@@ -1,18 +1,15 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs
+  IonApp, IonRouterOutlet
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cubeOutline, personCircle } from 'ionicons/icons';
+import Tabs from './pages/Tabs';
 import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
+import SignIn from './pages/SignIn';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -36,23 +33,15 @@ import './theme/variables.css';
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
+      <IonRouterOutlet>
+          <Route path="/signin" component={SignIn} exact={true} />
+          <Route path="/tabs" component={Tabs} exact={true} />
           <Route path="/exp" component={TabExp} exact={true} />
           <Route path="/account" component={TabAccount} exact={true} />
-          <Route path="/" render={() => <Redirect to="/exp" />} exact={true} />
+          <Route path="/" render={() => <Redirect to="/signin" />} exact={true} />
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="exp" href="/exp">
-            <IonIcon icon={cubeOutline} />
-            <IonLabel>Experiments</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="account" href="/account">
-            <IonIcon icon={personCircle} />
-            <IonLabel>Account</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+
+      
     </IonReactRouter>
   </IonApp>
 );
