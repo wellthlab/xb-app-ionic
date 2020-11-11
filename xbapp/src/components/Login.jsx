@@ -37,7 +37,7 @@ class Login extends Component{
                     </IonCard>
                     <p style={{textAlign: "center", margin: "20px 0 20px 0"}}>or</p>
                     <IonCard>
-                        <IonButton onclick={this.register}>Register</IonButton>
+                        <IonButton routerLink="/register">Register</IonButton>
                     </IonCard>
                 </IonContent>
             );

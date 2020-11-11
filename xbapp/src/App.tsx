@@ -15,7 +15,7 @@ import { cubeOutline, personCircle } from 'ionicons/icons';
 import Tabs from './pages/Tabs';
 import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
-import SignIn from './pages/SignIn';
+import LoginAfter from './pages/LoginAfter';
 
 
 import Login from './components/Login.jsx';
@@ -46,16 +46,14 @@ const App = function () {
 
     let state = store.getState();
 
-
-
     if (state.account.loggedin) {
         content = <IonTabs>
             <IonRouterOutlet>
-                <Route path="/signin" component={SignIn} exact={true} />
+                <Route path="/after" component={LoginAfter} exact={true} />
                 <Route path="/tabs" component={Tabs} exact={true} />
                 <Route path="/exp" component={TabExp} exact={true} />
                 <Route path="/account" component={TabAccount} exact={true} />
-                <Route path="/" render={() => <Redirect to="/signin" />} exact={true} />
+                <Route path="/" render={() => <Redirect to="/after" />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="exp" href="/exp">

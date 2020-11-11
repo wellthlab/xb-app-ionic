@@ -1,9 +1,9 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React from 'react';
 import ExploreContainer from '../components/ExploreContainer';
-import './SignIn.css';
+import './LoginAfter.css';
 
-const SignIn: React.FC = () => {
+const LoginAfter: React.FC = () => {
     return (
         <IonPage>
             <IonHeader>
@@ -32,4 +32,4 @@ const SignIn: React.FC = () => {
     );
 };
 
-export default SignIn;
+export default LoginAfter;
