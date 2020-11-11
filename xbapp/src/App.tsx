@@ -12,10 +12,11 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cubeOutline, personCircle } from 'ionicons/icons';
-
-
+import Tabs from './pages/Tabs';
 import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
+import SignIn from './pages/SignIn';
+
 
 import Login from './components/Login.jsx';
 
@@ -37,23 +38,24 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
 import store from './model/store'
 
-const App = function() {
+const App = function () {
 
     let content = null;
 
     let state = store.getState();
 
-    
 
-    if(state.account.loggedin) {
+
+    if (state.account.loggedin) {
         content = <IonTabs>
             <IonRouterOutlet>
+                <Route path="/signin" component={SignIn} exact={true} />
+                <Route path="/tabs" component={Tabs} exact={true} />
                 <Route path="/exp" component={TabExp} exact={true} />
                 <Route path="/account" component={TabAccount} exact={true} />
-                <Route path="/" render={() => <Redirect to="/exp" />} exact={true} />
+                <Route path="/" render={() => <Redirect to="/signin" />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="exp" href="/exp">
@@ -73,7 +75,7 @@ const App = function() {
     return <IonApp>
         <Provider store={store}>
             <IonReactRouter>
-            {content}
+                {content}
             </IonReactRouter>
         </Provider>
     </IonApp>
