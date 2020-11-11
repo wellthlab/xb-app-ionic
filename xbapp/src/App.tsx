@@ -2,13 +2,8 @@ import React from 'react';
 import { Provider } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom';
 import {
-    IonApp,
-    IonIcon,
-    IonLabel,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs
+  IonApp,
+  IonRouterOutlet
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cubeOutline, personCircle } from 'ionicons/icons';
@@ -19,6 +14,7 @@ import LoginAfter from './pages/LoginAfter';
 
 
 import Login from './components/Login.jsx';
+import Register from './pages/Register.jsx';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -42,41 +38,35 @@ import store from './model/store'
 
 const App = function () {
 
-    let content = null;
+  let content = null;
 
-    let state = store.getState();
+  let state = store.getState();
 
-    if (state.account.loggedin) {
-        content = <IonTabs>
-            <IonRouterOutlet>
-                <Route path="/after" component={LoginAfter} exact={true} />
-                <Route path="/tabs" component={Tabs} exact={true} />
-                <Route path="/exp" component={TabExp} exact={true} />
-                <Route path="/account" component={TabAccount} exact={true} />
-                <Route path="/" render={() => <Redirect to="/after" />} exact={true} />
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-                <IonTabButton tab="exp" href="/exp">
-                    <IonIcon icon={cubeOutline} />
-                    <IonLabel>Experiments</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="account" href="/account">
-                    <IonIcon icon={personCircle} />
-                    <IonLabel>Account</IonLabel>
-                </IonTabButton>
-            </IonTabBar>
-        </IonTabs>
-    } else {
-        content = <Login />
-    }
+  if (state.account.loggedin) {
+    content =
+      <IonRouterOutlet>
+        <Route path="/after" component={LoginAfter} exact={true} />
+        <Route path="/tabs" component={Tabs} exact={true} />
+        <Route path="/exp" component={TabExp} exact={true} />
+        <Route path="/account" component={TabAccount} exact={true} />
+        <Route path="/" render={() => <Redirect to="/after" />} exact={true} />
+      </IonRouterOutlet>
+  } else {
+    content =
+      <IonRouterOutlet>
+        <Route path="/login" component={Login} exact={true} />
+        <Route path="/register" component={Register} exact={true} />
+        <Route path="/" render={() => <Redirect to="/login" />} exact={true} />
+      </IonRouterOutlet>
+  }
 
-    return <IonApp>
-        <Provider store={store}>
-            <IonReactRouter>
-                {content}
-            </IonReactRouter>
-        </Provider>
-    </IonApp>
+  return <IonApp>
+    <Provider store={store}>
+      <IonReactRouter>
+        {content}
+      </IonReactRouter>
+    </Provider>
+  </IonApp>
 };
 
 export default App;
