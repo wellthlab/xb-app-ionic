@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
-import {LOG_IN, LOG_OUT} from '../model/reducers/accountReducer'
-import { IonContent, IonButton, IonModal, IonItem, IonInput, IonCard } from '@ionic/react';
+import {LOG_IN} from '../model/slices/Account'
+import { IonContent, IonButton, IonItem, IonInput, IonCard } from '@ionic/react';
 
 const autoBindReact = require('auto-bind/react');
 
@@ -58,7 +58,7 @@ export default connect(
         return {account: state.account};
     },
     { // Actions to include as props
-        LOG_IN, LOG_OUT
+        LOG_IN
     }
 
 )(Login);

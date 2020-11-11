@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import {LOG_IN, LOG_OUT} from '../model/reducers/accountReducer'
+import {LOG_IN, LOG_OUT} from '../model/slices/Account'
 import './TabAccount.css';
 
 const autoBindReact = require('auto-bind/react');
@@ -48,7 +48,7 @@ export default connect(
         }
     },
     {
-        // A map full of action creators
+        // A map full of action creators; action creators are imported from slices
         LOG_OUT
     }
 

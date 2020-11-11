@@ -23,7 +23,7 @@ import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
 
 // The login component
-import Login from './components/Login.jsx';
+import Login from './components/Login';
 
 /*************************************************************
  * CSS
@@ -84,6 +84,7 @@ class App extends Component {
                 </IonTabBar>
             </IonTabs>
         } else {
+            // TODO: Use another IonRouter to route between login and register?
             content = <Login />
         }
 
