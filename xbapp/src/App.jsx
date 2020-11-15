@@ -15,7 +15,7 @@ import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
 import LoginAfter from './pages/LoginAfter';
 import Register from './pages/Register.jsx';
-import Tutorial from './pages/Tutorial.tsx';
+import Tutorial from './pages/Tutorial.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
