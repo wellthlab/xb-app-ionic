@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'react-redux'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
-import './TabAccount.css';
+import './Register.css';
 
 const TabAccount = (account) => {
   return (
@@ -19,7 +19,7 @@ const TabAccount = (account) => {
           </IonToolbar>
         </IonHeader>
 
-        <iframe src="https://xbvisualise.herokuapp.com/register/"></iframe>
+        <iframe class= 'webPage' name= "registerPage" src="https://xbvisualise.herokuapp.com/register/" allowfullscreen></iframe>
 
       </IonContent>
     </IonPage>
