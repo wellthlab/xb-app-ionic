@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^2.4.2",
     "@apollo/client": "^3.2.5",
+    "@capacitor/android": "^2.4.2",
     "@capacitor/core": "2.4.2",
     "@capacitor/ios": "^2.4.2",
     "@ionic/pwa-elements": "^3.0.1",
@@ -25,6 +25,7 @@
     "auto-bind": "^4.0.0",
     "graphql": "^15.4.0",
     "ionicons": "^5.2.3",
+    "node-sass": "^4.14.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-redux": "^7.2.2",

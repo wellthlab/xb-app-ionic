@@ -15,6 +15,7 @@ import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
 import LoginAfter from './pages/LoginAfter';
 import Register from './pages/Register.jsx';
+import Tutorial from './pages/Tutorial.tsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -77,6 +78,7 @@ class App extends Component {
         <IonRouterOutlet>
           <Route path="/login" component={Login} exact={true} />
           <Route path="/register" component={Register} exact={true} />
+          <Route path="/tutorial" component={Tutorial} exact={true} />
           <Route path="/" render={() => <Redirect to="/login" />} exact={true} />
         </IonRouterOutlet>
     }
