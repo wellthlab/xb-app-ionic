@@ -1,29 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
-    IonApp,
-    IonIcon,
-    IonLabel,
-    IonRouterOutlet,
-    IonTabBar,
-    IonTabButton,
-    IonTabs
+  IonApp,
+  IonRouterOutlet
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-
-// Icons
-import { cubeOutline, personCircle } from 'ionicons/icons';
 
 // Redux stuff
 import { connect } from 'react-redux'
 
-
 // Pages
+import Tabs from './pages/Tabs';
 import TabExp from './pages/TabExp';
 import TabAccount from './pages/TabAccount';
+import LoginAfter from './pages/LoginAfter';
+import Register from './pages/Register.jsx';
 
 // The login component
-import Login from './components/Login';
+import Login from './components/Login.jsx';
+
 
 /*************************************************************
  * CSS
@@ -46,6 +41,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+//import store from './model/store'
 
 /****************************************************************/
 
@@ -53,56 +49,55 @@ import './theme/variables.css';
 // autoBind, because life's TOO SHORT
 const autoBindReact = require('auto-bind/react'); // Needs to go after import, because it's a const
 
+
 class App extends Component {
 
-    constructor(props) {
-        super(props);
-        autoBindReact(this);
+  constructor(props) {
+    super(props);
+    autoBindReact(this);
+  }
+
+  render() {
+
+    let content = null;
+
+    let { account } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
+
+    if (account.loggedin) {
+      content =
+        <IonRouterOutlet>
+          <Route path="/after" component={LoginAfter} exact={true} />
+          <Route path="/tabs" component={Tabs} exact={true} />
+          <Route path="/exp" component={TabExp} exact={true} />
+          <Route path="/account" component={TabAccount} exact={true} />
+          <Route path="/" render={() => <Redirect to="/after" />} exact={true} />
+        </IonRouterOutlet>
+    } else {
+      content =
+        <IonRouterOutlet>
+          <Route path="/login" component={Login} exact={true} />
+          <Route path="/register" component={Register} exact={true} />
+          <Route path="/" render={() => <Redirect to="/login" />} exact={true} />
+        </IonRouterOutlet>
     }
 
-    render() {
-        let content = null;
 
-        let {account} = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
+    return <IonApp>
+      <IonReactRouter>
+        {content}
+      </IonReactRouter>
+    </IonApp>;
 
-        if(account.loggedin) {
-            content = <IonTabs>
-                <IonRouterOutlet>
-                    <Route path="/exp" component={TabExp} exact={true} />
-                    <Route path="/account" component={TabAccount} exact={true} />
-                    <Route path="/" render={() => <Redirect to="/exp" />} exact={true} />
-                </IonRouterOutlet>
-                <IonTabBar slot="bottom">
-                    <IonTabButton tab="exp" href="/exp">
-                        <IonIcon icon={cubeOutline} />
-                        <IonLabel>Experiments</IonLabel>
-                    </IonTabButton>
-                    <IonTabButton tab="account" href="/account">
-                        <IonIcon icon={personCircle} />
-                        <IonLabel>Account</IonLabel>
-                    </IonTabButton>
-                </IonTabBar>
-            </IonTabs>
-        } else {
-            // TODO: Use another IonRouter to route between login and register?
-            content = <Login />
-        }
-
-        return <IonApp>
-                <IonReactRouter>
-                {content}
-                </IonReactRouter>
-            </IonApp>;
-
-    }
+  }
 };
 
 export default connect(
-    (state, ownProps) => {
-        return {account: state.account};
-    },
-    { // Actions to include as props
+  (state, ownProps) => {
+    return { account: state.account };
+  },
+  { // Actions to include as props
 
-    }
+  }
 
 )(App);
+

@@ -39,6 +39,8 @@ class Login extends Component{
                     <IonCard>
                         <IonButton routerLink="/register">Register</IonButton>
                     </IonCard>
+                    <ion-row style={{height: "40px"}}></ion-row>
+                    <IonButton routerLink="/tutorialone" expand="full">What is XB? (Tutorial)</IonButton>
                 </IonContent>
             );
         }
