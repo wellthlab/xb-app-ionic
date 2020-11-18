@@ -1,5 +1,10 @@
-import React, { Component }  from 'react';
-import { IonSlides, IonSlide, IonContent } from '@ionic/react';
+import React, { Component } from 'react';
+import {
+  IonSlides, IonSlide, IonContent,
+  IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
+  IonItem, IonIcon, IonLabel, IonButton,
+  IonGrid, IonRow, IonCol
+} from '@ionic/react';
 import './Tutorial.css';
 
 // Optional parameters to pass to the swiper instance.
@@ -171,19 +176,124 @@ class Tutorial extends Component {
       <IonContent>
         <IonSlides pager={true} options={slideOpts}>
           <IonSlide>
-            <h1>What is the XB approach? </h1>
+            <IonCard>
+              <IonItem>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/move.png" alt="XB Logo" /></IonCol>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/eat.png" alt="XB Logo" /></IonCol>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/engage.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/cogitate.png" alt="XB Logo" /></IonCol>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/sleep.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
+              <IonCardHeader>
+                <IonCardTitle>Experiments in a Box.</IonCardTitle>
+                <IonCardSubtitle>What is our approach?</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                You already have a lot of practice Eating. Sleeping. Moving. And that's great! But the question is, is there more to it? Is there something which works for YOU and doesn't work for others?<br></br>
+                A practice? A skill? A piece of knowledge? A habit? Our answer is: An experiment! Experiments-In-A-Box is our approach to make YOU Move better! Eat better! Engage Better! Cogitate Better! And Sleep Better! Our plan is to make you FEEL better!<br></br>
+                How? By offering you a variety of "BOXES" - sets of different experiments which can work for you and your daily habits, and we give you the opportunity of experimenting with them to see.. which one brings you more skills, which one improves your lifestyle.. and which one improves your WELLBEING!<br></br>
+                And the best thing.. You can even create your own! </IonCardContent>
+            </IonCard>
           </IonSlide>
           <IonSlide>
-            <h1>An Experiment-in-a-box?</h1>
+          <IonCard>
+              <IonItem>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/box.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
+              <IonCardHeader>
+                <IonCardTitle>An Experiment in a Box.</IonCardTitle>
+                <IonCardSubtitle>How does it work?</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                The good aspect to our approach is that we do not tell you wat to do.<br></br>
+                We simply give you a few health habits you can try out to see if they work FOR YOU?<br></br>
+                Why? Because EVERYONE IS DIFFERENT. So why not just try out some wellbeing practices to see which one is most beneficial for you?<br></br>
+                WE give you the options of experimentation.<br></br>
+                YOU get the power to choose what experiment you are doing.<br></br>
+                YOU feed YOUR DATA back into the app.<br></br>
+                YOU reflect on the experimen;ts affect on your wellbeing.<br></br>
+                YOU decide whether you wish to incorporate this into your daily life.<br></br>
+                And that's it! Simple as that! We give you the options, and you control your experience!
+                </IonCardContent>
+            </IonCard>
           </IonSlide>
           <IonSlide>
-            <h1>Your data</h1>
+          <IonCard>
+              <IonItem>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/visualise.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
+              <IonCardHeader>
+                <IonCardTitle>XB: Visualise.</IonCardTitle>
+                <IonCardSubtitle>What do we mean by "feed your data"?</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                You have total control over your data. We are just giving you some helpers to help MANAGE your data, ANALYSE it, and VISUALISE it.<br></br>
+                Amongst the features in the app of editing your profile, choosing an experiment and trying out a new health practice, you will be able to (1) record your experience and (2) reflect on your experience.<br></br>
+                We are doing that by prompting you with questions about your experiment, your experiment, your daily mood and health, which is later going to help you understand how these health practices impact you!<br></br>
+                And that's not everything! These are not only adjustable, but also optional! YOU decide what data you want to feed back to the app.<br></br>
+                And while browsing all of our features, you may find the "Goal Diary" (personal notebook), the "Calendar" (record of all your data), and the "Visualise" (graphs to understand your progress) sections be of great help in your journey!
+                </IonCardContent>
+            </IonCard>
           </IonSlide>
           <IonSlide>
-            <h1>Groups</h1>
+          <IonCard>
+              <IonItem>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/box.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
+              <IonCardHeader>
+                <IonCardTitle>An XB Group.</IonCardTitle>
+                <IonCardSubtitle>What's a group?</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                And there's more!<br></br>
+                We understand you may want to experience these health practices by yourself. You can look at YOUR own data.<br></br>
+                BUT: what is you want to (1) compare with your friends, or even (2) compare with other individuals?<br></br>
+                Well, XB Groups is a function which lets you join your XB experiment as part of a group, and work through the experiments together - OR - compare your data/your group's data with other groups/individuals!<br></br>
+                This shall be well fun!
+                </IonCardContent>
+            </IonCard>
           </IonSlide>
           <IonSlide>
-            <h1>Reiteration</h1>
+          <IonCard>
+              <IonItem>
+                <IonGrid>
+                  <IonRow>
+                    <IonCol><img style={{width: "100px", resize: "both"}} src="assets/box.png" alt="XB Logo" /></IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
+              <IonCardHeader>
+                <IonCardTitle>XB.</IonCardTitle>
+                <IonCardSubtitle>Join today!</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                1) CHOOSE.<br></br>
+                2) EXPERIEMENT.<br></br>
+                3) RECORD.<br></br>
+                4) VISUALISE.<br></br>
+                5) REFLECT.<br></br>
+                6) IMPROVE.<br></br>
+                </IonCardContent>
+                <IonButton routerLink="/login" expand="full">Back to the Log In page -&gt;</IonButton>
+            </IonCard>
           </IonSlide>
         </IonSlides>
       </IonContent>
@@ -191,4 +301,4 @@ class Tutorial extends Component {
   }
 }
 
-  export default Tutorial;
+export default Tutorial;

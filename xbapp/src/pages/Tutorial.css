@@ -3,4 +3,8 @@ ion-slides {
     height: 100%;
 
     background-color:#393e40; 
-  }
+}
+img {
+    width: 30px;
+    resize: both;
+}
