@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './TabAccount.css';
+import { IonContent, IonPage, IonTitle, IonButton, IonItem } from '@ionic/react';
+import XBHeader from '../components/XBHeader'
+import './Account.css';
 
 /**
  * Each slice exports some action creators that are used to push changes into the model
@@ -24,20 +24,11 @@ class TabAccount extends Component {
     render() {
         return (
         <IonPage>
-          <IonHeader>
-            <IonToolbar>
-              <IonTitle>Profile</IonTitle>
-            </IonToolbar>
-          </IonHeader>
+          <XBHeader title="Account"></XBHeader>
           <IonContent fullscreen>
-            <IonHeader collapse="condense">
-              <IonToolbar>
-                <IonTitle size="large"></IonTitle>
-              </IonToolbar>
-            </IonHeader>
 
             { /* the props are set up for us by connect(), below */ }
-            <IonItem>{this.props.account.name}</IonItem>
+            <p>{this.props.account.name}</p>
 
             <IonButton onclick={() => this.props.LOG_OUT({})}>Log Out</IonButton>
 

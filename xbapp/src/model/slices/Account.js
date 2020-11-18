@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    loggedin: false,
+    loggedin: true,
     email: null,
     password: null,
     name: ""
@@ -13,7 +13,6 @@ const accountSlice = createSlice({
     initialState,
     reducers: {
         LOG_IN(state, action) {
-            console.log("", action);
             // TODO: Actually validate! What's the best pattern?
             //createSlice allows us to safely mutate state, because it's really a proxy ;)
             state.loggedin = true;

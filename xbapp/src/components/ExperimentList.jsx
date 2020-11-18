@@ -1,56 +1,49 @@
 import React, {Component} from 'react';
+import { IonIcon } from '@ionic/react';
+import { peopleOutline, alertOutline, todayOutline } from 'ionicons/icons';
+import { Link } from "react-router-dom"
 
-class ExperimentList extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render(){
-    const {experiments: exps} = this.props;
-
-    return(
-        <div>
-          {exps.map((exp, i) => {
-            return <ion-card key={i}>
-                  <ion-card-header>
-                      <ion-card-title>{exp.title}</ion-card-title>
-                  </ion-card-header>
-
-                  <ion-card-content>
-                      <ion-img src={exp.img}/>
-                  </ion-card-content>
-              </ion-card>
-            })}
-        </div>
-    );
-  }
-}
-
-/**
- * Show information about the current experiment
- */
-class ExperimentCard extends Component {
+export default class ExperimentList extends Component {
     constructor(props) {
-      super(props);
+        super(props);
     }
 
     render(){
-      const exp = this.props.experiment;
+        const {groups} = this.props;
 
-      return(
-          <div>
-            {exps.map((exp, i) => {
-              return <ion-card key={i}>
+        console.log("Render ExperimentList", this.props);
+
+        return(
+            <>
+            {groups.map((group, i) => {
+
+                var members = group.users.length;
+                var missing = 1;
+
+                if(members > 1) {
+                    var memberchip = <ion-chip color="success">
+                        <ion-label><IonIcon icon={peopleOutline} /> {members}</ion-label>
+                    </ion-chip>
+                }
+
+                return <ion-card key={i}><Link to={"/group/" + group._group_id}>
                     <ion-card-header>
-                        <ion-card-title>{exp.title}</ion-card-title>
+                        <ion-card-title>{group.name}</ion-card-title>
+                        <ion-card-subtitle>{group.current_experiment.name}</ion-card-subtitle>
                     </ion-card-header>
 
                     <ion-card-content>
-                        <ion-img src={exp.img}/>
+                        <ion-chip color="primary">
+                            <ion-label><IonIcon icon={todayOutline} /> Day {group.current_experiment.day} of {group.current_experiment.maxdays}</ion-label>
+                        </ion-chip>
+                        <ion-chip color="danger">
+                            <ion-label><IonIcon icon={alertOutline} /> {missing} overdue { missing > 1 ? "entries" : "entry" }</ion-label>
+                        </ion-chip>
+                        {memberchip}
                     </ion-card-content>
-                </ion-card>
-              })}
-          </div>
-      );
+                </Link></ion-card>
+            })}
+            </>
+        );
     }
 }

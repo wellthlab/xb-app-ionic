@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
-  IonRouterOutlet
+  IonRouterOutlet,
+  IonMenu,
+  IonToolbar,
+  IonHeader,
+  IonContent,
+  IonList,
+  IonItem,
+  IonItemDivider
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -10,12 +17,13 @@ import { IonReactRouter } from '@ionic/react-router';
 import { connect } from 'react-redux'
 
 // Pages
-import Tabs from './pages/Tabs';
-import TabExp from './pages/TabExp';
-import TabAccount from './pages/TabAccount';
+import ExpList from './pages/ExpList';
+import Account from './pages/Account';
+import About from './pages/About';
 import LoginAfter from './pages/LoginAfter';
 import Register from './pages/Register.jsx';
 import Tutorial from './pages/Tutorial.jsx';
+import Group from './pages/Group.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -64,22 +72,36 @@ class App extends Component {
 
     let { account } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
 
-    if (account.loggedin) {
-      content =
-        <IonRouterOutlet>
-          <Route path="/after" component={LoginAfter} exact={true} />
-          <Route path="/tabs" component={Tabs} exact={true} />
-          <Route path="/exp" component={TabExp} exact={true} />
-          <Route path="/account" component={TabAccount} exact={true} />
-          <Route path="/" render={() => <Redirect to="/after" />} exact={true} />
-        </IonRouterOutlet>
+    if (account.loggedin !== false) {
+      content = <>
+            <IonMenu side="start" contentId="appContent">
+                <IonHeader>
+                    <IonToolbar color="primary">Menu</IonToolbar>
+                </IonHeader>
+                <IonContent>
+                    <IonList>
+                        <IonItem routerLink="/group">Experiments</IonItem>
+                        <IonItem routerLink="/account">Account</IonItem>
+                        <IonItemDivider></IonItemDivider>
+                        <IonItem routerLink="/about">About XB</IonItem>
+                    </IonList>
+                </IonContent>
+            </IonMenu>
+
+            <IonRouterOutlet id="appContent">
+              <Route path="/group" component={ExpList} exact={true} />
+              <Route path="/group/:id" component={Group} exact={true} />
+              <Route path="/account" component={Account} exact={true} />
+              <Route path="/about" component={About} exact={true} />
+              <Route component={LoginAfter} />
+            </IonRouterOutlet>
+        </>
     } else {
       content =
         <IonRouterOutlet>
-          <Route path="/login" component={Login} exact={true} />
           <Route path="/register" component={Register} exact={true} />
           <Route path="/tutorial" component={Tutorial} exact={true} />
-          <Route path="/" render={() => <Redirect to="/login" />} exact={true} />
+          <Route component={Login} />
         </IonRouterOutlet>
     }
 
@@ -102,4 +124,3 @@ export default connect(
   }
 
 )(App);
-
