@@ -215,13 +215,13 @@ class Tutorial extends Component {
                 <IonCardSubtitle>How does it work?</IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>
-                The good aspect to our approach is that we do not tell you wat to do.<br></br>
+                The good aspect to our approach is that we do not tell you what to do.<br></br>
                 We simply give you a few health habits you can try out to see if they work FOR YOU?<br></br>
                 Why? Because EVERYONE IS DIFFERENT. So why not just try out some wellbeing practices to see which one is most beneficial for you?<br></br>
                 WE give you the options of experimentation.<br></br>
                 YOU get the power to choose what experiment you are doing.<br></br>
                 YOU feed YOUR DATA back into the app.<br></br>
-                YOU reflect on the experimen;ts affect on your wellbeing.<br></br>
+                YOU reflect on the experiment's effect on your wellbeing.<br></br>
                 YOU decide whether you wish to incorporate this into your daily life.<br></br>
                 And that's it! Simple as that! We give you the options, and you control your experience!
                 </IonCardContent>
@@ -286,7 +286,7 @@ class Tutorial extends Component {
               </IonCardHeader>
               <IonCardContent>
                 1) CHOOSE.<br></br>
-                2) EXPERIEMENT.<br></br>
+                2) EXPERIMENT.<br></br>
                 3) RECORD.<br></br>
                 4) VISUALISE.<br></br>
                 5) REFLECT.<br></br>

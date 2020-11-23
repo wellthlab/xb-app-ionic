@@ -91,7 +91,8 @@ export default connect(
     (state, ownProps) => {
         return {
             account: state.account,
-            groups: state.groups
+            groups: state.groups,
+            boxes: state.boxes
         }
     },
     {

@@ -76,6 +76,12 @@ function XBClient() {
 
     }
 
+    /**
+     * Get all boxes
+     */
+    self.getBoxes = async function(exid) {
+        
+    }
 }
 
 

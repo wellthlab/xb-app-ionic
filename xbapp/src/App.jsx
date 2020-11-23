@@ -20,10 +20,12 @@ import { connect } from 'react-redux'
 import ExpList from './pages/ExpList';
 import Account from './pages/Account';
 import About from './pages/About';
-import LoginAfter from './pages/LoginAfter';
+import JourneyPlanner from './pages/JourneyPlanner';
 import Register from './pages/Register.jsx';
 import Tutorial from './pages/Tutorial.jsx';
 import Group from './pages/Group.jsx';
+import ExperimentYourself from './pages/ExperimentYourself.jsx';
+import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -76,13 +78,17 @@ class App extends Component {
       content = <>
             <IonMenu side="start" contentId="appContent">
                 <IonHeader>
-                    <IonToolbar color="primary">Menu</IonToolbar>
+                    <IonToolbar color="#5d8286">Menu</IonToolbar>
                 </IonHeader>
                 <IonContent>
                     <IonList>
                         <IonItem routerLink="/group">Experiments</IonItem>
-                        <IonItem routerLink="/account">Account</IonItem>
+                        <IonItem routerLink="/experiment">JourneyPlanner</IonItem>
                         <IonItemDivider></IonItemDivider>
+                        <IonItem routerLink="/experiment">Calendar</IonItem>
+                        <IonItem routerLink="/experiment">Goal Diary</IonItem>
+                        <IonItemDivider></IonItemDivider>
+                        <IonItem routerLink="/account">Account</IonItem>
                         <IonItem routerLink="/about">About XB</IonItem>
                     </IonList>
                 </IonContent>
@@ -93,7 +99,10 @@ class App extends Component {
               <Route path="/group/:id" component={Group} exact={true} />
               <Route path="/account" component={Account} exact={true} />
               <Route path="/about" component={About} exact={true} />
-              <Route component={LoginAfter} />
+              <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
+              <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
+              <Route path="/experiment" component={JourneyPlanner} exact={true} />
+              <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
             </IonRouterOutlet>
         </>
     } else {

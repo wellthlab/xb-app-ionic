@@ -3,12 +3,12 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import XBHeader from '../components/XBHeader'
 import './ExpList.css';
 
-import ExperimentList from '../components/ExperimentList'
+import BoxesList from '../components/BoxesList'
 
 import { connect } from 'react-redux'
 const autoBindReact = require('auto-bind/react');
 
-class ExpList extends Component {
+class ExperimentYourself extends Component {
 
     constructor(props) {
         super(props);
@@ -16,13 +16,13 @@ class ExpList extends Component {
     }
 
     render() {
-        console.log("Render ExpList", this.props);
+        console.log("Render all available boxes", this.props);
 
         return (
           <IonPage>
-              <XBHeader title="Experiments"></XBHeader>
+              <XBHeader title="Available Boxes"></XBHeader>
               <IonContent>
-                    <ExperimentList groups={this.props.groups.groups} />
+                    <BoxesList boxes={this.props.boxes.boxes} />
               </IonContent>
           </IonPage>
         );
@@ -37,4 +37,4 @@ export default connect(
 
     }
 
-)(ExpList);
+)(ExperimentYourself);
