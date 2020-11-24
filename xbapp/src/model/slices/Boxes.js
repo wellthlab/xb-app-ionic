@@ -22,6 +22,16 @@ const initialState = {
             warning: "warning",
             category: "Move",
             experiment_groups: [true, true]
+        },
+        {
+            _box_id: 3279,
+            _approved: true,
+            name: "MoveBetter",
+            blurb: "created for",
+            description: "short description",
+            warning: "warning",
+            category: "Move",
+            experiment_groups: [true, true]
         }
     ]
 };
