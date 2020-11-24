@@ -6,8 +6,8 @@
 // Use the realm WebSDK because we're effectively operating in a web browser
 import * as Realm from "realm-web";
 
-// GraphQL requires the apollo client
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+// GraphQL requires the apollo client; not using atm
+//import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
 
 /**
@@ -23,14 +23,14 @@ function XBClient() {
     var MONGO_DB = "V1";
     var graphql_url = `https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/graphql`;
 
-    self.realm = new Realm.App({ id: APP_ID });
+    self.realm = new Realm.App({ id: APP_ID, timeout: 10000 });
 
 
     // Log in and set the realm user
     self.setUser = async function(email, password) {
         const credentials = Realm.Credentials.emailPassword(email, password);
         try {
-            const user = await app.logIn(credentials);
+            const user = await self.realm.logIn(credentials);
             return user;
         } catch(err) {
             console.error("Failed to log in", err);
@@ -49,16 +49,33 @@ function XBClient() {
             throw "Cannot use DB until autenticated with realm";
         }
 
-        return self.realm.mongodb(ATLAS_APP).db(MONGO_DB);
+        console.log("services", self.realm.services);
+        console.log("currentUser", self.realm.currentUser);
+        console.log("currentUser.mongoclient", self.realm.currentUser.mongoClient);
+
+        // In non-web mode
+        if(self.realm.currentUser.mongoClient) {
+            var svc = self.realm.currentUser.mongoClient(ATLAS_APP);
+        }
+        // In web mode
+        else if(self.realm.services) {
+            var svc = self.realm.services.mongodb(ATLAS_APP);
+        }
+
+        var db = svc.db(MONGO_DB);
+
+        console.log(db);
+
+        return db;
     }
 
     /**
     * Get all groups for the current user
     */
     self.getGroups = async function() {
-        var db = self.getDb();
+        var db = getDb();
 
-        var collection = db.getCollection('groups');
+        var collection = db.collection('groups');
 
         var groups = collection.find({"users": {
             "$elemMatch": {
@@ -66,7 +83,7 @@ function XBClient() {
             }
         }});
 
-        return self.convert();
+        return groups;
     }
 
     /**
@@ -80,7 +97,7 @@ function XBClient() {
      * Get all boxes
      */
     self.getBoxes = async function(exid) {
-        
+
     }
 }
 

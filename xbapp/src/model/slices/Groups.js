@@ -43,7 +43,7 @@ const GroupSlice = createSlice({
     initialState,
     reducers: {
         // Add an experiment to the list
-        AddGroup(state, action) {
+        ADDGROUP(state, action) {
             const group = action.payload.group;
             state.groups.push(group);
 
