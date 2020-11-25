@@ -9,6 +9,13 @@ import * as Realm from "realm-web";
 // GraphQL requires the apollo client; not using atm
 //import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 
+var crypto = require('crypto')
+
+function sha512(str) {
+    var hash = crypto.createHash('sha512');
+    var data = hash.update(str, 'utf-8');
+    return data.digest('hex');
+}
 
 /**
 * Most methods are async and return promises; so the intended style would be something
@@ -25,17 +32,6 @@ function XBClient() {
 
     self.realm = new Realm.App({ id: APP_ID, timeout: 10000 });
 
-
-    // Log in and set the realm user
-    self.setUser = async function(email, password) {
-        const credentials = Realm.Credentials.emailPassword(email, password);
-        try {
-            const user = await self.realm.logIn(credentials);
-            return user;
-        } catch(err) {
-            console.error("Failed to log in", err);
-        }
-    }
 
     // Get a configured GraphQL client
     var _db = false;
@@ -64,9 +60,29 @@ function XBClient() {
 
         var db = svc.db(MONGO_DB);
 
-        console.log(db);
-
         return db;
+    }
+
+    self.register = async function(email, password, data) {
+
+        
+
+        await self.realm.emailPasswordAuth.registerUser( email, sha512(password) );
+        return await self.setUser(email, password);
+    }
+
+
+    // Log in and set the realm user
+    self.setUser = async function(email, password) {
+        var cpw = await sha512(password);
+        //console.log("Hash", cpw);
+        const credentials = Realm.Credentials.emailPassword(email, cpw);
+        try {
+            const user = await self.realm.logIn(credentials);
+            return user;
+        } catch(err) {
+            throw Error(err.message);
+        }
     }
 
     /**
@@ -75,9 +91,9 @@ function XBClient() {
     self.getGroups = async function() {
         var db = getDb();
 
-        var collection = db.collection('groups');
+        var collection = db.collection('Groups');
 
-        var groups = collection.find({"users": {
+        var groups = collection.find({"Users": {
             "$elemMatch": {
                 "$eq": self.realm.currentUser.id
             }
@@ -101,6 +117,14 @@ function XBClient() {
     }
 }
 
+var xbclient = false;
+function getXBClient() {
+    if(xbclient === false) {
+        xbclient = new XBClient();
+    }
 
+    return xbclient;
+}
 
-export default XBClient;
+export default getXBClient;
+export { XBClient };

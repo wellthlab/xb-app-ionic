@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { LOG_IN } from '../model/slices/Account'
-import { IonContent, IonButton, IonItem, IonInput, IonCard } from '@ionic/react';
+import { START_LOGIN, ACCEPT_LOGIN, REJECT_LOGIN } from '../model/slices/Account'
+import { IonContent, IonButton, IonItem, IonInput, IonCard, IonSpinner } from '@ionic/react';
+
+import getXBClient from '../model/client';
 
 import "./Login.scss";
 
@@ -23,20 +25,31 @@ class Login extends Component {
                 </IonContent>
             );
         } else {
+
+            var form;
+
+            if(account.fetching) {
+                form = <IonSpinner name="crescent" />
+            } else {
+                form = <>
+                        <IonCard>
+                            <IonItem>
+                                <IonInput value="" placeholder="Email Address" type="email" onIonChange={(e) => { this.email = e.detail.value }}></IonInput>
+                            </IonItem>
+                            <IonItem>
+                                <IonInput value="" placeholder="Password" type="password" onIonChange={(e) => { this.password = e.detail.value }}></IonInput>
+                            </IonItem>
+                        </IonCard>
+                        <div className="centering">
+                        <IonButton onclick={this.login} slot="end">Log In</IonButton>
+                        </div>
+                    </>
+            }
+
             return (
                 <IonContent>
                     <img src="assets/box.png" alt="XB Logo"/>
-                    <IonCard>
-                        <IonItem>
-                            <IonInput value="" placeholder="Email Address" type="email" onIonChange={(e) => { this.email = e.detail.value }}></IonInput>
-                        </IonItem>
-                        <IonItem>
-                            <IonInput value="" placeholder="Password" type="password" onIonChange={(e) => { this.password = e.detail.value }}></IonInput>
-                        </IonItem>
-                    </IonCard>
-                    <div className="centering">
-                    <IonButton onclick={this.login} slot="end">Log In</IonButton>
-                    </div>
+                    {form}
                     <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Don't have an account?</p>
                     <div className="centering">
                     <IonButton routerLink="/register">Register</IonButton>
@@ -51,7 +64,21 @@ class Login extends Component {
     }
 
     login(e) {
-        this.props.LOG_IN({ email: this.email, password: this.password });
+
+        if( !this.email || !this.password ) {
+            return;
+        }
+
+        this.props.START_LOGIN({ });
+        
+        var client = getXBClient();
+        client.setUser( this.email, this.password ).then(
+            (user) => {
+                this.props.ACCEPT_LOGIN({ email: this.email, password: this.password })
+            }, (err) => {
+                this.props.REJECT_LOGIN(err.message)
+            }
+        );
     }
 
     register(e) {
@@ -64,7 +91,9 @@ export default connect(
         return { account: state.account };
     },
     { // Actions to include as props
-        LOG_IN
+        START_LOGIN,
+        ACCEPT_LOGIN,
+        REJECT_LOGIN
     }
 
 )(Login);

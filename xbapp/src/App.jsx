@@ -73,7 +73,7 @@ class App extends Component {
 
     let content = null;
 
-    let { account } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
+    let { account, client } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
 
     if (account.loggedin !== false) {
       content = <>
@@ -105,6 +105,7 @@ class App extends Component {
               <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
               <Route path="/experiment" component={JourneyPlanner} exact={true} />
               <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
+              <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
             </IonRouterOutlet>
         </>
     } else {

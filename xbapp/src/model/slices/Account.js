@@ -4,7 +4,9 @@ const initialState = {
     loggedin: true,
     email: null,
     password: null,
-    name: ""
+    name: "",
+    loginerror: false,
+    fetching: false
 }
 
 // See: https://redux.js.org/tutorials/fundamentals/part-8-modern-redux#using-createslice
@@ -12,24 +14,36 @@ const accountSlice = createSlice({
     name: 'account',
     initialState,
     reducers: {
-        LOG_IN(state, action) {
-            //createSlice allows us to safely mutate state, because it's really a proxy ;)
+        START_LOGIN(state, action) { // When a login request starts
+            state.loggedin = false;
+            state.fetching = true;
+            state.loginerror = false;
+        },
+        REJECT_LOGIN(state, action) { // When a login request is rejected; must receive an error message
+            state.loggedin = false;
+            state.email = null;
+            state.name = "";
+            state.password = null;
+            state.loginerror = true;
+            state.loginerrormsg = action.payload;
+        },
+        ACCEPT_LOGIN(state, action) { // When a login request succeeds
             state.loggedin = true;
             state.email = action.payload.email;
             state.password = action.payload.password;
             state.name = "Anonymous Test User";
-
-            //
+            state.loginerror = false;
         },
         LOG_OUT(state, action) {
             state.loggedin = false;
             state.email = null;
             state.name = "";
             state.password = null;
+            state.loginerror = false;
         }
     }
 })
 
-export const { LOG_IN, LOG_OUT } = accountSlice.actions
+export const { START_LOGIN, REJECT_LOGIN, ACCEPT_LOGIN, LOG_OUT } = accountSlice.actions
 
 export default accountSlice.reducer
