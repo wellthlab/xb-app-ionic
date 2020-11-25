@@ -13,12 +13,13 @@ const accountSlice = createSlice({
     initialState,
     reducers: {
         LOG_IN(state, action) {
-            // TODO: Actually validate! What's the best pattern?
             //createSlice allows us to safely mutate state, because it's really a proxy ;)
             state.loggedin = true;
             state.email = action.payload.email;
             state.password = action.payload.password;
             state.name = "Anonymous Test User";
+
+            //
         },
         LOG_OUT(state, action) {
             state.loggedin = false;
