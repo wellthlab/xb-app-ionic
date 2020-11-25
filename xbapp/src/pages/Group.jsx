@@ -37,8 +37,7 @@ class Group extends Component {
           <XBHeader title={group.name}></XBHeader>
           <IonContent>
 
-                <p>Progress Chart</p>
-
+                <img src="assets/chart-placeholder.png" alt="" style={{marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px'}}/>
                 <ion-item><ion-heading><strong>{exp.name}</strong></ion-heading><ion-chip slot="end" color="primary">Day {exp.day}</ion-chip></ion-item>
                 <ion-item>{exp.instructions}</ion-item>
 
