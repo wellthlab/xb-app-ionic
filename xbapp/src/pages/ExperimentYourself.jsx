@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
-import './ExpList.css';
+//import './ExpList.css';
 
 import BoxesList from '../components/BoxesList'
 
@@ -14,10 +14,10 @@ class ExperimentYourself extends Component {
         super(props);
         autoBindReact(this); // Binds 'this' to this object in all methods
     }
-
+    
     render() {
         console.log("Render all available boxes", this.props);
-
+        
         return (
           <IonPage>
               <XBHeader title="Available Boxes"></XBHeader>

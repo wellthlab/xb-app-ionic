@@ -26,6 +26,7 @@ import Tutorial from './pages/Tutorial.jsx';
 import Group from './pages/Group.jsx';
 import ExperimentYourself from './pages/ExperimentYourself.jsx';
 import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
+//import Box from './pages/Box.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -100,6 +101,7 @@ class App extends Component {
               <Route path="/account" component={Account} exact={true} />
               <Route path="/about" component={About} exact={true} />
               <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
+              <Route path="/experiment/yourself/:id" component={About} exact={true} />
               <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
               <Route path="/experiment" component={JourneyPlanner} exact={true} />
               <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
