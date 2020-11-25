@@ -13,10 +13,10 @@ const JourneyPlanner: React.FC = () => {
                 
                 <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Let's build some new skills! Please choose your new journey below!</p>
                 <div className="centering">
-                    <IonButton routerLink="/experiment/yourself">Experiment By Yourself</IonButton>
+                    <IonButton routerLink="/experiment/yourself">Start an Experiment</IonButton>
                 </div>
                 <div className="centering">
-                    <IonButton routerLink="/experiment/group">Experiment In a Group</IonButton>
+                    <IonButton routerLink="/experiment/group">Join a Team</IonButton>
                 </div>
 
                 
