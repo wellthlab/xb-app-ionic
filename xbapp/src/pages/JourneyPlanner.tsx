@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import XBHeader from '../components/XBHeader'
 import './JourneyPlanner.scss';
 
+
 const JourneyPlanner: React.FC = () => {
 
     const [showAlertExperimentYourself, setShowAlertExperimentYourself] = useState(false);
