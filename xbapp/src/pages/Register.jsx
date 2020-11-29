@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Register from '../components/Register';

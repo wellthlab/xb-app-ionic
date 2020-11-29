@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 import './ExpList.css';
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -9,7 +9,8 @@ import {
   IonContent,
   IonList,
   IonItem,
-  IonItemDivider
+  IonItemDivider,
+  IonAlert
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -62,69 +63,92 @@ import './theme/variables.css';
 const autoBindReact = require('auto-bind/react'); // Needs to go after import, because it's a const
 
 
-class App extends Component {
+const App = ({ account }) => {
+  //class App extends Component {
 
-  constructor(props) {
-    super(props);
-    autoBindReact(this);
+  // constructor(props) {
+  //   super(props);
+  //   autoBindReact(this);
+  // }
+
+  const [showAlertCalendar, setShowAlertCalendar] = useState(false);
+  const [showAlertDiary, setShowAlertDiary] = useState(false);
+
+  // render() {
+
+  let content = null;
+
+  //let { account, client } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
+
+  if (account.loggedin !== false) {
+    content = <>
+      <IonMenu side="start" contentId="appContent">
+        <IonHeader>
+          <IonToolbar color="#5d8286">Menu</IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonList>
+            <IonItem routerLink="/group">Experiments</IonItem>
+            <IonItem routerLink="/experiment">JourneyPlanner</IonItem>
+            <IonItemDivider></IonItemDivider>
+            <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
+            <IonItem button onClick={() => setShowAlertDiary(true)} routerLink="/experiment">Goal Diary</IonItem>
+            <IonItemDivider></IonItemDivider>
+            <IonItem routerLink="/account">Account</IonItem>
+            <IonItem routerLink="/about">About XB</IonItem>
+          </IonList>
+          <IonAlert
+            isOpen={showAlertCalendar}
+            onDidDismiss={() => setShowAlertCalendar(false)}
+            cssClass='my-custom-class'
+            header={'Info'}
+            subHeader={'Calendar functionality'}
+            message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}
+            buttons={['OK']}
+          />
+
+          <IonAlert
+            isOpen={showAlertDiary}
+            onDidDismiss={() => setShowAlertDiary(false)}
+            cssClass='my-custom-class'
+            header={'Info'}
+            subHeader={'Goal Diary functionality'}
+            message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}
+            buttons={['OK']}
+          />
+        </IonContent>
+      </IonMenu>
+
+      <IonRouterOutlet id="appContent">
+        <Route path="/group" component={ExpList} exact={true} />
+        <Route path="/group/:id" component={Group} exact={true} />
+        <Route path="/account" component={Account} exact={true} />
+        <Route path="/about" component={About} exact={true} />
+        <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
+        <Route path="/experiment/yourself/:id" component={About} exact={true} />
+        <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
+        <Route path="/experiment" component={JourneyPlanner} exact={true} />
+        <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
+        <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
+      </IonRouterOutlet>
+    </>
+  } else {
+    content =
+      <IonRouterOutlet>
+        <Route path="/register" component={Register} exact={true} />
+        <Route path="/tutorial" component={Tutorial} exact={true} />
+        <Route component={Login} />
+      </IonRouterOutlet>
   }
 
-  render() {
 
-    let content = null;
+  return <IonApp>
+    <IonReactRouter>
+      {content}
+    </IonReactRouter>
+  </IonApp>;
 
-    let { account, client } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
-
-    if (account.loggedin !== false) {
-      content = <>
-            <IonMenu side="start" contentId="appContent">
-                <IonHeader>
-                    <IonToolbar color="#5d8286">Menu</IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <IonList>
-                        <IonItem routerLink="/group">Experiments</IonItem>
-                        <IonItem routerLink="/experiment">JourneyPlanner</IonItem>
-                        <IonItemDivider></IonItemDivider>
-                        <IonItem routerLink="/experiment">Calendar</IonItem>
-                        <IonItem routerLink="/experiment">Goal Diary</IonItem>
-                        <IonItemDivider></IonItemDivider>
-                        <IonItem routerLink="/account">Account</IonItem>
-                        <IonItem routerLink="/about">About XB</IonItem>
-                    </IonList>
-                </IonContent>
-            </IonMenu>
-
-            <IonRouterOutlet id="appContent">
-              <Route path="/group" component={ExpList} exact={true} />
-              <Route path="/group/:id" component={Group} exact={true} />
-              <Route path="/account" component={Account} exact={true} />
-              <Route path="/about" component={About} exact={true} />
-              <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
-              <Route path="/experiment/yourself/:id" component={About} exact={true} />
-              <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
-              <Route path="/experiment" component={JourneyPlanner} exact={true} />
-              <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
-              <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
-            </IonRouterOutlet>
-        </>
-    } else {
-      content =
-        <IonRouterOutlet>
-          <Route path="/register" component={Register} exact={true} />
-          <Route path="/tutorial" component={Tutorial} exact={true} />
-          <Route component={Login} />
-        </IonRouterOutlet>
-    }
-
-
-    return <IonApp>
-      <IonReactRouter>
-        {content}
-      </IonReactRouter>
-    </IonApp>;
-
-  }
+  //}
 };
 
 export default connect(

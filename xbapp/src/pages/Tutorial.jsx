@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   IonSlides, IonSlide, IonContent,
   IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle,
-  IonItem, IonIcon, IonLabel, IonButton,
+  IonItem, IonButton,
   IonGrid, IonRow, IonCol
 } from '@ionic/react';
 import './Tutorial.css';

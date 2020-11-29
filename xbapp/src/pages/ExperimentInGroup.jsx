@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonInput, IonButton } from '@ionic/react';
+import React, { useState } from 'react';
+import { IonContent, IonPage, IonInput, IonButton } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 
 import { connect } from 'react-redux'
@@ -10,7 +10,7 @@ const ExperimentInGroup = () => {
     const [number, setNumber] = useState();
     return (
         <IonPage>
-            <XBHeader title="Join a Group"></XBHeader>
+            <XBHeader title="Join a Team"></XBHeader>
             <IonContent>
                 <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Please write the Team ID in the box below and press Submit.</p>
                 <div className="centering">

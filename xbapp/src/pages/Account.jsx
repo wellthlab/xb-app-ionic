@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { IonContent, IonPage, IonTitle, IonButton, IonItem } from '@ionic/react';
+import { IonContent, IonPage, IonButton } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 import './Account.css';
 
