@@ -28,6 +28,7 @@ import Group from './pages/Group.jsx';
 import ExperimentYourself from './pages/ExperimentYourself.jsx';
 import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
 //import Box from './pages/Box.jsx';
+import Timer from './pages/Timer.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -92,7 +93,7 @@ const App = ({ account }) => {
             <IonItem routerLink="/experiment">JourneyPlanner</IonItem>
             <IonItemDivider></IonItemDivider>
             <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
-            <IonItem button onClick={() => setShowAlertDiary(true)} routerLink="/experiment">Goal Diary</IonItem>
+            <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem>
             <IonItemDivider></IonItemDivider>
             <IonItem routerLink="/account">Account</IonItem>
             <IonItem routerLink="/about">About XB</IonItem>
@@ -122,6 +123,7 @@ const App = ({ account }) => {
       <IonRouterOutlet id="appContent">
         <Route path="/group" component={ExpList} exact={true} />
         <Route path="/group/:id" component={Group} exact={true} />
+        <Route path="/group/:id/timer" component={Timer} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />
         <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />

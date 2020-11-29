@@ -1,7 +1,5 @@
-import React, { Component, useState } from 'react';
-import { IonIcon, IonList, IonItem, IonLabel, IonModal, IonButton } from '@ionic/react';
-import { peopleOutline, alertOutline, todayOutline } from 'ionicons/icons';
-import { Link } from "react-router-dom"
+import React, { useState } from 'react';
+import { IonList, IonItem, IonLabel, IonModal, IonButton } from '@ionic/react';
 
 var chosen_box = [];
 const BoxesList = ({ boxes }) => {
