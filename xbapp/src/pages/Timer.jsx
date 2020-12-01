@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   IonButton,
   IonItem,
-  IonInput, IonContent, IonGrid, IonRow, IonCol
+  IonInput, IonContent, IonGrid, IonRow, IonCol, IonPage, IonHeader, IonToolbar, IonTitle
 } from '@ionic/react';
 import './Timer.scss';
 import { connect } from 'react-redux'
@@ -70,6 +70,12 @@ const Timer = (props) => {
   }, [isActive, seconds]);
 
   return (
+    <IonPage>
+    <IonHeader>
+      <IonToolbar>
+        <IonTitle>Experiment Proof</IonTitle>
+      </IonToolbar>
+    </IonHeader>
     <IonContent>
       <div className="app">
         <div className="time">
@@ -83,9 +89,9 @@ const Timer = (props) => {
         <IonItem>
           <IonGrid>
             <IonRow>
-              <IonCol><img src={sunrise.sourceSunrise} style={{ width: "100px", resize: "both", border: "double" }} onClick={() => toggleImagesSun("sunrise")} /></IonCol>
-              <IonCol><img src={sunrise.sourceMidday} style={{ width: "100px", resize: "both", border: "double" }} onClick={() => toggleImagesSun("midday")} /></IonCol>
-              <IonCol><img src={sunrise.sourceSunset} style={{ width: "100px", resize: "both", border: "double" }} onClick={() => toggleImagesSun("sunset")} /></IonCol>
+              <IonCol><img src={sunrise.sourceSunrise} style={{ width: "100px", resize: "both", border: "double", cursor: "pointer"  }} onClick={() => toggleImagesSun("sunrise")} /></IonCol>
+              <IonCol><img src={sunrise.sourceMidday} style={{ width: "100px", resize: "both", border: "double", cursor: "pointer"  }} onClick={() => toggleImagesSun("midday")} /></IonCol>
+              <IonCol><img src={sunrise.sourceSunset} style={{ width: "100px", resize: "both", border: "double", cursor: "pointer"  }} onClick={() => toggleImagesSun("sunset")} /></IonCol>
             </IonRow>
           </IonGrid>
         </IonItem>
@@ -97,8 +103,8 @@ const Timer = (props) => {
         <IonItem>
           <IonGrid>
             <IonRow>
-              <IonCol><img src={environment.sourceIndoors} style={{ width: "100px", resize: "both", border: "double" }} onClick={() => toggleImagesInOut("indoors")} /></IonCol>
-              <IonCol><img src={environment.sourceOutdoors} style={{ width: "100px", resize: "both", border: "double" }} onClick={() => toggleImagesInOut("outdoors")} /></IonCol>
+              <IonCol><img src={environment.sourceIndoors} style={{ width: "100px", resize: "both", border: "double", cursor: "pointer" }} onClick={() => toggleImagesInOut("indoors")} /></IonCol>
+              <IonCol><img src={environment.sourceOutdoors} style={{ width: "100px", resize: "both", border: "double", cursor: "pointer"  }} onClick={() => toggleImagesInOut("outdoors")} /></IonCol>
             </IonRow>
           </IonGrid>
         </IonItem>
@@ -134,7 +140,7 @@ const Timer = (props) => {
         </IonButton>
 
         </div>
-      </div></IonContent>
+      </div></IonContent></IonPage>
   );
 };
 

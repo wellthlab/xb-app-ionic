@@ -121,7 +121,9 @@ const Group = ({ match, groups, days }) => {
                     <h2>Please submit the following data for today:</h2>
                     <IonButton onClick={() => {setMyModalMissingLastDay({ isOpen: false });
                         history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload()}}>Experimen Proof</IonButton>
-                    <IonButton>Questionnaire</IonButton>
+                    <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day +"/questionnaire"); window.location.reload();
+                        }}>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingLastDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
                 <IonModal isOpen={myModalMissingPreviousDay.isOpen}>
@@ -130,7 +132,9 @@ const Group = ({ match, groups, days }) => {
                     <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
                         history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload();
                         }}>Experimen Proof</IonButton>
-                    <IonButton>Questionnaire</IonButton>
+                    <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day +"/questionnaire"); window.location.reload();
+                        }}>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingPreviousDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
                 <div style={{

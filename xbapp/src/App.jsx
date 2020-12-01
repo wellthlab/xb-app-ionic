@@ -29,6 +29,7 @@ import ExperimentYourself from './pages/ExperimentYourself.jsx';
 import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
 //import Box from './pages/Box.jsx';
 import Timer from './pages/Timer.jsx';
+import Questionnaire from './pages/Questionnaire.jsx';
 
 // The login component
 import Login from './components/Login.jsx';
@@ -124,6 +125,7 @@ const App = ({ account }) => {
         <Route path="/group" component={ExpList} exact={true} />
         <Route path="/group/:id" component={Group} exact={true} />
         <Route path="/group/:id1/:id2/timer" component={Timer} exact={true} />
+        <Route path="/group/:id1/:id2/questionnaire" component={Questionnaire} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />
         <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
