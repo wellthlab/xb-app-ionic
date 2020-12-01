@@ -123,7 +123,7 @@ const App = ({ account }) => {
       <IonRouterOutlet id="appContent">
         <Route path="/group" component={ExpList} exact={true} />
         <Route path="/group/:id" component={Group} exact={true} />
-        <Route path="/group/:id/timer" component={Timer} exact={true} />
+        <Route path="/group/:id1/:id2/timer" component={Timer} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />
         <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />

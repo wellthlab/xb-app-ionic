@@ -8,7 +8,7 @@ import {useHistory} from "react-router-dom";
 const autoBindReact = require('auto-bind/react');
 
 var chosenDay = [];
-const Group = ({ match, groups }) => {
+const Group = ({ match, groups, days }) => {
     //class Group extends Component {
     // constructor(props) {
     //     super(props);
@@ -120,7 +120,7 @@ const Group = ({ match, groups }) => {
                     <h1 style={{ textAlign: "center" }}><b>Today</b></h1>
                     <h2>Please submit the following data for today:</h2>
                     <IonButton onClick={() => {setMyModalMissingLastDay({ isOpen: false });
-                        history.push("/group/" + gid + "/timer"); window.location.reload()}}>Timer</IonButton>
+                        history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload()}}>Experimen Proof</IonButton>
                     <IonButton>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingLastDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
@@ -128,7 +128,8 @@ const Group = ({ match, groups }) => {
                     <h1 style={{ textAlign: "center" }}><b>Day {chosenDay.day}</b></h1>
                     <h2>There is no data recorded for this day. If you wish to complete this day, please fill in the following:</h2>
                     <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
-                        history.push("/group/" + gid + "/timer"); window.location.reload()}}>Timer</IonButton>
+                        history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload();
+                        }}>Experimen Proof</IonButton>
                     <IonButton>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingPreviousDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
