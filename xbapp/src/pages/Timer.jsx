@@ -125,6 +125,9 @@ const Timer = (props) => {
             <IonButton >
               Submit
         </IonButton>
+        <IonButton onClick={() => {window.location.reload()}}>
+              Submit and add more
+        </IonButton>
           </div>
           <div className="row">
             <p>Or</p>
@@ -138,6 +141,9 @@ const Timer = (props) => {
           <IonButton >
             Submit
         </IonButton>
+        <IonButton onClick={() => {window.location.reload()}}>
+              Submit and add more
+        </IonButton>
 
         </div>
       </div></IonContent></IonPage>
@@ -149,8 +155,7 @@ export default connect(
     return {
       account: state.account,
       groups: state.groups,
-      boxes: state.boxes,
-      days: state.coco
+      boxes: state.boxes
     }
   },
   {

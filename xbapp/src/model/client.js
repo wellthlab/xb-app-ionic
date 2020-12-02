@@ -90,7 +90,6 @@ function XBClient() {
     */
     self.getGroups = async function() {
         var db = getDb();
-
         var collection = db.collection('Groups');
 
         var groups = collection.find({"Users": {
