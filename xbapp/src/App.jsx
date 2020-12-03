@@ -28,7 +28,7 @@ import Group from './pages/Group.jsx';
 import ExperimentYourself from './pages/ExperimentYourself.jsx';
 import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
 //import Box from './pages/Box.jsx';
-import Timer from './pages/Timer.jsx';
+import ExperimentProof from './pages/ExperimentProof.jsx';
 import Questionnaire from './pages/Questionnaire.jsx';
 
 // The login component
@@ -115,7 +115,7 @@ const App = ({ account }) => {
       <IonRouterOutlet id="appContent">
         <Route path="/group" component={ExpList} exact={true} />
         <Route path="/group/:id" component={Group} exact={true} />
-        <Route path="/group/:id1/:id2/timer" component={Timer} exact={true} />
+        <Route path="/group/:id1/:id2/proof" component={ExperimentProof} exact={true} />
         <Route path="/group/:id1/:id2/questionnaire" component={Questionnaire} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />

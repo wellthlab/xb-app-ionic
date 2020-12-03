@@ -4,14 +4,14 @@ import {
   IonItem,
   IonInput, IonContent, IonGrid, IonRow, IonCol, IonPage, IonHeader, IonToolbar, IonTitle
 } from '@ionic/react';
-import './Timer.scss';
+import './ExperimentProof.scss';
 import { connect } from 'react-redux'
 
 
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const Timer = async (props) => {
+const ExperimentProof = async (props) => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [number, setNumber] = useState();
@@ -164,4 +164,4 @@ export default connect(
 
   }
 
-)(Timer);
+)(ExperimentProof);
