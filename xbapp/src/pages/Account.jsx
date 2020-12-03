@@ -6,7 +6,7 @@ import './Account.css';
 /**
  * Each slice exports some action creators that are used to push changes into the model
  */
-import {LOG_IN, LOG_OUT} from '../model/slices/Account'
+import {LOG_OUT} from '../model/slices/Account'
 
 /**
  * We use this later, it joins the component up to the state, held in Redux

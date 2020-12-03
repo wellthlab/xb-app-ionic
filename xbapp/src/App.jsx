@@ -66,21 +66,11 @@ const autoBindReact = require('auto-bind/react'); // Needs to go after import, b
 
 
 const App = ({ account }) => {
-  //class App extends Component {
-
-  // constructor(props) {
-  //   super(props);
-  //   autoBindReact(this);
-  // }
 
   const [showAlertCalendar, setShowAlertCalendar] = useState(false);
   const [showAlertDiary, setShowAlertDiary] = useState(false);
 
-  // render() {
-
   let content = null;
-
-  //let { account, client } = this.props; // Unpack the props that connect() sorted out for us (thanks connect!)
 
   if (account.loggedin !== false) {
     content = <>
@@ -92,7 +82,7 @@ const App = ({ account }) => {
           <IonList>
             <IonItem routerLink="/group">Experiments</IonItem>
             { /* <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
-               <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem> 
+               <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem>
             <IonItemDivider></IonItemDivider> */ }
             <IonItem routerLink="/account">Profile</IonItem>
             <IonItem routerLink="/about">About XB</IonItem>

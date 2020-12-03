@@ -6,9 +6,6 @@
 // Use the realm WebSDK because we're effectively operating in a web browser
 import * as Realm from "realm-web";
 
-// GraphQL requires the apollo client; not using atm
-//import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
-
 var crypto = require('crypto')
 
 function sha512(str) {
@@ -28,9 +25,22 @@ function XBClient() {
     var APP_ID = "xbframework-yvulh";
     var ATLAS_APP = "mongodb-atlas";
     var MONGO_DB = "V2";
-    var graphql_url = `https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/graphql`;
 
     self.realm = new Realm.App({ id: APP_ID, timeout: 10000 });
+
+    console.log("Created realm client", self.realm);
+
+    var checkOpts = function(opts, reqOpts, defOpts) {
+        reqOpts.map(function(k) {
+            if(typeof opts[k] == 'undefined')
+                throw "Required option '"+k+"' is not set";
+        });
+
+        Object.keys(defOpts).map(function(k) {
+            if(typeof opts[k] == 'undefined')
+                opts[k] = defOpts[k];
+        });
+    }
 
 
     // Get a configured GraphQL client
@@ -50,12 +60,13 @@ function XBClient() {
         //console.log("currentUser.mongoclient", self.realm.currentUser.mongoClient);
 
         // In non-web mode
+        var svc;
         if(self.realm.currentUser.mongoClient) {
-            var svc = self.realm.currentUser.mongoClient(ATLAS_APP);
+            svc = self.realm.currentUser.mongoClient(ATLAS_APP);
         }
         // In web mode
         else if(self.realm.services) {
-            var svc = self.realm.services.mongodb(ATLAS_APP);
+            svc = self.realm.services.mongodb(ATLAS_APP);
         }
 
         var db = svc.db(MONGO_DB);
@@ -115,11 +126,20 @@ function XBClient() {
             g.experiment.info = getEx(g.experiment.experiment_id);
         }
 
-
-
         console.log("User teams", groups);
 
         return groups;
+    }
+
+    /**
+     * Create a new team
+     */
+    self.createTeam = function(opts) {
+
+        checkOpts(opts, ['userid', 'experimentid', 'name'], {});
+
+
+
     }
 
     /**

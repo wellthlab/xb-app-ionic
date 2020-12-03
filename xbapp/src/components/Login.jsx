@@ -4,6 +4,7 @@ import { START_LOGIN, ACCEPT_LOGIN, REJECT_LOGIN } from '../model/slices/Account
 import { IonContent, IonButton, IonItem, IonInput, IonCard, IonSpinner } from '@ionic/react';
 
 import getXBClient from '../model/client';
+import { addControllersProp } from '../model/controllers'
 
 import "./Login.scss";
 
@@ -13,6 +14,7 @@ class Login extends Component {
     constructor(props) {
         super(props);
         autoBindReact(this);
+        console.log("Login created with controllers", props.controllers);
     }
 
     render() {
@@ -96,4 +98,4 @@ export default connect(
         REJECT_LOGIN
     }
 
-)(Login);
+)(addControllersProp(Login));
