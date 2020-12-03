@@ -70,7 +70,7 @@ class Login extends Component {
         }
 
         this.props.START_LOGIN({ });
-        
+
         var client = getXBClient();
         client.setUser( this.email, this.password ).then(
             (user) => {

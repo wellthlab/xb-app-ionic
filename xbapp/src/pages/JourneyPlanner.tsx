@@ -10,7 +10,7 @@ const JourneyPlanner: React.FC = () => {
 
     return (
         <IonPage>
-            <XBHeader title="Journey Planner"></XBHeader>
+            <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
                 <img src="assets/health.png" alt="XB Health" />
 

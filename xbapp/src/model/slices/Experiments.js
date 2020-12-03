@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     experiments: [
 
-    ]
+    ],
+    fetching: false
 };
 
 /**
@@ -17,14 +18,19 @@ const Slice = createSlice({
     name: 'experiments',
     initialState,
     reducers: {
+        CLEAR_EXPERIMENTS(state, actions) {
+            state.fetching = true;
+            state.experiments = [];
+        },
         // Add an experiment to the list
-        AddExperiment(state, action) {
-            const group = action.payload.exp;
-            state.experiments.push(group);
+        SET_EXPERIMENTS(state, action) {
+            state.fetching = false;
+            const exps = action.payload.exps;
+            state.experiments = exps;
         }
     }
 })
 
-export const { AddExperiment } = Slice.actions
+export const { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } = Slice.actions
 
 export default Slice.reducer

@@ -91,12 +91,10 @@ const App = ({ account }) => {
         <IonContent>
           <IonList>
             <IonItem routerLink="/group">Experiments</IonItem>
-            <IonItem routerLink="/experiment">JourneyPlanner</IonItem>
-            <IonItemDivider></IonItemDivider>
-            <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
-            <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem>
-            <IonItemDivider></IonItemDivider>
-            <IonItem routerLink="/account">Account</IonItem>
+            { /* <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
+               <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem> 
+            <IonItemDivider></IonItemDivider> */ }
+            <IonItem routerLink="/account">Profile</IonItem>
             <IonItem routerLink="/about">About XB</IonItem>
           </IonList>
           <IonAlert

@@ -27,7 +27,7 @@ function XBClient() {
 
     var APP_ID = "xbframework-yvulh";
     var ATLAS_APP = "mongodb-atlas";
-    var MONGO_DB = "V1";
+    var MONGO_DB = "V2";
     var graphql_url = `https://realm.mongodb.com/api/client/v2.0/app/${APP_ID}/graphql`;
 
     self.realm = new Realm.App({ id: APP_ID, timeout: 10000 });
@@ -64,9 +64,6 @@ function XBClient() {
     }
 
     self.register = async function(email, password, data) {
-
-        
-
         await self.realm.emailPasswordAuth.registerUser( email, sha512(password) );
         return await self.setUser(email, password);
     }
@@ -88,33 +85,94 @@ function XBClient() {
     /**
     * Get all groups for the current user
     */
-    self.getGroups = async function() {
+    self.getTeams = async function() {
         var db = getDb();
 
-        var collection = db.collection('Groups');
+        var collection = db.collection('teams');
 
-        var groups = collection.find({"Users": {
+        var groups = await collection.find({"users": {
             "$elemMatch": {
                 "$eq": self.realm.currentUser.id
             }
         }});
 
+        self.tidy(groups);
+
+        var exps = await self.getExperiments();
+        var getEx = (id) => {
+            console.log("Look for experiment", id, "in", exps);
+            for(var i in exps) {
+                var e = exps[i];
+                if(e._id == id){
+                    return e;
+                }
+            }
+            return false;
+        }
+
+        for(var i in groups) {
+            var g = groups[i];
+            g.experiment.info = getEx(g.experiment.experiment_id);
+        }
+
+
+
+        console.log("User teams", groups);
+
         return groups;
     }
 
     /**
-     * Get details of a specific experiment
+     * Get details of an experiment
      */
-    self.getExperiment = async function(exid) {
+    self.getExperiments = async function(exid) {
+        var db = getDb();
 
+        var collection = db.collection('experiments');
+
+        var exps = await collection.find({ });
+
+        return self.tidy(exps);
     }
 
     /**
-     * Get all boxes
+     * Tidy up a result so it's safe to pass into redux with warnings about non-serializabilty
+     *
      */
-    self.getBoxes = async function(exid) {
+    self.tidy = function(result, depth) {
 
+        if(typeof depth == 'undefined') {
+            depth = 0;
+        }
+
+        if(depth == 0) {
+            //console.log("Tidy", result);
+        }
+
+        if(Array.isArray(result)) {
+            for(var i in result) {
+                result[i] = self.tidy(result[i], depth+1);
+            }
+        }
+        else if(typeof result == 'object') {
+            for(var k of Object.keys(result)) {
+                var v = result[k];
+
+                if(typeof v == 'undefined') continue;
+
+                if(v.id && v.id instanceof Uint8Array) { // Picks up mongo object IDs
+                    result[k] = v.toString();
+                }
+                else {
+                    result[k] = self.tidy(result[k], depth+1);
+                }
+            }
+        }
+
+        return result;
     }
+
+
 }
 
 var xbclient = false;
