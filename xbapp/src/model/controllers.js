@@ -16,7 +16,7 @@ import {CLEAR_EXPERIMENTS, SET_EXPERIMENTS} from './slices/Experiments'
  * - they'll be wrapped so that client and store are provided
  */
 
-function LOAD_TEAMS(client, store) {
+function LOAD_TEAMS(client, store, controllers) {
     // Clear the current teams and set the fetching flag
     store.dispatch(CLEAR_TEAMS());
     // Get the teams and pop them into the store
@@ -29,16 +29,18 @@ function LOAD_TEAMS(client, store) {
     );
 }
 
-async function JOIN_TEAM(client, store, code) {
+async function JOIN_TEAM(client, store, controllers, code) {
     // Try to join a team using the given code
     // This is implemented as a trigger in the Realm server
-    var res = await client.users[1].functions.joinTeam(code);
+    var res = await client.joinTeam(code);
 
     console.log("JOINED TEAM", res);
 
+    controllers.LOAD_TEAMS();
+
 }
 
-function LOAD_EXPERIMENTS(client, store) {
+function LOAD_EXPERIMENTS(client, store, controllers) {
     store.dispatch(CLEAR_EXPERIMENTS());
     client.getExperiments().then(
         (exps) => {
@@ -61,7 +63,7 @@ function getControllers(store, client) {
         var f = controllers[n];
         out[n] =    (function(f,n) { return function(...args) { // Trap f and n in a closure so they don't change
                         console.log("Call controller", n, f, args);
-                        return f(client, store, ...args);
+                        return f(client, store, out, ...args);
                     }})(f,n);
     }
 
