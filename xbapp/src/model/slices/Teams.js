@@ -4,7 +4,9 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     teams: [
     ],
-    fetching: false
+    fetching: false,
+    joining: false,
+    join_err: false
 };
 
 /**
@@ -28,14 +30,24 @@ const TeamSlice = createSlice({
             state.teams = teams;
             state.fetching = false;
 
-            // TODO: Add experiment information to each group
-
             // TODO: Calculate things like overdue entries, day number
 
+        },
+        START_JOIN_TEAM(state, action) {
+            state.joining = true;
+            state.join_err = false;
+        },
+        CLEAR_JOIN_TEAM(state, action) {
+            state.joining = false;
+            state.join_err = false;
+        },
+        ABORT_JOIN_TEAM(state, action) {
+            state.joining = false;
+            state.join_err = action.payload;
         }
     }
 })
 
-export const { CLEAR_TEAMS, SET_TEAMS } = TeamSlice.actions
+export const { CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM } = TeamSlice.actions
 
 export default TeamSlice.reducer

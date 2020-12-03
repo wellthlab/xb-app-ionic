@@ -134,9 +134,9 @@ function XBClient() {
     /**
      * Create a new team
      */
-    self.createTeam = function(opts) {
+    self.createTeam = function(name, experimentid) {
 
-        checkOpts(opts, ['userid', 'experimentid', 'name'], {});
+
 
     }
 
@@ -144,7 +144,13 @@ function XBClient() {
      * Join the current user to the team identified by the given Team Code
      */
     self.joinTeam = async function(code) {
-         return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
+        try {
+            return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
+        }
+        catch(e) {
+            console.log(e);
+            return {success: false, message: "Sorry, that code didn't work"};
+        }
     }
 
     /**

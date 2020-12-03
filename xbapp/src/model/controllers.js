@@ -8,7 +8,7 @@
 
 import React, { useContext } from 'react';
 
-import {CLEAR_TEAMS, SET_TEAMS} from './slices/Teams'
+import {CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM} from './slices/Teams'
 import {CLEAR_EXPERIMENTS, SET_EXPERIMENTS} from './slices/Experiments'
 
 /**
@@ -30,13 +30,21 @@ function LOAD_TEAMS(client, store, controllers) {
 }
 
 async function JOIN_TEAM(client, store, controllers, code) {
-    // Try to join a team using the given code
-    // This is implemented as a trigger in the Realm server
+
+    store.dispatch(START_JOIN_TEAM());
     var res = await client.joinTeam(code);
 
-    console.log("JOINED TEAM", res);
+    if(res.success===false) {
+        store.dispatch(ABORT_JOIN_TEAM(res.message));
+        return false;
+    } else {
+        store.dispatch(CLEAR_JOIN_TEAM());
+        controllers.LOAD_TEAMS();
+        return true;
+    }
+}
 
-    controllers.LOAD_TEAMS();
+async function CREATE_TEAM() {
 
 }
 
@@ -57,7 +65,7 @@ function getControllers(store, client) {
 
     var out = {client: client, store: store};
 
-    var controllers = { LOAD_TEAMS, LOAD_EXPERIMENTS, JOIN_TEAM };
+    var controllers = { LOAD_TEAMS, LOAD_EXPERIMENTS, JOIN_TEAM, CREATE_TEAM };
 
     for(var n of Object.keys(controllers)) {
         var f = controllers[n];
