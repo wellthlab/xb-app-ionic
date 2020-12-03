@@ -138,8 +138,13 @@ function XBClient() {
 
         checkOpts(opts, ['userid', 'experimentid', 'name'], {});
 
+    }
 
-
+    /**
+     * Join the current user to the team identified by the given Team Code
+     */
+    self.joinTeam = async function(code) {
+         return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
     }
 
     /**
