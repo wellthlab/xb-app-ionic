@@ -28,9 +28,10 @@ const ExperimentInGroup = (props, AddGroup) => {
             questions: [],
             users: [true]
         };
-        newGroups = props.groups.groups;
+        console.log(props);
+       // newGroups = props.groups.groups;
     
-        props.groups.groups.push(newGroup);
+       // props.groups.groups.push(newGroup);
     }
     return (
         <IonPage>
