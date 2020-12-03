@@ -34,6 +34,8 @@ import Questionnaire from './pages/Questionnaire.jsx';
 // The login component
 import Login from './components/Login.jsx';
 
+//the alert component
+import FunctionalityAlert from "./components/FunctionalityAlert";
 
 /*************************************************************
  * CSS
@@ -67,9 +69,9 @@ const autoBindReact = require('auto-bind/react'); // Needs to go after import, b
 
 const App = ({ account }) => {
 
-  const [showAlertCalendar, setShowAlertCalendar] = useState(false);
-  const [showAlertDiary, setShowAlertDiary] = useState(false);
-
+  const [showAlert, setShowAlert] = useState(false);
+  function toggleAlert() { setShowAlert(!showAlert)}
+    
   let content = null;
 
   if (account.loggedin !== false) {
@@ -79,33 +81,15 @@ const App = ({ account }) => {
           <IonToolbar color="#5d8286">Menu</IonToolbar>
         </IonHeader>
         <IonContent>
+        <FunctionalityAlert showAlert={showAlert} toggleAlert={toggleAlert}/>
           <IonList>
             <IonItem routerLink="/group">Experiments</IonItem>
-            { /* <IonItem button onClick={() => setShowAlertCalendar(true)}>Calendar</IonItem>
-               <IonItem button onClick={() => setShowAlertDiary(true)}>Goal Diary</IonItem>
+            { /* <IonItem button onClick={() => {toggleAlert()}}>Calendar</IonItem>
+               <IonItem button onClick={() => {toggleAlert()}}>Goal Diary</IonItem>
             <IonItemDivider></IonItemDivider> */ }
             <IonItem routerLink="/account">Profile</IonItem>
             <IonItem routerLink="/about">About XB</IonItem>
           </IonList>
-          <IonAlert
-            isOpen={showAlertCalendar}
-            onDidDismiss={() => setShowAlertCalendar(false)}
-            cssClass='my-custom-class'
-            header={'Info'}
-            subHeader={'Calendar functionality'}
-            message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}
-            buttons={['OK']}
-          />
-
-          <IonAlert
-            isOpen={showAlertDiary}
-            onDidDismiss={() => setShowAlertDiary(false)}
-            cssClass='my-custom-class'
-            header={'Info'}
-            subHeader={'Goal Diary functionality'}
-            message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}
-            buttons={['OK']}
-          />
         </IonContent>
       </IonMenu>
 

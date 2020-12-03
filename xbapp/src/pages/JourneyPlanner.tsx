@@ -5,7 +5,7 @@ import './JourneyPlanner.scss';
 import MinutesChart from "../components/minutesChart";
 import FunctionalityAlert from "../components/FunctionalityAlert";
 import ModalTeam from "../components/ModalTeam";
-
+import Timer from '../components/Timer'
 const JourneyPlanner: React.FC = () => {
 
     const [showModal, setModalTeam] = useState(false);
@@ -18,7 +18,7 @@ const JourneyPlanner: React.FC = () => {
         <IonPage>
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-                <MinutesChart />
+              
                 <FunctionalityAlert showAlert={showAlert} toggleAlert={toggleAlert}/>
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
