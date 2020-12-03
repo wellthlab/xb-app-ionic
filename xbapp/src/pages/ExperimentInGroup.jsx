@@ -36,7 +36,7 @@ const ExperimentInGroup = (props, AddGroup) => {
         <IonPage>
             <XBHeader title="Join a Team"></XBHeader>
             <IonContent>
-                <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Please write the Team ID in the box below and press Submit.</p>
+                <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Please write the Team ID in the box below and press Submit. Your team will then be added to your list.</p>
                 <div className="centering">
                     <IonInput type="number" value={number} placeholder="Enter Number" onIonChange={e => setNumber(parseInt(e.detail.value, 10))}></IonInput>
                 </div>

@@ -1,9 +1,7 @@
 import React, { Component, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 
 function MinutesChart(props) {
-    // var group_id = props.match.params.id1;
-
 
     // //*
     // /*/retrieve number of minutes everyday for INDIVIDUALS
@@ -151,7 +149,7 @@ function MinutesChart(props) {
         }}>
 
 
-        <Line data={data} options={options} />
+        <Bar data={data} options={options} />
 
 
         </div>

@@ -66,17 +66,10 @@ const autoBindReact = require('auto-bind/react'); // Needs to go after import, b
 
 
 const App = ({ account }) => {
-  //class App extends Component {
-
-  // constructor(props) {
-  //   super(props);
-  //   autoBindReact(this);
-  // }
 
   const [showAlertCalendar, setShowAlertCalendar] = useState(false);
   const [showAlertDiary, setShowAlertDiary] = useState(false);
 
-  // render() {
 
   let content = null;
 
@@ -155,10 +148,10 @@ const App = ({ account }) => {
 
 export default connect(
   (state, ownProps) => {
-    return { account: state.account };
+    return { account: state.account, };
   },
   { // Actions to include as props
-
+    
   }
 
 )(App);
