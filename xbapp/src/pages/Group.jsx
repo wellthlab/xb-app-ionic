@@ -5,6 +5,11 @@ import XBHeader from '../components/XBHeader'
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import MinutesChart from "../components/minutesChart";
+
+import ModalDayFull from "../components/ModalDayFull";
+import ModalDayLast from "../components/ModalDayLast";
+import ModalDayPrevious from "../components/ModalDayPrevious";
+
 const autoBindReact = require('auto-bind/react');
 
 var chosenDay = [];
@@ -14,9 +19,16 @@ var chosenDay = [];
 const Group = ({ match, teams, props, account }) => {
 
     const history = useHistory();
-    const [myModalCompleted, setMyModalCompleted] = useState({ isOpen: false });
-    const [myModalMissingLastDay, setMyModalMissingLastDay] = useState({ isOpen: false });
-    const [myModalMissingPreviousDay, setMyModalMissingPreviousDay] = useState({ isOpen: false });
+
+    const [showModalDayFull, setModalTeamDayFull] = useState(false);
+    function toggleModalDayFull() { setModalTeamDayFull(!showModalDayFull) }
+
+    const [showModalDayLast, setModalTeamDayLast] = useState(false);
+    function toggleModalDayLast() { setModalTeamDayLast(!showModalDayLast) }
+
+    const [showModalDayPrevious, setModalTeamDayPrevious] = useState(false);
+    function toggleModalDayPrevious() { setModalTeamDayPrevious(!showModalDayPrevious) }
+
 
     var gid = match.params.id; // Group ID comes from route
     var group = false;
@@ -38,87 +50,51 @@ const Group = ({ match, teams, props, account }) => {
 
     return (
         <IonPage>
-        <XBHeader title={group.name}></XBHeader>
-        <IonContent>
+            <XBHeader title={group.name}></XBHeader>
+            <IonContent>
 
-        { /* Refactor these modals out into separate components */ }
-        <IonModal isOpen={myModalCompleted.isOpen}>
-        <h1 style={{ textAlign: "center" }}><b>Day {chosenDay.day} completed</b></h1>
-        <h2>Here is the data you submitted on this day:</h2>
-        <h2>Number of minutes: {chosenDay.minutes}</h2>
-        <IonButton onClick={() => setMyModalCompleted({ isOpen: false })} >Close</IonButton>
-        </IonModal>
+                <ModalDayFull showModalDayFull={showModalDayFull} toggleModalDayFull={toggleModalDayFull} chosenDay={chosenDay} gid={gid}/>
+                <ModalDayLast showModalDayLast={showModalDayLast} toggleModalDayLast={toggleModalDayLast} chosenDay={chosenDay} gid={gid}/>
+                <ModalDayPrevious showModalDayPrevious={showModalDayPrevious} toggleModalDayPrevious={toggleModalDayPrevious} chosenDay={chosenDay} gid={gid}/>
 
-        <IonModal isOpen={myModalMissingLastDay.isOpen}>
-        <h1 style={{ textAlign: "center" }}><b>Today</b></h1>
-        <h2>Please submit the following data for today:</h2>
-        <IonButton onClick={() => {
-            setMyModalMissingLastDay({ isOpen: false });
-            history.push("/group/" + gid + "/" + chosenDay.day + "/timer"); window.location.reload()
-        }}>Add Minutes</IonButton>
-        <IonButton onClick={() => {
-            setMyModalMissingPreviousDay({ isOpen: false });
-            history.push("/group/" + gid + "/" + chosenDay.day + "/questionnaire"); window.location.reload();
-        }}>Daily Questionnaire</IonButton>
-        <IonButton onClick={() => setMyModalMissingLastDay({ isOpen: false })} >Close</IonButton>
-        </IonModal>
+                <MinutesChart />
 
-        <IonModal isOpen={myModalMissingPreviousDay.isOpen}>
-        <h1 style={{ textAlign: "center" }}><b>Day {chosenDay.day}</b></h1>
-        <h2>There is no data recorded for this day. If you wish to complete this day, please fill in the following:</h2>
-        <IonButton onClick={() => {
-            setMyModalMissingPreviousDay({ isOpen: false });
-            history.push("/group/" + gid + "/" + chosenDay.day + "/timer"); window.location.reload();
-        }}>Add Minutes</IonButton>
-        <IonButton onClick={() => {
-            setMyModalMissingPreviousDay({ isOpen: false });
-            history.push("/group/" + gid + "/" + chosenDay.day + "/questionnaire"); window.location.reload();
-        }}>Daily Questionnaire</IonButton>
-        <IonButton onClick={() => setMyModalMissingPreviousDay({ isOpen: false })} >Close</IonButton>
-        </IonModal>
+                <ion-item><ion-heading><strong>{exp.name}</strong></ion-heading><ion-chip slot="end" color="primary">Day {exp.day}</ion-chip></ion-item>
 
-        <MinutesChart />
+                <ion-item>{exp.instructions}</ion-item>
 
-        <ion-item><ion-heading><strong>{exp.name}</strong></ion-heading><ion-chip slot="end" color="primary">Day {exp.day}</ion-chip></ion-item>
-
-        <ion-item>{exp.instructions}</ion-item>
-
-        {entries.map((entry, i) => {
-            //if it's the last day- open the modal which gives timer or input and questionnaire
-            //if the entry is complete, open modal that shows data
-            //if it's a previous day, open just questionnaire/input
-            return <ion-card button onClick={() => {
-                if (entry.missing == false) {
-                    setMyModalCompleted({ isOpen: true });
-                } else {
-                    //opening the last missing day
-                    if (entry.day == exp.day) {
-                        setMyModalMissingLastDay({ isOpen: true });
-                    } else {
-                        //opening the last missing day
-                        if (entry.day == exp.day){
-                            setMyModalMissingLastDay({ isOpen: true });
+                {entries.map((entry, i) => {
+                    //if it's the last day- open the modal which gives timer or input and questionnaire
+                    //if the entry is complete, open modal that shows data
+                    //if it's a previous day, open just questionnaire/input
+                    return <ion-card button onClick={() => {
+                        if (entry.missing == false) {
+                            toggleModalDayFull();
                         } else {
-                            //opening a previous misisng day
-                            setMyModalMissingPreviousDay({ isOpen: true });
+                            //opening the last missing day
+                            if (entry.day == exp.day) {
+                                toggleModalDayLast();
+                            } else {
+                                //opening a previous misisng day
+                                toggleModalDayPrevious();
+
+                            }
                         }
-                    }
-                }
 
-                chosenDay = entry;
-            }} key={i}>
-            <ion-card-header>
-            <ion-card-title>Day {entry.day}</ion-card-title>
-            <ion-card-subtitle>{entry.missing ? "Missing Entry" : "Done"}</ion-card-subtitle>
-            </ion-card-header>
+                        chosenDay = entry;
+                    }} key={i}>
+                        <ion-card-header>
+                            <ion-card-title>Day {entry.day}</ion-card-title>
+                            <ion-card-subtitle>{entry.missing ? "Missing Entry" : "Done"}</ion-card-subtitle>
+                        </ion-card-header>
 
-            <ion-card-content>
+                        <ion-card-content>
 
-            </ion-card-content>
-            </ion-card>
-        })}
+                        </ion-card-content>
+                    </ion-card>
+                })}
 
-        </IonContent>
+            </IonContent>
         </IonPage>
     );
 }
@@ -133,13 +109,13 @@ class EntryCard extends Component {
 
         return (
             <ion-card>
-            <ion-card-header>
-            <ion-card-title>Day {entry.day}</ion-card-title>
-            </ion-card-header>
+                <ion-card-header>
+                    <ion-card-title>Day {entry.day}</ion-card-title>
+                </ion-card-header>
 
-            <ion-card-content>
-            <p>foo bar</p>
-            </ion-card-content>
+                <ion-card-content>
+                    <p>foo bar</p>
+                </ion-card-content>
             </ion-card>
         );
     }
