@@ -7,29 +7,31 @@ import {
 import './Timer.scss';
 import { connect } from 'react-redux'
 
+
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const Timer = (props) => {
+const Timer = async (props) => {
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [number, setNumber] = useState();
   const [sunrise, setSunrise] = useState({ sourceSunrise: "assets/suns/sunrise1.png", sourceMidday: "assets/suns/midday1.png", sourceSunset: "assets/suns/sunset1.png" });
   const [environment, setEnvironment] = useState({ sourceIndoors: "assets/inout/indoors1.png", sourceOutdoors: "assets/inout/outdoors1.png" });
 
-
-  var group_id = props.match.params.id1;
-
-  var experiment_object = findElement(props.groups.groups, "_group_id", group_id);
-  var last_experiment_day = experiment_object["current_experiment"]["day"];
-  var day_number = props.match.params.id2;
-
-  function findElement(arr, propName, propValue) {
-    for (var i = 0; i < arr.length; i++)
-      if (arr[i][propName] == propValue)
-        return arr[i];
-
+  var gid = props.match.params.id1; // Group ID comes from route
+  var group = false;
+  for (var g of props.teams.teams) { // Find the group in the store
+      if (g._id == gid) {
+          group = g;
+      }
   }
+
+  console.log("Group info", group, props.teams.teams);
+
+  var experiment = group.experiment;
+
+  var last_experiment_day = experiment.info.duration;
+  var day_number = props.match.params.id2;
 
   function toggle() {
     setIsActive(!isActive);
@@ -41,7 +43,7 @@ const Timer = (props) => {
       setSunrise({ sourceSunrise: "assets/suns/sunrise1.png", sourceMidday: "assets/suns/midday2.png", sourceSunset: "assets/suns/sunset1.png"  })
     } else if (imageToChange == "sunset") {
       setSunrise({ sourceSunrise: "assets/suns/sunrise1.png", sourceMidday: "assets/suns/midday1.png", sourceSunset: "assets/suns/sunset2.png"  })
-    }  
+    }
   }
 
   function toggleImagesInOut(imageToChange) {
@@ -49,7 +51,7 @@ const Timer = (props) => {
       setEnvironment({ sourceIndoors: "assets/inout/indoors2.png", sourceOutdoors: "assets/inout/outdoors1.png"  })
     } else if (imageToChange == "outdoors") {
       setEnvironment({ sourceIndoors: "assets/inout/indoors1.png", sourceOutdoors: "assets/inout/outdoors2.png"  })
-    }  
+    }
   }
 
   function reset() {
@@ -125,6 +127,9 @@ const Timer = (props) => {
             <IonButton >
               Submit
         </IonButton>
+        <IonButton onClick={() => {window.location.reload()}}>
+              Submit and add more
+        </IonButton>
           </div>
           <div className="row">
             <p>Or</p>
@@ -138,6 +143,9 @@ const Timer = (props) => {
           <IonButton >
             Submit
         </IonButton>
+        <IonButton onClick={() => {window.location.reload()}}>
+              Submit and add more
+        </IonButton>
 
         </div>
       </div></IonContent></IonPage>
@@ -148,9 +156,8 @@ export default connect(
   (state, ownProps) => {
     return {
       account: state.account,
-      groups: state.groups,
-      boxes: state.boxes,
-      days: state.coco
+      teams: state.teams,
+      boxes: state.boxes
     }
   },
   {

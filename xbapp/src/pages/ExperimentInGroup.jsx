@@ -5,9 +5,33 @@ import XBHeader from '../components/XBHeader'
 import { connect } from 'react-redux'
 const autoBindReact = require('auto-bind/react');
 //after clicking submit, it should retrieve the experiment that the group is doing and adds it to the list
-const ExperimentInGroup = () => {
+var newGroups;
+
+const ExperimentInGroup = (props, AddGroup) => {
 
     const [number, setNumber] = useState();
+    
+    function addTeam(group_id){
+        var newGroup = {
+            _group_id: group_id,
+            name: "Movement Minutes Southampton",
+            description: "Exercise everyday by running a small amount of minutes - and you'll improve your health!",
+            current_experiment: {
+                _experiment_id: 32,
+                name: "Run more every week!",
+                description: "Every week you would be given a different instruction - a certain amount of minutes to run everyday!",
+                day: 1,
+                maxdays: 28,
+                instructions: ["The first week is for warming up, so we shall run at least 5 minutes everydat!", "In the first official week, we shall run at least 10 minutes everyday!", "In the second official week, we shall run at least 15 minutes everyday!", "In the fourth official week, we shall run at least 20 minutes everyday!"]
+            },
+            notifications: [],
+            questions: [],
+            users: [true]
+        };
+        newGroups = props.groups.groups;
+    
+        props.groups.groups.push(newGroup);
+    }
     return (
         <IonPage>
             <XBHeader title="Join a Team"></XBHeader>
@@ -18,7 +42,7 @@ const ExperimentInGroup = () => {
                 </div>
 
                 <div className="centering">
-                    <IonButton onClick={() => alert(number)} routerLink="/group">SUBMIT</IonButton>
+                    <IonButton onClick={() => addTeam(number)} >SUBMIT</IonButton>
                     
                 </div>
 
@@ -26,4 +50,16 @@ const ExperimentInGroup = () => {
         </IonPage>
     );
 };
-export default ExperimentInGroup;
+export default connect(
+    (state, ownProps) => {
+      return {
+        account: state.account,
+        groups: state.groups,
+        boxes: state.boxes
+      }
+    },
+    {
+  
+    }
+  
+  )(ExperimentInGroup);

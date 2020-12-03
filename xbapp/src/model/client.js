@@ -45,9 +45,9 @@ function XBClient() {
             throw "Cannot use DB until autenticated with realm";
         }
 
-        console.log("services", self.realm.services);
-        console.log("currentUser", self.realm.currentUser);
-        console.log("currentUser.mongoclient", self.realm.currentUser.mongoClient);
+        //console.log("services", self.realm.services);
+        //console.log("currentUser", self.realm.currentUser);
+        //console.log("currentUser.mongoclient", self.realm.currentUser.mongoClient);
 
         // In non-web mode
         if(self.realm.currentUser.mongoClient) {
