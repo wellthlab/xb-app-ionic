@@ -4,23 +4,77 @@ import XBHeader from '../components/XBHeader'
 
 import { connect } from 'react-redux'
 import { Line } from 'react-chartjs-2';
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const autoBindReact = require('auto-bind/react');
 
 var chosenDay = [];
-const Group = ({ match, groups, days }) => {
-    //class Group extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     autoBindReact(this); // Binds 'this' to this object in all methods
-    // }
+const Group = ({ match, groups, props, account }) => {
+
+    function findCorrespondingResults(arr, propName, propValue) {
+        var arrToReturn = [];
+        for (var i = 0; i < arr.length; i++)
+            if (arr[i][propName] == propValue)
+                arrToReturn.push(arr[i]);
+
+        return arrToReturn;
+    }
 
     const history = useHistory();
-
-    // render() {
     const [myModalCompleted, setMyModalCompleted] = useState({ isOpen: false });
     const [myModalMissingLastDay, setMyModalMissingLastDay] = useState({ isOpen: false });
     const [myModalMissingPreviousDay, setMyModalMissingPreviousDay] = useState({ isOpen: false });
+
+    // var group_id = props.match.params.id1;
+
+
+    // //*
+    // /*/retrieve number of minutes everyday for INDIVIDUALS
+    // */
+
+    // //retreieve the results for the current user logged in
+    // var arrayOfResults = account.results;
+    // var arrayOfResultForCurrentIndividualExperiments = findCorrespondingResults(arrayOfResults, "experiment", group_id);
+
+    // //extract the minutes and how do you feel question
+    // var individualMinutes = [];
+    // var individualHowDoYouFeel = [];
+    // for (var i = 0; i < arrayOfResultForCurrentIndividualExperiments.length; i++) {
+    //     individualMinutes.push(arrayOfResultForCurrentIndividualExperiments[i]["responses"]["minutes"]);
+    //     individualHowDoYouFeel.push(arrayOfResultForCurrentIndividualExperiments[i]["responses"]["how_do_you_feel"]);
+    // }
+
+    // //*
+    // /*/retrieve number of minutes everyday for GROUPS AVERAGE
+    // */
+
+    // var allUsers = groups.users;
+
+    // var groupMinutes = [];
+    // var groupHowDoYouFeel = [];
+    // //goes through each user from this team/group
+
+    // for (var i = 0; i < allUsers.length; i++) {
+    //     var eachUser = allUsers[i];
+    //     var arrayOfResultForCurrentIndividualExperiments = findCorrespondingResults(eachUser.results, "experiment", group_id);
+
+    //     //for each user, retrieve the set of results for this experiment
+    //     //adds the results to a sum, which is gonna become an average at the end
+    //     for (var i = 0; i < arrayOfResultForCurrentIndividualExperiments.length; i++) {
+    //         var dataMinutes = arrayOfResultForCurrentIndividualExperiments[i]["responses"]["minutes"];
+    //         var dataFeeling = arrayOfResultForCurrentIndividualExperiments[i]["responses"]["how_do_you_feel"];
+    //         if (dataMinutes != null) groupMinutes[i] = groupMinutes[i] + dataMinutes;
+    //         if (dataFeeling != null) groupHowDoYouFeel[i] = groupHowDoYouFeel[i] + dataFeeling;
+
+    //     }
+    // }
+    // for (var i = 0; i < groupMinutes.length; i++) {
+    //     var eachMinuteValue = groupMinutes[i];
+    //     var eachFeelingValue = groupHowDoYouFeel[i];
+
+    //     groupMinutes[i] = eachMinuteValue / groupMinutes.length;
+    //     eachFeelingValue[i] = eachFeelingValue / groupMinutes.length;
+    // }
+
 
     const data = {
         labels: ['22.11.2020', '23.11.2020', '24.11.2020', '25.11.2020', '26.11.2020', '27.11.2020', '28.11.2020'],
@@ -119,22 +173,27 @@ const Group = ({ match, groups, days }) => {
                 <IonModal isOpen={myModalMissingLastDay.isOpen}>
                     <h1 style={{ textAlign: "center" }}><b>Today</b></h1>
                     <h2>Please submit the following data for today:</h2>
-                    <IonButton onClick={() => {setMyModalMissingLastDay({ isOpen: false });
-                        history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload()}}>Experimen Proof</IonButton>
-                    <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
-                        history.push("/group/" + gid + "/" + chosenDay.day +"/questionnaire"); window.location.reload();
-                        }}>Questionnaire</IonButton>
+                    <IonButton onClick={() => {
+                        setMyModalMissingLastDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day + "/timer"); window.location.reload()
+                    }}>Experimen Proof</IonButton>
+                    <IonButton onClick={() => {
+                        setMyModalMissingPreviousDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day + "/questionnaire"); window.location.reload();
+                    }}>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingLastDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
                 <IonModal isOpen={myModalMissingPreviousDay.isOpen}>
                     <h1 style={{ textAlign: "center" }}><b>Day {chosenDay.day}</b></h1>
                     <h2>There is no data recorded for this day. If you wish to complete this day, please fill in the following:</h2>
-                    <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
-                        history.push("/group/" + gid + "/" + chosenDay.day +"/timer"); window.location.reload();
-                        }}>Experimen Proof</IonButton>
-                    <IonButton onClick={() => {setMyModalMissingPreviousDay({ isOpen: false });
-                        history.push("/group/" + gid + "/" + chosenDay.day +"/questionnaire"); window.location.reload();
-                        }}>Questionnaire</IonButton>
+                    <IonButton onClick={() => {
+                        setMyModalMissingPreviousDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day + "/timer"); window.location.reload();
+                    }}>Experimen Proof</IonButton>
+                    <IonButton onClick={() => {
+                        setMyModalMissingPreviousDay({ isOpen: false });
+                        history.push("/group/" + gid + "/" + chosenDay.day + "/questionnaire"); window.location.reload();
+                    }}>Questionnaire</IonButton>
                     <IonButton onClick={() => setMyModalMissingPreviousDay({ isOpen: false })} >Close</IonButton>
                 </IonModal>
                 <div style={{
@@ -167,22 +226,22 @@ const Group = ({ match, groups, days }) => {
                 <ion-item>{exp.instructions}</ion-item>
 
                 {entries.map((entry, i) => {
-//if it's the last day- open the modal which gives timer or input and questionnaire
-//if the entry is complete, open modal that shows data
-//if it's a previous day, open just questionnaire/input
+                    //if it's the last day- open the modal which gives timer or input and questionnaire
+                    //if the entry is complete, open modal that shows data
+                    //if it's a previous day, open just questionnaire/input
                     return <ion-card button onClick={() => {
-                        if (entry.missing == false){
+                        if (entry.missing == false) {
                             setMyModalCompleted({ isOpen: true });
                         } else {
                             //opening the last missing day
-                            if (entry.day == exp.day){
+                            if (entry.day == exp.day) {
                                 setMyModalMissingLastDay({ isOpen: true });
                             } else {
                                 //opening a previous misisng day
                                 setMyModalMissingPreviousDay({ isOpen: true });
                             }
                         }
-                        
+
                         chosenDay = entry;
                     }} key={i}>
                         <ion-card-header>
