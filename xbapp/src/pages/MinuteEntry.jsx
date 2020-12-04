@@ -4,7 +4,7 @@ import {
   IonItem,
   IonInput, IonContent, IonGrid, IonRow, IonCol, IonPage, IonHeader, IonToolbar, IonTitle
 } from '@ionic/react';
-import './ExperimentProof.scss';
+import './MinuteEntry.scss';
 import { connect } from 'react-redux'
 import Timer from '../components/Timer'
 
@@ -116,7 +116,7 @@ const ExperimentProof = async (props) => {
           {last_experiment_day = day_number ? <div>
             <div className="time">{seconds}s</div>
             <div className="row">
-              <Timer/> 
+              <Timer/>
             </div>
             <div className="row">
               <IonButton >

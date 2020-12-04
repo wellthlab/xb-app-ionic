@@ -115,9 +115,9 @@ function XBClient() {
 
         self.tidy(groups);
 
+        // Add experiment info
         var exps = await self.getExperiments();
         var getEx = (id) => {
-            console.log("Look for experiment", id, "in", exps);
             for(var i in exps) {
                 var e = exps[i];
                 if(e._id == id){
@@ -130,6 +130,25 @@ function XBClient() {
         for(var i in groups) {
             var g = groups[i];
             g.experiment.info = getEx(g.experiment.experiment_id);
+        }
+
+        // Add response info
+        var responses = await self.getOwnResponses();
+        var getRes = (exid) => {
+            for(var i in responses) {
+                var r = responses[i];
+                if(r.experiment == exid) {
+                    return r;
+                }
+            }
+            return false;
+        }
+
+        for(var i in groups) {
+            var g = groups[i];
+            g.responses = {};
+            var res = getRes(g.experiment.experiment_id);
+            g.responses.own = res ? res : {responses: []}
         }
 
         console.log("User teams", groups);
@@ -151,7 +170,7 @@ function XBClient() {
           desc: desc,
           experiment: {
               experiment_id: string2ID(expid),
-              started: start
+              start: start
           },
           users: [
               self.realm.currentUser.id
@@ -160,10 +179,9 @@ function XBClient() {
 
         try {
             const insertOneResult = await collection.insertOne(team);
-            console.log("Create a new team", team, insertOneResult);
         } catch(e) {
             console.log(e);
-            return {success: false, message: "Sorry, that code didn't work"};
+            return {success: false, message: "Sorry, we couldn't create a new team"};
         }
 
         return {success: true};
@@ -180,6 +198,46 @@ function XBClient() {
             console.log(e);
             return {success: false, message: "Sorry, that code didn't work"};
         }
+    }
+
+    /**
+     * Add a response for the given team
+     */
+    self.addResponse = async function(teamid, response) {
+        var db = getDb();
+
+        response.added = (new Date()).toISOString();
+
+        var collection = db.collection('responses');
+
+        // This upsert creates the overal response list, if required
+        const query = { "team": string2ID(teamid), "user": self.realm.currentUser.id };
+        const update = { "$push": { "responses": response } };
+        const options = { "upsert": true };
+
+        try {
+            var result = await collection.updateOne(query, update, options);
+            const { matchedCount, modifiedCount, upsertedId } = result;
+        } catch (e) {
+            return {success: false, message: e.message};
+        }
+
+        return { success: true };
+    }
+
+    /**
+     * Get responses for the current user
+     */
+    self.getOwnResponses = async function() {
+
+        var db = getDb();
+        var collection = db.collection('teams');
+
+        var responses = await collection.find({"user": self.realm.currentUser.id});
+
+        self.tidy(responses);
+
+        return responses;
     }
 
     /**
