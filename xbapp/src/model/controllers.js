@@ -60,6 +60,14 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid) {
     }
 }
 
+async function ADD_RESPONSE(client, store, controllers, name, desc, expid) {
+
+    var start = "2020-12-14T00:00:00"; // Start on 14th Dec
+    client.addResponse(name, desc, expid, start);
+
+    await controllers.LOAD_TEAMS(); // Refresh team info, since that includes responses
+}
+
 function LOAD_EXPERIMENTS(client, store, controllers) {
     store.dispatch(CLEAR_EXPERIMENTS());
     client.getExperiments().then(
@@ -69,8 +77,9 @@ function LOAD_EXPERIMENTS(client, store, controllers) {
             console.error(err);
         }
     );
-
 }
+
+
 
 
 function getControllers(store, client) {
