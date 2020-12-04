@@ -67,9 +67,14 @@ function MinutesChart(props) {
     //we need 3 charts.
     // assume minutesIndividual, minutesGroup, feelingIndividual, feelingGroup, days
     var minutesIndividual = [20, 5, 15]
-    var minutesGroup = [18, 17, 30]
-
     var feelingIndividual = [2.3, 5.0, 4.2]
+    //extra options
+    var environmentIndividual = ["indoor", "outdoor","outdoor"];
+    var timeOfDayIndividual = ["morning", "morning","morning"];
+    var alarmIndividual = ["woke up with alarm", "woke up with alarm", "woke up with alarm"];
+    var exposureIndividual = ["no sunlight", "no sunlight", "no sunlight"];
+
+    var minutesGroup = [18, 17, 30]
     var feelingGroup = [1.5, 2.2, 3.6]
 
     var days = ['Day 1', 'Day 2', 'Day 3']
@@ -252,6 +257,30 @@ function MinutesChart(props) {
                     labelString: 'Day'
                 }
             }],
+        }, tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+                label: function (tooltipItems, data) {
+
+                    var label = data.datasets[tooltipItems.datasetIndex].label;
+                    
+                    var seriesText = "";
+                    var multistringText = [];
+                    if (label.includes("minutes")){
+                        seriesText = "Your minutes: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                        multistringText.push(timeOfDayIndividual[tooltipItems.index]);
+                        multistringText.push(environmentIndividual[tooltipItems.index]);
+                    } else {
+                        seriesText = "Your mood: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                        multistringText.push(exposureIndividual[tooltipItems.index]);
+                        multistringText.push(alarmIndividual[tooltipItems.index]);
+                    }
+                    return multistringText;
+                }
+            }
         }
     }
 
@@ -273,6 +302,28 @@ function MinutesChart(props) {
                     labelString: 'Day'
                 }
             }],
+        }, tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+                label: function (tooltipItems, data) {
+
+                    var label = data.datasets[tooltipItems.datasetIndex].label;
+                    
+                    var seriesText = "";
+                    var multistringText = [];
+                    if (label.includes("Your")){
+                        seriesText = "Your minutes: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                        multistringText.push(timeOfDayIndividual[tooltipItems.index]);
+                        multistringText.push(environmentIndividual[tooltipItems.index]);
+                    } else {
+                        seriesText = "Group's minutes: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                    }
+                    return multistringText;
+                }
+            }
         }
     }
     const optionsFeeling = {
@@ -293,6 +344,28 @@ function MinutesChart(props) {
                     labelString: 'Day'
                 }
             }],
+        }, tooltips: {
+            enabled: true,
+            mode: 'single',
+            callbacks: {
+                label: function (tooltipItems, data) {
+
+                    var label = data.datasets[tooltipItems.datasetIndex].label;
+                    
+                    var seriesText = "";
+                    var multistringText = [];
+                    if (label.includes("Your")){
+                        seriesText = "Your mood: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                        multistringText.push(exposureIndividual[tooltipItems.index]);
+                        multistringText.push(alarmIndividual[tooltipItems.index]);
+                    } else {
+                        seriesText = "Group's mood: ";
+                        multistringText = [seriesText + tooltipItems.yLabel];
+                    }
+                    return multistringText;
+                }
+            }
         }
     }
 
