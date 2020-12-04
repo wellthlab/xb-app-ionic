@@ -8,7 +8,7 @@
 
 import React, { useContext } from 'react';
 
-import {CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM} from './slices/Teams'
+import {CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM} from './slices/Teams'
 import {CLEAR_EXPERIMENTS, SET_EXPERIMENTS} from './slices/Experiments'
 
 /**
@@ -44,8 +44,20 @@ async function JOIN_TEAM(client, store, controllers, code) {
     }
 }
 
-async function CREATE_TEAM() {
+async function CREATE_TEAM(client, store, controllers, name, desc, expid) {
+    console.log("Create a team", name, desc, expid);
 
+    store.dispatch(START_CREATE_TEAM());
+    var res = await client.createTeam(name, desc, expid);
+
+    if(res.success===false) {
+        store.dispatch(ABORT_CREATE_TEAM(res.message));
+        return false;
+    } else {
+        store.dispatch(CLEAR_CREATE_TEAM());
+        controllers.LOAD_TEAMS();
+        return true;
+    }
 }
 
 function LOAD_EXPERIMENTS(client, store, controllers) {

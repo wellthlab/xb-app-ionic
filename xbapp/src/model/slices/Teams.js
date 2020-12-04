@@ -33,6 +33,7 @@ const TeamSlice = createSlice({
             // TODO: Calculate things like overdue entries, day number
 
         },
+
         START_JOIN_TEAM(state, action) {
             state.joining = true;
             state.join_err = false;
@@ -44,10 +45,23 @@ const TeamSlice = createSlice({
         ABORT_JOIN_TEAM(state, action) {
             state.joining = false;
             state.join_err = action.payload;
-        }
+        },
+
+        START_CREATE_TEAM(state, action) {
+            state.creating = true;
+            state.create_err = false;
+        },
+        CLEAR_CREATE_TEAM(state, action) {
+            state.creating = false;
+            state.create_err = false;
+        },
+        ABORT_CREATE_TEAM(state, action) {
+            state.creating = false;
+            state.create_err = action.payload;
+        },
     }
 })
 
-export const { CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM } = TeamSlice.actions
+export const { CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM } = TeamSlice.actions
 
 export default TeamSlice.reducer

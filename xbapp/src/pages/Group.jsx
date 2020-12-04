@@ -61,6 +61,8 @@ const Group = ({ match, teams, props, account }) => {
 
                 <ion-item><ion-heading><strong>{exp.name}</strong></ion-heading><ion-chip slot="end" color="primary">Day {exp.day}</ion-chip></ion-item>
 
+                <ion-item>Team Code: {group.code}</ion-item>
+
                 <ion-item>{exp.instructions}</ion-item>
 
                 {entries.map((entry, i) => {

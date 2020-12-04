@@ -27,6 +27,7 @@ import Tutorial from './pages/Tutorial.jsx';
 import Group from './pages/Group.jsx';
 import ExperimentYourself from './pages/ExperimentYourself.jsx';
 import ExperimentInGroup from './pages/ExperimentInGroup.jsx';
+import CreateTeam from './pages/CreateTeam';
 //import Box from './pages/Box.jsx';
 import ExperimentProof from './pages/ExperimentProof.jsx';
 import Questionnaire from './pages/Questionnaire.jsx';
@@ -71,7 +72,7 @@ const App = ({ account }) => {
 
   const [showAlert, setShowAlert] = useState(false);
   function toggleAlert() { setShowAlert(!showAlert)}
-    
+
   let content = null;
 
   if (account.loggedin !== false) {
@@ -103,6 +104,7 @@ const App = ({ account }) => {
         <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
         <Route path="/experiment/yourself/:id" component={About} exact={true} />
         <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
+        <Route path="/experiment/create" component={CreateTeam} exact={true} />
         <Route path="/experiment" component={JourneyPlanner} exact={true} />
         <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
         <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />

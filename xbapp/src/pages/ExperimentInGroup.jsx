@@ -6,7 +6,10 @@ import { addControllersProp } from '../model/controllers'
 import { connect } from 'react-redux'
 const autoBindReact = require('auto-bind/react');
 
-
+/**
+ * Join an existing group
+ * TODO: Rename this to be less ambiguous
+ */
 const ExperimentInGroup = (props) => {
 
     const [number, setNumber] = useState();
@@ -29,10 +32,11 @@ const ExperimentInGroup = (props) => {
     }
     else { // Otherwise show the entry interfae
         var btn, err;
-        if(typeof number !== 'undefined' && number.length == 6) {
+        if(props.teams.joining) {
+           btn = <ion-spinner name="crescent" />
+        }
+        else if(typeof number !== 'undefined' && number.length == 6) {
             btn = <IonButton onClick={() => { addTeam(number) } } >Join Team</IonButton>;
-        } else if(props.teams.joining) {
-            btn = <ion-spinner name="crescent" />
         }
         else {
             btn = <></>

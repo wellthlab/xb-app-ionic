@@ -6,6 +6,8 @@
 // Use the realm WebSDK because we're effectively operating in a web browser
 import * as Realm from "realm-web";
 
+import { ObjectId } from "bson";
+
 var crypto = require('crypto')
 
 function sha512(str) {
@@ -74,6 +76,10 @@ function XBClient() {
         return db;
     }
 
+    var string2ID = function(id) {
+        return new ObjectId(id);
+    }
+
     self.register = async function(email, password, data) {
         await self.realm.emailPasswordAuth.registerUser( email, sha512(password) );
         return await self.setUser(email, password);
@@ -134,10 +140,33 @@ function XBClient() {
     /**
      * Create a new team
      */
-    self.createTeam = function(name, experimentid) {
+    self.createTeam = async function(name, desc, expid, start) {
 
+        var db = getDb()
 
+        var collection = db.collection('teams');
 
+        const team = {
+          name: name,
+          desc: desc,
+          experiment: {
+              experiment_id: string2ID(expid),
+              started: start
+          },
+          users: [
+              self.realm.currentUser.id
+          ]
+        };
+
+        try {
+            const insertOneResult = await collection.insertOne(team);
+            console.log("Create a new team", team, insertOneResult);
+        } catch(e) {
+            console.log(e);
+            return {success: false, message: "Sorry, that code didn't work"};
+        }
+
+        return {success: true};
     }
 
     /**
@@ -189,7 +218,7 @@ function XBClient() {
             for(var k of Object.keys(result)) {
                 var v = result[k];
 
-                if(typeof v == 'undefined') continue;
+                if(typeof v == 'undefined' || v == null) continue;
 
                 if(v.id && v.id instanceof Uint8Array) { // Picks up mongo object IDs
                     result[k] = v.toString();
