@@ -18,7 +18,6 @@ const JourneyPlanner: React.FC = () => {
         <IonPage>
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-              
                 <FunctionalityAlert showAlert={showAlert} toggleAlert={toggleAlert}/>
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />

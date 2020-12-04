@@ -10,8 +10,8 @@ function MinutesChart(props) {
     function findCorrespondingResults(arr, propName, propValue) {
         var arrToReturn = [];
         for (var i = 0; i < arr.length; i++)
-        if (arr[i][propName] == propValue)
-        arrToReturn.push(arr[i]);
+            if (arr[i][propName] == propValue)
+                arrToReturn.push(arr[i]);
 
         return arrToReturn;
     }
@@ -64,7 +64,7 @@ function MinutesChart(props) {
     * Set up chart
     */
     const data = {
-        labels: ['22.11.2020', '23.11.2020', '24.11.2020', '25.11.2020', '26.11.2020', '27.11.2020', '28.11.2020'],
+        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
         datasets: [
             {
                 label: 'Your progress',
@@ -85,7 +85,7 @@ function MinutesChart(props) {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [6, 5, 8, 8, 5, 5, 4]
+                data: [6, 5, 8, 8, 5, 5, 3]
             },
             {
                 label: 'Group progress',
@@ -108,51 +108,52 @@ function MinutesChart(props) {
                 pointHitRadius: 10,
                 data: [9, 9, 8, 8, 5, 9, 6]
             }
-        ]}
+        ]
+    }
 
-        const options = {
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Completion'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Time'
-                    }
-                }],
-            }
+    const options = {
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Completion'
+                }
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Time'
+                }
+            }],
         }
+    }
 
 
-        return <div style={{
-            display: 'flex',
-            marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px',
-            flexDirection: 'column',
-            border: '1px solid #ccc',
-            height: '300px',
-            width: "500px"
-        }}>
-        <div style={{
-            flex: '0 0 auto',
-            padding: '10px',
-            textAlign: 'center'
-        }}>
+    return <div>
+        {/*bar chart 1 - movement minutes individual vs how do you feel individual*/}
+        <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
+            <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual: Movement Minutes vs. How do you feel?</div>
+            <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
+                <Bar data={data} options={options} />
+            </div>
         </div>
-        <div style={{
-            width: '400px',
-            height: '300px',
-            marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px'
-        }}>
-
-
-        <Bar data={data} options={options} />
-
-
+        
+        {/*bar chart 2 - movement minutes individual vs group*/}
+        <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
+            <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual vs Group: Movement Minutes</div>
+            <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
+                <Bar data={data} options={options} />
+            </div>
         </div>
+
+        {/*bar chart 2 - mhow do u feel individual vs group*/}
+        <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
+            <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual vs Group: How do you feel?</div>
+            <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
+                <Bar data={data} options={options} />
+            </div>
+        </div>
+
         </div>;
 }
 
