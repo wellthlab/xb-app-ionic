@@ -63,11 +63,22 @@ function MinutesChart(props) {
     /**
     * Set up chart
     */
-    const data = {
-        labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+
+    //we need 3 charts.
+    // assume minutesIndividual, minutesGroup, feelingIndividual, feelingGroup, days
+    var minutesIndividual = [20, 5, 15]
+    var minutesGroup = [18, 17, 30]
+
+    var feelingIndividual = [2.3, 5.0, 4.2]
+    var feelingGroup = [1.5, 2.2, 3.6]
+
+    var days = ['Day 1', 'Day 2', 'Day 3']
+
+    const minutesData = {
+        labels: days,
         datasets: [
             {
-                label: 'Your progress',
+                label: 'Your minutes',
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgba(75,192,192,0.4)',
@@ -85,44 +96,201 @@ function MinutesChart(props) {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [6, 5, 8, 8, 5, 5, 3]
+                data: minutesIndividual
             },
             {
-                label: 'Group progress',
+                label: "Group's minutes",
                 fill: false,
                 lineTension: 0.1,
-                backgroundColor: 'rgba(255,0,0)',
-                borderColor: 'rgba(255,0,0)',
+                backgroundColor: 'rgb(179, 89, 0)',
+                borderColor: 'rgb(179, 89, 0)',
                 borderCapStyle: 'butt',
                 borderDash: [],
                 borderDashOffset: 0.0,
                 borderJoinStyle: 'miter',
-                pointBorderColor: 'rgba(255,0,0)',
+                pointBorderColor: 'rgb(179, 89, 0)',
                 pointBackgroundColor: '#fff',
                 pointBorderWidth: 1,
                 pointHoverRadius: 5,
-                pointHoverBackgroundColor: 'rgba(255,0,0)',
-                pointHoverBorderColor: 'rgba(255,0,0)',
+                pointHoverBackgroundColor: 'rgb(179, 89, 0)',
+                pointHoverBorderColor: 'rgb(179, 89, 0)',
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: [9, 9, 8, 8, 5, 9, 6]
+                data: minutesGroup
             }
         ]
     }
 
-    const options = {
+    const feelingData = {
+        labels: days,
+        datasets: [
+            {
+                label: 'Your mood',
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: 'rgba(75,192,192,0.4)',
+                borderColor: 'rgba(75,192,192,1)',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgba(75,192,192,1)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: feelingIndividual
+            },
+            {
+                label: "Group's mood",
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: 'rgb(179, 89, 0)',
+                borderColor: 'rgb(179, 89, 0)',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgb(179, 89, 0)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgb(179, 89, 0)',
+                pointHoverBorderColor: 'rgb(179, 89, 0)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: feelingGroup
+            }
+        ]
+    }
+
+    const minutesFeelingData = {
+        labels: days,
+        datasets: [
+            {
+                label: 'Your minutes',
+                yAxisID: 'minutes',
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: 'rgba(75,192,192,0.4)',
+                borderColor: 'rgba(75,192,192,1)',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgba(75,192,192,1)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                pointHoverBorderColor: 'rgba(220,220,220,1)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: minutesIndividual
+            },
+            {
+                label: "Your mood",
+                yAxisID: 'mood',
+                fill: false,
+                lineTension: 0.1,
+                backgroundColor: 'rgb(179, 89, 0)',
+                borderColor: 'rgb(179, 89, 0)',
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: 'rgb(179, 89, 0)',
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: 'rgb(179, 89, 0)',
+                pointHoverBorderColor: 'rgb(179, 89, 0)',
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10,
+                data: feelingIndividual
+            }
+        ]
+    }
+    const optionsMinutesFeeling = {
         scales: {
             yAxes: [{
+                id: 'minutes',
+                type: 'linear',
+                position: 'left',
                 scaleLabel: {
                     display: true,
-                    labelString: 'Completion'
+                    labelString: 'Minutes'
+                },
+                ticks: {
+                    max: 50,
+                    min: 0
+                },
+            }, {
+                id: 'mood',
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                    max: 5,
+                    min: 0
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Mood'
                 }
             }],
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Time'
+                    labelString: 'Day'
+                }
+            }],
+        }
+    }
+
+    const optionsMinutes = {
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Minutes'
+                },
+                ticks: {
+                    max: 50,
+                    min: 0
+                },
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Day'
+                }
+            }],
+        }
+    }
+    const optionsFeeling = {
+        scales: {
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Mood'
+                },
+                ticks: {
+                    max: 5,
+                    min: 0
+                },
+            }],
+            xAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Day'
                 }
             }],
         }
@@ -134,15 +302,15 @@ function MinutesChart(props) {
         <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
             <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual: Movement Minutes vs. How do you feel?</div>
             <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
-                <Bar data={data} options={options} />
+                <Bar data={minutesFeelingData} options={optionsMinutesFeeling} />
             </div>
         </div>
-        
+
         {/*bar chart 2 - movement minutes individual vs group*/}
         <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
             <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual vs Group: Movement Minutes</div>
             <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
-                <Bar data={data} options={options} />
+                <Bar data={minutesData} options={optionsMinutes} />
             </div>
         </div>
 
@@ -150,11 +318,11 @@ function MinutesChart(props) {
         <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
             <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual vs Group: How do you feel?</div>
             <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
-                <Bar data={data} options={options} />
+                <Bar data={feelingData} options={optionsFeeling} />
             </div>
         </div>
 
-        </div>;
+    </div>;
 }
 
 
