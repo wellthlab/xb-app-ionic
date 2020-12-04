@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import XBHeader from '../components/XBHeader'
 import './JourneyPlanner.scss';
 import MinutesChart from "../components/minutesChart";
-import FunctionalityAlert from "../components/FunctionalityAlert";
+import GenericAlert from "../components/GenericAlert";
 import ModalTeam from "../components/ModalTeam";
 import Timer from '../components/Timer'
 const JourneyPlanner: React.FC = () => {
@@ -18,7 +18,7 @@ const JourneyPlanner: React.FC = () => {
         <IonPage>
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-                <FunctionalityAlert showAlert={showAlert} toggleAlert={toggleAlert}/>
+                <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
 

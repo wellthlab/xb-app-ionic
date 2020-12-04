@@ -30,33 +30,38 @@ class Login extends Component {
 
             var form;
 
-            if(account.fetching) {
+            if (account.fetching) {
                 form = <IonSpinner name="crescent" />
             } else {
                 form = <>
-                        <IonCard>
-                            <IonItem>
-                                <IonInput value="" placeholder="Email Address" type="email" onIonChange={(e) => { this.email = e.detail.value }}></IonInput>
-                            </IonItem>
-                            <IonItem>
-                                <IonInput value="" placeholder="Password" type="password" onIonChange={(e) => { this.password = e.detail.value }}></IonInput>
-                            </IonItem>
-                        </IonCard>
-                        <div className="centering">
+                    <IonCard>
+                        <IonItem>
+                            <IonInput value="" placeholder="Email Address" type="email" onIonChange={(e) => { this.email = e.detail.value }}></IonInput>
+                        </IonItem>
+                        <IonItem>
+                            <IonInput value="" placeholder="Password" type="password" onIonChange={(e) => { this.password = e.detail.value }}></IonInput>
+                        </IonItem>
+                    </IonCard>
+                    <div className="centering">
                         <IonButton onclick={this.login} slot="end">Log In</IonButton>
-                        </div>
-                    </>
+                    </div>
+                </>
             }
 
             return (
                 <IonContent>
-                    <img src="assets/box.png" alt="XB Logo"/>
+                    <img src="assets/box.png" alt="XB Logo" />
                     {form}
                     <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Don't have an account?</p>
                     <div className="centering">
-                    <IonButton routerLink="/register">Register</IonButton>
+                        <IonButton routerLink="/register">Register</IonButton>
                     </div>
                     <ion-row style={{ height: "40px" }}></ion-row>
+                    <br></br>
+                    <br></br>
+                    <p><a href="https://support.microsoft.com/en-us/office/use-a-link-or-code-to-join-a-team-c957af50-df15-46e3-b5c4-067547b64548" target="_blank">Part of the Movement Minute Challenge? Join the MS Teams Group!</a></p>
+                    <br></br>
+                    <br></br>
                     <div className="tutorialButton">
                         <IonButton routerLink="/tutorial" expand="full">What is XB? (Tutorial)</IonButton>
                     </div>
@@ -67,14 +72,14 @@ class Login extends Component {
 
     login(e) {
 
-        if( !this.email || !this.password ) {
+        if (!this.email || !this.password) {
             return;
         }
 
-        this.props.START_LOGIN({ });
+        this.props.START_LOGIN({});
 
         var client = getXBClient();
-        client.setUser( this.email, this.password ).then(
+        client.setUser(this.email, this.password).then(
             (user) => {
                 this.props.ACCEPT_LOGIN({ email: this.email, password: this.password })
             }, (err) => {

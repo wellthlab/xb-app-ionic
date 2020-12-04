@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { IonButton, IonContent, IonAlert, IonPage, IonModal } from '@ionic/react';
-import FunctionalityAlert from "./FunctionalityAlert";
+import GenericAlert from "./GenericAlert";
 import { useHistory } from "react-router-dom";
 
 function ModalDayPrevious(props) {

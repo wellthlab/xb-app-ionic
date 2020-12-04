@@ -12,7 +12,7 @@ function FunctionalityAlert(props) {
             onDidDismiss={props.toggleAlert}
             cssClass='my-custom-class'
             header={'Info'}
-            message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}
+            message={props.message}
             buttons={['OK']}
         />
 

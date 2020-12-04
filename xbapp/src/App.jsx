@@ -36,7 +36,7 @@ import Questionnaire from './pages/Questionnaire.jsx';
 import Login from './components/Login.jsx';
 
 //the alert component
-import FunctionalityAlert from "./components/FunctionalityAlert";
+import GenericAlert from "./components/GenericAlert";
 
 /*************************************************************
  * CSS
@@ -82,7 +82,7 @@ const App = ({ account }) => {
           <IonToolbar color="#5d8286">Menu</IonToolbar>
         </IonHeader>
         <IonContent>
-        <FunctionalityAlert showAlert={showAlert} toggleAlert={toggleAlert}/>
+        <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
           <IonList>
             <IonItem routerLink="/group">Experiments</IonItem>
             { /* <IonItem button onClick={() => {toggleAlert()}}>Calendar</IonItem>
@@ -106,6 +106,7 @@ const App = ({ account }) => {
         <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
         <Route path="/experiment/create" component={CreateTeam} exact={true} />
         <Route path="/experiment" component={JourneyPlanner} exact={true} />
+        <Route path="/tutorial" component={Tutorial} exact={true} />
         <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
         <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
       </IonRouterOutlet>
