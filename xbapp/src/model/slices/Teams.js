@@ -28,6 +28,11 @@ function dayify(responses, start, minday, maxday) {
     // First, organise by day
     for(var r of responses) {
         var day = dayNumber(r.date, start);
+
+        if(day > 100) {
+            throw "Yikes, big day = error...";
+        }
+
         minday = Math.min(minday, day);
         maxday = Math.max(maxday, day);
 

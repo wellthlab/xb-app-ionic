@@ -8,9 +8,8 @@ import MinutesChart from "../components/minutesChart";
 
 import { Link } from "react-router-dom"
 
-import ModalDayFull from "../components/ModalDayFull";
-import ModalDayLast from "../components/ModalDayLast";
-import ModalDayPrevious from "../components/ModalDayPrevious";
+import { IonIcon } from '@ionic/react';
+import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
 
 const autoBindReact = require('auto-bind/react');
 
@@ -53,6 +52,11 @@ const Group = ({ match, teams, props, account }) => {
 
     days.reverse();
 
+    var day = group.experiment.day;
+    var daydesc = day == 0 ? "Starts tomorrow" : (day < 0 ? "Starts in " + Math.abs(day) + " days" : "Day " + day)
+
+    var members = group.users.length > 1 ? group.users.length + " members" : "Private Experiment";
+
     return (
         <IonPage>
             <XBHeader title={group.name}></XBHeader>
@@ -60,9 +64,19 @@ const Group = ({ match, teams, props, account }) => {
 
                 <MinutesChart />
 
-                <ion-item><ion-heading><strong>{exp.name}</strong></ion-heading><ion-chip slot="end" color="primary">Day {group.experiment.day}</ion-chip></ion-item>
+                <ion-item>
+                    <ion-heading><strong>{exp.title}</strong></ion-heading>
+                    <ion-chip slot="end" color="primary"><ion-label><IonIcon icon={todayOutline} /> {daydesc}</ion-label></ion-chip>
+                </ion-item>
 
-                <ion-item>Team Code: {group.code}</ion-item>
+                <ion-item>
+                    <ion-chip slot="start" color="success">
+                        <ion-label><IonIcon icon={peopleOutline} /> {members}</ion-label>
+                    </ion-chip>
+                    <ion-chip slot="end" color="neutral">
+                        <ion-label>Team Code: <strong>{group.code}</strong></ion-label>
+                    </ion-chip>
+                </ion-item>
 
                 <ion-item>{exp.instructions}</ion-item>
 
@@ -71,28 +85,6 @@ const Group = ({ match, teams, props, account }) => {
             </IonContent>
         </IonPage>
     );
-}
-
-class EntryCard extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const entry = this.props.entry;
-
-        return (
-            <ion-card>
-                <ion-card-header>
-                    <ion-card-title>Day {entry.day}</ion-card-title>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <p>foo bar</p>
-                </ion-card-content>
-            </ion-card>
-        );
-    }
 }
 
 export default connect(

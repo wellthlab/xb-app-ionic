@@ -18,7 +18,7 @@ export default class ExperimentList extends Component {
             {teams.map((group, i) => {
 
                 var members = group.users.length;
-                var missing = 1;
+                var missing = 0; // TODO: Look this up
 
                 if(members > 1) {
                     var memberchip = <ion-chip color="success">
@@ -39,9 +39,9 @@ export default class ExperimentList extends Component {
                             <ion-chip color="primary">
                                 <ion-label><IonIcon icon={todayOutline} /> Day {group.experiment.current_day} of {group.experiment.info.maxdays}</ion-label>
                             </ion-chip>
-                            <ion-chip color="danger">
+                            {/*<ion-chip color="danger">
                                 <ion-label><IonIcon icon={alertOutline} /> {missing} overdue { missing > 1 ? "entries" : "entry" }</ion-label>
-                            </ion-chip>
+                            </ion-chip>*/}
                             {memberchip}
                         </ion-card-content>
                     </Link></ion-card>

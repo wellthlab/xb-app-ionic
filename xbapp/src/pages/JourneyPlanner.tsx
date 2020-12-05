@@ -15,23 +15,25 @@ const JourneyPlanner: React.FC = () => {
     function toggleModal() { setModalTeam(!showModal)}
 
     return (
-        <IonPage>
+        <IonPage className="planner">
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-                <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
 
-                <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Let's build some new skills! Please choose your new journey below!</p>
+                <h1>Hello!</h1>
+                <p>To get started you need to create a new Movement Minutes experiment, or join somebody else's!</p>
+
                 <div className="centering">
-                    <IonButton routerLink="/experiment/create" >Experiment By Yourself</IonButton>
+                    <IonButton routerLink="/experiment/create" >Create a new Experiment</IonButton>
+                    <p>(you can experiment by yourself, or invite other people to join in)</p>
                 </div>
                 <div className="centering">
+                    <IonButton routerLink="/experiment/group" >Join Someone Else's Experiment</IonButton>
+                </div>
+                {/*<div className="centering">
                     <IonButton onClick={() => {toggleModal()}}>Experiment in a Team</IonButton>
-                </div>
-
-
-
+                </div>*/}
 
             </IonContent>
         </IonPage>
