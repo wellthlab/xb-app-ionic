@@ -60,10 +60,10 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid) {
     }
 }
 
-async function ADD_RESPONSE(client, store, controllers, name, desc, expid) {
+async function ADD_RESPONSE(client, store, controllers, expid, value) {
 
-    var start = "2020-12-14T00:00:00"; // Start on 14th Dec
-    client.addResponse(name, desc, expid, start);
+    value.submitted = (new Date()).toISOString();
+    client.addResponse(expid, value);
 
     await controllers.LOAD_TEAMS(); // Refresh team info, since that includes responses
 }
@@ -86,7 +86,7 @@ function getControllers(store, client) {
 
     var out = {client: client, store: store};
 
-    var controllers = { LOAD_TEAMS, LOAD_EXPERIMENTS, JOIN_TEAM, CREATE_TEAM };
+    var controllers = { LOAD_TEAMS, LOAD_EXPERIMENTS, JOIN_TEAM, CREATE_TEAM, ADD_RESPONSE };
 
     for(var n of Object.keys(controllers)) {
         var f = controllers[n];

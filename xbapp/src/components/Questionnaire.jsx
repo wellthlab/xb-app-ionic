@@ -6,7 +6,8 @@ import {
 } from '@ionic/react';
 import { connect } from 'react-redux'
 
-const Questionnaire = ({ account })  => {
+
+const Questionnaire = (props)  => {
   const [selectedHowFeel, setSelectedHowFeel] = useState({mood: ""});
   const [selectedExposure, setSelectedExposure] = useState({exposure: ""});
   const [selectedAlarm, setSelectedAlarm] = useState({alarm: ""});
@@ -15,7 +16,7 @@ const Questionnaire = ({ account })  => {
     var moodValue = 0;
 
     //important: these are numbers as they will be represented on the graph
-    //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points 
+    //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points
     //the limits for this will always be between -2 and 2
     if (selectedHowFeel.mood = "a lot worse"){
       moodValue = -2;
@@ -27,22 +28,17 @@ const Questionnaire = ({ account })  => {
       moodValue = 1;
     } else if (selectedHowFeel.mood = "a lot better"){
       moodValue = 2;
-    } 
+    }
 
     var objectToAdd = {mood: moodValue, sunlight: selectedExposure.exposure, alarm: selectedAlarm.alarm}
 
-    console.log(objectToAdd);
-    //add object to database
+    if(props.onSubmit) {
+        props.onSubmit(objectToAdd);
+    }
   }
 
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Questionnaire</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
+      <>
         <IonRadioGroup value={selectedHowFeel.mood} onIonChange={e => setSelectedHowFeel({mood: e.detail.value})}>
           <IonListHeader>
             <IonLabel>How do you feel compared to the previous day?</IonLabel>
@@ -110,22 +106,8 @@ const Questionnaire = ({ account })  => {
         <IonButton onClick={() => {processData()}}>
               Submit
         </IonButton>
-      </IonContent>
-    </IonPage>
+        </>
   );
 };
 
-// Return the component, wrapped up so that it connects to the global state from Redux
-export default connect(
-  (state, ownProps) => {
-    // A function to map parts of the global state (from the App's wrapper <Provider>)
-    // into props for the wrapped component (which will be TabAccount)
-    return {
-      account: state.account
-    }
-  },
-  {
-    // A map full of action creators
-  }
-
-)(Questionnaire);
+export default Questionnaire;

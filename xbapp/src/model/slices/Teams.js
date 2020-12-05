@@ -27,11 +27,10 @@ function dayify(responses, start, minday, maxday) {
 
     // First, organise by day
     for(var r of responses) {
-        var day = dayNumber(r.date, start);
+        var subdate = new Date(r.submitted);
+        var day = dayNumber(subdate, new Date(start));
 
-        if(day > 100) {
-            throw "Yikes, big day = error...";
-        }
+        console.log("Analyse result", r, subdate, day)
 
         minday = Math.min(minday, day);
         maxday = Math.max(maxday, day);
@@ -43,7 +42,7 @@ function dayify(responses, start, minday, maxday) {
         entries[day].push(r);
     }
 
-    console.log(minday, maxday, entries);
+    console.log("Dayified", responses, minday, maxday, entries);
 
     // Then generate each daily entry
     for(var i = minday; i <= maxday; i++) {
@@ -55,6 +54,10 @@ function dayify(responses, start, minday, maxday) {
             entries[i] = {day: i, missing: false, responses: entries[i]}
         }
     }
+
+    entries.sort(function(a, b){
+        return a.day - b.day;
+    });
 
     return entries;
 }

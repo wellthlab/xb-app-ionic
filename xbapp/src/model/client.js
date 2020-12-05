@@ -134,10 +134,10 @@ function XBClient() {
 
         // Add response info
         var responses = await self.getOwnResponses();
-        var getRes = (exid) => {
+        var getRes = (teamid) => {
             for(var i in responses) {
                 var r = responses[i];
-                if(r.experiment == exid) {
+                if(r.team == teamid) {
                     return r;
                 }
             }
@@ -147,7 +147,7 @@ function XBClient() {
         for(var i in groups) {
             var g = groups[i];
             g.responses = {};
-            var res = getRes(g.experiment.experiment_id);
+            var res = getRes(g._id);
             g.responses.own = res ? res : {responses: []}
         }
 
@@ -219,8 +219,6 @@ function XBClient() {
     self.addResponse = async function(teamid, response) {
         var db = getDb();
 
-        response.added = (new Date()).toISOString();
-
         var collection = db.collection('responses');
 
         // This upsert creates the overal response list, if required
@@ -228,10 +226,13 @@ function XBClient() {
         const update = { "$push": { "responses": response } };
         const options = { "upsert": true };
 
+        console.log("Attempt to save response", response);
+
         try {
             var result = await collection.updateOne(query, update, options);
             const { matchedCount, modifiedCount, upsertedId } = result;
         } catch (e) {
+            console.log(e);
             return {success: false, message: e.message};
         }
 
@@ -244,11 +245,13 @@ function XBClient() {
     self.getOwnResponses = async function() {
 
         var db = getDb();
-        var collection = db.collection('teams');
+        var collection = db.collection('responses');
 
         var responses = await collection.find({"user": self.realm.currentUser.id});
 
         self.tidy(responses);
+
+        console.log("Own responses", responses);
 
         return responses;
     }
