@@ -41,6 +41,7 @@ const Day = ({ match, teams, props, account }) => {
             break;
     }
 
+    // TODO: This mostly duplicates what we now do in the Store
     for(var entry of day.responses) {
         console.log(entry);
         if(entry.type =='minutes') {

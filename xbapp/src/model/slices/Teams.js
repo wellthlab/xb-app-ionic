@@ -58,6 +58,23 @@ function dayify(responses, start, minday, maxday) {
         return a.day - b.day;
     });
 
+    // Add daily summaries
+    // TODO: This needs to go somewhere else longer-term so that the store isn't so coupled to particular experiments
+    for(var day of entries) {
+        var mins = 0;
+        var questionnaired = false;
+        for(var res of day.responses) {
+            if(res.type =='minutes') {
+                mins = mins + 1 * res.minutes;
+            } else if(res.type == 'questionnaire') {
+                questionnaired = true;
+            }
+        }
+
+        day.minutes = mins;
+        day.questionnaire = questionnaired;
+    }
+
     return entries;
 }
 

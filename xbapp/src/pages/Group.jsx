@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { IonContent, IonPage, IonModal, IonButton } from '@ionic/react';
+import { IonContent, IonPage, IonModal, IonButton, IonCard } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 
 import { connect } from 'react-redux'
@@ -39,16 +39,19 @@ const Group = ({ match, teams, props, account }) => {
     var days = [];
     for(var i = 0; i < entries.length; i++) {
         var entry = entries[i];
-        days.push(<ion-card key={i}><Link to={"/group/" + group._id + "/" + entry.day}>
+        days.push(<IonCard key={i} routerLink={"/group/" + group._id + "/" + entry.day}>
             <ion-card-header>
                 <ion-card-title>Day {entry.day}</ion-card-title>
-                <ion-card-subtitle>{entry.missing ? "Missing Entry" : "Done"}</ion-card-subtitle>
             </ion-card-header>
 
             <ion-card-content>
+                <ion-item>
+                    <ion-chip slot="start" color={ entry.questionnaire ? 'success' : 'danger' }>{entry.questionnaire ? "Questionnaire Done" : "Questionnaire Missing"}</ion-chip>
+                    <ion-chip slot="end" color={ entry.minutes > 0 ? 'success' : 'danger' }>{entry.minutes} minutes</ion-chip>
 
+                </ion-item>
             </ion-card-content>
-        </Link></ion-card>);
+        </IonCard>);
     }
 
     days.reverse();
