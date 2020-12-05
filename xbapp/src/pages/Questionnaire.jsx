@@ -6,10 +6,34 @@ import {
 } from '@ionic/react';
 import { connect } from 'react-redux'
 
-const Questionnaire = (account) => {
-  const [selectedHowFeel, setSelectedHowFeel] = useState();
-  const [selectedExposure, setSelectedExposure] = useState();
-  const [selectedAlarm, setSelectedAlarm] = useState();
+const Questionnaire = ({ account })  => {
+  const [selectedHowFeel, setSelectedHowFeel] = useState({mood: ""});
+  const [selectedExposure, setSelectedExposure] = useState({exposure: ""});
+  const [selectedAlarm, setSelectedAlarm] = useState({alarm: ""});
+
+  function processData(){
+    var moodValue = 0;
+
+    //important: these are numbers as they will be represented on the graph
+    //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points 
+    //the limits for this will always be between -2 and 2
+    if (selectedHowFeel.mood = "a lot worse"){
+      moodValue = -2;
+    } else if (selectedHowFeel.mood = "worse"){
+      moodValue = -1;
+    } else if (selectedHowFeel.mood = "the same"){
+      moodValue = 0;
+    } else if (selectedHowFeel.mood = "better"){
+      moodValue = 1;
+    } else if (selectedHowFeel.mood = "a lot better"){
+      moodValue = 2;
+    } 
+
+    var objectToAdd = {mood: moodValue, sunlight: selectedExposure.exposure, alarm: selectedAlarm.alarm}
+
+    console.log(objectToAdd);
+    //add object to database
+  }
 
   return (
     <IonPage>
@@ -19,7 +43,7 @@ const Questionnaire = (account) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonRadioGroup value={selectedHowFeel} onIonChange={e => setSelectedHowFeel(e.detail.value)}>
+        <IonRadioGroup value={selectedHowFeel.mood} onIonChange={e => setSelectedHowFeel({mood: e.detail.value})}>
           <IonListHeader>
             <IonLabel>How do you feel compared to the previous day?</IonLabel>
           </IonListHeader>
@@ -47,43 +71,43 @@ const Questionnaire = (account) => {
             <IonRadio slot="start" value="a lot better" />
           </IonItem>
         </IonRadioGroup>
-        <IonItemDivider>You are feeling {selectedHowFeel ?? '?'} than the previous day.</IonItemDivider>
+        <IonItemDivider></IonItemDivider>
 
-        <IonRadioGroup value={selectedExposure} onIonChange={e => setSelectedExposure(e.detail.value)}>
+        <IonRadioGroup value={selectedExposure.exposure} onIonChange={e => setSelectedExposure({exposure: e.detail.value})}>
           <IonListHeader>
             <IonLabel>Did you get sunlight exposure for this day?</IonLabel>
           </IonListHeader>
 
           <IonItem>
             <IonLabel>Yes</IonLabel>
-            <IonRadio slot="start" value="did" />
+            <IonRadio slot="start" value="sunlight" />
           </IonItem>
 
           <IonItem>
             <IonLabel>No</IonLabel>
-            <IonRadio slot="start" value="didn't" />
+            <IonRadio slot="start" value="no sunlight" />
           </IonItem>
         </IonRadioGroup>
-        <IonItemDivider>You {selectedExposure ?? '?'} get sunlight exposure for this day.</IonItemDivider>
+        <IonItemDivider></IonItemDivider>
 
-        <IonRadioGroup value={selectedAlarm} onIonChange={e => setSelectedAlarm(e.detail.value)}>
+        <IonRadioGroup value={selectedAlarm.alarm} onIonChange={e => setSelectedAlarm({alarm: e.detail.value})}>
           <IonListHeader>
             <IonLabel>Did you wake up with an alarm on this day?</IonLabel>
           </IonListHeader>
 
           <IonItem>
             <IonLabel>Yes</IonLabel>
-            <IonRadio slot="start" value="did" />
+            <IonRadio slot="start" value="woke up with an alarm" />
           </IonItem>
 
           <IonItem>
             <IonLabel>No</IonLabel>
-            <IonRadio slot="start" value="didn't" />
+            <IonRadio slot="start" value="woke up with no alarm" />
           </IonItem>
 
         </IonRadioGroup>
-        <IonItemDivider>You {selectedAlarm ?? '?'} wake up with an alarm on this day.</IonItemDivider>
-        <IonButton >
+        <IonItemDivider></IonItemDivider>
+        <IonButton onClick={() => {processData()}}>
               Submit
         </IonButton>
       </IonContent>
