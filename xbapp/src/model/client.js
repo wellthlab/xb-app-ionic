@@ -156,6 +156,16 @@ function XBClient() {
         return groups;
     }
 
+    function genID(len) {
+       var result           = '';
+       var characters       = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+       var charactersLength = characters.length;
+       for ( var i = 0; i < len; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+       }
+       return result;
+    }
+
     /**
      * Create a new team
      */
@@ -165,9 +175,12 @@ function XBClient() {
 
         var collection = db.collection('teams');
 
+        var code = genID(6);
+
         const team = {
           name: name,
           desc: desc,
+          code: code,
           experiment: {
               experiment_id: string2ID(expid),
               start: start

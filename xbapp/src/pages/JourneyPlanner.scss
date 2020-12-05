@@ -1,4 +1,6 @@
 
+.creator {
+
 div img {
     width: 230px;
     resize: both;
@@ -12,4 +14,10 @@ ion-button {
 
 .centering {
     text-align: center;
+}
+
+p, h1 {
+    margin: 20px 30px 40px 30px;
+}
+
 }

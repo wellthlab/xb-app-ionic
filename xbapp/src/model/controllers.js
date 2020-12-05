@@ -48,7 +48,7 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid) {
     console.log("Create a team", name, desc, expid);
 
     store.dispatch(START_CREATE_TEAM());
-    var res = await client.createTeam(name, desc, expid);
+    var res = await client.createTeam(name, desc, expid, "2020-12-14");
 
     if(res.success===false) {
         store.dispatch(ABORT_CREATE_TEAM(res.message));

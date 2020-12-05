@@ -4,6 +4,9 @@ import XBHeader from '../components/XBHeader'
 
 import { addControllersProp } from '../model/controllers'
 import { connect } from 'react-redux'
+
+import './CreateTeam.scss'
+
 const autoBindReact = require('auto-bind/react');
 
 /**
@@ -27,8 +30,11 @@ const CreateTeam = (props) => {
     // Detect completed joins and redirect
     if(creating && props.teams.creating === false && props.teams.create_err === false) {
         content = <>
-            <div className="centering"><ion-text color="success">Great, you've created a new team!</ion-text></div>
-            <div className="centering"><ion-button routerLink="/group">Go to Experiments</ion-button></div>
+            <div className="done">
+                <h1><ion-icon name="checkmark-circle-outline"></ion-icon> Great!</h1>
+                <p className="centering">You've created a new team! Let's get <strong>moving</strong>.</p>
+                <p className="centering"><IonButton routerLink="/group">Go to Experiments</IonButton></p>
+            </div>
             </>
     }
     else { // Otherwise show the entry interfae
@@ -48,10 +54,10 @@ const CreateTeam = (props) => {
             err = <></>
         }
 
-        content = <><p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Choose a name for your new team, and optionally enter a description.</p>
+        content = <><p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>Choose a name for your experiment, and optionally enter a description.</p>
         <div className="centering">
-            <IonInput type="text" placeholder="Team Name" onIonChange={e => { setName(e.detail.value)} }></IonInput>
-            <IonInput type="text" placeholder="Team Description" onIonChange={e => { setDesc(e.detail.value)} }></IonInput>
+            <IonInput type="text" placeholder="Experiment Name (e.g. Jane's Movement Minutes)" onIonChange={e => { setName(e.detail.value)} }></IonInput>
+            <IonInput type="text" placeholder="Experiment Description (e.g. The Finance Team get fit!)" onIonChange={e => { setDesc(e.detail.value)} }></IonInput>
         </div>
         {err}
         <div className="centering">
@@ -60,7 +66,7 @@ const CreateTeam = (props) => {
     }
 
     return (
-        <IonPage>
+        <IonPage className="creator">
             <XBHeader title="Create a Team"></XBHeader>
             <IonContent style={{paddingTop: '30px'}}>
                 {content}
@@ -71,7 +77,8 @@ const CreateTeam = (props) => {
 export default connect(
     (state, ownProps) => {
       return {
-        teams: state.teams
+        teams: state.teams,
+        account: state.account
       }
     },
     {
