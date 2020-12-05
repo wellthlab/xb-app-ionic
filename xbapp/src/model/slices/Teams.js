@@ -49,9 +49,9 @@ function dayify(responses, start, minday, maxday) {
         console.log("Process day", i);
         if(typeof entries[i] == 'undefined') {
             // TODO: Missing should be per-question
-            entries[i] = {day: i, missing: true, responses: []}
+            entries.push( {day: i, missing: true, responses: []} )
         } else {
-            entries[i] = {day: i, missing: false, responses: entries[i]}
+            entries.push( {day: i, missing: false, responses: entries[i]} )
         }
     }
 
@@ -60,6 +60,26 @@ function dayify(responses, start, minday, maxday) {
     });
 
     return entries;
+}
+
+// From a list of experiment stages, pick the one that's active on the given day
+function dayStage(day, stages) {
+
+    var starts = Object.keys(stages);
+    starts.sort(function(a, b){
+        return a * 1 - b * 1;
+    });
+    //console.log("Get active stage", day, stages, starts);
+
+    var last = false;
+    for(var start of starts) {
+        start = start * 1; // Convert to number
+        if(start > day) {
+            return last;
+        }
+        last = start;
+    }
+
 }
 
 /**
@@ -88,6 +108,9 @@ const TeamSlice = createSlice({
 
                 // Day number
                 team.experiment.day = dayNumber(new Date(), new Date(team.experiment.start));
+
+                // Current experiment phase info
+                team.experiment.current_stage = team.experiment.info.stages[dayStage(team.experiment.day, team.experiment.info.stages)];
 
                 // Compile responses into daily entries
                 team.entries = dayify(team.responses.own.responses, team.experiment.start, -14, team.experiment.day);

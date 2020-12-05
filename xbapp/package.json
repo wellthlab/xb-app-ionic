@@ -25,6 +25,7 @@
     "auto-bind": "^4.0.0",
     "chart.js": "^2.9.4",
     "graphql": "^15.4.0",
+    "html-react-parser": "^0.14.2",
     "ionicons": "^5.2.3",
     "node-sass": "^4.14.1",
     "react": "^16.13.0",

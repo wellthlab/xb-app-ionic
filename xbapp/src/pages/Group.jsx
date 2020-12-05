@@ -10,6 +10,7 @@ import { Link } from "react-router-dom"
 
 import { IonIcon } from '@ionic/react';
 import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
+import Instructions from "../components/Instructions"
 
 const autoBindReact = require('auto-bind/react');
 
@@ -36,7 +37,7 @@ const Group = ({ match, teams, props, account }) => {
     var entries = group.entries;
 
     var days = [];
-    for(var i in entries) {
+    for(var i = 0; i < entries.length; i++) {
         var entry = entries[i];
         days.push(<ion-card key={i}><Link to={"/group/" + group._id + "/" + entry.day}>
             <ion-card-header>
@@ -78,7 +79,7 @@ const Group = ({ match, teams, props, account }) => {
                     </ion-chip>
                 </ion-item>
 
-                <ion-item>{exp.instructions}</ion-item>
+                <ion-item><Instructions html={group.experiment.current_stage.instructions} /></ion-item>
 
                 {days}
 

@@ -35,8 +35,13 @@ const Day = ({ match, teams, props, account }) => {
     var rows = [];
     var total = 0;
     var questionnaired = false;
-    console.log("Entries", entries[daynumber].responses);
-    for(var entry of entries[daynumber].responses) {
+
+    for(var day of entries) {
+        if(day.day == daynumber)
+            break;
+    }
+
+    for(var entry of day.responses) {
         console.log(entry);
         if(entry.type =='minutes') {
             var time = entry.submitted.substring(10, 15);
