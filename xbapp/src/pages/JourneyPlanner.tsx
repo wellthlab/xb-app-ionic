@@ -21,8 +21,8 @@ const JourneyPlanner: React.FC = () => {
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
 
-                <h1>Hello!</h1>
-                <p>To get started you need to create a new Movement Minutes experiment, or join somebody else's!</p>
+                <h1 className="centering">Hello!</h1>
+                <p className="centering">To get started you need to create a new Movement Minutes experiment, or join somebody else's!</p>
 
                 <div className="centering">
                     <IonButton routerLink="/experiment/create" >Create a new Experiment</IonButton>

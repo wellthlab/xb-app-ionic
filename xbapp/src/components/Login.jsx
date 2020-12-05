@@ -59,7 +59,7 @@ class Login extends Component {
                     <ion-row style={{ height: "40px" }}></ion-row>
                     <br></br>
                     <br></br>
-                    <p><a href="https://support.microsoft.com/en-us/office/use-a-link-or-code-to-join-a-team-c957af50-df15-46e3-b5c4-067547b64548" target="_blank">Part of the Movement Minute Challenge? Join the MS Teams Group!</a></p>
+                    <p><a href="https://teams.microsoft.com/l/team/19%3a56457fd90cd84149b34600cf410a3ee8%40thread.tacv2/conversations?groupId=5fa041eb-4341-4608-a04a-67fa122429cc&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8" target="_blank">Part of the Movement Minute Challenge? Join the MS Teams Group!</a></p>
                     <br></br>
                     <br></br>
                     <div className="tutorialButton">

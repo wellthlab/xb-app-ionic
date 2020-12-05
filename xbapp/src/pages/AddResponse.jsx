@@ -54,7 +54,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         var link = '/group/' + gid + '/' + daynumber;
         content = <>
         <div className="done">
-            <h1><ion-icon name="checkmark-circle-outline"></ion-icon> Great!</h1>
+            <h1 className="centering"><ion-icon name="checkmark-circle-outline"></ion-icon> Great!</h1>
             <p className="centering">You've added a response. Keep adding responses to track your progress.</p>
             <p className="centering"><IonButton onClick={reset}>Back to Responses</IonButton></p>
         </div>

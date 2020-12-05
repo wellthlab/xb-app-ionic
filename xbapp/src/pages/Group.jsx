@@ -11,12 +11,18 @@ import { Link } from "react-router-dom"
 import { IonIcon } from '@ionic/react';
 import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
 import Instructions from "../components/Instructions"
+import GenericAlert from "../components/GenericAlert";
 
 const autoBindReact = require('auto-bind/react');
 
 var chosenDay = [];
 
 const Group = ({ match, teams, props, account }) => {
+
+
+    const [showAlert, setShowAlert] = useState(false);
+    function toggleAlert() { setShowAlert(!showAlert)}
+
 
     var gid = match.params.id; // Group ID comes from route
     var group = false;
@@ -65,9 +71,10 @@ const Group = ({ match, teams, props, account }) => {
         <IonPage>
             <XBHeader title={group.name}></XBHeader>
             <IonContent>
-
-                <MinutesChart />
-
+                <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day.'}/>
+        
+                <MinutesChart group={group}/>
+                <a href="javascript:void(0)" style={{ textAlign: "center", margin: "20px 0 20px 0" }} onClick={() => {toggleAlert()}}>How do I interpret the bar chart?</a>
                 <ion-item>
                     <ion-heading><strong>{exp.title}</strong></ion-heading>
                     <ion-chip slot="end" color="primary"><ion-label><IonIcon icon={todayOutline} /> {daydesc}</ion-label></ion-chip>

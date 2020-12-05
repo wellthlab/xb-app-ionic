@@ -18,15 +18,15 @@ const Questionnaire = (props)  => {
     //important: these are numbers as they will be represented on the graph
     //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points
     //the limits for this will always be between -2 and 2
-    if (selectedHowFeel.mood = "a lot worse"){
+    if (selectedHowFeel.mood == "a lot worse"){
       moodValue = -2;
-    } else if (selectedHowFeel.mood = "worse"){
+    } else if (selectedHowFeel.mood == "worse"){
       moodValue = -1;
-    } else if (selectedHowFeel.mood = "the same"){
+    } else if (selectedHowFeel.mood == "the same"){
       moodValue = 0;
-    } else if (selectedHowFeel.mood = "better"){
+    } else if (selectedHowFeel.mood == "better"){
       moodValue = 1;
-    } else if (selectedHowFeel.mood = "a lot better"){
+    } else if (selectedHowFeel.mood == "a lot better"){
       moodValue = 2;
     }
 
@@ -39,7 +39,7 @@ const Questionnaire = (props)  => {
 
   return (
       <>
-        <IonRadioGroup value={selectedHowFeel.mood} onIonChange={e => setSelectedHowFeel({mood: e.detail.value})}>
+        <IonRadioGroup allow-empty-selection="true" value={selectedHowFeel.mood} onIonChange={e => {setSelectedHowFeel({mood: e.detail.value})}}>
           <IonListHeader>
             <IonLabel>How do you feel compared to the previous day?</IonLabel>
           </IonListHeader>
@@ -67,9 +67,9 @@ const Questionnaire = (props)  => {
             <IonRadio slot="start" value="a lot better" />
           </IonItem>
         </IonRadioGroup>
-        <IonItemDivider></IonItemDivider>
+        <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 
-        <IonRadioGroup value={selectedExposure.exposure} onIonChange={e => setSelectedExposure({exposure: e.detail.value})}>
+        <IonRadioGroup allow-empty-selection="true"  value={selectedExposure.exposure} onIonChange={e => setSelectedExposure({exposure: e.detail.value})}>
           <IonListHeader>
             <IonLabel>Did you get sunlight exposure for this day?</IonLabel>
           </IonListHeader>
@@ -86,7 +86,7 @@ const Questionnaire = (props)  => {
         </IonRadioGroup>
         <IonItemDivider></IonItemDivider>
 
-        <IonRadioGroup value={selectedAlarm.alarm} onIonChange={e => setSelectedAlarm({alarm: e.detail.value})}>
+        <IonRadioGroup allow-empty-selection="true"  value={selectedAlarm.alarm} onIonChange={e => setSelectedAlarm({alarm: e.detail.value})}>
           <IonListHeader>
             <IonLabel>Did you wake up with an alarm on this day?</IonLabel>
           </IonListHeader>
