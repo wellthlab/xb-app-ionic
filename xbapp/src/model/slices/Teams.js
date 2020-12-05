@@ -27,10 +27,9 @@ function dayify(responses, start, minday, maxday) {
 
     // First, organise by day
     for(var r of responses) {
-        var subdate = new Date(r.submitted);
-        var day = dayNumber(subdate, new Date(start));
-
-        console.log("Analyse result", r, subdate, day)
+        //var subdate = new Date(r.submitted);
+        //var day = dayNumber(subdate, new Date(start));
+        var day = r.day;
 
         minday = Math.min(minday, day);
         maxday = Math.max(maxday, day);

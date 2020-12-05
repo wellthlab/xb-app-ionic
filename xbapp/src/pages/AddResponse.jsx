@@ -38,6 +38,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
     async function save(res) {
         setSaved('saving');
         res.type = type;
+        res.day = daynumber;
         await controllers.ADD_RESPONSE(gid, res);
         setSaved('saved');
     }
