@@ -15,11 +15,10 @@ const JourneyPlanner: React.FC = () => {
     function toggleModal() { setModalTeam(!showModal)}
 
     return (
-        <IonPage>
+        <IonPage className="planner">
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-                <MinutesChart/>
-                <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
+
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
 
@@ -36,9 +35,6 @@ const JourneyPlanner: React.FC = () => {
                 {/*<div className="centering">
                     <IonButton onClick={() => {toggleModal()}}>Experiment in a Team</IonButton>
                 </div>*/}
-
-
-
 
             </IonContent>
         </IonPage>
