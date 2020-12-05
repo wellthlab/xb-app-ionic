@@ -54,8 +54,7 @@ function Timer(props) {
   }, [isActive, seconds]);
 
   return (
-        <div className="app">
-
+        <div >
           <div className="time">{seconds}s</div>
           <div className="row">
             <IonButton onClick={toggle}>

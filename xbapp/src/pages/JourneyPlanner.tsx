@@ -18,7 +18,6 @@ const JourneyPlanner: React.FC = () => {
         <IonPage>
             <XBHeader title="Add an Experiment"></XBHeader>
             <IonContent>
-                <MinutesChart/>
                 <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
                 <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
                 <img src="assets/health.png" alt="XB Health" />
