@@ -271,7 +271,7 @@ function MinutesChart(props) {
                 data: minutesIndividual
             },
             {
-                label: "Your mood compared to the previous day",
+                label: "Your mood",
                 yAxisID: 'mood',
                 fill: false,
                 lineTension: 0.1,
@@ -440,9 +440,9 @@ function MinutesChart(props) {
 
     return <div>
         {/*bar chart 1 - movement minutes individual vs how do you feel individual*/}
-        <div style={{ display: 'flex', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px', flexDirection: 'column', border: '1px solid #ccc', height: '300px', width: "500px" }}>
-            <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Individual: Movement Minutes vs. How do you feel?</div>
-            <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '20px' }}>
+        <div>
+            <div style={{ flex: '0 0 auto', padding: '10px', textAlign: 'center' }}>Your Minutes vs. Your Mood</div>
+            <div style={{ width: '400px', height: '300px', marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', marginBottom: '1px' }}>
                 <Bar data={minutesFeelingData} options={optionsMinutesFeeling} />
             </div>
         </div>
