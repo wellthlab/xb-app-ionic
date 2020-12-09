@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { IonIcon } from '@ionic/react';
+import { IonIcon, IonButton } from '@ionic/react';
 import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
 import { Link } from "react-router-dom"
 
@@ -56,7 +56,10 @@ export default class ExperimentList extends Component {
                 }
             })}
 
-           
+            <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+              <IonButton routerLink="/experiment">+
+              </IonButton>
+            </ion-fab>
 
             </>
         );

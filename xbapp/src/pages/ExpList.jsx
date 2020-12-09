@@ -34,10 +34,6 @@ class ExpList extends Component {
               <IonContent>
               {c}
               </IonContent>
-              <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-              <ion-button routerLink="/experiment">+
-              </ion-button>
-            </ion-fab>
           </IonPage>
         );
     }
@@ -52,7 +48,7 @@ export default connect(
         return { teams: state.teams, experiments: state.experiments, boxes: state.boxes };
     },
     { // Actions to include as props
-        pure: false,
+
     }
 
 )(addControllersProp(ExpList));

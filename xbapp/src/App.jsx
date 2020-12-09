@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { Switch } from 'react-router';
 import {
   IonApp,
   IonRouterOutlet,
@@ -96,6 +97,7 @@ const App = ({ account }) => {
       </IonMenu>
 
       <IonRouterOutlet id="appContent">
+      <Switch>
         <Route path="/group/:id/:day/add/:type" component={AddResponse} exact={true} />
         <Route path="/group/:id/:day" component={Day} exact={true} />
         <Route path="/group/:id" component={Group} exact={true} />
@@ -110,16 +112,16 @@ const App = ({ account }) => {
         <Route path="/tutorial" component={Tutorial} exact={true} />
         <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
         <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
-      </IonRouterOutlet>
+        </Switch></IonRouterOutlet>
     </>
   } else {
     content =
-      <IonRouterOutlet>
+      <IonRouterOutlet><Switch>
         <Route path="/register" component={Register} exact={true} />
         <Route path="/tutorial" component={Tutorial} exact={true} />
         <Route path="/" component={Login} exact={true} />
         <Route path="/page" component={Tutorial} exact={true} />
-      </IonRouterOutlet>
+        </Switch></IonRouterOutlet>
   }
 
 
