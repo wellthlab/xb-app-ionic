@@ -74,7 +74,7 @@ export default connect(
       }
     },
     {
-
+        pure: false,
     }
 
 )(addControllersProp(ExperimentInGroup));

@@ -70,9 +70,11 @@ const autoBindReact = require('auto-bind/react'); // Needs to go after import, b
 const App = ({ account }) => {
 
   const [showAlert, setShowAlert] = useState(false);
-  function toggleAlert() { setShowAlert(!showAlert)}
+  function toggleAlert() { setShowAlert(!showAlert) }
 
   let content = null;
+
+
 
   if (account.loggedin !== false) {
     content = <>
@@ -81,7 +83,7 @@ const App = ({ account }) => {
           <IonToolbar color="#5d8286">Menu</IonToolbar>
         </IonHeader>
         <IonContent>
-        <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'}/>
+          <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'We are really sorry, this side of the application is not ready yet. We will let you know soon of future updates. :)'} />
           <IonList>
             <IonItem routerLink="/group">Experiments</IonItem>
             { /* <IonItem button onClick={() => {toggleAlert()}}>Calendar</IonItem>
@@ -94,14 +96,14 @@ const App = ({ account }) => {
       </IonMenu>
 
       <IonRouterOutlet id="appContent">
-        <Route path="/group" component={ExpList} exact={true} />
-        <Route path="/group/:id" component={Group} exact={true} />
-        <Route path="/group/:id/:day" component={Day} exact={true} />
         <Route path="/group/:id/:day/add/:type" component={AddResponse} exact={true} />
+        <Route path="/group/:id/:day" component={Day} exact={true} />
+        <Route path="/group/:id" component={Group} exact={true} />
+        <Route path="/group" component={ExpList} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />
-        <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
         <Route path="/experiment/yourself/:id" component={About} exact={true} />
+        <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
         <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
         <Route path="/experiment/create" component={CreateTeam} exact={true} />
         <Route path="/experiment" component={JourneyPlanner} exact={true} />
@@ -115,7 +117,8 @@ const App = ({ account }) => {
       <IonRouterOutlet>
         <Route path="/register" component={Register} exact={true} />
         <Route path="/tutorial" component={Tutorial} exact={true} />
-        <Route component={Login} />
+        <Route path="/" component={Login} exact={true} />
+        <Route path="/page" component={Tutorial} exact={true} />
       </IonRouterOutlet>
   }
 
@@ -134,7 +137,7 @@ export default connect(
     return { account: state.account, };
   },
   { // Actions to include as props
-
+    pure: false,
   }
 
 )(App);

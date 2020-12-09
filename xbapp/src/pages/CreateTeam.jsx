@@ -82,7 +82,7 @@ export default connect(
       }
     },
     {
-
+        pure: false,
     }
 
 )(addControllersProp(CreateTeam));

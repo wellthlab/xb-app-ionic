@@ -10,10 +10,14 @@ function GenericModal(props) {
     return <div>
         <IonModal isOpen={props.showModal}>
         <IonContent>
+            <br></br>
+            <br></br>
             <h1 style={{ textAlign: "center" }}><b>{props.title}</b></h1>
             {props.message}
         </IonContent>
             <IonButton onClick={props.toggleModal} >Close</IonButton>
+            <br></br>
+            <br></br>
         </IonModal>
     </div>;
 }

@@ -115,7 +115,7 @@ export default connect(
         }
     },
     {
-
+        pure: false,
     }
 
 )(addControllersProp(AddResponse));

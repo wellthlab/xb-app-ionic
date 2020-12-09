@@ -8,3 +8,6 @@ img {
     width: 30px;
     resize: both;
 }
+ion-slides{
+    overflow-y: scroll;
+  }

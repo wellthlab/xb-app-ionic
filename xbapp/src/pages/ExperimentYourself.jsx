@@ -34,7 +34,7 @@ export default connect(
         return { groups: state.groups, experiments: state.experiments, boxes: state.boxes };
     },
     { // Actions to include as props
-
+        pure: false,
     }
 
 )(ExperimentYourself);

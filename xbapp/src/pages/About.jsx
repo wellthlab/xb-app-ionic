@@ -1,4 +1,7 @@
 import React, { Component, useState } from 'react';
+import {
+    Link, 
+  } from "react-router-dom";
 import { IonContent, IonPage, IonItemDivider, IonButton, IonItem } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 import './Account.css';
@@ -32,7 +35,7 @@ const TabAccount = ({ }) => {
                 {/** replace "Movement Minutes" with variable corresponding for each team the user is part of */}
                 <p><a href="https://teams.microsoft.com/l/team/19%3a56457fd90cd84149b34600cf410a3ee8%40thread.tacv2/conversations?groupId=5fa041eb-4341-4608-a04a-67fa122429cc&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8" target="_blank">Movement Minutes: JOIN the MS Teams Group Chat</a></p>
                 <p><b>What is XB?</b></p>
-                <p><a href="/tutorial">Tutorial</a></p>
+               <IonButton routerLink="/tutorial">Tutorial</IonButton>
 
                 <IonItemDivider></IonItemDivider>
                 <p>eXperiment in a Box</p>
@@ -63,7 +66,8 @@ export default connect(
     },
     {
         // A map full of action creators; action creators are imported from slices
-        LOG_OUT // shorthand for LOG_OUT: LOG_OUT
+        LOG_OUT, // shorthand for LOG_OUT: LOG_OUT
+        pure: false,
     }
 
 )(TabAccount);

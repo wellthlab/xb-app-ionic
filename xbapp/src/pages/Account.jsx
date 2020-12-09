@@ -30,7 +30,7 @@ class TabAccount extends Component {
             { /* the props are set up for us by connect(), below */ }
             <p>{this.props.account.name}</p>
 
-            <IonButton onclick={() => this.props.LOG_OUT({}) }>Log Out</IonButton>
+            <IonButton routerLink="/" onclick={() => this.props.LOG_OUT({}) }>Log Out</IonButton>
 
           </IonContent>
         </IonPage>
@@ -53,7 +53,8 @@ export default connect(
     },
     {
         // A map full of action creators; action creators are imported from slices
-        LOG_OUT // shorthand for LOG_OUT: LOG_OUT
+        LOG_OUT, // shorthand for LOG_OUT: LOG_OUT
+        pure: false,
     }
 
 )(TabAccount);

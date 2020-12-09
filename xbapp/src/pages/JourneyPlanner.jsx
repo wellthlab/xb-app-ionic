@@ -1,24 +1,16 @@
 import { IonButton, IonContent, IonAlert, IonPage, IonModal } from '@ionic/react';
 import React, { useState } from 'react';
 import XBHeader from '../components/XBHeader'
+import { connect } from 'react-redux'
 import './JourneyPlanner.scss';
-import MinutesChart from "../components/minutesChart";
-import GenericAlert from "../components/GenericAlert";
-import ModalTeam from "../components/ModalTeam";
 import Timer from '../components/Timer'
-const JourneyPlanner: React.FC = () => {
+const JourneyPlanner = (account) => {
 
-    const [showModal, setModalTeam] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-
-    function toggleAlert() { setShowAlert(!showAlert)}
-    function toggleModal() { setModalTeam(!showModal)}
-
+    console.log("ddddd");
     return (
         <IonPage className="planner">
             <XBHeader title="Add an Experiment"></XBHeader>
-            <IonContent>
-                <ModalTeam showModal={showModal} toggleModal={toggleModal}/>
+            <IonContent> 
                 <img src="assets/health.png" alt="XB Health" />
 
                 <h1 className="centering">Hello!</h1>
@@ -31,13 +23,23 @@ const JourneyPlanner: React.FC = () => {
                 <div className="centering">
                     <IonButton routerLink="/experiment/group" >Join Someone Else's Experiment</IonButton>
                 </div>
-                {/*<div className="centering">
-                    <IonButton onClick={() => {toggleModal()}}>Experiment in a Team</IonButton>
-                </div>*/}
 
             </IonContent>
         </IonPage>
     );
 };
 
-export default JourneyPlanner;
+export default connect(
+    (state, ownProps) => {
+        // A function to map parts of the global state (from the App's wrapper <Provider>)
+        // into props for the wrapped component (which will be TabAccount)
+        return {
+            account: state.account
+        }
+    },
+    {
+        // A map full of action creators
+        pure: false,
+    }
+
+)(JourneyPlanner);

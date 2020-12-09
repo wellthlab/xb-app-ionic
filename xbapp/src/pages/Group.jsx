@@ -107,7 +107,7 @@ export default connect(
         }
     },
     {
-
+        pure: false,
     }
 
 )(Group);

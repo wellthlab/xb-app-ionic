@@ -56,11 +56,7 @@ export default class ExperimentList extends Component {
                 }
             })}
 
-            <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-              <ion-fab-button  href="/experiment">
-                <ion-icon icon={add} />
-              </ion-fab-button>
-            </ion-fab>
+           
 
             </>
         );

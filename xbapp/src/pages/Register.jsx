@@ -37,6 +37,7 @@ export default connect(
     },
     {
         // A map full of action creators
+        pure: false,
     }
 
 )(TabReg);

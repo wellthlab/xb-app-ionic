@@ -31,7 +31,7 @@ const accountSlice = createSlice({
             state.loggedin = true;
             state.email = action.payload.email;
             state.password = action.payload.password;
-            state.name = "Anonymous Test User";
+            state.name = "";
             state.loginerror = false;
         },
         LOG_OUT(state, action) {
