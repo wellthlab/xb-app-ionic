@@ -78,13 +78,13 @@ class Login extends Component {
         this.props.START_LOGIN({});
 
         var client = getXBClient();
-        client.setUser(this.email, this.password).then(
-            (user) => {
+        client.setUser(this.email, this.password)
+            .then( (user) => {
                 this.props.ACCEPT_LOGIN({ email: this.email, password: this.password })
-            }, (err) => {
+            }).catch( (err) => {
+                console.log("Login rejected", err);
                 this.props.REJECT_LOGIN(err.message)
-            }
-        );
+            });
     }
 
     register(e) {

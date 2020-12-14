@@ -21,6 +21,7 @@ const accountSlice = createSlice({
         },
         REJECT_LOGIN(state, action) { // When a login request is rejected; must receive an error message
             state.loggedin = false;
+            state.fetching = false;
             state.email = null;
             state.name = "";
             state.password = null;
@@ -29,6 +30,7 @@ const accountSlice = createSlice({
         },
         ACCEPT_LOGIN(state, action) { // When a login request succeeds
             state.loggedin = true;
+            state.fetching = false;
             state.email = action.payload.email;
             state.password = action.payload.password;
             state.name = "";
@@ -36,6 +38,7 @@ const accountSlice = createSlice({
         },
         LOG_OUT(state, action) {
             state.loggedin = false;
+            state.fetching = false;
             state.email = null;
             state.name = "";
             state.password = null;
