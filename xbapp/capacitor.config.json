@@ -17,6 +17,6 @@
     "android": {
         "allowMixedContent": true,
         "webContentsDebuggingEnabled": true
-    }
+    },
     "cordova": {}
 }
