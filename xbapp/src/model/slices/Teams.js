@@ -133,7 +133,7 @@ const TeamSlice = createSlice({
                 team.experiment.current_stage = team.experiment.info.stages[dayStage(team.experiment.day, team.experiment.info.stages)];
 
                 // Compile responses into daily entries
-                team.entries = dayify(team.responses.own.responses, team.experiment.start, -14, team.experiment.day);
+                team.entries = dayify(team.responses.own.responses, team.experiment.start, 1, team.experiment.day);
             }
 
         },
