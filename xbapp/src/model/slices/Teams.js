@@ -25,7 +25,10 @@ function dayNumber(date, start) {
 function dayify(responses, start, minday, maxday) {
     var entries = [];
 
+    console.log("Dayifying responses", responses);
+
     // First, organise by day
+    var entriesByDay = {};
     for(var r of responses) {
         //var subdate = new Date(r.submitted);
         //var day = dayNumber(subdate, new Date(start));
@@ -34,23 +37,23 @@ function dayify(responses, start, minday, maxday) {
         minday = Math.min(minday, day);
         maxday = Math.max(maxday, day);
 
-        if(typeof entries[day] == 'undefined') {
-            entries[day] = [];
+        if(typeof entriesByDay[day] == 'undefined') {
+            entriesByDay[day] = [];
         }
 
-        entries[day].push(r);
+        entriesByDay[day].push(r);
     }
 
-    console.log("Dayified", responses, minday, maxday, entries);
+    console.log("Dayified", entries);
 
     // Then generate each daily entry
     for(var i = minday; i <= maxday; i++) {
         console.log("Process day", i);
-        if(typeof entries[i] == 'undefined') {
+        if(typeof entriesByDay[i] == 'undefined') {
             // TODO: Missing should be per-question
             entries.push( {day: i, missing: true, responses: []} )
         } else {
-            entries.push( {day: i, missing: false, responses: entries[i]} )
+            entries.push( {day: i, missing: false, responses: entriesByDay[i]} )
         }
     }
 
@@ -63,6 +66,7 @@ function dayify(responses, start, minday, maxday) {
     for(var day of entries) {
         var mins = 0;
         var questionnaired = false;
+        console.log("Generate summary for", day);
         for(var res of day.responses) {
             if(res.type =='minutes') {
                 mins = mins + 1 * res.minutes;
