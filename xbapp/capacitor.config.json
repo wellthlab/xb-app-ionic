@@ -9,7 +9,6 @@
             "launchShowDuration": 0
         }
     },
-    "cordova": {},
     "server": {
         "url": "https://stich.mongodb.com/",
         "cleartext": false
@@ -19,4 +18,5 @@
         "allowMixedContent": true,
         "webContentsDebuggingEnabled": true
     }
+    "cordova": {}
 }

@@ -84,7 +84,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
                 </IonItem>
 
             </IonCard>
-            <p>Please read the information at the link below. Please note that by registering and creating an account, you agree to have read the information about the study and agree for your data being used anonymously for the purpose of this study.</p>
+            <p>Please read the information at the link below. Please note that by registering and creating an account, you consent to the following: I understand what the study involves and how my personal data will be used.</p>
             <a href="javascript:void(0)" onClick={() => { toggleModal() }}>Read Information Sheet About Our Study</a>
 
             <IonItemDivider></IonItemDivider>
