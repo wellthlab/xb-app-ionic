@@ -1,17 +1,22 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "xbapp",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
+    "appId": "uk.ac.soton.ecs.xbapp",
+    "appName": "xbapp",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        }
+    },
+    "cordova": {},
+    "server": {
+        "url": "https://stich.mongodb.com/",
+        "cleartext": false
+    },
+    "linuxAndroidStudioPath": "/home/richard/android-studio-ide-201.6953283-linux/android-studio/bin/studio.sh",
+    "android": {
+        "allowMixedContent": true,
+        "webContentsDebuggingEnabled": true
     }
-  },
-  "cordova": {},
-  "server": {
-    "url": "http://192.168.86.21:8100",
-    "cleartext": true
-  }
 }
