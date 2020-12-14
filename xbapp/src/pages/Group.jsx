@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { IonContent, IonPage, IonModal, IonItemDivider, IonCard } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 
@@ -13,15 +13,23 @@ import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
 import Instructions from "../components/Instructions"
 import GenericAlert from "../components/GenericAlert";
 
+import { addControllersProp } from '../model/controllers'
+
 const autoBindReact = require('auto-bind/react');
 
 var chosenDay = [];
 
-const Group = ({ match, teams, props, account }) => {
+const Group = ({ match, teams, controllers, account }) => {
 
 
     const [showAlert, setShowAlert] = useState(false);
     function toggleAlert() { setShowAlert(!showAlert)}
+
+
+    useEffect(() => {
+        // Load team responses
+        controllers.GET_TEAM_RESPONSES(group._id);
+    }, [match.params.id]);
 
 
     var gid = match.params.id; // Group ID comes from route
@@ -37,6 +45,18 @@ const Group = ({ match, teams, props, account }) => {
     }
 
     console.log("group", group);
+
+    /**
+     * Team responses are loaded on demand
+     */
+    if(group.responses.fetching) {
+        // Responses are being fetched; probably do nothing
+    } else {
+        // Responses should be available in group.responses.all
+        console.log("Group responses are available", group.responses.all);
+
+        // TODO ...
+    }
 
     var exp = group.experiment.info;
 
@@ -72,7 +92,7 @@ const Group = ({ match, teams, props, account }) => {
             <XBHeader title={group.name}></XBHeader>
             <IonContent>
                 <GenericAlert showAlert={showAlert} toggleAlert={toggleAlert} message={'The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day.'}/>
-        
+
                 <MinutesChart group={group}/>
                 <a href="javascript:void(0)" style={{ textAlign: "center", margin: "0 0 0 0" }} onClick={() => {toggleAlert()}}>How do I interpret the bar chart?</a>
                 <IonItemDivider></IonItemDivider>
@@ -111,4 +131,4 @@ export default connect(
         pure: false,
     }
 
-)(Group);
+)(addControllersProp(Group));

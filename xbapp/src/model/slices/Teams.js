@@ -102,6 +102,15 @@ function dayStage(day, stages) {
 
 }
 
+function getTeam(teams, id) {
+    for(var t of teams) {
+        if(t._id == id) {
+            return t;
+        }
+    }
+    return false;
+}
+
 /**
  * The experiment slice handles experiments that the user is part of.
  * ALL experiments are actually groups; even if the user is the only member!
@@ -138,6 +147,34 @@ const TeamSlice = createSlice({
 
         },
 
+        /**
+         * Team responses are fetched on demand
+         */
+        START_GET_TEAM_RESPONSES(state, action) {
+            var teamid = action.payload.team;
+
+            var team = getTeam(state.teams, teamid);
+            if(team !== false) {
+                team.responses.fetching = true;
+            }
+        },
+
+        SET_TEAM_RESPONSES(state, action) {
+            var teamid = action.payload.team;
+            var responses = action.payload.responses;
+
+            var team = getTeam(state.teams, teamid);
+            if(team === false) {
+                console.error("Tried to set team responses on non-existent team?", teamid);
+                return;
+            }
+
+            // TODO: Pre-process the response data to generate e.g. summaries, totals....
+
+            team.responses.fetching = false;
+            team.responses.all = responses;
+        },
+
         START_JOIN_TEAM(state, action) {
             state.joining = true;
             state.join_err = false;
@@ -166,6 +203,6 @@ const TeamSlice = createSlice({
     }
 })
 
-export const { CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM } = TeamSlice.actions
+export const { CLEAR_TEAMS, SET_TEAMS, START_GET_TEAM_RESPONSES, SET_TEAM_RESPONSES, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM } = TeamSlice.actions
 
 export default TeamSlice.reducer

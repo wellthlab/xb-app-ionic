@@ -156,6 +156,18 @@ function XBClient() {
         return groups;
     }
 
+    /**
+     * Get all responses for a team
+     */
+    self.getTeamResponses = async function(teamid) {
+        var info = await self.realm.users[0].functions.getTeamData(teamid);
+
+        console.log("Fetched team responses", info);
+
+        return self.tidy(info[0].allresponses);
+    }
+
+    // Helper function for generating a team ID
     function genID(len) {
        var result           = '';
        var characters       = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
@@ -209,7 +221,6 @@ function XBClient() {
         }
         catch(e) {
             console.log(e);
-            return {success: false, message: "Sorry, that code didn't work"};
         }
     }
 

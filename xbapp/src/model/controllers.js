@@ -8,7 +8,7 @@
 
 import React, { useContext } from 'react';
 
-import {CLEAR_TEAMS, SET_TEAMS, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM} from './slices/Teams'
+import {CLEAR_TEAMS, SET_TEAMS, START_GET_TEAM_RESPONSES, SET_TEAM_RESPONSES, START_JOIN_TEAM, CLEAR_JOIN_TEAM, ABORT_JOIN_TEAM, START_CREATE_TEAM, CLEAR_CREATE_TEAM, ABORT_CREATE_TEAM} from './slices/Teams'
 import {CLEAR_EXPERIMENTS, SET_EXPERIMENTS} from './slices/Experiments'
 
 /**
@@ -79,6 +79,16 @@ function LOAD_EXPERIMENTS(client, store, controllers) {
     );
 }
 
+async function GET_TEAM_RESPONSES(client, store, controllers, teamid) {
+    store.dispatch(START_GET_TEAM_RESPONSES({team: teamid}));
+
+    try {
+        var r = await client.getTeamResponses(teamid);
+        store.dispatch(SET_TEAM_RESPONSES({team: teamid, responses: r}));
+    } catch(e) {
+        SET_TEAM_RESPONSES({team: teamid, responses: {}});
+    }
+}
 
 
 
@@ -86,7 +96,7 @@ function getControllers(store, client) {
 
     var out = {client: client, store: store};
 
-    var controllers = { LOAD_TEAMS, LOAD_EXPERIMENTS, JOIN_TEAM, CREATE_TEAM, ADD_RESPONSE };
+    var controllers = { LOAD_TEAMS, GET_TEAM_RESPONSES, LOAD_EXPERIMENTS, JOIN_TEAM, CREATE_TEAM, ADD_RESPONSE };
 
     for(var n of Object.keys(controllers)) {
         var f = controllers[n];
@@ -100,7 +110,7 @@ function getControllers(store, client) {
 }
 
 /**
- * A Higher ORder Component that provides a controllers prop contianing
+ * A Higher Order Component that provides a controllers prop contianing
  * the controllers from the curent context
  */
 function addControllersProp(Component) {
