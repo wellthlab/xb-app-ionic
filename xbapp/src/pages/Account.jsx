@@ -30,7 +30,7 @@ class TabAccount extends Component {
             { /* the props are set up for us by connect(), below */ }
             <p>{this.props.account.name}</p>
 
-            <IonButton routerLink="/" onclick={() => this.props.LOG_OUT({}) }>Log Out</IonButton>
+            <IonButton routerLink="/" onclick={() => {this.props.LOG_OUT({}); localStorage.clear()} }>Log Out</IonButton>
 
           </IonContent>
         </IonPage>
