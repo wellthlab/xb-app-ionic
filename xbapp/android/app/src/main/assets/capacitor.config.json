@@ -1,13 +1,18 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "xbapp",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
+    "appId": "uk.ac.soton.ecs.xbapp",
+    "appName": "xbapp",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 0
+        }
+    },
+    "linuxAndroidStudioPath": "/home/richard/android-studio-ide-201.6953283-linux/android-studio/bin/studio.sh",
+    "android": {
+        "allowMixedContent": true,
+        "webContentsDebuggingEnabled": true
+    },
+    "cordova": {}
 }

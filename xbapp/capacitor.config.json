@@ -9,10 +9,6 @@
             "launchShowDuration": 0
         }
     },
-    "server": {
-        "url": "https://stich.mongodb.com/",
-        "cleartext": false
-    },
     "linuxAndroidStudioPath": "/home/richard/android-studio-ide-201.6953283-linux/android-studio/bin/studio.sh",
     "android": {
         "allowMixedContent": true,
