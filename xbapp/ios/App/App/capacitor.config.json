@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "uk.ac.soton.ecs.xbapp",
   "appName": "xbapp",
   "bundledWebRuntime": false,
   "npmClient": "npm",
