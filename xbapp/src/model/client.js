@@ -2,7 +2,9 @@
 * Client for interacting with the server component
 * Based on MongoDB realm client
 */
-
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
+import 'babel-polyfill'
+import 'react-app-polyfill/stable';
 // Use the realm WebSDK because we're effectively operating in a web browser
 import * as Realm from "realm-web";
 
