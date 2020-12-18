@@ -89,6 +89,7 @@ class Login extends Component {
                 this.props.ACCEPT_LOGIN({ email: this.email, password: this.password })
             }).catch( (err) => {
                 console.log("Login rejected", err);
+                console.log(err.message);
                 this.props.REJECT_LOGIN(err.message)
             });
     }

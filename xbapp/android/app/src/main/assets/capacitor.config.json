@@ -14,5 +14,9 @@
     "allowMixedContent": true,
     "webContentsDebuggingEnabled": true
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "url": "http://192.168.86.21:8100",
+    "cleartext": true
+  }
 }
