@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     teams: [
     ],
-    fetching: false,
+    fetching: true,
     joining: false,
     join_err: false
 };
@@ -26,7 +26,7 @@ function dayNumber(date, start) {
 function dayify(responses, start, minday, maxday) {
     var entries = [];
 
-    console.log("Dayifying responses", responses);
+    //console.log("Dayifying responses", responses);
 
     // First, organise by day
     var entriesByDay = {};
@@ -45,11 +45,11 @@ function dayify(responses, start, minday, maxday) {
         entriesByDay[day].push(r);
     }
 
-    console.log("Dayified", entries);
+    //console.log("Dayified", entries);
 
     // Then generate each daily entry
     for (var i = minday; i <= maxday; i++) {
-        console.log("Process day", i);
+        //console.log("Process day", i);
         if (typeof entriesByDay[i] == 'undefined') {
             // TODO: Missing should be per-question
             entries.push({ day: i, missing: true, responses: [] })
@@ -67,7 +67,7 @@ function dayify(responses, start, minday, maxday) {
     for (var day of entries) {
         var mins = 0;
         var questionnaired = false;
-        console.log("Generate summary for", day);
+        //console.log("Generate summary for", day);
         for (var res of day.responses) {
             if (res.type == 'minutes') {
                 mins = mins + 1 * res.minutes;
@@ -101,6 +101,7 @@ function dayStage(day, stages) {
         last = start;
     }
 
+    return last;
 }
 
 function getTeam(teams, id) {
@@ -140,7 +141,9 @@ const TeamSlice = createSlice({
                 team.experiment.day = dayNumber(new Date(), new Date(team.experiment.start));
 
                 // Current experiment phase info
-                team.experiment.current_stage = team.experiment.info.stages[dayStage(team.experiment.day, team.experiment.info.stages)];
+                var stage = dayStage(team.experiment.day, team.experiment.info.stages);
+                console.log("Day", team.experiment.day, "Stages", team.experiment.info.stages);
+                team.experiment.current_stage = team.experiment.info.stages[stage];
 
                 // Compile responses into daily entries
                 team.entries = dayify(team.responses.own.responses, team.experiment.start, 1, team.experiment.day);
@@ -225,7 +228,7 @@ const TeamSlice = createSlice({
                         unweightedFeelingIndividual[correspondingDay] = parseInt(eachEntry.mood);
                         nrOfDayMood[correspondingDay] += 1;
                     }
-                    
+
                 }
                 //process feeling data with averaged weights making use of unweightedFeelingIndividual
 
@@ -244,7 +247,7 @@ const TeamSlice = createSlice({
                         feelingIndividual.push(eachMood);
                     }
                 }
-                
+
                 for (var k=0; k<unweightedFeelingIndividual.length; k++){
                     if ( minutesIndividual[k] != null){
                         groupMinutesSums[k] += parseInt(minutesIndividual[k]);

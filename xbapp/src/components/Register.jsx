@@ -26,7 +26,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
     var err = "";
     var btn = "";
 
-    console.log(ACCEPT_LOGIN);
+    console.log("Register state", state1);
 
     if (state1.pw.length < 8) {
         err = <>Enter a password of at least 8 characters</>
@@ -58,7 +58,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
             (user) => {
                 ACCEPT_LOGIN({ email: eml, password: pw });
             }, (err) => {
-                setState({ error: err });
+                setState({ error: err, eml: eml, pw: pw, pw2: pw });
             }
         );
     }

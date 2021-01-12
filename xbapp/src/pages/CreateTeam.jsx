@@ -7,11 +7,9 @@ import { connect } from 'react-redux'
 
 import './CreateTeam.scss'
 
-const autoBindReact = require('auto-bind/react');
 
 /**
- * Join an existing group
- * TODO: Rename this to be less ambiguous
+ * Create a new team experiment
  */
 const CreateTeam = (props) => {
 

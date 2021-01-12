@@ -104,14 +104,14 @@ const App = ({ account }) => {
         <Route path="/group" component={ExpList} exact={true} />
         <Route path="/account" component={Account} exact={true} />
         <Route path="/about" component={About} exact={true} />
-        <Route path="/experiment/yourself/:id" component={About} exact={true} />
-        <Route path="/experiment/yourself" component={ExperimentYourself} exact={true} />
-        <Route path="/experiment/group" component={ExperimentInGroup} exact={true} />
-        <Route path="/experiment/create" component={CreateTeam} exact={true} />
-        <Route path="/experiment" component={JourneyPlanner} exact={true} />
+        <Route path="/start/yourself/:id" component={About} exact={true} />
+        <Route path="/start/yourself" component={ExperimentYourself} exact={true} />
+        <Route path="/start/group" component={ExperimentInGroup} exact={true} />
+        <Route path="/start/create" component={CreateTeam} exact={true} />
+        <Route path="/start" component={JourneyPlanner} exact={true} />
         <Route path="/tutorial" component={Tutorial} exact={true} />
-        <Route path="/" render={() => <Redirect to="/experiment" />} exact={true} />
-        <Route path="/register" render={() => <Redirect to="/experiment" />} exact={true} />
+        <Route path="/" render={() => <Redirect to="/group" />} exact={true} />
+        <Route path="/register" render={() => <Redirect to="/group" />} exact={true} />
         </Switch></IonRouterOutlet>
     </>
   } else {

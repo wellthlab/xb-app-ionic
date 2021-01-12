@@ -1,24 +1,17 @@
-import React, { Component, useState, useEffect } from 'react';
-import { IonContent, IonPage, IonModal, IonItemDivider, IonCard } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonContent, IonPage, IonItemDivider, IonCard } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 
 import { connect } from 'react-redux'
-import { useHistory } from "react-router-dom";
 import MinutesChart from "../components/minutesChart";
 
-import { Link } from "react-router-dom"
-
-import { IonIcon } from '@ionic/react';
-import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
+import { IonIcon, IonItem, IonChip, IonTitle, IonLabel } from '@ionic/react';
+import { peopleOutline, todayOutline, add } from 'ionicons/icons';
 import Instructions from "../components/Instructions"
 import GenericAlert from "../components/GenericAlert";
 
 import { addControllersProp } from '../model/controllers'
 
-const autoBindReact = require('auto-bind/react');
-
-var chosenDay = [];
-var individual = false;
 
 const Group = ({ match, teams, controllers, account }) => {
 
@@ -51,7 +44,7 @@ const Group = ({ match, teams, controllers, account }) => {
      * Team responses are loaded on demand
      */
     if (group.users.length == 1){
-        individual = true;
+        //individual = true;
     }
     if(group.responses.fetching) {
         // Responses are being fetched; probably do nothing
@@ -99,21 +92,21 @@ const Group = ({ match, teams, controllers, account }) => {
                 {group.users.length == 1 ? <><MinutesChart group={group} individual={true} /></> : <><MinutesChart group={group} individual={false} /></>}
                 <a href="javascript:void(0)" style={{ textAlign: "center", margin: "0 0 0 0" }} onClick={() => {toggleAlert()}}>How do I interpret the bar chart?</a>
                 <IonItemDivider></IonItemDivider>
-                <ion-item>
-                    <ion-heading><strong>{exp.title}</strong></ion-heading>
-                    <ion-chip slot="end" color="primary"><ion-label><IonIcon icon={todayOutline} /> {daydesc}</ion-label></ion-chip>
-                </ion-item>
+                <IonItem>
+                    <IonTitle><strong>{exp.title}</strong></IonTitle>
+                    <IonChip slot="end" color="primary"><IonLabel><IonIcon icon={todayOutline} /> {daydesc}</IonLabel></IonChip>
+                </IonItem>
 
-                <ion-item>
-                    <ion-chip slot="start" color="success">
-                        <ion-label><IonIcon icon={peopleOutline} /> {members}</ion-label>
-                    </ion-chip>
-                    <ion-chip slot="end" color="neutral">
-                        <ion-label>Team Code: <strong>{group.code}</strong></ion-label>
-                    </ion-chip>
-                </ion-item>
+                <IonItem>
+                    <IonChip slot="end" color="success">
+                        <IonLabel><IonIcon icon={peopleOutline} /> {members}</IonLabel>
+                    </IonChip>
+                    <IonChip slot="start" color="neutral">
+                        <IonLabel>Team Code: <strong>{group.code}</strong></IonLabel>
+                    </IonChip>
+                </IonItem>
 
-                <ion-item><Instructions html={group.experiment.current_stage.instructions} /></ion-item>
+                <IonItem><Instructions html={group.experiment.current_stage.instructions} /></IonItem>
 
                 {days}
 

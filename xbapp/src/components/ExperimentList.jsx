@@ -57,7 +57,7 @@ export default class ExperimentList extends Component {
             })}
 
             <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-              <IonButton routerLink="/experiment">+
+              <IonButton routerLink="/start">+
               </IonButton>
             </ion-fab>
 

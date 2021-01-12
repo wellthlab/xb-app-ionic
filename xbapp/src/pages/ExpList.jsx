@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withRouter } from "react-router";
 import { IonContent, IonPage } from '@ionic/react';
 import XBHeader from '../components/XBHeader'
 import './ExpList.css';
@@ -25,7 +26,20 @@ class ExpList extends Component {
         if(this.props.teams.fetching) {
             c = <ion-spinner name="crescent" />
         } else {
-            c = <ExperimentList teams={this.props.teams.teams} />
+
+            // Redirect to create exp. page if no experiments exist
+            if(this.props.teams.teams.length == 0) {
+                c = <></>
+                this.props.history.replace('/start/');
+            }
+            // If only one experiment, go straight to it
+            // This prevents access to the add experiment button, so needs some thought before enabling
+            else if(false && this.props.teams.teams.length == 1) {
+                c = <></>
+                this.props.history.replace('/group/' + this.props.teams.teams[0]._id);
+            } else {
+                c = <ExperimentList teams={this.props.teams.teams} />
+            }
         }
 
         return (
@@ -51,4 +65,4 @@ export default connect(
 
     }
 
-)(addControllersProp(ExpList));
+)(addControllersProp(withRouter(ExpList)));

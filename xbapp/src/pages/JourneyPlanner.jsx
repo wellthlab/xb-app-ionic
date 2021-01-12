@@ -6,7 +6,6 @@ import './JourneyPlanner.scss';
 import Timer from '../components/Timer'
 const JourneyPlanner = (account) => {
 
-    console.log("ddddd");
     return (
         <IonPage className="planner">
             <XBHeader title="Add an Experiment"></XBHeader>
