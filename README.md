@@ -10,3 +10,12 @@ This app is built with:
 
 ## Run
 For development: `ionic serve`
+
+## Build
+
+### Android
+
+`ionic cap sync android` To rebuild code and sync with the android project
+`ionic cap open android` To open the android studio project
+
+Update version numbers in app manifest before packaging.

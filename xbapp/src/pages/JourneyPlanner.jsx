@@ -9,18 +9,18 @@ const JourneyPlanner = (account) => {
     return (
         <IonPage className="planner">
             <XBHeader title="Add an Experiment"></XBHeader>
-            <IonContent> 
+            <IonContent>
                 <img src="assets/health.png" alt="XB Health" />
 
                 <h1 className="centering">Hello!</h1>
                 <p className="centering">To get started you need to create a new Movement Minutes experiment, or join somebody else's!</p>
 
                 <div className="centering">
-                    <IonButton routerLink="/experiment/create" >Create a new Experiment</IonButton>
+                    <IonButton routerLink="/start/create" >Create a new Experiment</IonButton>
                     <p>(you can experiment by yourself, or invite other people to join in)</p>
                 </div>
                 <div className="centering">
-                    <IonButton routerLink="/experiment/group" >Join Someone Else's Experiment</IonButton>
+                    <IonButton routerLink="/start/group" >Join Someone Else's Experiment</IonButton>
                 </div>
 
             </IonContent>
