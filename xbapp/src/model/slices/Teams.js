@@ -142,7 +142,7 @@ const TeamSlice = createSlice({
 
                 // Current experiment phase info
                 var stage = dayStage(team.experiment.day, team.experiment.info.stages);
-                console.log("Day", team.experiment.day, "Stages", team.experiment.info.stages);
+                //console.log("Day", team.experiment.day, "Stages", team.experiment.info.stages);
                 team.experiment.current_stage = team.experiment.info.stages[stage];
 
                 // Compile responses into daily entries
@@ -201,7 +201,7 @@ const TeamSlice = createSlice({
             for (var h = 0; h < responses.length; h++) {
                 //goes through each user
                 var userResponse = responses[h];
-                console.log("USER", userResponse);
+                //console.log("USER", userResponse);
                 var minutesIndividual = minutesIndividualReplacer.slice();
                 var unweightedFeelingIndividual = unweightedFeelingIndividualReplacer.slice();
 

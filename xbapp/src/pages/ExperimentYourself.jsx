@@ -16,7 +16,7 @@ class ExperimentYourself extends Component {
     }
     
     render() {
-        console.log("Render all available boxes", this.props);
+        //console.log("Render all available boxes", this.props);
         
         return (
           <IonPage>

@@ -38,7 +38,7 @@ const Group = ({ match, teams, controllers, account }) => {
         return <IonPage>Nope :(</IonPage>
     }
 
-    console.log("group", group);
+    //console.log("group", group);
 
     /**
      * Team responses are loaded on demand
@@ -50,7 +50,7 @@ const Group = ({ match, teams, controllers, account }) => {
         // Responses are being fetched; probably do nothing
     } else {
         // Responses should be available in group.responses.all
-        console.log("Group responses are available", group);
+        //console.log("Group responses are available", group);
         // TODO ...
     }
 

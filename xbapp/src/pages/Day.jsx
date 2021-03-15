@@ -43,7 +43,7 @@ const Day = ({ match, teams, props, account }) => {
 
     // TODO: This mostly duplicates what we now do in the Store
     for(var entry of day.responses) {
-        console.log(entry);
+        //console.log(entry);
         if(entry.type =='minutes') {
             var time = entry.submitted.substring(10, 15);
             rows.push(<tr><td>{time}</td><td>{entry.minutes}</td></tr>)

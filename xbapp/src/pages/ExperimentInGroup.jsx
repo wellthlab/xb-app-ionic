@@ -17,7 +17,7 @@ const ExperimentInGroup = (props) => {
 
     function addTeam(code){
         setJoining(true);
-        console.log(code);
+        //console.log(code);
         props.controllers.JOIN_TEAM(code);
     }
 

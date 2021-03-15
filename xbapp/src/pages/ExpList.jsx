@@ -20,7 +20,7 @@ class ExpList extends Component {
     }
 
     render() {
-        console.log("Render ExpList", this.props);
+        //console.log("Render ExpList", this.props);
 
         var c;
         if(this.props.teams.fetching) {

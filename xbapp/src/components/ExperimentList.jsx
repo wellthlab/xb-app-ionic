@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
 import { IonIcon, IonButton } from '@ionic/react';
 import { peopleOutline, alertOutline, todayOutline, add } from 'ionicons/icons';
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import Timer from "./Timer";
 
 export default class ExperimentList extends Component {
     constructor(props) {
         super(props);
     }
 
+    
     render(){
         const {teams} = this.props;
 
-        console.log("Render ExperimentList", this.props);
+        function retrieve(){
+            console.log(localStorage.getItem("time"));
+        }
+        //console.log("Render ExperimentList", this.props);
 
         return(
             <>
@@ -55,7 +60,10 @@ export default class ExperimentList extends Component {
                     </Link></ion-card>
                 }
             })}
-
+            <Timer/>
+            <IonButton onClick={retrieve}>
+              Retrieve
+            </IonButton>
             <ion-fab vertical="bottom" horizontal="end" slot="fixed">
               <IonButton routerLink="/start">+
               </IonButton>
