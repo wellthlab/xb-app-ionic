@@ -1,31 +1,38 @@
 .addMinutes {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /*font-size: calc(10px + 2vmin);*/
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*font-size: calc(10px + 2vmin);*/
 }
 
 .addMinutes {
+  .time {
+    font-size: 3rem;
+    padding: 2rem;
+  }
 
-    .time {
-        font-size: 3rem;
-        padding: 2rem;
-    }
+  img {
+    width: 100px !important;
+    resize: both;
+    border: 0;
+    cursor: pointer;
+  }
 
-    img {
-        width: 100px !important;
-        resize: both;
-        border: 0;
-        cursor: pointer;
-    }
+  .row {
+    margin: 30px 0 0 0;
+  }
 
-    .row {
-        margin: 30px 0 0 0;
-    }
-
-    IonInput.minutes { /* TODO: This doesn't work :/ */
-        font-size: 2em !important;
-    }
+  IonInput.minutes {
+    /* TODO: This doesn't work :/ */
+    font-size: 2em !important;
+  }
+}
+.mbsc-form-group-title.titleDrop.mbsc-collapsible-header {
+  color: #ffffff;
+  background-color: #5d8286;
+  cursor: pointer;
+  border: 2px solid #000000;
+  border-radius: 6px;
 }

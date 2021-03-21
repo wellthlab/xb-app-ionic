@@ -11,6 +11,7 @@
     "@ionic/react": "^5.5.2",
     "@ionic/react-hooks": "0.0.8",
     "@ionic/react-router": "^5.5.2",
+    "@mobiscroll/react-lite": "^4.10.8",
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -70,6 +71,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",
     "@capacitor/cli": "^2.4.5",
+    "prettier": "2.2.1",
     "react-scripts": "3.4.0",
     "redux-devtools": "^3.7.0"
   },

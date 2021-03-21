@@ -1,13 +1,13 @@
 /* Without setting height the slides will take up the height of the slide's content */
 ion-slides {
-    height: 100%;
+  height: 100%;
 
-    background-color:#393e40; 
+  background-color: #393e40;
 }
 img {
-    width: 30px;
-    resize: both;
+  width: 30px;
+  resize: both;
 }
-ion-slides{
-    overflow-y: scroll;
-  }
+ion-slides {
+  overflow-y: scroll;
+}

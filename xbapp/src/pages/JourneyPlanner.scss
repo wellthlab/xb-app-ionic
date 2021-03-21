@@ -1,23 +1,20 @@
-
 .planner {
+  div img {
+    width: 230px;
+    resize: both;
+    margin: auto auto auto auto;
+    display: block;
+  }
+  ion-button {
+    --background: #5d8286;
+  }
 
-    div img {
-        width: 230px;
-        resize: both;
-        margin: auto auto auto auto;
-        display: block;
-    }
-    ion-button {
-        --background: #5d8286;
+  .centering {
+    text-align: center;
+  }
 
-    }
-
-    .centering {
-        text-align: center;
-    }
-
-    p, h1 {
-        margin: 20px 30px 40px 30px;
-    }
-
+  p,
+  h1 {
+    margin: 20px 30px 40px 30px;
+  }
 }

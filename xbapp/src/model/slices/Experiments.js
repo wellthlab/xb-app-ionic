@@ -1,11 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    experiments: [
-
-    ],
-    fetching: false
+  experiments: [],
+  fetching: false,
 };
 
 /**
@@ -15,22 +12,22 @@ const initialState = {
  *
  */
 const Slice = createSlice({
-    name: 'experiments',
-    initialState,
-    reducers: {
-        CLEAR_EXPERIMENTS(state, actions) {
-            state.fetching = true;
-            state.experiments = [];
-        },
-        // Add an experiment to the list
-        SET_EXPERIMENTS(state, action) {
-            state.fetching = false;
-            const exps = action.payload.exps;
-            state.experiments = exps;
-        }
-    }
-})
+  name: "experiments",
+  initialState,
+  reducers: {
+    CLEAR_EXPERIMENTS(state, actions) {
+      state.fetching = true;
+      state.experiments = [];
+    },
+    // Add an experiment to the list
+    SET_EXPERIMENTS(state, action) {
+      state.fetching = false;
+      const exps = action.payload.exps;
+      state.experiments = exps;
+    },
+  },
+});
 
-export const { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } = Slice.actions
+export const { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } = Slice.actions;
 
-export default Slice.reducer
+export default Slice.reducer;
