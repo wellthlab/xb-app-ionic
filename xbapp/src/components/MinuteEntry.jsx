@@ -80,7 +80,7 @@ const MinuteEntry = (props) => {
   }
 
   function save() {
-      const min = 0;
+      var min = 0;
     if (pickTimer){
         min = Math.floor(localStorage.getItem("time")/60);
     } else if (pickManual){

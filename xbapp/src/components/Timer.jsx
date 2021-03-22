@@ -93,13 +93,14 @@ function Timer(props) {
 
   function submit() {
     setSeconds(0);
-    localStorage.setItem("recordedSeconds", 0);
+    localStorage.removeItem("recordedSeconds");
     setMinutes(0);
-    localStorage.setItem("recordedMinutes", 0);
+    localStorage.removeItem("recordedMinutes");
     setHours(0);
-    localStorage.setItem("recordedHours", 0);
+    localStorage.removeItem("recordedHours");
     setIsActive(false);
     localStorage.setItem("countActive", false);
+    localStorage.removeItem("timerStartedAt");
     localStorage.setItem("time", hours * 3600 + minutes * 60 + seconds);
   }
 

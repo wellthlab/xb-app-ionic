@@ -6,9 +6,6 @@ import { Link } from "react-router-dom";
 const ExperimentList = (props) => {
   const { teams } = props;
 
-  function retrieve() {
-    console.log(localStorage.getItem("time"));
-  }
   //console.log("Render ExperimentList", props);
 
   return (
@@ -73,7 +70,6 @@ const ExperimentList = (props) => {
           );
         }
       })}
-      <IonButton onClick={retrieve}>Retrieve</IonButton>
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <IonButton routerLink="/start">+</IonButton>
       </ion-fab>
