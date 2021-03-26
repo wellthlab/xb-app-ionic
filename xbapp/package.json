@@ -28,6 +28,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
     "chart.js": "^2.9.4",
+    "dateformat": "^4.5.1",
     "graphql": "^15.4.0",
     "html-react-parser": "^0.14.3",
     "ionicons": "^5.3.0",

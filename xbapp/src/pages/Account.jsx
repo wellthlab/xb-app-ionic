@@ -60,6 +60,5 @@ export default connect(
   {
     // A map full of action creators; action creators are imported from slices
     LOG_OUT, // shorthand for LOG_OUT: LOG_OUT
-    pure: false,
   }
 )(TabAccount);

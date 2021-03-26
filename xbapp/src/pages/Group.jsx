@@ -95,7 +95,7 @@ const Group = ({ match, teams, controllers, account }) => {
       ? "Starts tomorrow"
       : day < 0
       ? "Starts in " + Math.abs(day) + " days"
-      : "Day " + day;
+      :   ( day > group.experiment.info.duration ? "Finished" : "Day " + day )
 
   var members =
     group.users.length > 1

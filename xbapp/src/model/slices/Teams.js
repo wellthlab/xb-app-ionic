@@ -150,7 +150,7 @@ const TeamSlice = createSlice({
           team.responses.own.responses,
           team.experiment.start,
           1,
-          team.experiment.day
+          Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experment duration
         );
       }
     },
