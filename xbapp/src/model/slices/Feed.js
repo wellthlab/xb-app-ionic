@@ -5,8 +5,8 @@ const initialState = {
     feed: [
         {
             type: 'team_update', // Required
-            id: '', // required, must be unique
-            content: "" // Example - individual types can have their own fields
+            id: '23823752365675213', // required, must be unique
+            content: "Brenda Q logged 15 box squats" // Example - individual types can have their own fields
         }
     ],
     fetching: false

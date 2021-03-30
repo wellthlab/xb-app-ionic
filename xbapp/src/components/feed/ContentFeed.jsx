@@ -29,7 +29,7 @@ export default class ContentFeed extends Component {
                         content = <LiveUpdate item={item} />
                         break;*/
                     case 'overdue_entry':
-                        content = <OverdueEntry item={item} />
+                        content = <OverdueEntry item={item} key={item.id} />
                         break;
                 }
 

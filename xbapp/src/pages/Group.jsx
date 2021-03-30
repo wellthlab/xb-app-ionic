@@ -59,10 +59,12 @@ const Group = ({ match, teams, controllers, account }) => {
   var days = [];
   for (var i = 0; i < entries.length; i++) {
     var entry = entries[i];
+    var date = entry.date;
     days.push(
       <IonCard key={i} routerLink={"/group/" + group._id + "/" + entry.day}>
         <ion-card-header>
           <ion-card-title>Day {entry.day}</ion-card-title>
+          <ion-card-subtitle>{date}</ion-card-subtitle>
         </ion-card-header>
 
         <ion-card-content>
