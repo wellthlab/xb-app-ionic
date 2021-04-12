@@ -74,6 +74,7 @@ const App = ({ account }) => {
 
   let content = null;
 
+  console.log(account);
   if (account.loggedin !== false) {
     content = (
       <>

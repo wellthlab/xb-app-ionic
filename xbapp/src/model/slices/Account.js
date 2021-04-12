@@ -40,6 +40,7 @@ const accountSlice = createSlice({
       state.loginerror = false;
     },
     LOG_OUT(state, action) {
+      console.log("logging out");
       state.loggedin = false;
       state.fetching = false;
       state.email = null;

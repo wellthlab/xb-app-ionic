@@ -1,13 +1,60 @@
 import React, { Component, useState } from "react";
-import { IonIcon, IonButton } from "@ionic/react";
+import { IonButton, IonIcon, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, withIonLifeCycle, IonFooter, IonList, IonItem, IonLabel, IonListHeader, IonText } from "@ionic/react";
 import { peopleOutline, alertOutline, todayOutline, add } from "ionicons/icons";
 import { Link } from "react-router-dom";
+import { Plugins, PushNotification, PushNotificationToken, PushNotificationActionPerformed } from '@capacitor/core';
+
+// const { PushNotifications } = Plugins;
+// const INITIAL_STATE = {
+//   notifications: [{ id: 'id', title: "Test Push", body: "This is my first push notification" }],
+// };
 
 const ExperimentList = (props) => {
   const { teams } = props;
 
   //console.log("Render ExperimentList", props);
 
+  // const push = () => {
+  //   // Register with Apple / Google to receive push via APNS/FCM
+  //   PushNotifications.register();
+
+  //   // On succcess, we should be able to receive notifications
+  //   PushNotifications.addListener('registration',
+  //     (token) => {
+  //       alert('Push registration success, token: ' + token.value);
+  //     }
+  //   );
+
+  //   // Some issue with your setup and push will not work
+  //   PushNotifications.addListener('registrationError',
+  //     (error) => {
+  //       alert('Error on registration: ' + JSON.stringify(error));
+  //     }
+  //   );
+
+  //   // Show us the notification payload if the app is open on our device
+  //   PushNotifications.addListener('pushNotificationReceived',
+  //     (notification) => {
+  //       let notif = this.state.notifications;
+  //       notif.push({ id: notification.id, title: notification.title, body: notification.body })
+  //       this.setState({
+  //         notifications: notif
+  //       })
+  //     }
+  //   );
+
+  //   // Method called when tapping on a notification
+  //   PushNotifications.addListener('pushNotificationActionPerformed',
+  //     (notification) => {
+  //       let notif = this.state.notifications;
+  //       notif.push({ id: notification.notification.data.id, title: notification.notification.data.title, body: notification.notification.data.body })
+  //       this.setState({
+  //         notifications: notif
+  //       })
+  //     }
+  //   );
+  // }
+  // const { notifications } = this.state;
   return (
     <>
       {teams.map((group, i) => {
@@ -70,6 +117,7 @@ const ExperimentList = (props) => {
           );
         }
       })}
+      {/* <IonButton expand="full" onClick={() => this.push()}>Register for Push</IonButton> */}
       <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <IonButton routerLink="/start">+</IonButton>
       </ion-fab>
