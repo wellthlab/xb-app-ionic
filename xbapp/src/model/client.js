@@ -97,6 +97,10 @@ function XBClient() {
     }
   };
 
+  self.getUser = function() {
+      return self.realm.currentUser;
+  }
+
   /**
    * Get all groups for the current user
    */

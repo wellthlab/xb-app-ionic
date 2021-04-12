@@ -8,6 +8,7 @@ const initialState = {
 };
 
 var _ = require("lodash");
+var dateFormat = require("dateformat");
 
 /**
  * Some helpers
@@ -24,13 +25,9 @@ function dayNumber(date, start) {
 function dayify(responses, start, minday, maxday) {
   var entries = [];
 
-  //console.log("Dayifying responses", responses);
-
   // First, organise by day
   var entriesByDay = {};
   for (var r of responses) {
-    //var subdate = new Date(r.submitted);
-    //var day = dayNumber(subdate, new Date(start));
     var day = r.day;
 
     minday = Math.min(minday, day);
@@ -43,16 +40,24 @@ function dayify(responses, start, minday, maxday) {
     entriesByDay[day].push(r);
   }
 
-  //console.log("Dayified", entries);
+  var startDate = new Date( Date.parse(start) );
+  console.log("Compiling daily summary. Start date", start, startDate);
+  function addDays(date, days) {
+      var result = new Date(date);
+      result.setDate(result.getDate() + days);
+      console.log("Add days to date", days, date, result);
+      return result;
+  }
 
   // Then generate each daily entry
   for (var i = minday; i <= maxday; i++) {
-    //console.log("Process day", i);
+    var date = dateFormat(addDays(startDate, i), "ddd d mmm");
+
     if (typeof entriesByDay[i] == "undefined") {
       // TODO: Missing should be per-question
-      entries.push({ day: i, missing: true, responses: [] });
+      entries.push({ day: i, date: date, missing: true, responses: [] });
     } else {
-      entries.push({ day: i, missing: false, responses: entriesByDay[i] });
+      entries.push({ day: i, date: date, missing: false, responses: entriesByDay[i] });
     }
   }
 
@@ -150,7 +155,7 @@ const TeamSlice = createSlice({
           team.responses.own.responses,
           team.experiment.start,
           1,
-          team.experiment.day
+          Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experment duration
         );
       }
     },

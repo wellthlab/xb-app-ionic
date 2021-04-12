@@ -86,7 +86,7 @@ const ExperimentList = (props) => {
             ? "Starts tomorrow"
             : day < 0
             ? "Starts in " + Math.abs(day) + " days"
-            : "Day " + day;
+            :   ( day > group.experiment.info.duration ? "Finished" : "Day " + day )
 
         if (group.experiment.info === false) {
           return <p>This group has no experiment :(</p>;
