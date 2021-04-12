@@ -11,6 +11,8 @@ This app is built with:
 ## Run
 For development: `ionic serve`
 
+Code beautifier: `run npx prettier --write .`
+
 ## Build
 
 ### Android

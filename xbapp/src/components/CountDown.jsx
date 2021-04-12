@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-function CountDown(props) {
+function CountDown({blocks}) {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("CountDownStartedAt") != null
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
@@ -20,7 +20,7 @@ function CountDown(props) {
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
         ? differenceBetweenThenAndNow("minutes")
         : parseInt(localStorage.getItem("recordedMinutes"))
-      : 7
+      : 7*blocks
   );
   const [isActive, setIsActive] = useState(
     localStorage.getItem("CountDowncountActive") != null
@@ -74,7 +74,7 @@ function CountDown(props) {
   function reset() {
     setSeconds(0);
     localStorage.removeItem("CountDownrecordedSeconds");
-    setMinutes(7);
+    setMinutes(7*blocks);
     localStorage.removeItem("CountDownrecordedMinutes");
     setIsActive(false);
     localStorage.setItem("CountDowncountActive", false);

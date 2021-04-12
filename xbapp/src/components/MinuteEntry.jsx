@@ -23,7 +23,8 @@ import "./ExperimentList.css";
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const MinuteEntry = (props) => {
+const MinuteEntry = ({props, group}) => {
+
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
@@ -85,6 +86,9 @@ const MinuteEntry = (props) => {
     var min = 0;
     if (pickCountDown) {
       min = 7;
+      //number of blocks per week
+      var numberOfBlocks = parseInt((group.experiment.current_stage.title).substr(-1));
+      min = 7*numberOfBlocks;
       //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
     } else if (pickTimer) {
       min = Math.floor(localStorage.getItem("time") / 60);
@@ -109,33 +113,33 @@ const MinuteEntry = (props) => {
 
         <mobiscroll.Form>
           <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickCountDown}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                onClick={() => {
+            <mobiscroll.FormGroup collapsible open={pickCountDown} onClick={() => {
                   setPickCountdown(!pickCountDown);
                   if (pickManual == true) setPickManual(false);
                   if (pickTimer == true) setPickTimer(false);
-                }}
+                }}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                
               >
                 <b>Countdown</b>
               </mobiscroll.FormGroupTitle>
               <mobiscroll.FormGroupContent>
                 <div className="mbsc-padding">
-                  <CountDown />
+                  <CountDown blocks={parseInt((group.experiment.current_stage.title).substr(-1))}/>
                 </div>
               </mobiscroll.FormGroupContent>
             </mobiscroll.FormGroup>
           </mobiscroll.Accordion>
           <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickTimer}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                onClick={() => {
+            <mobiscroll.FormGroup collapsible open={pickTimer} onClick={() => {
                   setPickTimer(!pickTimer);
                   if (pickManual == true) setPickManual(false);
                   if (pickCountDown == true) setPickCountdown(false);
-                }}
+                }}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                
               >
                 <b>Timer</b>
               </mobiscroll.FormGroupTitle>
@@ -147,14 +151,15 @@ const MinuteEntry = (props) => {
             </mobiscroll.FormGroup>
           </mobiscroll.Accordion>
           <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickManual}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                onClick={() => {
+            <mobiscroll.FormGroup collapsible open={pickManual} onClick={() => {
                   if (pickTimer == true) setPickTimer(false);
                   if (pickCountDown == true) setPickCountdown(false);
                   setPickManual(!pickManual);
-                }}
+                  console.log(pickManual, pickTimer, pickCountDown);
+                }}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                
               >
                 <b>Manual Minutes</b>
               </mobiscroll.FormGroupTitle>

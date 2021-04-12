@@ -81,7 +81,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
     var time = Date.now();
     switch (type) {
       case "minutes":
-        input = <MinuteEntry key={time} onSubmit={save} />;
+        input = <MinuteEntry key={time} group={group} onSubmit={save} />;
         break;
 
       case "questionnaire":
