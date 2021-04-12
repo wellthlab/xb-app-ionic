@@ -1,8 +1,28 @@
 import React, { Component, useState } from "react";
-import { IonButton, IonIcon, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, withIonLifeCycle, IonFooter, IonList, IonItem, IonLabel, IonListHeader, IonText } from "@ionic/react";
+import {
+  IonButton,
+  IonIcon,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  withIonLifeCycle,
+  IonFooter,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonListHeader,
+  IonText,
+} from "@ionic/react";
 import { peopleOutline, alertOutline, todayOutline, add } from "ionicons/icons";
 import { Link } from "react-router-dom";
-import { Plugins, PushNotification, PushNotificationToken, PushNotificationActionPerformed } from '@capacitor/core';
+import {
+  Plugins,
+  PushNotification,
+  PushNotificationToken,
+  PushNotificationActionPerformed,
+} from "@capacitor/core";
 
 // const { PushNotifications } = Plugins;
 // const INITIAL_STATE = {
@@ -86,7 +106,9 @@ const ExperimentList = (props) => {
             ? "Starts tomorrow"
             : day < 0
             ? "Starts in " + Math.abs(day) + " days"
-            :   ( day > group.experiment.info.duration ? "Finished" : "Day " + day )
+            : day > group.experiment.info.duration
+            ? "Finished"
+            : "Day " + day;
 
         if (group.experiment.info === false) {
           return <p>This group has no experiment :(</p>;

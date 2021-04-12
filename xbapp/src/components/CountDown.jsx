@@ -47,8 +47,12 @@ function CountDown(props) {
       //is about to be turned on
       if (localStorage.getItem("CountDownStartedAt") != null) {
         if (parseInt(localStorage.getItem("CountDownStartedAt")) == 0) {
-          const sec = parseInt(localStorage.getItem("CountDownrecordedSeconds"));
-          const min = parseInt(localStorage.getItem("CountDownrecordedMinutes"));
+          const sec = parseInt(
+            localStorage.getItem("CountDownrecordedSeconds")
+          );
+          const min = parseInt(
+            localStorage.getItem("CountDownrecordedMinutes")
+          );
           //console.log(sec, min);
           const millisec = (sec + min * 60) * 1000;
           //console.log(millisec);

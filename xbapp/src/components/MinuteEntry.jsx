@@ -82,14 +82,14 @@ const MinuteEntry = (props) => {
   }
 
   function save() {
-      var min = 0;
-    if (pickCountDown){
-        min = 7;
-        //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
-    } else if (pickTimer){
-        min = Math.floor(localStorage.getItem("time")/60);
-    } else if (pickManual){
-        min = number.value;
+    var min = 0;
+    if (pickCountDown) {
+      min = 7;
+      //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
+    } else if (pickTimer) {
+      min = Math.floor(localStorage.getItem("time") / 60);
+    } else if (pickManual) {
+      min = number.value;
     }
     var response = {
       minutes: min,
@@ -108,74 +108,74 @@ const MinuteEntry = (props) => {
         <p>Which way do you prefer to use to add your movement minutes?</p>
 
         <mobiscroll.Form>
-        <mobiscroll.Accordion>
-          <mobiscroll.FormGroup collapsible open={pickCountDown}>
-            <mobiscroll.FormGroupTitle
-              className="titleDrop"
-              onClick={() => {
-                setPickCountdown(!pickCountDown);
-                if (pickManual == true) setPickManual(false);
-                if (pickTimer == true) setPickTimer(false);
-              }}
-            >
-              <b>Countdown</b>
-            </mobiscroll.FormGroupTitle>
-            <mobiscroll.FormGroupContent>
-              <div className="mbsc-padding">
-                <CountDown />
-              </div>
-            </mobiscroll.FormGroupContent>
-          </mobiscroll.FormGroup>
-        </mobiscroll.Accordion>
-        <mobiscroll.Accordion>
-          <mobiscroll.FormGroup collapsible open={pickTimer}>
-            <mobiscroll.FormGroupTitle
-              className="titleDrop"
-              onClick={() => {
-                setPickTimer(!pickTimer);
-                if (pickManual == true) setPickManual(false);
-                if (pickCountDown == true) setPickCountdown(false);
-              }}
-            >
-              <b>Timer</b>
-            </mobiscroll.FormGroupTitle>
-            <mobiscroll.FormGroupContent>
-              <div className="mbsc-padding">
-                <Timer />
-              </div>
-            </mobiscroll.FormGroupContent>
-          </mobiscroll.FormGroup>
-        </mobiscroll.Accordion>
-        <mobiscroll.Accordion>
-          <mobiscroll.FormGroup collapsible open={pickManual}>
-            <mobiscroll.FormGroupTitle
-              className="titleDrop"
-              onClick={() => {
-                if (pickTimer == true) setPickTimer(false);
-                if (pickCountDown == true) setPickCountdown(false);
-                setPickManual(!pickManual);
-              }}
-            >
-              <b>Manual Minutes</b>
-            </mobiscroll.FormGroupTitle>
-            <mobiscroll.FormGroupContent>
-              <div className="mbsc-padding">
-              <IonItem>
-          <IonInput
-            className="minutes"
-            min="1"
-            max="600"
-            type="number"
-            value={number.value}
-            placeholder="Enter: "
-            onIonChange={(e) => setNumber({ value: e.detail.value })}
-          ></IonInput>
-        </IonItem>
-              </div>
-            </mobiscroll.FormGroupContent>
-          </mobiscroll.FormGroup>
-        </mobiscroll.Accordion>
-      </mobiscroll.Form>
+          <mobiscroll.Accordion>
+            <mobiscroll.FormGroup collapsible open={pickCountDown}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                onClick={() => {
+                  setPickCountdown(!pickCountDown);
+                  if (pickManual == true) setPickManual(false);
+                  if (pickTimer == true) setPickTimer(false);
+                }}
+              >
+                <b>Countdown</b>
+              </mobiscroll.FormGroupTitle>
+              <mobiscroll.FormGroupContent>
+                <div className="mbsc-padding">
+                  <CountDown />
+                </div>
+              </mobiscroll.FormGroupContent>
+            </mobiscroll.FormGroup>
+          </mobiscroll.Accordion>
+          <mobiscroll.Accordion>
+            <mobiscroll.FormGroup collapsible open={pickTimer}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                onClick={() => {
+                  setPickTimer(!pickTimer);
+                  if (pickManual == true) setPickManual(false);
+                  if (pickCountDown == true) setPickCountdown(false);
+                }}
+              >
+                <b>Timer</b>
+              </mobiscroll.FormGroupTitle>
+              <mobiscroll.FormGroupContent>
+                <div className="mbsc-padding">
+                  <Timer />
+                </div>
+              </mobiscroll.FormGroupContent>
+            </mobiscroll.FormGroup>
+          </mobiscroll.Accordion>
+          <mobiscroll.Accordion>
+            <mobiscroll.FormGroup collapsible open={pickManual}>
+              <mobiscroll.FormGroupTitle
+                className="titleDrop"
+                onClick={() => {
+                  if (pickTimer == true) setPickTimer(false);
+                  if (pickCountDown == true) setPickCountdown(false);
+                  setPickManual(!pickManual);
+                }}
+              >
+                <b>Manual Minutes</b>
+              </mobiscroll.FormGroupTitle>
+              <mobiscroll.FormGroupContent>
+                <div className="mbsc-padding">
+                  <IonItem>
+                    <IonInput
+                      className="minutes"
+                      min="1"
+                      max="600"
+                      type="number"
+                      value={number.value}
+                      placeholder="Enter: "
+                      onIonChange={(e) => setNumber({ value: e.detail.value })}
+                    ></IonInput>
+                  </IonItem>
+                </div>
+              </mobiscroll.FormGroupContent>
+            </mobiscroll.FormGroup>
+          </mobiscroll.Accordion>
+        </mobiscroll.Form>
       </div>
 
       <div className="row">
