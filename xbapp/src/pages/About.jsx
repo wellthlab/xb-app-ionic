@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   IonContent,
@@ -34,6 +34,8 @@ const TabAccount = ({}) => {
     setShowModal(!showModal);
   }
 
+  var mbsc = useRef();
+
   return (
     <IonPage>
       <XBHeader title="About XB"></XBHeader>
@@ -53,18 +55,6 @@ const TabAccount = ({}) => {
         />
 
         <p>
-          <b>List of groups/chats for the teams you are part of:</b>
-        </p>
-        {/** replace "Movement Minutes" with variable corresponding for each team the user is part of */}
-        <p>
-          <a
-            href="https://teams.microsoft.com/l/team/19%3a56457fd90cd84149b34600cf410a3ee8%40thread.tacv2/conversations?groupId=5fa041eb-4341-4608-a04a-67fa122429cc&tenantId=4a5378f9-29f4-4d3e-be89-669d03ada9d8"
-            target="_blank"
-          >
-            Movement Minutes: JOIN the MS Teams Group Chat
-          </a>
-        </p>
-        <p>
           <b>What is XB?</b>
         </p>
         <IonButton type="button" class="btn btn-link" routerLink="/tutorial">
@@ -74,33 +64,31 @@ const TabAccount = ({}) => {
         <IonItemDivider></IonItemDivider>
         <p>eXperiment in a Box</p>
 
-        <p>&copy; 2020 University of Southampton</p>
+        <p>&copy; 2020-2021 University of Southampton</p>
 
         <p>
-          <a
-            href="javascript:void(0)"
+          <IonButton
             onClick={() => {
               toggleModal();
             }}
           >
             Privacy Notice
-          </a>
+          </IonButton>
         </p>
 
         <p>
-          <a
-            href="javascript:void(0)"
+          <IonButton
             onClick={() => {
               toggleAlert();
             }}
           >
             Contact
-          </a>
+          </IonButton>
         </p>
 
         <mobiscroll.Form>
           <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref="mbsc" collapsible open>
+            <mobiscroll.FormGroup ref={mbsc} collapsible open>
               <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
               <mobiscroll.FormGroupContent>
                 <div className="mbsc-padding">
@@ -110,7 +98,7 @@ const TabAccount = ({}) => {
             </mobiscroll.FormGroup>
           </mobiscroll.Accordion>
           <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref="mbsc" collapsible open>
+            <mobiscroll.FormGroup ref={mbsc} collapsible open>
               <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
               <mobiscroll.FormGroupContent>
                 <div className="mbsc-padding">
@@ -125,25 +113,8 @@ const TabAccount = ({}) => {
   );
 };
 
-/**
- * Here, we wrap the raw component using the Redux connect() wrapper. It finds the
- * redux state (defined in index.jsx using the Provider component) and sets up props
- * for the component we defined above, using the maps below.
- */
-export default connect(
-  (state, ownProps) => {
-    // A function to map parts of the global state (from the App's wrapper <Provider>)
-    // into props for the wrapped component (which will be TabAccount)
-    return {
-      account: state.account, // This turns state.account into an 'account' prop
-    };
-  },
-  {
-    // A map full of action creators; action creators are imported from slices
-    LOG_OUT, // shorthand for LOG_OUT: LOG_OUT
-    pure: false,
-  }
-)(TabAccount);
+export default TabAccount;
+
 
 var privacy_notice = (
   <div>

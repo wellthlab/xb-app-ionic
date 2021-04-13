@@ -6,6 +6,8 @@ import "./Feed.css";
 
 import { connect } from "react-redux";
 
+import { addControllersProp } from "../model/controllers";
+
 const autoBindReact = require("auto-bind/react");
 
 class Feed extends Component {
@@ -15,11 +17,25 @@ class Feed extends Component {
   }
 
   render() {
+
+    var c; // Hold content
+
+    var feed = this.props.feed;
+
+    if(feed.fetching) {
+      c = <ion-spinner name="crescent" />;
+    } else if(feed.feed.length < 1) {
+      this.props.controllers.GET_FEED();
+      c = <ion-spinner name="crescent" />;
+    } else {
+      c = <ContentFeed feed={this.props.feed.feed} />
+    }
+
     return (
       <IonPage>
         <XBHeader title="Updates"></XBHeader>
         <IonContent fullscreen>
-          <ContentFeed feed={this.props.feed} />
+          {c}
         </IonContent>
       </IonPage>
     );
@@ -35,4 +51,4 @@ export default connect(
   {
     pure: false,
   }
-)(Feed);
+)(addControllersProp(Feed));

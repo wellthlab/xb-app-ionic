@@ -1,6 +1,11 @@
 import React, { Component } from "react";
+import {
+  IonCard
+} from "@ionic/react";
+import { connect } from "react-redux";
 
 import OverdueEntry from "./OverdueEntry";
+import News from "./News";
 //import TeamUpdate from './LiveUpdate';
 //import LiveUpdate from './LiveUpdate';
 
@@ -19,6 +24,8 @@ export default class ContentFeed extends Component {
 
           var item = feed[key];
 
+          console.log("Render content", item);
+
           switch (item.type) {
             /*case 'team_update':
                         content = <TeamUpdate item={item} />
@@ -29,9 +36,12 @@ export default class ContentFeed extends Component {
             case "overdue_entry":
               content = <OverdueEntry item={item} key={item.id} />;
               break;
+            case "news":
+              content = <News item={item} key={item.id} />;
+              break;
           }
 
-          return <ion-card key={item.id}>{content}</ion-card>;
+          return <IonCard key={item.id}>{content}</IonCard>;
         })}
       </>
     );

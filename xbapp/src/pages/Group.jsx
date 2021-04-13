@@ -127,7 +127,7 @@ const Group = ({ match, teams, controllers, account }) => {
             <MinutesChart group={group} individual={false} />
           </>
         )}
-        <a
+        /*<a
           href="javascript:void(0)"
           style={{ textAlign: "center", margin: "0 0 0 0" }}
           onClick={() => {
@@ -135,7 +135,7 @@ const Group = ({ match, teams, controllers, account }) => {
           }}
         >
           How do I interpret the bar chart?
-        </a>
+        </a>*/
         <IonItemDivider></IonItemDivider>
         <IonItem>
           <IonTitle>

@@ -15,6 +15,7 @@ import { addControllersProp } from "../model/controllers";
 
 import MinuteEntry from "../components/MinuteEntry";
 import Questionnaire from "../components/Questionnaire";
+import StrengthWizard from "../components/strength/StrengthWizard"
 
 const autoBindReact = require("auto-bind/react");
 
@@ -87,6 +88,30 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       case "questionnaire":
         input = <Questionnaire key={time} onSubmit={save} />;
         break;
+
+      case "strength":
+        var week = Math.floor(daynumber / 7);
+
+        // Determine required minutes based on week
+        // TODO: Check what these should be!
+        var mins;
+        if(week <= 1) {
+          mins = 7;
+          //reps = 1;
+        } else if (week == 2) {
+          mins = 10;
+          //reps = 2;
+        } else if (week == 3) {
+          mins = 12;
+          //reps = 2;
+        } else if (week >= 4) {
+          mins = 15;
+          //reps = 3;
+        }
+
+        input = <StrengthWizard mins={mins} week={week} />;
+        break;
+
       default:
         input = <p>Unknown Response Type</p>;
         break;
@@ -101,16 +126,19 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
   var typedesc;
   switch (type) {
     case "minutes":
-      typedesc = "Movement Minutes";
+      typedesc = "Add Movement Minutes";
       break;
     case "questionnaire":
       typedesc = "Daily Questionnaire";
+      break;
+    case "strength":
+      typedesc = "Daily Strength Session";
       break;
   }
 
   return (
     <IonPage>
-      <XBHeader title={"Add " + typedesc + ": Day " + daynumber}></XBHeader>
+      <XBHeader title={ typedesc + ": Day " + daynumber}></XBHeader>
       <IonContent>{content}</IonContent>
     </IonPage>
   );

@@ -11,12 +11,12 @@ import {
   IonCardSubtitle,
   IonCardTitle,
   IonCardContent,
-  IonItem,
-  IonIcon,
-  IonLabel,
   IonButton,
+  IonItem,
+  IonIcon
 } from "@ionic/react";
-import { pin, wifi, wine, warning, walk } from "ionicons/icons";
+
+import { pin } from "ionicons/icons";
 
 import dateFromTS from "../../lib/dateFromTS";
 
@@ -34,12 +34,14 @@ export default class OverdueEntry extends Component {
     return (
       <>
         <IonCardHeader>
-          <IonCardSubtitle>Missing Entries</IonCardSubtitle>
-          <IonCardTitle>{when}</IonCardTitle>
+
+          <IonCardSubtitle>News</IonCardSubtitle>
+          <IonCardTitle>{item.title}</IonCardTitle>
         </IonCardHeader>
-        <IonCardContent>
-          <IonButton href={link}>Add Entries</IonButton>
-        </IonCardContent>
+				<IonCardContent>
+					<p>{item.content}</p>
+					<p>{item.link ? <IonButton slot="end" href={item.link}>Read More</IonButton> : ""}</p>
+				</IonCardContent>
       </>
     );
   }

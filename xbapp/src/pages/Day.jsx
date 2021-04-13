@@ -51,8 +51,6 @@ const Day = ({ match, teams, props, account }) => {
         </tr>
       );
       total = total * 1 + 1 * entry.minutes;
-    } else if (entry.type == "questionnaire") {
-      questionnaired = true;
     }
   }
 
@@ -74,8 +72,22 @@ const Day = ({ match, teams, props, account }) => {
     </table>
   );
 
+  if (typeof day.questionTypes.strength == 'undefined') {
+    qbtn = (
+      <IonButton
+        routerLink={
+          "/group/" + group._id + "/" + daynumber + "/add/strength"
+        }
+      >
+        Do the Strength Exercise
+      </IonButton>
+    );
+  } else {
+    qbtn = <p>You've done the day {daynumber} strength exercise.</p>;
+  }
+
   var qbtn = "";
-  if (!questionnaired) {
+  if (typeof day.questionTypes.questionnaire == 'undefined') {
     qbtn = (
       <IonButton
         routerLink={
@@ -86,7 +98,7 @@ const Day = ({ match, teams, props, account }) => {
       </IonButton>
     );
   } else {
-    qbtn = <p>You have done the daily questionnaire.</p>;
+    qbtn = <p>You've done the daily questionnaire.</p>;
   }
 
   return (

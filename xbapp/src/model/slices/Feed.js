@@ -3,23 +3,20 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     feed: [
-        {
+        /*{
             type: 'team_update', // Required
             id: '23823752365675213', // required, must be unique
             content: "Brenda Q logged 15 box squats" // Example - individual types can have their own fields
-        }
+        }*/
     ],
     fetching: false
 };
 
 /**
- * The experiment slice handles experiments that the user is part of.
- * ALL experiments are actually groups; even if the user is the only member!
- * So this slice most closely relates to the "group" collection in MongoDB
- *
+ * The feed slice handles content for the content feed.
  */
 const Slice = createSlice({
-    name: 'experiments',
+    name: 'feed',
     initialState,
     reducers: {
         // Clear the feed and set the fetching flags
@@ -53,6 +50,6 @@ const Slice = createSlice({
     }
 })
 
-export const { CLEAR_FEED, SET_FEED } = Slice.actions
+export const { CLEAR_FEED, SET_FEED, ADD_FEED } = Slice.actions
 
 export default Slice.reducer

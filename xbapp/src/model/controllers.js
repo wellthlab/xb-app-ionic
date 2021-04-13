@@ -20,7 +20,10 @@ import {
   CLEAR_CREATE_TEAM,
   ABORT_CREATE_TEAM,
 } from "./slices/Teams";
+
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
+
+import { CLEAR_FEED, SET_FEED, ADD_FEED } from "./slices/Feed";
 
 /**
  * These controller functions will be returned by getControllers
@@ -101,6 +104,31 @@ async function GET_TEAM_RESPONSES(client, store, controllers, teamid) {
   }
 }
 
+/**
+ * Refresh the content feed
+ */
+let Parser = require('rss-parser');
+let parser = new Parser();
+
+async function GET_FEED(client, store, controllers) {
+
+  store.dispatch(CLEAR_FEED());
+
+  const feed = await parser.parseURL('http://svm00146.ecs.soton.ac.uk/xb/feed.rss');
+
+  var n = 0;
+  var time = Date.now();
+  feed.items.forEach(item => {
+    item.type = "news"; // RSS items are 'news' posts
+    item.id = "rss-" + time + "-" + n++;
+    item.date = item.date ? Date.parse(item.date).getTime() : time;
+  });
+
+  store.dispatch(SET_FEED(feed.items));
+}
+
+
+
 function getControllers(store, client) {
   var out = { client: client, store: store };
 
@@ -111,6 +139,7 @@ function getControllers(store, client) {
     JOIN_TEAM,
     CREATE_TEAM,
     ADD_RESPONSE,
+    GET_FEED
   };
 
   for (var n of Object.keys(controllers)) {

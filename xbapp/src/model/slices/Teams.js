@@ -69,18 +69,23 @@ function dayify(responses, start, minday, maxday) {
   // TODO: This needs to go somewhere else longer-term so that the store isn't so coupled to particular experiments
   for (var day of entries) {
     var mins = 0;
-    var questionnaired = false;
+    day.responseTypes = {};
+
     //console.log("Generate summary for", day);
     for (var res of day.responses) {
+
+      // Make a list of answered question types
+      day.responseTypes[res.type] = true;
+
+      // Add minutes up
       if (res.type == "minutes") {
         mins = mins + 1 * res.minutes;
-      } else if (res.type == "questionnaire") {
-        questionnaired = true;
       }
+
     }
 
     day.minutes = mins;
-    day.questionnaire = questionnaired;
+    day.questionnaire = typeof day.responseTypes.questionnaire !== 'undefined'; // day.responseTypes is preferred, but this is for backward compatibility
   }
 
   return entries;

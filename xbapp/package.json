@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.6",
+    "@capacitor-community/react-hooks": "0.0.11",
     "@capacitor/android": "^2.4.5",
     "@capacitor/core": "2.4.2",
     "@capacitor/ios": "^2.4.5",
@@ -45,6 +46,7 @@
     "react-router-dom": "^5.1.2",
     "realm-web": "^1.1.0",
     "redux": "^4.0.5",
+    "rss-parser": "^3.12.0",
     "swiper": "^6.4.1",
     "typescript": "3.8.3"
   },
