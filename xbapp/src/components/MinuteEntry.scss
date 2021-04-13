@@ -29,10 +29,17 @@
     font-size: 2em !important;
   }
 }
-.mbsc-form-group-title.titleDrop.mbsc-collapsible-header {
+
+.MuiPaper-root.MuiAccordion-root.titleDrop.MuiAccordion-rounded.MuiPaper-elevation1.MuiPaper-rounded{
   color: #ffffff;
   background-color: #5d8286;
   cursor: pointer;
   border: 2px solid #000000;
   border-radius: 6px;
+}
+.MuiAccordionDetails-root.detailsAcc{
+  color: #000000;
+  background-color: #ffffff;
+  cursor: pointer;
+  border: 2px solid #000000;
 }

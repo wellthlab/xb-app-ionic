@@ -4,17 +4,13 @@
  *
  */
 import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonSlides,
-  IonSlide,
-} from "@ionic/react";
+import { IonButton, IonSlides, IonSlide } from "@ionic/react";
 import { connect } from "react-redux";
 
 import MovementPicker from "./MovementPicker";
 import MovementInfoCard from "./MovementInfoCard";
 
-import { useStorage } from '@capacitor-community/react-hooks/storage' // Persistent storage
+import { useStorage } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
 /**
  * props:
@@ -33,7 +29,7 @@ const StrengthWizard = (props) => {
   const [reps, setReps] = useState(null);
 
   // Use storage react hook to use capacitor storage to store weekly exercise choices
-  const [exList, setExList] = useStorage('week' + props.week + '-exlist');
+  const [exList, setExList] = useStorage("week" + props.week + "-exlist");
 
   function sendResponse() {
     var results = {};
@@ -45,17 +41,19 @@ const StrengthWizard = (props) => {
     }
   }
 
-  var picker = <MovementPicker onSubmit={async (list) => {
-    setExList(list);
-  }} number={2} />
+  var picker = (
+    <MovementPicker
+      onSubmit={async (list) => {
+        setExList(list);
+      }}
+      number={2}
+    />
+  );
 
   // TODO: Rest of the pagess
   //var timer =
 
-  var content = [
-    picker,
-
-  ];
+  var content = [picker];
 
   // Wrap all the content into slides, with next buttons
   var slides = [];

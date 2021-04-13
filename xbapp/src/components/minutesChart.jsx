@@ -1,5 +1,7 @@
 import React, { Component, useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
+import { IonSlides, IonSlide, IonContent } from "@ionic/react";
+import "./minutesChart.css";
 
 var _ = require("lodash");
 
@@ -406,6 +408,11 @@ function MinutesChart(props) {
     },
   };
 
+  const slideOpts = {
+    initialSlide: 0,
+    speed: 400,
+  };
+
   return (
     <div>
       {/*bar chart 1 - movement minutes individual vs how do you feel individual*/}
@@ -431,57 +438,80 @@ function MinutesChart(props) {
         </div>
       ) : (
         <div>
-          <div
-            style={{ flex: "0 0 auto", padding: "10px", textAlign: "center" }}
-          >
-            Your Minutes vs. Your Mood
-          </div>
-          <div
-            style={{
-              width: "400px",
-              height: "300px",
-              marginTop: "20px",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: "1px",
-            }}
-          >
-            <Bar data={minutesFeelingData} options={optionsMinutesFeeling} />
-          </div>
-          <div
-            style={{ flex: "0 0 auto", padding: "10px", textAlign: "center" }}
-          >
-            Your Minutes vs. Team's Minutes
-          </div>
-          <div
-            style={{
-              width: "400px",
-              height: "300px",
-              marginTop: "20px",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: "1px",
-            }}
-          >
-            <Bar data={minutesData} options={optionsMinutes} />
-          </div>
-          <div
-            style={{ flex: "0 0 auto", padding: "10px", textAlign: "center" }}
-          >
-            Your Mood vs. Team's Mood
-          </div>
-          <div
-            style={{
-              width: "400px",
-              height: "300px",
-              marginTop: "20px",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: "1px",
-            }}
-          >
-            <Bar data={feelingData} options={optionsFeeling} />
-          </div>
+          <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+            <IonSlide>
+              <div
+                style={{
+                  width: "400px",
+                  height: "300px",
+                  marginTop: "20px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: "1px",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "0 0 auto",
+                    padding: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  Your Minutes vs. Your Mood
+                </div>
+                <Bar
+                  data={minutesFeelingData}
+                  options={optionsMinutesFeeling}
+                />
+              </div>
+            </IonSlide>
+            <IonSlide>
+              <div
+                style={{
+                  width: "400px",
+                  height: "300px",
+                  marginTop: "20px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: "1px",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "0 0 auto",
+                    padding: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  Your Minutes vs. Team's Minutes
+                </div>
+                <Bar data={minutesData} options={optionsMinutes} />
+              </div>
+            </IonSlide>
+            <IonSlide>
+              <div
+                style={{
+                  width: "400px",
+                  height: "300px",
+                  marginTop: "20px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: "1px",
+                }}
+              >
+                <div
+                  style={{
+                    flex: "0 0 auto",
+                    padding: "10px",
+                    textAlign: "center",
+                  }}
+                >
+                  Your Mood vs. Team's Mood
+                </div>
+                <Bar data={feelingData} options={optionsFeeling} />
+              </div>
+            </IonSlide>
+          </IonSlides>
         </div>
       )}
 

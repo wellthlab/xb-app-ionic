@@ -17,26 +17,23 @@ class Feed extends Component {
   }
 
   render() {
-
     var c; // Hold content
 
     var feed = this.props.feed;
 
-    if(feed.fetching) {
+    if (feed.fetching) {
       c = <ion-spinner name="crescent" />;
-    } else if(feed.feed.length < 1) {
+    } else if (feed.feed.length < 1) {
       this.props.controllers.GET_FEED();
       c = <ion-spinner name="crescent" />;
     } else {
-      c = <ContentFeed feed={this.props.feed.feed} />
+      c = <ContentFeed feed={this.props.feed.feed} />;
     }
 
     return (
       <IonPage>
         <XBHeader title="News &amp; Updates"></XBHeader>
-        <IonContent fullscreen>
-          {c}
-        </IonContent>
+        <IonContent fullscreen>{c}</IonContent>
       </IonPage>
     );
   }

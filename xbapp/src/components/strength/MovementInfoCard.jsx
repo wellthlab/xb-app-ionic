@@ -3,7 +3,7 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardContent
+  IonCardContent,
 } from "@ionic/react";
 
 /**

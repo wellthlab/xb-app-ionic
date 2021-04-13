@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-function CountDown({blocks}) {
+function CountDown(props) {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("CountDownStartedAt") != null
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
@@ -20,7 +20,7 @@ function CountDown({blocks}) {
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
         ? differenceBetweenThenAndNow("minutes")
         : parseInt(localStorage.getItem("recordedMinutes"))
-      : 7*blocks
+      : 7 * props.blocks
   );
   const [isActive, setIsActive] = useState(
     localStorage.getItem("CountDowncountActive") != null
@@ -74,7 +74,7 @@ function CountDown({blocks}) {
   function reset() {
     setSeconds(0);
     localStorage.removeItem("CountDownrecordedSeconds");
-    setMinutes(7*blocks);
+    setMinutes(7 * props.blocks);
     localStorage.removeItem("CountDownrecordedMinutes");
     setIsActive(false);
     localStorage.setItem("CountDowncountActive", false);
@@ -92,6 +92,12 @@ function CountDown({blocks}) {
         } else {
           localStorage.setItem("CountDowncountSeconds", seconds - 1);
           setSeconds((seconds) => seconds - 1);
+        }
+        if (minutes == 0 && seconds == 0) {
+          setIsActive(false);
+          if (props.onFinish) {
+            props.onFinish(true);
+          }
         }
       }, 1000);
     } else if (!isActive && seconds !== 0) {

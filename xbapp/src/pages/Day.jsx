@@ -77,12 +77,10 @@ const Day = ({ match, teams, account, controllers }) => {
   );
 
   var sbtn = "";
-  if (typeof day.responseTypes.strength == 'undefined') {
+  if (typeof day.responseTypes.strength == "undefined") {
     sbtn = (
       <IonButton
-        routerLink={
-          "/group/" + group._id + "/" + daynumber + "/add/strength"
-        }
+        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
       >
         Do the Strength Exercise
       </IonButton>
@@ -92,7 +90,7 @@ const Day = ({ match, teams, account, controllers }) => {
   }
 
   var qbtn = "";
-  if (typeof day.responseTypes.questionnaire == 'undefined') {
+  if (typeof day.responseTypes.questionnaire == "undefined") {
     qbtn = (
       <IonButton
         routerLink={

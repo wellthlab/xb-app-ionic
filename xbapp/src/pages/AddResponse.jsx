@@ -15,7 +15,7 @@ import { addControllersProp } from "../model/controllers";
 
 import MinuteEntry from "../components/MinuteEntry";
 import Questionnaire from "../components/Questionnaire";
-import StrengthWizard from "../components/strength/StrengthWizard"
+import StrengthWizard from "../components/strength/StrengthWizard";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -95,7 +95,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         // Determine required minutes based on week
         // TODO: Check what these should be!
         var mins;
-        if(week <= 1) {
+        if (week <= 1) {
           mins = 7;
           //reps = 1;
         } else if (week == 2) {
@@ -138,7 +138,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
 
   return (
     <IonPage>
-      <XBHeader title={ typedesc + ": Day " + daynumber}></XBHeader>
+      <XBHeader title={typedesc + ": Day " + daynumber}></XBHeader>
       <IonContent>{content}</IonContent>
     </IonPage>
   );

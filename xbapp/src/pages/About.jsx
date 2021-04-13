@@ -115,7 +115,6 @@ const TabAccount = ({}) => {
 
 export default TabAccount;
 
-
 var privacy_notice = (
   <div>
     <b>What happens if there is a problem?</b>

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import {
-  IonCard
-} from "@ionic/react";
+import { IonCard } from "@ionic/react";
 import { connect } from "react-redux";
 
 import OverdueEntry from "./OverdueEntry";

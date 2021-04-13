@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonItem,
-  IonTitle
-} from "@ionic/react";
+import { IonButton, IonItem, IonTitle } from "@ionic/react";
 import { connect } from "react-redux";
 
 import MovementInfoCard from "./MovementInfoCard";
@@ -63,22 +59,23 @@ const MovementPicker = (props) => {
     }
   }
 
-  function togglePicked(id) {
-
-  }
+  function togglePicked(id) {}
 
   var movements = [];
   for (var m of moves) {
-    (function (m) { // Trap m in a closure
+    (function (m) {
+      // Trap m in a closure
       var selected = picked.contains(m.id);
       movements.push(
         <MovementInfoCard name={m.name} text={m.text} images={m.images}>
-          <IonButton className={ !selected ? "" : "selected"}
-            onClick={() => { // Onclick, toggle whether this move is in the list
-              if(selected) {
+          <IonButton
+            className={!selected ? "" : "selected"}
+            onClick={() => {
+              // Onclick, toggle whether this move is in the list
+              if (selected) {
                 var newpicked = [];
-                for(var p of picked) {
-                  if(p != m.id) {
+                for (var p of picked) {
+                  if (p != m.id) {
                     newpicked.push(m.id);
                   }
                 }
@@ -88,8 +85,9 @@ const MovementPicker = (props) => {
               }
             }}
           >
-            { !selected ? "Add to Selection" : "Remove from Selection" }
-          </IonButton>;
+            {!selected ? "Add to Selection" : "Remove from Selection"}
+          </IonButton>
+          ;
         </MovementInfoCard>
       );
     })(m);

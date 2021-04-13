@@ -13,7 +13,7 @@ import {
   IonCardContent,
   IonButton,
   IonItem,
-  IonIcon
+  IonIcon,
 } from "@ionic/react";
 
 import { pin } from "ionicons/icons";
@@ -34,14 +34,21 @@ export default class OverdueEntry extends Component {
     return (
       <>
         <IonCardHeader>
-
           <IonCardSubtitle>News</IonCardSubtitle>
           <IonCardTitle>{item.title}</IonCardTitle>
         </IonCardHeader>
-				<IonCardContent>
-					<p>{item.content}</p>
-					<p>{item.link ? <IonButton slot="end" href={item.link}>Read More</IonButton> : ""}</p>
-				</IonCardContent>
+        <IonCardContent>
+          <p>{item.content}</p>
+          <p>
+            {item.link ? (
+              <IonButton slot="end" href={item.link}>
+                Read More
+              </IonButton>
+            ) : (
+              ""
+            )}
+          </p>
+        </IonCardContent>
       </>
     );
   }

@@ -20,11 +20,16 @@ import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 import "./ExperimentList.css";
 
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const MinuteEntry = ({props, group}) => {
-
+const MinuteEntry = ({ props, group }) => {
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
@@ -37,9 +42,7 @@ const MinuteEntry = ({props, group}) => {
   });
 
   const [variables, setVariables] = useState({ place: "", timeOfDay: "" });
-  const [pickCountDown, setPickCountdown] = useState(true);
-  const [pickTimer, setPickTimer] = useState(false);
-  const [pickManual, setPickManual] = useState(false);
+  const [timerFinished, setTimerFinished] = useState(false);
 
   function toggleImagesSun(imageToChange) {
     if (imageToChange == "sunrise") {
@@ -84,15 +87,17 @@ const MinuteEntry = ({props, group}) => {
 
   function save() {
     var min = 0;
-    if (pickCountDown) {
+    if (expanded == "panel1") {
       min = 7;
       //number of blocks per week
-      var numberOfBlocks = parseInt((group.experiment.current_stage.title).substr(-1));
-      min = 7*numberOfBlocks;
+      var numberOfBlocks = parseInt(
+        group.experiment.current_stage.title.substr(-1)
+      );
+      min = 7 * numberOfBlocks;
       //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
-    } else if (pickTimer) {
+    } else if (expanded == "panel2") {
       min = Math.floor(localStorage.getItem("time") / 60);
-    } else if (pickManual) {
+    } else if (expanded == "panel3") {
       min = number.value;
     }
     var response = {
@@ -104,83 +109,82 @@ const MinuteEntry = ({props, group}) => {
     if (props.onSubmit) {
       props.onSubmit(response);
     }
+    //TODO: in case expanded is false - throw error//
   }
+
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   return (
     <div className="addMinutes">
       <div className="row">
         <p>Which way do you prefer to use to add your movement minutes?</p>
 
-        <mobiscroll.Form>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickCountDown} onClick={() => {
-                  setPickCountdown(!pickCountDown);
-                  if (pickManual == true) setPickManual(false);
-                  if (pickTimer == true) setPickTimer(false);
-                }}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                
-              >
-                <b>Countdown</b>
-              </mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <CountDown blocks={parseInt((group.experiment.current_stage.title).substr(-1))}/>
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickTimer} onClick={() => {
-                  setPickTimer(!pickTimer);
-                  if (pickManual == true) setPickManual(false);
-                  if (pickCountDown == true) setPickCountdown(false);
-                }}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                
-              >
-                <b>Timer</b>
-              </mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <Timer />
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup collapsible open={pickManual} onClick={() => {
-                  if (pickTimer == true) setPickTimer(false);
-                  if (pickCountDown == true) setPickCountdown(false);
-                  setPickManual(!pickManual);
-                  console.log(pickManual, pickTimer, pickCountDown);
-                }}>
-              <mobiscroll.FormGroupTitle
-                className="titleDrop"
-                
-              >
-                <b>Manual Minutes</b>
-              </mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <IonItem>
-                    <IonInput
-                      className="minutes"
-                      min="1"
-                      max="600"
-                      type="number"
-                      value={number.value}
-                      placeholder="Enter: "
-                      onIonChange={(e) => setNumber({ value: e.detail.value })}
-                    ></IonInput>
-                  </IonItem>
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-        </mobiscroll.Form>
+        <Accordion
+          className="titleDrop"
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+          >
+            <Typography>Countdown</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="detailsAcc">
+            <CountDown
+              onFinish={async (finished) => {
+                setTimerFinished(finished);
+              }}
+              blocks={parseInt(group.experiment.current_stage.title.substr(-1))}
+            />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          className="titleDrop"
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+          >
+            <Typography>Timer</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="detailsAcc">
+            <Timer />
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          className="titleDrop"
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+          >
+            <Typography>Manual Minutes</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="detailsAcc">
+            <div className="mbsc-padding">
+              <IonItem>
+                <IonInput
+                  className="minutes"
+                  min="1"
+                  max="600"
+                  type="number"
+                  value={number.value}
+                  placeholder="Enter: "
+                  onIonChange={(e) => setNumber({ value: e.detail.value })}
+                ></IonInput>
+              </IonItem>
+            </div>
+          </AccordionDetails>
+        </Accordion>
       </div>
 
       <div className="row">

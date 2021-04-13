@@ -15,7 +15,6 @@ const JourneyPlanner = (account) => {
     <IonPage className="planner">
       <XBHeader title="Start an Experiment"></XBHeader>
       <IonContent>
-
         <h1 className="centering">Hello!</h1>
         <p className="centering">
           To get started you need to create a new Movement Minutes experiment,
@@ -29,7 +28,7 @@ const JourneyPlanner = (account) => {
           </IonButton>
         </div>
         <div className="centering">
-        <br />
+          <br />
           <IonButton routerLink="/start/group">
             Join an Existing Experiment
           </IonButton>

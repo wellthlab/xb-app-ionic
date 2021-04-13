@@ -5,7 +5,14 @@ import XBHeader from "../components/XBHeader";
 import { connect } from "react-redux";
 import MinutesChart from "../components/minutesChart";
 
-import { IonIcon, IonItem, IonChip, IonTitle, IonLabel, IonButton } from "@ionic/react";
+import {
+  IonIcon,
+  IonItem,
+  IonChip,
+  IonTitle,
+  IonLabel,
+  IonButton,
+} from "@ionic/react";
 import { peopleOutline, todayOutline, add } from "ionicons/icons";
 import Instructions from "../components/Instructions";
 import GenericAlert from "../components/GenericAlert";

@@ -8,38 +8,39 @@ import {
   IonRadioGroup,
   IonPage,
   IonHeader,
-  IonToolbar,
-  IonTitle,
+  IonRange,
   IonItemDivider,
   IonButton,
 } from "@ionic/react";
 import { connect } from "react-redux";
+import MoodPicker from "./MoodPicker";
 
 const Questionnaire = (props) => {
   const [selectedHowFeel, setSelectedHowFeel] = useState({ mood: "" });
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
   const [selectedAlarm, setSelectedAlarm] = useState({ alarm: "" });
+  const [moodValue, setMoodValue] = useState(3); //useStorage?;
 
   function processData() {
-    var moodValue = 0;
+    var officialMoodValue = 0;
 
     //important: these are numbers as they will be represented on the graph
     //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points
     //the limits for this will always be between -2 and 2
-    if (selectedHowFeel.mood == "a lot worse") {
-      moodValue = -2;
-    } else if (selectedHowFeel.mood == "worse") {
-      moodValue = -1;
-    } else if (selectedHowFeel.mood == "the same") {
-      moodValue = 0;
-    } else if (selectedHowFeel.mood == "better") {
-      moodValue = 1;
-    } else if (selectedHowFeel.mood == "a lot better") {
-      moodValue = 2;
+    if (moodValue == 1) {
+      officialMoodValue = -2;
+    } else if (selectedHowFeel.mood == 2) {
+      officialMoodValue = -1;
+    } else if (selectedHowFeel.mood == 3) {
+      officialMoodValue = 0;
+    } else if (selectedHowFeel.mood == 4) {
+      officialMoodValue = 1;
+    } else if (selectedHowFeel.mood == 5) {
+      officialMoodValue = 2;
     }
 
     var objectToAdd = {
-      mood: moodValue,
+      mood: officialMoodValue,
       sunlight: selectedExposure.exposure,
       alarm: selectedAlarm.alarm,
     };
@@ -51,40 +52,11 @@ const Questionnaire = (props) => {
 
   return (
     <>
-      <IonRadioGroup
-        allow-empty-selection="true"
-        value={selectedHowFeel.mood}
-        onIonChange={(e) => {
-          setSelectedHowFeel({ mood: e.detail.value });
+      <MoodPicker
+        onChange={async (moodVal) => {
+          setMoodValue(moodVal);
         }}
-      >
-        <IonListHeader>
-          <IonLabel>How do you feel compared to the previous day?</IonLabel>
-        </IonListHeader>
-
-        <IonItem>
-          <IonLabel>A lot worse</IonLabel>
-          <IonRadio slot="start" value="a lot worse" />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel>Worse</IonLabel>
-          <IonRadio slot="start" value="worse" />
-        </IonItem>
-
-        <IonItem>
-          <IonLabel>The same</IonLabel>
-          <IonRadio slot="start" value="the same" />
-        </IonItem>
-        <IonItem>
-          <IonLabel>Better</IonLabel>
-          <IonRadio slot="start" value="better" />
-        </IonItem>
-        <IonItem>
-          <IonLabel>A lot better</IonLabel>
-          <IonRadio slot="start" value="a lot better" />
-        </IonItem>
-      </IonRadioGroup>
+      />
       <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 
       <IonRadioGroup
