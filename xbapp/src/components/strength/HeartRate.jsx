@@ -4,20 +4,9 @@ import {
   IonItem,
   IonInput,
   IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
 } from "@ionic/react";
-import "./MinuteEntry.scss";
 import { connect } from "react-redux";
 import Timer from "./Timer";
-import mobiscroll from "@mobiscroll/react-lite";
-import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-import "./ExperimentList.css";
 
 const MinuteEntry = (props) => {
   const [rate, setRate] = useState(null);
@@ -29,8 +18,6 @@ const MinuteEntry = (props) => {
       props.onSubmit(rate);
     }
   }
-
-  function reset() {}
 
   function updateBeats(beats) {
     save(beats * (60 / seconds));

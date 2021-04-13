@@ -49,8 +49,14 @@ function LOAD_TEAMS(client, store, controllers) {
  */
 function LOAD_TEAMS_IF_REQD(client, store, controllers) {
   var state = store.getState();
-  if(!state.teams.fetching && state.teams.teams.length < 1) {
+
+  var f = state.teams.fetching;
+  var l = state.teams.loaded;
+  if(!f && !l) {
+    console.log("Refresh is required", f, l);
     controllers.LOAD_TEAMS();
+  } else {
+    console.log("Refresh is not required", f, l);
   }
 }
 
@@ -72,7 +78,7 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid) {
   console.log("Create a team", name, desc, expid);
 
   store.dispatch(START_CREATE_TEAM());
-  var res = await client.createTeam(name, desc, expid, "2020-12-14");
+  var res = await client.createTeam(name, desc, expid, "2021-04-19");
 
   if (res.success === false) {
     store.dispatch(ABORT_CREATE_TEAM(res.message));

@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import MovementInfoCard from "./MovementInfoCard";
 
+import "./MovementPicker.css"
+
 /**
  * The list of moves.
  * TODO: Make this not hard-coded!
@@ -53,41 +55,40 @@ const MovementPicker = (props) => {
 
   const [picked, setPicked] = useState([]);
 
-  function save() {
-    if (props.onSubmit) {
-      props.onSubmit(picked);
+  function change(list) {
+    if (props.onChange) {
+      console.log("New selection", list);
+      props.onChange(list);
     }
   }
 
-  function togglePicked(id) {}
-
   var movements = [];
   for (var m of moves) {
-    (function (m) {
-      // Trap m in a closure
-      var selected = picked.contains(m.id);
+    (function (m) { // Trap m in a closure
+      var selected = picked.includes(m.id);
       movements.push(
-        <MovementInfoCard name={m.name} text={m.text} images={m.images}>
+        <MovementInfoCard key={m.id} className={ !selected ? "" : "selected"} name={m.name} text={m.text} images={m.images}>
           <IonButton
-            className={!selected ? "" : "selected"}
-            onClick={() => {
-              // Onclick, toggle whether this move is in the list
-              if (selected) {
+            onClick={() => { // Onclick, toggle whether this move is in the list
+              if(selected) {
+                console.log("Remove", m);
                 var newpicked = [];
-                for (var p of picked) {
-                  if (p != m.id) {
-                    newpicked.push(m.id);
+                for(var p of picked) {
+                  if(p != m.id) {
+                    newpicked.push(p);
                   }
                 }
                 setPicked(newpicked);
+                change(newpicked);
               } else {
-                setPicked(picked.concat([m.id]));
+                var newpicked = picked.concat([m.id]);
+                setPicked(newpicked);
+                change(newpicked);
               }
             }}
           >
-            {!selected ? "Add to Selection" : "Remove from Selection"}
+            { !selected ? "Add to Selection" : "Remove from Selection" }
           </IonButton>
-          ;
         </MovementInfoCard>
       );
     })(m);
@@ -98,22 +99,25 @@ const MovementPicker = (props) => {
   var msg;
 
   if (rem == 0) {
-    msg = (
-      <>
-        <IonButton onClick={save}>Save Choices</IonButton>
-      </>
-    );
+    msg = false;
+  } else if (rem == 1) {
+    msg = <>Choose {rem} more movement</>;
   } else if (rem < number) {
     msg = <>Choose {rem} more movements</>;
   } else {
     msg = <>Choose {number} movements</>;
   }
 
+  var mbox = "";
+  if(msg !== false) {
+    mbox = <div className="instruction" slot="fixed">
+      <p>{msg}</p>
+    </div>
+  }
+
   return (
     <>
-      <div slot="fixed">
-        <p>{msg}</p>
-      </div>
+      {mbox}
       <div className="MovementPicker">{movements}</div>
     </>
   );

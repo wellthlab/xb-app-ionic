@@ -18,7 +18,7 @@ const MovementInfoCard = (props) => {
   // TODO: Show more than one image; use a carousel? Or just fade nicely every second?
   return (
     <IonCard>
-      <img src={props.images[0]} alt="" />
+      <img src={"assets/moves/" + props.images[0]} alt="" />
       <IonCardHeader>
         <IonCardTitle>{props.name}</IonCardTitle>
       </IonCardHeader>

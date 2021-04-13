@@ -1,0 +1,23 @@
+.instruction {
+	background: var(--ion-background-color, #fff);
+	display: block;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+
+ion-content {
+	margin-top: 60px;
+}
+
+.MovementPicker {
+	padding-bottom: 40px;
+}
+
+img {
+	width: 90px !important;
+}
+
+.MovementInfoCard.selected {
+	background: var(--ion-color-secondary);
+}

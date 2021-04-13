@@ -4,13 +4,20 @@
  *
  */
 import React, { useState, useEffect } from "react";
-import { IonButton, IonSlides, IonSlide } from "@ionic/react";
+import {
+  IonButton,
+  IonSlides,
+  IonSlide,
+  IonContent,
+  IonItem
+} from "@ionic/react";
 import { connect } from "react-redux";
 
 import MovementPicker from "./MovementPicker";
-import MovementInfoCard from "./MovementInfoCard";
 
-import { useStorage } from "@capacitor-community/react-hooks/storage"; // Persistent storage
+import MovementTimer from "./MovementTimer";
+
+import { useStorageItem } from '@capacitor-community/react-hooks/storage' // Persistent storage
 
 /**
  * props:
@@ -29,7 +36,9 @@ const StrengthWizard = (props) => {
   const [reps, setReps] = useState(null);
 
   // Use storage react hook to use capacitor storage to store weekly exercise choices
-  const [exList, setExList] = useStorage("week" + props.week + "-exlist");
+  var [exList, setExList] = useStorageItem('week' + props.week + '-exlist', []);
+
+  console.log("Week is ", props.week);
 
   function sendResponse() {
     var results = {};
@@ -41,23 +50,33 @@ const StrengthWizard = (props) => {
     }
   }
 
-  var picker = (
-    <MovementPicker
-      onSubmit={async (list) => {
-        setExList(list);
-      }}
-      number={2}
-    />
-  );
+  var content = [];
 
-  // TODO: Rest of the pagess
-  //var timer =
+  // On first render, exList will be undefined - because it takes a cycle to be fetched
+  if(!exList) {
+    return <ion-spinner name="crescent" />;
+  }
 
-  var content = [picker];
+  // exList will be returned as a string
+  exList = JSON.parse(exList);
+
+  // Movement chooser shows up first
+  if(exList.length < 2) {
+    content.push( <MovementPicker onChange={async (list) => {
+      setExList(list);
+    }} number={2} /> );
+  }
+
+
+  // Movement Timer is page 2
+  content.push( <MovementTimer exercises={exList} onChange={ () => {
+
+  }} /> );
 
   // Wrap all the content into slides, with next buttons
   var slides = [];
 
+  // TODO: Next button should be linked to whether page is complete or not
   for (var i in content) {
     var c = content[i];
     var next =
@@ -67,16 +86,18 @@ const StrengthWizard = (props) => {
         <IonButton>Next</IonButton>
       );
     slides.push(
-      <IonSlide>
+      <IonSlide key={"slide" + i}>
+        <IonContent>
         {c}
-        {next}
+        <IonItem>{next}</IonItem>
+        </IonContent>
       </IonSlide>
     );
   }
 
   // use ion-slides to provide slide functionality
   // and wrap each page in ion-slide
-  return <IonSlides pager={true}>{slides}</IonSlides>;
+  return <IonSlides pager={true} scrollbar={true}>{slides}</IonSlides>;
 };
 
 export default StrengthWizard;

@@ -132,7 +132,7 @@ const TeamSlice = createSlice({
   initialState,
   reducers: {
     CLEAR_TEAMS(state, action) {
-      state.fetching = false;
+      state.fetching = true;
       state.teams = [];
       state.loaded = false;
     },
@@ -162,7 +162,7 @@ const TeamSlice = createSlice({
         team.entries = dayify(
           team.responses.own.responses,
           team.experiment.start,
-          1,
+          Math.min(1, team.experiment.day),
           Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experment duration
         );
       }
