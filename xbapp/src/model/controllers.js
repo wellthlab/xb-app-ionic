@@ -44,6 +44,16 @@ function LOAD_TEAMS(client, store, controllers) {
   );
 }
 
+/**
+ * Load teams if they don't seem to be loaded already
+ */
+function LOAD_TEAMS_IF_REQD(client, store, controllers) {
+  var state = store.getState();
+  if(!state.teams.fetching && state.teams.teams.length < 1) {
+    controllers.LOAD_TEAMS();
+  }
+}
+
 async function JOIN_TEAM(client, store, controllers, code) {
   store.dispatch(START_JOIN_TEAM());
   var res = await client.joinTeam(code);
@@ -134,6 +144,7 @@ function getControllers(store, client) {
 
   var controllers = {
     LOAD_TEAMS,
+    LOAD_TEAMS_IF_REQD,
     GET_TEAM_RESPONSES,
     LOAD_EXPERIMENTS,
     JOIN_TEAM,

@@ -99,13 +99,13 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
       <>
         <IonMenu side="start" contentId="appContent">
           <IonHeader>
-            <IonToolbar color="#5d8286">Menu</IonToolbar>
+            <IonToolbar color="#5d8286"></IonToolbar>
           </IonHeader>
           <IonContent>
             <IonList>
-              <IonItem routerLink="/feed">Updates</IonItem>
+              <IonItem routerLink="/feed">News &amp; Updates</IonItem>
               <IonItem routerLink="/group">Experiments</IonItem>
-              <IonItem routerLink="/account">Profile</IonItem>
+              <IonItem routerLink="/account">Log Out</IonItem>
               <IonItem routerLink="/about">About XB</IonItem>
             </IonList>
           </IonContent>

@@ -33,7 +33,7 @@ class Feed extends Component {
 
     return (
       <IonPage>
-        <XBHeader title="Updates"></XBHeader>
+        <XBHeader title="News &amp; Updates"></XBHeader>
         <IonContent fullscreen>
           {c}
         </IonContent>

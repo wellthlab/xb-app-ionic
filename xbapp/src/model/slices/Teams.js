@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   teams: [],
-  fetching: true,
+  fetching: false,
+  loaded: false,
   joining: false,
   join_err: false,
 };
@@ -41,11 +42,11 @@ function dayify(responses, start, minday, maxday) {
   }
 
   var startDate = new Date( Date.parse(start) );
-  console.log("Compiling daily summary. Start date", start, startDate);
+  //console.log("Compiling daily summary. Start date", start, startDate);
   function addDays(date, days) {
       var result = new Date(date);
       result.setDate(result.getDate() + days);
-      console.log("Add days to date", days, date, result);
+      //console.log("Add days to date", days, date, result);
       return result;
   }
 
@@ -131,14 +132,16 @@ const TeamSlice = createSlice({
   initialState,
   reducers: {
     CLEAR_TEAMS(state, action) {
-      state.fetching = true;
+      state.fetching = false;
       state.teams = [];
+      state.loaded = false;
     },
     // Add an experiment to the list
     SET_TEAMS(state, action) {
       const teams = action.payload.teams;
       state.teams = teams;
       state.fetching = false;
+      state.loaded = true;
 
       // Add extra info to each teams
       for (var i in state.teams) {

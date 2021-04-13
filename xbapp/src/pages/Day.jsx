@@ -4,10 +4,11 @@ import XBHeader from "../components/XBHeader";
 
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { addControllersProp } from "../model/controllers";
 
 const autoBindReact = require("auto-bind/react");
 
-const Day = ({ match, teams, props, account }) => {
+const Day = ({ match, teams, account, controllers }) => {
   var gid = match.params.id; // Group ID comes from route
   var daynumber = match.params.day; // So does day number
 
@@ -20,6 +21,9 @@ const Day = ({ match, teams, props, account }) => {
       group = g;
     }
   }
+
+  // Load team data if required; mostly useful during development
+  controllers.LOAD_TEAMS_IF_REQD();
 
   if (group === false) {
     return <IonPage>Group not found, is state loaded?</IonPage>;
@@ -72,8 +76,9 @@ const Day = ({ match, teams, props, account }) => {
     </table>
   );
 
-  if (typeof day.questionTypes.strength == 'undefined') {
-    qbtn = (
+  var sbtn = "";
+  if (typeof day.responseTypes.strength == 'undefined') {
+    sbtn = (
       <IonButton
         routerLink={
           "/group/" + group._id + "/" + daynumber + "/add/strength"
@@ -83,11 +88,11 @@ const Day = ({ match, teams, props, account }) => {
       </IonButton>
     );
   } else {
-    qbtn = <p>You've done the day {daynumber} strength exercise.</p>;
+    sbtn = <p>You've done the day {daynumber} strength exercise.</p>;
   }
 
   var qbtn = "";
-  if (typeof day.questionTypes.questionnaire == 'undefined') {
+  if (typeof day.responseTypes.questionnaire == 'undefined') {
     qbtn = (
       <IonButton
         routerLink={
@@ -115,6 +120,8 @@ const Day = ({ match, teams, props, account }) => {
           Add Minutes
         </IonButton>
 
+        {sbtn}
+
         {qbtn}
       </IonContent>
     </IonPage>
@@ -126,4 +133,4 @@ export default connect((state, ownProps) => {
     account: state.account,
     teams: state.teams,
   };
-}, {})(Day);
+}, {})(addControllersProp(Day));

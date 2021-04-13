@@ -5,7 +5,7 @@ import XBHeader from "../components/XBHeader";
 import { connect } from "react-redux";
 import MinutesChart from "../components/minutesChart";
 
-import { IonIcon, IonItem, IonChip, IonTitle, IonLabel } from "@ionic/react";
+import { IonIcon, IonItem, IonChip, IonTitle, IonLabel, IonButton } from "@ionic/react";
 import { peopleOutline, todayOutline, add } from "ionicons/icons";
 import Instructions from "../components/Instructions";
 import GenericAlert from "../components/GenericAlert";
@@ -17,6 +17,9 @@ const Group = ({ match, teams, controllers, account }) => {
   function toggleAlert() {
     setShowAlert(!showAlert);
   }
+
+  // Load team data if required; mostly useful during development
+  controllers.LOAD_TEAMS_IF_REQD();
 
   useEffect(() => {
     // Load team responses
@@ -127,15 +130,14 @@ const Group = ({ match, teams, controllers, account }) => {
             <MinutesChart group={group} individual={false} />
           </>
         )}
-        /*<a
-          href="javascript:void(0)"
+        <IonButton
           style={{ textAlign: "center", margin: "0 0 0 0" }}
           onClick={() => {
             toggleAlert();
           }}
         >
           How do I interpret the bar chart?
-        </a>*/
+        </IonButton>
         <IonItemDivider></IonItemDivider>
         <IonItem>
           <IonTitle>

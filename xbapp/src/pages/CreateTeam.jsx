@@ -13,7 +13,7 @@ import "./CreateTeam.scss";
 const CreateTeam = (props) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [expid, setExpid] = useState("5fc7ae573d9aad4f4b3beaa9"); // Defaults to the four-week step challenge
+  const [expid, setExpid] = useState("6075b6b384e4a536be04e75a"); // Defaults to the strength challenge
   const [creating, setCreating] = useState(false); // Track if a create operation has been attempted
 
   function create(name, desc, expid) {

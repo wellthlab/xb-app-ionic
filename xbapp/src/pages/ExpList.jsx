@@ -22,7 +22,7 @@ class ExpList extends Component {
     //console.log("Render ExpList", this.props);
 
     var c;
-    if (this.props.teams.fetching) {
+    if (this.props.teams.fetching || !this.props.teams.loaded) {
       c = <ion-spinner name="crescent" />;
     } else {
       // Redirect to create exp. page if no experiments exist
