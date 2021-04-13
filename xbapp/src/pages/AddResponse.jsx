@@ -30,6 +30,9 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
 
   const [group, setGroup] = useState(false);
 
+  // Load team data if required; mostly useful during development
+  controllers.LOAD_TEAMS_IF_REQD();
+
   if (group === false) {
     for (var g of teams.teams) {
       // Find the group in the store
