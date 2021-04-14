@@ -12,8 +12,9 @@ import {
   IonTitle,
   IonLabel,
   IonButton,
+  IonList
 } from "@ionic/react";
-import { peopleOutline, todayOutline, add } from "ionicons/icons";
+import { peopleOutline, todayOutline, add, barChart, checkmarkCircleOutline, closeCircleOutline } from "ionicons/icons";
 import Instructions from "../components/Instructions";
 import GenericAlert from "../components/GenericAlert";
 
@@ -46,54 +47,44 @@ const Group = ({ match, teams, controllers, account }) => {
     return <IonPage>Nope :(</IonPage>;
   }
 
-  //console.log("group", group);
-
-  /**
-   * Team responses are loaded on demand
-   */
-  if (group.users.length == 1) {
-    //individual = true;
-  }
-  if (group.responses.fetching) {
-    // Responses are being fetched; probably do nothing
-  } else {
-    // Responses should be available in group.responses.all
-    //console.log("Group responses are available", group);
-    // TODO ...
-  }
 
   var exp = group.experiment.info;
-
   var entries = group.entries;
 
+  // Generate daily summaries
   var days = [];
   for (var i = 0; i < entries.length; i++) {
     var entry = entries[i];
     var date = entry.date;
+
+    var icon_done = checkmarkCircleOutline;
+    var icon_missing = closeCircleOutline;
+
+    console.log(entry);
+
+    // TODO: Don't hard code this; take from experiment
+    var statusList = ([{type: 'strength', desc: "Daily Strength Exercise" }, {type: 'minutes', desc: 'Movement Minutes'}, {type: 'questionnaire', desc: 'Daily Review'}]).map((type) => {
+      var done = (typeof entry.responseTypes[type.type] !== 'undefined');
+
+      console.log(type.type, done)
+
+      return <IonItem color={done ? 'success' : 'danger'} key={type.type}>
+        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        {type.desc}
+      </IonItem>
+    });
+
     days.push(
       <IonCard key={i} routerLink={"/group/" + group._id + "/" + entry.day}>
         <ion-card-header>
-          <ion-card-title>Day {entry.day}</ion-card-title>
-          <ion-card-subtitle>{date}</ion-card-subtitle>
+          <ion-card-subtitle>Day {entry.day}</ion-card-subtitle>
+          <ion-card-title>{date}</ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
-          <ion-item>
-            <ion-chip
-              slot="start"
-              color={entry.questionnaire ? "success" : "danger"}
-            >
-              {entry.questionnaire
-                ? "Questionnaire Done"
-                : "Questionnaire Missing"}
-            </ion-chip>
-            <ion-chip
-              slot="end"
-              color={entry.minutes > 0 ? "success" : "danger"}
-            >
-              {entry.minutes} minutes
-            </ion-chip>
-          </ion-item>
+          <IonList>
+            {statusList}
+          </IonList>
         </ion-card-content>
       </IonCard>
     );
@@ -114,65 +105,37 @@ const Group = ({ match, teams, controllers, account }) => {
   var members =
     group.users.length > 1
       ? group.users.length + " members"
-      : "Private Experiment";
+      : "Just You";
 
   return (
     <IonPage>
       <XBHeader title={group.name}></XBHeader>
       <IonContent>
-        <GenericAlert
-          showAlert={showAlert}
-          toggleAlert={toggleAlert}
-          message={
-            "The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day."
-          }
-        />
+        <IonList>
 
-        {group.users.length == 1 ? (
-          <>
-            <MinutesChart group={group} individual={true} />
-          </>
-        ) : (
-          <>
-            <MinutesChart group={group} individual={false} />
-          </>
-        )}
-        <IonButton
-          style={{ textAlign: "center", margin: "0 0 0 0" }}
-          onClick={() => {
-            toggleAlert();
-          }}
-        >
-          How do I interpret the bar chart?
-        </IonButton>
-        <IonItemDivider></IonItemDivider>
-        <IonItem>
-          <IonTitle>
-            <strong>{exp.title}</strong>
-          </IonTitle>
-          <IonChip slot="end" color="primary">
-            <IonLabel>
-              <IonIcon icon={todayOutline} /> {daydesc}
-            </IonLabel>
-          </IonChip>
-        </IonItem>
+          <IonItem>
+            <strong slot="start">{exp.title}</strong>
+          </IonItem>
 
-        <IonItem>
-          <IonChip slot="end" color="success">
-            <IonLabel>
-              <IonIcon icon={peopleOutline} /> {members}
-            </IonLabel>
-          </IonChip>
-          <IonChip slot="start" color="neutral">
-            <IonLabel>
-              Team Code: <strong>{group.code}</strong>
-            </IonLabel>
-          </IonChip>
-        </IonItem>
+          <IonItem>
+            <Instructions html={group.experiment.current_stage.instructions} />
+          </IonItem>
 
-        <IonItem>
-          <Instructions html={group.experiment.current_stage.instructions} />
-        </IonItem>
+          <IonItem color="primary">
+                <IonIcon icon={peopleOutline} slot="start" /> {members}
+                <span slot="end">Team Code: <strong>{group.code}</strong></span>
+          </IonItem>
+
+          <IonItem color="secondary" routerLink={'/group/' + group._id + '/charts'} detail={true}>
+            <IonIcon icon={barChart} slot="start" />
+            View Charts
+          </IonItem>
+
+          <IonItem color={ day < 0 ? "warning" : ( day > group.experiment.info.duration ? "error" : "primary" ) }>
+              <IonIcon icon={todayOutline} slot="start"/>  {daydesc}
+          </IonItem>
+
+        </IonList>
 
         {days}
       </IonContent>

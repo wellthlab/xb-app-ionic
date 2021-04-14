@@ -27,6 +27,7 @@ import JourneyPlanner from "./pages/JourneyPlanner";
 import Register from "./pages/Register.jsx";
 import Tutorial from "./pages/Tutorial.jsx";
 import Group from "./pages/Group.jsx";
+import Charts from "./pages/Charts"
 import Day from "./pages/Day";
 import ExperimentYourself from "./pages/ExperimentYourself.jsx";
 import ExperimentInGroup from "./pages/ExperimentInGroup.jsx";
@@ -118,6 +119,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               component={AddResponse}
               exact={true}
             />
+            <Route path="/group/:id/charts" component={Charts} exact={true} />
             <Route path="/group/:id/:day" component={Day} exact={true} />
             <Route path="/group/:id" component={Group} exact={true} />
             <Route path="/group" component={ExpList} exact={true} />

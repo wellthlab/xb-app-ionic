@@ -1,10 +1,27 @@
 import React, { Component, useState } from "react";
-import { IonContent, IonPage, IonModal, IonButton } from "@ionic/react";
+import {
+  IonContent,
+  IonPage,
+  IonModal,
+  IonButton,
+  IonGrid,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonIcon
+
+} from "@ionic/react";
 import XBHeader from "../components/XBHeader";
+
+import { checkmarkCircleOutline, closeCircleOutline, arrowForwardOutline, calendarClearOutline } from "ionicons/icons";
+
+import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addControllersProp } from "../model/controllers";
+
+import './Day.css';
 
 const autoBindReact = require("auto-bind/react");
 
@@ -43,84 +60,72 @@ const Day = ({ match, teams, account, controllers }) => {
     if (day.day == daynumber) break;
   }
 
-  // TODO: This mostly duplicates what we now do in the Store
-  for (var entry of day.responses) {
-    //console.log(entry);
-    if (entry.type == "minutes") {
-      var time = entry.submitted.substring(10, 15);
-      rows.push(
-        <tr>
-          <td>{time}</td>
-          <td>{entry.minutes}</td>
-        </tr>
-      );
-      total = total * 1 + 1 * entry.minutes;
-    }
-  }
+  var total = day.minutes;
 
-  var table = (
-    <table>
-      <thead>
-        <tr>
-          <td>Submitted</td>
-          <td>Minutes</td>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-      <tfoot>
-        <tr>
-          <td>Total</td>
-          <td>{total}</td>
-        </tr>
-      </tfoot>
-    </table>
-  );
+  var icon_done = checkmarkCircleOutline;
+  var icon_missing = closeCircleOutline;
+  var icon_go = arrowForwardOutline;
+
+  var taskrows = [];
 
   var sbtn = "";
   if (typeof day.responseTypes.strength == "undefined") {
-    sbtn = (
-      <IonButton
-        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
-      >
-        Do the Strength Exercise
-      </IonButton>
+    taskrows.push(
+      <IonItem color="danger" routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"} detail={false}>
+        <IonIcon icon={icon_missing} slot="start" />
+        Daily Strength Exercise
+        <IonIcon icon={icon_go} slot="end" />
+      </IonItem>
     );
   } else {
-    sbtn = <p>You've done the day {daynumber} strength exercise.</p>;
+    taskrows.push(
+      <IonItem color="success" routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"} detail={false}>
+        <IonIcon icon={icon_done} slot="start" />
+        Daily Strength Exercise
+      </IonItem>
+    );
   }
+
+  taskrows.push(
+      <IonItem color={total > 0 ? "success" : "danger"} routerLink={"/group/" + group._id + "/" + daynumber + "/add/minutes"} detail={false} >
+        <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
+        {total} minutes logged
+        <IonIcon slot="end" icon={icon_go} />
+      </IonItem>
+  );
 
   var qbtn = "";
   if (typeof day.responseTypes.questionnaire == "undefined") {
-    qbtn = (
-      <IonButton
-        routerLink={
-          "/group/" + group._id + "/" + daynumber + "/add/questionnaire"
-        }
-      >
-        Take Daily Questionnaire
-      </IonButton>
+    taskrows.push(
+      <IonItem color="danger" routerLink={"/group/" + group._id + "/" + daynumber + "/add/questionnaire"} detail={false}>
+        <IonIcon icon={icon_missing} slot="start" />
+        Daily Review
+        <IonIcon icon={icon_go} slot="end" />
+      </IonItem>
     );
   } else {
-    qbtn = <p>You've done the daily questionnaire.</p>;
+    taskrows.push(
+      <IonItem color="success" routerLink={"/group/" + group._id + "/" + daynumber + "/add/questionnaire"} detail={false}>
+        <IonIcon icon={icon_done} slot="start" />
+        Daily Review
+      </IonItem>
+    );
   }
+
+
 
   return (
     <IonPage>
       <XBHeader title={group.name + ": Day " + daynumber}></XBHeader>
       <IonContent>
-        <p>
-          You've entered <strong>{total}</strong> minutes for day {daynumber}
-        </p>
 
-        <IonButton
-          routerLink={"/group/" + group._id + "/" + daynumber + "/add/minutes"}
-        >
-          Add Minutes
-        </IonButton>
+        <IonList className="tasklist">
+          <IonItem>
+            <IonIcon icon={calendarClearOutline} slot="start" /> <strong>Day {daynumber}</strong> &nbsp; &nbsp; {day.date}
+          </IonItem>
+          {taskrows}
+        </IonList>
 
-        {sbtn}
-
-        {qbtn}
       </IonContent>
     </IonPage>
   );

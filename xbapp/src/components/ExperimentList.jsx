@@ -32,52 +32,15 @@ import {
 const ExperimentList = (props) => {
   const { teams } = props;
 
-  //console.log("Render ExperimentList", props);
+  var steams = [...teams]; // Shallow copy teams so we can sort them
 
-  // const push = () => {
-  //   // Register with Apple / Google to receive push via APNS/FCM
-  //   PushNotifications.register();
+  steams.sort( (a,b) => {
+    return a.experiment.day - b.experiment.day;
+  });
 
-  //   // On succcess, we should be able to receive notifications
-  //   PushNotifications.addListener('registration',
-  //     (token) => {
-  //       alert('Push registration success, token: ' + token.value);
-  //     }
-  //   );
-
-  //   // Some issue with your setup and push will not work
-  //   PushNotifications.addListener('registrationError',
-  //     (error) => {
-  //       alert('Error on registration: ' + JSON.stringify(error));
-  //     }
-  //   );
-
-  //   // Show us the notification payload if the app is open on our device
-  //   PushNotifications.addListener('pushNotificationReceived',
-  //     (notification) => {
-  //       let notif = this.state.notifications;
-  //       notif.push({ id: notification.id, title: notification.title, body: notification.body })
-  //       this.setState({
-  //         notifications: notif
-  //       })
-  //     }
-  //   );
-
-  //   // Method called when tapping on a notification
-  //   PushNotifications.addListener('pushNotificationActionPerformed',
-  //     (notification) => {
-  //       let notif = this.state.notifications;
-  //       notif.push({ id: notification.notification.data.id, title: notification.notification.data.title, body: notification.notification.data.body })
-  //       this.setState({
-  //         notifications: notif
-  //       })
-  //     }
-  //   );
-  // }
-  // const { notifications } = this.state;
   return (
     <>
-      {teams.map((group, i) => {
+      {steams.map((group, i) => {
         var members = group.users.length;
         var missing = 0; // TODO: Look this up
 
