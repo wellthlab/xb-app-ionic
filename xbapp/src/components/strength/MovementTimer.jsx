@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonItem,
-  IonInput,
-  IonTitle,
-} from "@ionic/react";
+import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
 
 import { connect } from "react-redux";
 import Countdown from "../CountDown";
@@ -15,7 +10,7 @@ import Countdown from "../CountDown";
 const MovementTimer = ({ exercises, onChange }) => {
   const [rate, setRate] = useState(null);
 
-	console.log("Timer", exercises, typeof exercises, onChange);
+  console.log("Timer", exercises, typeof exercises, onChange);
 
   var seconds = 30; // Number of seconds to count for
 
@@ -25,13 +20,12 @@ const MovementTimer = ({ exercises, onChange }) => {
     }
   }
 
-
   // TODO
   return (
     <>
-		{exercises.map((ex, i) => {
-			return <>{ex}</>;
-		})}
+      {exercises.map((ex, i) => {
+        return <>{ex}</>;
+      })}
 
       <p>Do your moves</p>
       <p>Timer Goes Here</p>

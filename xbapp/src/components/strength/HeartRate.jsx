@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonItem,
-  IonInput,
-  IonContent,
-} from "@ionic/react";
+import { IonButton, IonItem, IonInput, IonContent } from "@ionic/react";
 import { connect } from "react-redux";
 import Timer from "./Timer";
 

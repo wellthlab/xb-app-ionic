@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import MovementInfoCard from "./MovementInfoCard";
 
-import "./MovementPicker.css"
+import "./MovementPicker.css";
 
 /**
  * The list of moves.
@@ -64,17 +64,25 @@ const MovementPicker = (props) => {
 
   var movements = [];
   for (var m of moves) {
-    (function (m) { // Trap m in a closure
+    (function (m) {
+      // Trap m in a closure
       var selected = picked.includes(m.id);
       movements.push(
-        <MovementInfoCard key={m.id} className={ !selected ? "" : "selected"} name={m.name} text={m.text} images={m.images}>
+        <MovementInfoCard
+          key={m.id}
+          className={!selected ? "" : "selected"}
+          name={m.name}
+          text={m.text}
+          images={m.images}
+        >
           <IonButton
-            onClick={() => { // Onclick, toggle whether this move is in the list
-              if(selected) {
+            onClick={() => {
+              // Onclick, toggle whether this move is in the list
+              if (selected) {
                 console.log("Remove", m);
                 var newpicked = [];
-                for(var p of picked) {
-                  if(p != m.id) {
+                for (var p of picked) {
+                  if (p != m.id) {
                     newpicked.push(p);
                   }
                 }
@@ -87,7 +95,7 @@ const MovementPicker = (props) => {
               }
             }}
           >
-            { !selected ? "Add to Selection" : "Remove from Selection" }
+            {!selected ? "Add to Selection" : "Remove from Selection"}
           </IonButton>
         </MovementInfoCard>
       );
@@ -109,10 +117,12 @@ const MovementPicker = (props) => {
   }
 
   var mbox = "";
-  if(msg !== false) {
-    mbox = <div className="instruction" slot="fixed">
-      <p>{msg}</p>
-    </div>
+  if (msg !== false) {
+    mbox = (
+      <div className="instruction" slot="fixed">
+        <p>{msg}</p>
+      </div>
+    );
   }
 
   return (

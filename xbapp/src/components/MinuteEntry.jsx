@@ -30,6 +30,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
 const MinuteEntry = ({ props, group }) => {
+  var [timerSeconds, setTimerSeconds] = useState(0); //useStorageItem('week' + props.week + '-exlist', []);
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
@@ -155,7 +156,11 @@ const MinuteEntry = ({ props, group }) => {
             <Typography>Timer</Typography>
           </AccordionSummary>
           <AccordionDetails className="detailsAcc">
-            <Timer />
+            <Timer
+              onStop={async (seconds) => {
+                setTimerSeconds(seconds);
+              }}
+            />
           </AccordionDetails>
         </Accordion>
         <Accordion

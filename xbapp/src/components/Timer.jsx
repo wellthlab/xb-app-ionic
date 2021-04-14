@@ -101,7 +101,11 @@ function Timer(props) {
     setIsActive(false);
     localStorage.setItem("countActive", false);
     localStorage.removeItem("timerStartedAt");
-    localStorage.setItem("time", hours * 3600 + minutes * 60 + seconds);
+    var secondsToUse = hours * 3600 + minutes * 60 + seconds;
+    localStorage.setItem("time", secondsToUse);
+    if (props.onStop) {
+      props.onStop(secondsToUse);
+    }
   }
 
   useEffect(() => {
@@ -141,7 +145,7 @@ function Timer(props) {
         <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
         <IonButton onClick={reset}>Reset</IonButton>
         <div></div>
-        <IonButton onClick={submit}>Submit</IonButton>
+        <IonButton onClick={submit}>Stop</IonButton>
       </div>
     </div>
   );
