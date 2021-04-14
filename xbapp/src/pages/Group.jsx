@@ -18,6 +18,8 @@ import { peopleOutline, todayOutline, add, barChart, checkmarkCircleOutline, clo
 import Instructions from "../components/Instructions";
 import GenericAlert from "../components/GenericAlert";
 
+import "./Group.scss";
+
 import { addControllersProp } from "../model/controllers";
 
 const Group = ({ match, teams, controllers, account }) => {
@@ -108,13 +110,13 @@ const Group = ({ match, teams, controllers, account }) => {
       : "Just You";
 
   return (
-    <IonPage>
+    <IonPage id="weekInfo">
       <XBHeader title={group.name}></XBHeader>
       <IonContent>
         <IonList>
 
           <IonItem>
-            <strong slot="start">{exp.title}</strong>
+            <h2 slot="start">{exp.title}</h2>
           </IonItem>
 
           <IonItem>
@@ -126,7 +128,7 @@ const Group = ({ match, teams, controllers, account }) => {
                 <span slot="end">Team Code: <strong>{group.code}</strong></span>
           </IonItem>
 
-          <IonItem color="secondary" routerLink={'/group/' + group._id + '/charts'} detail={true}>
+          <IonItem color="tertiary" routerLink={'/group/' + group._id + '/charts'} detail={true}>
             <IonIcon icon={barChart} slot="start" />
             View Charts
           </IonItem>
