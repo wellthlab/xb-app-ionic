@@ -87,7 +87,7 @@ function Timer(props) {
     setHours(0);
     localStorage.removeItem("recordedHours");
     setIsActive(false);
-    localStorage.setItem("countActive", false);
+    localStorage.removeItem("countActive");
     localStorage.removeItem("timerStartedAt");
   }
 
