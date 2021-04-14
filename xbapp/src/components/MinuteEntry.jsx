@@ -122,7 +122,7 @@ const MinuteEntry = ({ props, group }) => {
   return (
     <div className="addMinutes">
       <div className="row">
-        <p>Which way do you prefer to use to add your movement minutes?</p>
+        <h4>How'd you prefer to add movement minutes?</h4>
 
         <Accordion
           className="titleDrop"
@@ -193,7 +193,7 @@ const MinuteEntry = ({ props, group }) => {
       </div>
 
       <div className="row">
-        <p>What time of the day did you get these minutes?</p>
+        <h4>When did you get these minutes?</h4>
         <IonItem>
           <IonGrid>
             <IonRow>
@@ -221,7 +221,7 @@ const MinuteEntry = ({ props, group }) => {
       </div>
 
       <div className="row">
-        <p>Did you get them indoors or outdoors?</p>
+        <h4>Did you get them indoors or outdoors?</h4>
         <IonItem>
           <IonGrid>
             <IonRow>

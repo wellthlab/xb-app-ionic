@@ -25,7 +25,7 @@ class TabAccount extends Component {
     return (
       <IonPage>
         <XBHeader title="Account"></XBHeader>
-        <IonContent fullscreen>
+        <IonContent id="account" fullscreen>
           {/* the props are set up for us by connect(), below */}
           <p>{this.props.account.name}</p>
 

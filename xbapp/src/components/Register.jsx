@@ -137,22 +137,14 @@ const Register = ({ ACCEPT_LOGIN }) => {
         </IonItem>
         <IonItem>{err}</IonItem>
       </IonCard>
-      <p>
-        Please read the information at the link below. Please note that by
-        registering and creating an account, you consent to the following: I
-        understand what the study involves and how my personal data will be
-        used.
-      </p>
-      <a
-        href="javascript:void(0)"
-        onClick={() => {
-          toggleModal();
-        }}
-      >
-        Read Information Sheet About Our Study
-      </a>
+      <p>Please note that by registering and creating an account, you declare you consent to the <a
+          href="javascript:void(0)"
+          onClick={() => {
+            toggleModal();
+          }}
+        >terms of our study</a>,
+        and understand how your personal data will be used.</p>
 
-      <IonItemDivider></IonItemDivider>
       <div className="centering">{btn}</div>
       <div className="centering">
         <IonButton
@@ -162,7 +154,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
             window.location.reload();
           }}
         >
-          Go back
+          Back
         </IonButton>
       </div>
     </IonContent>

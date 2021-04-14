@@ -51,7 +51,7 @@ class Login extends Component {
               <IonItem>
                 <IonInput
                   value=""
-                  placeholder="Email Address"
+                  placeholder="Email"
                   type="email"
                   onIonChange={(e) => {
                     this.email = e.detail.value;
@@ -85,23 +85,20 @@ class Login extends Component {
 
       return (
         <IonContent>
-          <br></br>
-          <br></br>
-          <img src="assets/box.png" alt="XB Logo" />
-          {form}
-          <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
-            Don't have an account?
-          </p>
-          <div className="centering">
-            <IonButton routerLink="/register">Register</IonButton>
-          </div>
-          <ion-row style={{ height: "40px" }}></ion-row>
-          <br></br>
-          <br></br>
-          <div className="tutorialButton">
-            <IonButton routerLink="/tutorial" expand="full">
-              What is XB? (Tutorial)
-            </IonButton>
+          <div id="login">
+            <img src="assets/strength_logo.png" alt="XB Logo" />
+            {form}
+            <div>
+              <h4>
+                New to the app?
+              </h4>
+              <div class="centering">
+                <IonButton routerLink="/register">Register</IonButton>
+                <IonButton routerLink="/tutorial">
+                  Tutorial
+                </IonButton>
+              </div>
+            </div>
           </div>
         </IonContent>
       );

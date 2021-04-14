@@ -12,7 +12,7 @@ import "./Register.css";
 
 const TabReg = (account) => {
   return (
-    <IonPage>
+    <IonPage id="register">
       <IonHeader>
         <IonToolbar>
           <IonTitle>Register</IonTitle>

@@ -19,6 +19,8 @@ import Timer from "../components/Timer";
  */
 import { LOG_IN, LOG_OUT } from "../model/slices/Account";
 
+import "./About.scss";
+
 /**
  * We use this later, it joins the component up to the state, held in Redux
  */
@@ -39,7 +41,7 @@ const TabAccount = ({}) => {
   return (
     <IonPage>
       <XBHeader title="About XB"></XBHeader>
-      <IonContent fullscreen>
+      <IonContent id="about" fullscreen>
         <GenericAlert
           showAlert={showAlert}
           toggleAlert={toggleAlert}
@@ -54,60 +56,42 @@ const TabAccount = ({}) => {
           message={privacy_notice}
         />
 
-        <p>
-          <b>What is XB?</b>
-        </p>
+        <h4>What is XB?</h4>
         <IonButton type="button" class="btn btn-link" routerLink="/tutorial">
           Tutorial
         </IonButton>
 
         <IonItemDivider></IonItemDivider>
-        <p>eXperiment in a Box</p>
 
-        <p>&copy; 2020-2021 University of Southampton</p>
+        <div id="moreInfo">
+          <h4>More Information</h4>
+          <p>
+            <IonButton
+              onClick={() => {
+                toggleModal();
+              }}
+            >
+              Privacy Notice
+            </IonButton>
+          </p>
 
-        <p>
-          <IonButton
-            onClick={() => {
-              toggleModal();
-            }}
-          >
-            Privacy Notice
-          </IonButton>
-        </p>
+          <p>
+            <IonButton
+              onClick={() => {
+                toggleAlert();
+              }}
+            >
+              Contact
+            </IonButton>
+          </p>
+        </div>
 
-        <p>
-          <IonButton
-            onClick={() => {
-              toggleAlert();
-            }}
-          >
-            Contact
-          </IonButton>
-        </p>
+        <IonItemDivider></IonItemDivider>
+        <div id="corpInfo">
+          <p>eXperiment in a Box<br />
+          &copy; 2020-2021 University of Southampton</p>
+        </div>
 
-        <mobiscroll.Form>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref={mbsc} collapsible open>
-              <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <Timer />
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref={mbsc} collapsible open>
-              <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <p>coco</p>
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-        </mobiscroll.Form>
       </IonContent>
     </IonPage>
   );
@@ -116,7 +100,7 @@ const TabAccount = ({}) => {
 export default TabAccount;
 
 var privacy_notice = (
-  <div>
+  <div id="privacyNotice">
     <b>What happens if there is a problem?</b>
     <br></br>
     If you have a concern about any aspect of this study, you should speak to

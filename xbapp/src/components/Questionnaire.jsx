@@ -15,6 +15,8 @@ import {
 import { connect } from "react-redux";
 import MoodPicker from "./MoodPicker";
 
+import "./Questionnaire.scss";
+
 const Questionnaire = (props) => {
   const [selectedHowFeel, setSelectedHowFeel] = useState({ mood: "" });
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
@@ -52,61 +54,64 @@ const Questionnaire = (props) => {
 
   return (
     <>
-      <MoodPicker
-        onChange={async (moodVal) => {
-          setMoodValue(moodVal);
-        }}
-      />
-      <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
+      <div id="moodQuestions">
+        <h4>How do you feel today?</h4>
+        <MoodPicker
+          onChange={async (moodVal) => {
+            setMoodValue(moodVal);
+          }}
+        />
+        <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 
-      <IonRadioGroup
-        allow-empty-selection="true"
-        value={selectedExposure.exposure}
-        onIonChange={(e) => setSelectedExposure({ exposure: e.detail.value })}
-      >
-        <IonListHeader>
-          <IonLabel>Did you get sunlight exposure for this day?</IonLabel>
-        </IonListHeader>
+        <IonRadioGroup
+          allow-empty-selection="true"
+          value={selectedExposure.exposure}
+          onIonChange={(e) => setSelectedExposure({ exposure: e.detail.value })}
+        >
+          <IonListHeader>
+            <IonLabel>Did you get sunlight exposure today?</IonLabel>
+          </IonListHeader>
 
-        <IonItem>
-          <IonLabel>Yes</IonLabel>
-          <IonRadio slot="start" value="sunlight" />
-        </IonItem>
+          <IonItem>
+            <IonLabel>Yes</IonLabel>
+            <IonRadio slot="start" value="sunlight" />
+          </IonItem>
 
-        <IonItem>
-          <IonLabel>No</IonLabel>
-          <IonRadio slot="start" value="no sunlight" />
-        </IonItem>
-      </IonRadioGroup>
-      <IonItemDivider></IonItemDivider>
+          <IonItem>
+            <IonLabel>No</IonLabel>
+            <IonRadio slot="start" value="no sunlight" />
+          </IonItem>
+        </IonRadioGroup>
+        <IonItemDivider></IonItemDivider>
 
-      <IonRadioGroup
-        allow-empty-selection="true"
-        value={selectedAlarm.alarm}
-        onIonChange={(e) => setSelectedAlarm({ alarm: e.detail.value })}
-      >
-        <IonListHeader>
-          <IonLabel>Did you wake up with an alarm on this day?</IonLabel>
-        </IonListHeader>
+        <IonRadioGroup
+          allow-empty-selection="true"
+          value={selectedAlarm.alarm}
+          onIonChange={(e) => setSelectedAlarm({ alarm: e.detail.value })}
+        >
+          <IonListHeader>
+            <IonLabel>Did you wake up with an alarm today?</IonLabel>
+          </IonListHeader>
 
-        <IonItem>
-          <IonLabel>Yes</IonLabel>
-          <IonRadio slot="start" value="woke up with an alarm" />
-        </IonItem>
+          <IonItem>
+            <IonLabel>Yes</IonLabel>
+            <IonRadio slot="start" value="woke up with an alarm" />
+          </IonItem>
 
-        <IonItem>
-          <IonLabel>No</IonLabel>
-          <IonRadio slot="start" value="woke up with no alarm" />
-        </IonItem>
-      </IonRadioGroup>
-      <IonItemDivider></IonItemDivider>
-      <IonButton
-        onClick={() => {
-          processData();
-        }}
-      >
-        Submit
-      </IonButton>
+          <IonItem>
+            <IonLabel>No</IonLabel>
+            <IonRadio slot="start" value="woke up with no alarm" />
+          </IonItem>
+        </IonRadioGroup>
+        <IonItemDivider></IonItemDivider>
+        <IonButton
+          onClick={() => {
+            processData();
+          }}
+        >
+          Submit
+        </IonButton>
+      </div>
     </>
   );
 };
