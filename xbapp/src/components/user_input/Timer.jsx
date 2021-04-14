@@ -14,7 +14,6 @@ function Timer(props) {
         : parseInt(localStorage.getItem("recordedSeconds"))
       : 0
   );
-  console.log(localStorage.getItem("timerStartedAt"), seconds);
   const [minutes, setMinutes] = useState(
     localStorage.getItem("timerStartedAt") != null
       ? parseInt(localStorage.getItem("timerStartedAt")) != 0
@@ -69,6 +68,7 @@ function Timer(props) {
           );
         }
       } else localStorage.setItem("timerStartedAt", new Date().getTime());
+      localStorage.setItem("locationOfTimer", window.location.pathname);
     } else {
       //about to be paused
       localStorage.setItem("timerStartedAt", 0);
@@ -141,12 +141,16 @@ function Timer(props) {
         {minutes > 9 ? minutes : "0" + minutes}:
         {seconds > 9 ? seconds : "0" + seconds}
       </div>
-      <div className="row">
-        <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
-        <IonButton onClick={reset}>Reset</IonButton>
-        <div></div>
-        <IonButton onClick={submit}>Stop</IonButton>
-      </div>
+      {props.buttonsOnShow ? (
+        <div className="row">
+          <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
+          <IonButton onClick={reset}>Reset</IonButton>
+          <div></div>
+          <IonButton onClick={submit}>Stop</IonButton>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

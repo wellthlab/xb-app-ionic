@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
 
 import { connect } from "react-redux";
-import Countdown from "../CountDown";
+import Countdown from "../user_input/CountDown";
 
 /**
  * Time movements

@@ -26,11 +26,16 @@ import {
  */
 const MoodPicker = (props) => {
   const [value, setValue] = useState(3);
+  //comparing represents the answers to the "how do you feel compared to yesterday?". Other strings represents the general "how do you feel"
+  var sliderValues =
+    props.typeOfSlider == "comparing"
+      ? ["A lot worse", "Worse", "The same", "Better", "A lot better"]
+      : ["Very Bad", "Bad", "Okay", "Good", "Very good"];
 
   function onChangeSlider(valueToUpdate) {
     setValue(valueToUpdate);
     if (props.onChange) {
-      props.onChange(valueToUpdate);
+      props.onChange(valueToUpdate, sliderValues[valueToUpdate - 1]);
     }
   }
 
@@ -52,17 +57,7 @@ const MoodPicker = (props) => {
         alt="happy"
       />
       <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>
-          {value == 1
-            ? "A lot worse"
-            : value == 2
-            ? "Worse"
-            : value == 3
-            ? "The Same"
-            : value == 4
-            ? "Better"
-            : "A lot better"}
-        </IonLabel>
+        <IonLabel>{sliderValues[value - 1]}</IonLabel>
       </IonItem>
       <IonItem>
         <IonRange

@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import XBHeader from "../components/XBHeader";
 import { connect } from "react-redux";
 import "./JourneyPlanner.scss";
-import Timer from "../components/Timer";
+import Timer from "../components/user_input/Timer";
 const JourneyPlanner = (account) => {
   return (
     <IonPage className="planner">

@@ -4,7 +4,10 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  CreateAnimation,
+  Animation,
 } from "@ionic/react";
+import "./MovementInfoCard.css";
 
 /**
  * Show info about a specific movement
@@ -16,11 +19,19 @@ import {
  */
 const MovementInfoCard = (props) => {
   // TODO: Show more than one image; use a carousel? Or just fade nicely every second?
+  function power() {}
   return (
     <IonCard>
-      <img src={"assets/moves/" + props.images[0]} alt="" />
       <IonCardHeader>
         <IonCardTitle>{props.name}</IonCardTitle>
+        <figure id="promo">
+          <img src={"assets/moves/" + props.images[0]} class="A" />
+          <img src={"assets/moves/" + props.images[1]} class="B" />
+        </figure>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </IonCardHeader>
       <IonCardContent>
         <p>{props.text}</p>

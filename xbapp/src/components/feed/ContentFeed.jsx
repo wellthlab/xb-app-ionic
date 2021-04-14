@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { IonCard } from "@ionic/react";
+import { Link } from "react-router-dom";
+import { IonCard, IonButton } from "@ionic/react";
 import { connect } from "react-redux";
+import Timer from "../user_input/Timer";
 
 import OverdueEntry from "./OverdueEntry";
 import News from "./News";
@@ -14,9 +16,18 @@ export default class ContentFeed extends Component {
 
   render() {
     const { feed } = this.props;
-
     return (
       <>
+        {localStorage.getItem("countActive") != null ? (
+          <div style={{ textAlign: "center" }}>
+            <Timer buttonsOnShow={false} />
+            <Link to={localStorage.getItem("locationOfTimer")}>
+              Go To Timer{" "}
+            </Link>
+          </div>
+        ) : (
+          <></>
+        )}
         {Object.keys(feed).map((key, i) => {
           var content;
 

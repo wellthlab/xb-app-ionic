@@ -13,7 +13,6 @@ import GenericAlert from "../components/GenericAlert";
 import GenericModal from "../components/GenericModal";
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-import Timer from "../components/Timer";
 /**
  * Each slice exports some action creators that are used to push changes into the model
  */
@@ -85,29 +84,6 @@ const TabAccount = ({}) => {
             Contact
           </IonButton>
         </p>
-
-        <mobiscroll.Form>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref={mbsc} collapsible open>
-              <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <Timer />
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-          <mobiscroll.Accordion>
-            <mobiscroll.FormGroup ref={mbsc} collapsible open>
-              <mobiscroll.FormGroupTitle>TIMER</mobiscroll.FormGroupTitle>
-              <mobiscroll.FormGroupContent>
-                <div className="mbsc-padding">
-                  <p>coco</p>
-                </div>
-              </mobiscroll.FormGroupContent>
-            </mobiscroll.FormGroup>
-          </mobiscroll.Accordion>
-        </mobiscroll.Form>
       </IonContent>
     </IonPage>
   );

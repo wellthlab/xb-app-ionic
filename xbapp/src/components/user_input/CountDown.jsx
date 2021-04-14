@@ -20,6 +20,8 @@ function CountDown(props) {
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
         ? differenceBetweenThenAndNow("minutes")
         : parseInt(localStorage.getItem("recordedMinutes"))
+      : props.blocks > 1
+      ? 7 * (props.blocks - 1)
       : 7 * props.blocks
   );
   const [isActive, setIsActive] = useState(
@@ -74,7 +76,9 @@ function CountDown(props) {
   function reset() {
     setSeconds(0);
     localStorage.removeItem("CountDownrecordedSeconds");
-    setMinutes(7 * props.blocks);
+    props.blocks > 1
+      ? setMinutes(7 * (props.blocks - 1))
+      : setMinutes(7 * props.blocks);
     localStorage.removeItem("CountDownrecordedMinutes");
     setIsActive(false);
     localStorage.setItem("CountDowncountActive", false);

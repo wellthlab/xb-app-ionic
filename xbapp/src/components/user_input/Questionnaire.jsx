@@ -20,6 +20,7 @@ const Questionnaire = (props) => {
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
   const [selectedAlarm, setSelectedAlarm] = useState({ alarm: "" });
   const [moodValue, setMoodValue] = useState(3); //useStorage?;
+  const [smileyVal, setSmileyVal] = useState(""); //useStorage?;
 
   function processData() {
     var officialMoodValue = 0;
@@ -27,6 +28,8 @@ const Questionnaire = (props) => {
     //important: these are numbers as they will be represented on the graph
     //and because they are dependent on the previous day, we are going to use a weighted average to be able to draw the points
     //the limits for this will always be between -2 and 2
+
+    //the below is important for representing the graphs
     if (moodValue == 1) {
       officialMoodValue = -2;
     } else if (selectedHowFeel.mood == 2) {
@@ -38,6 +41,9 @@ const Questionnaire = (props) => {
     } else if (selectedHowFeel.mood == 5) {
       officialMoodValue = 2;
     }
+
+    //if needed to get value from smiley (text value):
+    var smileyValue = smileyVal;
 
     var objectToAdd = {
       mood: officialMoodValue,
@@ -53,9 +59,11 @@ const Questionnaire = (props) => {
   return (
     <>
       <MoodPicker
-        onChange={async (moodVal) => {
+        onChange={async (moodVal, smileyVal) => {
           setMoodValue(moodVal);
+          setSmileyVal(smileyVal);
         }}
+        typeOfSlider="comparing"
       />
       <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 

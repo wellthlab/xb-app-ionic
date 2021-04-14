@@ -13,8 +13,8 @@ import { useHistory } from "react-router-dom";
 
 import { addControllersProp } from "../model/controllers";
 
-import MinuteEntry from "../components/MinuteEntry";
-import Questionnaire from "../components/Questionnaire";
+import MinuteEntry from "../components/user_input/MinuteEntry";
+import Questionnaire from "../components/user_input/Questionnaire";
 import StrengthWizard from "../components/strength/StrengthWizard";
 
 const autoBindReact = require("auto-bind/react");

@@ -18,19 +18,19 @@ import Timer from "./Timer";
 import CountDown from "./CountDown";
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
-import "./ExperimentList.css";
 
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import GenericAlert from "../GenericAlert";
 
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const MinuteEntry = ({ props, group }) => {
-  var [timerSeconds, setTimerSeconds] = useState(0); //useStorageItem('week' + props.week + '-exlist', []);
+const MinuteEntry = (props) => {
+  var [timerSeconds, setTimerSeconds] = useState(0);
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
@@ -88,15 +88,7 @@ const MinuteEntry = ({ props, group }) => {
 
   function save() {
     var min = 0;
-    if (expanded == "panel1") {
-      min = 7;
-      //number of blocks per week
-      var numberOfBlocks = parseInt(
-        group.experiment.current_stage.title.substr(-1)
-      );
-      min = 7 * numberOfBlocks;
-      //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
-    } else if (expanded == "panel2") {
+    if (expanded == "panel2") {
       min = Math.floor(localStorage.getItem("time") / 60);
     } else if (expanded == "panel3") {
       min = number.value;
@@ -107,13 +99,21 @@ const MinuteEntry = ({ props, group }) => {
       time: variables.timeOfDay,
     };
 
-    if (props.onSubmit) {
-      props.onSubmit(response);
+    if (expanded == false) {
+      //if the user hasn't picked an input method for minutes
+      toggleAlert();
+    } else {
+      if (props.onSubmit) {
+        props.onSubmit(response);
+      }
     }
-    //TODO: in case expanded is false - throw error//
   }
 
   const [expanded, setExpanded] = React.useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  function toggleAlert() {
+    setShowAlert(!showAlert);
+  }
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -121,29 +121,16 @@ const MinuteEntry = ({ props, group }) => {
 
   return (
     <div className="addMinutes">
+      <GenericAlert
+        showAlert={showAlert}
+        toggleAlert={toggleAlert}
+        message={
+          "Please choose one of teh Input methods (Timer or Manual Minutes) by tapping on the title."
+        }
+      />
       <div className="row">
         <p>Which way do you prefer to use to add your movement minutes?</p>
 
-        <Accordion
-          className="titleDrop"
-          expanded={expanded === "panel1"}
-          onChange={handleChange("panel1")}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-          >
-            <Typography>Countdown</Typography>
-          </AccordionSummary>
-          <AccordionDetails className="detailsAcc">
-            <CountDown
-              onFinish={async (finished) => {
-                setTimerFinished(finished);
-              }}
-              blocks={parseInt(group.experiment.current_stage.title.substr(-1))}
-            />
-          </AccordionDetails>
-        </Accordion>
         <Accordion
           className="titleDrop"
           expanded={expanded === "panel2"}
@@ -160,6 +147,7 @@ const MinuteEntry = ({ props, group }) => {
               onStop={async (seconds) => {
                 setTimerSeconds(seconds);
               }}
+              buttonsOnShow={true}
             />
           </AccordionDetails>
         </Accordion>
