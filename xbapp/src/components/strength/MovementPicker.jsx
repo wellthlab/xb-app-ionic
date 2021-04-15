@@ -274,7 +274,8 @@ const MovementPicker = (props) => {
       <div id="movementChoices">
         <h3>Choose Today's Routine</h3>
         <p>
-          Please select one <span>upper body</span> movement and one <span>lower body</span> movement.
+          Please select one <span>upper body</span> movement and one{" "}
+          <span>lower body</span> movement.
         </p>
         <h4>Upper Body Movements</h4>
         <IonSlides pager={true} options={slideOpts} className="slidesCharts">

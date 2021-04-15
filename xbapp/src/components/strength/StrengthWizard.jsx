@@ -120,25 +120,34 @@ const StrengthWizard = (props) => {
   /**
    * Final stage, save button!
    */
-   content.push({
-     el: <>
-      <IonTitle>Good work!</IonTitle>
-      <p>Submit your workout to record your progress.</p>
-      <p><strong>See you tomorrow!</strong></p>
-      <IonButton onClick={ function() {
-        var res = {};
-        res.sets = sets; // Contains exercises and number of sets
-        res.heartrate = postHeart; // Contains heart rate
-        res.type = 'strength';
-        var rmins = {};
-        rmins.type = 'minutes';
-        rmins.minutes = mins;
-        props.onSubmit([res, rmins]);
-      }}>Submit</IonButton>
-     </>,
-     rule: () => { return true; }
-   });
-
+  content.push({
+    el: (
+      <>
+        <IonTitle>Good work!</IonTitle>
+        <p>Submit your workout to record your progress.</p>
+        <p>
+          <strong>See you tomorrow!</strong>
+        </p>
+        <IonButton
+          onClick={function () {
+            var res = {};
+            res.sets = sets; // Contains exercises and number of sets
+            res.heartrate = postHeart; // Contains heart rate
+            res.type = "strength";
+            var rmins = {};
+            rmins.type = "minutes";
+            rmins.minutes = mins;
+            props.onSubmit([res, rmins]);
+          }}
+        >
+          Submit
+        </IonButton>
+      </>
+    ),
+    rule: () => {
+      return true;
+    },
+  });
 
   /**
    * Wire the stages together so we can progress from one to the next

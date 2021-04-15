@@ -23,15 +23,27 @@ const HeartRate = ({ onChange }) => {
   return (
     <>
       <div id="heartratePage">
-        <IonTitle><IonIcon icon="heart" /></IonTitle>
+        <IonTitle>
+          <IonIcon icon="heart" />
+        </IonTitle>
         <h3>Record Your Pulse</h3>
-        <p>Find your pulse by firmly gripping your wrist like in the diagram below.</p>
-        <p>Start the time below and count your heartbeats for {seconds} seconds.</p>
+        <p>
+          Find your pulse by firmly gripping your wrist like in the diagram
+          below.
+        </p>
+        <p>
+          Start the time below and count your heartbeats for {seconds} seconds.
+        </p>
         <img src="assets/heartrate.png" />
         <CountDown seconds={20} />
         <h4>How Many Beats?</h4>
         <p>Enter what you counted below:</p>
-        <IonInput type="number" placeholder="Beats" onIonChange={updateBeats} countdownID="heartrate" />
+        <IonInput
+          type="number"
+          placeholder="Beats"
+          onIonChange={updateBeats}
+          countdownID="heartrate"
+        />
       </div>
     </>
   );

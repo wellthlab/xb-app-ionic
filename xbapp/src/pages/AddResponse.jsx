@@ -46,12 +46,12 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
   async function save(res) {
     setSaved("saving");
 
-    if(!Array.isArray(res)) {
+    if (!Array.isArray(res)) {
       res.type = type; // We can only set type for single-response types; otherwise, provider needs to do it
       res = [res];
     }
 
-    for(var r of res) {
+    for (var r of res) {
       r.day = daynumber;
       console.log("Add response", r);
       await controllers.ADD_RESPONSE(gid, r);
