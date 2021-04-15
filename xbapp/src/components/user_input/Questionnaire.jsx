@@ -60,16 +60,16 @@ const Questionnaire = (props) => {
 
   return (
     <>
-    <div id="moodQuestions">
-      <h4>How do you feel today?</h4>
-      <MoodPicker
-        onChange={async (moodVal, smileyVal) => {
-          setMoodValue(moodVal);
-          setSmileyVal(smileyVal);
-        }}
-        typeOfSlider="comparing"
-      />
-      <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
+      <div id="moodQuestions">
+        <h4>How do you feel today?</h4>
+        <MoodPicker
+          onChange={async (moodVal, smileyVal) => {
+            setMoodValue(moodVal);
+            setSmileyVal(smileyVal);
+          }}
+          typeOfSlider="comparing"
+        />
+        <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 
         <IonRadioGroup
           allow-empty-selection="true"

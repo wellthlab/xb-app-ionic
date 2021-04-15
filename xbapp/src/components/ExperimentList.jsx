@@ -34,7 +34,7 @@ const ExperimentList = (props) => {
 
   var steams = [...teams]; // Shallow copy teams so we can sort them
 
-  steams.sort( (a,b) => {
+  steams.sort((a, b) => {
     return a.experiment.day - b.experiment.day;
   });
 
