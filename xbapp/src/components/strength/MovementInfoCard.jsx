@@ -25,8 +25,8 @@ const MovementInfoCard = (props) => {
       <IonCardHeader>
         <IonCardTitle>{props.name}</IonCardTitle>
         <figure id="promo">
-          <img src={"assets/moves/" + props.images[0]} class="A" />
-          <img src={"assets/moves/" + props.images[1]} class="B" />
+          <img src={"assets/moves/" + props.images[0]} className="A" />
+          <img src={"assets/moves/" + props.images[1]} className="B" />
         </figure>
         <br></br>
         <br></br>
