@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import CountDown from "../user_input/CountDown";
 
 import { heart } from "ionicons/icons";
-
+import "./HeartRate.scss";
 
 const HeartRate = ({ onChange }) => {
   const [rate, setRate] = useState(null);
@@ -22,11 +22,17 @@ const HeartRate = ({ onChange }) => {
 
   return (
     <>
-      <IonTitle><IonIcon icon="heart" /></IonTitle>
-      <p>Find your pulse, and count your heartbeats for {seconds} seconds.</p>
-      <CountDown seconds={20} />
-      <p>How many beats did you count?</p>
-      <IonInput type="number" placeholder="Beats" onIonChange={updateBeats} countdownID="heartrate" />
+      <div id="heartratePage">
+        <IonTitle><IonIcon icon="heart" /></IonTitle>
+        <h3>Record Your Pulse</h3>
+        <p>Find your pulse by firmly gripping your wrist like in the diagram below.</p>
+        <p>Start the time below and count your heartbeats for {seconds} seconds.</p>
+        <img src="assets/heartrate.png" />
+        <CountDown seconds={20} />
+        <h4>How Many Beats?</h4>
+        <p>Enter what you counted below:</p>
+        <IonInput type="number" placeholder="Beats" onIonChange={updateBeats} countdownID="heartrate" />
+      </div>
     </>
   );
 };

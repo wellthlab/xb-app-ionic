@@ -21,10 +21,6 @@ ion-content {
 	padding-bottom: 40px;
 }
 
-img {
-	width: 90px !important;
-}
-
 .MovementInfoCard.selected {
 	background: var(--ion-color-secondary);
 }
@@ -54,6 +50,10 @@ img {
 #movementChoices > p > span {
 	font-family: "Nunito SemiBold";
 	color: var(--ion-color-secondary);
+}
+
+#movementChoices img {
+	width: 90px;
 }
 
 .swiper-pagination-bullet {
