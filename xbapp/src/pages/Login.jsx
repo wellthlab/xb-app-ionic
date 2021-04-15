@@ -90,7 +90,7 @@ class Login extends Component {
             {form}
             <div>
               <h4>New to the app?</h4>
-              <div class="centering">
+              <div className="centering">
                 <IonButton routerLink="/register">Register</IonButton>
                 <IonButton routerLink="/tutorial">Tutorial</IonButton>
               </div>

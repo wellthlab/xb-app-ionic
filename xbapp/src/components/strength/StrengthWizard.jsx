@@ -114,7 +114,11 @@ const StrengthWizard = (props) => {
         var res = {};
         res.sets = sets; // Contains exercises and number of sets
         res.heartrate = postHeart; // Contains heart rate
-        props.onSubmit(res);
+        res.type = 'strength';
+        var rmins = {};
+        rmins.type = 'minutes';
+        rmins.minutes = mins;
+        props.onSubmit([res, rmins]);
       }}>Submit</IonButton>
      </>,
      rule: () => { return true; }

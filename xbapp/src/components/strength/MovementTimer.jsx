@@ -18,6 +18,8 @@ const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
       <p style={{"padding": "5px 8px 5px 8px"}}>Repeat these two moves. Do ten of the first exercise, followed by ten of the second, for a total of <strong>{mins} minutes</strong>.</p>
       <p style={{"padding": "5px 8px 5px 8px"}}>Keep a running count of your sets, using the set counters. (A set is ten repetitions of a single exercise.)</p>
 
+      <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
+
       {exercises.map((ex, i) => {
         var move = getMove(ex);
         console.log("Get move", ex, move);
@@ -28,7 +30,6 @@ const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
         </MovementInfoCard>
       })}
 
-      <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
     </>
   );
 };

@@ -27,7 +27,6 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
   //const history = useHistory();
 
   const [saved, setSaved] = useState(false);
-
   const [group, setGroup] = useState(false);
 
   // Load team data if required; mostly useful during development
@@ -46,9 +45,18 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
 
   async function save(res) {
     setSaved("saving");
-    res.type = type;
-    res.day = daynumber;
-    await controllers.ADD_RESPONSE(gid, res);
+
+    if(!Array.isArray(res)) {
+      res.type = type; // We can only set type for single-response types; otherwise, provider needs to do it
+      res = [res];
+    }
+
+    for(var r of res) {
+      r.day = daynumber;
+      console.log("Add response", r);
+      await controllers.ADD_RESPONSE(gid, r);
+    }
+
     setSaved("saved");
   }
 
@@ -60,7 +68,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
 
   var content;
   if (saved == "saved") {
-    var link = "/group/" + gid + "/" + daynumber;
+    var link = "/group/" + gid + "/";
     content = (
       <>
         <div className="done">
@@ -72,7 +80,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
             progress.
           </p>
           <p className="centering">
-            <IonButton onClick={reset}>Back to Responses</IonButton>
+            <IonButton routerLink={link}>Back to Experiment</IonButton>
           </p>
         </div>
       </>
