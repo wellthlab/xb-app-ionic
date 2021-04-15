@@ -75,6 +75,12 @@ function Timer(props) {
       localStorage.setItem("recordedSeconds", seconds);
       localStorage.setItem("recordedMinutes", minutes);
       localStorage.setItem("recordedHours", hours);
+
+      var secondsToUse = hours * 3600 + minutes * 60 + seconds;
+      localStorage.setItem("time", secondsToUse);
+      if (props.onStop) {
+        props.onStop(secondsToUse);
+      }
     }
     setIsActive(!isActive);
   }
@@ -89,23 +95,6 @@ function Timer(props) {
     setIsActive(false);
     localStorage.removeItem("countActive");
     localStorage.removeItem("timerStartedAt");
-  }
-
-  function submit() {
-    setSeconds(0);
-    localStorage.removeItem("recordedSeconds");
-    setMinutes(0);
-    localStorage.removeItem("recordedMinutes");
-    setHours(0);
-    localStorage.removeItem("recordedHours");
-    setIsActive(false);
-    localStorage.setItem("countActive", false);
-    localStorage.removeItem("timerStartedAt");
-    var secondsToUse = hours * 3600 + minutes * 60 + seconds;
-    localStorage.setItem("time", secondsToUse);
-    if (props.onStop) {
-      props.onStop(secondsToUse);
-    }
   }
 
   useEffect(() => {
@@ -145,8 +134,6 @@ function Timer(props) {
         <div className="row">
           <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
           <IonButton onClick={reset}>Reset</IonButton>
-          <div></div>
-          <IonButton onClick={submit}>Stop</IonButton>
         </div>
       ) : (
         <></>
