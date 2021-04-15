@@ -1,18 +1,28 @@
+.MovementPicker ion-card {
+  text-align: center;
+}
+
 #promo {
-    margin-top: 33px;
-    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-items: center;
+    align-items: center;
+    min-height: 100px;
   }
-  
+
   .A {
   animation: animA 1s infinite alternate;
-  position: absolute;
+  grid-column: 1;
+  grid-row: 1;
   }
-  
+
   .B {
   animation: animB 1s infinite alternate;
-  position: absolute;
+  grid-column: 1;
+  grid-row: 1;
   }
-  
+
   @keyframes animA {
     0% {opacity: 0; z-index: 0}
     24% {opacity: 0}
@@ -21,7 +31,7 @@
     75% {opacity: 0}
     100% {opacity: 0; z-index: 1}
   }
-  
+
   @keyframes animB {
     0% {opacity: 1; z-index: 1}
     24% {opacity: 1}

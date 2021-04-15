@@ -1,15 +1,16 @@
 .instruction {
-	background: var(--ion-background-color, #fff);
+	background: var(--ion-toolbar-background, #fff);
+	color: var(--ion-toolbar-color);
 	display: block;
 	width: 100%;
 	position: fixed;
 	bottom: 0;
 	z-index: 60;
-	font-weight: bold;
+	font-family: "Nunito SemiBold";
 	text-align: center;
-	font-size: 1.1.em;
-	padding: 10px;
-	border-top: 1px solid #ccc;
+	font-size: 1.1em;
+	padding: 5px;
+	border-top: 1px solid var(--ion-color-light);
 }
 
 ion-content {

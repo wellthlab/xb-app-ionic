@@ -101,7 +101,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
       <>
         <IonMenu side="start" contentId="appContent">
           <IonHeader>
-            <IonToolbar color="#5d8286"></IonToolbar>
+            <IonToolbar></IonToolbar>
           </IonHeader>
           <IonContent>
             <IonList>
