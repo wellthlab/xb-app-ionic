@@ -8,14 +8,14 @@ import {
   IonButton,
   IonSlides,
   IonSlide,
-  IonContent,
+  IonTitle,
   IonItem,
 } from "@ionic/react";
 import { connect } from "react-redux";
 
 import MovementPicker from "./MovementPicker";
-
 import MovementTimer from "./MovementTimer";
+import HeartRate from "./HeartRate";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
@@ -26,30 +26,9 @@ import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Pe
  *
  */
 const StrengthWizard = (props) => {
-  const [preHeart, setPreHeart] = useState(null);
-  const [postHeart, setPostHeart] = useState(null);
-
-  const [postBreath, setPostBreath] = useState(null);
-
-  const [enjoyment, setEnjoyment] = useState(null);
-
 
 
   const [stage, setStage] = useState(0);
-
-
-  /**
-   * Compile all the collected data into a response
-   */
-  function sendResponse() {
-    var results = {};
-
-    // TODO
-
-    if (props.onSubmit) {
-      props.onSubmit(results);
-    }
-  }
 
   /**
    * Content contains all the pages, plus functions for checking if the stage is complete
@@ -112,6 +91,35 @@ const StrengthWizard = (props) => {
     rule: () => { return true; }
   });
 
+  /**
+   * Heart Rate and effort review
+   */
+  const [postHeart, setPostHeart] = useState(null);
+
+  content.push({
+    el: <HeartRate onChange={ (rate) => { console.log("Set Heart Rate", rate); setPostHeart(rate); }} />,
+    rule: () => { return postHeart !== null; }
+  })
+
+
+  /**
+   * Final stage, save button!
+   */
+   content.push({
+     el: <>
+      <IonTitle>Good work!</IonTitle>
+      <p>Submit your workout to record your progress.</p>
+      <p><strong>See you tomorrow!</strong></p>
+      <IonButton onClick={ function() {
+        var res = {};
+        res.sets = sets; // Contains exercises and number of sets
+        res.heartrate = postHeart; // Contains heart rate
+        props.onSubmit(res);
+      }}>Submit</IonButton>
+     </>,
+     rule: () => { return true; }
+   });
+
 
   /**
    * Wire the stages together so we can progress from one to the next
@@ -142,13 +150,10 @@ const StrengthWizard = (props) => {
     var c = content[i];
     var nextExists = i < content.length - 1;
 
-
-    console.log("Next exists?", nextExists);
-
     slides.push(
       <div key={"slide" + i}>
           {c.el}
-          { nextExists ? <IonItem className="next"><IonButton onClick={nextSlide}>Next</IonButton></IonItem> : "" }
+          { nextExists ? <div className="next"><IonButton onClick={nextSlide}>Next</IonButton></div> : "" }
       </div>
     );
   }

@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { IonButton, IonItem, IonInput, IonContent } from "@ionic/react";
+import { IonButton, IonIcon, IonInput, IonTitle } from "@ionic/react";
 import { connect } from "react-redux";
-import Timer from "./Timer";
+import CountDown from "../user_input/CountDown";
 
-const MinuteEntry = (props) => {
+import { heart } from "ionicons/icons";
+
+
+const HeartRate = ({ onChange }) => {
   const [rate, setRate] = useState(null);
 
-  var seconds = 30; // Number of seconds to count for
+  var seconds = 20; // Number of seconds to count for
 
-  function save() {
-    if (props.onSubmit) {
-      props.onSubmit(rate);
+  function updateBeats(e) {
+    var beats = e.detail.value
+    console.log(beats, onChange);
+    if (onChange) {
+      var rate = beats * (60 / seconds)
+      onChange(rate);
     }
   }
 
-  function updateBeats(beats) {
-    save(beats * (60 / seconds));
-  }
-
-  // TODO
   return (
     <>
+      <IonTitle><IonIcon icon="heart" /></IonTitle>
       <p>Find your pulse, and count your heartbeats for {seconds} seconds.</p>
+      <CountDown seconds={20} />
       <p>How many beats did you count?</p>
-      <IonInput type="number" placeholder="Beats" />
+      <IonInput type="number" placeholder="Beats" onIonChange={updateBeats} countdownID="heartrate" />
     </>
   );
 };
 
-export default MinuteEntry;
+export default HeartRate;

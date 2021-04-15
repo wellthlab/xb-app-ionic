@@ -18,23 +18,25 @@ const MovementTimer = ({ onChange, start }) => {
 
   // TODO
   return (
-			<>
-				<span>{sets}</span>
-				<div slot="end">
-					<IonButton onClick={
-						() => {
-							setSets(sets + 1);
-							save();
-						}
-					}><IonIcon icon={addCircleOutline} /></IonButton>
-					<IonButton onClick={
+			<div style={{paddingTop: "10px"}}>
+			<IonButton onClick={
 						() => {
 							setSets(sets - 1);
 							save();
 						}
-					}><IonIcon icon={removeCircleOutline} /></IonButton>
-				</div>
-			</>
+					}>
+				<IonIcon icon={removeCircleOutline} />
+			</IonButton>
+			<span style={{fontSize: "2em", fontWeight: "bold", display: "inline-block", padding: "0 5px 0 5px"}}>{sets}</span>
+			<IonButton onClick={
+						() => {
+							setSets(sets + 1);
+							save();
+						}
+					}>
+				<IonIcon icon={addCircleOutline} />
+			</IonButton>
+			</div>
   );
 };
 
