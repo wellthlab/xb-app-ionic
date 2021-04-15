@@ -38,17 +38,17 @@ class Feed extends Component {
       <IonPage>
         <XBHeader title="News &amp; Updates"></XBHeader>
         <IonContent fullscreen>
-        {localStorage.getItem("countActive") != null ? (
-          <div style={{ textAlign: "center" }}>
-            <Timer buttonsOnShow={false} />
-            <Link to={localStorage.getItem("locationOfTimer")}>
-              Go To Timer{" "}
-            </Link>
-          </div>
-        ) : (
-          <></>
-        )}
-        {c}
+          {localStorage.getItem("countActive") != null ? (
+            <div style={{ textAlign: "center" }}>
+              <Timer buttonsOnShow={false} />
+              <Link to={localStorage.getItem("locationOfTimer")}>
+                Go To Timer{" "}
+              </Link>
+            </div>
+          ) : (
+            <></>
+          )}
+          {c}
         </IonContent>
       </IonPage>
     );

@@ -90,6 +90,12 @@ const MinuteEntry = (props) => {
     var min = 0;
     if (expanded == "panel2") {
       min = Math.floor(localStorage.getItem("time") / 60);
+      //we don;t need the timer on/showing in the feed anymore - so we are removing the items related to timer
+      localStorage.removeItem("recordedSeconds");
+      localStorage.removeItem("recordedMinutes");
+      localStorage.removeItem("recordedHours");
+      localStorage.removeItem("countActive");
+      localStorage.removeItem("timerStartedAt");
     } else if (expanded == "panel3") {
       min = number.value;
     }

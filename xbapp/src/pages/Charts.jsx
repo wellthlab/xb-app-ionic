@@ -12,7 +12,7 @@ import {
   IonTitle,
   IonLabel,
   IonButton,
-  IonList
+  IonList,
 } from "@ionic/react";
 import { peopleOutline, todayOutline, add } from "ionicons/icons";
 import Instructions from "../components/Instructions";
@@ -55,16 +55,16 @@ const GroupCharts = ({ match, teams, controllers, account }) => {
     <IonPage>
       <XBHeader title={group.name}></XBHeader>
       <IonContent>
-      {group.users.length == 1 ? (
-        <>
-          <MinutesChart group={group} individual={true} />
-        </>
-      ) : (
-        <>
-          <MinutesChart group={group} individual={false} />
-        </>
-      )}
-      <IonItemDivider></IonItemDivider>
+        {group.users.length == 1 ? (
+          <>
+            <MinutesChart group={group} individual={true} />
+          </>
+        ) : (
+          <>
+            <MinutesChart group={group} individual={false} />
+          </>
+        )}
+        <IonItemDivider></IonItemDivider>
       </IonContent>
     </IonPage>
   );

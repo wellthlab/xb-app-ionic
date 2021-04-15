@@ -137,13 +137,19 @@ const Register = ({ ACCEPT_LOGIN }) => {
         </IonItem>
         <IonItem>{err}</IonItem>
       </IonCard>
-      <p>Please note that by registering and creating an account, you declare you consent to the <a
+      <p>
+        Please note that by registering and creating an account, you declare you
+        consent to the{" "}
+        <a
           href="javascript:void(0)"
           onClick={() => {
             toggleModal();
           }}
-        >terms of our study</a>,
-        and understand how your personal data will be used.</p>
+        >
+          terms of our study
+        </a>
+        , and understand how your personal data will be used.
+      </p>
 
       <div className="centering">{btn}</div>
       <div className="centering">

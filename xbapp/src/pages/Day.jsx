@@ -8,12 +8,16 @@ import {
   IonList,
   IonItem,
   IonLabel,
-  IonIcon
-
+  IonIcon,
 } from "@ionic/react";
 import XBHeader from "../components/XBHeader";
 
-import { checkmarkCircleOutline, closeCircleOutline, arrowForwardOutline, calendarClearOutline } from "ionicons/icons";
+import {
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  arrowForwardOutline,
+  calendarClearOutline,
+} from "ionicons/icons";
 
 import { Link } from "react-router-dom";
 
@@ -21,7 +25,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addControllersProp } from "../model/controllers";
 
-import './Day.css';
+import "./Day.css";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -71,7 +75,11 @@ const Day = ({ match, teams, account, controllers }) => {
   var sbtn = "";
   if (typeof day.responseTypes.strength == "undefined") {
     taskrows.push(
-      <IonItem color="danger" routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"} detail={false}>
+      <IonItem
+        color="danger"
+        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
+        detail={false}
+      >
         <IonIcon icon={icon_missing} slot="start" />
         Daily Strength Exercise
         <IonIcon icon={icon_go} slot="end" />
@@ -79,7 +87,11 @@ const Day = ({ match, teams, account, controllers }) => {
     );
   } else {
     taskrows.push(
-      <IonItem color="success" routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"} detail={false}>
+      <IonItem
+        color="success"
+        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
+        detail={false}
+      >
         <IonIcon icon={icon_done} slot="start" />
         Daily Strength Exercise
       </IonItem>
@@ -87,17 +99,27 @@ const Day = ({ match, teams, account, controllers }) => {
   }
 
   taskrows.push(
-      <IonItem color={total > 0 ? "success" : "danger"} routerLink={"/group/" + group._id + "/" + daynumber + "/add/minutes"} detail={false} >
-        <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
-        {total} minutes logged
-        <IonIcon slot="end" icon={icon_go} />
-      </IonItem>
+    <IonItem
+      color={total > 0 ? "success" : "danger"}
+      routerLink={"/group/" + group._id + "/" + daynumber + "/add/minutes"}
+      detail={false}
+    >
+      <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
+      {total} minutes logged
+      <IonIcon slot="end" icon={icon_go} />
+    </IonItem>
   );
 
   var qbtn = "";
   if (typeof day.responseTypes.questionnaire == "undefined") {
     taskrows.push(
-      <IonItem color="danger" routerLink={"/group/" + group._id + "/" + daynumber + "/add/questionnaire"} detail={false}>
+      <IonItem
+        color="danger"
+        routerLink={
+          "/group/" + group._id + "/" + daynumber + "/add/questionnaire"
+        }
+        detail={false}
+      >
         <IonIcon icon={icon_missing} slot="start" />
         Daily Review
         <IonIcon icon={icon_go} slot="end" />
@@ -105,27 +127,30 @@ const Day = ({ match, teams, account, controllers }) => {
     );
   } else {
     taskrows.push(
-      <IonItem color="success" routerLink={"/group/" + group._id + "/" + daynumber + "/add/questionnaire"} detail={false}>
+      <IonItem
+        color="success"
+        routerLink={
+          "/group/" + group._id + "/" + daynumber + "/add/questionnaire"
+        }
+        detail={false}
+      >
         <IonIcon icon={icon_done} slot="start" />
         Daily Review
       </IonItem>
     );
   }
 
-
-
   return (
     <IonPage>
       <XBHeader title={group.name + ": Day " + daynumber}></XBHeader>
       <IonContent>
-
         <IonList className="tasklist">
           <IonItem>
-            <IonIcon icon={calendarClearOutline} slot="start" /> <strong>Day {daynumber}</strong> &nbsp; &nbsp; {day.date}
+            <IonIcon icon={calendarClearOutline} slot="start" />{" "}
+            <strong>Day {daynumber}</strong> &nbsp; &nbsp; {day.date}
           </IonItem>
           {taskrows}
         </IonList>
-
       </IonContent>
     </IonPage>
   );

@@ -28,7 +28,6 @@ const MovementInfoCard = (props) => {
           <img src={"assets/moves/" + props.images[0]} className="A" />
           <img src={"assets/moves/" + props.images[1]} className="B" />
         </figure>
-
       </IonCardHeader>
       <IonCardContent>
         <p>{props.text}</p>

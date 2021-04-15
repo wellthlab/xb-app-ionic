@@ -27,7 +27,7 @@ import JourneyPlanner from "./pages/JourneyPlanner";
 import Register from "./pages/Register.jsx";
 import Tutorial from "./pages/Tutorial.jsx";
 import Group from "./pages/Group.jsx";
-import Charts from "./pages/Charts"
+import Charts from "./pages/Charts";
 import Day from "./pages/Day";
 import ExperimentYourself from "./pages/ExperimentYourself.jsx";
 import ExperimentInGroup from "./pages/ExperimentInGroup.jsx";

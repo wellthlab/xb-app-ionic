@@ -89,14 +89,10 @@ class Login extends Component {
             <img src="assets/strength_logo.png" alt="XB Logo" />
             {form}
             <div>
-              <h4>
-                New to the app?
-              </h4>
+              <h4>New to the app?</h4>
               <div class="centering">
                 <IonButton routerLink="/register">Register</IonButton>
-                <IonButton routerLink="/tutorial">
-                  Tutorial
-                </IonButton>
+                <IonButton routerLink="/tutorial">Tutorial</IonButton>
               </div>
             </div>
           </div>

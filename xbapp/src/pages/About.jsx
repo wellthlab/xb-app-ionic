@@ -87,10 +87,12 @@ const TabAccount = ({}) => {
 
         <IonItemDivider></IonItemDivider>
         <div id="corpInfo">
-          <p>eXperiment in a Box<br />
-          &copy; 2020-2021 University of Southampton</p>
+          <p>
+            eXperiment in a Box
+            <br />
+            &copy; 2020-2021 University of Southampton
+          </p>
         </div>
-
       </IonContent>
     </IonPage>
   );

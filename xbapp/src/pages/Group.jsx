@@ -12,9 +12,16 @@ import {
   IonTitle,
   IonLabel,
   IonButton,
-  IonList
+  IonList,
 } from "@ionic/react";
-import { peopleOutline, todayOutline, add, barChart, checkmarkCircleOutline, closeCircleOutline } from "ionicons/icons";
+import {
+  peopleOutline,
+  todayOutline,
+  add,
+  barChart,
+  checkmarkCircleOutline,
+  closeCircleOutline,
+} from "ionicons/icons";
 import Instructions from "../components/Instructions";
 import GenericAlert from "../components/GenericAlert";
 
@@ -49,7 +56,6 @@ const Group = ({ match, teams, controllers, account }) => {
     return <IonPage>Nope :(</IonPage>;
   }
 
-
   var exp = group.experiment.info;
   var entries = group.entries;
 
@@ -65,15 +71,21 @@ const Group = ({ match, teams, controllers, account }) => {
     console.log(entry);
 
     // TODO: Don't hard code this; take from experiment
-    var statusList = ([{type: 'strength', desc: "Daily Strength Exercise" }, {type: 'minutes', desc: 'Movement Minutes'}, {type: 'questionnaire', desc: 'Daily Review'}]).map((type) => {
-      var done = (typeof entry.responseTypes[type.type] !== 'undefined');
+    var statusList = [
+      { type: "strength", desc: "Daily Strength Exercise" },
+      { type: "minutes", desc: "Movement Minutes" },
+      { type: "questionnaire", desc: "Daily Review" },
+    ].map((type) => {
+      var done = typeof entry.responseTypes[type.type] !== "undefined";
 
-      console.log(type.type, done)
+      console.log(type.type, done);
 
-      return <IonItem color={done ? 'success' : 'danger'} key={type.type}>
-        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
-        {type.desc}
-      </IonItem>
+      return (
+        <IonItem color={done ? "success" : "danger"} key={type.type}>
+          <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+          {type.desc}
+        </IonItem>
+      );
     });
 
     days.push(
@@ -84,9 +96,7 @@ const Group = ({ match, teams, controllers, account }) => {
         </ion-card-header>
 
         <ion-card-content>
-          <IonList>
-            {statusList}
-          </IonList>
+          <IonList>{statusList}</IonList>
         </ion-card-content>
       </IonCard>
     );
@@ -105,16 +115,13 @@ const Group = ({ match, teams, controllers, account }) => {
       : "Day " + day;
 
   var members =
-    group.users.length > 1
-      ? group.users.length + " members"
-      : "Just You";
+    group.users.length > 1 ? group.users.length + " members" : "Just You";
 
   return (
     <IonPage id="weekInfo">
       <XBHeader title={group.name}></XBHeader>
       <IonContent>
         <IonList>
-
           <IonItem>
             <h2 slot="start">{exp.title}</h2>
           </IonItem>
@@ -124,19 +131,32 @@ const Group = ({ match, teams, controllers, account }) => {
           </IonItem>
 
           <IonItem color="primary">
-                <IonIcon icon={peopleOutline} slot="start" /> {members}
-                <span slot="end">Team Code: <strong>{group.code}</strong></span>
+            <IonIcon icon={peopleOutline} slot="start" /> {members}
+            <span slot="end">
+              Team Code: <strong>{group.code}</strong>
+            </span>
           </IonItem>
 
-          <IonItem color="tertiary" routerLink={'/group/' + group._id + '/charts'} detail={true}>
+          <IonItem
+            color="tertiary"
+            routerLink={"/group/" + group._id + "/charts"}
+            detail={true}
+          >
             <IonIcon icon={barChart} slot="start" />
             View Charts
           </IonItem>
 
-          <IonItem color={ day < 0 ? "warning" : ( day > group.experiment.info.duration ? "error" : "primary" ) }>
-              <IonIcon icon={todayOutline} slot="start"/>  {daydesc}
+          <IonItem
+            color={
+              day < 0
+                ? "warning"
+                : day > group.experiment.info.duration
+                ? "error"
+                : "primary"
+            }
+          >
+            <IonIcon icon={todayOutline} slot="start" /> {daydesc}
           </IonItem>
-
         </IonList>
 
         {days}

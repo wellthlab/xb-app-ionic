@@ -28,3 +28,7 @@ img {
 .MovementInfoCard.selected {
 	background: var(--ion-color-secondary);
 }
+.slidesCharts{
+    background-color: #1e1e1e;
+	height:300px;
+}
