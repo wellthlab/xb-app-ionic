@@ -193,7 +193,7 @@ const MovementPicker = (props) => {
       // Trap m in a closure
       var selected = picked.includes(m.id);
       var movementCard = (
-        <IonSlide>
+        <IonSlide className="movementSlides">
           <div
             style={{
               width: "400px",
@@ -271,18 +271,21 @@ const MovementPicker = (props) => {
   return (
     <>
       {mbox}
-      <p style={{ textAlign: "center" }}>
-        Please select one Upper exercide and one Lower exercise.
-      </p>
-      <p style={{ textAlign: "center" }}>UPPER</p>
-      <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-        {movementsUpper}
-      </IonSlides>
-      <IonItemDivider></IonItemDivider>
-      <p style={{ textAlign: "center" }}>LOWER</p>
-      <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-        {movementsLower}
-      </IonSlides>
+      <div id="movementChoices">
+        <h3>Choose Today's Routine</h3>
+        <p>
+          Please select one <span>upper body</span> movement and one <span>lower body</span> movement.
+        </p>
+        <h4>Upper Body Movements</h4>
+        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          {movementsUpper}
+        </IonSlides>
+        <IonItemDivider></IonItemDivider>
+        <h4>Lower Body Movements</h4>
+        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          {movementsLower}
+        </IonSlides>
+      </div>
     </>
   );
 };
