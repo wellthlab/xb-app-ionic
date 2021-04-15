@@ -12,10 +12,10 @@ const HeartRate = ({ onChange }) => {
   var seconds = 20; // Number of seconds to count for
 
   function updateBeats(e) {
-    var beats = e.detail.value
+    var beats = e.detail.value;
     console.log(beats, onChange);
     if (onChange) {
-      var rate = beats * (60 / seconds)
+      var rate = beats * (60 / seconds);
       onChange(rate);
     }
   }

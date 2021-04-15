@@ -27,8 +27,7 @@ function CountDown(props) {
     setIsActive(false);
   }
 
-  if(seconds === false)
-    reset(); // Set initial state
+  if (seconds === false) reset(); // Set initial state
 
   useEffect(() => {
     let interval = null;
@@ -54,7 +53,7 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  console.log("countdown", minutes, seconds)
+  console.log("countdown", minutes, seconds);
 
   return (
     <IonItem>

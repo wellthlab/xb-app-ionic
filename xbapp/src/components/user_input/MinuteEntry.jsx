@@ -131,7 +131,7 @@ const MinuteEntry = (props) => {
         showAlert={showAlert}
         toggleAlert={toggleAlert}
         message={
-          "Please choose one of teh Input methods (Timer or Manual Minutes) by tapping on the title."
+          "Please choose one of the Input methods (Timer or Manual Minutes) by tapping on the title."
         }
       />
       <div className="row">

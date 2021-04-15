@@ -34,7 +34,7 @@ const ExperimentInGroup = (props) => {
           <ion-text color="success">Great, you've joined a new team!</ion-text>
         </div>
         <div className="centering">
-          <ion-button routerLink="/group">Go to Experiments</ion-button>
+          <IonButton routerLink="/group">Go to Experiments</IonButton>
         </div>
       </>
     );

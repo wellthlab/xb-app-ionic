@@ -3,8 +3,8 @@ import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
 
 import { connect } from "react-redux";
 import CountDown from "../user_input/CountDown";
-import MovementInfoCard from "./MovementInfoCard"
-import SetCounter from "./SetCounter"
+import MovementInfoCard from "./MovementInfoCard";
+import SetCounter from "./SetCounter";
 
 import { moves, getMove } from "./MovementPicker"
 import "./MovementTimer.scss";
@@ -13,7 +13,6 @@ import "./MovementTimer.scss";
  * Time movements
  */
 const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
-
   return (
     <>
       <div id="movementTimer">

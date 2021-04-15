@@ -292,16 +292,16 @@ const MovementPicker = (props) => {
 
 export default MovementPicker;
 
-var getMove = function(id) {
-  for(var i in moves) {
+var getMove = function (id) {
+  for (var i in moves) {
     var m = moves[i];
 
-    if(m.id == id) {
+    if (m.id == id) {
       return m;
     }
   }
 
   return false;
-}
+};
 
 export { moves, getMove };
