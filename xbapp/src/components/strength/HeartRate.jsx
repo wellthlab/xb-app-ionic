@@ -21,7 +21,6 @@ const MinuteEntry = (props) => {
   // TODO
   return (
     <>
-      <img src="assets/icons/heart.png" alt="Heartrate" />
       <p>Find your pulse, and count your heartbeats for {seconds} seconds.</p>
       <p>How many beats did you count?</p>
       <IonInput type="number" placeholder="Beats" />

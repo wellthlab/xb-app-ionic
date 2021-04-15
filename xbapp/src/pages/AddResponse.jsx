@@ -95,24 +95,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       case "strength":
         var week = Math.floor(daynumber / 7);
 
-        // Determine required minutes based on week
-        // TODO: Check what these should be!
-        var mins;
-        if (week <= 1) {
-          mins = 7;
-          //reps = 1;
-        } else if (week == 2) {
-          mins = 10;
-          //reps = 2;
-        } else if (week == 3) {
-          mins = 12;
-          //reps = 2;
-        } else if (week >= 4) {
-          mins = 15;
-          //reps = 3;
-        }
-
-        input = <StrengthWizard mins={mins} week={week} />;
+        input = <StrengthWizard countdownID={daynumber + "-" + gid} week={week} onSubmit={save} />;
         break;
 
       default:

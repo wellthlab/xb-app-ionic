@@ -33,77 +33,128 @@ const StrengthWizard = (props) => {
 
   const [enjoyment, setEnjoyment] = useState(null);
 
-  const [reps, setReps] = useState(null);
 
-  // Use storage react hook to use capacitor storage to store weekly exercise choices
-  var [exList, setExList] = useStorageItem("week" + props.week + "-exlist", []);
 
-  console.log("Week is ", props.week);
+  const [stage, setStage] = useState(0);
 
+
+  /**
+   * Compile all the collected data into a response
+   */
   function sendResponse() {
     var results = {};
 
-    // TODO: Compile results from the pages into a response object to be saved
+    // TODO
 
     if (props.onSubmit) {
       props.onSubmit(results);
     }
   }
 
+  /**
+   * Content contains all the pages, plus functions for checking if the stage is complete
+   */
   var content = [];
 
+  /**
+   * Set up the exercise picker
+   */
+  /* TODO: This doesn't work - useStorageItem is broken?
+  // Use storage react hook to use capacitor storage to store weekly exercise choices
+  var [exList, setExList] = useStorageItem("week" + props.week + "-exlist", false);
+
   // On first render, exList will be undefined - because it takes a cycle to be fetched
-  if (!exList) {
+  if (typeof exList === 'undefined') {
+    console.log(exList);
     return <ion-spinner name="crescent" />;
   }
 
-  // exList will be returned as a string
   exList = JSON.parse(exList);
+  */
+  var [exList, setExList] = useState([]);
 
-  // Movement chooser shows up first
-  if (exList.length < 2) {
-    content.push(
-      <MovementPicker
-        onChange={async (list) => {
-          setExList(list);
-        }}
-        number={2}
-      />
-    );
+  content.push(
+    {
+      el: <MovementPicker
+            onChange={(list) => {
+              console.log("Set exercise list", list);
+              setExList(list);
+            }}
+            number={2}
+          />,
+      rule: function() {
+        console.log(exList);
+        return exList.length == 2;
+      }
+    }
+
+  );
+
+  /**
+   * Set up the timer and set counter
+   */
+  var week = props.week;
+  var mins = Math.max(1, week - 1) * 7; // 7 minute increase per week, but just 7 in weeks 1 and 2
+
+  const [sets, setSets] = useState(null);
+
+  function updateSets(type, count) {
+    var copy = {};
+    Object.assign(copy, sets);
+
+    copy[type] = count;
+
+    setSets(copy);
   }
 
-  // Movement Timer is page 2
-  content.push(<MovementTimer exercises={exList} onChange={() => {}} />);
+  content.push({
+    el: <MovementTimer exercises={exList} onDone={() => {  }} onSetChange={ updateSets } mins={mins} countdownID={props.countdownID} />,
+    rule: () => { return true; }
+  });
+
+
+  /**
+   * Wire the stages together so we can progress from one to the next
+   *
+   */
+
+  // Work out the maximum stage that's allowed
+  var maxStage = 0;
+  for(var i in content) {
+    maxStage = i;
+    if(!content[i].rule()) {
+      console.log("Stage", i, "is not complete");
+      break;
+    }
+  }
+
+  console.log("Max stage is", maxStage, "of", content.length);
 
   // Wrap all the content into slides, with next buttons
   var slides = [];
 
+  var nextSlide = () => {
+    setStage(stage+1);
+  }
+
   // TODO: Next button should be linked to whether page is complete or not
   for (var i in content) {
     var c = content[i];
-    var next =
-      typeof content[i + 1] == "undefined" ? (
-        <></>
-      ) : (
-        <IonButton>Next</IonButton>
-      );
+    var nextExists = i < content.length - 1;
+
+
+    console.log("Next exists?", nextExists);
+
     slides.push(
-      <IonSlide key={"slide" + i}>
-        <IonContent>
-          {c}
-          <IonItem>{next}</IonItem>
-        </IonContent>
-      </IonSlide>
+      <div key={"slide" + i}>
+          {c.el}
+          { nextExists ? <IonItem className="next"><IonButton onClick={nextSlide}>Next</IonButton></IonItem> : "" }
+      </div>
     );
   }
 
-  // use ion-slides to provide slide functionality
-  // and wrap each page in ion-slide
-  return (
-    <IonSlides pager={true} scrollbar={true}>
-      {slides}
-    </IonSlides>
-  );
+  return slides[Math.min(stage, maxStage)];
+
 };
 
 export default StrengthWizard;

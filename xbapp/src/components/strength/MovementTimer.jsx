@@ -2,33 +2,33 @@ import React, { useState, useEffect } from "react";
 import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
 
 import { connect } from "react-redux";
-import Countdown from "../user_input/CountDown";
+import CountDown from "../user_input/CountDown";
+import MovementInfoCard from "./MovementInfoCard"
+import SetCounter from "./SetCounter"
+
+import { moves, getMove } from "./MovementPicker"
 
 /**
  * Time movements
  */
-const MovementTimer = ({ exercises, onChange }) => {
-  const [rate, setRate] = useState(null);
+const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
 
-  console.log("Timer", exercises, typeof exercises, onChange);
-
-  var seconds = 30; // Number of seconds to count for
-
-  function save() {
-    if (onChange) {
-      onChange(rate);
-    }
-  }
-
-  // TODO
   return (
     <>
+      <p style={{"padding": "5px 8px 5px 8px"}}>Repeat these two moves. Do ten of the first exercise, followed by ten of the second, for a total of <strong>{mins} minutes</strong>.</p>
+      <p style={{"padding": "5px 8px 5px 8px"}}>Keep a running count of your sets, using the set counters. (A set is ten repetitions of a single exercise.)</p>
+
       {exercises.map((ex, i) => {
-        return <>{ex}</>;
+        var move = getMove(ex);
+        console.log("Get move", ex, move);
+        return <MovementInfoCard key={move.id} images={move.images} name={move.name}>
+          <SetCounter onChange={ (sets) => {
+            onSetChange(move.id, sets);
+          }} />
+        </MovementInfoCard>
       })}
 
-      <p>Do your moves</p>
-      <p>Timer Goes Here</p>
+      <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
     </>
   );
 };

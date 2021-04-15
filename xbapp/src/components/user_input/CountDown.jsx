@@ -14,16 +14,15 @@ function CountDown(props) {
         : parseInt(localStorage.getItem("CountDownrecordedSeconds"))
       : 0
   );
-  console.log(localStorage.getItem("CountDownStartedAt"), seconds);
+
   const [minutes, setMinutes] = useState(
     localStorage.getItem("CountDownStartedAt") != null
       ? parseInt(localStorage.getItem("CountDownStartedAt")) != 0
         ? differenceBetweenThenAndNow("minutes")
-        : parseInt(localStorage.getItem("recordedMinutes"))
-      : props.blocks > 1
-      ? 7 * (props.blocks - 1)
-      : 7 * props.blocks
+        : parseInt(localStorage.getItem("CountDownrecordedMinutes"))
+      : props.minutes
   );
+
   const [isActive, setIsActive] = useState(
     localStorage.getItem("CountDowncountActive") != null
       ? localStorage.getItem("CountDowncountActive") === "true"
@@ -55,9 +54,7 @@ function CountDown(props) {
           const min = parseInt(
             localStorage.getItem("CountDownrecordedMinutes")
           );
-          //console.log(sec, min);
           const millisec = (sec + min * 60) * 1000;
-          //console.log(millisec);
           localStorage.setItem(
             "CountDownStartedAt",
             new Date().getTime() - millisec
@@ -76,14 +73,13 @@ function CountDown(props) {
   function reset() {
     setSeconds(0);
     localStorage.removeItem("CountDownrecordedSeconds");
-    props.blocks > 1
-      ? setMinutes(7 * (props.blocks - 1))
-      : setMinutes(7 * props.blocks);
+    setMinutes(props.minutes);
     localStorage.removeItem("CountDownrecordedMinutes");
     setIsActive(false);
     localStorage.setItem("CountDowncountActive", false);
     localStorage.removeItem("CountDownStartedAt");
   }
+
   useEffect(() => {
     let interval = null;
     if (isActive) {
@@ -99,6 +95,7 @@ function CountDown(props) {
         }
         if (minutes == 0 && seconds == 0) {
           setIsActive(false);
+          reset();
           if (props.onFinish) {
             props.onFinish(true);
           }
@@ -118,7 +115,6 @@ function CountDown(props) {
       </div>
       <div className="row">
         <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
-        <IonButton onClick={reset}>Reset</IonButton>
         <div></div>
       </div>
     </div>
