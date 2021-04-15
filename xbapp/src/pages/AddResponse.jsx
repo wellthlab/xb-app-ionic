@@ -95,7 +95,13 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       case "strength":
         var week = Math.floor(daynumber / 7);
 
-        input = <StrengthWizard countdownID={daynumber + "-" + gid} week={week} onSubmit={save} />;
+        input = (
+          <StrengthWizard
+            countdownID={daynumber + "-" + gid}
+            week={week}
+            onSubmit={save}
+          />
+        );
         break;
 
       default:

@@ -26,8 +26,6 @@ import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Pe
  *
  */
 const StrengthWizard = (props) => {
-
-
   const [stage, setStage] = useState(0);
 
   /**
@@ -52,22 +50,21 @@ const StrengthWizard = (props) => {
   */
   var [exList, setExList] = useState([]);
 
-  content.push(
-    {
-      el: <MovementPicker
-            onChange={(list) => {
-              console.log("Set exercise list", list);
-              setExList(list);
-            }}
-            number={2}
-          />,
-      rule: function() {
-        console.log(exList);
-        return exList.length == 2;
-      }
-    }
-
-  );
+  content.push({
+    el: (
+      <MovementPicker
+        onChange={(list) => {
+          console.log("Set exercise list", list);
+          setExList(list);
+        }}
+        number={2}
+      />
+    ),
+    rule: function () {
+      console.log(exList);
+      return exList.length == 2;
+    },
+  });
 
   /**
    * Set up the timer and set counter
@@ -87,8 +84,18 @@ const StrengthWizard = (props) => {
   }
 
   content.push({
-    el: <MovementTimer exercises={exList} onDone={() => {  }} onSetChange={ updateSets } mins={mins} countdownID={props.countdownID} />,
-    rule: () => { return true; }
+    el: (
+      <MovementTimer
+        exercises={exList}
+        onDone={() => {}}
+        onSetChange={updateSets}
+        mins={mins}
+        countdownID={props.countdownID}
+      />
+    ),
+    rule: () => {
+      return true;
+    },
   });
 
   /**
@@ -97,29 +104,46 @@ const StrengthWizard = (props) => {
   const [postHeart, setPostHeart] = useState(null);
 
   content.push({
-    el: <HeartRate onChange={ (rate) => { console.log("Set Heart Rate", rate); setPostHeart(rate); }} />,
-    rule: () => { return postHeart !== null; }
-  })
-
+    el: (
+      <HeartRate
+        onChange={(rate) => {
+          console.log("Set Heart Rate", rate);
+          setPostHeart(rate);
+        }}
+      />
+    ),
+    rule: () => {
+      return postHeart !== null;
+    },
+  });
 
   /**
    * Final stage, save button!
    */
-   content.push({
-     el: <>
-      <IonTitle>Good work!</IonTitle>
-      <p>Submit your workout to record your progress.</p>
-      <p><strong>See you tomorrow!</strong></p>
-      <IonButton onClick={ function() {
-        var res = {};
-        res.sets = sets; // Contains exercises and number of sets
-        res.heartrate = postHeart; // Contains heart rate
-        props.onSubmit(res);
-      }}>Submit</IonButton>
-     </>,
-     rule: () => { return true; }
-   });
-
+  content.push({
+    el: (
+      <>
+        <IonTitle>Good work!</IonTitle>
+        <p>Submit your workout to record your progress.</p>
+        <p>
+          <strong>See you tomorrow!</strong>
+        </p>
+        <IonButton
+          onClick={function () {
+            var res = {};
+            res.sets = sets; // Contains exercises and number of sets
+            res.heartrate = postHeart; // Contains heart rate
+            props.onSubmit(res);
+          }}
+        >
+          Submit
+        </IonButton>
+      </>
+    ),
+    rule: () => {
+      return true;
+    },
+  });
 
   /**
    * Wire the stages together so we can progress from one to the next
@@ -128,9 +152,9 @@ const StrengthWizard = (props) => {
 
   // Work out the maximum stage that's allowed
   var maxStage = 0;
-  for(var i in content) {
+  for (var i in content) {
     maxStage = i;
-    if(!content[i].rule()) {
+    if (!content[i].rule()) {
       console.log("Stage", i, "is not complete");
       break;
     }
@@ -142,8 +166,8 @@ const StrengthWizard = (props) => {
   var slides = [];
 
   var nextSlide = () => {
-    setStage(stage+1);
-  }
+    setStage(stage + 1);
+  };
 
   // TODO: Next button should be linked to whether page is complete or not
   for (var i in content) {
@@ -152,14 +176,19 @@ const StrengthWizard = (props) => {
 
     slides.push(
       <div key={"slide" + i}>
-          {c.el}
-          { nextExists ? <div className="next"><IonButton onClick={nextSlide}>Next</IonButton></div> : "" }
+        {c.el}
+        {nextExists ? (
+          <div className="next">
+            <IonButton onClick={nextSlide}>Next</IonButton>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     );
   }
 
   return slides[Math.min(stage, maxStage)];
-
 };
 
 export default StrengthWizard;
