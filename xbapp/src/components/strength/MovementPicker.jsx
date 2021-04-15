@@ -15,7 +15,7 @@ const moves = [
     id: "angledbridge",
     name: "Angled Bridge",
     description:
-      "Find a knee height, sturdy object. Lie back, keeping feet flat and shoulder width apart. Place hands either side of your head, fingers pointing at your toes. Press through the hands, pushing your hips up and arcing your back as far as you can.",
+      "Find a sturdy box or chair. Lie back on object, keeping feet flat and shoulder width apart. Place hands either side of your head, palms flat on object, fingers pointing at your toes. Press through the hands, pushing your hips up and arcing your back as far as you can.",
     images: ["angled_bridge_rest.png", "angled_bridge_engaged.png"],
     type: "upper"
   },
