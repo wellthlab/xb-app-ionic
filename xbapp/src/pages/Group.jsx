@@ -4,6 +4,7 @@ import XBHeader from "../components/XBHeader";
 
 import { connect } from "react-redux";
 import MinutesChart from "../components/minutesChart";
+import { useHistory } from "react-router-dom";
 
 import {
   IonIcon,
@@ -31,6 +32,7 @@ import { addControllersProp } from "../model/controllers";
 
 const Group = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
+  const history = useHistory();
   function toggleAlert() {
     setShowAlert(!showAlert);
   }
@@ -139,7 +141,11 @@ const Group = ({ match, teams, controllers, account }) => {
 
           <IonItem
             color="tertiary"
-            routerLink={"/group/" + group._id + "/charts"}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              history.push("/group/" + group._id + "/charts");
+              window.location.reload();
+            }}
             detail={true}
           >
             <IonIcon icon={barChart} slot="start" />

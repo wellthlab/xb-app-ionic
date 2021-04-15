@@ -1,0 +1,21 @@
+#heartratePage img {
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+}
+
+#heartratePage > h3, #heartratePage > h4, #heartratePage > p {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+#heartratePage > h4 {
+  margin-top: 2rem;
+}
+
+#heartratePage ion-input {
+  background: var(--ion-item-background);
+  margin-bottom: 1.5rem;
+}
