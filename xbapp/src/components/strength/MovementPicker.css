@@ -29,6 +29,33 @@ img {
 	background: var(--ion-color-secondary);
 }
 .slidesCharts{
-    background-color: #1e1e1e;
 	height:300px;
+}
+
+.movementSlides, .movementSlides > div {
+	background: var(--ion-background-color);
+}
+
+#movementChoices {
+	padding-top: 1.5rem;
+	padding-bottom: 3rem;
+}
+
+#movementChoices > h3, #movementChoices > h4, #movementChoices > p {
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+}
+
+#movementChoices > h4 {
+	margin-top: 2rem;
+	margin-bottom: 0rem;
+}
+
+#movementChoices > p > span {
+	font-family: "Nunito SemiBold";
+	color: var(--ion-color-secondary);
+}
+
+.swiper-pagination-bullet {
+	background: var(--ion-color-primary);
 }
