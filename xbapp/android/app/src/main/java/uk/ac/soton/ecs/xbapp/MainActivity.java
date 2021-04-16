@@ -1,4 +1,4 @@
-package uos.xb.app;
+package uk.ac.soton.ecs.xbapp;
 
 import android.os.Bundle;
 

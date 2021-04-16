@@ -130,7 +130,9 @@ async function GET_FEED(client, store, controllers) {
 
   store.dispatch(CLEAR_FEED());
 
-  const feed = await parser.parseURL('http://svm00146.ecs.soton.ac.uk/xb/feed.rss');
+
+
+  const feed = await parser.parseURL('https://svm00146.ecs.soton.ac.uk/xb/feed.rss');
 
   var n = 0;
   var time = Date.now();
