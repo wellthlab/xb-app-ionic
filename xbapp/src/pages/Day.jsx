@@ -106,7 +106,7 @@ const Day = ({ match, teams, account, controllers }) => {
     >
       <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
       {total} minutes logged
-      <IonIcon slot="end" icon={icon_go} />
+      <span style={{fontWeight: 'bold'}} slot="end">Log More &nbsp; <IonIcon icon={icon_go} /></span>
     </IonItem>
   );
 

@@ -18,6 +18,7 @@ var dateFormat = require("dateformat");
 function dayNumber(date, start) {
   var diff = date - start;
   var day = Math.ceil(diff / 1000 / 3600 / 24);
+
   //console.log("Day Number", date, start, day);
   return day;
 }
@@ -52,7 +53,7 @@ function dayify(responses, start, minday, maxday) {
 
   // Then generate each daily entry
   for (var i = minday; i <= maxday; i++) {
-    var date = dateFormat(addDays(startDate, i), "ddd d mmm");
+    var date = dateFormat(addDays(startDate, i - 1), "ddd d mmm");
 
     if (typeof entriesByDay[i] == "undefined") {
       // TODO: Missing should be per-question

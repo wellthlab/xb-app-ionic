@@ -67,7 +67,7 @@ const Questionnaire = (props) => {
             setMoodValue(moodVal);
             setSmileyVal(smileyVal);
           }}
-          typeOfSlider="normal"
+          typeOfSlider="comparing"
         />
         <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
 

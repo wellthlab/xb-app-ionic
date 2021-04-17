@@ -13,18 +13,21 @@ import "./MovementTimer.scss";
  * Time movements
  */
 const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
+
+  if(!mins) var mins = 0;
+  if(!secs) var secs = 0;
+
   return (
     <div id="movementTimer">
       <p style={{ padding: "5px 8px 5px 8px" }}>
-        Repeat these two moves. Do ten of the first exercise, followed by ten of
+        Repeat these two moves. Do FIVE reps of the first exercise, followed by FIVE reps of
         the second, for a total of <strong>{mins} minutes</strong>.
       </p>
       <p style={{ padding: "5px 8px 5px 8px" }}>
-        Keep a running count of your sets, using the set counters. (A set is ten
-        repetitions of a single exercise.)
+        Keep a running count of your reps, using the counters below.
       </p>
 
-      <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
+      { (mins == 0 && secs == 0) ? "" : <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} /> }
 
       {exercises.map((ex, i) => {
         var move = getMove(ex);

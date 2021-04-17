@@ -113,6 +113,17 @@ const moves = [
     type: "upper",
   },
   {
+    id: "suppinatedaustralianpull",
+    name: "Suppinated Australian Pull",
+    description:
+      "Rest a stiff stick between two sturdy objects (or use a table). Lay beneath it, shoulders slightly forward of the stick, firmly gripping the stick with your palms facing towards you (if using a table, lay with your body below the table and grip the edge). Pull your body upwards with your arms to meet the object, pivoting from your ankles.",
+    images: [
+      "suppinated_australian_pull_rest.png",
+      "suppinated_australian_pull_engaged.png",
+    ],
+    type: "upper",
+  },
+  {
     id: "shortbridge",
     name: "Short Bridge",
     description:
@@ -131,25 +142,14 @@ const moves = [
     ],
     type: "lower",
   },
-  {
-    id: "suppinatedaustralianpull",
-    name: "Suppinated Australian Pull",
-    description:
-      "Rest a stiff stick between two sturdy objects (or use a table). Lay beneath it, shoulders slightly forward of the stick, firmly gripping the stick with your palms facing towards you (if using a table, lay with your body below the table and grip the edge). Pull your body upwards with your arms to meet the object, pivoting from your ankles.",
-    images: [
-      "suppinated_australian_pull_rest.png",
-      "suppinated_australian_pull_engaged.png",
-    ],
-    type: "upper",
-  },
-  {
+  /*{
     id: "tricepdip",
     name: "Tricep Dip",
     description:
       "Bring together two raised objects such as chairs. Sit on the edge of on object, and rest your ankles on the other. Bring your arms behind your body either side of you, firmly grip the object, and edge off the chair until supporting your body weight through your arms. Lower your body until your elbows are close to a 45 degree angle, then push through your arms until fully extended.",
     images: ["tricep_dip_rest.png", "tricep_dip_engaged.png"],
     type: "upper",
-  },
+  },*/
   {
     id: "verticalpull",
     name: "Vertical Pull",
@@ -171,6 +171,12 @@ const MovementPicker = (props) => {
 
   // Number of movements to pick
   var number = props.number;
+
+  var showUpper = props.upper ? true : false;
+  var showLower = props.lower ? true : false;
+
+  var txtAdd = number > 1 ? "Add to Selection" : "Select";
+  var txtRem = "Remove from Selection";
 
   const [picked, setPicked] = useState([]);
 
@@ -231,7 +237,7 @@ const MovementPicker = (props) => {
                   }
                 }}
               >
-                {!selected ? "Add to Selection" : "Remove from Selection"}
+                {!selected ? txtAdd : txtRem}
               </IonButton>
             </MovementInfoCard>
           </div>
@@ -268,24 +274,35 @@ const MovementPicker = (props) => {
     );
   }
 
+  switch(showUpper) {
+    case true:
+      var upper = <><h4>Upper Body Movements</h4>
+      <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+        {movementsUpper}
+      </IonSlides></>;
+      break;
+    case false:
+      upper = "";
+  }
+
+  switch(showLower) {
+    case true:
+        var lower = <><h4>Lower Body Movements</h4>
+        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          {movementsLower}
+        </IonSlides></>;
+        break;
+    case false:
+        lower = "";
+  }
+
   return (
     <>
       {mbox}
       <div id="movementChoices">
-        <h3>Choose Today's Routine</h3>
-        <p>
-          Please select one <span>upper body</span> movement and one{" "}
-          <span>lower body</span> movement.
-        </p>
-        <h4>Upper Body Movements</h4>
-        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-          {movementsUpper}
-        </IonSlides>
-        <IonItemDivider></IonItemDivider>
-        <h4>Lower Body Movements</h4>
-        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-          {movementsLower}
-        </IonSlides>
+        { upper }
+        { showUpper && showLower ? <IonItemDivider></IonItemDivider> : "" }
+        { lower }
       </div>
     </>
   );

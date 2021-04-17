@@ -4,9 +4,9 @@ import { IonButton, IonItem, IonInput, IonIcon } from "@ionic/react";
 import { addCircleOutline, removeCircleOutline } from "ionicons/icons";
 
 /**
- * Count Sets
+ * Count Reps
  */
-const MovementTimer = ({ onChange, start }) => {
+const RepCounter = ({ onChange, start }) => {
   const [sets, setSets] = useState(start ? start : 0);
 
   function save() {
@@ -38,14 +38,22 @@ const MovementTimer = ({ onChange, start }) => {
       </span>
       <IonButton
         onClick={() => {
+          setSets(sets + 5);
+          save();
+        }}
+      >
+        <IonIcon icon={addCircleOutline} /> <strong>5</strong>
+      </IonButton>
+      <IonButton
+        onClick={() => {
           setSets(sets + 1);
           save();
         }}
       >
-        <IonIcon icon={addCircleOutline} />
+        <IonIcon icon={addCircleOutline} /> <strong>1</strong>
       </IonButton>
     </div>
   );
 };
 
-export default MovementTimer;
+export default RepCounter;
