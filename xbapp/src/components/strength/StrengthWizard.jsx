@@ -20,6 +20,8 @@ import LevelFinder from "./LevelFinder";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
+import './StrengthWizard.css';
+
 /**
  * props:
  *      week: int - Week number; just used to store/retrieve chosen movement
@@ -297,18 +299,16 @@ const StrengthWizard = (props) => {
     slides.push(
       <div key={"slide" + i}>
         {c.el}
-        {c.previous ? (
-            <div className="back">
-              <IonButton onClick={prevSlide}>Back</IonButton>
-            </div>
-        ) : "" }
-        {nextExists ? (
-          <div className="next">
-            <IonButton onClick={nextSlide}>Next</IonButton>
+          <div className="buttons">
+          {c.previous ? (
+              <IonButton onClick={prevSlide} className="back">Back</IonButton>
+          ) : "" }
+          {nextExists && c.rule() ? (
+              <IonButton onClick={nextSlide} className="next">Next</IonButton>
+          ) : (
+            ""
+          )}
           </div>
-        ) : (
-          ""
-        )}
       </div>
     );
   }
