@@ -140,6 +140,39 @@ const Day = ({ match, teams, account, controllers }) => {
     );
   }
 
+  // Assessment days
+  if(daynumber == 1 || daynumber == 22 || daynumber == 36) {
+    var qbtn = "";
+    if (typeof day.responseTypes.assessment == "undefined") {
+      taskrows.push(
+        <IonItem
+          color="danger"
+          routerLink={
+            "/group/" + group._id + "/" + daynumber + "/add/assessment"
+          }
+          detail={false}
+        >
+          <IonIcon icon={icon_missing} slot="start" />
+          Strength Assessment
+          <IonIcon icon={icon_go} slot="end" />
+        </IonItem>
+      );
+    } else {
+      taskrows.push(
+        <IonItem
+          color="success"
+          routerLink={
+            "/group/" + group._id + "/" + daynumber + "/add/assessment"
+          }
+          detail={false}
+        >
+          <IonIcon icon={icon_done} slot="start" />
+          Strength Assessment
+        </IonItem>
+      );
+    }
+  }
+
   return (
     <IonPage>
       <XBHeader title={group.name + ": Day " + daynumber}></XBHeader>

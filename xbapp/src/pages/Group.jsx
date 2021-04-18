@@ -73,11 +73,18 @@ const Group = ({ match, teams, controllers, account }) => {
     console.log(entry);
 
     // TODO: Don't hard code this; take from experiment
-    var statusList = [
+    var qreq = [
       { type: "strength", desc: "Daily Strength Exercise" },
       { type: "minutes", desc: "Movement Minutes" },
       { type: "questionnaire", desc: "Daily Review" },
-    ].map((type) => {
+    ];
+
+    var day = entry.day;
+    if(day == 1 || day == 22 || day == 36) {
+      qreq.push({ type: "assessment", desc: "Strength Assessment" })
+    }
+
+    var statusList = qreq.map((type) => {
       var done = typeof entry.responseTypes[type.type] !== "undefined";
 
       console.log(type.type, done);

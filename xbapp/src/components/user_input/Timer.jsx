@@ -86,15 +86,12 @@ function Timer(props) {
   }
 
   function reset() {
+    resetTimer(); // Clear localStorage
+
     setSeconds(0);
-    localStorage.removeItem("recordedSeconds");
     setMinutes(0);
-    localStorage.removeItem("recordedMinutes");
     setHours(0);
-    localStorage.removeItem("recordedHours");
     setIsActive(false);
-    localStorage.removeItem("countActive");
-    localStorage.removeItem("timerStartedAt");
   }
 
   useEffect(() => {
@@ -123,6 +120,14 @@ function Timer(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+  var buttonsOnShow = true;
+  console.log('buttonsOnShow', props.buttonsOnShow);
+  if(typeof props.buttonsOnShow == 'undefined') {
+    buttonsOnShow = true;
+  } else {
+    buttonsOnShow = props.buttonsOnShow;
+  }
+
   return (
     <div>
       <div className="time">
@@ -130,7 +135,7 @@ function Timer(props) {
         {minutes > 9 ? minutes : "0" + minutes}:
         {seconds > 9 ? seconds : "0" + seconds}
       </div>
-      {props.buttonsOnShow ? (
+      {buttonsOnShow ? (
         <div className="row">
           <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
           <IonButton onClick={reset}>Reset</IonButton>
@@ -142,6 +147,15 @@ function Timer(props) {
   );
 }
 
+
+function resetTimer() {
+  localStorage.removeItem("recordedSeconds");
+  localStorage.removeItem("recordedMinutes");
+  localStorage.removeItem("recordedHours");
+  localStorage.removeItem("countActive");
+  localStorage.removeItem("timerStartedAt");
+}
+
 export default connect((state, ownProps) => {
   return {
     account: state.account,
@@ -149,3 +163,5 @@ export default connect((state, ownProps) => {
     boxes: state.boxes,
   };
 }, {})(Timer);
+
+export { resetTimer };
