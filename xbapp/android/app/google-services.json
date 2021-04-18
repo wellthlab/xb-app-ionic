@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823988663968",
+    "project_id": "experiments-in-a-box",
+    "storage_bucket": "experiments-in-a-box.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823988663968:android:1acf05470bbee7472a7bc5",
+        "android_client_info": {
+          "package_name": "uos.xb.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823988663968-t5alm5n8neu51hju28244rrgjn6ht6e6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsMj3joMF_l27D-SMadXygw7xEkupWHt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823988663968-t5alm5n8neu51hju28244rrgjn6ht6e6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

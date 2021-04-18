@@ -101,7 +101,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         break;
 
       case "strength":
-        var week = Math.floor(daynumber / 7);
+        var week = Math.floor((daynumber - 1) / 7) + 1;
 
         input = (
           <StrengthWizard

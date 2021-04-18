@@ -36,10 +36,12 @@ const StrengthWizard = (props) => {
    */
   var content = [];
 
+  var week = props.week;
+
  /**
   * Instructions
   */
- if(week == 1) {
+ if(week <= 1) {
     var rubric = "This week, you're exploring the different moves. Pick one upper and lower body move each day and try them out. ";
 } else {
     var rubric = "This week, you'll do the same exercises each day. One upper body, and one lower body.";
@@ -54,6 +56,26 @@ const StrengthWizard = (props) => {
     rule: function(){
         return true;
     }
+ });
+
+
+ /**
+  * Heart Rate and effort review
+  */
+ const [preHeart, setPreHeart] = useState(null);
+
+ content.push({
+   el: (
+     <HeartRate
+       onChange={(rate) => {
+         console.log("Set Heart Rate", rate);
+         setPostHeart(rate);
+       }}
+     />
+   ),
+   rule: () => {
+     return postHeart !== null;
+   },
  });
 
 
@@ -106,7 +128,6 @@ const StrengthWizard = (props) => {
       /**
        * Set up the timer and set counter
        */
-      var week = props.week;
       var mins = Math.max(1, week - 1) * 7; // 7 minute increase per week, but just 7 in weeks 1 and 2
 
       function updateSets(type, count) {
@@ -158,6 +179,7 @@ const StrengthWizard = (props) => {
             />
           </>
         ),
+        next: false,
         rule: function () {
           console.log(exList);
           return exList.length == 1;
@@ -198,6 +220,7 @@ const StrengthWizard = (props) => {
             console.log(exList);
             return exList.length == 1;
           },
+          next: false
         });
 
         content.push({
@@ -245,6 +268,7 @@ const StrengthWizard = (props) => {
           onClick={function () {
             var res = {};
             res.sets = sets; // Contains exercises and number of sets
+            res.preHeartrate = preHeart;
             res.heartrate = postHeart; // Contains heart rate
             res.type = "strength";
             var rmins = {};
@@ -303,7 +327,7 @@ const StrengthWizard = (props) => {
           {c.previous ? (
               <IonButton onClick={prevSlide} className="back">Back</IonButton>
           ) : "" }
-          {nextExists && c.rule() ? (
+          {nextExists && c.rule() && (typeof c.next == 'undefined' || c.next != false) ? (
               <IonButton onClick={nextSlide} className="next">Next</IonButton>
           ) : (
             ""
