@@ -34,7 +34,16 @@ const HeartRate = ({ onChange }) => {
         <p>
           Start the time below and count your heartbeats for {seconds} seconds.
         </p>
-        <img src="assets/heartrate.png" />
+        <img
+          style={{
+            display: "block",
+            maxWidth: "230px",
+            maxHeight: "95px",
+            width: "auto",
+            height: "auto",
+          }}
+          src="assets/heartrate.png"
+        />
         <CountDown seconds={20} />
         <h4>How Many Beats?</h4>
         <p>Enter what you counted below:</p>

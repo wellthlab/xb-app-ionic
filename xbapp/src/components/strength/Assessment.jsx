@@ -12,7 +12,7 @@ import {
   IonItem,
   IonList,
   IonLabel,
-  IonInput
+  IonInput,
 } from "@ionic/react";
 import { connect } from "react-redux";
 
@@ -20,7 +20,7 @@ import Timer, { resetTimer } from "../user_input/Timer";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
-import './StrengthWizard.css';
+import "./StrengthWizard.css";
 
 /**
  * props:
@@ -42,103 +42,131 @@ const Assessment = (props) => {
 
   var week = props.week;
 
- content.push({
-    el: <>
-            <h3>Week {week} Assessment</h3>
-            <p>Some simple exercises can help to track progress. We'll walk you through three of them.</p>
-            <ol>
-            <li>The Wall Sit</li>
-            <li>The Plank</li>
-            <li>Profile of Mood States</li>
-            </ol>
-            <p>You can read more about these assessments in the ASSESSMENTS channel on Teams.</p>
-        </>,
-    rule: function(){
-        return true;
-    }
- });
-
-
+  content.push({
+    el: (
+      <>
+        <h3>Week {week} Assessment</h3>
+        <p>
+          Some simple exercises can help to track progress. We'll walk you
+          through three of them.
+        </p>
+        <ol>
+          <li>The Wall Sit</li>
+          <li>The Plank</li>
+          <li>Profile of Mood States</li>
+        </ol>
+        <p>
+          You can read more about these assessments in the ASSESSMENTS channel
+          on Teams.
+        </p>
+      </>
+    ),
+    rule: function () {
+      return true;
+    },
+  });
 
   const [plankTime, setPlankTime] = useState(null);
   const [wallTime, setWallTime] = useState(null);
 
   content.push({
-      el: (
-        <>
-          <h3>Wall Sit</h3>
-          <p>The wall sit assesses leg strength.</p>
-          <p>Put your back against the wall, with your feet a thigh's-length in front of you. Slide your back down the wall
-          until you are in a sitting position, with your thighs parallel to the floor.</p>
-          <p>Time how long you can hold that position.</p>
-          <p>If you can't get your thighs parallel with the floor, that's no problem. Note how low you can get; and don't worry
-          about timing yourself.</p>
-          <Timer onStop={ setWallTime }/>
-        </>
-      ),
-      rule: function () {
-        return true;
-      }
+    el: (
+      <>
+        <h3>Wall Sit</h3>
+        <p>The wall sit assesses leg strength.</p>
+        <p>
+          Put your back against the wall, with your feet a thigh's-length in
+          front of you. Slide your back down the wall until you are in a sitting
+          position, with your thighs parallel to the floor.
+        </p>
+        <p>Time how long you can hold that position.</p>
+        <p>
+          If you can't get your thighs parallel with the floor, that's no
+          problem. Note how low you can get; and don't worry about timing
+          yourself.
+        </p>
+        <Timer onStop={setWallTime} />
+      </>
+    ),
+    rule: function () {
+      return true;
+    },
   });
 
   content.push({
-      el: (
-        <>
-          <h3>Plank</h3>
-          <p>The plank engages lots of muscles, so is a good measure of general strength.</p>
-          <p>Lay on the floor, and raise your upper body on to your elbows, so that they're directly below your shoulders.
-          Make fists with your hands, and leave them on the floor.</p>
-          <p>Now raise your bottom towards the ceiling, taking your knees off of the floor. Your body should be fairly
-          straight, don't let your bottom sag downwards! Your head should be neutral, so you're looking down at the floor.</p>
-          <p>Time how long you can hold that position. 60 seconds maximum!</p>
-          <p>If you can't get into this form right now, that's fine. Make a note of how close you got, and where the challenges
-          are.</p>
-          <Timer onStop={ setPlankTime }/>
-        </>
-      ),
-      rule: function () {
-        return true;
-      }
+    el: (
+      <>
+        <h3>Plank</h3>
+        <p>
+          The plank engages lots of muscles, so is a good measure of general
+          strength.
+        </p>
+        <p>
+          Lay on the floor, and raise your upper body on to your elbows, so that
+          they're directly below your shoulders. Make fists with your hands, and
+          leave them on the floor.
+        </p>
+        <p>
+          Now raise your bottom towards the ceiling, taking your knees off of
+          the floor. Your body should be fairly straight, don't let your bottom
+          sag downwards! Your head should be neutral, so you're looking down at
+          the floor.
+        </p>
+        <p>Time how long you can hold that position. 60 seconds maximum!</p>
+        <p>
+          If you can't get into this form right now, that's fine. Make a note of
+          how close you got, and where the challenges are.
+        </p>
+        <Timer onStop={setPlankTime} />
+      </>
+    ),
+    rule: function () {
+      return true;
+    },
   });
 
   const [poms, setPoms] = useState({});
 
   content.push({
-      el: (
-        <>
-          <h3>POMS</h3>
-          <p>The Profile of Mood States helps to assess your mood.</p>
-          <p>Complete the POMS online, and enter your score below.</p>
-          <IonButton href="https://www.brianmac.co.uk/poms.htm">Take the POMS</IonButton>
-          <IonList>
-          {
-            ([
-              "Total Mood Disturbance",
-              "Anger",
-              "Confusion",
-              "Depression",
-              "Fatigue",
-              "Tension",
-              "Vigour"
-            ]).map(function(item, num) {
-              return <IonItem>
+    el: (
+      <>
+        <h3>POMS</h3>
+        <p>The Profile of Mood States helps to assess your mood.</p>
+        <p>Complete the POMS online, and enter your score below.</p>
+        <IonButton href="https://www.brianmac.co.uk/poms.htm">
+          Take the POMS
+        </IonButton>
+        <IonList>
+          {[
+            "Total Mood Disturbance",
+            "Anger",
+            "Confusion",
+            "Depression",
+            "Fatigue",
+            "Tension",
+            "Vigour",
+          ].map(function (item, num) {
+            return (
+              <IonItem>
                 <IonLabel position="stacked">{item}</IonLabel>
-                <IonInput type="number" onIonChange={ (e) => {
-                  var newpoms = Object.assign({}, poms);
-                  newpoms[item] = e.detail.value;
-                  setPoms(newpoms);
-                } } />
+                <IonInput
+                  type="number"
+                  onIonChange={(e) => {
+                    var newpoms = Object.assign({}, poms);
+                    newpoms[item] = e.detail.value;
+                    setPoms(newpoms);
+                  }}
+                />
               </IonItem>
-            })
-          }
-          </IonList>
-        </>
-      ),
-      rule: function () {
-        return true;
-      }
+            );
+          })}
+        </IonList>
+      </>
+    ),
+    rule: function () {
+      return true;
+    },
   });
-
 
   /**
    * Final stage, save button!
@@ -198,7 +226,6 @@ const Assessment = (props) => {
     setStage(stage - 1);
   };
 
-
   // TODO: Next button should be linked to whether page is complete or not
   for (var i in content) {
     var c = content[i];
@@ -207,16 +234,24 @@ const Assessment = (props) => {
     slides.push(
       <div key={"slide" + i}>
         {c.el}
-          <div className="buttons">
+        <div className="buttons">
           {c.previous ? (
-              <IonButton onClick={prevSlide} className="back">Back</IonButton>
-          ) : "" }
-          {nextExists && c.rule() && (typeof c.next == 'undefined' || c.next != false) ? (
-              <IonButton onClick={nextSlide} className="next">Next</IonButton>
+            <IonButton onClick={prevSlide} className="back">
+              Back
+            </IonButton>
           ) : (
             ""
           )}
-          </div>
+          {nextExists &&
+          c.rule() &&
+          (typeof c.next == "undefined" || c.next != false) ? (
+            <IonButton onClick={nextSlide} className="next">
+              Next
+            </IonButton>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     );
   }

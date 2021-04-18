@@ -121,8 +121,8 @@ function Timer(props) {
   }, [isActive, seconds]);
 
   var buttonsOnShow = true;
-  console.log('buttonsOnShow', props.buttonsOnShow);
-  if(typeof props.buttonsOnShow == 'undefined') {
+  console.log("buttonsOnShow", props.buttonsOnShow);
+  if (typeof props.buttonsOnShow == "undefined") {
     buttonsOnShow = true;
   } else {
     buttonsOnShow = props.buttonsOnShow;
@@ -146,7 +146,6 @@ function Timer(props) {
     </div>
   );
 }
-
 
 function resetTimer() {
   localStorage.removeItem("recordedSeconds");

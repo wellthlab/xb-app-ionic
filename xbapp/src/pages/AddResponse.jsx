@@ -16,7 +16,7 @@ import { addControllersProp } from "../model/controllers";
 import MinuteEntry from "../components/user_input/MinuteEntry";
 import Questionnaire from "../components/user_input/Questionnaire";
 import StrengthWizard from "../components/strength/StrengthWizard";
-import Assessment from "../components/strength/Assessment"
+import Assessment from "../components/strength/Assessment";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -114,7 +114,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         break;
 
       case "assessment":
-        input = <Assessment onSubmit={save} />
+        input = <Assessment onSubmit={save} />;
         break;
 
       default:

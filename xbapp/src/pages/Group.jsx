@@ -80,8 +80,8 @@ const Group = ({ match, teams, controllers, account }) => {
     ];
 
     var day = entry.day;
-    if(day == 1 || day == 22 || day == 36) {
-      qreq.push({ type: "assessment", desc: "Strength Assessment" })
+    if (day == 1 || day == 22 || day == 36) {
+      qreq.push({ type: "assessment", desc: "Strength Assessment" });
     }
 
     var statusList = qreq.map((type) => {
