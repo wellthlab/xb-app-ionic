@@ -5,6 +5,7 @@ import XBHeader from "../components/XBHeader";
 import { connect } from "react-redux";
 import MinutesChart from "../components/minutesChart";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   IonIcon,
@@ -146,18 +147,16 @@ const Group = ({ match, teams, controllers, account }) => {
             </span>
           </IonItem>
 
-          <IonItem
-            color="tertiary"
-            style={{ cursor: "pointer" }}
-            onClick={() => {
-              history.push("/group/" + group._id + "/charts");
-              window.location.reload();
-            }}
-            detail={true}
-          >
-            <IonIcon icon={barChart} slot="start" />
-            View Charts
-          </IonItem>
+          <Link to={"/group/" + group._id + "/charts"}>
+            <IonItem
+              color="tertiary"
+              style={{ cursor: "pointer" }}
+              detail={true}
+            >
+              <IonIcon icon={barChart} slot="start" />
+              View Charts
+            </IonItem>
+          </Link>
 
           <IonItem
             color={

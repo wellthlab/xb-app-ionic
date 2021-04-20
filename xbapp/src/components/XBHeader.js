@@ -2,7 +2,7 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonMenuButton,
+  IonBackButton,
   IonButtons,
 } from "@ionic/react";
 import React from "react";
@@ -12,7 +12,7 @@ const XBHeader = (props) => {
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
-          <IonMenuButton></IonMenuButton>
+          <IonBackButton defaultHref="/feed" />
         </IonButtons>
         <IonTitle>{props.title}</IonTitle>
       </IonToolbar>
