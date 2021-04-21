@@ -71,7 +71,7 @@ const Group = ({ match, teams, controllers, account }) => {
       <XBHeader></XBHeader>
       <IonContent>
 
-      <ion-spinner name="crescent" />;
+      <ion-spinner name="crescent" />
 
       </IonContent>
     </IonPage>
