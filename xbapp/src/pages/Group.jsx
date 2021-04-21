@@ -67,7 +67,14 @@ const Group = ({ match, teams, controllers, account }) => {
 
   // Wait for teams to be loaded
   if(teams.fetching) {
-    return "";
+    return <IonPage id="weekInfo">
+      <XBHeader></XBHeader>
+      <IonContent>
+
+      <ion-spinner name="crescent" />;
+
+      </IonContent>
+    </IonPage>
   }
 
   /**
@@ -196,7 +203,7 @@ const Group = ({ match, teams, controllers, account }) => {
       <XBHeader title={group.name}></XBHeader>
       <IonContent>
 
-      <IonSegment onIonChange={setSegment}>
+      <IonSegment onIonChange={setSegment} value={view}>
         <IonSegmentButton value="info">
           <IonIcon icon={informationCircleOutline} /> Info
         </IonSegmentButton>

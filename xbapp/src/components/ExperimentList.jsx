@@ -103,9 +103,6 @@ const ExperimentList = (props) => {
         }
       })}
       {/* <IonButton expand="full" onClick={() => this.push()}>Register for Push</IonButton> */}
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <IonButton routerLink="/start">+</IonButton>
-      </ion-fab>
     </>
   );
 };

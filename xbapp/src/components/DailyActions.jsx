@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { heart, arrowForward, caretForward, timer, caretBackCircle, caretForwardCircle,
   checkmarkCircleOutline, closeCircleOutline, add, addCircle, listOutline,
-  checkboxOutline, squareOutline } from "ionicons/icons";
+  checkboxOutline, squareOutline, arrowForwardOutline } from "ionicons/icons";
 
 
 /**
@@ -60,7 +60,7 @@ const DailyActions = ({group, activeDay}) => {
     console.log(type.type, done);
 
     return (
-      <IonItem color={done ? "success" : "danger"} key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true}>
+      <IonItem color={done ? "success" : "danger"} key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true} detailIcon={arrowForwardOutline}>
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
           {type.desc}
         { /* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */ }
@@ -71,7 +71,7 @@ const DailyActions = ({group, activeDay}) => {
   var otheractions = others.map((type) => {
     var done = typeof entry.responseTypes[type.type] !== "undefined";
     return (
-      <IonItem key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true}>
+      <IonItem key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true} detailIcon={arrowForwardOutline}>
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
           {type.desc}
         { /* span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */ }
