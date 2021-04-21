@@ -1,0 +1,22 @@
+h3 {
+  min-height: 2em;
+  padding: 10px 0 0 15px;
+}
+
+h3 .navbuttons {
+  display: inline-block;
+  float: right;
+  position: relative;
+  top: -5px;
+  right: 15px;
+}
+
+.journalfeed ion-card p {
+  color: var(--ion-text-color);
+  font-size: 16px;
+}
+
+.journalTasks ion-label {
+  font-size: 1.2em;
+  font-weight: bold;
+}

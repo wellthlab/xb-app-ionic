@@ -22,13 +22,17 @@ import {
   barChart,
   checkmarkCircleOutline,
   closeCircleOutline,
+  arrowForwardOutline
 } from "ionicons/icons";
 import Instructions from "../components/Instructions";
-import GenericAlert from "../components/GenericAlert";
+
+import { addControllersProp } from "../model/controllers";
+
+import DailyJournal from "../components/journal/DailyJournal";
 
 import "./Group.scss";
 
-import { addControllersProp } from "../model/controllers";
+
 
 const Group = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -40,11 +44,14 @@ const Group = ({ match, teams, controllers, account }) => {
   // Load team data if required; mostly useful during development
   controllers.LOAD_TEAMS_IF_REQD();
 
-  useEffect(() => {
-    // Load team responses
-    controllers.GET_TEAM_RESPONSES(group._id);
-  }, [match.params.id]);
+  // Wait for teams to be loaded
+  if(teams.fetching) {
+    return "";
+  }
 
+  /**
+   * Look up the group
+   */
   var gid = match.params.id; // Group ID comes from route
   var group = false;
   for (var g of teams.teams) {
@@ -54,65 +61,15 @@ const Group = ({ match, teams, controllers, account }) => {
     }
   }
 
+  // Check the active day is set, and that group is found etc.
   if (group === false) {
     return <IonPage>Nope :(</IonPage>;
   }
 
-  var exp = group.experiment.info;
-  var entries = group.entries;
-
-  // Generate daily summaries
-  var days = [];
-  for (var i = 0; i < entries.length; i++) {
-    var entry = entries[i];
-    var date = entry.date;
-
-    var icon_done = checkmarkCircleOutline;
-    var icon_missing = closeCircleOutline;
-
-    console.log(entry);
-
-    // TODO: Don't hard code this; take from experiment
-    var qreq = [
-      { type: "strength", desc: "Daily Strength Exercise" },
-      { type: "minutes", desc: "Movement Minutes" },
-      { type: "questionnaire", desc: "Daily Review" },
-    ];
-
-    var day = entry.day;
-    if(day == 1 || day == 22 || day == 36) {
-      qreq.push({ type: "assessment", desc: "Strength Assessment" })
-    }
-
-    var statusList = qreq.map((type) => {
-      var done = typeof entry.responseTypes[type.type] !== "undefined";
-
-      console.log(type.type, done);
-
-      return (
-        <IonItem color={done ? "success" : "danger"} key={type.type}>
-          <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
-          {type.desc}
-        </IonItem>
-      );
-    });
-
-    days.push(
-      <IonCard key={i} routerLink={"/group/" + group._id + "/" + entry.day}>
-        <ion-card-header>
-          <ion-card-subtitle>Day {entry.day}</ion-card-subtitle>
-          <ion-card-title>{date}</ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-          <IonList>{statusList}</IonList>
-        </ion-card-content>
-      </IonCard>
-    );
-  }
-
-  days.reverse();
-
+  /**
+   * Render header info
+   * Plus daily journal
+   */
   var day = group.experiment.day;
   var daydesc =
     day == 0
@@ -121,10 +78,9 @@ const Group = ({ match, teams, controllers, account }) => {
       ? "Starts in " + Math.abs(day) + " days"
       : day > group.experiment.info.duration
       ? "Finished"
-      : "Day " + day;
+      : "Today is day " + day;
 
-  var members =
-    group.users.length > 1 ? group.users.length + " members" : "Just You";
+  var members = group.users.length > 1 ? group.users.length + " members" : "Just You";
 
   return (
     <IonPage id="weekInfo">
@@ -132,7 +88,7 @@ const Group = ({ match, teams, controllers, account }) => {
       <IonContent>
         <IonList>
           <IonItem>
-            <h2 slot="start">{exp.title}</h2>
+            <h2 slot="start">{group.experiment.title}</h2>
           </IonItem>
 
           <IonItem>
@@ -172,7 +128,7 @@ const Group = ({ match, teams, controllers, account }) => {
           </IonItem>
         </IonList>
 
-        {days}
+        <DailyJournal todayNumber={day} entries={group.entries} group={group} />
       </IonContent>
     </IonPage>
   );

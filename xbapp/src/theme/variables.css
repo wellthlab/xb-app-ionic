@@ -40,24 +40,24 @@ h1, h2, h3, h4, ion-title, ion-card-title, ion-card-subtitle, ion-button {
   --ion-color-primary-rgb: 64, 86, 161;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #4056a1;
-  --ion-color-primary-tint: #6b7fc4;
+  --ion-color-primary-shade: #2e3e74;
+  --ion-color-primary-tint: #7585bb;
 
   /** secondary **/
-  --ion-color-secondary: #f13c20;
+  --ion-color-secondary: #2ca089;
   --ion-color-secondary-rgb: 241, 160, 32;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #dc290e;
-  --ion-color-secondary-tint: #f24c32;
+  --ion-color-secondary-shade: #207363;
+  --ion-color-secondary-tint: #67baaa;
 
   /** tertiary **/
-  --ion-color-tertiary: #d79922;
+  --ion-color-tertiary: #2f8ea5;
   --ion-color-tertiary-rgb: 215, 153, 34;
   --ion-color-tertiary-contrast: #1a1a1a;
   --ion-color-tertiary-contrast-rgb: 25, 25, 25;
-  --ion-color-tertiary-shade: #c68d1f;
-  --ion-color-tertiary-tint: #e1a940;
+  --ion-color-tertiary-shade: #226677;
+  --ion-color-tertiary-tint: #69adbe;
 
   /** success **/
   --ion-color-success: #22d73f;

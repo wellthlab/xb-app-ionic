@@ -16,7 +16,8 @@ import { addControllersProp } from "../model/controllers";
 import MinuteEntry from "../components/user_input/MinuteEntry";
 import Questionnaire from "../components/user_input/Questionnaire";
 import StrengthWizard from "../components/strength/StrengthWizard";
-import Assessment from "../components/strength/Assessment"
+import Assessment from "../components/strength/Assessment";
+import Note from "../components/user_input/Note";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -117,6 +118,10 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         input = <Assessment onSubmit={save} />
         break;
 
+      case "note":
+        input = <Note onSubmit={save} />
+        break;
+
       default:
         input = <p>Unknown Response Type</p>;
         break;
@@ -138,6 +143,12 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       break;
     case "strength":
       typedesc = "Daily Strength Session";
+      break;
+    case "note":
+      typedesc = "Note";
+      break;
+    case "assessment":
+      typedesc = "Strength Assessment";
       break;
   }
 
