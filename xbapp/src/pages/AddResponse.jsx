@@ -115,7 +115,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         break;
 
       case "assessment":
-        input = <Assessment onSubmit={save} />
+        input = <Assessment onSubmit={save} />;
         break;
 
       case "note":

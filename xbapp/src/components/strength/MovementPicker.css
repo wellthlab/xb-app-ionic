@@ -25,7 +25,7 @@ ion-content {
 	background: var(--ion-color-secondary);
 }
 .slidesCharts{
-	height:300px;
+	height:350px;
 }
 
 .movementSlides, .movementSlides > div {

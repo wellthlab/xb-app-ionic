@@ -106,7 +106,9 @@ const Day = ({ match, teams, account, controllers }) => {
     >
       <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
       {total} minutes logged
-      <span style={{fontWeight: 'bold'}} slot="end">Log More &nbsp; <IonIcon icon={icon_go} /></span>
+      <span style={{ fontWeight: "bold" }} slot="end">
+        Log More &nbsp; <IonIcon icon={icon_go} />
+      </span>
     </IonItem>
   );
 
@@ -141,7 +143,7 @@ const Day = ({ match, teams, account, controllers }) => {
   }
 
   // Assessment days
-  if(daynumber == 1 || daynumber == 22 || daynumber == 36) {
+  if (daynumber == 1 || daynumber == 22 || daynumber == 36) {
     var qbtn = "";
     if (typeof day.responseTypes.assessment == "undefined") {
       taskrows.push(
