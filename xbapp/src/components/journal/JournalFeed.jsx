@@ -111,8 +111,6 @@ const JournalFeed = ({responses}) => {
 
       case 'questionnaire':
 
-
-
         content = <>
           <IonCardHeader>
             <IonCardSubtitle>{time} &nbsp; DAILY REVIEW</IonCardSubtitle>
