@@ -1,40 +1,59 @@
-import React, { Component, useState } from "react";
-import {
-  IonContent,
-  IonPage,
-  IonModal,
-  IonButton,
-  IonGrid,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonIcon,
-} from "@ionic/react";
+import React, { useState, useEffect } from "react";
+import { IonContent, IonPage, IonItemDivider, IonCard } from "@ionic/react";
 import XBHeader from "../components/XBHeader";
 
-import {
-  checkmarkCircleOutline,
-  closeCircleOutline,
-  arrowForwardOutline,
-  calendarClearOutline,
-} from "ionicons/icons";
-
+import { connect } from "react-redux";
+import MinutesChart from "../components/minutesChart";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import {
+  IonIcon,
+  IonItem,
+  IonChip,
+  IonTitle,
+  IonLabel,
+  IonButton,
+  IonList,
+} from "@ionic/react";
+import {
+  peopleOutline,
+  todayOutline,
+  add,
+  barChart,
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  arrowForwardOutline
+} from "ionicons/icons";
+import Instructions from "../components/Instructions";
+
 import { addControllersProp } from "../model/controllers";
 
-import "./Day.css";
+import DailyJournal from "../components/journal/DailyJournal";
 
-const autoBindReact = require("auto-bind/react");
+import "./Group.scss";
 
-const Day = ({ match, teams, account, controllers }) => {
-  var gid = match.params.id; // Group ID comes from route
-  var daynumber = match.params.day; // So does day number
 
+
+const Group = ({ match, teams, controllers, account }) => {
+  const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
+  function toggleAlert() {
+    setShowAlert(!showAlert);
+  }
 
+  // Load team data if required; mostly useful during development
+  controllers.LOAD_TEAMS_IF_REQD();
+
+  // Wait for teams to be loaded
+  if(teams.fetching) {
+    return "";
+  }
+
+  /**
+   * Look up the group
+   */
+  var gid = match.params.id; // Group ID comes from route
   var group = false;
   for (var g of teams.teams) {
     // Find the group in the store
@@ -43,157 +62,46 @@ const Day = ({ match, teams, account, controllers }) => {
     }
   }
 
-  // Load team data if required; mostly useful during development
-  controllers.LOAD_TEAMS_IF_REQD();
-
+  // Check the active day is set, and that group is found etc.
   if (group === false) {
-    return <IonPage>Group not found, is state loaded?</IonPage>;
+    return <IonPage>Nope :(</IonPage>;
   }
 
-  var exp = group.experiment.info;
-  var entries = group.responses.own;
+  /**
+   * Render header info
+   * Plus daily journal
+   */
+  var day = group.experiment.day;
+  var daydesc =
+    day == 0
+      ? "Starts tomorrow"
+      : day < 0
+      ? "Starts in " + Math.abs(day) + " days"
+      : day > group.experiment.info.duration
+      ? "Finished"
+      : "Today is day " + day;
 
-  entries = group.entries; // These are the responses, processed day by day
-
-  // Summarise the reponses
-  var rows = [];
-  var total = 0;
-  var questionnaired = false;
-
-  for (var day of entries) {
-    if (day.day == daynumber) break;
-  }
-
-  var total = day.minutes;
-
-  var icon_done = checkmarkCircleOutline;
-  var icon_missing = closeCircleOutline;
-  var icon_go = arrowForwardOutline;
-
-  var taskrows = [];
-
-  var sbtn = "";
-  if (typeof day.responseTypes.strength == "undefined") {
-    taskrows.push(
-      <IonItem
-        color="danger"
-        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
-        detail={false}
-      >
-        <IonIcon icon={icon_missing} slot="start" />
-        Daily Strength Exercise
-        <IonIcon icon={icon_go} slot="end" />
-      </IonItem>
-    );
-  } else {
-    taskrows.push(
-      <IonItem
-        color="success"
-        routerLink={"/group/" + group._id + "/" + daynumber + "/add/strength"}
-        detail={false}
-      >
-        <IonIcon icon={icon_done} slot="start" />
-        Daily Strength Exercise
-      </IonItem>
-    );
-  }
-
-  taskrows.push(
-    <IonItem
-      color={total > 0 ? "success" : "danger"}
-      routerLink={"/group/" + group._id + "/" + daynumber + "/add/minutes"}
-      detail={false}
-    >
-      <IonIcon slot="start" icon={total > 0 ? icon_done : icon_missing} />
-      {total} minutes logged
-      <span style={{ fontWeight: "bold" }} slot="end">
-        Log More &nbsp; <IonIcon icon={icon_go} />
-      </span>
-    </IonItem>
-  );
-
-  var qbtn = "";
-  if (typeof day.responseTypes.questionnaire == "undefined") {
-    taskrows.push(
-      <IonItem
-        color="danger"
-        routerLink={
-          "/group/" + group._id + "/" + daynumber + "/add/questionnaire"
-        }
-        detail={false}
-      >
-        <IonIcon icon={icon_missing} slot="start" />
-        Daily Review
-        <IonIcon icon={icon_go} slot="end" />
-      </IonItem>
-    );
-  } else {
-    taskrows.push(
-      <IonItem
-        color="success"
-        routerLink={
-          "/group/" + group._id + "/" + daynumber + "/add/questionnaire"
-        }
-        detail={false}
-      >
-        <IonIcon icon={icon_done} slot="start" />
-        Daily Review
-      </IonItem>
-    );
-  }
-
-  // Assessment days
-  if (daynumber == 1 || daynumber == 22 || daynumber == 36) {
-    var qbtn = "";
-    if (typeof day.responseTypes.assessment == "undefined") {
-      taskrows.push(
-        <IonItem
-          color="danger"
-          routerLink={
-            "/group/" + group._id + "/" + daynumber + "/add/assessment"
-          }
-          detail={false}
-        >
-          <IonIcon icon={icon_missing} slot="start" />
-          Strength Assessment
-          <IonIcon icon={icon_go} slot="end" />
-        </IonItem>
-      );
-    } else {
-      taskrows.push(
-        <IonItem
-          color="success"
-          routerLink={
-            "/group/" + group._id + "/" + daynumber + "/add/assessment"
-          }
-          detail={false}
-        >
-          <IonIcon icon={icon_done} slot="start" />
-          Strength Assessment
-        </IonItem>
-      );
-    }
-  }
+  var members = group.users.length > 1 ? group.users.length + " members" : "Just You";
 
   return (
-    <IonPage>
-      <XBHeader title={group.name + ": Day " + daynumber}></XBHeader>
+    <IonPage id="weekInfo">
+      <XBHeader title={group.name}></XBHeader>
       <IonContent>
-        <IonList className="tasklist">
-          <IonItem>
-            <IonIcon icon={calendarClearOutline} slot="start" />{" "}
-            <strong>Day {daynumber}</strong> &nbsp; &nbsp; {day.date}
-          </IonItem>
-          {taskrows}
-        </IonList>
+        <DailyJournal todayNumber={day} entries={group.entries} group={group} />
       </IonContent>
     </IonPage>
   );
 };
 
-export default connect((state, ownProps) => {
-  return {
-    account: state.account,
-    teams: state.teams,
-  };
-}, {})(addControllersProp(Day));
+export default connect(
+  (state, ownProps) => {
+    return {
+      account: state.account,
+      teams: state.teams,
+      boxes: state.boxes,
+    };
+  },
+  {
+    pure: false,
+  }
+)(addControllersProp(Group));

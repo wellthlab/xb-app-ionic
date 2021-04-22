@@ -36,7 +36,7 @@ const CreateTeam = (props) => {
             <ion-icon name="checkmark-circle-outline"></ion-icon> Great!
           </h1>
           <p className="centering">
-            You've created a new team! Let's get <strong>moving</strong>.
+            You've created a new experiment! Let's get <strong>moving</strong>.
           </p>
           <p className="centering">
             <IonButton routerLink="/group">Go to Experiments</IonButton>
@@ -56,7 +56,7 @@ const CreateTeam = (props) => {
             create(name, desc, expid);
           }}
         >
-          Create Team
+          Create Experiment
         </IonButton>
       );
     } else {

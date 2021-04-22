@@ -80,7 +80,8 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-//import store from './model/store'
+
+import "./theme/App.css";
 
 /****************************************************************/
 
@@ -119,8 +120,9 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={GroupCharts}
                 exact={true}
               />
-              <Route path="/group/:id/:day" component={Day} exact={true} />
-              <Route path="/group/:id" component={Group} exact={true} />
+              {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
+              <Route path="/group/:id/:page" component={Group} exact={true} />
+              <Route path="/group/:id/" component={Group} exact={true} />
               <Route path="/group" component={ExpList} exact={true} />
               <Route path="/feed" component={Feed} exact={true} />
               <Route path="/account" component={Account} exact={true} />

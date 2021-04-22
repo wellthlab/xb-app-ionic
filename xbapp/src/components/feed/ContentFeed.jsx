@@ -13,6 +13,29 @@ export default class ContentFeed extends Component {
     super(props);
   }
 
+  renderItem( item ) {
+    console.log("Render content", item);
+
+    var content;
+    switch (item.type) {
+      /*case 'team_update':
+                  content = <TeamUpdate item={item} />
+                  break;
+              case 'live_update':
+                  content = <LiveUpdate item={item} />
+                  break;*/
+      case "overdue_entry":
+        content = <OverdueEntry item={item} key={item.id} />;
+        break;
+      case "news":
+        content = <News item={item} key={item.id} />;
+        break;
+    }
+
+    return content;
+
+  }
+
   render() {
     const { feed } = this.props;
     return (
@@ -21,23 +44,7 @@ export default class ContentFeed extends Component {
           var content;
 
           var item = feed[key];
-
-          console.log("Render content", item);
-
-          switch (item.type) {
-            /*case 'team_update':
-                        content = <TeamUpdate item={item} />
-                        break;
-                    case 'live_update':
-                        content = <LiveUpdate item={item} />
-                        break;*/
-            case "overdue_entry":
-              content = <OverdueEntry item={item} key={item.id} />;
-              break;
-            case "news":
-              content = <News item={item} key={item.id} />;
-              break;
-          }
+          var content = this.renderItem(item);
 
           return <IonCard key={item.id}>{content}</IonCard>;
         })}

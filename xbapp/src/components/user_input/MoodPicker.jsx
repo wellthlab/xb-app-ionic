@@ -19,6 +19,22 @@ import {
  * TODO: Make this not hard-coded!
  */
 
+const MoodImages = {
+  1: 'sad.png',
+  2: 'somewhat_sad.png',
+  3: 'neutral.png',
+  4: 'somewhat_happy.png',
+  5: 'happy.png'
+};
+
+const MoodStringsRelative = {
+  1: "A lot worse", 2: "Worse", 3: "The same", 4: "Better", 5: "A lot better"
+}
+
+const MoodStringsAbsolute = {
+  1: "Very Bad", 2: "Bad", 3: "Okay", 4: "Good", 5: "Very good"
+}
+
 /**
  * Pick moood
  * Props:
@@ -29,8 +45,8 @@ const MoodPicker = (props) => {
   //comparing represents the answers to the "how do you feel compared to yesterday?". Other strings represents the general "how do you feel"
   var sliderValues =
     props.typeOfSlider == "comparing"
-      ? ["A lot worse", "Worse", "The same", "Better", "A lot better"]
-      : ["Very Bad", "Bad", "Okay", "Good", "Very good"];
+      ? MoodStringsRelative
+      : MoodStringsAbsolute;
 
   function onChangeSlider(valueToUpdate) {
     setValue(valueToUpdate);
@@ -43,17 +59,7 @@ const MoodPicker = (props) => {
     <>
       <img
         style={{ width: "50px", resize: "both", textAlign: "center" }}
-        src={
-          value == 1
-            ? "assets/mood/sad.png"
-            : value == 2
-            ? "assets/mood/somewhat_sad.png"
-            : value == 3
-            ? "assets/mood/neutral.png"
-            : value == 4
-            ? "assets/mood/somewhat_happy.png"
-            : "assets/mood/happy.png"
-        }
+        src={ "assets/mood/" + MoodImages[value] }
         alt="happy"
       />
       <IonItem style={{ textAlign: "center" }}>
@@ -76,3 +82,5 @@ const MoodPicker = (props) => {
 };
 
 export default MoodPicker;
+
+export { MoodImages, MoodStringsAbsolute, MoodStringsRelative };

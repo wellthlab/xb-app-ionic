@@ -14,6 +14,7 @@ import {
   IonLabel,
   IonListHeader,
   IonText,
+  IonCard
 } from "@ionic/react";
 import { peopleOutline, alertOutline, todayOutline, add } from "ionicons/icons";
 import { Link } from "react-router-dom";
@@ -77,13 +78,12 @@ const ExperimentList = (props) => {
           return <p>This group has no experiment :(</p>;
         } else {
           return (
-            <ion-card key={i}>
-              <Link to={"/group/" + group._id}>
+            <IonCard key={i} routerLink={"/group/" + group._id}>
                 <ion-card-header>
+                <ion-card-subtitle>
+                  {group.experiment.info.title}
+                </ion-card-subtitle>
                   <ion-card-title>{group.name}</ion-card-title>
-                  <ion-card-subtitle>
-                    {group.experiment.info.title}
-                  </ion-card-subtitle>
                 </ion-card-header>
 
                 <ion-card-content>
@@ -97,15 +97,11 @@ const ExperimentList = (props) => {
                             </ion-chip>*/}
                   {memberchip}
                 </ion-card-content>
-              </Link>
-            </ion-card>
+            </IonCard>
           );
         }
       })}
       {/* <IonButton expand="full" onClick={() => this.push()}>Register for Push</IonButton> */}
-      <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <IonButton routerLink="/start">+</IonButton>
-      </ion-fab>
     </>
   );
 };
