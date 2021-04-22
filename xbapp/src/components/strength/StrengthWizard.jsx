@@ -17,6 +17,7 @@ import MovementPicker from "./MovementPicker";
 import MovementTimer from "./MovementTimer";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
+import RPE from "../user_input/RPE";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
@@ -256,6 +257,28 @@ const StrengthWizard = (props) => {
   });
 
   /**
+   * RPE
+   */
+  const [rpeVal, setrpeVal] = useState(1);
+  const [scoreRPE, setscoreRPE] = useState("0-1: No Exertion");
+  const [explanationRPE, setexplanationRPE] = useState("The only movement you're getting is pushing buttons on the TV remote.");
+
+  content.push({
+    el: (
+      <RPE
+        onChange={async (rpeVal, scoreRPE, explanationRPE) => {
+          setrpeVal(rpeVal);
+          setscoreRPE(scoreRPE);
+          setexplanationRPE(explanationRPE);
+        }}
+      />
+    ),
+    rule: () => {
+      return true;
+    },
+  });
+
+  /**
    * Final stage, save button!
    */
   content.push({
@@ -272,6 +295,7 @@ const StrengthWizard = (props) => {
             res.sets = sets; // Contains exercises and number of sets
             res.preHeartrate = preHeart;
             res.heartrate = postHeart; // Contains heart rate
+            res.exertionValue = scoreRPE; //contains the string of exertion type
             res.type = "strength";
             var rmins = {};
             rmins.type = "minutes";

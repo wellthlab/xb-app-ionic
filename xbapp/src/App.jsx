@@ -20,7 +20,12 @@ import {
   IonAlert,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { cubeOutline, menu, newspaperOutline, settingsOutline} from "ionicons/icons";
+import {
+  cubeOutline,
+  menu,
+  newspaperOutline,
+  settingsOutline,
+} from "ionicons/icons";
 
 // Redux stuff
 import { connect } from "react-redux";

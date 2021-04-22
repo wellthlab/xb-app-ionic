@@ -18,7 +18,6 @@ import MoodPicker from "./MoodPicker";
 import "./Questionnaire.scss";
 
 const Questionnaire = (props) => {
-  const [selectedHowFeel, setSelectedHowFeel] = useState({ mood: "" });
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
   const [selectedAlarm, setSelectedAlarm] = useState({ alarm: "" });
   const [moodValue, setMoodValue] = useState(3); //useStorage?;
@@ -32,15 +31,15 @@ const Questionnaire = (props) => {
     //the limits for this will always be between -2 and 2
 
     //the below is important for representing the graphs
-    if (moodValue == 1) {
+    if (moodValue === 1) {
       officialMoodValue = -2;
-    } else if (selectedHowFeel.mood == 2) {
+    } else if (moodValue == 2) {
       officialMoodValue = -1;
-    } else if (selectedHowFeel.mood == 3) {
+    } else if (moodValue == 3) {
       officialMoodValue = 0;
-    } else if (selectedHowFeel.mood == 4) {
+    } else if (moodValue == 4) {
       officialMoodValue = 1;
-    } else if (selectedHowFeel.mood == 5) {
+    } else if (moodValue == 5) {
       officialMoodValue = 2;
     }
 
@@ -69,8 +68,7 @@ const Questionnaire = (props) => {
           }}
           typeOfSlider="comparing"
         />
-        <IonItemDivider>{selectedHowFeel.mood}</IonItemDivider>
-
+        <IonItemDivider></IonItemDivider>
         <IonRadioGroup
           allow-empty-selection="true"
           value={selectedExposure.exposure}
