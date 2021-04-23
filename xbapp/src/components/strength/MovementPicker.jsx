@@ -21,7 +21,7 @@ const moves = [
   {
     id: "boxsquat",
     name: "Squat 1: Box Squat",
-    type: "squat",
+    type: "push",
     description:
       "Find a sturdy box or chair. Facing away, extend your arms, feet spaced shoulder-width apart, push your bum outwards, and bring your body down and angled forwards until your bum touches the chair. Widen stance to increase difficulty.",
     images: ["box_squat_rest.png", "box_squat_engaged.png"],
@@ -32,7 +32,7 @@ const moves = [
   {
     id: "fullsquat",
     name: "Squat 2: Full Squat",
-    type: "squat",
+    type: "push",
     description:
       "Extend your arms, feet spaced shoulder-width apart, push your bum outwards, and bring your body down and angled forwards as far as possible. Widen stance to increase difficulty.",
     images: ["full_squat_rest.png", "full_squat_engaged.png"],
@@ -43,7 +43,7 @@ const moves = [
   {
     id: "bulgariansplitsquat",
     name: "Squat 3: Bulgarian Split Squat",
-    type: "squat",
+    type: "push",
     description:
       "Find a sturdy box or chair. Rest the leg you aren't using on the object. Kneel downwards on your other leg keeping your body fairly straight until your knees are at a 45 degree angle.",
     images: [
@@ -57,7 +57,7 @@ const moves = [
   {
     id: "boxpistolsquat",
     name: "Squat 4: Box Pistol Squat",
-    type: "squat",
+    type: "push",
     description:
       "Find a sturdy box or chair. If using a box, step on and squat your leg, angling your body forward with extended hands for balance. If using a chair, face away and squat with one leg, extending the other leg forward, until your bum touches the chair.",
     images: ["box_pistol_squat_rest.png", "box_pistol_squat_engaged.png"],
@@ -68,7 +68,7 @@ const moves = [
   {
     id: "gluteraise",
     name: "Hinge 1: Glute Raise",
-    type: "hinge",
+    type: "push",
     description:
       "Lay on your back, arms flat either side, knees bent pointing upwards. Drive your hips upwards until your back is nearly straight, pivoting from your shoulder blades. Rest a weight on your body to increase difficulty.",
     images: ["glute_raise_rest.png", "glute_raise_engaged.png"],
@@ -78,7 +78,7 @@ const moves = [
   {
     id: "shortbridge",
     name: "Hinge 2: Short Bridge",
-    type: "hinge",
+    type: "push",
     description:
       "Lay on your back, knees bent upwards, arms laying either side of your body or resting on your belly. Drive your hips upwards, forming a bridge shape with your back, pivoting from your upper back. Hold a weight to increase difficulty.",
     images: ["short_bridge_rest.png", "short_bridge_engaged.png"],
@@ -88,7 +88,7 @@ const moves = [
   {
     id: "singlelegromaniandeadlift",
     name: "Hinge 3: Single Leg Romanian Deadlift",
-    type: "hinge",
+    type: "pull",
     description:
       "Stand upright, facing forwards. Bring one leg backwards as you pivot your body forwards until almost facing straight down, slightly bending your other leg. Hold a weight to increase difficulty.",
     images: [
@@ -102,7 +102,7 @@ const moves = [
   {
     id: "angledbridge",
     name: "Hinge 4: Angled Bridge",
-    type: "hinge",
+    type: "push",
     description:
       "Find a sturdy box or chair. Lie back on object, keeping feet flat and shoulder width apart. Place hands either side of your head, palms flat on object, fingers pointing at your toes. Press through the hands, pushing your hips up and arcing your back as far as you can.",
     images: ["angled_bridge_rest.png", "angled_bridge_engaged.png"],
