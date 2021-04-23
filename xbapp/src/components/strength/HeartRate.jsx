@@ -26,13 +26,9 @@ const HeartRate = ({ onChange }) => {
         <IonTitle>
           <IonIcon icon="heart" />
         </IonTitle>
-        <h3>Record Your Pulse</h3>
         <p>
           Find your pulse by firmly gripping your wrist like in the diagram
-          below.
-        </p>
-        <p>
-          Start the time below and count your heartbeats for {seconds} seconds.
+          below. Start the timer and count your heartbeats for {seconds} seconds.
         </p>
         <img
           style={{
@@ -45,8 +41,7 @@ const HeartRate = ({ onChange }) => {
           src="assets/heartrate.png"
         />
         <CountDown seconds={20} />
-        <h4>How Many Beats?</h4>
-        <p>Enter what you counted below:</p>
+        <p>How many beats did you count?</p>
         <IonInput
           type="number"
           placeholder="Beats"

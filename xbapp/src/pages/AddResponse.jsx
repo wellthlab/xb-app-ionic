@@ -70,7 +70,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
 
   var content;
   if (saved == "saved") {
-    var link = "/group/" + gid + "/";
+    var link = "/group/" + gid + "/journal";
     content = (
       <>
         <div className="done">

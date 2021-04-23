@@ -32,6 +32,8 @@ const RepCounter = ({ onChange, start }) => {
           fontWeight: "bold",
           display: "inline-block",
           padding: "0 5px 0 5px",
+          width: "90px",
+          textAlign: "center"
         }}
       >
         {sets}
@@ -42,7 +44,7 @@ const RepCounter = ({ onChange, start }) => {
           save();
         }}
       >
-        <IonIcon icon={addCircleOutline} /> <strong>5</strong>
+        <IonIcon icon={addCircleOutline} /> &nbsp; <strong>5</strong>
       </IonButton>
       <IonButton
         onClick={() => {
@@ -50,7 +52,7 @@ const RepCounter = ({ onChange, start }) => {
           save();
         }}
       >
-        <IonIcon icon={addCircleOutline} /> <strong>1</strong>
+        <IonIcon icon={addCircleOutline} /> &nbsp; <strong>1</strong>
       </IonButton>
     </div>
   );

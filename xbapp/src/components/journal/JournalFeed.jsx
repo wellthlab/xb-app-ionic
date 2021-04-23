@@ -55,7 +55,11 @@ const JournalFeed = ({responses}) => {
             <IonList>
             {
               Object.keys(r.sets).map((type, i) => {
-                var move = getMove(type);
+
+                var block, mtype;
+                [mtype, block] = type.split(/-/);
+
+                var move = getMove(mtype);
                 if(move == false) {
                   move = {
                     name: "Unknown move, " + type
