@@ -91,7 +91,6 @@ const StrengthWizard = ({week, onSubmit, countdownID}) => {
     el: (
       <>
       <h3>Pre-Exercise Heart Rate</h3>
-      <p>We'll record your heart rate before and after your exercise.</p>
       <HeartRate
         onChange={(rate) => {
           console.log("Set Heart Rate", rate);

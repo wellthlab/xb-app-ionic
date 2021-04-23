@@ -3,6 +3,8 @@ import { IonButton, IonIcon, IonInput, IonTitle } from "@ionic/react";
 import { connect } from "react-redux";
 import CountDown from "../user_input/CountDown";
 
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+
 import { heart } from "ionicons/icons";
 import "./HeartRate.scss";
 
@@ -28,7 +30,7 @@ const HeartRate = ({ onChange }) => {
         </IonTitle>
         <p>
           Find your pulse by firmly gripping your wrist like in the diagram
-          below. Start the timer and count your heartbeats for {seconds} seconds.
+          below. Count your heartbeats for {seconds} seconds.
         </p>
         <img
           style={{
@@ -40,7 +42,25 @@ const HeartRate = ({ onChange }) => {
           }}
           src="assets/heartrate.png"
         />
-        <CountDown seconds={20} />
+
+        <div className="timer">
+        <CountdownCircleTimer
+          onComplete={()=>{
+            return [true];
+          }}
+          isPlaying
+          size={90}
+          duration={seconds}
+          initialRemainingTime={10}
+          colors={[
+            ['#004777', 0.33],
+            ['#F7B801', 0.33],
+            ['#A30000', 0.33],
+          ]}
+        >
+          {({ remainingTime }) => remainingTime}
+        </CountdownCircleTimer></div>
+
         <p>How many beats did you count?</p>
         <IonInput
           type="number"
