@@ -21,6 +21,7 @@ const moves = [
   {
     id: "boxsquat",
     name: "Squat 1: Box Squat",
+    type: "squat",
     description:
       "Find a sturdy box or chair. Facing away, extend your arms, feet spaced shoulder-width apart, push your bum outwards, and bring your body down and angled forwards until your bum touches the chair. Widen stance to increase difficulty.",
     images: ["box_squat_rest.png", "box_squat_engaged.png"],
@@ -31,6 +32,7 @@ const moves = [
   {
     id: "fullsquat",
     name: "Squat 2: Full Squat",
+    type: "squat",
     description:
       "Extend your arms, feet spaced shoulder-width apart, push your bum outwards, and bring your body down and angled forwards as far as possible. Widen stance to increase difficulty.",
     images: ["full_squat_rest.png", "full_squat_engaged.png"],
@@ -41,6 +43,7 @@ const moves = [
   {
     id: "bulgariansplitsquat",
     name: "Squat 3: Bulgarian Split Squat",
+    type: "squat",
     description:
       "Find a sturdy box or chair. Rest the leg you aren't using on the object. Kneel downwards on your other leg keeping your body fairly straight until your knees are at a 45 degree angle.",
     images: [
@@ -54,6 +57,7 @@ const moves = [
   {
     id: "boxpistolsquat",
     name: "Squat 4: Box Pistol Squat",
+    type: "squat",
     description:
       "Find a sturdy box or chair. If using a box, step on and squat your leg, angling your body forward with extended hands for balance. If using a chair, face away and squat with one leg, extending the other leg forward, until your bum touches the chair.",
     images: ["box_pistol_squat_rest.png", "box_pistol_squat_engaged.png"],
@@ -64,6 +68,7 @@ const moves = [
   {
     id: "gluteraise",
     name: "Hinge 1: Glute Raise",
+    type: "hinge",
     description:
       "Lay on your back, arms flat either side, knees bent pointing upwards. Drive your hips upwards until your back is nearly straight, pivoting from your shoulder blades. Rest a weight on your body to increase difficulty.",
     images: ["glute_raise_rest.png", "glute_raise_engaged.png"],
@@ -73,6 +78,7 @@ const moves = [
   {
     id: "shortbridge",
     name: "Hinge 2: Short Bridge",
+    type: "hinge",
     description:
       "Lay on your back, knees bent upwards, arms laying either side of your body or resting on your belly. Drive your hips upwards, forming a bridge shape with your back, pivoting from your upper back. Hold a weight to increase difficulty.",
     images: ["short_bridge_rest.png", "short_bridge_engaged.png"],
@@ -82,6 +88,7 @@ const moves = [
   {
     id: "singlelegromaniandeadlift",
     name: "Hinge 3: Single Leg Romanian Deadlift",
+    type: "hinge",
     description:
       "Stand upright, facing forwards. Bring one leg backwards as you pivot your body forwards until almost facing straight down, slightly bending your other leg. Hold a weight to increase difficulty.",
     images: [
@@ -95,6 +102,7 @@ const moves = [
   {
     id: "angledbridge",
     name: "Hinge 4: Angled Bridge",
+    type: "hinge",
     description:
       "Find a sturdy box or chair. Lie back on object, keeping feet flat and shoulder width apart. Place hands either side of your head, palms flat on object, fingers pointing at your toes. Press through the hands, pushing your hips up and arcing your back as far as you can.",
     images: ["angled_bridge_rest.png", "angled_bridge_engaged.png"],
@@ -105,6 +113,7 @@ const moves = [
   {
     id: "cobrapushup",
     name: "Push 1: Cobra Push Up",
+    type: "push",
     description:
       "Lay on the floor belly first, elbows back fairly tight against the body, hands flat below the shoulders. Keeping your body below your hips flat on the floor, drive your entire upper body upwards, engaging your core and fully extending your arms.",
     images: ["push_up_rest.png", "cobra_push_up_engaged.png"],
@@ -114,6 +123,7 @@ const moves = [
   {
     id: "pushup",
     name: "Push 2: Flat Push Up",
+    type: "push",
     description:
       "Lay on the floor belly first, elbows back fairly tight against the body, hands flat below the shoulders, pivoting from your toes. Drive through your arms until fully extended. Reduce difficulty by pivoting from your knees instead.",
     images: ["push_up_rest.png", "push_up_engaged.png"],
@@ -124,6 +134,7 @@ const moves = [
   {
     id: "elevatedpushup",
     name: "Push 3: Elevated Push Up",
+    type: "push",
     description:
       "Find a sturdy box or chair. Carefully lean forwards, elbows back fairly tight against the body, hands flat on the object below the shoulders, pivoting from your toes. Drive through your arms until fully extended. Reduce difficulty by pivoting from your knees instead.",
     images: ["elevated_push_up_rest.png", "elevated_push_up_engaged.png"],
@@ -135,6 +146,7 @@ const moves = [
   {
     id: "verticalpull",
     name: "Pull 1: Vertical Pull",
+    type: "pull",
     description:
       "Stand facing a door frame or other solid vertical object. Grip the object with both hands level with your upper chest. Lean your body backwards until your arms fully extend, then pull your body back to an upright position. Bring both feet further forward to angle your body and increase difficulty.",
     images: ["vertical_pull_rest.png", "vertical_pull_engaged.png"],
@@ -145,6 +157,7 @@ const moves = [
   {
     id: "pronatedaustralianpull",
     name: "Pull 2: Pronated Australian Pull",
+    type: "pull",
     description:
       "Rest a stiff stick between two sturdy objects (or use a table). Lay beneath it, shoulders slightly forward of the stick, firmly gripping the stick with both hands facing forwards. Pull your body upwards with your arms to meet the object, pivoting from your ankles.",
     images: [
@@ -158,6 +171,7 @@ const moves = [
   {
     id: "suppinatedaustralianpull",
     name: "Pull 3: Suppinated Australian Pull",
+    type: "pull",
     description:
       "Rest a stiff stick between two sturdy objects (or use a table). Lay beneath it, shoulders slightly forward of the stick, firmly gripping the stick with your palms facing towards you (if using a table, lay with your body below the table and grip the edge). Pull your body upwards with your arms to meet the object, pivoting from your ankles.",
     images: [
@@ -170,6 +184,7 @@ const moves = [
   {
     id: "horizontalpull",
     name: "Pull 4: Horizontal Pull",
+    type: "pull",
     description:
       "Find a sturdy table or chair. Lay beneath it, shoulders slightly forward of the lip of the object, firmly gripping the lip with both hands. Pull your body upwards with your arms to meet the object, pivoting from your ankles. Bend knees and pivot from your bum to reduce difficulty.",
     images: ["horizontal_pull_rest.png", "horizontal_pull_engaged.png"],
