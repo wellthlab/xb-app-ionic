@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.6",
     "@capacitor-community/react-hooks": "0.0.11",
-    "@capacitor/android": "^2.4.5",
+    "@capacitor/android": "^3.0.0-rc.0",
     "@capacitor/core": "^3.0.0-rc.0",
     "@capacitor/ios": "^3.0.0-rc.0",
     "@capacitor/local-notifications": "^0.6.0",
