@@ -59,17 +59,19 @@ const RPE = (props) => {
   return (
     <>
       <p style={{ padding: "5px 8px 5px 8px" }}>
-          RPE: Rate of Perceived Exertion
+        RPE: Rate of Perceived Exertion
       </p>
 
       <p style={{ padding: "5px 8px 5px 8px" }}>
-          Do you feel between 4-6 during your Blocks?
+        Do you feel between 4-6 during your Blocks?
       </p>
       <IonItem style={{ textAlign: "center" }}>
         <IonLabel>{sliderValues[value - 1]}</IonLabel>
       </IonItem>
       <IonItem style={{ textAlign: "center" }}>
-        <IonLabel style={{overflowWrap: "break-word", whiteSpace: "normal"}}>{sliderValuesExplanations[value - 1]}</IonLabel>
+        <IonLabel style={{ overflowWrap: "break-word", whiteSpace: "normal" }}>
+          {sliderValuesExplanations[value - 1]}
+        </IonLabel>
       </IonItem>
       <IonItem>
         <IonRange

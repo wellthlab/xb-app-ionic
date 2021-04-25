@@ -13,7 +13,7 @@ export default class ContentFeed extends Component {
     super(props);
   }
 
-  renderItem( item ) {
+  renderItem(item) {
     console.log("Render content", item);
 
     var content;
@@ -33,7 +33,6 @@ export default class ContentFeed extends Component {
     }
 
     return content;
-
   }
 
   render() {

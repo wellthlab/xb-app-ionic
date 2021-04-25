@@ -119,7 +119,7 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         break;
 
       case "note":
-        input = <Note onSubmit={save} />
+        input = <Note onSubmit={save} />;
         break;
 
       default:

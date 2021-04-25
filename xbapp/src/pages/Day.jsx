@@ -23,7 +23,7 @@ import {
   barChart,
   checkmarkCircleOutline,
   closeCircleOutline,
-  arrowForwardOutline
+  arrowForwardOutline,
 } from "ionicons/icons";
 import Instructions from "../components/Instructions";
 
@@ -32,8 +32,6 @@ import { addControllersProp } from "../model/controllers";
 import DailyJournal from "../components/journal/DailyJournal";
 
 import "./Group.scss";
-
-
 
 const Group = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
@@ -46,7 +44,7 @@ const Group = ({ match, teams, controllers, account }) => {
   controllers.LOAD_TEAMS_IF_REQD();
 
   // Wait for teams to be loaded
-  if(teams.fetching) {
+  if (teams.fetching) {
     return "";
   }
 
@@ -81,7 +79,8 @@ const Group = ({ match, teams, controllers, account }) => {
       ? "Finished"
       : "Today is day " + day;
 
-  var members = group.users.length > 1 ? group.users.length + " members" : "Just You";
+  var members =
+    group.users.length > 1 ? group.users.length + " members" : "Just You";
 
   return (
     <IonPage id="weekInfo">

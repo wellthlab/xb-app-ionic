@@ -17,9 +17,9 @@ const JourneyPlanner = (account) => {
       <IonContent>
         <h1 className="centering">Hello!</h1>
         <p className="centering">
-          To get started you can either start a new experiment,
-          or join somebody else's as part of a team. If you start a new experiment, you'll be able
-          to experiment by yourself, or invite other people to join you.
+          To get started you can either start a new experiment, or join somebody
+          else's as part of a team. If you start a new experiment, you'll be
+          able to experiment by yourself, or invite other people to join you.
         </p>
 
         <div className="centering">

@@ -261,7 +261,9 @@ const StrengthWizard = (props) => {
    */
   const [rpeVal, setrpeVal] = useState(1);
   const [scoreRPE, setscoreRPE] = useState("0-1: No Exertion");
-  const [explanationRPE, setexplanationRPE] = useState("The only movement you're getting is pushing buttons on the TV remote.");
+  const [explanationRPE, setexplanationRPE] = useState(
+    "The only movement you're getting is pushing buttons on the TV remote."
+  );
 
   content.push({
     el: (

@@ -14,5 +14,12 @@
 		"allowMixedContent": true,
 		"webContentsDebuggingEnabled": true
 	},
-	"cordova": {}
+	"cordova": {},
+	"ios": {
+		"minVersion": "13.0"
+	},
+	"server": {
+		"url": "http://192.168.1.24:8100",
+		"cleartext": true
+	}
 }

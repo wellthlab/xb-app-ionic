@@ -20,20 +20,28 @@ import {
  */
 
 const MoodImages = {
-  1: 'sad.png',
-  2: 'somewhat_sad.png',
-  3: 'neutral.png',
-  4: 'somewhat_happy.png',
-  5: 'happy.png'
+  1: "sad.png",
+  2: "somewhat_sad.png",
+  3: "neutral.png",
+  4: "somewhat_happy.png",
+  5: "happy.png",
 };
 
 const MoodStringsRelative = {
-  1: "A lot worse", 2: "Worse", 3: "The same", 4: "Better", 5: "A lot better"
-}
+  1: "A lot worse",
+  2: "Worse",
+  3: "The same",
+  4: "Better",
+  5: "A lot better",
+};
 
 const MoodStringsAbsolute = {
-  1: "Very Bad", 2: "Bad", 3: "Okay", 4: "Good", 5: "Very good"
-}
+  1: "Very Bad",
+  2: "Bad",
+  3: "Okay",
+  4: "Good",
+  5: "Very good",
+};
 
 /**
  * Pick moood
@@ -59,7 +67,7 @@ const MoodPicker = (props) => {
     <>
       <img
         style={{ width: "50px", resize: "both", textAlign: "center" }}
-        src={ "assets/mood/" + MoodImages[value] }
+        src={"assets/mood/" + MoodImages[value]}
         alt="happy"
       />
       <IonItem style={{ textAlign: "center" }}>

@@ -14,5 +14,8 @@
 		"allowMixedContent": true,
 		"webContentsDebuggingEnabled": true
 	},
-	"cordova": {}
+	"cordova": {},
+	"ios": {
+		"minVersion": "13.0"
+	}
 }

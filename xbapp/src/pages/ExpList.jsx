@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
-import { IonContent, IonPage, IonFab, IonFabButton, IonIcon } from "@ionic/react";
+import {
+  IonContent,
+  IonPage,
+  IonFab,
+  IonFabButton,
+  IonIcon,
+} from "@ionic/react";
 import XBHeader from "../components/XBHeader";
 import "./ExpList.css";
 
-import {
-  add
-} from "ionicons/icons";
+import { add } from "ionicons/icons";
 
 import ExperimentList from "../components/ExperimentList";
 
@@ -40,21 +44,23 @@ class ExpList extends Component {
         c = <></>;
         this.props.history.replace("/group/" + this.props.teams.teams[0]._id);
       } else {
-        c = <>
-          <ExperimentList teams={this.props.teams.teams} />
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-            <IonFabButton routerLink="/start"><IonIcon icon={add} /></IonFabButton>
-          </IonFab>
-        </>
+        c = (
+          <>
+            <ExperimentList teams={this.props.teams.teams} />
+            <IonFab vertical="bottom" horizontal="end" slot="fixed">
+              <IonFabButton routerLink="/start">
+                <IonIcon icon={add} />
+              </IonFabButton>
+            </IonFab>
+          </>
+        );
       }
     }
 
     return (
       <IonPage>
         <XBHeader title="Experiments"></XBHeader>
-        <IonContent>
-        {c}
-        </IonContent>
+        <IonContent>{c}</IonContent>
       </IonPage>
     );
   }

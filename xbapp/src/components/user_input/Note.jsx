@@ -11,28 +11,36 @@ import {
   IonRange,
   IonItemDivider,
   IonButton,
-  IonTextarea
+  IonTextarea,
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import './Note.css';
+import "./Note.css";
 
-const Note = ({onSubmit}) => {
+const Note = ({ onSubmit }) => {
   const [note, setNote] = useState("");
 
-
   return (
-    <div style={{padding: "15px"}}>
-      <IonTextarea placeholder="Enter your note" onIonChange={ (e) => {
-        setNote(e.detail.value);
-      }}>
-      </IonTextarea>
-      { note.length > 0 ?
-      <IonButton onClick={() => {
-        onSubmit({
-          note: note
-        });
-      }}>Save</IonButton> : "" }
+    <div style={{ padding: "15px" }}>
+      <IonTextarea
+        placeholder="Enter your note"
+        onIonChange={(e) => {
+          setNote(e.detail.value);
+        }}
+      ></IonTextarea>
+      {note.length > 0 ? (
+        <IonButton
+          onClick={() => {
+            onSubmit({
+              note: note,
+            });
+          }}
+        >
+          Save
+        </IonButton>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

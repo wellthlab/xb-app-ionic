@@ -14,7 +14,7 @@ import {
   IonLabel,
   IonListHeader,
   IonText,
-  IonCard
+  IonCard,
 } from "@ionic/react";
 import { peopleOutline, alertOutline, todayOutline, add } from "ionicons/icons";
 import { Link } from "react-router-dom";
@@ -79,24 +79,24 @@ const ExperimentList = (props) => {
         } else {
           return (
             <IonCard key={i} routerLink={"/group/" + group._id}>
-                <ion-card-header>
+              <ion-card-header>
                 <ion-card-subtitle>
                   {group.experiment.info.title}
                 </ion-card-subtitle>
-                  <ion-card-title>{group.name}</ion-card-title>
-                </ion-card-header>
+                <ion-card-title>{group.name}</ion-card-title>
+              </ion-card-header>
 
-                <ion-card-content>
-                  <ion-chip color="primary">
-                    <ion-label>
-                      <IonIcon icon={todayOutline} /> {daydesc}
-                    </ion-label>
-                  </ion-chip>
-                  {/*<ion-chip color="danger">
+              <ion-card-content>
+                <ion-chip color="primary">
+                  <ion-label>
+                    <IonIcon icon={todayOutline} /> {daydesc}
+                  </ion-label>
+                </ion-chip>
+                {/*<ion-chip color="danger">
                                 <ion-label><IonIcon icon={alertOutline} /> {missing} overdue { missing > 1 ? "entries" : "entry" }</ion-label>
                             </ion-chip>*/}
-                  {memberchip}
-                </ion-card-content>
+                {memberchip}
+              </ion-card-content>
             </IonCard>
           );
         }
