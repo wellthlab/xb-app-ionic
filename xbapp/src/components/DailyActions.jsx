@@ -58,17 +58,22 @@ const DailyActions = ({ group, activeDay }) => {
    * Daily task list and buttons
    */
   var qreq = [
-    {
-      type: "strength",
-      desc: "Do your Daily Strength Exercise",
-      verb: "DO IT",
-    },
-    { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" },
-    { type: "questionnaire", desc: "Fill in the Daily Review", verb: "DO IT" },
+    { type: "questionnaire", desc: "Fill in the Daily Review", verb: "DO IT" }
   ];
 
   // Other tasks that can be done, but optionally
-  var others = [{ type: "note", desc: "Add Notes", verb: "ADD NOTES" }];
+  var others = [
+    { type: "note", desc: "Add Notes", verb: "ADD NOTES" },
+    { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" }
+  ];
+
+  // Strength exercise only on week days
+  var day = (new Date()).getDay();
+  if( day == 0 || day == 6) {
+    others.push({ type: "strength", desc: "Do your Daily Strength Exercise", verb: "DO IT" });
+  } else {
+    qreq.push({ type: "strength", desc: "Do your Daily Strength Exercise", verb: "DO IT" });
+  }
 
   var day = entry.day;
   if (day == 1 || day == 22 || day == 36) {
@@ -91,15 +96,7 @@ const DailyActions = ({ group, activeDay }) => {
     console.log(type.type, done);
 
     return (
-      <IonItem
-        color={done ? "success" : "danger"}
-        key={type.type}
-        routerLink={
-          "/group/" + group._id + "/" + activeDay + "/add/" + type.type
-        }
-        detail={true}
-        detailIcon={arrowForwardOutline}
-      >
+      <IonItem color={done ? "neutral" : "warning"} key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true} detailIcon={arrowForwardOutline}>
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
         {type.desc}
         {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}

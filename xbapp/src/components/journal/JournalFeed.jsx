@@ -65,17 +65,20 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; DAILY STRENGTH EXERCISE
-              </IonCardSubtitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <IonList>
-                {Object.keys(r.sets).map((type, i) => {
-                  var move = getMove(type);
-                  if (move == false) {
-                    move = {
-                      name: "Unknown move, " + type,
+            <IonCardSubtitle>{time} &nbsp; DAILY STRENGTH EXERCISE</IonCardSubtitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+            {
+              Object.keys(r.sets).map((type, i) => {
+
+                var block, mtype;
+                [mtype, block] = type.split(/-/);
+
+                var move = getMove(mtype);
+                if(move == false) {
+                  move = {
+                    name: "Unknown move, " + type
                     };
                   }
                   var mname = move.name.split(/:/).pop();

@@ -10,10 +10,15 @@ import {
   IonSlide,
   IonTitle,
   IonItem,
+  IonList,
+  IonLabel,
+  IonListHeader,
+  IonTextarea
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import MovementPicker from "./MovementPicker";
+import MovementPicker, {getMove} from "./MovementPicker";
+import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
@@ -23,44 +28,59 @@ import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Pe
 
 import "./StrengthWizard.css";
 
+function useLocalStorage(key, initialValue) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
 /**
  * props:
  *      week: int - Week number; just used to store/retrieve chosen movement
- *      mins: Minutes of movement required
  *
  */
-const StrengthWizard = (props) => {
+const StrengthWizard = ({week, onSubmit, countdownID}) => {
   const [stage, setStage] = useState(0);
+
+  var blocks = Math.max(1, week - 1);
+  console.log("Week", week, "blocks", blocks);
 
   /**
    * Content contains all the pages, plus functions for checking if the stage is complete
    */
   var content = [];
 
-  var week = props.week;
-
-  /**
-   * Instructions
-   */
-  if (week <= 1) {
-    var rubric =
-      "This week, you're exploring the different moves. Pick one upper and lower body move each day and try them out. ";
-  } else {
-    var rubric =
-      "This week, you'll do the same exercises each day. One upper body, and one lower body.";
-  }
-
-  content.push({
-    el: (
-      <>
-        <h3>Week {week}</h3>
-        <p>{rubric}</p>
-      </>
-    ),
-    rule: function () {
-      return true;
-    },
-  });
+  content[0] = {placeholder: true}; // A placeholder for the real first page, which we'll assemble later
 
   /**
    * Heart Rate and effort review
@@ -69,92 +89,160 @@ const StrengthWizard = (props) => {
 
   content.push({
     el: (
+      <>
+      <h3>Pre-Exercise Heart Rate</h3>
       <HeartRate
         onChange={(rate) => {
           console.log("Set Heart Rate", rate);
-          setPostHeart(rate);
+          setPreHeart(rate);
         }}
       />
+      </>
     ),
     rule: () => {
-      return postHeart !== null;
+      return preHeart !== null;
     },
+    title: "Pre-exercise Heart Rate"
   });
 
   /**
    * Set up the exercise picker
    */
-  /* TODO: This doesn't work - useStorageItem is broken?
-  // Use storage react hook to use capacitor storage to store weekly exercise choices
-  var [exList, setExList] = useStorageItem("week" + props.week + "-exlist", false);
 
-  // On first render, exList will be undefined - because it takes a cycle to be fetched
-  if (typeof exList === 'undefined') {
-    console.log(exList);
-    return <ion-spinner name="crescent" />;
-  }
+   // TODO: We need to not jump to "you've picked" when the ex list is updated :/
+   // Remember appropriate flow somehow? i.e. in a useState?
 
-  exList = JSON.parse(exList);
-  */
-  var [exList, setExList] = useState([]);
+  var exList = [];
+  var setExList = [];
+  [exList[1], setExList[1]] = useLocalStorage("week" + week + "-block1-exlist", []);
+  [exList[2], setExList[2]] = useLocalStorage("week" + week + "-block2-exlist", []);
+  [exList[3], setExList[3]] = useLocalStorage("week" + week + "-block3-exlist", []);
+  [exList[4], setExList[4]] = useLocalStorage("week" + week + "-block4-exlist", []);
+  [exList[5], setExList[5]] = useLocalStorage("week" + week + "-block5-exlist", []);
+  [exList[6], setExList[6]] = useLocalStorage("week" + week + "-block6-exlist", []);
+  [exList[7], setExList[7]] = useLocalStorage("week" + week + "-block7-exlist", []);
 
+  console.log("exList[1]", exList[1], exList[1].length);
+
+  // Remember which flow is in use for each block
+  var blockFlow = [];
+  var setBlockFlow = [];
+  [blockFlow[1], setBlockFlow[1]] = useState(exList[1].length < 2 ? "pick" : "show");
+  [blockFlow[2], setBlockFlow[2]] = useState(exList[2].length < 2 ? "pick" : "show");
+  [blockFlow[3], setBlockFlow[3]] = useState(exList[3].length < 2 ? "pick" : "show");
+  [blockFlow[4], setBlockFlow[4]] = useState(exList[4].length < 2 ? "pick" : "show");
+  [blockFlow[5], setBlockFlow[5]] = useState(exList[5].length < 2 ? "pick" : "show");
+  [blockFlow[6], setBlockFlow[6]] = useState(exList[6].length < 2 ? "pick" : "show");
+  [blockFlow[7], setBlockFlow[7]] = useState(exList[7].length < 2 ? "pick" : "show");
+
+
+  var [exExpList, setExExpList] = useState([]); // Explore exercise list, week 1
+
+  //var [exList, setExList] = useState([]);
   const [sets, setSets] = useState(null);
+
 
   /**
    * Normal flow is to pick two moves and do them
    */
   if (week > 1) {
-    content.push({
-      el: (
-        <>
-          <h3>Choose Today's Routine</h3>
-          <p>
-            Please select one <span>upper body</span> movement and one{" "}
-            <span>lower body</span> movement.
-          </p>
-          <MovementPicker
-            onChange={(list) => {
-              console.log("Set exercise list", list);
-              setExList(list);
-            }}
-            number={2}
-          />
-        </>
-      ),
-      rule: function () {
-        console.log(exList);
-        return exList.length == 2;
-      },
-    });
 
-    /**
-     * Set up the timer and set counter
-     */
-    var mins = Math.max(1, week - 1) * 7; // 7 minute increase per week, but just 7 in weeks 1 and 2
+    // TODO: Only if exercise is not set; otherwise show a reminder?
+    for(var blocknum = 1; blocknum <= blocks; blocknum++)
+    {
+      var picked = blockFlow[blocknum] == "show";
+      console.log("Block", blocknum, "List", exList[blocknum], "flow", blockFlow[blocknum])
 
-    function updateSets(type, count) {
-      var copy = {};
-      Object.assign(copy, sets);
+      if(!picked) { // Either show a picker, or a reminder
+        console.log("Use picker for block", blocknum);
+        (function(blocknum)  // Trap blocknum in a closure
+        {
+          content.push({
+            el: (
+              <>
+                <h3>Block {blocknum} of {blocks}</h3>
+                <p>You need to choose two movements for this block. Your choices will be fixed for the rest of the week.</p>
+                <p>
+                  Please select one <span>push</span> movement and one{" "}
+                  <span>pull</span> movement.
+                </p>
+                <p><strong>Swipe left or right to select different moves.</strong></p>
+                <MovementPicker
+                  onChange={(list) => {
+                    setExList[blocknum](list);
+                  }}
+                  number={2}
+                />
+              </>
+            ),
+            rule: function () {
+              console.log("Check exList for block", blocknum, exList[blocknum]);
+              return exList[blocknum].length == 2;
+            }
+          });
+        })(blocknum); // Apply value to closure
+      }
+      else {
+        console.log("Use reminder for block", blocknum);
+        (function(blocknum)  // Trap blocknum in a closure
+        {
 
-      copy[type] = count;
+          var move1 = getMove(exList[blocknum][0]);
+          var move2 = getMove(exList[blocknum][1]);
 
-      setSets(copy);
+          content.push({
+            el: (
+              <>
+                <h3>Block {blocknum} of {blocks}</h3>
+                <p>You have already chosen your exercises for this block. Here's a reminder of what you picked.</p>
+                <p><strong>Swipe left or right to select different moves.</strong></p>
+
+                <MovementInfoCard key={move1.id} images={move1.images} name={move1.name} />
+                <MovementInfoCard key={move2.id} images={move2.images} name={move2.name} />
+
+              </>
+            ),
+            rule: function () {
+              console.log("Check exList for block", blocknum, exList[blocknum]);
+              return exList[blocknum].length == 2;
+            }
+          });
+        })(blocknum); // Apply value to closure
+      }
+
+      /**
+       * Set up the timer and set counter
+       */
+      (function(blocknum) {
+
+        function updateSets(type, block, count) {
+          var copy = {};
+          Object.assign(copy, sets);
+
+          copy[type + "-" + block] = count;
+
+          setSets(copy);
+        }
+
+        content.push({
+          el: (<>
+            <h3>Block {blocknum} of {blocks}</h3>
+            <MovementTimer
+              exercises={exList[blocknum]}
+              onDone={() => {}}
+              onSetChange={updateSets}
+              mins={7}
+              countdownID={countdownID}
+              block={blocknum}
+            /></>
+          ),
+          rule: () => {
+            return true;
+          },
+          title: "Movement Block " + blocknum
+        });
+      })(blocknum);
     }
-
-    content.push({
-      el: (
-        <MovementTimer
-          exercises={exList}
-          onDone={() => {}}
-          onSetChange={updateSets}
-          mins={mins}
-          countdownID={props.countdownID}
-        />
-      ),
-      rule: () => {
-        return true;
-      },
-    });
 
     /**
      * But in week 1, just explore different moves to find a level
@@ -165,15 +253,14 @@ const StrengthWizard = (props) => {
         <>
           <h3>Choose a Move</h3>
           <p>
-            Please select the <span>upper body</span> movement you'd like to
+            Please select the <span>push</span> movement you'd like to
             explore today.
           </p>
           <MovementPicker
-            upper={true}
-            lower={false}
+            type="push"
             onChange={(list) => {
               console.log("Set exercise list", list);
-              setExList(list);
+              setExExpList(list);
               var newsets = Object.assign({}, sets);
               newsets[list[0]] = "explore"; // Record the chosen exercise
               setSets(newsets);
@@ -186,12 +273,13 @@ const StrengthWizard = (props) => {
       next: false,
       rule: function () {
         console.log(exList);
-        return exList.length == 1;
+        return exExpList.length == 1;
       },
+      title: "Movement One"
     });
 
     content.push({
-      el: <LevelFinder exercise={exList[0]} />,
+      el: <LevelFinder exercise={exExpList[0]} />,
       rule: () => {
         return true;
       },
@@ -203,15 +291,14 @@ const StrengthWizard = (props) => {
         <>
           <h3>Choose a Move</h3>
           <p>
-            Please select the <span>lower body</span> movement you'd like to
+            Please select the <span>pull</span> movement you'd like to
             explore today.
           </p>
           <MovementPicker
-            upper={false}
-            lower={true}
+            type="pull"
             onChange={(list) => {
               console.log("Set exercise list", list);
-              setExList(list);
+              setExExpList(list);
               var newsets = Object.assign({}, sets);
               newsets[list[0]] = "explore"; // Record the chosen exercise
               setSets(newsets);
@@ -222,18 +309,18 @@ const StrengthWizard = (props) => {
         </>
       ),
       rule: function () {
-        console.log(exList);
-        return exList.length == 1;
+        return exExpList.length == 1;
       },
       next: false,
+      title: "Movement Two"
     });
 
     content.push({
-      el: <LevelFinder exercise={exList[0]} />,
+      el: <LevelFinder exercise={exExpList[0]} />,
       rule: () => {
         return true;
       },
-      previous: true,
+      previous: true
     });
   }
 
@@ -244,16 +331,20 @@ const StrengthWizard = (props) => {
 
   content.push({
     el: (
+      <>
+      <h3>Post-Exercise Heart Rate</h3>
       <HeartRate
         onChange={(rate) => {
           console.log("Set Heart Rate", rate);
           setPostHeart(rate);
         }}
       />
+      </>
     ),
     rule: () => {
       return postHeart !== null;
     },
+    title: "Post-exercise Heart Rate"
   });
 
   /**
@@ -266,19 +357,76 @@ const StrengthWizard = (props) => {
   );
 
   content.push({
-    el: (
+    el: (<>
+      <h3>Perceived Exertion</h3>
+      <p>How do you feel?</p>
       <RPE
         onChange={async (rpeVal, scoreRPE, explanationRPE) => {
           setrpeVal(rpeVal);
           setscoreRPE(scoreRPE);
           setexplanationRPE(explanationRPE);
         }}
-      />
+      /></>
     ),
     rule: () => {
       return true;
     },
+    title: "Perceived Exertion Score"
   });
+
+  /**
+   * Notes
+   */
+   const [notes, setNotes] = useState("");
+   content.push({
+     el: (<>
+         <h3>Notes</h3>
+         <p>How did today's exercise go? Add some notes to remind yourself of which moves went well and which were more challenging.</p>
+         <IonTextarea placeholder="Enter your note" onIonChange={ (e) => {
+           setNotes(e.detail.value);
+         }} />
+       </>
+     ),
+     rule: () => {
+       return true;
+     },
+     title: "Record Notes"
+   });
+
+
+  /**
+   * Instructions and stage list
+   */
+  if (week <= 1) {
+    var rubric =
+      "This week, you're exploring the different moves. Pick one upper and lower body move each day and try them out. ";
+  } else {
+    var rubric =
+      "This week, you'll do the same exercises each day. You have " + blocks + " blocks to complete, with two moves in each block.";
+  }
+
+  var snum = 1;
+  content[0] = {
+    el: (
+      <>
+        <p>{rubric}</p>
+        <IonList>
+        <IonListHeader>
+          <IonLabel>Today's Strength Exercise</IonLabel>
+        </IonListHeader>
+        {
+          content.map((stage, i) => {
+            if(stage.title)
+              return <IonItem key={i}><span className="number" slot="start">{snum++}</span> <IonLabel>{stage.title}</IonLabel></IonItem>
+          })
+        }
+        </IonList>
+      </>
+    ),
+    rule: function () {
+      return true;
+    },
+  };
 
   /**
    * Final stage, save button!
@@ -286,7 +434,7 @@ const StrengthWizard = (props) => {
   content.push({
     el: (
       <>
-        <IonTitle>Good work!</IonTitle>
+        <h3>Good work!</h3>
         <p>Submit your workout to record your progress.</p>
         <p>
           <strong>See you tomorrow!</strong>
@@ -301,8 +449,13 @@ const StrengthWizard = (props) => {
             res.type = "strength";
             var rmins = {};
             rmins.type = "minutes";
-            rmins.minutes = mins;
-            props.onSubmit([res, rmins]);
+            rmins.minutes = Math.max(1, week - 1) * 7;
+            var rnotes = {}
+            rnotes.type="note";
+            rnotes.note = notes;
+            notes.length > 0 ?
+              onSubmit([res, rmins, rnotes])
+              : onSubmit([res, rmins]);
           }}
         >
           Submit
@@ -323,6 +476,7 @@ const StrengthWizard = (props) => {
   var maxStage = 0;
   for (var i in content) {
     maxStage = i;
+
     if (!content[i].rule()) {
       console.log("Stage", i, "is not complete");
       break;
@@ -342,7 +496,6 @@ const StrengthWizard = (props) => {
     setStage(stage - 1);
   };
 
-  // TODO: Next button should be linked to whether page is complete or not
   for (var i in content) {
     var c = content[i];
     var nextExists = i < content.length - 1;
@@ -372,7 +525,11 @@ const StrengthWizard = (props) => {
     );
   }
 
-  return slides[Math.min(stage, maxStage)];
+  var slide = slides[Math.min(stage, maxStage)];
+
+  return <div className="StrengthWizard">
+    {slide}
+  </div>
 };
 
 export default StrengthWizard;

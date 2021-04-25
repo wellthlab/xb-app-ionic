@@ -5,3 +5,11 @@
 .buttons .next {
   float: right;
 }
+
+.StrengthWizard {
+  padding: 0 10px 0 10px;
+}
+
+.StrengthWizard h3 {
+  padding: 10px 0 0 0 !important;
+}

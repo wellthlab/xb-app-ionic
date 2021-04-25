@@ -10,12 +10,12 @@ import { connect } from "react-redux";
  *  onPause
  *  minutes - starting number of minutes
  *  seconds - starting number of seconds
- *  persist - true/false to indicate if values should be fetched/stored from localStorage
+ *  active - set whether countdown is active initially
  */
 function CountDown(props) {
   const [seconds, setSeconds] = useState(false);
   const [minutes, setMinutes] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(props.active ? props.active : false);
 
   function toggle() {
     setIsActive(!isActive);
@@ -27,7 +27,10 @@ function CountDown(props) {
     setIsActive(false);
   }
 
-  if (seconds === false) reset(); // Set initial state
+  if (seconds === false) {
+    setMinutes(props.minutes ? props.minutes : 0);
+    setSeconds(props.seconds ? props.seconds : 0);
+  };
 
   useEffect(() => {
     let interval = null;
@@ -63,6 +66,7 @@ function CountDown(props) {
       </div>
       <div className="row" slot="end">
         <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
+        { !isActive ? <IonButton onClick={reset}>Reset</IonButton> : "" }
       </div>
     </IonItem>
   );

@@ -59,11 +59,7 @@ const RPE = (props) => {
   return (
     <>
       <p style={{ padding: "5px 8px 5px 8px" }}>
-        RPE: Rate of Perceived Exertion
-      </p>
-
-      <p style={{ padding: "5px 8px 5px 8px" }}>
-        Do you feel between 4-6 during your Blocks?
+          Rate how hard or easy you found that exercise using the scale below.
       </p>
       <IonItem style={{ textAlign: "center" }}>
         <IonLabel>{sliderValues[value - 1]}</IonLabel>

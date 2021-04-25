@@ -12,7 +12,7 @@ import "./MovementTimer.scss";
 /**
  * Time movements
  */
-const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
+const MovementTimer = ({ exercises, block, onSetChange, onDone, mins, day }) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
@@ -38,8 +38,8 @@ const MovementTimer = ({ exercises, onSetChange, onDone, mins, day }) => {
         return (
           <MovementInfoCard key={move.id} images={move.images} name={move.name}>
             <SetCounter
-              onChange={(sets) => {
-                onSetChange(move.id, sets);
+              onChange={(reps) => {
+                onSetChange(move.id, block, reps);
               }}
             />
           </MovementInfoCard>

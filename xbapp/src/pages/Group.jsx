@@ -56,9 +56,9 @@ const Group = ({ match, teams, controllers, account }) => {
     setShowAlert(!showAlert);
   }
 
-  const [view, setView] = useState(
-    match.params.page ? match.params.id : "info"
-  );
+  const [view, setView] = useState(match.params.page ? match.params.page : 'info');
+
+  console.log(view, match.params);
 
   const [showMenu, setShowMenu] = useState(false);
 

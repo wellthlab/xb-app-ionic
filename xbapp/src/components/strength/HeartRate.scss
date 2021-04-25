@@ -7,8 +7,7 @@
 }
 
 #heartratePage > h3, #heartratePage > h4, #heartratePage > p {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+
 }
 
 #heartratePage > h4 {
@@ -18,4 +17,15 @@
 #heartratePage ion-input {
   background: var(--ion-item-background);
   margin-bottom: 1.5rem;
+}
+
+#heartratePage .timer {
+  position: relative;
+  top: -20px;
+}
+
+#heartratePage .timer > div {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
