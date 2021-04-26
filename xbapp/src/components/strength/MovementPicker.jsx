@@ -64,7 +64,16 @@ const moves = [
     type: "push",
     difficulty: "",
   },
-
+  {
+    id: "stepup",
+    name: "Squat 5: Step Up",
+    type: "push",
+    description:
+      "The FOCUS in the movement is to LIFT your body with the bent leg, by using the bent leg and straightening it – just like we do climbing up stairs. You can lean forward over the bent leg to help lift the back leg up. PRACTICE USING AS LITTLE of the straight leg foot as possible. From standing on the box, reverse the movement, to lower the straight leg back down to the ground. Again, use the bent leg side to do the work.",
+    images: ["step_up_rest.png", "step_up_engaged.png"],
+    type: "push",
+    difficulty: "",
+  },
   {
     id: "gluteraise",
     name: "Hinge 1: Glute Raise",
@@ -109,7 +118,16 @@ const moves = [
     type: "push",
     difficulty: "Try one of the easier squats if this is too hard.",
   },
-
+  {
+    id: "swimmer",
+    name: "Hinge 5: The Swimmer",
+    type: "hinge",
+    description:
+      "Start laying face down on the floor, legs and arms fully extended so you look like a green bean. For the movement, simultaneously bring both legs up, as well as your upper body (pivot from the diaphragm), and bring both arms backwards and inwards pressing your shoulder blades together.",
+    images: ["the_swimmer_rest.png", "the_swimmer_engaged.png"],
+    type: "pull",
+    difficulty: "",
+  },
   {
     id: "cobrapushup",
     name: "Push 1: Cobra Push Up",
@@ -142,7 +160,6 @@ const moves = [
     difficulty:
       "Move your feet apart to make this easier, or try a flat push up if this is too hard.",
   },
-
   {
     id: "verticalpull",
     name: "Pull 1: Vertical Pull",
@@ -368,3 +385,4 @@ var getMove = function (id) {
 };
 
 export { moves, getMove };
+
