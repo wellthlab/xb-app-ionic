@@ -206,15 +206,16 @@ const Group = ({ match, teams, controllers, account }) => {
               <IonLabel>View Data</IonLabel>
             </IonItemDivider>
 
+            <Link to={"/group/" + group._id + "/charts"}>
             <IonItem
-              color="primary"
+              color="tertiary"
               style={{ cursor: "pointer" }}
               detail={true}
-              routerLink={"/group/" + group._id + "/charts"}
             >
               <IonIcon icon={barChart} slot="start" />
               View Charts
             </IonItem>
+          </Link>
           </IonItemGroup>
         </IonList>
       </>

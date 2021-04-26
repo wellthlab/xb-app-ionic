@@ -59,7 +59,7 @@ const MoodPicker = (props) => {
   function onChangeSlider(valueToUpdate) {
     setValue(valueToUpdate);
     if (props.onChange) {
-      props.onChange(valueToUpdate, sliderValues[valueToUpdate - 1]);
+      props.onChange(valueToUpdate, sliderValues[valueToUpdate]);
     }
   }
 
@@ -71,7 +71,7 @@ const MoodPicker = (props) => {
         alt="happy"
       />
       <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>{sliderValues[value - 1]}</IonLabel>
+        <IonLabel>{sliderValues[value]}</IonLabel>
       </IonItem>
       <IonItem>
         <IonRange

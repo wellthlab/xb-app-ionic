@@ -24,7 +24,7 @@ function MinutesChart(props) {
     //adding day label
     days.push("Day " + eachEntry.day);
     //if minutes are added
-    if (!eachEntry.missing) {
+    if (!eachEntry.missing && eachEntry.minutes != 0) {
       //adding minutes
       minutesIndividual.push(eachEntry.minutes);
       //analyse all entries hat day
@@ -151,6 +151,7 @@ function MinutesChart(props) {
     ],
   };
   const optionsMinutes = {
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -248,6 +249,7 @@ function MinutesChart(props) {
   };
 
   const optionsFeeling = {
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -346,6 +348,7 @@ function MinutesChart(props) {
     ],
   };
   const optionsMinutesFeeling = {
+    maintainAspectRatio: false,
     scales: {
       yAxes: [
         {
@@ -419,15 +422,15 @@ function MinutesChart(props) {
       {props.individual ? (
         <div>
           <div
-            style={{ flex: "0 0 auto", padding: "10px", textAlign: "center" }}
+            style={{ flex: "0 0 auto", textAlign: "center", color: "black" }}
           >
             Your Minutes vs. Your Mood
           </div>
           <div
             style={{
-              width: "400px",
-              height: "300px",
-              marginTop: "20px",
+              width: "100%",
+              height: "280px",
+                  marginTop: "0px",
               marginLeft: "auto",
               marginRight: "auto",
               marginBottom: "1px",
@@ -438,13 +441,13 @@ function MinutesChart(props) {
         </div>
       ) : (
         <div>
-          <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          <IonSlides pager={true} options={slideOpts} className="slidesCharts0">
             <IonSlide>
               <div
                 style={{
-                  width: "400px",
-                  height: "300px",
-                  marginTop: "20px",
+                  width: "100%",
+                  height: "280px",
+                  marginTop: "0px",
                   marginLeft: "auto",
                   marginRight: "auto",
                   marginBottom: "1px",
@@ -453,8 +456,8 @@ function MinutesChart(props) {
                 <div
                   style={{
                     flex: "0 0 auto",
-                    padding: "10px",
                     textAlign: "center",
+                    color: "black"
                   }}
                 >
                   Your Minutes vs. Your Mood
@@ -468,9 +471,9 @@ function MinutesChart(props) {
             <IonSlide>
               <div
                 style={{
-                  width: "400px",
-                  height: "300px",
-                  marginTop: "20px",
+                  width: "100%",
+                  height: "280px",
+                  marginTop: "0px",
                   marginLeft: "auto",
                   marginRight: "auto",
                   marginBottom: "1px",
@@ -479,8 +482,8 @@ function MinutesChart(props) {
                 <div
                   style={{
                     flex: "0 0 auto",
-                    padding: "10px",
                     textAlign: "center",
+                    color: "black"
                   }}
                 >
                   Your Minutes vs. Team's Minutes
@@ -491,9 +494,9 @@ function MinutesChart(props) {
             <IonSlide>
               <div
                 style={{
-                  width: "400px",
-                  height: "300px",
-                  marginTop: "20px",
+                  width: "100%",
+                  height: "280px",
+                  marginTop: "0px",
                   marginLeft: "auto",
                   marginRight: "auto",
                   marginBottom: "1px",
@@ -502,7 +505,7 @@ function MinutesChart(props) {
                 <div
                   style={{
                     flex: "0 0 auto",
-                    padding: "10px",
+                    color: "black",
                     textAlign: "center",
                   }}
                 >

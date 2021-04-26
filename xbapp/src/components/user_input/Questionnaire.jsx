@@ -20,8 +20,8 @@ import "./Questionnaire.scss";
 const Questionnaire = (props) => {
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
   const [selectedAlarm, setSelectedAlarm] = useState({ alarm: "" });
-  const [moodValue, setMoodValue] = useState(3); //useStorage?;
-  const [smileyVal, setSmileyVal] = useState(""); //useStorage?;
+  const [moodValue, setMoodValue] = useState(3);
+  const [smileyVal, setSmileyVal] = useState("");
 
   function processData() {
     var officialMoodValue = 0;

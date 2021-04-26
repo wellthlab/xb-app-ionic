@@ -19,7 +19,7 @@ import { heart, arrowForward, caretForward, timer } from "ionicons/icons";
 
 import "./JournalFeed.css";
 
-import { MoodImages, MoodStringsAbsolute } from "../user_input/MoodPicker";
+import { MoodImages, MoodStringsRelative } from "../user_input/MoodPicker";
 
 const JournalFeed = ({ responses }) => {
   function renderItem(r) {
@@ -176,11 +176,18 @@ const JournalFeed = ({ responses }) => {
                     : "Woke up with an alarm"}
                 </IonItem>
 
-                {r.mood > 0 ? (
+                {/*if mood exists
+                mood passed as argument falls within -2 and 2. 
+                SO we need to add + 3 in order to correspond to the values on MoodImages and MoodStringsRelative*/}
+                {r.mood > -3 ? (
+                  <>
                   <IonItem key="mood">
-                    <img src={"assets/mood/" + MoodImages[r.mood]} />
-                    Your mood was {MoodStringsAbsolute[r.mood]}
+                    <img src={"assets/mood/" + MoodImages[r.mood + 3]} />
                   </IonItem>
+                  <IonItem key="mood">
+                    Your mood was {MoodStringsRelative[r.mood + 3]} than the previous day
+                  </IonItem>
+                  </>
                 ) : (
                   ""
                 )}
@@ -212,6 +219,7 @@ const JournalFeed = ({ responses }) => {
   return (
     <div className="journalfeed">
       {sresponses.map((item, i) => {
+        console.log(item);
         var content;
 
         var content = renderItem(item);

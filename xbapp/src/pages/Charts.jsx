@@ -22,7 +22,7 @@ import { addControllersProp } from "../model/controllers";
 const autoBindReact = require("auto-bind/react");
 
 class GroupCharts extends Component {
-  state = { showAlert: "false" };
+  state = { showAlert: "false", message: "" };
   constructor(props) {
     super(props);
     autoBindReact(this); // Binds 'this' to this object in all methods
@@ -54,9 +54,7 @@ class GroupCharts extends Component {
           <GenericAlert
             showAlert={showAlert == "true"}
             toggleAlert={toggleAlert}
-            message={
-              "The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day."
-            }
+            message={this.state.message}
           />
           {group.users.length == 1 ? (
             <>
@@ -72,10 +70,30 @@ class GroupCharts extends Component {
             href="javascript:void(0)"
             style={{ textAlign: "center", margin: "0 0 0 0" }}
             onClick={() => {
-              setState({ showAlert: "true" });
+              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day." });
             }}
           >
-            How do I interpret the bar chart?
+            Understanding my minutes vs. my mood.
+          </a>
+          <IonItemDivider></IonItemDivider>
+          <a
+            href="javascript:void(0)"
+            style={{ textAlign: "center", margin: "0 0 0 0" }}
+            onClick={() => {
+              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the number of minutes you ran everyday, and the average of minutes your group ran everyday. The number of minutes starts from 0. You can notice the development of the bars to observe your movement minutes compared to your group's. If you tap on a bar, you will be able to see more information on that particular day." });
+            }}
+          >
+            *TEAMS ONLY* Understanding my minutes vs. team minutes.
+          </a>
+          <IonItemDivider></IonItemDivider>
+          <a
+            href="javascript:void(0)"
+            style={{ textAlign: "center", margin: "0 0 0 0" }}
+            onClick={() => {
+              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the mood of the group, and your mood. The mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe how you feel, compared to your group. If you tap on a bar, you will be able to see more information on that particular day." });
+            }}
+          >
+            *TEAMS ONLY* Understanding my mood vs. team mood.
           </a>
         </>
       );
