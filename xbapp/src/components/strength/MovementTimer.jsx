@@ -12,7 +12,14 @@ import "./MovementTimer.scss";
 /**
  * Time movements
  */
-const MovementTimer = ({ exercises, block, onSetChange, onDone, mins, day }) => {
+const MovementTimer = ({
+  exercises,
+  block,
+  onSetChange,
+  onDone,
+  mins,
+  day,
+}) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
@@ -34,7 +41,7 @@ const MovementTimer = ({ exercises, block, onSetChange, onDone, mins, day }) => 
 
       {exercises.map((ex, i) => {
         var move = getMove(ex);
-        console.log("Get move", ex, move);
+        // console.log("Get move", ex, move);
         return (
           <MovementInfoCard key={move.id} images={move.images} name={move.name}>
             <SetCounter

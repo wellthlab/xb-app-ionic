@@ -3,7 +3,7 @@ import { IonButton, IonIcon, IonInput, IonTitle } from "@ionic/react";
 import { connect } from "react-redux";
 import CountDown from "../user_input/CountDown";
 
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { heart } from "ionicons/icons";
 import "./HeartRate.scss";
@@ -15,7 +15,7 @@ const HeartRate = ({ onChange }) => {
 
   function updateBeats(e) {
     var beats = e.detail.value;
-    console.log(beats, onChange);
+    // console.log(beats, onChange);
     if (onChange) {
       var rate = beats * (60 / seconds);
       onChange(rate);
@@ -44,22 +44,23 @@ const HeartRate = ({ onChange }) => {
         />
 
         <div className="timer">
-        <CountdownCircleTimer
-          onComplete={()=>{
-            return [true];
-          }}
-          isPlaying
-          size={90}
-          duration={seconds}
-          initialRemainingTime={10}
-          colors={[
-            ['#004777', 0.33],
-            ['#F7B801', 0.33],
-            ['#A30000', 0.33],
-          ]}
-        >
-          {({ remainingTime }) => remainingTime}
-        </CountdownCircleTimer></div>
+          <CountdownCircleTimer
+            onComplete={() => {
+              return [true];
+            }}
+            isPlaying
+            size={90}
+            duration={seconds}
+            initialRemainingTime={10}
+            colors={[
+              ["#004777", 0.33],
+              ["#F7B801", 0.33],
+              ["#A30000", 0.33],
+            ]}
+          >
+            {({ remainingTime }) => remainingTime}
+          </CountdownCircleTimer>
+        </div>
 
         <p>How many beats did you count?</p>
         <IonInput

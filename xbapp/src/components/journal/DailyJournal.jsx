@@ -29,6 +29,7 @@ import {
   add,
   addCircle,
   listOutline,
+  arrowForwardOutline,
 } from "ionicons/icons";
 
 import "./DailyJournal.css";
@@ -92,6 +93,14 @@ const DailyJournal = ({ todayNumber, entries, children, group }) => {
             }
           </span>
         </h3>
+        <IonItem
+          key="note"
+          routerLink={"/group/" + group._id + "/" + activeDay + "/add/note"}
+          detail={true}
+          detailIcon={arrowForwardOutline}
+        >
+          Add Note for Day {activeDay}
+        </IonItem>
         {children}
       </div>
       <JournalFeed responses={responses} />

@@ -430,7 +430,7 @@ function MinutesChart(props) {
             style={{
               width: "100%",
               height: "280px",
-                  marginTop: "0px",
+              marginTop: "0px",
               marginLeft: "auto",
               marginRight: "auto",
               marginBottom: "1px",
@@ -457,7 +457,7 @@ function MinutesChart(props) {
                   style={{
                     flex: "0 0 auto",
                     textAlign: "center",
-                    color: "black"
+                    color: "black",
                   }}
                 >
                   Your Minutes vs. Your Mood
@@ -483,7 +483,7 @@ function MinutesChart(props) {
                   style={{
                     flex: "0 0 auto",
                     textAlign: "center",
-                    color: "black"
+                    color: "black",
                   }}
                 >
                   Your Minutes vs. Team's Minutes

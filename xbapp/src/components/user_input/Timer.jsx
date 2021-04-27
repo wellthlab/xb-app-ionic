@@ -121,7 +121,7 @@ function Timer(props) {
   }, [isActive, seconds]);
 
   var buttonsOnShow = true;
-  console.log("buttonsOnShow", props.buttonsOnShow);
+  // console.log("buttonsOnShow", props.buttonsOnShow);
   if (typeof props.buttonsOnShow == "undefined") {
     buttonsOnShow = true;
   } else {

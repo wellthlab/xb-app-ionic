@@ -224,17 +224,18 @@ const MovementPicker = (props) => {
 
   var type = props.type ? props.type : false;
 
-  var showPush = false, showPull = false;
+  var showPush = false,
+    showPull = false;
 
-  if(type === false) {
+  if (type === false) {
     showPush = true;
     showPull = true;
-  } else if(type == 'pull') {
-    showPush=false;
-    showPull=true;
-  } else if(type == 'push') {
-    showPush=true;
-    showPull=false;
+  } else if (type == "pull") {
+    showPush = false;
+    showPull = true;
+  } else if (type == "push") {
+    showPush = true;
+    showPull = false;
   }
 
   var txtAdd = number > 1 ? "Add to Selection" : "Select";
@@ -244,7 +245,7 @@ const MovementPicker = (props) => {
 
   function change(list) {
     if (props.onChange) {
-      console.log("New selection", list);
+      // console.log("New selection", list);
       props.onChange(list);
     }
   }
@@ -264,12 +265,10 @@ const MovementPicker = (props) => {
         <IonSlide className="movementSlides">
           <div
             style={{
-              width: "400px",
-              height: "300px",
-              marginTop: "20px",
+              overflow: "auto",
               marginLeft: "auto",
               marginRight: "auto",
-              marginBottom: "1px",
+              marginBottom: "40px",
             }}
           >
             <MovementInfoCard
@@ -283,7 +282,7 @@ const MovementPicker = (props) => {
                 onClick={() => {
                   // Onclick, toggle whether this move is in the list
                   if (selected) {
-                    console.log("Remove", m);
+                    // console.log("Remove", m);
                     var newpicked = [];
                     for (var p of picked) {
                       if (p != m.id) {
@@ -338,24 +337,24 @@ const MovementPicker = (props) => {
 
   var push = "";
   if (showPush) {
-      push = (
-        <>
-          <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-            {movesPush}
-          </IonSlides>
-        </>
-      );
+    push = (
+      <>
+        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          {movesPush}
+        </IonSlides>
+      </>
+    );
   }
 
   var pull = "";
   if (showPull) {
-      var pull = (
-        <>
-          <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-            {movesPull}
-          </IonSlides>
-        </>
-      );
+    var pull = (
+      <>
+        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
+          {movesPull}
+        </IonSlides>
+      </>
+    );
   }
 
   return (
@@ -385,4 +384,3 @@ var getMove = function (id) {
 };
 
 export { moves, getMove };
-

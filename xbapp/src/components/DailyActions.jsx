@@ -30,11 +30,17 @@ import {
   arrowForwardOutline,
 } from "ionicons/icons";
 
+//css
+import "./DailyActions.css";
+
 /**
  * Props:
  *
  */
-const DailyActions = ({ group, activeDay }) => {
+const DailyActions = ({ group, today }) => {
+  // Track the day we're displaying; default to current day
+  const [activeDay, setActiveDay] = useState(today);
+
   var entries = group.entries;
 
   // Look up the daily entry we need to render
@@ -51,6 +57,9 @@ const DailyActions = ({ group, activeDay }) => {
     return <>Can't find entry for day {activeDay}</>;
   }
 
+  const nextDayExists = dayList.includes(activeDay + 1);
+  const prevDayExists = dayList.includes(activeDay - 1);
+
   var icon_done = checkboxOutline;
   var icon_missing = squareOutline;
 
@@ -58,21 +67,29 @@ const DailyActions = ({ group, activeDay }) => {
    * Daily task list and buttons
    */
   var qreq = [
-    { type: "questionnaire", desc: "Fill in the Daily Review", verb: "DO IT" }
+    { type: "questionnaire", desc: "Fill in the Daily Review", verb: "DO IT" },
   ];
 
   // Other tasks that can be done, but optionally
   var others = [
     { type: "note", desc: "Add Notes", verb: "ADD NOTES" },
-    { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" }
+    { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" },
   ];
 
   // Strength exercise only on week days
-  var day = (new Date()).getDay();
-  if( day == 0 || day == 6) {
-    others.push({ type: "strength", desc: "Do your Daily Strength Exercise", verb: "DO IT" });
+  var day = new Date().getDay();
+  if (day == 0 || day == 6) {
+    others.push({
+      type: "strength",
+      desc: "Do your Daily Strength Exercise",
+      verb: "DO IT",
+    });
   } else {
-    qreq.push({ type: "strength", desc: "Do your Daily Strength Exercise", verb: "DO IT" });
+    qreq.push({
+      type: "strength",
+      desc: "Do your Daily Strength Exercise",
+      verb: "DO IT",
+    });
   }
 
   var day = entry.day;
@@ -93,10 +110,18 @@ const DailyActions = ({ group, activeDay }) => {
   var tasks = qreq.map((type) => {
     var done = typeof entry.responseTypes[type.type] !== "undefined";
 
-    console.log(type.type, done);
+    // console.log(type.type, done);
 
     return (
-      <IonItem color={done ? "neutral" : "warning"} key={type.type} routerLink={"/group/" + group._id + "/" + activeDay + "/add/" + type.type} detail={true} detailIcon={arrowForwardOutline}>
+      <IonItem
+        color={done ? "neutral" : "warning"}
+        key={type.type}
+        routerLink={
+          "/group/" + group._id + "/" + activeDay + "/add/" + type.type
+        }
+        detail={true}
+        detailIcon={arrowForwardOutline}
+      >
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
         {type.desc}
         {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
@@ -126,20 +151,45 @@ const DailyActions = ({ group, activeDay }) => {
 
   return (
     <div className="dailyActions">
+      <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
+        <span className="text">
+          <h3>
+            {nextDayExists
+              ? "Day " + activeDay + " : " + entry.date
+              : "Today's Tasks"}
+          </h3>
+        </span>
+        <span className="navbuttons">
+          {
+            <IonButton
+              disabled={!prevDayExists}
+              onClick={() => {
+                setActiveDay(activeDay - 1);
+              }}
+            >
+              <IonIcon icon={caretBackCircle} />
+            </IonButton>
+          }
+          {
+            <IonButton
+              disabled={!nextDayExists}
+              onClick={() => {
+                setActiveDay(activeDay + 1);
+              }}
+            >
+              <IonIcon icon={caretForwardCircle} />
+            </IonButton>
+          }
+        </span>
+      </div>
       <IonList lines="full" className="journalTasks">
-        <IonItemGroup>
-          <IonItemDivider>
-            <IonLabel>Today's Tasks</IonLabel>
-          </IonItemDivider>
-          {tasks}
-        </IonItemGroup>
-
-        <IonItemGroup>
-          <IonItemDivider>
-            <IonLabel>Other Activities</IonLabel>
-          </IonItemDivider>
-          {otheractions}
-        </IonItemGroup>
+        <IonItemGroup>{tasks}</IonItemGroup>
+      </IonList>
+      <span className="text">
+        <h3>Other Activities</h3>
+      </span>
+      <IonList lines="full" className="journalTasks">
+        <IonItemGroup>{otheractions}</IonItemGroup>
       </IonList>
     </div>
   );

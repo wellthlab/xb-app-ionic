@@ -59,7 +59,7 @@ const RPE = (props) => {
   return (
     <>
       <p style={{ padding: "5px 8px 5px 8px" }}>
-          Rate how hard or easy you found that exercise using the scale below.
+        Rate how hard or easy you found that exercise using the scale below.
       </p>
       <IonItem style={{ textAlign: "center" }}>
         <IonLabel>{sliderValues[value - 1]}</IonLabel>

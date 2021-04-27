@@ -14,7 +14,7 @@ import "./MovementTimer.scss";
  */
 const LevelFinder = ({ exercise }) => {
   var move = getMove(exercise);
-  console.log("Get move", exercise, move);
+  // console.log("Get move", exercise, move);
   var card = (
     <MovementInfoCard key={move.id} images={move.images} name={move.name}>
       <p>{move.difficulty ? move.difficulty : ""}</p>

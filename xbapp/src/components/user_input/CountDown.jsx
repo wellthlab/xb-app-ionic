@@ -30,7 +30,7 @@ function CountDown(props) {
   if (seconds === false) {
     setMinutes(props.minutes ? props.minutes : 0);
     setSeconds(props.seconds ? props.seconds : 0);
-  };
+  }
 
   useEffect(() => {
     let interval = null;
@@ -56,7 +56,7 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  console.log("countdown", minutes, seconds);
+  // console.log("countdown", minutes, seconds);
 
   return (
     <IonItem>
@@ -66,7 +66,7 @@ function CountDown(props) {
       </div>
       <div className="row" slot="end">
         <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
-        { !isActive ? <IonButton onClick={reset}>Reset</IonButton> : "" }
+        {!isActive ? <IonButton onClick={reset}>Reset</IonButton> : ""}
       </div>
     </IonItem>
   );

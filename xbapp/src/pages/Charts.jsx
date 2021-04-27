@@ -70,7 +70,11 @@ class GroupCharts extends Component {
             href="javascript:void(0)"
             style={{ textAlign: "center", margin: "0 0 0 0" }}
             onClick={() => {
-              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day." });
+              setState({
+                showAlert: "true",
+                message:
+                  "The chart displays 2 sets of data: the number of minutes you ran everyday, and your mood compared to the day before. The number of minutes starts from 0, whereas the mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe whether you feel better when running each day. If you tap on a bar, you will be able to see more information on that particular day.",
+              });
             }}
           >
             Understanding my minutes vs. my mood.
@@ -80,7 +84,11 @@ class GroupCharts extends Component {
             href="javascript:void(0)"
             style={{ textAlign: "center", margin: "0 0 0 0" }}
             onClick={() => {
-              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the number of minutes you ran everyday, and the average of minutes your group ran everyday. The number of minutes starts from 0. You can notice the development of the bars to observe your movement minutes compared to your group's. If you tap on a bar, you will be able to see more information on that particular day." });
+              setState({
+                showAlert: "true",
+                message:
+                  "The chart displays 2 sets of data: the number of minutes you ran everyday, and the average of minutes your group ran everyday. The number of minutes starts from 0. You can notice the development of the bars to observe your movement minutes compared to your group's. If you tap on a bar, you will be able to see more information on that particular day.",
+              });
             }}
           >
             *TEAMS ONLY* Understanding my minutes vs. team minutes.
@@ -90,7 +98,11 @@ class GroupCharts extends Component {
             href="javascript:void(0)"
             style={{ textAlign: "center", margin: "0 0 0 0" }}
             onClick={() => {
-              setState({ showAlert: "true", message: "The chart displays 2 sets of data: the mood of the group, and your mood. The mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe how you feel, compared to your group. If you tap on a bar, you will be able to see more information on that particular day." });
+              setState({
+                showAlert: "true",
+                message:
+                  "The chart displays 2 sets of data: the mood of the group, and your mood. The mood begins from -2 (feeling a lot worse than the previous day) up to 2 (feeling a lot better than the previous day). You can notice the development of the bars to observe how you feel, compared to your group. If you tap on a bar, you will be able to see more information on that particular day.",
+              });
             }}
           >
             *TEAMS ONLY* Understanding my mood vs. team mood.

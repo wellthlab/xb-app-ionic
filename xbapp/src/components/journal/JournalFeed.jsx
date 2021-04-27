@@ -65,25 +65,25 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-            <IonCardSubtitle>{time} &nbsp; DAILY STRENGTH EXERCISE</IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonList>
-            {
-              Object.keys(r.sets).map((type, i) => {
+              <IonCardSubtitle>
+                {time} &nbsp; DAILY STRENGTH EXERCISE
+              </IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <IonList>
+                {Object.keys(r.sets).map((type, i) => {
+                  var block, mtype;
+                  [mtype, block] = type.split(/-/);
 
-                var block, mtype;
-                [mtype, block] = type.split(/-/);
-
-                var move = getMove(mtype);
-                if(move == false) {
-                  move = {
-                    name: "Unknown move, " + type
+                  var move = getMove(mtype);
+                  if (move == false) {
+                    move = {
+                      name: "Unknown move, " + type,
                     };
                   }
                   var mname = move.name.split(/:/).pop();
                   var number = r.sets[type];
-                  console.log(type, number);
+                  // console.log(type, number);
                   return (
                     <IonItem key={i}>
                       <span>
@@ -181,12 +181,13 @@ const JournalFeed = ({ responses }) => {
                 SO we need to add + 3 in order to correspond to the values on MoodImages and MoodStringsRelative*/}
                 {r.mood > -3 ? (
                   <>
-                  <IonItem key="mood">
-                    <img src={"assets/mood/" + MoodImages[r.mood + 3]} />
-                  </IonItem>
-                  <IonItem key="mood">
-                    Your mood was {MoodStringsRelative[r.mood + 3]} than the previous day
-                  </IonItem>
+                    <IonItem key="mood">
+                      <img src={"assets/mood/" + MoodImages[r.mood + 3]} />
+                    </IonItem>
+                    <IonItem key="mood">
+                      Your mood was {MoodStringsRelative[r.mood + 3]} than the
+                      previous day
+                    </IonItem>
                   </>
                 ) : (
                   ""
@@ -209,17 +210,17 @@ const JournalFeed = ({ responses }) => {
     var btime = Date.parse(b.submitted);
     var atime = Date.parse(a.submitted);
 
-    console.log(a.submitted, atime, b.submitted, btime);
+    // console.log(a.submitted, atime, b.submitted, btime);
 
     return btime - Date.parse(a.submitted);
   });
 
-  console.log(sresponses);
+  // console.log(sresponses);
 
   return (
     <div className="journalfeed">
       {sresponses.map((item, i) => {
-        console.log(item);
+        // console.log(item);
         var content;
 
         var content = renderItem(item);

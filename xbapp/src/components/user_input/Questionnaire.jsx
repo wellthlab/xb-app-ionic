@@ -75,7 +75,9 @@ const Questionnaire = (props) => {
           onIonChange={(e) => setSelectedExposure({ exposure: e.detail.value })}
         >
           <IonListHeader>
-            <IonLabel>Have you been outside during daylight in the last 24 hours?</IonLabel>
+            <IonLabel>
+              Have you been outside during daylight in the last 24 hours?
+            </IonLabel>
           </IonListHeader>
 
           <IonItem>

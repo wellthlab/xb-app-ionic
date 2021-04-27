@@ -7,7 +7,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonPage,
+  IonTextarea,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -30,6 +30,7 @@ import GenericAlert from "../GenericAlert";
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
 const MinuteEntry = (props) => {
+  const [note, setNote] = useState("");
   var [timerSeconds, setTimerSeconds] = useState(0);
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
@@ -99,18 +100,28 @@ const MinuteEntry = (props) => {
     } else if (expanded == "panel3") {
       min = number.value;
     }
-    var response = {
-      minutes: min,
-      location: variables.place,
-      time: variables.timeOfDay,
-    };
 
+    //
+
+    var response = {};
+    response.type = "minutes";
+    response.minutes = min;
+    response.location = variables.place;
+    response.time = variables.timeOfDay;
+
+    var rnotes = {};
+    rnotes.type = "note";
+    rnotes.note = note;
+
+    ///
     if (expanded == false) {
       //if the user hasn't picked an input method for minutes
       toggleAlert();
     } else {
       if (props.onSubmit) {
-        props.onSubmit(response);
+        note.length > 0
+          ? props.onSubmit([response, rnotes])
+          : props.onSubmit(response);
       }
     }
   }
@@ -234,6 +245,17 @@ const MinuteEntry = (props) => {
             </IonRow>
           </IonGrid>
         </IonItem>
+      </div>
+      <div className="row">
+        <h4>Do you wish to add any notes about this?</h4>
+        <div style={{ padding: "15px" }}>
+          <IonTextarea
+            placeholder="Enter your note"
+            onIonChange={(e) => {
+              setNote(e.detail.value);
+            }}
+          ></IonTextarea>
+        </div>
       </div>
 
       <div className="row">

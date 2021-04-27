@@ -56,7 +56,9 @@ const Group = ({ match, teams, controllers, account }) => {
     setShowAlert(!showAlert);
   }
 
-  const [view, setView] = useState(match.params.page ? match.params.page : 'info');
+  const [view, setView] = useState(
+    match.params.page ? match.params.page : "info"
+  );
 
   console.log(view, match.params);
 
@@ -162,14 +164,14 @@ const Group = ({ match, teams, controllers, account }) => {
       </IonGrid>
     );
   } else if (view == "tasks") {
-  /**
-   * Task list
-   */
-    content = <DailyActions group={group} activeDay={day} />;
+    /**
+     * Task list
+     */
+    content = <DailyActions group={group} today={day} />;
   } else if (view == "journal") {
-  /**
-   * Journal & Charts
-   */
+    /**
+     * Journal & Charts
+     */
     const list = (
       <IonList>
         <IonListHeader>Ionic</IonListHeader>
@@ -207,15 +209,15 @@ const Group = ({ match, teams, controllers, account }) => {
             </IonItemDivider>
 
             <Link to={"/group/" + group._id + "/charts"}>
-            <IonItem
-              color="tertiary"
-              style={{ cursor: "pointer" }}
-              detail={true}
-            >
-              <IonIcon icon={barChart} slot="start" />
-              View Charts
-            </IonItem>
-          </Link>
+              <IonItem
+                color="tertiary"
+                style={{ cursor: "pointer" }}
+                detail={true}
+              >
+                <IonIcon icon={barChart} slot="start" />
+                View Charts
+              </IonItem>
+            </Link>
           </IonItemGroup>
         </IonList>
       </>

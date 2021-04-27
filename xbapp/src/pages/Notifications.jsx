@@ -20,7 +20,7 @@ import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 
 import { LocalNotifications } from "@capacitor/local-notifications";
 import * as moment from "moment";
-import {format} from "date-fns"
+import { format } from "date-fns";
 
 const Notifications = ({}) => {
   const [chosenHours, setChosenHours] = useState(0);
@@ -45,90 +45,89 @@ const Notifications = ({}) => {
   }
 
   function addNotifications() {
-    let notif=[];
+    let notif = [];
     let currentDate = new Date();
-        let currentDay = currentDate.getDay(); // Sunday = 0, Monday = 1, etc.
+    let currentDay = currentDate.getDay(); // Sunday = 0, Monday = 1, etc.
 
-        for(let day of days){
+    for (let day of days) {
+      if (day.checked) {
+        // console.log(day.title);
+        let firstNotificationTime = new Date();
+        let dayDifference = day.dayCode - currentDay;
 
-            if(day.checked){
-                // console.log(day.title);
-                let firstNotificationTime = new Date();
-                let dayDifference = day.dayCode - currentDay;
-
-                if(dayDifference < 0){
-                    dayDifference = dayDifference + 7; // for cases where the day is in the following week
-                }
-
-                // console.log(firstNotificationTime);
-                firstNotificationTime.setHours(firstNotificationTime.getHours() + (24 * (dayDifference)));
-                // console.log(firstNotificationTime);
-                // console.log(chosenHours);
-                firstNotificationTime.setHours(chosenHours);
-                // console.log(firstNotificationTime);
-                // console.log(firstNotificationTime.getHours());
-                firstNotificationTime.setMinutes(chosenMinutes);
-
-                let notification = {
-                    id: day.dayCode,
-                    title: day.title,
-                    body: 'You just got notified :)',
-                    at: firstNotificationTime,
-                    // at: {
-                    //           hour: 1,
-                    //           minute: 15
-                    // },
-                    repeat: true,
-                    every: 'week'
-                };
-
-                notif.push(notification);
-
-            }
-
+        if (dayDifference < 0) {
+          dayDifference = dayDifference + 7; // for cases where the day is in the following week
         }
 
-        console.log("Notifications to be scheduled: ", notif);
+        // console.log(firstNotificationTime);
+        firstNotificationTime.setHours(
+          firstNotificationTime.getHours() + 24 * dayDifference
+        );
+        // console.log(firstNotificationTime);
+        // console.log(chosenHours);
+        firstNotificationTime.setHours(chosenHours);
+        // console.log(firstNotificationTime);
+        // console.log(firstNotificationTime.getHours());
+        firstNotificationTime.setMinutes(chosenMinutes);
 
-            // Cancel any existing notifications
-            //LocalNotifications.cancelAll().then(() => {
+        let notification = {
+          id: day.dayCode,
+          title: day.title,
+          body: "You just got notified :)",
+          at: firstNotificationTime,
+          // at: {
+          //           hour: 1,
+          //           minute: 15
+          // },
+          repeat: true,
+          every: "week",
+        };
 
-                // Schedule the new notifications
-                LocalNotifications.schedule({
-                  notifications: notif
-                });
+        notif.push(notification);
+      }
+    }
 
-                notif = [];
+    console.log("Notifications to be scheduled: ", notif);
 
-                //alert('all good');
+    // Cancel any existing notifications
+    //LocalNotifications.cancelAll().then(() => {
 
-            // });
-            
+    // Schedule the new notifications
+    LocalNotifications.schedule({
+      notifications: notif,
+    });
 
+    notif = [];
+
+    //alert('all good');
+
+    // });
   }
 
-  function updateChecked(checkedToUSe, dayCodeToUse){
+  function updateChecked(checkedToUSe, dayCodeToUse) {
     setDays(
-      days.map(day => 
-        day.dayCode === dayCodeToUse 
-          ? {...day, checked : checkedToUSe} 
-          : day 
-    ))
+      days.map((day) =>
+        day.dayCode === dayCodeToUse ? { ...day, checked: checkedToUSe } : day
+      )
+    );
   }
 
   function cancelAll() {
-
     //code for cancelling notifications
-  LocalNotifications.getPending().then( res => {
-    var index = res.notifications.map(x => {
-      return x["id"];
-    }).indexOf("10000000");
-    res.notifications.splice(index, 0);
-    LocalNotifications.cancel(res);
-  }, err => {
-    console.log(err);
-  })
-
+    LocalNotifications.getPending().then(
+      (res) => {
+        var index = res.notifications
+          .map((x) => {
+            return x["id"];
+          })
+          .indexOf("10000000");
+        res.notifications.splice(index, 0);
+        LocalNotifications.cancel(res);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 
   return (
@@ -160,15 +159,17 @@ const Notifications = ({}) => {
                   checked={day.checked}
                   value={day.title}
                   color="primary"
-                  onIonChange={(e) => updateChecked(e.detail.checked, day.dayCode)}
+                  onIonChange={(e) =>
+                    updateChecked(e.detail.checked, day.dayCode)
+                  }
                 ></IonCheckbox>
               </div>
             );
           })}
         </IonList>
         <IonItemDivider></IonItemDivider>
-        <IonButton onClick={addNotifications} >Schedule</IonButton>
-        <IonButton onClick={cancelAll} >Leave me alone!</IonButton>
+        <IonButton onClick={addNotifications}>Schedule</IonButton>
+        <IonButton onClick={cancelAll}>Leave me alone!</IonButton>
       </IonContent>
     </IonPage>
   );
