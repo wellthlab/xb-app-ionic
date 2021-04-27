@@ -81,6 +81,16 @@ const moves = [
     type: "push",
     difficulty: ""
   },
+   {
+    id: "shoulderstandsquat",
+    name: "Squat 7: Shoulder Stand Squat",
+    type: "push",
+    description:
+      "Another variant just to work the movement without as much load can be done from a shoulder stand – if you feel comfy with that. Get into your shoulder stand – have your hands on your back for support – that’s fine, and bring your legs down into a tuck, and then back up straight again.",
+    images: ["shoulder_stand_squat_rest.png", "shoulder_stand_squat_engaged.png"],
+    type: "push",
+    difficulty: ""
+  },
   {
     id: "gluteraise",
     name: "Hinge 1: Glute Raise",
@@ -145,6 +155,26 @@ const moves = [
     difficulty: ""
   },
   {
+    id: "hollowbody",
+    name: "Hinge 7: Hollow Body Position",
+    type: "hinge",
+    description:
+      "With knees up back in contact ALWAYS with the floor, arms reach straight up for the sky. Pulse up – it’s a very small movement, but doing it you’ll feel it. From strength developing working this movement, you can begin to bring your arms overhead, reaching behind you. After that feels strong, extend your legs ALWAYS KEEP YOUR BACK in contact with the ground.",
+    images: ["hollow_body_rest.png", "hollow_body_engaged.png"],
+    type: "pull",
+    difficulty: ""
+  },
+  {
+    id: "singlelegpike",
+    name: "Hinge 8: Single Leg Pike",
+    type: "hinge",
+    description:
+      "Sit on the floor in an upright position, legs fully extended, stabilising your body with both hands on the floor either side. Keeping your leg as straight as possible, raise one upwards as far as you can, pause and squeeze your thigh at the top, then bring down again to rest. Endeavor NOT to let the leg drop, but to control that lowering.",
+    images: ["single_leg_pike_rest.png", "single_leg_pike_engaged.png"],
+    type: "pull",
+    difficulty: ""
+  },
+  {
     id: "cobrapushup",
     name: "Push 1: Cobra Push Up",
     type: "push",
@@ -173,6 +203,16 @@ const moves = [
     images: ["elevated_push_up_rest.png", "elevated_push_up_engaged.png"],
     type: "pull",
     difficulty: "Move your feet apart to make this easier, or try a flat push up if this is too hard."
+  },
+  {
+    id: "hindupushup",
+    name: "Push 4: Hindu Push Up",
+    type: "push",
+    description:
+      "You’ll notice in the Hindu Push up that it MOVES – there’s a nice flow from a kind of what in Yoga is a downward dog position (an inverted V) into the cobra. See how that feels doing 10 in a row of these as an option for one of the blocks. If this combo move is too effortful to get a comfy 10, then let’s look at the flat push up progressions.",
+    images: ["hindu_push_up_rest.png", "hindu_push_up_engaged.png"],
+    type: "pull",
+    difficulty: ""
   },
   {
     id: "verticalpull",
@@ -227,6 +267,26 @@ const moves = [
     description:
       "Facing towards the door and standing upright or bending your legs, firmly grip your tether at about chest height and gently lean backwards into your resting position (where your arms are fully extended). Pull yourself towards the door with both arms, pivoting from your feet, until vertical again.",
     images: ["tethered_door_pull_rest.png", "tethered_door_pull_engaged.png"],
+    type: "pull",
+    difficulty: ""
+  },
+  {
+    id: "doorhangpull",
+    name: "Pull 6: Door Hang Pull",
+    type: "pull",
+    description:
+      "Grab the top of a door, hand shoulder width apart, and pull yourself up, and lower yourself back down. If you wish, put a towel at the top of the door for comfort.",
+    images: ["door_hang_pull_rest.png", "door_hang_pull_engaged.png"],
+    type: "pull",
+    difficulty: ""
+  },
+   {
+    id: "onearmdoorpull",
+    name: "Pull 7: One Arm Door Pull",
+    type: "pull",
+    description:
+      "A way to start exploring single arm pulls is to go back to the doorway and see how that feels with one arm. If that feels good you can explore what are called “archer rows” with the sheets or pillow cases in the doors. In the archer you move one arm out to the side and pull mainly with the other arm you keep in the normal pull position.",
+    images: ["one_arm_door_pull_rest.png", "one_arm_door_pull_engaged.png"],
     type: "pull",
     difficulty: ""
   }
