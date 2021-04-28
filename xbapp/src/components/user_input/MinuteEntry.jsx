@@ -8,7 +8,7 @@ import {
   IonRow,
   IonCol,
   IonTextarea,
-  IonHeader,
+  IonLabel,
   IonToolbar,
   IonTitle,
 } from "@ionic/react";
@@ -32,6 +32,7 @@ import GenericAlert from "../GenericAlert";
 const MinuteEntry = (props) => {
   const [note, setNote] = useState("");
   var [timerSeconds, setTimerSeconds] = useState(0);
+  var [minutesCountdown, setMinutesCountdown] = useState(0);
   const [number, setNumber] = useState({ value: 0 });
   const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
@@ -89,7 +90,10 @@ const MinuteEntry = (props) => {
 
   function save() {
     var min = 0;
-    if (expanded == "panel2") {
+    if (expanded == "panel1") {
+      min = minutesCountdown;
+      //this should be 7 * day of experiment? if 2nd day i.e. => 7*2?
+    } else if (expanded == "panel2") {
       min = Math.floor(localStorage.getItem("time") / 60);
       //we don;t need the timer on/showing in the feed anymore - so we are removing the items related to timer
       localStorage.removeItem("recordedSeconds");
@@ -150,6 +154,40 @@ const MinuteEntry = (props) => {
 
         <Accordion
           className="titleDrop"
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+          >
+            <Typography>Countdown</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="detailsAcc">
+            <IonGrid>
+              <IonRow>
+                <IonLabel>
+                  You can directly edit the minutes/seconds by tapping on them.
+                  Please only submit your response when the countdown is
+                  finished.
+                </IonLabel>
+              </IonRow>
+              <IonRow>
+                <CountDown
+                  onFinish={async (finished) => {
+                    setTimerFinished(finished);
+                  }}
+                  onFinishMinutes={async (minutes) => {
+                    setMinutesCountdown(minutes);
+                  }}
+                  editable={true}
+                />
+              </IonRow>
+            </IonGrid>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          className="titleDrop"
           expanded={expanded === "panel2"}
           onChange={handleChange("panel2")}
         >
@@ -157,7 +195,7 @@ const MinuteEntry = (props) => {
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel2bh-content"
           >
-            <Typography>Timer</Typography>
+            <Typography>Stopwatch</Typography>
           </AccordionSummary>
           <AccordionDetails className="detailsAcc">
             <Timer

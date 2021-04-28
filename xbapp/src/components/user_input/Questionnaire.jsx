@@ -98,7 +98,9 @@ const Questionnaire = (props) => {
           onIonChange={(e) => setSelectedAlarm({ alarm: e.detail.value })}
         >
           <IonListHeader>
-            <IonLabel>Did you wake up with an alarm today?</IonLabel>
+            <IonLabel>
+              Did you need an alarm to get yourself up to start your day today?
+            </IonLabel>
           </IonListHeader>
 
           <IonItem>

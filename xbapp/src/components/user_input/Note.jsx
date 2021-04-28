@@ -22,6 +22,15 @@ const Note = ({ onSubmit }) => {
 
   return (
     <div style={{ padding: "15px" }}>
+      <IonLabel>
+        What do you wish to add as a note? For instance, here are a few ideas:
+        <br></br>- How do you feel?
+        <br></br>- How was your workout?
+        <br></br>- What questions have come up?
+        <br></br>- What parts are you enjoying of the experience?
+        <br></br>- What could change?
+        <br></br>- What new things did you learn today?
+      </IonLabel>
       <IonTextarea
         placeholder="Enter your note"
         onIonChange={(e) => {
