@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import { IonSlides, IonSlide, IonContent } from "@ionic/react";
 import "./minutesChart.css";
+import { getMove } from "./strength/MovementPicker";
 
 var _ = require("lodash");
 
@@ -10,12 +11,14 @@ function MinutesChart(props) {
    * Set up chart
    */
 
-  //console.log(props);
+  console.log("PROPS ARE ", props);
   var days = [];
   var minutesIndividual = [];
   var unweightedFeelingIndividual = [];
   var minutesDescription = [];
+  var strengthDescription = [];
   var questionnaireDescription = [];
+  var notesDescription = [];
 
   var dayData = props.group.entries;
 
@@ -43,10 +46,57 @@ function MinutesChart(props) {
             "; ";
         }
       }
+      //adding info about the strength exercises at the end
+      var setsExplanations = "";
+      for (var j = 0; j < responses.length; j++) {
+        var eachResponse = responses[j];
+        //console.log("verifying", eachResponse, _.has(eachResponse, "strength"));
+        if (_.has(eachResponse, "sets")) {
+
+          //first - retrieve the name of the sets
+          
+          Object.keys(eachResponse.sets).map((type, i) => {
+            var block, mtype;
+            [mtype, block] = type.split(/-/);
+
+            var move = getMove(mtype);
+            if (move == false) {
+              move = {
+                name: "Unknown move, " + type,
+              };
+            }
+            var mname = move.name.split(/:/).pop();
+            var number = eachResponse.sets[type];
+            
+            number == "explore" ? (setsExplanations+= "Tried out") : (setsExplanations+= "");
+            setsExplanations+= mname.toString();
+            setsExplanations+= " ";
+            number == "explore" ? (setsExplanations+= "") : (setsExplanations+= "× ");
+            setsExplanations+= number.toString();
+            setsExplanations+= "; ";
+
+          })
+
+          //now adding pre+post heart rate
+          setsExplanations+= "Pre/Post Heart-Rate: ";
+          setsExplanations+=  eachResponse.preHeartrate.toString() + "/" + eachResponse.heartrate.toString() + "; ";
+        
+           //now adding PER
+           setsExplanations+= "Perceived Exertion: ";
+           setsExplanations+= eachResponse.exertionValue + "; ";
+        }
+      }
+      //if a strength exercise was found
+      if (setsExplanations != ""){
+        strengthDescription.push(setsExplanations);
+      } else {
+        strengthDescription.push(null);
+      }
       minutesDescription.push(explanationString);
-    } else {
+    } else { //minutes were not added
       minutesIndividual.push(null);
       minutesDescription.push(null);
+      strengthDescription.push(null);
     }
     if (eachEntry.questionnaire) {
       //analyse all entries hat day
@@ -68,6 +118,24 @@ function MinutesChart(props) {
       unweightedFeelingIndividual.push(null);
       questionnaireDescription.push(null);
     }
+
+    //now add the notes 
+    var notesExplanation="Notes: ";
+    var responses = eachEntry.responses;
+
+      for (var j = 0; j < responses.length; j++) {
+        var eachResponse = responses[j];
+        if (_.has(eachResponse, "note")) {
+          notesExplanation+= eachResponse.note + "; ";
+        }
+      }
+
+      if (notesExplanation != "Notes: "){
+        notesDescription.push(notesExplanation);
+      } else {
+        notesDescription.push(null);
+      }
+
   }
 
   //process feeling data with averaged weights making use of unweightedFeelingIndividual
@@ -190,6 +258,9 @@ function MinutesChart(props) {
             seriesText = "Your minutes: ";
             multistringText = [seriesText + tooltipItems.yLabel];
             multistringText.push(minutesDescription[tooltipItems.index]);
+            var strengthValue = strengthDescription[tooltipItems.index];
+            if (strengthValue != null) multistringText.push(strengthValue);
+            
           } else {
             seriesText = "Team's minutes (average): ";
             multistringText = [seriesText + tooltipItems.yLabel];
@@ -288,6 +359,8 @@ function MinutesChart(props) {
             seriesText = "Your mood: ";
             multistringText = [seriesText + tooltipItems.yLabel];
             multistringText.push(minutesDescription[tooltipItems.index]);
+            var notesValues = notesDescription[tooltipItems.index];
+            if (notesValues != null) multistringText.push(notesValues);
           } else {
             seriesText = "Team's mood (Average): ";
             multistringText = [seriesText + tooltipItems.yLabel];
@@ -400,10 +473,16 @@ function MinutesChart(props) {
             seriesText = "Your minutes: ";
             multistringText = [seriesText + tooltipItems.yLabel];
             multistringText.push(minutesDescription[tooltipItems.index]);
+            var strengthValue = strengthDescription[tooltipItems.index];
+            if (strengthValue != null) multistringText.push(strengthValue);
+            
           } else {
             seriesText = "Your mood: ";
             multistringText = [seriesText + tooltipItems.yLabel];
             multistringText.push(questionnaireDescription[tooltipItems.index]);
+            var notesValues = notesDescription[tooltipItems.index];
+            if (notesValues != null) multistringText.push(notesValues);
+            
           }
           return multistringText;
         },
