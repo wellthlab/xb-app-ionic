@@ -214,6 +214,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                     setExList[blocknum](list);
                   }}
                   number={2}
+                  week={week}
                 />
               </>
             ),
