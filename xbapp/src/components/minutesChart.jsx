@@ -37,13 +37,16 @@ function MinutesChart(props) {
       for (var j = 0; j < responses.length; j++) {
         var eachResponse = responses[j];
         if (_.has(eachResponse, "minutes")) {
-          explanationString +=
-            eachResponse.minutes.toString() +
-            " min. " +
-            eachResponse.location +
+          explanationString += eachResponse.minutes.toString() + " min.";
+          //if the user added a location and time of minutes
+          if (eachResponse.location != undefined && eachResponse.time != undefined){
+            explanationString += " " + eachResponse.location +
             " in " +
             eachResponse.time +
             "; ";
+          } else {
+            explanationString += "; ";
+          }
         }
       }
       //adding info about the strength exercises at the end

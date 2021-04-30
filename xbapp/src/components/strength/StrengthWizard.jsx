@@ -6,9 +6,9 @@
 import React, { useState, useEffect } from "react";
 import {
   IonButton,
-  IonSlides,
-  IonSlide,
-  IonTitle,
+  IonGrid,
+  IonCol,
+  IonRow,
   IonItem,
   IonList,
   IonLabel,
@@ -405,6 +405,123 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   });
 
   /**
+   * Where did you do your minutes?
+   */
+   const [sunrise, setSunrise] = useState({
+    sourceSunrise: "assets/suns/sunrise1.png",
+    sourceMidday: "assets/suns/midday1.png",
+    sourceSunset: "assets/suns/sunset1.png",
+  });
+  const [environment, setEnvironment] = useState({
+    sourceIndoors: "assets/inout/indoors1.png",
+    sourceOutdoors: "assets/inout/outdoors1.png",
+  });
+
+  const [variables, setVariables] = useState({ place: "", timeOfDay: "" });
+
+  function toggleImagesSun(imageToChange) {
+    if (imageToChange == "sunrise") {
+      setSunrise({
+        sourceSunrise: "assets/suns/sunrise2.png",
+        sourceMidday: "assets/suns/midday1.png",
+        sourceSunset: "assets/suns/sunset1.png",
+      });
+      setVariables({ place: variables.place, timeOfDay: "morning" });
+    } else if (imageToChange == "midday") {
+      setSunrise({
+        sourceSunrise: "assets/suns/sunrise1.png",
+        sourceMidday: "assets/suns/midday2.png",
+        sourceSunset: "assets/suns/sunset1.png",
+      });
+      setVariables({ place: variables.place, timeOfDay: "midday" });
+    } else if (imageToChange == "sunset") {
+      setSunrise({
+        sourceSunrise: "assets/suns/sunrise1.png",
+        sourceMidday: "assets/suns/midday1.png",
+        sourceSunset: "assets/suns/sunset2.png",
+      });
+      setVariables({ place: variables.place, timeOfDay: "evening" });
+    }
+  }
+
+  function toggleImagesInOut(imageToChange) {
+    if (imageToChange == "indoors") {
+      setEnvironment({
+        sourceIndoors: "assets/inout/indoors2.png",
+        sourceOutdoors: "assets/inout/outdoors1.png",
+      });
+      setVariables({ place: "indoors", timeOfDay: variables.timeOfDay });
+    } else if (imageToChange == "outdoors") {
+      setEnvironment({
+        sourceIndoors: "assets/inout/indoors1.png",
+        sourceOutdoors: "assets/inout/outdoors2.png",
+      });
+      setVariables({ place: "outdoors", timeOfDay: variables.timeOfDay });
+    }
+  }
+
+
+   content.push({
+     el: (
+       <div className="minutesQues">
+         <div className="row">
+        <h4>When did you get these minutes?</h4>
+        <IonItem>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <img
+                  src={sunrise.sourceSunrise}
+                  onClick={() => toggleImagesSun("sunrise")}
+                />
+              </IonCol>
+              <IonCol>
+                <img
+                  src={sunrise.sourceMidday}
+                  onClick={() => toggleImagesSun("midday")}
+                />
+              </IonCol>
+              <IonCol>
+                <img
+                  src={sunrise.sourceSunset}
+                  onClick={() => toggleImagesSun("sunset")}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
+      </div>
+
+      <div className="row">
+        <h4>Did you get them indoors or outdoors?</h4>
+        <IonItem>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <img
+                  src={environment.sourceIndoors}
+                  onClick={() => toggleImagesInOut("indoors")}
+                />
+              </IonCol>
+              <IonCol>
+                <img
+                  src={environment.sourceOutdoors}
+                  onClick={() => toggleImagesInOut("outdoors")}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
+      </div>
+       </div>
+     ),
+     rule: () => {
+       return variables.place != "" && variables.timeOfDay != "";
+     },
+     title: "Movement Questions",
+   });
+
+  /**
    * RPE
    */
   const [rpeVal, setrpeVal] = useState(1);
@@ -522,6 +639,8 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             var rmins = {};
             rmins.type = "minutes";
             rmins.minutes = Math.max(1, week - 1) * 7;
+            rmins.location = variables.place;
+            rmins.time = variables.timeOfDay;
             var rnotes = {};
             rnotes.type = "note";
             rnotes.note = notes;
