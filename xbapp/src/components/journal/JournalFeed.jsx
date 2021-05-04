@@ -182,7 +182,10 @@ const JournalFeed = ({ responses }) => {
                 {r.mood > -3 ? (
                   <>
                     <IonItem key="mood">
-                      <img style={{width: "100px", height: "auto"}} src={"assets/mood/" + MoodImages[r.mood + 3]} />
+                      <img
+                        style={{ width: "100px", height: "auto" }}
+                        src={"assets/mood/" + MoodImages[r.mood + 3]}
+                      />
                     </IonItem>
                     <IonItem key="mood">
                       Your mood was {MoodStringsRelative[r.mood + 3]} than the

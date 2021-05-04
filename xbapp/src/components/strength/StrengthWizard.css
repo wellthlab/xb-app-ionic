@@ -1,5 +1,6 @@
 .buttons {
-  height: 25px;
+  height: 50px;
+  padding-bottom: 5rem;
 }
 
 .buttons .next {

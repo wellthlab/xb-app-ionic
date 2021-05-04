@@ -39,11 +39,12 @@ function MinutesChart(props) {
         if (_.has(eachResponse, "minutes")) {
           explanationString += eachResponse.minutes.toString() + " min.";
           //if the user added a location and time of minutes
-          if (eachResponse.location != undefined && eachResponse.time != undefined){
-            explanationString += " " + eachResponse.location +
-            " in " +
-            eachResponse.time +
-            "; ";
+          if (
+            eachResponse.location != undefined &&
+            eachResponse.time != undefined
+          ) {
+            explanationString +=
+              " " + eachResponse.location + " in " + eachResponse.time + "; ";
           } else {
             explanationString += "; ";
           }
@@ -55,9 +56,8 @@ function MinutesChart(props) {
         var eachResponse = responses[j];
         //console.log("verifying", eachResponse, _.has(eachResponse, "strength"));
         if (_.has(eachResponse, "sets")) {
-
           //first - retrieve the name of the sets
-          
+
           Object.keys(eachResponse.sets).map((type, i) => {
             var block, mtype;
             [mtype, block] = type.split(/-/);
@@ -70,33 +70,41 @@ function MinutesChart(props) {
             }
             var mname = move.name.split(/:/).pop();
             var number = eachResponse.sets[type];
-            
-            number == "explore" ? (setsExplanations+= "Tried out") : (setsExplanations+= "");
-            setsExplanations+= mname.toString();
-            setsExplanations+= " ";
-            number == "explore" ? (setsExplanations+= "") : (setsExplanations+= "× ");
-            setsExplanations+= number.toString();
-            setsExplanations+= "; ";
 
-          })
+            number == "explore"
+              ? (setsExplanations += "Tried out")
+              : (setsExplanations += "");
+            setsExplanations += mname.toString();
+            setsExplanations += " ";
+            number == "explore"
+              ? (setsExplanations += "")
+              : (setsExplanations += "× ");
+            setsExplanations += number.toString();
+            setsExplanations += "; ";
+          });
 
           //now adding pre+post heart rate
-          setsExplanations+= "Pre/Post Heart-Rate: ";
-          setsExplanations+=  eachResponse.preHeartrate.toString() + "/" + eachResponse.heartrate.toString() + "; ";
-        
-           //now adding PER
-           setsExplanations+= "Perceived Exertion: ";
-           setsExplanations+= eachResponse.exertionValue + "; ";
+          setsExplanations += "Pre/Post Heart-Rate: ";
+          setsExplanations +=
+            eachResponse.preHeartrate.toString() +
+            "/" +
+            eachResponse.heartrate.toString() +
+            "; ";
+
+          //now adding PER
+          setsExplanations += "Perceived Exertion: ";
+          setsExplanations += eachResponse.exertionValue + "; ";
         }
       }
       //if a strength exercise was found
-      if (setsExplanations != ""){
+      if (setsExplanations != "") {
         strengthDescription.push(setsExplanations);
       } else {
         strengthDescription.push(null);
       }
       minutesDescription.push(explanationString);
-    } else { //minutes were not added
+    } else {
+      //minutes were not added
       minutesIndividual.push(null);
       minutesDescription.push(null);
       strengthDescription.push(null);
@@ -122,23 +130,22 @@ function MinutesChart(props) {
       questionnaireDescription.push(null);
     }
 
-    //now add the notes 
-    var notesExplanation="Notes: ";
+    //now add the notes
+    var notesExplanation = "Notes: ";
     var responses = eachEntry.responses;
 
-      for (var j = 0; j < responses.length; j++) {
-        var eachResponse = responses[j];
-        if (_.has(eachResponse, "note")) {
-          notesExplanation+= eachResponse.note + "; ";
-        }
+    for (var j = 0; j < responses.length; j++) {
+      var eachResponse = responses[j];
+      if (_.has(eachResponse, "note")) {
+        notesExplanation += eachResponse.note + "; ";
       }
+    }
 
-      if (notesExplanation != "Notes: "){
-        notesDescription.push(notesExplanation);
-      } else {
-        notesDescription.push(null);
-      }
-
+    if (notesExplanation != "Notes: ") {
+      notesDescription.push(notesExplanation);
+    } else {
+      notesDescription.push(null);
+    }
   }
 
   //process feeling data with averaged weights making use of unweightedFeelingIndividual
@@ -263,7 +270,6 @@ function MinutesChart(props) {
             multistringText.push(minutesDescription[tooltipItems.index]);
             var strengthValue = strengthDescription[tooltipItems.index];
             if (strengthValue != null) multistringText.push(strengthValue);
-            
           } else {
             seriesText = "Team's minutes (average): ";
             multistringText = [seriesText + tooltipItems.yLabel];
@@ -478,14 +484,12 @@ function MinutesChart(props) {
             multistringText.push(minutesDescription[tooltipItems.index]);
             var strengthValue = strengthDescription[tooltipItems.index];
             if (strengthValue != null) multistringText.push(strengthValue);
-            
           } else {
             seriesText = "Your mood: ";
             multistringText = [seriesText + tooltipItems.yLabel];
             multistringText.push(questionnaireDescription[tooltipItems.index]);
             var notesValues = notesDescription[tooltipItems.index];
             if (notesValues != null) multistringText.push(notesValues);
-            
           }
           return multistringText;
         },

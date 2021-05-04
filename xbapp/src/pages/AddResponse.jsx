@@ -16,6 +16,7 @@ import { addControllersProp } from "../model/controllers";
 import MinuteEntry from "../components/user_input/MinuteEntry";
 import Questionnaire from "../components/user_input/Questionnaire";
 import StrengthWizard from "../components/strength/StrengthWizard";
+import StrengthExercisePicker from "../components/strength/StrengthExercisePicker";
 import Assessment from "../components/strength/Assessment";
 import Note from "../components/user_input/Note";
 
@@ -114,6 +115,18 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         );
         break;
 
+      case "strength-exercise":
+        var week = Math.floor((daynumber - 1) / 7) + 1;
+
+        input = (
+          <StrengthExercisePicker
+            countdownID={daynumber + "-" + gid}
+            week={week}
+            onSubmit={save}
+          />
+        );
+        break;
+
       case "assessment":
         input = <Assessment onSubmit={save} />;
         break;
@@ -142,6 +155,9 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       typedesc = "Daily Questionnaire";
       break;
     case "strength":
+      typedesc = "Daily Strength Session";
+      break;
+    case "strength-exercise":
       typedesc = "Daily Strength Session";
       break;
     case "note":

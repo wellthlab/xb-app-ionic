@@ -224,44 +224,6 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             },
           });
         })(blocknum); // Apply value to closure
-      } else {
-        // console.log("Use reminder for block", blocknum);
-        (function (
-          blocknum // Trap blocknum in a closure
-        ) {
-          var move1 = getMove(exList[blocknum][0]);
-          var move2 = getMove(exList[blocknum][1]);
-
-          content.push({
-            el: (
-              <>
-                <h3>
-                  Block {blocknum} of {blocks}
-                </h3>
-                <p>
-                  You have already chosen your exercises for this block. Here's
-                  a reminder of what you picked.
-                </p>
-                {/* <p><strong>Swipe left or right to select different moves.</strong></p> */}
-
-                <MovementInfoCard
-                  key={move1.id}
-                  images={move1.images}
-                  name={move1.name}
-                />
-                <MovementInfoCard
-                  key={move2.id}
-                  images={move2.images}
-                  name={move2.name}
-                />
-              </>
-            ),
-            rule: function () {
-              // console.log("Check exList for block", blocknum, exList[blocknum]);
-              return exList[blocknum].length == 2;
-            },
-          });
-        })(blocknum); // Apply value to closure
       }
 
       /**
@@ -407,7 +369,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   /**
    * Where did you do your minutes?
    */
-   const [sunrise, setSunrise] = useState({
+  const [sunrise, setSunrise] = useState({
     sourceSunrise: "assets/suns/sunrise1.png",
     sourceMidday: "assets/suns/midday1.png",
     sourceSunset: "assets/suns/sunset1.png",
@@ -460,66 +422,65 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
     }
   }
 
+  content.push({
+    el: (
+      <div className="minutesQues">
+        <div className="row">
+          <h4>When did you get these minutes?</h4>
+          <IonItem>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <img
+                    src={sunrise.sourceSunrise}
+                    onClick={() => toggleImagesSun("sunrise")}
+                  />
+                </IonCol>
+                <IonCol>
+                  <img
+                    src={sunrise.sourceMidday}
+                    onClick={() => toggleImagesSun("midday")}
+                  />
+                </IonCol>
+                <IonCol>
+                  <img
+                    src={sunrise.sourceSunset}
+                    onClick={() => toggleImagesSun("sunset")}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+        </div>
 
-   content.push({
-     el: (
-       <div className="minutesQues">
-         <div className="row">
-        <h4>When did you get these minutes?</h4>
-        <IonItem>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <img
-                  src={sunrise.sourceSunrise}
-                  onClick={() => toggleImagesSun("sunrise")}
-                />
-              </IonCol>
-              <IonCol>
-                <img
-                  src={sunrise.sourceMidday}
-                  onClick={() => toggleImagesSun("midday")}
-                />
-              </IonCol>
-              <IonCol>
-                <img
-                  src={sunrise.sourceSunset}
-                  onClick={() => toggleImagesSun("sunset")}
-                />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
+        <div className="row">
+          <h4>Did you get them indoors or outdoors?</h4>
+          <IonItem>
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <img
+                    src={environment.sourceIndoors}
+                    onClick={() => toggleImagesInOut("indoors")}
+                  />
+                </IonCol>
+                <IonCol>
+                  <img
+                    src={environment.sourceOutdoors}
+                    onClick={() => toggleImagesInOut("outdoors")}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+        </div>
       </div>
-
-      <div className="row">
-        <h4>Did you get them indoors or outdoors?</h4>
-        <IonItem>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <img
-                  src={environment.sourceIndoors}
-                  onClick={() => toggleImagesInOut("indoors")}
-                />
-              </IonCol>
-              <IonCol>
-                <img
-                  src={environment.sourceOutdoors}
-                  onClick={() => toggleImagesInOut("outdoors")}
-                />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      </div>
-       </div>
-     ),
-     rule: () => {
-       return variables.place != "" && variables.timeOfDay != "";
-     },
-     title: "Movement Questions",
-   });
+    ),
+    rule: () => {
+      return variables.place != "" && variables.timeOfDay != "";
+    },
+    title: "Movement Questions",
+  });
 
   /**
    * RPE

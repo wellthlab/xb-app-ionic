@@ -400,8 +400,17 @@ const MovementPicker = (props) => {
       //check the week for moves to exclude
       if (props.week) {
         // console.log("checking move");
-        if (props.week == 3){
-          if (m.name == "Pull 7: One Arm Door Pull" || m.name == "Squat 5: Step Up" || m.name == "Squat 3: Bulgarian Split Squat" || m.name == "Squat 4: Box Pistol Squat" || m.name == "Hinge 8: Single Leg Pike" || m.name == "Hinge 3: Single Leg Romanian Deadlift" || m.name == "Hinge 5: The Swimmer" || m.name == "Hinge 7: Hollow Body Position"){
+        if (props.week == 3) {
+          if (
+            m.name == "Pull 7: One Arm Door Pull" ||
+            m.name == "Squat 5: Step Up" ||
+            m.name == "Squat 3: Bulgarian Split Squat" ||
+            m.name == "Squat 4: Box Pistol Squat" ||
+            m.name == "Hinge 8: Single Leg Pike" ||
+            m.name == "Hinge 3: Single Leg Romanian Deadlift" ||
+            m.name == "Hinge 5: The Swimmer" ||
+            m.name == "Hinge 7: Hollow Body Position"
+          ) {
             // console.log("move excluded");
             return;
           }

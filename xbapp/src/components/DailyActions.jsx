@@ -11,7 +11,6 @@ import {
   IonLabel,
   IonIcon,
 } from "@ionic/react";
-import { connect } from "react-redux";
 
 import {
   heart,
@@ -41,6 +40,67 @@ const DailyActions = ({ group, today }) => {
   // Track the day we're displaying; default to current day
   const [activeDay, setActiveDay] = useState(today);
 
+  var week = Math.floor((activeDay - 1) / 7) + 1;
+  var blocks = Math.max(1, week - 1);
+
+  //retrieving the exercise blocks in order to CHECK if they are selected
+  var exList = [];
+  var setExList = [];
+  [exList[1], setExList[1]] = useLocalStorage(
+    "week" + week + "-block1-exlist",
+    []
+  );
+  [exList[2], setExList[2]] = useLocalStorage(
+    "week" + week + "-block2-exlist",
+    []
+  );
+  [exList[3], setExList[3]] = useLocalStorage(
+    "week" + week + "-block3-exlist",
+    []
+  );
+  [exList[4], setExList[4]] = useLocalStorage(
+    "week" + week + "-block4-exlist",
+    []
+  );
+  [exList[5], setExList[5]] = useLocalStorage(
+    "week" + week + "-block5-exlist",
+    []
+  );
+  [exList[6], setExList[6]] = useLocalStorage(
+    "week" + week + "-block6-exlist",
+    []
+  );
+  [exList[7], setExList[7]] = useLocalStorage(
+    "week" + week + "-block7-exlist",
+    []
+  );
+
+  var blockFlow = [];
+  var setBlockFlow = [];
+  [blockFlow[1], setBlockFlow[1]] = useState(
+    exList[1].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[2], setBlockFlow[2]] = useState(
+    exList[2].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[3], setBlockFlow[3]] = useState(
+    exList[3].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[4], setBlockFlow[4]] = useState(
+    exList[4].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[5], setBlockFlow[5]] = useState(
+    exList[5].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[6], setBlockFlow[6]] = useState(
+    exList[6].length < 2 ? "pick" : "show"
+  );
+  [blockFlow[7], setBlockFlow[7]] = useState(
+    exList[7].length < 2 ? "pick" : "show"
+  );
+
+  //finished retrieving teh blocks
+
   var entries = group.entries;
 
   // Look up the daily entry we need to render
@@ -67,7 +127,11 @@ const DailyActions = ({ group, today }) => {
    * Daily task list and buttons
    */
   var qreq = [
-    { type: "questionnaire", desc: "Fill in the Daily Review", verb: "DO IT" },
+    {
+      type: "strength-exercise",
+      desc: "Set your current Strength Exercise",
+      verb: "DO IT",
+    },
   ];
 
   // Other tasks that can be done, but optionally
@@ -92,6 +156,12 @@ const DailyActions = ({ group, today }) => {
     });
   }
 
+  qreq.push({
+    type: "questionnaire",
+    desc: "Fill in the Daily Review",
+    verb: "DO IT",
+  });
+
   var day = entry.day;
   if (day == 1 || day == 22 || day == 36) {
     qreq.push({
@@ -107,8 +177,22 @@ const DailyActions = ({ group, today }) => {
     });
   }
 
+  //check if exercises are set
+  function checkIfExercisesAreSet() {
+    for (var blocknum = 1; blocknum <= blocks; blocknum++) {
+      if (blockFlow[blocknum] == "pick") return false;
+    }
+    return true;
+  }
+
   var tasks = qreq.map((type) => {
-    var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var responseExists = typeof entry.responseTypes[type.type] !== "undefined";
+    var done =
+      type.type == "strength-exercise"
+        ? checkIfExercisesAreSet()
+          ? true
+          : false
+        : responseExists;
 
     // console.log(type.type, done);
 
@@ -123,6 +207,7 @@ const DailyActions = ({ group, today }) => {
         detailIcon={arrowForwardOutline}
       >
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+
         {type.desc}
         {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
       </IonItem>
@@ -196,3 +281,39 @@ const DailyActions = ({ group, today }) => {
 };
 
 export default DailyActions;
+
+function useLocalStorage(key, initialValue) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}

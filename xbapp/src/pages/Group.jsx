@@ -116,6 +116,7 @@ const Group = ({ match, teams, controllers, account }) => {
     var members =
       group.users.length > 1 ? group.users.length + " members" : "Just You";
 
+    console.log("BAAA", group.experiment.current_stage.instructions);
     content = (
       <IonGrid>
         <IonRow>

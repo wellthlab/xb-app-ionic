@@ -26,8 +26,8 @@ const MovementTimer = ({
   return (
     <div id="movementTimer">
       <p style={{ padding: "5px 8px 5px 8px" }}>
-        Repeat these two moves. Do FIVE reps of the first exercise, followed by
-        FIVE reps of the second, for a total of <strong>{mins} minutes</strong>.
+        Do FIVE reps of the first exercise, followed by FIVE reps of the second,
+        and then repeat, for a total of <strong>{mins} minutes</strong>.
       </p>
       <p style={{ padding: "5px 8px 5px 8px" }}>
         Keep a running count of your reps, using the counters below.
