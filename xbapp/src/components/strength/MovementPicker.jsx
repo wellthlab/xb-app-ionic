@@ -224,6 +224,16 @@ const moves = [
     difficulty: "",
   },
   {
+    id: "diamondpushup",
+    name: "Push 5: Diamond Push Up",
+    type: "push",
+    description:
+      "Lay on the floor belly first, elbows back fairly tight against the body, hands pushed together flat below the breastplate, pivoting from your toes. Drive through your arms until fully extended. Reduce difficulty by pivoting from your knees instead.",
+    images: ["diamond_push_up_rest.png", "diamond_push_up_engaged.png"],
+    type: "pull",
+    difficulty: "",
+  },
+  {
     id: "verticalpull",
     name: "Pull 1: Vertical Pull",
     type: "pull",
