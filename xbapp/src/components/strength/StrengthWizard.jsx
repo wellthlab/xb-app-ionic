@@ -23,6 +23,7 @@ import MovementTimer from "./MovementTimer";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
 import RPE from "../user_input/RPE";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
@@ -260,7 +261,54 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           },
           title: "Movement Block " + blocknum,
         });
+
+        /**
+     * Add countdown of 2 minutes in between blocks
+     */
+        if (blocknum != blocks)
+         content.push({
+          el: (
+            <>
+              <h3>
+                Take a break! Breathe!
+              </h3>
+              <p>
+              We recommend taking a 2-minute break between each block. 
+              </p>
+              <p>
+              If you wish to skip these, please press "Next".
+              </p>
+              <p>
+              The timer will reset after 2 minutes have passed, so you can decide when to proceed to the next block by pressing "Next".
+              </p>
+              <div className="timer">
+          <CountdownCircleTimer
+            onComplete={() => {
+              return [true];
+            }}
+            isPlaying
+            size={90}
+            duration={120}
+            colors={[
+              ["#004777", 0.33],
+              ["#F7B801", 0.33],
+              ["#A30000", 0.33],
+            ]}
+          >
+            {({ remainingTime }) => remainingTime}
+          </CountdownCircleTimer>
+        </div>
+            </>
+          ),
+          rule: () => {
+            return true;
+          },
+          next: true,
+          title: "2-minute break",
+        });
+
       })(blocknum);
+
     }
 
     /**

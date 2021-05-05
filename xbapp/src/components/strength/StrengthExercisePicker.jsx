@@ -225,22 +225,22 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
           <MovementPicker
             type="push"
             onChange={(list) => {
-              // console.log("Set exercise list", list);
+              //  console.log("Set exercise list", list);
+              //list[0] is the push move
               setExExpList(list);
-              var newsets = Object.assign({}, sets);
-              newsets[list[0]] = "explore"; // Record the chosen exercise
-              setSets(newsets);
+       
               nextSlide();
             }}
-            number={1}
+            number={0}
           />
         </>
       ),
       next: false,
       rule: function () {
         // console.log(exList);
-        return exExpList.length == 1;
+        return true;
       },
+      previous: true,
       title: "Movement One",
     });
 
@@ -263,26 +263,27 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
           <MovementPicker
             type="pull"
             onChange={(list) => {
-              // console.log("Set exercise list", list);
+              //  console.log("Set exercise list", list);
+              list[1] = list[0];
+              list[0] = exExpList[0];
+              console.log("SET", list);
               setExExpList(list);
-              var newsets = Object.assign({}, sets);
-              newsets[list[0]] = "explore"; // Record the chosen exercise
-              setSets(newsets);
               nextSlide();
             }}
-            number={1}
+            number={0}
           />
         </>
       ),
       rule: function () {
-        return exExpList.length == 1;
+        return true;
       },
       next: false,
+      previous: true,
       title: "Movement Two",
     });
 
     content.push({
-      el: <LevelFinder exercise={exExpList[0]} />,
+      el: <LevelFinder exercise={exExpList[1]} />,
       rule: () => {
         return true;
       },

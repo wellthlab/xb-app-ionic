@@ -1,6 +1,6 @@
 .buttons {
   height: 50px;
-  padding-bottom: 5rem;
+  padding-bottom: 4rem;
 }
 
 .buttons .next {
@@ -32,4 +32,15 @@ img {
   justify-content: center;
   /*font-size: calc(10px + 2vmin);*/
   padding: 0 1.5rem;
+}
+
+.timer {
+  position: relative;
+}
+
+.timer > div {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
