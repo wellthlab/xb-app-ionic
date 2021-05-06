@@ -10,6 +10,11 @@ import {
 import "./CountDown.scss";
 import { connect } from "react-redux";
 
+//sounds
+import useSound from 'use-sound';
+import beep_short from '../../audio/beep_short.mp3';
+import beep_long from '../../audio/beep_long.mp3';
+
 /**
  * Props:
  *  onFinish - fired when countdown reaches zero
@@ -121,7 +126,10 @@ function CountDown(props) {
     localStorage.setItem("CountDowncountActive", false);
     localStorage.removeItem("CountDownStartedAt");
   }
-  
+
+  const [play_short] = useSound(beep_short);
+  const [play_long] = useSound(beep_long);
+
   useEffect(() => {
     let interval = null;
     if (isActive) {
@@ -132,10 +140,17 @@ function CountDown(props) {
           setSeconds(59);
           localStorage.setItem("CountDownrecordedSeconds", 59);
         } else {
+          if (minutes == 0 && (seconds == 4 || seconds == 3 || seconds == 2)){
+            play_short();
+          }
+          if (minutes == 0 && seconds == 1){
+            play_long();
+          }
           localStorage.setItem("CountDownrecordedSeconds", seconds - 1);
           setSeconds((seconds) => seconds - 1);
         }
         if (minutes == 0 && seconds == 0) {
+          
           setIsActive(false);
           reset();
           if (props.onFinish) {
