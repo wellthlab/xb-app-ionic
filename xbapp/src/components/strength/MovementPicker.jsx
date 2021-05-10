@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import MovementInfoCard from "./MovementInfoCard";
 
 import "./MovementPicker.css";
+import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 /**
  * The list of moves.
@@ -28,6 +29,7 @@ const moves = [
     type: "push",
     difficulty:
       "Don't rest on the box, just use it as your stopping point. Try a full squat if this is too easy. Lower the box to make this harder.",
+    technique: "bilateral",
   },
   {
     id: "fullsquat",
@@ -39,6 +41,7 @@ const moves = [
     type: "push",
     difficulty:
       "Get your bum as low as possible; if that's difficult, hang on to a door handle and lower yourself to feel the back of your legs hit the back of your calves.",
+    technique: "bilateral",
   },
   {
     id: "bulgariansplitsquat",
@@ -53,6 +56,7 @@ const moves = [
     type: "push",
     difficulty:
       "Try a full squat if this is too hard; or a box pistol squat if this is too easy",
+    technique: "isolateral",
   },
   {
     id: "boxpistolsquat",
@@ -63,6 +67,7 @@ const moves = [
     images: ["box_pistol_squat_rest.png", "box_pistol_squat_engaged.png"],
     type: "push",
     difficulty: "",
+    technique: "isolateral",
   },
   {
     id: "stepup",
@@ -73,6 +78,7 @@ const moves = [
     images: ["step_up_rest.png", "step_up_engaged.png"],
     type: "push",
     difficulty: "",
+    technique: "isolateral",
   },
   {
     id: "supportedsquat",
@@ -83,6 +89,7 @@ const moves = [
     images: ["supported_squat_rest.png", "supported_squat_engaged.png"],
     type: "push",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "shoulderstandsquat",
@@ -96,6 +103,7 @@ const moves = [
     ],
     type: "push",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "gluteraise",
@@ -106,6 +114,7 @@ const moves = [
     images: ["glute_raise_rest.png", "glute_raise_engaged.png"],
     type: "push",
     difficulty: "Try a short bridge if this is too easy.",
+    technique: "bilateral",
   },
   {
     id: "shortbridge",
@@ -116,6 +125,7 @@ const moves = [
     images: ["short_bridge_rest.png", "short_bridge_engaged.png"],
     type: "push",
     difficulty: "Try a single leg romanian deadlift if this is too easy.",
+    technique: "bilateral",
   },
   {
     id: "singlelegromaniandeadlift",
@@ -130,6 +140,7 @@ const moves = [
     type: "push",
     difficulty:
       "Place your hands on the back of a chair if balance is a challenge, or go hands-free to make this harder.",
+    technique: "isolateral",
   },
   {
     id: "angledbridge",
@@ -140,6 +151,7 @@ const moves = [
     images: ["angled_bridge_rest.png", "angled_bridge_engaged.png"],
     type: "push",
     difficulty: "Try one of the easier squats if this is too hard.",
+    technique: "bilateral",
   },
   {
     id: "swimmer",
@@ -150,6 +162,7 @@ const moves = [
     images: ["the_swimmer_rest.png", "the_swimmer_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "wallrdlprep",
@@ -160,6 +173,7 @@ const moves = [
     images: ["wall_rdl_prep_rest.png", "wall_rdl_prep_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "hollowbody",
@@ -170,6 +184,7 @@ const moves = [
     images: ["hollow_body_rest.png", "hollow_body_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "singlelegpike",
@@ -180,6 +195,7 @@ const moves = [
     images: ["single_leg_pike_rest.png", "single_leg_pike_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "isolateral",
   },
   {
     id: "cobrapushup",
@@ -190,6 +206,7 @@ const moves = [
     images: ["push_up_rest.png", "cobra_push_up_engaged.png"],
     type: "pull",
     difficulty: "Try a flat push up if this is too easy",
+    technique: "bilateral",
   },
   {
     id: "pushup",
@@ -201,6 +218,7 @@ const moves = [
     type: "pull",
     difficulty:
       "Try an elevated push up if this is too easy; or a cobra push up if this is too hard",
+    technique: "bilateral",
   },
   {
     id: "elevatedpushup",
@@ -212,6 +230,7 @@ const moves = [
     type: "pull",
     difficulty:
       "Move your feet apart to make this easier, or try a flat push up if this is too hard.",
+    technique: "bilateral",
   },
   {
     id: "hindupushup",
@@ -222,6 +241,7 @@ const moves = [
     images: ["hindu_push_up_rest.png", "hindu_push_up_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "diamondpushup",
@@ -232,6 +252,7 @@ const moves = [
     images: ["diamond_push_up_rest.png", "diamond_push_up_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "verticalpull",
@@ -243,6 +264,7 @@ const moves = [
     type: "pull",
     difficulty:
       "Step towards the door frame to make this harder, or away to make it easier",
+    technique: "bilateral",
   },
   {
     id: "pronatedaustralianpull",
@@ -257,6 +279,7 @@ const moves = [
     type: "pull",
     difficulty:
       "Try a Suppinated Austrialian Pull or Horizontal Pull if this is too easy!",
+    technique: "bilateral",
   },
   {
     id: "suppinatedaustralianpull",
@@ -270,6 +293,7 @@ const moves = [
     ],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "horizontalpull",
@@ -280,6 +304,7 @@ const moves = [
     images: ["horizontal_pull_rest.png", "horizontal_pull_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "tethereddoorpull",
@@ -290,6 +315,7 @@ const moves = [
     images: ["tethered_door_pull_rest.png", "tethered_door_pull_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "doorhangpull",
@@ -300,6 +326,7 @@ const moves = [
     images: ["door_hang_pull_rest.png", "door_hang_pull_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "bilateral",
   },
   {
     id: "onearmdoorpull",
@@ -310,6 +337,7 @@ const moves = [
     images: ["one_arm_door_pull_rest.png", "one_arm_door_pull_engaged.png"],
     type: "pull",
     difficulty: "",
+    technique: "isolateral",
   },
 ];
 
@@ -321,6 +349,7 @@ const moves = [
  */
 const MovementPicker = (props) => {
   const [rate, setRate] = useState(null);
+  const [corrRefSelected, setCorrRefSelected] = useState([]);
 
   // Number of movements to pick
   var number = props.number;
@@ -360,77 +389,188 @@ const MovementPicker = (props) => {
 
   var movesPull = [];
   var movesPush = [];
+
+  var toUpdate = [];
+  for (var m of moves) {
+    if (m.technique != "isolateral") {
+      toUpdate.push({ id: m.id, selection: "false" });
+    } else {
+      toUpdate.push({ id: m.id + "1", selection: "false" });
+      toUpdate.push({ id: m.id + "2", selection: "false" });
+    }
+  }
   for (var m of moves) {
     (function (m) {
       // Trap m in a closure
-      var selected = picked.includes(m.id);
-      var movementCard = (
-        <IonSlide className="movementSlides">
-          <div
-            style={{
-              overflow: "auto",
-              marginLeft: "auto",
-              marginRight: "auto",
-              marginBottom: "40px",
-            }}
-          >
-            <MovementInfoCard
-              key={m.id}
-              className={!selected ? "" : "selected"}
-              name={m.name}
-              text={m.text}
-              images={m.images}
-            >
-              <IonButton
-                onClick={() => {
-                  // Onclick, toggle whether this move is in the list
-                  if (selected) {
-                    // console.log("Remove", m);
-                    var newpicked = [];
-                    for (var p of picked) {
-                      if (p != m.id) {
-                        newpicked.push(p);
-                      }
-                    }
-                    setPicked(newpicked);
-                    change(newpicked);
-                  } else {
-                    var newpicked = picked.concat([m.id]);
-                    setPicked(newpicked);
-                    change(newpicked);
-                  }
-                }}
-              >
-                {!selected ? txtAdd : txtRem}
-              </IonButton>
-            </MovementInfoCard>
-          </div>
-        </IonSlide>
-      );
+
       //check the week for moves to exclude
       if (props.week) {
         // console.log("checking move");
         if (props.week == 3) {
           if (
-            m.name == "Pull 7: One Arm Door Pull" ||
-            m.name == "Squat 5: Step Up" ||
-            m.name == "Squat 3: Bulgarian Split Squat" ||
-            m.name == "Squat 4: Box Pistol Squat" ||
-            m.name == "Hinge 8: Single Leg Pike" ||
-            m.name == "Hinge 3: Single Leg Romanian Deadlift" ||
+            m.technique == "isolateral" ||
             m.name == "Hinge 5: The Swimmer" ||
             m.name == "Hinge 7: Hollow Body Position"
           ) {
             // console.log("move excluded");
             return;
           }
+        } else if (props.week == 4) {
+          if (
+            (props.blocknum == 1 || props.blocknum == 2) &&
+            m.technique == "bilateral"
+          ) {
+            //excluding bilateral from block 1 and 2
+            return;
+          } else if (props.blocknum == 3 && m.technique == "isolateral") {
+            //excluding isolateral from block 3
+            return;
+          }
         }
       }
-      // console.log("move added");
-      if (m.type == "push") {
-        movesPush.push(movementCard);
+
+      //if we are in week 4, it means we can give folks the chance of doing the SAME isolateral move in a block
+      if (m.technique == "isolateral" && props.week == 4) {
+        /*so instead of adding the same isolateral move to both sliders,
+         * we are going to create 2 of the same kind, change their keys, and add them to the sliders
+         * it seems the key that we create here at the top remains as the LAST value
+         * so when re-checking whether a move is "selected", we will be using the BUTTON classNAme rather than the computed key
+         * these KEYS will have a 1 and a 2 at the end (for each isolateral move)
+         */
+        for (var i = 1; i < 3; i++) {
+          //computed key
+          var keyForId = m.id + i.toString();
+
+          //selected value to update the buton text
+          var selected = picked.includes(keyForId);
+          var card = (
+            <IonSlide className="movementSlides">
+              <div
+                style={{
+                  overflow: "auto",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  marginBottom: "40px",
+                }}
+              >
+                <MovementInfoCard
+                  key={keyForId}
+                  className={!selected ? "" : "selected"}
+                  name={m.name}
+                  text={m.text}
+                  images={m.images}
+                >
+                  <IonButton
+                    key={keyForId}
+                    className={keyForId}
+                    onClick={(event) => {
+                      //since keyForId cannot be retrieved, we can retrieve the classNAme
+                      var referenceKey = event.target.className.split(" ")[0];
+                      selected = picked.includes(referenceKey);
+                      //Onclick, toggle whether this move is in the list
+                      if (selected) {
+                        //console.log("Remove", referenceKey);
+                        var newpicked = [];
+                        for (var p of picked) {
+                          if (p != referenceKey) {
+                            newpicked.push(p);
+                          }
+                        }
+                        setPicked(newpicked);
+                        //before updating the list back through props, we remove teh 1s and 2s at the end of the move name
+                        var toUpdate = [];
+                        for (var i = 0; i < newpicked.length; i++) {
+                          var mov2 = newpicked[i];
+                          var lastString = mov2.charAt(mov2.length - 1);
+                          if (/\d/.test(lastString)) {
+                            //if the last char is a digit
+                            mov2 = mov2.slice(0, -1);
+                          }
+                          toUpdate.push(mov2);
+                        }
+                        change(toUpdate);
+                      } else {
+                        //adding the move to the list
+                        var newpicked = picked.concat([referenceKey]);
+                        setPicked(newpicked);
+                        var toUpdate = [];
+                        for (var i = 0; i < newpicked.length; i++) {
+                          var mov2 = newpicked[i];
+                          var lastString = mov2.charAt(mov2.length - 1);
+                          if (/\d/.test(lastString)) {
+                            //if the last char is a digit
+                            mov2 = mov2.slice(0, -1);
+                          }
+                          toUpdate.push(mov2);
+                        }
+                        change(toUpdate);
+                      }
+                    }}
+                  >
+                    {!selected ? txtAdd : txtRem}
+                  </IonButton>
+                </MovementInfoCard>
+              </div>
+            </IonSlide>
+          );
+          if (i == 1) {
+            movesPush.push(card);
+          } else {
+            movesPull.push(card);
+          }
+        }
       } else {
-        movesPull.push(movementCard);
+        //for all other moves that are non isolateral (in week 4) or ALL MOVES (non week 4), we just add them where they belong
+        var selected = picked.includes(m.id);
+
+        var movementCard = (
+          <IonSlide className="movementSlides">
+            <div
+              style={{
+                overflow: "auto",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginBottom: "40px",
+              }}
+            >
+              <MovementInfoCard
+                key={m.id}
+                className={!selected ? "" : "selected"}
+                name={m.name}
+                text={m.text}
+                images={m.images}
+              >
+                <IonButton
+                  onClick={() => {
+                    // Onclick, toggle whether this move is in the list
+                    if (selected) {
+                      // console.log("Remove", m);
+                      var newpicked = [];
+                      for (var p of picked) {
+                        if (p != m.id) {
+                          newpicked.push(p);
+                        }
+                      }
+                      setPicked(newpicked);
+                      change(newpicked);
+                    } else {
+                      var newpicked = picked.concat([m.id]);
+                      setPicked(newpicked);
+                      change(newpicked);
+                    }
+                  }}
+                >
+                  {!selected ? txtAdd : txtRem}
+                </IonButton>
+              </MovementInfoCard>
+            </div>
+          </IonSlide>
+        );
+        if (m.type == "push") {
+          movesPush.push(movementCard);
+        } else {
+          movesPull.push(movementCard);
+        }
       }
     })(m);
   }
@@ -495,10 +635,17 @@ const MovementPicker = (props) => {
 export default MovementPicker;
 
 var getMove = function (id) {
+  //checking to see if there are 2 isolateral moves i.e. pull1, pull2 or pull2, push1
+  var idToUse = id;
+  var lastString = id.charAt(id.length - 1);
+  if (/\d/.test(lastString)) {
+    //if the last char is a digit
+    idToUse = idToUse.slice(0, -1);
+  }
   for (var i in moves) {
     var m = moves[i];
 
-    if (m.id == id) {
+    if (m.id == idToUse) {
       return m;
     }
   }

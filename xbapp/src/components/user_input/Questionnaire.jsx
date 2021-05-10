@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   IonItem,
   IonListHeader,
-  IonContent,
+  IonTextarea,
   IonLabel,
   IonRadio,
   IonRadioGroup,
@@ -18,6 +18,7 @@ import MoodPicker from "./MoodPicker";
 import "./Questionnaire.scss";
 
 const Questionnaire = (props) => {
+  const [note, setNote] = useState("");
   const [selectedExposure, setSelectedExposure] = useState({ exposure: "" });
   const [selectedAlarm, setSelectedAlarm] = useState({ alarm: "" });
   const [moodValue, setMoodValue] = useState(3);
@@ -46,15 +47,31 @@ const Questionnaire = (props) => {
     //if needed to get value from smiley (text value):
     var smileyValue = smileyVal;
 
-    var objectToAdd = {
-      mood: officialMoodValue,
-      sunlight: selectedExposure.exposure,
-      alarm: selectedAlarm.alarm,
-    };
+    var response = {};
+    response.type = "questionnaire";
+    response.mood = officialMoodValue;
+    response.sunlight = selectedExposure.exposure;
+    response.alarm = selectedAlarm.alarm;
+
+    var rnotes = {};
+    rnotes.type = "note";
+    rnotes.note = note;
 
     if (props.onSubmit) {
-      props.onSubmit(objectToAdd);
+      note.length > 0
+        ? props.onSubmit([response, rnotes])
+        : props.onSubmit(response);
     }
+
+    // var objectToAdd = {
+    //   mood: officialMoodValue,
+    //   sunlight: selectedExposure.exposure,
+    //   alarm: selectedAlarm.alarm,
+    // };
+
+    // if (props.onSubmit) {
+    //   props.onSubmit(objectToAdd);
+    // }
   }
 
   return (
@@ -114,6 +131,23 @@ const Questionnaire = (props) => {
           </IonItem>
         </IonRadioGroup>
         <IonItemDivider></IonItemDivider>
+        <IonListHeader>
+          <IonLabel>Do you wish to add any notes about this?</IonLabel>
+        </IonListHeader>
+
+        <IonItem>
+          <div style={{ padding: "15px" }}>
+            <IonTextarea
+              placeholder="Enter your note"
+              onIonChange={(e) => {
+                setNote(e.detail.value);
+              }}
+            ></IonTextarea>
+          </div>
+        </IonItem>
+
+        <IonItemDivider></IonItemDivider>
+
         <IonButton
           onClick={() => {
             processData();

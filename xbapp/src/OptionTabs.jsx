@@ -170,7 +170,6 @@ function OptionTabs() {
   //   // }
   // }
 
-
   return (
     <>
       <XBHeader title="Settings"></XBHeader>

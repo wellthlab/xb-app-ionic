@@ -11,9 +11,9 @@ import "./CountDown.scss";
 import { connect } from "react-redux";
 
 //sounds
-import useSound from 'use-sound';
-import beep_short from '../../audio/beep_short.mp3';
-import beep_long from '../../audio/beep_long.mp3';
+import useSound from "use-sound";
+import beep_short from "../../audio/beep_short.mp3";
+import beep_long from "../../audio/beep_long.mp3";
 
 /**
  * Props:
@@ -31,10 +31,11 @@ function CountDown(props) {
   const [minutesToReturn, setMinutestoReturn] = useState(0);
   const [isActive, setIsActive] = useState(props.active ? props.active : false);
 
-  if (seconds === false) { //we need to set the seconds and minutes
-    if (localStorage.getItem("CountDownStartedAt") != null){
+  if (seconds === false) {
+    //we need to set the seconds and minutes
+    if (localStorage.getItem("CountDownStartedAt") != null) {
       //checking if the countdown has been playing in the background
-      if (parseInt(localStorage.getItem("CountDownStartedAt")) != 0){
+      if (parseInt(localStorage.getItem("CountDownStartedAt")) != 0) {
         //if it's been playing in the background, we need to update where it's left off
         var secondsToUpdate = differenceBetweenThenAndNow("seconds");
         setSeconds(secondsToUpdate);
@@ -42,9 +43,13 @@ function CountDown(props) {
         setMinutes(minutesToUpdate);
       } else {
         //it's been paused and left in the background - we retrieve the last number of seconds/mins
-        var secondsToUpdate = parseInt(localStorage.getItem("CountDownrecordedSeconds"));
+        var secondsToUpdate = parseInt(
+          localStorage.getItem("CountDownrecordedSeconds")
+        );
         setSeconds(secondsToUpdate);
-        var minutesToUpdate = parseInt(localStorage.getItem("CountDownrecordedMinutes"));
+        var minutesToUpdate = parseInt(
+          localStorage.getItem("CountDownrecordedMinutes")
+        );
         setMinutes(minutesToUpdate);
       }
     } else {
@@ -54,7 +59,7 @@ function CountDown(props) {
       localStorage.setItem("cdSecondsSet", props.minutes ? props.minutes : 0);
       //0
     }
-    if (localStorage.getItem("CountDowncountActive") != null){
+    if (localStorage.getItem("CountDowncountActive") != null) {
       //if countdown is playing in the background
       var activeValue = localStorage.getItem("CountDowncountActive") === "true";
       setIsActive(activeValue);
@@ -70,7 +75,8 @@ function CountDown(props) {
   function toggle() {
     localStorage.setItem("CountDowncountActive", !isActive);
 
-    if (!countdownisSet) { //prepare for returning number of minutes
+    if (!countdownisSet) {
+      //prepare for returning number of minutes
       setMinutestoReturn(minutes);
       localStorage.setItem("cdMinutesSet", minutes);
       localStorage.setItem("cdSecondsSet", seconds);
@@ -119,7 +125,7 @@ function CountDown(props) {
     setMinutestoReturn(0);
     localStorage.removeItem("cdMinutesSet");
     localStorage.removeItem("cdSecondsSet");
-    
+
     localStorage.removeItem("CountDownrecordedSeconds");
     localStorage.removeItem("CountDownrecordedMinutes");
     setIsActive(false);
@@ -140,17 +146,16 @@ function CountDown(props) {
           setSeconds(59);
           localStorage.setItem("CountDownrecordedSeconds", 59);
         } else {
-          if (minutes == 0 && (seconds == 4 || seconds == 3 || seconds == 2)){
+          if (minutes == 0 && (seconds == 4 || seconds == 3 || seconds == 2)) {
             play_short();
           }
-          if (minutes == 0 && seconds == 1){
+          if (minutes == 0 && seconds == 1) {
             play_long();
           }
           localStorage.setItem("CountDownrecordedSeconds", seconds - 1);
           setSeconds((seconds) => seconds - 1);
         }
         if (minutes == 0 && seconds == 0) {
-          
           setIsActive(false);
           reset();
           if (props.onFinish) {
@@ -229,19 +234,19 @@ function CountDown(props) {
     var minutesSetOnCountdown = parseInt(localStorage.getItem("cdMinutesSet"));
     var secondsSetOnCountdown = parseInt(localStorage.getItem("cdSecondsSet"));
 
-    const countdownTotalMilliseconds = minutesSetOnCountdown * 60000 + secondsSetOnCountdown * 1000;
+    const countdownTotalMilliseconds =
+      minutesSetOnCountdown * 60000 + secondsSetOnCountdown * 1000;
     //difference between total milliseconds and passed milliseconds
     const diff = countdownTotalMilliseconds - currentMillisecondsPassed;
     const minutesToUpdate = Math.floor(diff / 60000);
     const secondsToUpdate = ((diff % 60000) / 1000).toFixed(0);
-    
+
     if (type == "seconds") {
       return parseInt(secondsToUpdate);
     } else if (type == "minutes") {
       return parseInt(minutesToUpdate);
     }
   }
-
 }
 
 export default connect((state, ownProps) => {

@@ -19,6 +19,7 @@ import "./MovementInfoCard.css";
  */
 const MovementInfoCard = (props) => {
   // TODO: Show more than one image; use a carousel? Or just fade nicely every second?
+  // console.log(props);
   function power() {}
   return (
     <IonCard>

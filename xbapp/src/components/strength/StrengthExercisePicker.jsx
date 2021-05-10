@@ -52,34 +52,13 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
 
   var exList = [];
   var setExList = [];
-  [exList[1], setExList[1]] = useLocalStorage(
-    "week" + week + "-block1-exlist",
-    []
-  );
-  [exList[2], setExList[2]] = useLocalStorage(
-    "week" + week + "-block2-exlist",
-    []
-  );
-  [exList[3], setExList[3]] = useLocalStorage(
-    "week" + week + "-block3-exlist",
-    []
-  );
-  [exList[4], setExList[4]] = useLocalStorage(
-    "week" + week + "-block4-exlist",
-    []
-  );
-  [exList[5], setExList[5]] = useLocalStorage(
-    "week" + week + "-block5-exlist",
-    []
-  );
-  [exList[6], setExList[6]] = useLocalStorage(
-    "week" + week + "-block6-exlist",
-    []
-  );
-  [exList[7], setExList[7]] = useLocalStorage(
-    "week" + week + "-block7-exlist",
-    []
-  );
+  [exList[1], setExList[1]] = useState([]);
+  [exList[2], setExList[2]] = useState([]);
+  [exList[3], setExList[3]] = useState([]);
+  [exList[4], setExList[4]] = useState([]);
+  [exList[5], setExList[5]] = useState([]);
+  [exList[6], setExList[6]] = useState([]);
+  [exList[7], setExList[7]] = useState([]);
 
   // Remember which flow is in use for each block
   var blockFlow = [];
@@ -134,10 +113,19 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                   You need to choose two movements for this block. Your choices
                   will be fixed for the rest of the week.
                 </p>
-                <p>
-                  Please select one <span>push</span> movement and one{" "}
-                  <span>pull</span> movement.
-                </p>
+                {week == 4 && blocknum < 3 ? (
+                  <p>
+                    You may prefer choosing either one <span>push</span>{" "}
+                    movement and one <span>pull</span> movement, OR the{" "}
+                    <span>same</span> isolateral movement (and switch sides).
+                  </p>
+                ) : (
+                  <p>
+                    Please select one <span>push</span> movement and one{" "}
+                    <span>pull</span> movement.
+                  </p>
+                )}
+
                 <p>
                   <strong>
                     Swipe left or right to select different moves.
@@ -152,6 +140,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                   }}
                   number={2}
                   week={week}
+                  blocknum={blocknum}
                 />
               </>
             ),
@@ -166,6 +155,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
         (function (
           blocknum // Trap blocknum in a closure
         ) {
+          console.log("BAAA");
           var move1 = getMove(exList[blocknum][0]);
           var move2 = getMove(exList[blocknum][1]);
 
@@ -183,12 +173,12 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                 {/* <p><strong>Swipe left or right to select different moves.</strong></p> */}
 
                 <MovementInfoCard
-                  key={move1.id}
+                  key={move1.id + "1"}
                   images={move1.images}
                   name={move1.name}
                 />
                 <MovementInfoCard
-                  key={move2.id}
+                  key={move2.id + "2"}
                   images={move2.images}
                   name={move2.name}
                 />
@@ -228,10 +218,11 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
               //  console.log("Set exercise list", list);
               //list[0] is the push move
               setExExpList(list);
-       
+
               nextSlide();
             }}
             number={0}
+            blocknum={0} //no blocks
           />
         </>
       ),
@@ -271,6 +262,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
               nextSlide();
             }}
             number={0}
+            blocknum={0}
           />
         </>
       ),

@@ -127,13 +127,14 @@ const DailyActions = ({ group, today }) => {
    * Daily task list and buttons
    */
   var qreq = [];
-  if (week > 1){ 
+  if (week > 1) {
     qreq.push({
       type: "strength-exercise",
       desc: "Set your current Strength Exercise",
       verb: "DO IT",
     });
-  } else { //if it's exploration week, let the participants know that they can PRACTICE with a strength exercise - without recording it
+  } else {
+    //if it's exploration week, let the participants know that they can PRACTICE with a strength exercise - without recording it
     qreq.push({
       type: "strength-exercise",
       desc: "Explore different Strength Exercises",
@@ -202,10 +203,22 @@ const DailyActions = ({ group, today }) => {
         : responseExists;
 
     // console.log(type.type, done);
-    console.log("ACTTT ", week, type.type, week > 1, type.type != "strength-exercise");
+    console.log(
+      "ACTTT ",
+      week,
+      type.type,
+      week > 1,
+      type.type != "strength-exercise"
+    );
     return (
       <IonItem
-        color={week == 1 && type.type == "strength-exercise" ? "neutral" : (done ? "neutral" : "warning")}
+        color={
+          week == 1 && type.type == "strength-exercise"
+            ? "neutral"
+            : done
+            ? "neutral"
+            : "warning"
+        }
         key={type.type}
         routerLink={
           "/group/" + group._id + "/" + activeDay + "/add/" + type.type
@@ -214,7 +227,11 @@ const DailyActions = ({ group, today }) => {
         detailIcon={arrowForwardOutline}
       >
         {/*Hide checkbox icon when it's week 1 - because they can access it whenever they wish*/}
-        {week == 1 && type.type == "strength-exercise" ? <></> : <IonIcon slot="start" icon={done ? icon_done : icon_missing} />}
+        {week == 1 && type.type == "strength-exercise" ? (
+          <></>
+        ) : (
+          <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        )}
 
         {type.desc}
         {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}

@@ -201,10 +201,18 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                   You need to choose two movements for this block. Your choices
                   will be fixed for the rest of the week.
                 </p>
-                <p>
-                  Please select one <span>push</span> movement and one{" "}
-                  <span>pull</span> movement.
-                </p>
+                {week == 4 && blocknum < 3 ? (
+                  <p>
+                    You may prefer choosing either one <span>push</span>{" "}
+                    movement and one <span>pull</span> movement, OR the{" "}
+                    <span>same</span> isolateral movement (and switch sides).
+                  </p>
+                ) : (
+                  <p>
+                    Please select one <span>push</span> movement and one{" "}
+                    <span>pull</span> movement.
+                  </p>
+                )}
                 <p>
                   <strong>
                     Swipe left or right to select different moves.
@@ -216,6 +224,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                   }}
                   number={2}
                   week={week}
+                  blocknum={blocknum}
                 />
               </>
             ),
@@ -263,52 +272,45 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
         });
 
         /**
-     * Add countdown of 2 minutes in between blocks
-     */
+         * Add countdown of 2 minutes in between blocks
+         */
         if (blocknum != blocks)
-         content.push({
-          el: (
-            <>
-              <h3>
-                Take a break! Breathe!
-              </h3>
-              <p>
-              We recommend taking a 2-minute break between each block. 
-              </p>
-              <p>
-              If you wish to skip these, please press "Next".
-              </p>
-              <p>
-              The timer will reset after 2 minutes have passed, so you can decide when to proceed to the next block by pressing "Next".
-              </p>
-              <div className="timer">
-          <CountdownCircleTimer
-            onComplete={() => {
-              return [true];
-            }}
-            isPlaying
-            size={90}
-            duration={120}
-            colors={[
-              ["#004777", 0.33],
-              ["#F7B801", 0.33],
-              ["#A30000", 0.33],
-            ]}
-          >
-            {({ remainingTime }) => remainingTime}
-          </CountdownCircleTimer>
-        </div>
-            </>
-          ),
-          rule: () => {
-            return true;
-          },
-          next: true,
-          title: "2-minute break",
-        });
-
+          content.push({
+            el: (
+              <>
+                <h3>Take a break! Breathe!</h3>
+                <p>We recommend taking a 2-minute break between each block.</p>
+                <p>If you wish to skip these, please press "Next".</p>
+                <p>
+                  The timer will reset after 2 minutes have passed, so you can
+                  decide when to proceed to the next block by pressing "Next".
+                </p>
+                <div className="timer">
+                  <CountdownCircleTimer
+                    onComplete={() => {
+                      return [true];
+                    }}
+                    isPlaying
+                    size={90}
+                    duration={120}
+                    colors={[
+                      ["#004777", 0.33],
+                      ["#F7B801", 0.33],
+                      ["#A30000", 0.33],
+                    ]}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                </div>
+              </>
+            ),
+            rule: () => {
+              return true;
+            },
+            next: true,
+            title: "2-minute break",
+          });
       })(blocknum);
-
     }
 
     /**
@@ -334,6 +336,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               nextSlide();
             }}
             number={1}
+            blocknum={0}
           />
         </>
       ),
@@ -372,6 +375,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               nextSlide();
             }}
             number={1}
+            blocknum={0}
           />
         </>
       ),
