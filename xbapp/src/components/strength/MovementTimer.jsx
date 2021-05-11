@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
+import {
+  IonButton,
+  IonItem,
+  IonInput,
+  IonRow,
+  IonGrid,
+  IonCol,
+} from "@ionic/react";
 
 import { connect } from "react-redux";
 import CountDown from "../user_input/CountDown";
@@ -26,12 +33,13 @@ const MovementTimer = ({
   return (
     <div id="movementTimer">
       <p style={{ padding: "5px 8px 5px 8px" }}>
-        Do FIVE reps of the first exercise, followed by FIVE reps of the second,
-        and then repeat, for a total of <strong>{mins} minutes</strong>.
+        FIVE reps of each exercise is a SET. Do one set for the first exercise,
+        followed by one set of the second, and then repeat, for a total of{" "}
+        <strong>{mins} minutes</strong>.
       </p>
-      <p style={{ padding: "5px 8px 5px 8px" }}>
-        Keep a running count of your reps, using the counters below.
-      </p>
+      {/* <p style={{ padding: "5px 8px 5px 8px" }}>
+        Keep a running count of your sets and reps, using the counters below.
+      </p> */}
 
       {mins == 0 && secs == 0 ? (
         ""
@@ -39,19 +47,33 @@ const MovementTimer = ({
         <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
       )}
 
-      {exercises.map((ex, i) => {
-        var move = getMove(ex);
-        // console.log("Get move", ex, move);
-        return (
-          <MovementInfoCard key={move.id} images={move.images} name={move.name}>
-            <SetCounter
-              onChange={(reps) => {
-                onSetChange(move.id, block, reps);
-              }}
-            />
-          </MovementInfoCard>
-        );
-      })}
+      <IonGrid>
+        <IonRow>
+          <IonCol>
+            <MovementInfoCard
+              accordion={true}
+              titleSize={"small"}
+              key={getMove(exercises[0]) + "0"}
+              images={getMove(exercises[0]).images}
+              name={getMove(exercises[0]).name}
+            ></MovementInfoCard>
+          </IonCol>
+          <IonCol>
+            <MovementInfoCard
+              accordion={true}
+              titleSize={"small"}
+              key={getMove(exercises[1]) + "1"}
+              images={getMove(exercises[1]).images}
+              name={getMove(exercises[1]).name}
+            ></MovementInfoCard>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <SetCounter
+        onChange={(reps) => {
+          onSetChange(exercises, block, reps);
+        }}
+      />
     </div>
   );
 };

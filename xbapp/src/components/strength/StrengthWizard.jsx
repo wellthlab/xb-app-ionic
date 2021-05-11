@@ -240,12 +240,16 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
        * Set up the timer and set counter
        */
       (function (blocknum) {
-        function updateSets(type, block, count) {
+        function updateSets(exercisesTypeArray, block, count) {
           var copy = {};
-          Object.assign(copy, sets);
+          Object.assign(copy, sets); //there are actually reps here!!!
 
-          copy[type + "-" + block] = count;
+          //both exercises will be listed here
+          copy[
+            exercisesTypeArray[0] + "+" + exercisesTypeArray[1] + "-" + block
+          ] = count;
 
+          //TODO: what if they choose the same exercise for mltiple blocks - will these reps be overwritten?
           setSets(copy);
         }
 
@@ -268,6 +272,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           rule: () => {
             return true;
           },
+          previous: true,
           title: "Movement Block " + blocknum,
         });
 
@@ -308,6 +313,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               return true;
             },
             next: true,
+            previous: true,
             title: "2-minute break",
           });
       })(blocknum);

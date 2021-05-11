@@ -9,6 +9,12 @@ import {
 } from "@ionic/react";
 import "./MovementInfoCard.css";
 
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 /**
  * Show info about a specific movement
  * props:
@@ -22,19 +28,41 @@ const MovementInfoCard = (props) => {
   // console.log(props);
   function power() {}
   return (
-    <IonCard>
-      <IonCardHeader>
-        <IonCardTitle>{props.name}</IonCardTitle>
-        <figure id="promo">
-          <img src={"assets/moves/" + props.images[0]} className="A" />
-          <img src={"assets/moves/" + props.images[1]} className="B" />
-        </figure>
-      </IonCardHeader>
-      <IonCardContent>
-        <p>{props.text}</p>
-        {props.children}
-      </IonCardContent>
-    </IonCard>
+    <>
+      {props.accordion ? (
+        <Accordion className="titleDrop">
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2bh-content"
+            className={props.titleSize}
+          >
+            <Typography className={props.titleSize}>{props.name}</Typography>
+          </AccordionSummary>
+          <AccordionDetails className="detailsAcc">
+            <figure id="promo">
+              <img src={"assets/moves/" + props.images[0]} className="A" />
+              <img src={"assets/moves/" + props.images[1]} className="B" />
+            </figure>
+          </AccordionDetails>
+        </Accordion>
+      ) : (
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle className={props.titleSize}>
+              {props.name}
+            </IonCardTitle>
+            <figure id="promo">
+              <img src={"assets/moves/" + props.images[0]} className="A" />
+              <img src={"assets/moves/" + props.images[1]} className="B" />
+            </figure>
+          </IonCardHeader>
+          <IonCardContent>
+            <p>{props.text}</p>
+            {props.children}
+          </IonCardContent>
+        </IonCard>
+      )}
+    </>
   );
 };
 

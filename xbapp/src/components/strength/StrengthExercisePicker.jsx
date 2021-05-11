@@ -173,11 +173,13 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                 {/* <p><strong>Swipe left or right to select different moves.</strong></p> */}
 
                 <MovementInfoCard
+                  titleSize={"normal"}
                   key={move1.id + "1"}
                   images={move1.images}
                   name={move1.name}
                 />
                 <MovementInfoCard
+                  titleSize={"normal"}
                   key={move2.id + "2"}
                   images={move2.images}
                   name={move2.name}

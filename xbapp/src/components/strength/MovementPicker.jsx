@@ -454,6 +454,7 @@ const MovementPicker = (props) => {
                 }}
               >
                 <MovementInfoCard
+                  titleSize={"normal"}
                   key={keyForId}
                   className={!selected ? "" : "selected"}
                   name={m.name}
@@ -534,6 +535,7 @@ const MovementPicker = (props) => {
               }}
             >
               <MovementInfoCard
+                titleSize={"normal"}
                 key={m.id}
                 className={!selected ? "" : "selected"}
                 name={m.name}

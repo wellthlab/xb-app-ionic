@@ -1,10 +1,17 @@
 .buttons {
   height: 50px;
-  padding-bottom: 4rem;
+  padding-bottom: 5rem;
 }
 
 .buttons .next {
   float: right;
+  width: 60px;
+  height: 30px;
+}
+.buttons .back {
+  float: left;
+  width: 60px;
+  height: 30px;
 }
 
 .StrengthWizard {

@@ -174,52 +174,69 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  console.log("countdown", minutes, seconds);
+  //console.log("countdown", minutes, seconds);
 
   return (
     <IonItem>
       <IonGrid>
         <IonRow>
           {props.editable ? (
-            <div className="time">
-              <IonInput
-                style={{
-                  width: "80px",
-                  display: "inline-block",
-                  marginRight: "10px",
-                }}
-                type="number"
-                value={minutes}
-                placeholder="0"
-                onIonChange={(e) => setMinutes(parseInt(e.detail.value, 10))}
-              ></IonInput>
-              :
-              <IonInput
-                style={{
-                  width: "80px",
-                  display: "inline-block",
-                  marginLeft: "10px",
-                }}
-                type="number"
-                value={seconds}
-                placeholder="0"
-                onIonChange={(e) => setSeconds(parseInt(e.detail.value, 10))}
-              ></IonInput>
-            </div>
+            <IonCol>
+              <div className="time">
+                <IonInput
+                  style={{
+                    width: "80px",
+                    display: "inline-block",
+                    marginRight: "10px",
+                  }}
+                  type="number"
+                  value={minutes}
+                  placeholder="0"
+                  onIonChange={(e) => setMinutes(parseInt(e.detail.value, 10))}
+                ></IonInput>
+                :
+                <IonInput
+                  style={{
+                    width: "80px",
+                    display: "inline-block",
+                    marginLeft: "10px",
+                  }}
+                  type="number"
+                  value={seconds}
+                  placeholder="0"
+                  onIonChange={(e) => setSeconds(parseInt(e.detail.value, 10))}
+                ></IonInput>
+              </div>
+            </IonCol>
           ) : (
-            <div className="time">
-              {minutes > 9 ? minutes : "0" + minutes}:
-              {seconds > 9 ? seconds : "0" + seconds}
-            </div>
+            <IonCol>
+              <div className="time">
+                {minutes > 9 ? minutes : "0" + minutes}:
+                {seconds > 9 ? seconds : "0" + seconds}
+              </div>
+            </IonCol>
           )}
         </IonRow>
         <IonRow>
-          <div className="row">
-            <IonButton onClick={toggle}>
+          <IonCol>
+            <IonButton onClick={toggle} style={{ float: "right" }}>
               {isActive ? "Pause" : "Start"}
             </IonButton>
-            {!isActive ? <IonButton onClick={reset}>Reset</IonButton> : ""}
-          </div>
+          </IonCol>
+          <IonCol>
+            {!isActive ? (
+              <IonButton
+                style={{
+                  display: "inline-block",
+                }}
+                onClick={reset}
+              >
+                Reset
+              </IonButton>
+            ) : (
+              ""
+            )}
+          </IonCol>
         </IonRow>
       </IonGrid>
     </IonItem>

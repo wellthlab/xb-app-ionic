@@ -72,29 +72,61 @@ const JournalFeed = ({ responses }) => {
             <IonCardContent>
               <IonList>
                 {Object.keys(r.sets).map((type, i) => {
+                  
                   var block, mtype;
                   [mtype, block] = type.split(/-/);
 
-                  var move = getMove(mtype);
-                  if (move == false) {
-                    move = {
-                      name: "Unknown move, " + type,
-                    };
+                  if (mtype.includes("+")) {
+                    // there are 2 moves put together
+                    var arrMoves = mtype.split("+");
+
+                    var nameOfBothExercises = "";
+                    for (var i = 0; i < 2; i++) {
+                      var move = getMove(arrMoves[i]);
+                      if (move == false) {
+                        move = {
+                          name: "Unknown move, " + type,
+                        };
+                      }
+                      var mname = move.name.split(/:/).pop();
+                      nameOfBothExercises += mname + " and ";
+                      var number = r.sets[type];
+                    }
+                    nameOfBothExercises = nameOfBothExercises.slice(0, -5);
+                    // console.log("ANALYSING ", number % 5, number);
+                    return (
+                      <IonItem key={i}>
+                        <span>
+                          {number == "explore" ? "Tried out" : ""} {nameOfBothExercises}{" "}
+                          <strong>
+                            {number == "explore" ? "" : "× " + Math.floor(number/5) + " sets and " + (number % 5) + " reps"}
+                          </strong>
+                        </span>
+                      </IonItem>
+                    );
+                  } else {
+                    var move = getMove(mtype);
+                    if (move == false) {
+                      move = {
+                        name: "Unknown move, " + type,
+                      };
+                    }
+                    var mname = move.name.split(/:/).pop();
+                    var number = r.sets[type];
+                    // console.log(type, number);
+                    return (
+                      <IonItem key={i}>
+                        <span>
+                          {number == "explore" ? "Tried out" : ""} {mname}{" "}
+                          <strong>
+                            {number == "explore" ? "" : "× " + number}
+                          </strong>
+                        </span>
+                      </IonItem>
+                    );
                   }
-                  var mname = move.name.split(/:/).pop();
-                  var number = r.sets[type];
-                  // console.log(type, number);
-                  return (
-                    <IonItem key={i}>
-                      <span>
-                        {number == "explore" ? "Tried out" : ""} {mname}{" "}
-                        <strong>
-                          {number == "explore" ? "" : "× " + number}
-                        </strong>
-                      </span>
-                    </IonItem>
-                  );
                 })}
+
               </IonList>
               <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
                 <span>
