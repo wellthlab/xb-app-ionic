@@ -177,12 +177,12 @@ function CountDown(props) {
   //console.log("countdown", minutes, seconds);
 
   return (
-    <IonItem>
+    <IonItem className="contain">
       <IonGrid>
         <IonRow>
           {props.editable ? (
             <IonCol>
-              <div className="time">
+              <div className="time0">
                 <IonInput
                   style={{
                     width: "80px",
