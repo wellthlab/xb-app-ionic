@@ -52,13 +52,34 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
 
   var exList = [];
   var setExList = [];
-  [exList[1], setExList[1]] = useState([]);
-  [exList[2], setExList[2]] = useState([]);
-  [exList[3], setExList[3]] = useState([]);
-  [exList[4], setExList[4]] = useState([]);
-  [exList[5], setExList[5]] = useState([]);
-  [exList[6], setExList[6]] = useState([]);
-  [exList[7], setExList[7]] = useState([]);
+  [exList[1], setExList[1]] = useLocalStorage(
+    "week" + week + "-block1-exlist",
+    []
+  );
+  [exList[2], setExList[2]] = useLocalStorage(
+    "week" + week + "-block2-exlist",
+    []
+  );
+  [exList[3], setExList[3]] = useLocalStorage(
+    "week" + week + "-block3-exlist",
+    []
+  );
+  [exList[4], setExList[4]] = useLocalStorage(
+    "week" + week + "-block4-exlist",
+    []
+  );
+  [exList[5], setExList[5]] = useLocalStorage(
+    "week" + week + "-block5-exlist",
+    []
+  );
+  [exList[6], setExList[6]] = useLocalStorage(
+    "week" + week + "-block6-exlist",
+    []
+  );
+  [exList[7], setExList[7]] = useLocalStorage(
+    "week" + week + "-block7-exlist",
+    []
+  );
 
   // Remember which flow is in use for each block
   var blockFlow = [];
@@ -133,6 +154,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                 </p>
                 <MovementPicker
                   onChange={(list) => {
+                    console.log("UPDATE ", exList);
                     setExList[blocknum](list);
                     if (list.length == 2) {
                       setBlockFlow[blocknum]("show");

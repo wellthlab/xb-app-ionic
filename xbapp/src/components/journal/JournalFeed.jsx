@@ -72,7 +72,6 @@ const JournalFeed = ({ responses }) => {
             <IonCardContent>
               <IonList>
                 {Object.keys(r.sets).map((type, i) => {
-                  
                   var block, mtype;
                   [mtype, block] = type.split(/-/);
 
@@ -97,9 +96,16 @@ const JournalFeed = ({ responses }) => {
                     return (
                       <IonItem key={i}>
                         <span>
-                          {number == "explore" ? "Tried out" : ""} {nameOfBothExercises}{" "}
+                          {number == "explore" ? "Tried out" : ""}{" "}
+                          {nameOfBothExercises}{" "}
                           <strong>
-                            {number == "explore" ? "" : "× " + Math.floor(number/5) + " sets and " + (number % 5) + " reps"}
+                            {number == "explore"
+                              ? ""
+                              : "× " +
+                                Math.floor(number / 5) +
+                                " sets and " +
+                                (number % 5) +
+                                " reps"}
                           </strong>
                         </span>
                       </IonItem>
@@ -126,7 +132,6 @@ const JournalFeed = ({ responses }) => {
                     );
                   }
                 })}
-
               </IonList>
               <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
                 <span>

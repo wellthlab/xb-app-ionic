@@ -62,25 +62,77 @@ function MinutesChart(props) {
             var block, mtype;
             [mtype, block] = type.split(/-/);
 
-            var move = getMove(mtype);
-            if (move == false) {
-              move = {
-                name: "Unknown move, " + type,
-              };
-            }
-            var mname = move.name.split(/:/).pop();
-            var number = eachResponse.sets[type];
+            if (mtype.includes("+")) {
+              // there are 2 moves put together
+              var arrMoves = mtype.split("+");
+              var nameOfBothExercises = "";
+              for (var i = 0; i < 2; i++) {
+                var move = getMove(arrMoves[i]);
+                if (move == false) {
+                  move = {
+                    name: "Unknown move, " + type,
+                  };
+                }
+                var mname = move.name.split(/:/).pop();
+                nameOfBothExercises += mname + " and ";
+                var number = eachResponse.sets[type];
+              }
+              nameOfBothExercises = nameOfBothExercises.slice(0, -5);
 
-            number == "explore"
-              ? (setsExplanations += "Tried out")
-              : (setsExplanations += "");
-            setsExplanations += mname.toString();
-            setsExplanations += " ";
-            number == "explore"
-              ? (setsExplanations += "")
-              : (setsExplanations += "× ");
-            setsExplanations += number.toString();
-            setsExplanations += "; ";
+              // var move = getMove(mtype);
+              // if (move == false) {
+              //   move = {
+              //     name: "Unknown move, " + type,
+              //   };
+              // }
+              // var mname = move.name.split(/:/).pop();
+              // var number = eachResponse.sets[type];
+
+              // number == "explore"
+              //   ? (setsExplanations += "Tried out")
+              //   : (setsExplanations += "");
+              // setsExplanations += mname.toString();
+              // setsExplanations += " ";
+              // number == "explore"
+              //   ? (setsExplanations += "")
+              //   : (setsExplanations += "× ");
+              // setsExplanations += number.toString();
+              // setsExplanations += "; ";
+
+              number == "explore"
+                ? (setsExplanations += "Tried out")
+                : (setsExplanations += "");
+              setsExplanations += nameOfBothExercises.toString();
+              setsExplanations += " ";
+              number == "explore"
+                ? (setsExplanations += "")
+                : (setsExplanations +=
+                    "× " +
+                    Math.floor(number / 5).toString() +
+                    " sets and " +
+                    (number % 5).toString() +
+                    " reps");
+              setsExplanations += "; ";
+            } else {
+              var move = getMove(mtype);
+              if (move == false) {
+                move = {
+                  name: "Unknown move, " + type,
+                };
+              }
+              var mname = move.name.split(/:/).pop();
+              var number = eachResponse.sets[type];
+
+              number == "explore"
+                ? (setsExplanations += "Tried out")
+                : (setsExplanations += "");
+              setsExplanations += mname.toString();
+              setsExplanations += " ";
+              number == "explore"
+                ? (setsExplanations += "")
+                : (setsExplanations += "× " + number.toString());
+              setsExplanations += "; ";
+            }
           });
 
           //now adding pre+post heart rate
