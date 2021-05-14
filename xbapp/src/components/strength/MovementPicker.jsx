@@ -99,6 +99,19 @@ const moves = [
     technique: "bilateral",
   },
   {
+    id: "kj",
+    name: "Squat 8: KJs",
+    type: "push",
+    description:
+      "Step one foot forward. Squat on your back leg, pivoting on the heel of your leading foot.",
+    images: [
+      "alternative_pistol_squat_rest.png",
+      "alternative_pistol_squat_engaged.png",
+    ],
+    difficulty: "",
+    technique: "bilateral",
+  },
+  {
     id: "gluteraise",
     name: "Hinge 1: Glute Raise",
     type: "push",
@@ -313,6 +326,16 @@ const moves = [
     technique: "isolateral",
   },
   {
+    id: "onearmdoorpull",
+    name: "Pull 8: Assisted Pull",
+    type: "pull",
+    description:
+      "A way to practice full pull ups with managed load. Rest your feet or knees on an object beneath your beam/door frame to take some of your body weight whilst pulling up with your arms.",
+    images: ["assisted_pull_up_rest.png", "assisted_pull_up_engaged.png"],
+    difficulty: "",
+    technique: "bilateral",
+  },
+  {
     id: "doorhanghold",
     name: "Hold 1: Door Hang",
     type: "pull",
@@ -328,7 +351,7 @@ const moves = [
     type: "push",
     description:
       "Stand legs wide apart feet pointing outwards. Bend your knees at right angles and stick your butt out, leaning your upper body forwards. Hold for 15 seconds.",
-    images: ["horse_stance_engaged_nowall.png", "horse_stance_engaged_nowall.png"],
+    images: ["horse_stance_hold.png", "horse_stance_hold.png"],
     difficulty: "",
     technique: "isolateral",
   },
@@ -337,10 +360,10 @@ const moves = [
     name: "Hold 3: Middle Split",
     type: "push",
     description:
-      "Stand legs wide apart feet pointing outwards in a split stance. Keep your legs straight, and increase the angle as far as comfortable. Hold for 15 seconds.",
-    images: ["middle_split_engaged.png", "middle_split_engaged.png"],
+      "Stand legs wide apart feet pointing outwards in a split stance. Keep your legs straight, and increase the angle as far as comfortable. Slowly bring legs together, using wall for support.",
+    images: ["middle_split_rest.png", "middle_split_engaged.png"],
     difficulty: "",
-    technique: "isolateral",
+    technique: "bilateral",
   },
   {
     id: "pikehold",
@@ -383,14 +406,54 @@ const moves = [
     technique: "isolateral",
   },
   {
-    id: "tricephold",
-    name: "Hold 8: Tricep Hold",
+    id: "chairdiphold",
+    name: "Hold 8: Chair Dip Hold",
     type: "push",
     description:
       "Position yourself between two objects. Place a hand flat on each one about level with your body. Push yourself upwards until your arm is fully extended and your toes brush the ground. Hold for 15 seconds.",
-    images: ["tricep_dip_hold.png", "tricep_dip_hold.png"],
+    images: ["chair_dip_hold.png", "chair_dip_hold.png"],
     difficulty: "",
-    technique: "isolateral",
+    technique: "bilateral",
+  },
+  {
+    id: "superman",
+    name: "Hold 9: Superman",
+    type: "pull",
+    description:
+      "Lay flat on the ground. Raise both arms up and straight forward. Raise both legs pivoting as far above the knees as possible. Hold for 15 seconds.",
+    images: ["superman_hold.png", "superman_hold.png"],
+    difficulty: "",
+    technique: "bilateral",
+  },
+  {
+    id: "lsit",
+    name: "Hold 10: L Sit",
+    type: "pull",
+    description:
+      "Sit on the floor both hands flat on the ground either side. Raise your body on both hands, and hold both legs out straight and raised. Hold for 15 seconds.",
+    images: ["l_sit.png", "l_sit.png"],
+    difficulty: "",
+    technique: "bilateral",
+  },
+  {
+    id: "shallowpushup",
+    name: "Hold 11: Shallow Push Up",
+    type: "push",
+    description:
+      "Lay face down on the floor, hands below the shoulders. Push your body up about 6 inches off the ground, pivoting from your toes. Hold for 15 seconds.",
+    images: ["shallow_push_up_hold.png", "shallow_push_up_hold.png"],
+    difficulty: "",
+    technique: "bilateral",
+  },
+  {
+    id: "vsit",
+    name: "Hold 12: V Sit",
+    type: "pull",
+    description:
+      "Sit on the floor. Bring your body back and simultaneously raise your straight legs (use hands for support) until at a 45 degree angle. Hold for 15 seconds.",
+    images: ["v_sit_hold.png", "v_sit_hold.png"],
+    difficulty: "",
+    technique: "bilateral",
   }
 ];
 
