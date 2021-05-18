@@ -454,7 +454,7 @@ const moves = [
     images: ["v_sit_hold.png", "v_sit_hold.png"],
     difficulty: "",
     technique: "bilateral",
-  }
+  },
 ];
 
 /**
@@ -531,7 +531,7 @@ const MovementPicker = (props) => {
             // console.log("move excluded");
             return;
           }
-        } else if (props.week == 4) {
+        } else if (props.week == 4 || props.week == 5) {
           if (
             (props.blocknum == 1 || props.blocknum == 2) &&
             m.technique == "bilateral"
@@ -545,8 +545,8 @@ const MovementPicker = (props) => {
         }
       }
 
-      //if we are in week 4, it means we can give folks the chance of doing the SAME isolateral move in a block
-      if (m.technique == "isolateral" && props.week == 4) {
+      //if we are in week 4/5, it means we can give folks the chance of doing the SAME isolateral move in a block
+      if (m.technique == "isolateral" && (props.week == 4 || props.week == 5)) {
         /*so instead of adding the same isolateral move to both sliders,
          * we are going to create 2 of the same kind, change their keys, and add them to the sliders
          * it seems the key that we create here at the top remains as the LAST value
@@ -637,7 +637,7 @@ const MovementPicker = (props) => {
           }
         }
       } else {
-        //for all other moves that are non isolateral (in week 4) or ALL MOVES (non week 4), we just add them where they belong
+        //for all other moves that are non isolateral (in week 4/5) or ALL MOVES (non week 4/5), we just add them where they belong
         var selected = picked.includes(m.id);
 
         var movementCard = (

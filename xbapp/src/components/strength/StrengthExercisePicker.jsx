@@ -134,7 +134,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                   You need to choose two movements for this block. Your choices
                   will be fixed for the rest of the week.
                 </p>
-                {week == 4 && blocknum < 3 ? (
+                {week >= 4 && blocknum < 3 ? (
                   <p>
                     You may prefer choosing either one <span>push</span>{" "}
                     movement and one <span>pull</span> movement, OR the{" "}
@@ -154,7 +154,6 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                 </p>
                 <MovementPicker
                   onChange={(list) => {
-                    console.log("UPDATE ", exList);
                     setExList[blocknum](list);
                     if (list.length == 2) {
                       setBlockFlow[blocknum]("show");
@@ -177,7 +176,6 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
         (function (
           blocknum // Trap blocknum in a closure
         ) {
-          console.log("BAAA");
           var move1 = getMove(exList[blocknum][0]);
           var move2 = getMove(exList[blocknum][1]);
 

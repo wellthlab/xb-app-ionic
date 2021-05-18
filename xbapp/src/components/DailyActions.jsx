@@ -29,6 +29,8 @@ import {
   arrowForwardOutline,
 } from "ionicons/icons";
 
+import GenericModal from "./GenericModal";
+
 //css
 import "./DailyActions.css";
 
@@ -42,6 +44,17 @@ const DailyActions = ({ group, today }) => {
 
   var week = Math.floor((activeDay - 1) / 7) + 1;
   var blocks = Math.max(1, week - 1);
+
+  //if the quiz exists/
+  const [showQuiz, setShowQuiz] = useState(
+    localStorage.getItem("week_" + week.toString() + "_quiz") == null
+      ? true
+      : false
+  );
+  function toggleQuiz() {
+    setShowQuiz(!showQuiz);
+    localStorage.setItem("week_" + week.toString() + "_quiz", "completed");
+  }
 
   //retrieving the exercise blocks in order to CHECK if they are selected
   var exList = [];
@@ -261,6 +274,13 @@ const DailyActions = ({ group, today }) => {
 
   return (
     <div className="dailyActions">
+      <GenericModal
+        showModal={showQuiz}
+        toggleModal={toggleQuiz}
+        title={"Weekly Quiz! :)"}
+        quiz={true}
+        message={week.toString()}
+      />
       <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
         <span className="text">
           <h3>
