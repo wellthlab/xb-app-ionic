@@ -546,7 +546,7 @@ const MovementPicker = (props) => {
       }
 
       //if we are in week 4/5, it means we can give folks the chance of doing the SAME isolateral move in a block
-      if (m.technique == "isolateral" && (props.week == 4 || props.week == 5)) {
+      if (m.technique == "isolateral" && (props.week >= 4)) {
         /*so instead of adding the same isolateral move to both sliders,
          * we are going to create 2 of the same kind, change their keys, and add them to the sliders
          * it seems the key that we create here at the top remains as the LAST value

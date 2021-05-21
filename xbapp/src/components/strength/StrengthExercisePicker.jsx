@@ -134,7 +134,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
                   You need to choose two movements for this block. Your choices
                   will be fixed for the rest of the week.
                 </p>
-                {week >= 4 && blocknum < 3 ? (
+                {((week == 4 || week == 5) && blocknum < 3) || week == 6 ? (
                   <p>
                     You may prefer choosing either one <span>push</span>{" "}
                     movement and one <span>pull</span> movement, OR the{" "}
