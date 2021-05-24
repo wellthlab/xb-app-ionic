@@ -30,6 +30,7 @@ import {
 } from "ionicons/icons";
 
 import GenericModal from "./GenericModal";
+import { quizes, getQuiz } from "./GenericModal";
 
 //css
 import "./DailyActions.css";
@@ -43,17 +44,24 @@ const DailyActions = ({ group, today }) => {
   const [activeDay, setActiveDay] = useState(today);
 
   var week = Math.floor((activeDay - 1) / 7) + 1;
+  var dayOfWeek =
+    activeDay - (week - 1) * 7 == 0
+      ? "7"
+      : (activeDay - (week - 1) * 7).toString();
   var blocks = Math.max(1, week - 1);
 
   //if the quiz exists/
+  var codeForQuiz = week.toString() + "." + dayOfWeek;
   const [showQuiz, setShowQuiz] = useState(
-    localStorage.getItem("week_" + week.toString() + "_quiz") == null
-      ? true
+    localStorage.getItem("week_" + codeForQuiz + "_quiz") == null &&
+      localStorage.getItem("week_" + week.toString() + ".0_quiz") == null
+      ? getQuiz(codeForQuiz) || getQuiz(week.toString() + ".0") != false
+        ? true
+        : false
       : false
   );
   function toggleQuiz() {
     setShowQuiz(!showQuiz);
-    localStorage.setItem("week_" + week.toString() + "_quiz", "completed");
   }
 
   //retrieving the exercise blocks in order to CHECK if they are selected
@@ -279,7 +287,7 @@ const DailyActions = ({ group, today }) => {
         toggleModal={toggleQuiz}
         title={"Weekly Quiz! :)"}
         quiz={true}
-        message={week.toString()}
+        message={week.toString() + "." + dayOfWeek}
       />
       <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
         <span className="text">
