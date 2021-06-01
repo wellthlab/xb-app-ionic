@@ -48,6 +48,7 @@ const StrengthExercisePicker = ({ week, onSubmit, countdownID }) => {
   const [stage, setStage] = useState(0);
 
   var blocks = Math.max(1, week - 1);
+  if (blocks > 5) blocks = 5;
   var content = [];
 
   var exList = [];

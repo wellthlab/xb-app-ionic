@@ -74,6 +74,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   const [stage, setStage] = useState(0);
 
   var blocks = Math.max(1, week - 1);
+  if (blocks > 5) blocks = 5;
   // console.log("Week", week, "blocks", blocks);
 
   /**
@@ -657,7 +658,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             res.type = "strength";
             var rmins = {};
             rmins.type = "minutes";
-            rmins.minutes = Math.max(1, week - 1) * 7;
+            rmins.minutes = week > 6 ? 35 : Math.max(1, week - 1) * 7;
             rmins.location = variables.place;
             rmins.time = variables.timeOfDay;
             var rnotes = {};

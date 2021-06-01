@@ -109,7 +109,7 @@ const Group = ({ match, teams, controllers, account }) => {
         ? "Starts tomorrow"
         : day < 0
         ? "Starts in " + Math.abs(day) + " days"
-        : day > group.experiment.info.duration
+        : day > 42
         ? "Finished"
         : "Today is day " + day;
 
@@ -137,15 +137,15 @@ const Group = ({ match, teams, controllers, account }) => {
         <IonRow>
           <IonCol>
             <IonItem lines="none">
-              <IonIcon icon={todayOutline} slot="start" /> {daydesc} of{" "}
-              {group.experiment.info.duration}
+              <IonIcon icon={todayOutline} slot="start" /> {daydesc} 
+              {daydesc == "Finished" ? " 42 days" : "of" + group.experiment.info.duration}
             </IonItem>
           </IonCol>
         </IonRow>
 
         <IonRow>
           <IonCol>
-            <IonProgressBar value={day / group.experiment.info.duration} />
+            <IonProgressBar value={day > 42 ? (42 / 42) : (day / group.experiment.info.duration)} />
           </IonCol>
         </IonRow>
 

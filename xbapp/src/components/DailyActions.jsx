@@ -49,6 +49,7 @@ const DailyActions = ({ group, today }) => {
       ? "7"
       : (activeDay - (week - 1) * 7).toString();
   var blocks = Math.max(1, week - 1);
+  if (blocks > 5) blocks = 5;
 
   //if the quiz exists/
   var codeForQuiz = week.toString() + "." + dayOfWeek;
