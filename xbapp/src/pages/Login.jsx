@@ -28,7 +28,7 @@ class Login extends Component {
     console.log("Login created with controllers", props.controllers);
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     const { account } = this.props;
@@ -89,6 +89,9 @@ class Login extends Component {
             <img src="assets/strength_logo.png" alt="XB Logo" />
             {form}
             <div>
+              <IonButton onClick={() => {
+                this.resetPassword();
+              }}>Forgotten password?</IonButton>
               <h4>New to the app?</h4>
               <div className="centering">
                 <IonButton routerLink="/register">Register</IonButton>
@@ -121,7 +124,11 @@ class Login extends Component {
       });
   }
 
-  register(e) {}
+  register(e) { }
+
+  resetPassword(e) {
+    console.log("Reset password");
+  }
 }
 
 export default connect(
