@@ -69,6 +69,8 @@ class ForgotPassword extends Component {
                 Forgot Password
               </IonButton>
             </div>
+
+            <div className="centering"><IonButton routerLink={"/"}> Home </IonButton></div>
           </>
         );
       }
@@ -86,12 +88,9 @@ class ForgotPassword extends Component {
   // Sends a password reset request to server
   // TODO: send feedback to user about state of password reset request
   forgotPassword(e) {
-    console.log("Reset password");
+    console.log("Send password reset request");
     const client = getXBClient();
-    const email = this.email;
-    const testEmail = "jds1g17@soton.ac.uk";
-    console.log(email, testEmail)
-    // client.forgotPassword(testEmail);
+    client.forgotPassword(this.email);
   };
   // Verifies that email is in a valid format. Returns codes?
   isValidEmail(email) {
