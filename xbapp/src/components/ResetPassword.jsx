@@ -29,6 +29,7 @@ const Register = ({ query }) => {
     pw: "",
     pw2: "",
     error: false,
+    tokenError: false,
   });
   const history = useHistory();
 
@@ -42,7 +43,13 @@ const Register = ({ query }) => {
 
   console.log("Reset password", state1);
 
-  if (state1.pw.length < 8) {
+  if (state1.tokenError) {
+    err = (
+      <ion-text color="danger">
+        Token expired, please request another password reset
+      </ion-text>
+    );
+  } else if (state1.pw.length < 8) {
     err = <>Enter a password of at least 8 characters</>;
   } else if (state1.pw !== state1.pw2) {
     err = <>Please enter matching passwords</>
@@ -54,20 +61,6 @@ const Register = ({ query }) => {
         Reset Password
       </IonButton>
     );
-  }
-
-  if (err == "" && state1.error !== false) {
-    switch (state1.error.statusCode) {
-      case 409:
-        err = (
-          <ion-text color="danger">
-            That email address is already registered
-          </ion-text>
-        );
-        break;
-      default:
-        err = <ion-text color="danger">{state1.error.error}</ion-text>;
-    }
   }
 
   function getQueryParamsFromSearch(query) {
@@ -87,9 +80,28 @@ const Register = ({ query }) => {
     const token = queryParams.token;
     const tokenId = queryParams.tokenId;
     const newPassword = state1.pw;
-    client.resetPassword(token, tokenId, newPassword).then(() => {
-      console.log("Reset password");
-    });
+    client.resetPassword(token, tokenId, newPassword)
+      .then((success) => {
+        if (success) {
+          console.log("Password reset");
+          history.push("/");
+        } else {
+          console.log("Password reset failed");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        const isTokenInvalid = err.message.includes("invalid token data (status 400)");
+        if (isTokenInvalid) {
+          console.log("Invalid token used");
+          setState({
+            pw: state1.pw,
+            pw2: state1.pw2,
+            error: state1.error,
+            tokenError: true,
+          });
+        }
+      });
   }
 
   var pis = <PIS />;
@@ -113,6 +125,7 @@ const Register = ({ query }) => {
                 pw: e.detail.value,
                 pw2: state1.pw2,
                 error: state1.error,
+                tokenError: state1.tokenError,
               });
             }}
           ></IonInput>
@@ -126,6 +139,7 @@ const Register = ({ query }) => {
                 pw: state1.pw,
                 pw2: e.detail.value,
                 error: state1.error,
+                tokenError: state1.tokenError,
               });
             }}
           ></IonInput>
@@ -134,6 +148,8 @@ const Register = ({ query }) => {
       </IonCard>
 
       <div className="centering">{btn}</div>
+      <div className="centering"><IonButton routerLink={"/"}> Home </IonButton></div>
+
     </IonContent>
   );
 };
