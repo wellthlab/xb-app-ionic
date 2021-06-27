@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   START_LOGIN,
   ACCEPT_LOGIN,
@@ -89,9 +90,9 @@ class Login extends Component {
             <img src="assets/strength_logo.png" alt="XB Logo" />
             {form}
             <div>
-              <IonButton onClick={() => {
-                this.forgotPassword();
-              }}>Forgotten password?</IonButton>
+              <div className="centering">
+                <Link to="/forgot-password">Forgotten password?</Link>
+              </div>
               <h4>New to the app?</h4>
               <div className="centering">
                 <IonButton routerLink="/register">Register</IonButton>
