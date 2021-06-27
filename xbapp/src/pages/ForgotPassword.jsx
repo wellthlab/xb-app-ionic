@@ -66,7 +66,7 @@ class ForgotPassword extends Component {
                 }}
                 slot="end"
               >
-                Log In
+                Forgot Password
               </IonButton>
             </div>
           </>
@@ -75,47 +75,16 @@ class ForgotPassword extends Component {
 
       return (
         <IonContent>
-          <div id="login">
+          <div id="forgot-password">
             <img src="assets/strength_logo.png" alt="XB Logo" />
             {form}
-            <div>
-              <IonButton onClick={() => {
-                this.forgotPassword();
-              }}>Forgotten password?</IonButton>
-              <h4>New to the app?</h4>
-              <div className="centering">
-                <IonButton routerLink="/register">Register</IonButton>
-                <IonButton routerLink="/tutorial">Tutorial</IonButton>
-              </div>
-            </div>
           </div>
         </IonContent>
       );
     }
   }
-
-  login(e) {
-    if (!this.email || !this.password) {
-      return;
-    }
-
-    this.props.START_LOGIN({});
-
-    var client = getXBClient();
-    client
-      .setUser(this.email, this.password)
-      .then((user) => {
-        this.props.ACCEPT_LOGIN({ email: this.email, password: this.password });
-      })
-      .catch((err) => {
-        console.log("Login rejected", err);
-        console.log(err.message);
-        this.props.REJECT_LOGIN(err.message);
-      });
-  }
-
-  register(e) { }
-
+  // Sends a password reset request to server
+  // TODO: send feedback to user about state of password reset request
   forgotPassword(e) {
     console.log("Reset password");
     const client = getXBClient();
@@ -123,8 +92,14 @@ class ForgotPassword extends Component {
     const testEmail = "jds1g17@soton.ac.uk";
     console.log(email, testEmail)
     // client.forgotPassword(testEmail);
-  }
-}
+  };
+  // Verifies that email is in a valid format. Returns codes?
+  isValidEmail(email) {
+    console.log("This email looks great");
+    return true;
+  };
+
+};
 
 export default connect(
   (state, ownProps) => {
