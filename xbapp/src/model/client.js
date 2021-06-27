@@ -84,6 +84,15 @@ function XBClient() {
     return await self.setUser(email, password);
   };
 
+  self.forgotPassword = async function (email) {
+    try {
+      console.log("Someone forgot password");
+      await self.realm.emailPasswordAuth.sendResetPasswordEmail(email);
+    } catch (err) {
+      throw Error(err.message);
+    }
+  };
+
   // Log in and set the realm user
   self.setUser = async function (email, password) {
     var cpw = await sha512(password);
@@ -97,8 +106,8 @@ function XBClient() {
     }
   };
 
-  self.getUser = function() {
-      return self.realm.currentUser;
+  self.getUser = function () {
+    return self.realm.currentUser;
   }
 
   /**

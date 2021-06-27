@@ -90,7 +90,7 @@ class Login extends Component {
             {form}
             <div>
               <IonButton onClick={() => {
-                this.resetPassword();
+                this.forgotPassword();
               }}>Forgotten password?</IonButton>
               <h4>New to the app?</h4>
               <div className="centering">
@@ -126,8 +126,11 @@ class Login extends Component {
 
   register(e) { }
 
-  resetPassword(e) {
+  forgotPassword(e) {
     console.log("Reset password");
+    const client = getXBClient();
+    const testEmail = "jds1g17@soton.ac.uk";
+    client.forgotPassword(testEmail);
   }
 }
 
