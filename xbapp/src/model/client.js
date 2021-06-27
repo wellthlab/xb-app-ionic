@@ -93,6 +93,10 @@ function XBClient() {
     }
   };
 
+  self.resetPassword = async function (token, tokenId, password) {
+    console.log(token, tokenId, password, sha512(password));
+  }
+
   // Log in and set the realm user
   self.setUser = async function (email, password) {
     var cpw = await sha512(password);
