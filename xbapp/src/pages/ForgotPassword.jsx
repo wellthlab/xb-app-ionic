@@ -18,6 +18,7 @@ import getXBClient from "../model/client";
 import { addControllersProp } from "../model/controllers";
 
 import "./ForgotPassword.scss";
+import { useState } from "react";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -26,6 +27,10 @@ class ForgotPassword extends Component {
     super(props);
     autoBindReact(this);
     console.log("ForgotPassword created with controllers", props.controllers);
+    this.state = {
+      emailSent: false,
+      err: <>Please enter your email</>
+    };
   }
 
   componentDidMount() { }
@@ -58,12 +63,14 @@ class ForgotPassword extends Component {
                   }}
                 ></IonInput>
               </IonItem>
+              <IonItem>{this.state.err}</IonItem>
             </IonCard>
             <div className="centering">
               <IonButton
                 onclick={() => {
                   this.forgotPassword();
                 }}
+                disabled={this.state.emailSent}
                 slot="end"
               >
                 Forgot Password
@@ -90,7 +97,24 @@ class ForgotPassword extends Component {
   forgotPassword(e) {
     console.log("Send password reset request");
     const client = getXBClient();
-    client.forgotPassword(this.email);
+    this.setState({
+      emailSent: true,
+      err: <>Please enter your email</>
+    });
+    client.forgotPassword(this.email)
+      .then((success) => {
+        if (success) {
+          this.setState({ emailSent: true, err: <>Reset password link sent to email</> });
+          console.log("Email sent");
+        } else {
+          this.setState({ emailSent: false, err: <>Please enter a valid email</> });
+          console.log("Email not sent")
+        }
+      })
+      .catch((err) => {
+        console.log(err.message)
+        this.setState({ emailSent: false, err: <>There was a problem, try again later</> })
+      })
   };
   // Verifies that email is in a valid format. Returns codes?
   isValidEmail(email) {
