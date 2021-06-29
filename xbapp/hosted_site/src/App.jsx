@@ -1,8 +1,7 @@
 import './App.css';
-import { useEffect, useState, Component } from 'react';
-import { Switch, Route, Router, BrowserRouter, Link } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import ResetPasswordPage from './pages/ResetPassword';
-import Unknown from './components/unknown';
+import Unknown from './pages/Unknown';
 import '@ionic/react/css/core.css';
 import { IonApp } from '@ionic/react'
 
@@ -22,19 +21,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 
-import "./theme/App.css";
 function App() {
-  const [apiResponse, setApiResponse] = useState("");
-
-  function callApi() {
-    fetch("http://localhost:9000/reset")
-      .then(res => res.text())
-      .then(res => setApiResponse(res));
-  }
-
-  useEffect(() => {
-  }, [])
-
   return (
     <div className="App">
       <div className="component">
