@@ -104,7 +104,7 @@ class ForgotPassword extends Component {
     client.forgotPassword(this.email)
       .then((success) => {
         if (success) {
-          this.setState({ emailSent: true, err: <>Reset password link sent to email</> });
+          this.setState({ emailSent: true, err: <>Reset password link sent from {this.getResetEmail()}, please check your junk folder</> });
           console.log("Email sent");
         } else {
           this.setState({ emailSent: false, err: <>Please enter a valid email</> });
@@ -121,6 +121,9 @@ class ForgotPassword extends Component {
     console.log("This email looks great");
     return true;
   };
+  getResetEmail() {
+    return "no-reply+stitch@mongodb.com";
+  }
 
 };
 
