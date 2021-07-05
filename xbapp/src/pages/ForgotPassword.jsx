@@ -95,7 +95,6 @@ class ForgotPassword extends Component {
     }
   }
   // Sends a password reset request to server
-  // TODO: send feedback to user about state of password reset request
   forgotPassword(e) {
     console.log("Send password reset request");
     const client = getXBClient();
