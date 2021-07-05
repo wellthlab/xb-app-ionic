@@ -24,7 +24,7 @@ import { searchCircleOutline } from "ionicons/icons";
 const autoBindReact = require("auto-bind/react");
 
 const Register = ({ query }) => {
-  console.log("Token", query)
+  console.log("Token", query);
   const [state1, setState] = useState({
     pw: "",
     pw2: "",
@@ -52,7 +52,7 @@ const Register = ({ query }) => {
   } else if (state1.pw.length < 8) {
     err = <>Enter a password of at least 8 characters</>;
   } else if (state1.pw !== state1.pw2) {
-    err = <>Please enter matching passwords</>
+    err = <>Please enter matching passwords</>;
   } else {
     // TODO: have a confirmatory err message here
     err = "";
@@ -80,7 +80,8 @@ const Register = ({ query }) => {
     const token = queryParams.token;
     const tokenId = queryParams.tokenId;
     const newPassword = state1.pw;
-    client.resetPassword(token, tokenId, newPassword)
+    client
+      .resetPassword(token, tokenId, newPassword)
       .then((success) => {
         if (success) {
           console.log("Password reset");
@@ -91,7 +92,9 @@ const Register = ({ query }) => {
       })
       .catch((err) => {
         console.log(err);
-        const isTokenInvalid = err.message.includes("invalid token data (status 400)");
+        const isTokenInvalid = err.message.includes(
+          "invalid token data (status 400)"
+        );
         if (isTokenInvalid) {
           console.log("Invalid token used");
           setState({
@@ -148,8 +151,9 @@ const Register = ({ query }) => {
       </IonCard>
 
       <div className="centering">{btn}</div>
-      <div className="centering"><IonButton routerLink={"/"}> Home </IonButton></div>
-
+      <div className="centering">
+        <IonButton routerLink={"/"}> Home </IonButton>
+      </div>
     </IonContent>
   );
 };

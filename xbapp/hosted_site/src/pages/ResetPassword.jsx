@@ -11,7 +11,7 @@ import {
   IonTitle,
 } from "@ionic/react";
 
-import './ResetPassword.scss'
+import "./ResetPassword.scss";
 
 import getXBClient from "../model/client";
 import { useEffect } from "react";
@@ -27,8 +27,8 @@ function ResetPassword(props) {
   // Used to display error messages and disable the reset password button
   const [state2, setState2] = useState({
     err: "",
-    enableButton: false
-  })
+    enableButton: false,
+  });
 
   // Get url parameters token and tokenId
   const query = props.location.search;
@@ -37,24 +37,29 @@ function ResetPassword(props) {
   useEffect(() => {
     if (state1.tokenError) {
       setState2({
-        err: <ion-text color="danger">
-          Token expired, please request another password reset
-        </ion-text>, enableButton: false
+        err: (
+          <ion-text color="danger">
+            Token expired, please request another password reset
+          </ion-text>
+        ),
+        enableButton: false,
       });
     } else if (state1.pw.length < 8) {
       setState2({
-        err: <>Enter a password of at least 8 characters</>, enableButton: false
+        err: <>Enter a password of at least 8 characters</>,
+        enableButton: false,
       });
     } else if (state1.pw !== state1.pw2) {
       setState2({
-        err: <>Please enter matching passwords</>, enableButton: false
+        err: <>Please enter matching passwords</>,
+        enableButton: false,
       });
     } else {
       setState2({
-        err: "Passwords match", enableButton: true
+        err: "Passwords match",
+        enableButton: true,
       });
     }
-
   }, [state1]);
 
   function getQueryParamsFromSearch(query) {
@@ -77,26 +82,28 @@ function ResetPassword(props) {
     const token = queryParams.token;
     const tokenId = queryParams.tokenId;
     const newPassword = state1.pw;
-    client.resetPassword(token, tokenId, newPassword)
+    client
+      .resetPassword(token, tokenId, newPassword)
       .then((success) => {
         if (success) {
           console.log("Password reset");
           setState2({
             err: <>Password successfully reset</>,
-            enableButton: false
-          })
-
+            enableButton: false,
+          });
         } else {
           console.log("Password reset failed");
           setState2({
             err: <>Password not reset</>,
-            enableButton: true
-          })
+            enableButton: true,
+          });
         }
       })
       .catch((error) => {
         console.log(error);
-        const isTokenInvalid = error.message.includes("invalid token data (status 400)");
+        const isTokenInvalid = error.message.includes(
+          "invalid token data (status 400)"
+        );
         if (isTokenInvalid) {
           console.log("Invalid token used");
           setState({
@@ -108,8 +115,8 @@ function ResetPassword(props) {
         }
         setState2({
           err: <>Password not reset</>,
-          enableButton: true
-        })
+          enableButton: true,
+        });
       });
   }
 
@@ -119,50 +126,58 @@ function ResetPassword(props) {
 
   let form;
   if (isEmptyObject(params)) {
-    form = <IonContent><IonItem>No tokens found</IonItem></IonContent>
+    form = (
+      <IonContent>
+        <IonItem>No tokens found</IonItem>
+      </IonContent>
+    );
   } else {
-    form = <IonContent>
-      <IonCard>
-        <IonItem>
-          Reset password
-        </IonItem>
-        <IonItem>
-          <IonInput
-            placeholder="Password"
-            type="password"
-            onIonChange={(e) => {
-              setState({
-                pw: e.detail.value,
-                pw2: state1.pw2,
-                error: state1.error,
-                tokenError: state1.tokenError,
-              });
-            }}
-          ></IonInput>
-        </IonItem>
-        <IonItem>
-          <IonInput
-            placeholder="Confirm Password"
-            type="password"
-            onIonChange={(e) => {
-              setState({
-                pw: state1.pw,
-                pw2: e.detail.value,
-                error: state1.error,
-                tokenError: state1.tokenError,
-              });
-            }}
-          ></IonInput>
-        </IonItem>
-        <IonItem>{state2.err}</IonItem>
-        <div className="centering">
-          <IonButton onclick={() => resetPassword()} slot="end" disabled={!state2.enableButton}>
-            Reset Password
-          </IonButton></div>
-      </IonCard>
-    </IonContent>;
+    form = (
+      <IonContent>
+        <IonCard>
+          <IonItem>Reset password</IonItem>
+          <IonItem>
+            <IonInput
+              placeholder="Password"
+              type="password"
+              onIonChange={(e) => {
+                setState({
+                  pw: e.detail.value,
+                  pw2: state1.pw2,
+                  error: state1.error,
+                  tokenError: state1.tokenError,
+                });
+              }}
+            ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonInput
+              placeholder="Confirm Password"
+              type="password"
+              onIonChange={(e) => {
+                setState({
+                  pw: state1.pw,
+                  pw2: e.detail.value,
+                  error: state1.error,
+                  tokenError: state1.tokenError,
+                });
+              }}
+            ></IonInput>
+          </IonItem>
+          <IonItem>{state2.err}</IonItem>
+          <div className="centering">
+            <IonButton
+              onclick={() => resetPassword()}
+              slot="end"
+              disabled={!state2.enableButton}
+            >
+              Reset Password
+            </IonButton>
+          </div>
+        </IonCard>
+      </IonContent>
+    );
   }
-
 
   return (
     <IonPage id="reset-password">
@@ -180,7 +195,6 @@ function ResetPassword(props) {
         {form}
       </IonContent>
     </IonPage>
-
   );
 }
 

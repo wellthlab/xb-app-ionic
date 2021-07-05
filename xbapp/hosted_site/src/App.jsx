@@ -1,9 +1,9 @@
-import './App.css';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
-import ResetPasswordPage from './pages/ResetPassword';
-import Unknown from './pages/Unknown';
-import '@ionic/react/css/core.css';
-import { IonApp } from '@ionic/react'
+import "./App.css";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+import ResetPasswordPage from "./pages/ResetPassword";
+import Unknown from "./pages/Unknown";
+import "@ionic/react/css/core.css";
+import { IonApp } from "@ionic/react";
 
 import "@ionic/react/css/core.css";
 /* Basic CSS for apps built with Ionic */
@@ -28,15 +28,17 @@ function App() {
         <IonApp>
           <BrowserRouter>
             <Switch>
-              <Route exact path={"/"}
+              <Route
+                exact
+                path={"/"}
                 render={(props) => (
                   <ResetPasswordPage {...props}></ResetPasswordPage>
-                )} />
+                )}
+              />
               <Route component={Unknown} />
             </Switch>
           </BrowserRouter>
         </IonApp>
-
       </div>
     </div>
   );

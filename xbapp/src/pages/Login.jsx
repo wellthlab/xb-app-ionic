@@ -29,7 +29,7 @@ class Login extends Component {
     console.log("Login created with controllers", props.controllers);
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     const { account } = this.props;
@@ -125,7 +125,7 @@ class Login extends Component {
       });
   }
 
-  register(e) { }
+  register(e) {}
 
   forgotPassword(e) {
     console.log("Reset password");

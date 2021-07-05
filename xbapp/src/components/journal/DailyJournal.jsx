@@ -69,7 +69,8 @@ const DailyJournal = ({ todayNumber, entries, children, group }) => {
     <>
       <div className="journalHeader">
         <h3>
-          Day {activeDay} {activeDay > 42 ? " (after-pilot)" : ""} : {entry.date}
+          Day {activeDay} {activeDay > 42 ? " (after-pilot)" : ""} :{" "}
+          {entry.date}
           <span className="navbuttons">
             {
               <IonButton

@@ -29,11 +29,11 @@ class ForgotPassword extends Component {
     console.log("ForgotPassword created with controllers", props.controllers);
     this.state = {
       emailSent: false,
-      err: <>Please enter your email</>
+      err: <>Please enter your email</>,
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   render() {
     const { account } = this.props;
@@ -77,7 +77,9 @@ class ForgotPassword extends Component {
               </IonButton>
             </div>
 
-            <div className="centering"><IonButton routerLink={"/"}> Home </IonButton></div>
+            <div className="centering">
+              <IonButton routerLink={"/"}> Home </IonButton>
+            </div>
           </>
         );
       }
@@ -99,33 +101,47 @@ class ForgotPassword extends Component {
     const client = getXBClient();
     this.setState({
       emailSent: true,
-      err: <>Please enter your email</>
+      err: <>Please enter your email</>,
     });
-    client.forgotPassword(this.email)
+    client
+      .forgotPassword(this.email)
       .then((success) => {
         if (success) {
-          this.setState({ emailSent: true, err: <>Reset password link sent from {this.getResetEmail()}, please check your junk folder</> });
+          this.setState({
+            emailSent: true,
+            err: (
+              <>
+                Reset password link sent from {this.getResetEmail()}, please
+                check your junk folder
+              </>
+            ),
+          });
           console.log("Email sent");
         } else {
-          this.setState({ emailSent: false, err: <>Please enter a valid email</> });
-          console.log("Email not sent")
+          this.setState({
+            emailSent: false,
+            err: <>Please enter a valid email</>,
+          });
+          console.log("Email not sent");
         }
       })
       .catch((err) => {
-        console.log(err.message)
-        this.setState({ emailSent: false, err: <>There was a problem, try again later</> })
-      })
-  };
+        console.log(err.message);
+        this.setState({
+          emailSent: false,
+          err: <>There was a problem, try again later</>,
+        });
+      });
+  }
   // Verifies that email is in a valid format. Returns codes?
   isValidEmail(email) {
     console.log("This email looks great");
     return true;
-  };
+  }
   getResetEmail() {
     return "no-reply+stitch@mongodb.com";
   }
-
-};
+}
 
 export default connect(
   (state, ownProps) => {

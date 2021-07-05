@@ -137,15 +137,19 @@ const Group = ({ match, teams, controllers, account }) => {
         <IonRow>
           <IonCol>
             <IonItem lines="none">
-              <IonIcon icon={todayOutline} slot="start" /> {daydesc} 
-              {daydesc == "Finished" ? " 42 days" : "of" + group.experiment.info.duration}
+              <IonIcon icon={todayOutline} slot="start" /> {daydesc}
+              {daydesc == "Finished"
+                ? " 42 days"
+                : "of" + group.experiment.info.duration}
             </IonItem>
           </IonCol>
         </IonRow>
 
         <IonRow>
           <IonCol>
-            <IonProgressBar value={day > 42 ? (42 / 42) : (day / group.experiment.info.duration)} />
+            <IonProgressBar
+              value={day > 42 ? 42 / 42 : day / group.experiment.info.duration}
+            />
           </IonCol>
         </IonRow>
 

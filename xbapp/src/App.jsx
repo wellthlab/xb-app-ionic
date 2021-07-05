@@ -130,8 +130,16 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/feed" component={Feed} exact={true} />
               <Route path="/account" component={Account} exact={true} />
               <Route path="/about" component={About} exact={true} />
-              <Route path="/forgot-password" component={ForgotPassword} exact={true} />
-              <Route path="/reset-password" component={ResetPassword} exact={true} />
+              <Route
+                path="/forgot-password"
+                component={ForgotPassword}
+                exact={true}
+              />
+              <Route
+                path="/reset-password"
+                component={ResetPassword}
+                exact={true}
+              />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -195,8 +203,16 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
           <Route path="/tutorial" component={Tutorial} exact={true} />
           <Route path="/" component={Login} exact={true} />
           <Route path="/page" component={Tutorial} exact={true} />
-          <Route path="/forgot-password" component={ForgotPassword} exact={true} />
-          <Route path="/reset-password" component={ResetPassword} exact={true} />
+          <Route
+            path="/forgot-password"
+            component={ForgotPassword}
+            exact={true}
+          />
+          <Route
+            path="/reset-password"
+            component={ResetPassword}
+            exact={true}
+          />
         </Switch>
       </IonRouterOutlet>
     );

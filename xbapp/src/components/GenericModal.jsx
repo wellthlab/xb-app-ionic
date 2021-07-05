@@ -90,7 +90,6 @@ const quizes = [
   },
 ];
 function GenericModal(props) {
-
   const [selected, setSelected] = useState("");
   const [reply, setReply] = useState(
     "Answer the question to reveal the answer and the explanation!"
@@ -109,11 +108,16 @@ function GenericModal(props) {
       })
     : {};
 
-    console.log(quizToShow, quizToShow.length == 0, props.message, props.message.split("."));
+  console.log(
+    quizToShow,
+    quizToShow.length == 0,
+    props.message,
+    props.message.split(".")
+  );
   if (quizToShow.length == 0) {
     quizToShow = props.quiz
       ? quizes.filter(function (item) {
-          return item.id === (props.message.split(".")[0] + ".0"); //checking for weekly quizes i.e. 5.0, 6.0
+          return item.id === props.message.split(".")[0] + ".0"; //checking for weekly quizes i.e. 5.0, 6.0
         })
       : {};
   }
