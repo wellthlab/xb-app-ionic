@@ -98,6 +98,7 @@ class ForgotPassword extends Component {
   forgotPassword(e) {
     console.log("Send password reset request");
     const client = getXBClient();
+    const email = this.email;
     this.setState({
       emailSent: true,
       err: <>Please enter your email</>,
@@ -107,15 +108,15 @@ class ForgotPassword extends Component {
       .then((success) => {
         if (success) {
           this.setState({
-            emailSent: true,
+            emailSent: false,
             err: (
               <>
-                Reset password link sent from {this.getResetEmail()}, please
+                Reset password link sent from {this.getResetEmail()} to {email}, please
                 check your junk folder
               </>
             ),
           });
-          console.log("Email sent");
+          console.log("Email sent to", this.email);
         } else {
           this.setState({
             emailSent: false,
