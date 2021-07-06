@@ -111,8 +111,8 @@ class ForgotPassword extends Component {
             emailSent: false,
             err: (
               <>
-                Reset password link sent from {this.getResetEmail()} to {email}, please
-                check your junk folder
+                Reset password link sent from {this.getResetEmail()} to {email},
+                please check your junk folder
               </>
             ),
           });
