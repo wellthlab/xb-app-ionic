@@ -130,6 +130,10 @@ const Notifications = ({}) => {
     );
   }
 
+  function test(){
+    
+  }
+
   return (
     <IonPage>
       <XBHeader title="Notifications"></XBHeader>
@@ -170,6 +174,7 @@ const Notifications = ({}) => {
         <IonItemDivider></IonItemDivider>
         <IonButton onClick={addNotifications}>Schedule</IonButton>
         <IonButton onClick={cancelAll}>Leave me alone!</IonButton>
+        <IonButton onClick={test}>Test</IonButton>
       </IonContent>
     </IonPage>
   );
