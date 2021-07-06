@@ -48,7 +48,6 @@ import AddResponse from "./pages/AddResponse";
 import OptionTabs from "./OptionTabs";
 import Notifications from "./pages/Notifications";
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
 
 // The login component
 import Login from "./pages/Login.jsx";
@@ -136,11 +135,6 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/reset-password"
-                component={ResetPassword}
-                exact={true}
-              />
-              <Route
                 path="/notifications"
                 component={Notifications}
                 exact={true}
@@ -206,11 +200,6 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
           <Route
             path="/forgot-password"
             component={ForgotPassword}
-            exact={true}
-          />
-          <Route
-            path="/reset-password"
-            component={ResetPassword}
             exact={true}
           />
         </Switch>
