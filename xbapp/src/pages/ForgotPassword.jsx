@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   START_LOGIN,
   ACCEPT_LOGIN,
@@ -18,15 +17,20 @@ import {
 import getXBClient from "../model/client";
 import { addControllersProp } from "../model/controllers";
 
-import "./Login.scss";
+import "./ForgotPassword.scss";
+import { useState } from "react";
 
 const autoBindReact = require("auto-bind/react");
 
-class Login extends Component {
+class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     autoBindReact(this);
-    console.log("Login created with controllers", props.controllers);
+    console.log("ForgotPassword created with controllers", props.controllers);
+    this.state = {
+      emailSent: false,
+      err: <>Please enter your email</>,
+    };
   }
 
   componentDidMount() {}
@@ -59,26 +63,22 @@ class Login extends Component {
                   }}
                 ></IonInput>
               </IonItem>
-              <IonItem>
-                <IonInput
-                  value=""
-                  placeholder="Password"
-                  type="password"
-                  onIonChange={(e) => {
-                    this.password = e.detail.value;
-                  }}
-                ></IonInput>
-              </IonItem>
+              <IonItem>{this.state.err}</IonItem>
             </IonCard>
             <div className="centering">
               <IonButton
                 onclick={() => {
-                  this.login();
+                  this.forgotPassword();
                 }}
+                disabled={this.state.emailSent}
                 slot="end"
               >
-                Log In
+                Forgot Password
               </IonButton>
+            </div>
+
+            <div className="centering">
+              <IonButton routerLink={"/"}> Home </IonButton>
             </div>
           </>
         );
@@ -86,52 +86,60 @@ class Login extends Component {
 
       return (
         <IonContent>
-          <div id="login">
+          <div id="forgot-password">
             <img src="assets/strength_logo.png" alt="XB Logo" />
             {form}
-            <div>
-              <div className="centering">
-                <Link to="/forgot-password">Forgotten password?</Link>
-              </div>
-              <h4>New to the app?</h4>
-              <div className="centering">
-                <IonButton routerLink="/register">Register</IonButton>
-                <IonButton routerLink="/tutorial">Tutorial</IonButton>
-              </div>
-            </div>
           </div>
         </IonContent>
       );
     }
   }
-
-  login(e) {
-    if (!this.email || !this.password) {
-      return;
-    }
-
-    this.props.START_LOGIN({});
-
-    var client = getXBClient();
+  // Sends a password reset request to server
+  forgotPassword(e) {
+    console.log("Send password reset request");
+    const client = getXBClient();
+    const email = this.email;
+    this.setState({
+      emailSent: true,
+      err: <>Please enter your email</>,
+    });
     client
-      .setUser(this.email, this.password)
-      .then((user) => {
-        this.props.ACCEPT_LOGIN({ email: this.email, password: this.password });
+      .forgotPassword(this.email)
+      .then((success) => {
+        if (success) {
+          this.setState({
+            emailSent: false,
+            err: (
+              <>
+                Reset password link sent from {this.getResetEmail()} to {email},
+                please check your junk folder
+              </>
+            ),
+          });
+          console.log("Email sent to", this.email);
+        } else {
+          this.setState({
+            emailSent: false,
+            err: <>Please enter a valid email</>,
+          });
+          console.log("Email not sent");
+        }
       })
       .catch((err) => {
-        console.log("Login rejected", err);
         console.log(err.message);
-        this.props.REJECT_LOGIN(err.message);
+        this.setState({
+          emailSent: false,
+          err: <>There was a problem, try again later</>,
+        });
       });
   }
-
-  register(e) {}
-
-  forgotPassword(e) {
-    console.log("Reset password");
-    const client = getXBClient();
-    const testEmail = "jds1g17@soton.ac.uk";
-    client.forgotPassword(testEmail);
+  // Verifies that email is in a valid format. Returns codes?
+  isValidEmail(email) {
+    console.log("This email looks great");
+    return true;
+  }
+  getResetEmail() {
+    return "no-reply+stitch@mongodb.com";
   }
 }
 
@@ -146,4 +154,4 @@ export default connect(
     REJECT_LOGIN,
     pure: false,
   }
-)(addControllersProp(Login));
+)(addControllersProp(ForgotPassword));
