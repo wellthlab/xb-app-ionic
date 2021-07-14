@@ -1,21 +1,26 @@
 {
 	"appId": "uk.ac.soton.ecs.xbapp",
 	"appName": "xbapp",
-	"bundledWebRuntime": false,
-	"npmClient": "npm",
 	"webDir": "build",
+	"bundledWebRuntime": false,
 	"plugins": {
 		"SplashScreen": {
-			"launchShowDuration": 0
+			"launchAutoHide": false
+		},
+		"LocalNotifications": {
+			"smallIcon": "ic_stat_icon_config_sample",
+			"iconColor": "#CE0B7C"
+		},
+		"PushNotifications": {
+			"presentationOptions": [
+				"alert",
+				"sound"
+			]
 		}
 	},
-	"linuxAndroidStudioPath": "/home/richard/android-studio/bin/studio.sh",
 	"android": {
 		"allowMixedContent": true,
 		"webContentsDebuggingEnabled": true
 	},
-	"cordova": {},
-	"ios": {
-		"minVersion": "13.0"
-	}
+	"cordova": {}
 }
