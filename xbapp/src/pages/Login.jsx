@@ -126,13 +126,6 @@ class Login extends Component {
   }
 
   register(e) {}
-
-  forgotPassword(e) {
-    console.log("Reset password");
-    const client = getXBClient();
-    const testEmail = "jds1g17@soton.ac.uk";
-    client.forgotPassword(testEmail);
-  }
 }
 
 export default connect(
