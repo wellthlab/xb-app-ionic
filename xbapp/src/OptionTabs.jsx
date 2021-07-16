@@ -23,7 +23,6 @@ import XBHeader from "./components/XBHeader";
 
 //css
 import "./OptionTabs.scss";
-import { LocalNotifications } from "@capacitor/local-notifications";
 
 //code for cancelling notifications
 //   LocalNotifications.getPending().then( res => {
@@ -179,7 +178,7 @@ function OptionTabs() {
           <IonItemDivider></IonItemDivider>
           <IonItem routerLink="/account">Log Out</IonItem>
           <IonItemDivider></IonItemDivider>
-          <IonItem routerLink="/notifications">Notifications</IonItem>
+          {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
           <IonItemDivider></IonItemDivider>
         </IonList>
         {/* <IonButton onClick={trig}>trig</IonButton>
