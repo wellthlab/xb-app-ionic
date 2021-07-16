@@ -1,0 +1,28 @@
+#movement-picker {
+  height: 100vh;
+  width: 100%;
+  padding: 3rem;
+}
+
+#movement-picker h4 {
+  text-align: center;
+  margin-top: 4.5rem;
+}
+
+#movement-picker > img {
+  max-width: 260px;
+  width: 50%;
+  min-width: 200px;
+  resize: both;
+  margin: auto auto auto auto;
+  display: block;
+  margin-bottom: 3rem;
+}
+
+#movement-picker > ion-card {
+  margin-bottom: 1.5rem;
+}
+
+.centering {
+  text-align: center;
+}
