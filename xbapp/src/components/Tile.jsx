@@ -5,8 +5,19 @@ import "./Tile.scss";
 
 function Tile(props) {
   const letter = props.letter;
+  // Default to green
+  const colour = props.colour || "green";
   return (
-    <div id="tile" className="centering">
+    <div
+      id="tile"
+      className="centering"
+      style={{
+        width: "250px",
+        height: "250px",
+        margin: "10px",
+        backgroundColor: colour,
+      }}
+    >
       {letter}
     </div>
   );

@@ -76,10 +76,13 @@ class MovementPicker extends Component {
             <IonSlide>
               <IonSlides pager={false} options={slideOpts}>
                 <IonSlide>
-                  <Tile letter="A" />
+                  <Tile letter="A" colour="brown" />
                 </IonSlide>
                 <IonSlide>
-                  <Tile letter="B" />
+                  <Tile letter="B" colour="pink" />
+                </IonSlide>
+                <IonSlide>
+                  <Tile letter="C" colour="red" />
                 </IonSlide>
               </IonSlides>
             </IonSlide>
@@ -89,7 +92,14 @@ class MovementPicker extends Component {
                   <Tile letter="D" />
                 </IonSlide>
                 <IonSlide>
-                  <Tile letter="E" />
+                  <Tile letter="E" colour="purple" />
+                </IonSlide>
+              </IonSlides>
+            </IonSlide>
+            <IonSlide>
+              <IonSlides pager={false} options={slideOpts}>
+                <IonSlide>
+                  <Tile letter="F" colour="blue" />
                 </IonSlide>
               </IonSlides>
             </IonSlide>
