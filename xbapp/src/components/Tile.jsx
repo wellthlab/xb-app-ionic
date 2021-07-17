@@ -1,5 +1,4 @@
 import React, { Component, useState } from "react";
-import { Line, Bar } from "react-chartjs-2";
 import {
   IonSlides,
   IonSlide,
@@ -13,6 +12,7 @@ import {
   IonItem,
 } from "@ionic/react";
 import "./Tile.scss";
+import { useEffect } from "react";
 
 function Tile(props) {
   const colour = props.colour || "green";
@@ -21,10 +21,12 @@ function Tile(props) {
   const progressionLevel = exercise.progressionLevel || 1;
   const image = exercise.images[0] || "";
   const width = "250px";
-  console.log("Image", exercise.images);
   return (
     <div id="tile" className="centering">
       <IonCard
+        onClick={() => {
+          props.updateExercise(true, exercise);
+        }}
         style={{
           width: width,
           height: width,
