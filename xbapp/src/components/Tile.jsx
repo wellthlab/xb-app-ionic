@@ -15,8 +15,6 @@ import {
 import "./Tile.scss";
 
 function Tile(props) {
-  const letter = props.letter;
-  // Default to green
   const colour = props.colour || "green";
   const exercise = props.exercise || {};
   const name = exercise.name || "Exercise";
@@ -31,7 +29,6 @@ function Tile(props) {
           width: width,
           height: width,
           margin: "10px",
-          backgroundColor: colour,
         }}
       >
         <IonCardHeader className="tile-header">
