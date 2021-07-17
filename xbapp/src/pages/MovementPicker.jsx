@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Tile from "../components/Tile";
+import Moves from "../components/strength/moves.json";
 import {
   START_LOGIN,
   ACCEPT_LOGIN,
@@ -37,38 +38,19 @@ const slideOpts2 = {
   speed: 400,
   direction: "vertical",
 };
-const data = ["A", "B", "C", "D", "E", "F"];
 
 class MovementPicker extends Component {
   constructor(props) {
     super(props);
-    this.state = { scrollToIndex: 0 };
     autoBindReact(this);
     console.log("Movement picker created with controllers", props.controllers);
-    this.inc = this.inc.bind(this);
-    this.onScrollUpdateIndex = this.onScrollUpdateIndex.bind(this);
-    this.startOffset = 0;
-    this.endOffset = 0;
   }
 
-  componentDidMount() {}
-
-  inc(e) {
-    console.log("HEllo", this.state.scrollToIndex);
-    this.setState({ scrollToIndex: this.state.scrollToIndex + 1 });
-  }
-  onScrollUpdateIndex(n, e) {
-    console.log(n, e);
-    console.log(n % 125);
+  componentDidMount() {
+    console.log(Moves.moves[0]);
   }
 
   render() {
-    const { scrollToIndex } = this.state;
-
-    function test(n, e) {
-      // console.log(n, e);
-    }
-
     return (
       <IonContent>
         <div id="movement-picker">
@@ -104,22 +86,10 @@ class MovementPicker extends Component {
               </IonSlides>
             </IonSlide>
           </IonSlides>
-          <IonButton onClick={this.inc}>Click me</IonButton>
         </div>
       </IonContent>
     );
   }
 }
 
-export default connect(
-  (state, ownProps) => {
-    return { account: state.account };
-  },
-  {
-    // Actions to include as props
-    START_LOGIN,
-    ACCEPT_LOGIN,
-    REJECT_LOGIN,
-    pure: false,
-  }
-)(addControllersProp(MovementPicker));
+export default MovementPicker;
