@@ -51,38 +51,23 @@ class MovementPicker extends Component {
   }
 
   render() {
+    const exercises = Moves.moves.slice(0, 5);
+    console.log(exercises);
     return (
       <IonContent>
         <div id="movement-picker">
           <IonSlides options={slideOpts2}>
             <IonSlide>
               <IonSlides pager={false} options={slideOpts}>
-                <IonSlide>
-                  <Tile letter="A" colour="brown" />
-                </IonSlide>
-                <IonSlide>
-                  <Tile letter="B" colour="pink" />
-                </IonSlide>
-                <IonSlide>
-                  <Tile letter="C" colour="red" />
-                </IonSlide>
-              </IonSlides>
-            </IonSlide>
-            <IonSlide>
-              <IonSlides pager={false} options={slideOpts}>
-                <IonSlide>
-                  <Tile letter="D" />
-                </IonSlide>
-                <IonSlide>
-                  <Tile letter="E" colour="purple" />
-                </IonSlide>
-              </IonSlides>
-            </IonSlide>
-            <IonSlide>
-              <IonSlides pager={false} options={slideOpts}>
-                <IonSlide>
-                  <Tile letter="F" colour="blue" />
-                </IonSlide>
+                {exercises.map((exercise, index) => (
+                  <IonSlide key={index}>
+                    <Tile
+                      letter={exercise.id}
+                      exercise={exercise}
+                      colour="pink"
+                    />
+                  </IonSlide>
+                ))}
               </IonSlides>
             </IonSlide>
           </IonSlides>
