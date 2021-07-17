@@ -6,6 +6,17 @@
   padding: 10px;
 }
 
+.tile-item{
+  width: 210px;
+  height: 180px;
+  padding: 5px;
+  display: flex;
+}
+
+.tile-image{
+  height: 160px;
+}
+
 .bg-transparent {
   background: lightsalmon;
 }

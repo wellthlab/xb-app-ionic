@@ -41,14 +41,14 @@ function Tile(props) {
         <IonCardContent>
           <IonItem
             color="light"
-            className="bg-transparent"
+            className="bg-transparent tile-item"
             lines="none"
             color="none"
           >
             <IonImg
               src={process.env.PUBLIC_URL + "/assets/moves/" + image}
               alt="No Image"
-              style={{ height: "120px" }}
+              className="tile-image"
             ></IonImg>
           </IonItem>
         </IonCardContent>
