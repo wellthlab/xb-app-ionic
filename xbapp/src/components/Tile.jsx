@@ -22,6 +22,14 @@ function Tile(props) {
   const progressionLevel = movement.progressionLevel || 1;
   const image = movement?.images[0] || "";
   const width = "250px";
+  const completedCount = getTimesCompleted(movement);
+
+  // TODO: implement later
+  function getTimesCompleted(movement) {
+    const id = movement.id;
+    return Math.floor(Math.random() * 750);
+  }
+
   return (
     <div id="tile" className="centering">
       <IonCard
@@ -35,8 +43,13 @@ function Tile(props) {
         }}
       >
         <IonCardHeader className="tile-header">
-          <IonCardTitle className="tile-title">{name}</IonCardTitle>
-          <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
+          <div className="tile-title-container">
+            <IonCardTitle className="tile-title">{name}</IonCardTitle>
+            <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
+          </div>
+          <div className="completed-container">
+            <IonCardSubtitle>* {completedCount}</IonCardSubtitle>
+          </div>
         </IonCardHeader>
         <IonCardContent className="tile-content">
           <IonCard
@@ -45,7 +58,7 @@ function Tile(props) {
             lines="none"
             color="none"
           >
-            <div className="one">
+            <div className="card-container">
               <IonImg
                 src={process.env.PUBLIC_URL + "/assets/moves/" + image}
                 alt="No Image"
@@ -53,20 +66,20 @@ function Tile(props) {
               ></IonImg>
               <div className="tile-description-container">
                 <IonCardContent className="tile-description">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
+                  {movement.description}
                 </IonCardContent>
               </div>
             </div>
 
             <div className="tile-button-container">
-              <IonButton className="tile-button">Select</IonButton>
+              <IonButton
+                className="tile-button"
+                onClick={(event) => {
+                  console.log("chose an exercise");
+                }}
+              >
+                Select
+              </IonButton>
             </div>
           </IonCard>
         </IonCardContent>
