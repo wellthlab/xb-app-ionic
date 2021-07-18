@@ -34,7 +34,7 @@ function Tile(props) {
     <div id="tile" className="centering">
       <IonCard
         onClick={() => {
-          props.updateExercise(true, movement);
+          // props.updateExercise(true, movement);
         }}
         style={{
           width: width,
@@ -58,7 +58,31 @@ function Tile(props) {
             lines="none"
             color="none"
           >
-            <div className="card-container">
+            <div
+              className="card-container"
+              onClick={(event) => {
+                // event.nativeEvent.path[13]
+                //   .getActiveIndex()
+                //   .then((index) => {
+                //     console.log(index);
+                //   })
+                //   .catch((err) => {
+                //     console.log(err.message);
+                //   });
+
+                // event.nativeEvent
+                //   .composedPath()[13]
+                //   .getActiveIndex()
+                //   .then((index) => {
+                console.log("Clicked");
+                props.updateExercise(true, movement);
+                // props.setDisableSlides(true);
+                // })
+                // .catch((err) => {
+                //   console.log(err.message);
+                // });
+              }}
+            >
               <IonImg
                 src={process.env.PUBLIC_URL + "/assets/moves/" + image}
                 alt="No Image"

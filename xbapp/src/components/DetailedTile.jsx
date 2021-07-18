@@ -23,7 +23,7 @@ function DetailedTile(props) {
   // const image = movement.images[0] || "";
   const description = movement.description || "New description";
   const width = "250px";
-  const images = movement.images.map((image, index) => {
+  const images = movement.images?.map((image, index) => {
     return (
       <IonImg
         key={index}

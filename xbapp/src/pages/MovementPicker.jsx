@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Tile from "../components/Tile";
 import Moves from "../components/strength/moves.json";
-import { IonContent, IonSlides, IonSlide } from "@ionic/react";
+import { IonContent, IonSlides, IonSlide, IonButton } from "@ionic/react";
 
 import "./MovementPicker.scss";
 import { useState } from "react";
@@ -21,9 +21,11 @@ const MovementPicker = (props) => {
       direction: "vertical",
       slidesPerView: 2,
       centeredSlides: true,
-      spaceBetween: 50,
+      spaceBetween: 30,
     },
   });
+
+  const [disableSlides, setDisableSlides] = useState(false);
 
   const defaultOptions = {
     activeIndex: 0,
@@ -43,12 +45,59 @@ const MovementPicker = (props) => {
   };
 
   const [rowSlideOpts, setRowSlideOpts] = useState({
-    top: defaultOptions,
-    middle: defaultOptions,
-    bottom: defaultOptions,
+    top: {
+      activeIndex: 0,
+      options: {
+        // The index of the intital slide
+        initialSlide: 0,
+        speed: 400,
+        // Display two slides and center them
+        slidesPerView: 2,
+        centeredSlides: true,
+        // The space between slides
+        spaceBetween: 220,
+        // Render 1 slide before and after
+        addSlidesBefore: 1,
+        addSlidesAfer: 1,
+      },
+    },
+    middle: {
+      activeIndex: 0,
+      options: {
+        // The index of the intital slide
+        initialSlide: 0,
+        speed: 400,
+        // Display two slides and center them
+        slidesPerView: 2,
+        centeredSlides: true,
+        // The space between slides
+        spaceBetween: 220,
+        // Render 1 slide before and after
+        addSlidesBefore: 1,
+        addSlidesAfer: 1,
+      },
+    },
+    bottom: {
+      activeIndex: 0,
+      options: {
+        // The index of the intital slide
+        initialSlide: 0,
+        speed: 400,
+        // Display two slides and center them
+        slidesPerView: 2,
+        centeredSlides: true,
+        // The space between slides
+        spaceBetween: 220,
+        // Render 1 slide before and after
+        addSlidesBefore: 1,
+        addSlidesAfer: 1,
+      },
+    },
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(rowSlideOpts);
+  }, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render
@@ -59,6 +108,7 @@ const MovementPicker = (props) => {
       const columnOptions = columnSlideOpts;
       columnOptions.options.initialSlide = activeColumnIndex;
       setColumnSlideOpts(columnOptions);
+      console.log("Column", activeColumnIndex, "Row", index);
     } catch (error) {
       console.log(error.message);
     }
@@ -66,6 +116,7 @@ const MovementPicker = (props) => {
     const rowOptions = rowSlideOpts;
     rowOptions[row].options.initialSlide = index;
     setRowSlideOpts(rowOptions);
+    console.log("rowOpts", rowOptions);
   }
 
   async function updateExercise(_showDetailedTile, _exercise) {
@@ -98,11 +149,15 @@ const MovementPicker = (props) => {
   let screen;
   // Either render the slides filled with tiles or a detialed tile
   if (!showDetailedTile) {
+    const control = !showDetailedTile;
     screen = (
-      <IonSlides options={columnSlideOpts.options}>
+      <IonSlides options={columnSlideOpts.options} style={{ height: "500px" }}>
         <MovementSlide
           slideClicked={slideClicked}
+          showDetailedTile={control}
           row="top"
+          disableSlides={disableSlides}
+          setDisableSlides={setDisableSlides}
           // Considering passing rowSlideOpts[row].options instead
           options={rowSlideOpts}
           movements={passedMovements.upperBody}
@@ -110,14 +165,20 @@ const MovementPicker = (props) => {
         />
         <MovementSlide
           slideClicked={slideClicked}
+          showDetailedTile={control}
           row="middle"
+          disableSlides={disableSlides}
+          setDisableSlides={setDisableSlides}
           options={rowSlideOpts}
           movements={passedMovements.fullBody}
           updateExercise={updateExercise}
         />
         <MovementSlide
           slideClicked={slideClicked}
+          showDetailedTile={control}
           row="bottom"
+          disableSlides={disableSlides}
+          setDisableSlides={setDisableSlides}
           options={rowSlideOpts}
           movements={passedMovements.lowerBody}
           updateExercise={updateExercise}
@@ -132,7 +193,10 @@ const MovementPicker = (props) => {
 
   return (
     <IonContent>
-      <div id="movement-picker">{screen}</div>
+      <div id="movement-picker">
+        {screen}
+        <IonButton>Click me</IonButton>
+      </div>
     </IonContent>
   );
 };
