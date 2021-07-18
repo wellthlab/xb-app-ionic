@@ -28,11 +28,17 @@ const MovementPicker = (props) => {
   const defaultOptions = {
     activeIndex: 0,
     options: {
+      // The index of the intital slide
       initialSlide: 0,
       speed: 400,
+      // Display two slides and center them
       slidesPerView: 2,
       centeredSlides: true,
+      // The space between slides
       spaceBetween: 220,
+      // Render 1 slide before and after
+      addSlidesBefore: 1,
+      addSlidesAfer: 1,
     },
   };
 
