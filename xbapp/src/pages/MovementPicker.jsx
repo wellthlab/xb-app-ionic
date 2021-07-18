@@ -54,10 +54,14 @@ const MovementPicker = (props) => {
   // The state activeIndex is then updated to preserve the current index for the next render
   async function slideClicked(e, index, row) {
     // Gets the active index of the parent slide (which is the vertical index)
-    const activeColumnIndex = await e.path[3].getActiveIndex();
-    const columnOptions = columnSlideOpts;
-    columnOptions.options.initialSlide = activeColumnIndex;
-    setColumnSlideOpts(columnOptions);
+    try {
+      const activeColumnIndex = await e.path[3].getActiveIndex();
+      const columnOptions = columnSlideOpts;
+      columnOptions.options.initialSlide = activeColumnIndex;
+      setColumnSlideOpts(columnOptions);
+    } catch (error) {
+      console.log(error.message);
+    }
 
     const rowOptions = rowSlideOpts;
     rowOptions[row].options.initialSlide = index;
