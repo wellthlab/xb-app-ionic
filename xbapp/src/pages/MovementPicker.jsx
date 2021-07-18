@@ -69,11 +69,28 @@ const MovementPicker = (props) => {
     setMovement(_exercise);
   }
 
+  // Setup movements for rendering
+
+  // Delete when use properly
+  const passedMovements = {};
+  passedMovements.upperBody = Moves.moves.slice(0, 15);
+  passedMovements.upperBody.sort((a, b) => {
+    return a.progressionLevel - b.progressionLevel;
+  });
+  passedMovements.fullBody = Moves.moves.slice(15, 27);
+  passedMovements.fullBody.sort((a, b) => {
+    return a.progressionLevel - b.progressionLevel;
+  });
+  passedMovements.lowerBody = Moves.moves.slice(27, 50);
+  passedMovements.lowerBody.sort((a, b) => {
+    return a.progressionLevel - b.progressionLevel;
+  });
   const rows = 3;
   const exercises = [];
   for (let i = 0; i < rows; ++i) {
     exercises.push(Moves.moves.slice(i * 10, i * 10 + 10));
   }
+
   let screen;
   // Either render the slides filled with tiles or a detialed tile
   if (!showDetailedTile) {
@@ -84,21 +101,21 @@ const MovementPicker = (props) => {
           row="top"
           // Considering passing rowSlideOpts[row].options instead
           options={rowSlideOpts}
-          movements={exercises[0]}
+          movements={passedMovements.upperBody}
           updateExercise={updateExercise}
         />
         <MovementSlide
           slideClicked={slideClicked}
           row="middle"
           options={rowSlideOpts}
-          movements={exercises[1]}
+          movements={passedMovements.fullBody}
           updateExercise={updateExercise}
         />
         <MovementSlide
           slideClicked={slideClicked}
           row="bottom"
           options={rowSlideOpts}
-          movements={exercises[2]}
+          movements={passedMovements.lowerBody}
           updateExercise={updateExercise}
         />
       </IonSlides>
