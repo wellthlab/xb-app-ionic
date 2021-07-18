@@ -6,8 +6,6 @@ import { useEffect } from "react";
 import Tile from "../Tile";
 
 const MovementSlide = (props) => {
-  console.log(props);
-
   return (
     <IonSlide>
       <IonSlides

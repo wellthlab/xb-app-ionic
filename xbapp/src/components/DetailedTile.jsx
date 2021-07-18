@@ -33,7 +33,6 @@ function DetailedTile(props) {
       ></IonImg>
     );
   });
-  console.log(images);
   return (
     <div id="detailed-tile" className="centering">
       <IonCard
