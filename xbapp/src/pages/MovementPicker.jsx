@@ -73,7 +73,13 @@ class MovementPicker extends Component {
   };
 
   render() {
-    const exercises = Moves.moves.slice(0, 5);
+    // const exercises = Moves.moves.slice(0, 20);
+
+    const rows = 3;
+    const exercises = [];
+    for (let i = 0; i < rows; ++i) {
+      exercises.push(Moves.moves.slice(i * 10, i * 10 + 10));
+    }
     let screen;
     // Either render the slides filled with tiles or a detialed tile
     if (!this.state.tileClicked) {
@@ -87,7 +93,7 @@ class MovementPicker extends Component {
                 this.slideClicked(event);
               }}
             >
-              {exercises.map((exercise, index) => (
+              {exercises[0].map((exercise, index) => (
                 <IonSlide key={index}>
                   <Tile
                     exercise={exercise}
