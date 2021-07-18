@@ -27,7 +27,7 @@ function Tile(props) {
   // TODO: implement later
   function getTimesCompleted(movement) {
     const id = movement.id;
-    return Math.floor(Math.random() * 750);
+    return Math.floor(Math.random() * 999);
   }
 
   return (
@@ -48,7 +48,7 @@ function Tile(props) {
             <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
           </div>
           <div className="completed-container">
-            <IonCardSubtitle>* {completedCount}</IonCardSubtitle>
+            <p>* {completedCount}</p>
           </div>
         </IonCardHeader>
         <IonCardContent className="tile-content">
@@ -72,14 +72,7 @@ function Tile(props) {
             </div>
 
             <div className="tile-button-container">
-              <IonButton
-                className="tile-button"
-                onClick={(event) => {
-                  console.log("chose an exercise");
-                }}
-              >
-                Select
-              </IonButton>
+              <IonButton className="tile-button">Select</IonButton>
             </div>
           </IonCard>
         </IonCardContent>
