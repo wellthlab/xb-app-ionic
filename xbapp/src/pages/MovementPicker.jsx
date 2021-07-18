@@ -1,39 +1,16 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import Tile from "../components/Tile";
 import Moves from "../components/strength/moves.json";
-import {
-  START_LOGIN,
-  ACCEPT_LOGIN,
-  REJECT_LOGIN,
-} from "../model/slices/Account";
-import {
-  IonContent,
-  IonButton,
-  IonItem,
-  IonInput,
-  IonCard,
-  IonSpinner,
-  IonSlides,
-  IonSlide,
-  IonVirtualScroll,
-} from "@ionic/react";
-
-import getXBClient from "../model/client";
-import { addControllersProp } from "../model/controllers";
+import { IonContent, IonSlides, IonSlide } from "@ionic/react";
 
 import "./MovementPicker.scss";
 import { useState } from "react";
 import DetailedTile from "../components/DetailedTile";
-import { Body } from "react-ionicons";
 import { useEffect } from "react";
 
-const autoBindReact = require("auto-bind/react");
-
 const MovementPicker = (props) => {
-  const [tileClicked, setTileClicked] = useState(false);
-  const [movement, setMovement] = useState({});
+  const [showDetailedTile, setShowDetailedTile] = useState(false);
+  const [movement, setMovement] = useState(Moves.moves[0]);
   const [columnSlideOpts, setColumnSlideOpts] = useState({
     activeIndex: 0,
     options: { initialSlide: 0, speed: 400, direction: "vertical" },
@@ -57,6 +34,10 @@ const MovementPicker = (props) => {
   async function slideClicked(e, index, row) {
     // Gets the active index of the parent slide (which is the vertical index)
     const activeColumnIndex = await e.path[3].getActiveIndex();
+    const options = columnSlideOpts;
+    options.options.initialSlide = activeColumnIndex;
+    setColumnSlideOpts(options);
+
     if (row === "top") {
       const options = topRowSlideOpts;
       options.options.initialSlide = index;
@@ -66,13 +47,10 @@ const MovementPicker = (props) => {
       options.options.initialSlide = index;
       setMiddleRowSlideOpts(options);
     }
-    const options = columnSlideOpts;
-    options.options.initialSlide = activeColumnIndex;
-    setColumnSlideOpts(options);
   }
 
   async function updateExercise(_tileClicked, _exercise) {
-    setTileClicked(_tileClicked);
+    setShowDetailedTile(_tileClicked);
     setMovement(_exercise);
   }
 
@@ -83,14 +61,9 @@ const MovementPicker = (props) => {
   }
   let screen;
   // Either render the slides filled with tiles or a detialed tile
-  if (!tileClicked) {
+  if (!showDetailedTile) {
     screen = (
-      <IonSlides
-        options={columnSlideOpts.options}
-        // onIonSlideTap={(event) => {
-        //   console.log("Clicked a slide");
-        // }}
-      >
+      <IonSlides options={columnSlideOpts.options}>
         <IonSlide>
           <IonSlides
             pager={false}
@@ -103,11 +76,7 @@ const MovementPicker = (props) => {
           >
             {exercises[0].map((exercise, index) => (
               <IonSlide key={index}>
-                <Tile
-                  exercise={exercise}
-                  // state={this.state}
-                  updateExercise={updateExercise}
-                />
+                <Tile movement={exercise} updateExercise={updateExercise} />
               </IonSlide>
             ))}
           </IonSlides>
@@ -125,11 +94,7 @@ const MovementPicker = (props) => {
           >
             {exercises[1].map((exercise, index) => (
               <IonSlide key={index}>
-                <Tile
-                  exercise={exercise}
-                  // state={this.state}
-                  updateExercise={updateExercise}
-                />
+                <Tile movement={exercise} updateExercise={updateExercise} />
               </IonSlide>
             ))}
           </IonSlides>
@@ -139,7 +104,7 @@ const MovementPicker = (props) => {
     );
   } else {
     screen = (
-      <DetailedTile exercise={movement} updateExercise={updateExercise} />
+      <DetailedTile movement={movement} updateExercise={updateExercise} />
     );
   }
 

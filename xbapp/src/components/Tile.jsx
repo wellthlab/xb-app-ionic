@@ -16,16 +16,16 @@ import { useEffect } from "react";
 
 function Tile(props) {
   const colour = props.colour || "green";
-  const exercise = props.exercise || {};
-  const name = exercise.name || "Exercise";
-  const progressionLevel = exercise.progressionLevel || 1;
-  const image = exercise.images[0] || "";
+  const movement = props.movement || {};
+  const name = movement.name || "Exercise";
+  const progressionLevel = movement.progressionLevel || 1;
+  const image = movement?.images[0] || "";
   const width = "250px";
   return (
     <div id="tile" className="centering">
       <IonCard
         onClick={() => {
-          props.updateExercise(true, exercise);
+          props.updateExercise(true, movement);
         }}
         style={{
           width: width,

@@ -17,11 +17,11 @@ import "./DetailedTile.scss";
 import { useEffect } from "react";
 
 function DetailedTile(props) {
-  const exercise = props.exercise || {};
-  const name = exercise.name || "Exercise";
-  const progressionLevel = exercise.progressionLevel || 1;
-  const image = exercise.images[0] || "";
-  const description = exercise.description || "New description";
+  const movement = props.movement || {};
+  const name = movement.name || "Exercise";
+  const progressionLevel = movement.progressionLevel || 1;
+  const image = movement.images[0] || "";
+  const description = movement.description || "New description";
   const width = "250px";
   return (
     <div id="detailed-tile" className="centering">
