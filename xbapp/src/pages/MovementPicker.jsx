@@ -10,22 +10,36 @@ import { useEffect } from "react";
 import MovementSlide from "../components/strength/MovementSlide";
 
 const MovementPicker = (props) => {
+  // Setup states to control the active slide
   const [showDetailedTile, setShowDetailedTile] = useState(false);
   const [movement, setMovement] = useState(Moves.moves[0]);
   const [columnSlideOpts, setColumnSlideOpts] = useState({
     activeIndex: 0,
-    options: { initialSlide: 0, speed: 400, direction: "vertical" },
+    options: {
+      initialSlide: 1,
+      speed: 400,
+      direction: "vertical",
+      slidesPerView: 2,
+      centeredSlides: true,
+      spaceBetween: 50,
+    },
   });
 
+  const defaultOptions = {
+    activeIndex: 0,
+    options: {
+      initialSlide: 0,
+      speed: 400,
+      slidesPerView: 2,
+      centeredSlides: true,
+      spaceBetween: 220,
+    },
+  };
+
   const [rowSlideOpts, setRowSlideOpts] = useState({
-    top: {
-      activeIndex: 0,
-      options: { initialSlide: 0, speed: 400 },
-    },
-    middle: {
-      activeIndex: 0,
-      options: { initialSlide: 0, speed: 400 },
-    },
+    top: defaultOptions,
+    middle: defaultOptions,
+    bottom: defaultOptions,
   });
 
   useEffect(() => {}, []);
@@ -44,8 +58,8 @@ const MovementPicker = (props) => {
     setRowSlideOpts(rowOptions);
   }
 
-  async function updateExercise(_tileClicked, _exercise) {
-    setShowDetailedTile(_tileClicked);
+  async function updateExercise(_showDetailedTile, _exercise) {
+    setShowDetailedTile(_showDetailedTile);
     setMovement(_exercise);
   }
 
@@ -72,6 +86,13 @@ const MovementPicker = (props) => {
           row="middle"
           options={rowSlideOpts}
           movements={exercises[1]}
+          updateExercise={updateExercise}
+        />
+        <MovementSlide
+          slideClicked={slideClicked}
+          row="bottom"
+          options={rowSlideOpts}
+          movements={exercises[2]}
           updateExercise={updateExercise}
         />
       </IonSlides>
