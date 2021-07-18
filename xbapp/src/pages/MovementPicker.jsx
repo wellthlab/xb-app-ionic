@@ -26,100 +26,128 @@ import { addControllersProp } from "../model/controllers";
 import "./MovementPicker.scss";
 import { useState } from "react";
 import DetailedTile from "../components/DetailedTile";
+import { Body } from "react-ionicons";
+import { useEffect } from "react";
 
 const autoBindReact = require("auto-bind/react");
 
-class MovementPicker extends Component {
-  constructor(props) {
-    super(props);
+const MovementPicker = (props) => {
+  const [tileClicked, setTileClicked] = useState(false);
+  const [movement, setMovement] = useState({});
+  const [columnSlideOpts, setColumnSlideOpts] = useState({
+    activeIndex: 0,
+    options: { initialSlide: 0, speed: 400, direction: "vertical" },
+  });
+  const [topRowSlideOpts, setTopRowSlideOpts] = useState({
+    activeIndex: 0,
+    options: { initialSlide: 0, speed: 400 },
+  });
 
-    this.state = { tileClicked: false, exercise: {}, activeIndex: 3 };
-    this.slideOpts = {
-      initialSlide: this.state.activeIndex,
-      speed: 400,
-    };
+  const [middleRowSlideOpts, setMiddleRowSlideOpts] = useState({
+    activeIndex: 0,
+    options: { initialSlide: 0, speed: 400 },
+  });
 
-    this.slideOpts2 = {
-      initialSlide: 1,
-      speed: 400,
-      direction: "vertical",
-    };
-  }
-
-  componentDidMount() {
-    // Using this to update the inital slide passed to the slide component
-    this.slideOpts.initialSlide = this.state.activeIndex;
-  }
-
-  componentDidUpdate() {
-    // Using this to update the inital slide passed to the slide component
-    this.slideOpts.initialSlide = this.state.activeIndex;
-  }
+  useEffect(() => {
+    console.log("Top row", topRowSlideOpts.options);
+  }, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render
-  slideClicked(e) {
-    e.target.getActiveIndex().then((index) => {
-      this.updateActiveIndex(index);
-    });
+  async function slideClicked(e, index, row) {
+    // Gets the active index of the parent slide (which is the vertical index)
+    const activeColumnIndex = await e.path[3].getActiveIndex();
+    if (row === "top") {
+      const options = topRowSlideOpts;
+      options.options.initialSlide = index;
+      setTopRowSlideOpts(options);
+    } else if (row === "middle") {
+      const options = middleRowSlideOpts;
+      options.options.initialSlide = index;
+      setMiddleRowSlideOpts(options);
+    }
+    const options = columnSlideOpts;
+    options.options.initialSlide = activeColumnIndex;
+    setColumnSlideOpts(options);
   }
 
-  updateExercise = (tileClicked, exercise) => {
-    this.setState({ tileClicked: tileClicked, exercise: exercise });
-  };
-  // Used to update the activeIndex state
-  updateActiveIndex = (activeSlideIndex) => {
-    this.setState({ activeIndex: activeSlideIndex });
-  };
+  async function updateExercise(_tileClicked, _exercise) {
+    setTileClicked(_tileClicked);
+    setMovement(_exercise);
+  }
 
-  render() {
-    // const exercises = Moves.moves.slice(0, 20);
+  const rows = 3;
+  const exercises = [];
+  for (let i = 0; i < rows; ++i) {
+    exercises.push(Moves.moves.slice(i * 10, i * 10 + 10));
+  }
+  let screen;
+  // Either render the slides filled with tiles or a detialed tile
+  if (!tileClicked) {
+    screen = (
+      <IonSlides
+        options={columnSlideOpts.options}
+        // onIonSlideTap={(event) => {
+        //   console.log("Clicked a slide");
+        // }}
+      >
+        <IonSlide>
+          <IonSlides
+            pager={false}
+            options={topRowSlideOpts.options}
+            onIonSlideTap={(event) => {
+              event.target.getActiveIndex().then((index) => {
+                slideClicked(event, index, "top");
+              });
+            }}
+          >
+            {exercises[0].map((exercise, index) => (
+              <IonSlide key={index}>
+                <Tile
+                  exercise={exercise}
+                  // state={this.state}
+                  updateExercise={updateExercise}
+                />
+              </IonSlide>
+            ))}
+          </IonSlides>
+        </IonSlide>
 
-    const rows = 3;
-    const exercises = [];
-    for (let i = 0; i < rows; ++i) {
-      exercises.push(Moves.moves.slice(i * 10, i * 10 + 10));
-    }
-    let screen;
-    // Either render the slides filled with tiles or a detialed tile
-    if (!this.state.tileClicked) {
-      screen = (
-        <IonSlides options={this.slideOpts2}>
-          <IonSlide>
-            <IonSlides
-              pager={false}
-              options={this.slideOpts}
-              onIonSlideTap={(event) => {
-                this.slideClicked(event);
-              }}
-            >
-              {exercises[0].map((exercise, index) => (
-                <IonSlide key={index}>
-                  <Tile
-                    exercise={exercise}
-                    state={this.state}
-                    updateExercise={this.updateExercise.bind(this)}
-                  />
-                </IonSlide>
-              ))}
-            </IonSlides>
-          </IonSlide>
-        </IonSlides>
-      );
-    } else {
-      screen = (
-        <DetailedTile
-          exercise={this.state.exercise}
-          updateExercise={this.updateExercise.bind(this)}
-        />
-      );
-    }
-    return (
-      <IonContent>
-        <div id="movement-picker">{screen}</div>
-      </IonContent>
+        <IonSlide>
+          <IonSlides
+            pager={false}
+            options={middleRowSlideOpts.options}
+            onIonSlideTap={(event) => {
+              event.target.getActiveIndex().then((index) => {
+                slideClicked(event, index, "middle");
+              });
+            }}
+          >
+            {exercises[1].map((exercise, index) => (
+              <IonSlide key={index}>
+                <Tile
+                  exercise={exercise}
+                  // state={this.state}
+                  updateExercise={updateExercise}
+                />
+              </IonSlide>
+            ))}
+          </IonSlides>
+        </IonSlide>
+        <IonSlide></IonSlide>
+      </IonSlides>
+    );
+  } else {
+    screen = (
+      <DetailedTile exercise={movement} updateExercise={updateExercise} />
     );
   }
-}
+
+  return (
+    <IonContent>
+      <div id="movement-picker">{screen}</div>
+    </IonContent>
+  );
+};
 
 export default MovementPicker;
