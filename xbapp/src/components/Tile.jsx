@@ -10,6 +10,7 @@ import {
   IonCardContent,
   IonCardSubtitle,
   IonItem,
+  IonButton,
 } from "@ionic/react";
 import "./Tile.scss";
 import { useEffect } from "react";
@@ -37,19 +38,37 @@ function Tile(props) {
           <IonCardTitle className="tile-title">{name}</IonCardTitle>
           <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
         </IonCardHeader>
-        <IonCardContent>
-          <IonItem
+        <IonCardContent className="tile-content">
+          <IonCard
             color="light"
             className="bg-transparent tile-item"
             lines="none"
             color="none"
           >
-            <IonImg
-              src={process.env.PUBLIC_URL + "/assets/moves/" + image}
-              alt="No Image"
-              className="tile-image"
-            ></IonImg>
-          </IonItem>
+            <div className="one">
+              <IonImg
+                src={process.env.PUBLIC_URL + "/assets/moves/" + image}
+                alt="No Image"
+                className="tile-image"
+              ></IonImg>
+              <div className="tile-description-container">
+                <IonCardContent className="tile-description">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                  irure dolor in reprehenderit in voluptate velit esse cillum
+                  dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt
+                  mollit anim id est laborum.
+                </IonCardContent>
+              </div>
+            </div>
+
+            <div className="tile-button-container">
+              <IonButton className="tile-button">Select</IonButton>
+            </div>
+          </IonCard>
         </IonCardContent>
       </IonCard>
     </div>

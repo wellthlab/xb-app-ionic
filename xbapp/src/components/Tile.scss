@@ -6,16 +6,42 @@
   padding: 10px;
 }
 
+.tile-content{
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
 .tile-item{
-  width: 210px;
+  width: 220px;
   height: 180px;
   padding: 5px;
+  margin:0px;
   display: flex;
+  flex-direction: column;
 }
 
 .tile-image{
-  height: 160px;
+  height: 80px;
+  width: 70px;
+  align-self: center;
 }
+
+.tile-button-container{
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.tile-button{
+  width: 200px;
+  margin: 0px;
+}
+.tile-description-container{
+  width: 140px;
+}
+
 
 .bg-transparent {
   background: #3dc2ff;
@@ -24,4 +50,23 @@
 
 .centering {
   text-align: center;
+}
+
+.tile-description{
+  padding: 0px;
+  // font-size: 10pt;
+  white-space:normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 120px;
+  line-height: 24px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.one{
+  display: flex;
+  flex-direction: row;
+  height: 120px;
+  width: 210px;
 }
