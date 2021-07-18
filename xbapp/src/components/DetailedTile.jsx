@@ -20,9 +20,20 @@ function DetailedTile(props) {
   const movement = props.movement || {};
   const name = movement.name || "Exercise";
   const progressionLevel = movement.progressionLevel || 1;
-  const image = movement.images[0] || "";
+  // const image = movement.images[0] || "";
   const description = movement.description || "New description";
   const width = "250px";
+  const images = movement.images.map((image, index) => {
+    return (
+      <IonImg
+        key={index}
+        src={process.env.PUBLIC_URL + "/assets/moves/" + image}
+        alt="No Image"
+        className="tile-image"
+      ></IonImg>
+    );
+  });
+  console.log(images);
   return (
     <div id="detailed-tile" className="centering">
       <IonCard
@@ -38,11 +49,7 @@ function DetailedTile(props) {
         </IonCardHeader>
         <IonCardContent>
           <IonCardContent>{description}</IonCardContent>
-          <IonImg
-            src={process.env.PUBLIC_URL + "/assets/moves/" + image}
-            alt="No Image"
-            className="tile-image"
-          ></IonImg>
+          {images}
         </IonCardContent>
       </IonCard>
     </div>
