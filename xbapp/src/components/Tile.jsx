@@ -84,6 +84,8 @@ function Tile(props) {
                     pathname: "/",
                     state: {
                       [props.blockIndex]: movement,
+                      chosenExercise: movement,
+                      blockIndex: props.blockIndex,
                     },
                   });
                 }}
