@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import "./Tile.scss";
 import { useEffect } from "react";
+import { useHistory } from "react-router";
 
 function Tile(props) {
   const colour = props.colour || "green";
@@ -23,6 +24,7 @@ function Tile(props) {
   const image = movement?.images[0] || "";
   const width = "250px";
   const completedCount = getTimesCompleted(movement);
+  const history = useHistory();
 
   // TODO: implement later
   function getTimesCompleted(movement) {
@@ -74,7 +76,20 @@ function Tile(props) {
             </div>
 
             <div className="tile-button-container">
-              <IonButton className="tile-button">Select</IonButton>
+              <IonButton
+                className="tile-button"
+                onClick={(event) => {
+                  console.log("Block index", props.blockIndex);
+                  history.push({
+                    pathname: "/",
+                    state: {
+                      [props.blockIndex]: movement,
+                    },
+                  });
+                }}
+              >
+                Select
+              </IonButton>
             </div>
           </IonCard>
         </IonCardContent>

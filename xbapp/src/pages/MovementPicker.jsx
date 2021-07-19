@@ -143,7 +143,6 @@ const MovementPicker = (props) => {
   }
 
   const passedMovements = props.location.state?.movements;
-
   let screen;
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {
@@ -171,6 +170,7 @@ const MovementPicker = (props) => {
           options={rowSlideOpts}
           movements={passedMovements.upperBody}
           updateExercise={updateExercise}
+          blockIndex={props.location.state?.blockIndex}
         />
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
@@ -179,6 +179,7 @@ const MovementPicker = (props) => {
           options={rowSlideOpts}
           movements={passedMovements.fullBody}
           updateExercise={updateExercise}
+          blockIndex={props.location.state?.blockIndex}
         />
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
@@ -187,6 +188,7 @@ const MovementPicker = (props) => {
           options={rowSlideOpts}
           movements={passedMovements.lowerBody}
           updateExercise={updateExercise}
+          blockIndex={props.location.state?.blockIndex}
         />
       </IonSlides>
     );

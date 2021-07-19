@@ -24,6 +24,7 @@ const MovementSlide = (props) => {
               movement={exercise}
               updateExercise={props.updateExercise}
               row={props.row}
+              blockIndex={props.blockIndex}
             />
           </IonSlide>
         ))}

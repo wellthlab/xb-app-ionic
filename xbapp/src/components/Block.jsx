@@ -12,9 +12,9 @@ import Moves from "./strength/moves.json";
 import { useEffect } from "react";
 
 const Block = (props) => {
-  const index = props.index;
+  const blockIndex = props.blockIndex;
   const filter = props.filter;
-  const [moveSelected, setMoveSelected] = useState("No move selected");
+  const moveSelected = props.exerciseChosen;
   const history = useHistory();
   const movements = {};
   // Maybe this should be a state?
@@ -48,13 +48,12 @@ const Block = (props) => {
     movements.lowerBody.sort((a, b) => {
       return a.progressionLevel - b.progressionLevel;
     });
-    console.log("Activated filters");
   }
   processMovements();
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardTitle>Block {index}</IonCardTitle>
+        <IonCardTitle>Block {blockIndex}</IonCardTitle>
         <IonCardSubtitle>{filter}</IonCardSubtitle>
       </IonCardHeader>
       <IonCard
@@ -63,7 +62,7 @@ const Block = (props) => {
             pathname: "/movement-picker",
             state: {
               movements: movements,
-              test: "test",
+              blockIndex: blockIndex,
             },
           });
         }}
