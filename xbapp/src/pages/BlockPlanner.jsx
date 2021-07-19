@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import Block from "../components/Block";
 
 const BlockPlanner = (props) => {
-  console.log(props);
   let blocks;
   if (!("blocks" in props)) {
     blocks = ["pull", "push", "pull"];

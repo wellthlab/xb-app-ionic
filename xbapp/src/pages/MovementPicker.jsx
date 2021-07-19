@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import Tile from "../components/Tile";
 import Moves from "../components/strength/moves.json";
-import { IonContent, IonSlides, IonSlide, IonButton } from "@ionic/react";
+import {
+  IonContent,
+  IonSlides,
+  IonSlide,
+  IonButton,
+  IonAlert,
+  IonCard,
+  IonCardContent,
+} from "@ionic/react";
 
 import "./MovementPicker.scss";
 import { useState } from "react";
@@ -125,31 +133,26 @@ const MovementPicker = (props) => {
     setColumnSlideOpts(columnOptions);
   }
 
-  // Setup movements for rendering
-
-  // Delete when use properly
-  const passedMovements = {};
-  passedMovements.upperBody = Moves.moves.slice(0, 15);
-  passedMovements.upperBody.sort((a, b) => {
-    return a.progressionLevel - b.progressionLevel;
-  });
-  passedMovements.fullBody = Moves.moves.slice(15, 27);
-  passedMovements.fullBody.sort((a, b) => {
-    return a.progressionLevel - b.progressionLevel;
-  });
-  passedMovements.lowerBody = Moves.moves.slice(27, 50);
-  passedMovements.lowerBody.sort((a, b) => {
-    return a.progressionLevel - b.progressionLevel;
-  });
-  const rows = 3;
-  const exercises = [];
-  for (let i = 0; i < rows; ++i) {
-    exercises.push(Moves.moves.slice(i * 10, i * 10 + 10));
+  function invalidMovements(movements) {
+    if (typeof movements === "undefined") {
+      return true;
+    } else if (Object.entries(movements).length === 0) {
+      return true;
+    }
+    return false;
   }
+
+  const passedMovements = props.location.state?.movements;
 
   let screen;
   // Either render the slides filled with tiles or a detialed tile
-  if (!showDetailedTile) {
+  if (invalidMovements(passedMovements)) {
+    screen = (
+      <IonCard>
+        <IonCardContent>There are no exercises to choose from</IonCardContent>
+      </IonCard>
+    );
+  } else if (!showDetailedTile) {
     const control = !showDetailedTile;
     screen = (
       <IonSlides
