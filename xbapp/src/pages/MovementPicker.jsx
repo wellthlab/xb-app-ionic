@@ -25,8 +25,7 @@ const MovementPicker = (props) => {
     },
   });
 
-  const [disableSlides, setDisableSlides] = useState(false);
-
+  // TODO: Implement a method to deep clone this. There are problems otherwise
   const defaultOptions = {
     activeIndex: 0,
     options: {
@@ -95,20 +94,17 @@ const MovementPicker = (props) => {
     },
   });
 
-  useEffect(() => {
-    console.log(rowSlideOpts);
-  }, []);
+  useEffect(() => {}, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render
-  async function slideClicked(e, index, row) {
+  async function horizonalSlideSwiped(e, index, row) {
     // Gets the active index of the parent slide (which is the vertical index)
     try {
       const activeColumnIndex = await e.path[3].getActiveIndex();
       const columnOptions = columnSlideOpts;
       columnOptions.options.initialSlide = activeColumnIndex;
       setColumnSlideOpts(columnOptions);
-      console.log("Column", activeColumnIndex, "Row", index);
     } catch (error) {
       console.log(error.message);
     }
@@ -116,7 +112,6 @@ const MovementPicker = (props) => {
     const rowOptions = rowSlideOpts;
     rowOptions[row].options.initialSlide = index;
     setRowSlideOpts(rowOptions);
-    console.log("rowOpts", rowOptions);
   }
 
   async function updateExercise(_showDetailedTile, _exercise) {
@@ -153,32 +148,26 @@ const MovementPicker = (props) => {
     screen = (
       <IonSlides options={columnSlideOpts.options} style={{ height: "500px" }}>
         <MovementSlide
-          slideClicked={slideClicked}
+          horizonalSlideSwiped={horizonalSlideSwiped}
           showDetailedTile={control}
           row="top"
-          disableSlides={disableSlides}
-          setDisableSlides={setDisableSlides}
           // Considering passing rowSlideOpts[row].options instead
           options={rowSlideOpts}
           movements={passedMovements.upperBody}
           updateExercise={updateExercise}
         />
         <MovementSlide
-          slideClicked={slideClicked}
+          horizonalSlideSwiped={horizonalSlideSwiped}
           showDetailedTile={control}
           row="middle"
-          disableSlides={disableSlides}
-          setDisableSlides={setDisableSlides}
           options={rowSlideOpts}
           movements={passedMovements.fullBody}
           updateExercise={updateExercise}
         />
         <MovementSlide
-          slideClicked={slideClicked}
+          horizonalSlideSwiped={horizonalSlideSwiped}
           showDetailedTile={control}
           row="bottom"
-          disableSlides={disableSlides}
-          setDisableSlides={setDisableSlides}
           options={rowSlideOpts}
           movements={passedMovements.lowerBody}
           updateExercise={updateExercise}

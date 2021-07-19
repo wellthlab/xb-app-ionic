@@ -12,31 +12,11 @@ const MovementSlide = (props) => {
         id="87g"
         pager={false}
         options={props.options[props.row].options}
-        // onIonSlidePrevEnd={(event) => {
-        //   event.target.getActiveIndex().then((index) => {
-        //     // props.slideClicked(event, index, props.row);
-        //   });
-        // }}
+        // When the slide changes, update the initial slide for this row to current slide
         onIonSlideDidChange={(event) => {
-          // console.log("Slide changed", props.row);
-          if (!props.disableSlides) {
-            event.target.getActiveIndex().then((index) => {
-              console.log(
-                props.showDetailedTile,
-                "Slide changed on row",
-                props.row,
-                "to",
-                index
-              );
-              props.slideClicked(event, index, props.row);
-            });
-          } else {
-            console.log("Slides disabled");
-          }
-        }}
-        onIonSlidesDidLoad={(event) => {
-          console.log("Loaded");
-          props.setDisableSlides(false);
+          event.target.getActiveIndex().then((index) => {
+            props.horizonalSlideSwiped(event, index, props.row);
+          });
         }}
       >
         {props.movements.map((exercise, index) => (
@@ -45,7 +25,6 @@ const MovementSlide = (props) => {
               movement={exercise}
               updateExercise={props.updateExercise}
               row={props.row}
-              setDisableSlides={props.setDisableSlides}
             />
           </IonSlide>
         ))}
