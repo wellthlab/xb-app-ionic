@@ -119,6 +119,12 @@ const MovementPicker = (props) => {
     setMovement(_exercise);
   }
 
+  function verticalSlideSwiped(index) {
+    const columnOptions = columnSlideOpts;
+    columnOptions.options.initialSlide = index;
+    setColumnSlideOpts(columnOptions);
+  }
+
   // Setup movements for rendering
 
   // Delete when use properly
@@ -146,7 +152,15 @@ const MovementPicker = (props) => {
   if (!showDetailedTile) {
     const control = !showDetailedTile;
     screen = (
-      <IonSlides options={columnSlideOpts.options} style={{ height: "500px" }}>
+      <IonSlides
+        options={columnSlideOpts.options}
+        style={{ height: "500px" }}
+        onIonSlideDidChange={(event) => {
+          event.target.getActiveIndex().then((index) => {
+            verticalSlideSwiped(index);
+          });
+        }}
+      >
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
           showDetailedTile={control}
