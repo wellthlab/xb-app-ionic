@@ -9,7 +9,6 @@ const MovementSlide = (props) => {
   return (
     <IonSlide>
       <IonSlides
-        id="87g"
         pager={false}
         options={props.options[props.row].options}
         // When the slide changes, update the initial slide for this row to current slide

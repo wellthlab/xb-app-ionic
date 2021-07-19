@@ -42,13 +42,13 @@ function dayify(responses, start, minday, maxday) {
     entriesByDay[day].push(r);
   }
 
-  var startDate = new Date( Date.parse(start) );
+  var startDate = new Date(Date.parse(start));
   //console.log("Compiling daily summary. Start date", start, startDate);
   function addDays(date, days) {
-      var result = new Date(date);
-      result.setDate(result.getDate() + days);
-      //console.log("Add days to date", days, date, result);
-      return result;
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    //console.log("Add days to date", days, date, result);
+    return result;
   }
 
   // Then generate each daily entry
@@ -59,7 +59,12 @@ function dayify(responses, start, minday, maxday) {
       // TODO: Missing should be per-question
       entries.push({ day: i, date: date, missing: true, responses: [] });
     } else {
-      entries.push({ day: i, date: date, missing: false, responses: entriesByDay[i] });
+      entries.push({
+        day: i,
+        date: date,
+        missing: false,
+        responses: entriesByDay[i],
+      });
     }
   }
 
@@ -75,7 +80,6 @@ function dayify(responses, start, minday, maxday) {
 
     //console.log("Generate summary for", day);
     for (var res of day.responses) {
-
       // Make a list of answered question types
       day.responseTypes[res.type] = true;
 
@@ -83,11 +87,10 @@ function dayify(responses, start, minday, maxday) {
       if (res.type == "minutes") {
         mins = mins + 1 * res.minutes;
       }
-
     }
 
     day.minutes = mins;
-    day.questionnaire = typeof day.responseTypes.questionnaire !== 'undefined'; // day.responseTypes is preferred, but this is for backward compatibility
+    day.questionnaire = typeof day.responseTypes.questionnaire !== "undefined"; // day.responseTypes is preferred, but this is for backward compatibility
   }
 
   return entries;
@@ -223,7 +226,8 @@ const TeamSlice = createSlice({
         var userResponse = responses[h];
         //console.log("USER", userResponse);
         var minutesIndividual = minutesIndividualReplacer.slice();
-        var unweightedFeelingIndividual = unweightedFeelingIndividualReplacer.slice();
+        var unweightedFeelingIndividual =
+          unweightedFeelingIndividualReplacer.slice();
 
         //iterating through all responses
         for (var i = 0; i < userResponse.responses.length; i++) {

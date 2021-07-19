@@ -1,11 +1,11 @@
-.tile-title-container{
+.tile-title-container {
   width: 175px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.tile-title{
+.tile-title {
   font-size: medium;
   overflow: hidden;
   white-space: nowrap;
@@ -13,16 +13,16 @@
   margin-right: 5px;
 }
 
-.tile-header{
+.tile-header {
   padding: 10px;
-  display:flex;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 59px;
   text-align: left;
 }
 
-.completed-container{
+.completed-container {
   align-self: center;
   max-width: 55px;
   border-radius: 8px;
@@ -30,48 +30,47 @@
   padding: 5px;
 }
 
-.completed-container p{
+.completed-container p {
   font-family: "Nunito-SemiBold", sans-serif;
   color: white;
   margin: 0px;
 }
 
-.tile-content{
+.tile-content {
   width: 250px;
   display: flex;
   justify-content: center;
   padding: 10px;
 }
 
-.tile-item{
+.tile-item {
   width: 220px;
   height: 180px;
   padding: 5px;
-  margin:0px;
+  margin: 0px;
   display: flex;
   flex-direction: column;
 }
 
-.tile-image{
+.tile-image {
   height: 80px;
   width: 70px;
   align-self: center;
 }
 
-.tile-button-container{
+.tile-button-container {
   height: 50px;
   display: flex;
   justify-content: center;
   padding: 5px;
 }
-.tile-button{
+.tile-button {
   width: 200px;
   margin: 0px;
 }
-.tile-description-container{
+.tile-description-container {
   width: 140px;
 }
-
 
 .bg-transparent {
   background: #3dc2ff;
@@ -82,10 +81,10 @@
   text-align: center;
 }
 
-.tile-description{
+.tile-description {
   padding: 0px;
   // font-size: 10pt;
-  white-space:normal;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
   height: 120px;
@@ -94,7 +93,7 @@
   margin-left: 10px;
 }
 
-.card-container{
+.card-container {
   display: flex;
   flex-direction: row;
   height: 120px;

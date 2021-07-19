@@ -51,11 +51,7 @@ const accountSlice = createSlice({
   },
 });
 
-export const {
-  START_LOGIN,
-  REJECT_LOGIN,
-  ACCEPT_LOGIN,
-  LOG_OUT,
-} = accountSlice.actions;
+export const { START_LOGIN, REJECT_LOGIN, ACCEPT_LOGIN, LOG_OUT } =
+  accountSlice.actions;
 
 export default accountSlice.reducer;
