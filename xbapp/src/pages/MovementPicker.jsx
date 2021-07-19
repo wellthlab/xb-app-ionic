@@ -154,7 +154,6 @@ const MovementPicker = (props) => {
     screen = (
       <IonSlides
         options={columnSlideOpts.options}
-        style={{ height: "500px" }}
         onIonSlideDidChange={(event) => {
           event.target.getActiveIndex().then((index) => {
             verticalSlideSwiped(index);
@@ -196,10 +195,7 @@ const MovementPicker = (props) => {
 
   return (
     <IonContent>
-      <div id="movement-picker">
-        {screen}
-        <IonButton>Click me</IonButton>
-      </div>
+      <div id="movement-picker">{screen}</div>
     </IonContent>
   );
 };
