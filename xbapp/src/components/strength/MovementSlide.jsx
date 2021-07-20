@@ -1,8 +1,6 @@
-import React, { Component } from "react";
-import { IonContent, IonSlides, IonSlide } from "@ionic/react";
+import React from "react";
+import { IonSlides, IonSlide } from "@ionic/react";
 
-import { useState } from "react";
-import { useEffect } from "react";
 import Tile from "../Tile";
 
 const MovementSlide = (props) => {
@@ -20,12 +18,7 @@ const MovementSlide = (props) => {
       >
         {props.movements.map((exercise, index) => (
           <IonSlide key={index}>
-            <Tile
-              movement={exercise}
-              updateExercise={props.updateExercise}
-              row={props.row}
-              blockIndex={props.blockIndex}
-            />
+            <Tile movement={exercise} updateExercise={props.updateExercise} />
           </IonSlide>
         ))}
       </IonSlides>

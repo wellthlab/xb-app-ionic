@@ -1,30 +1,22 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import {
-  IonSlides,
-  IonSlide,
-  IonContent,
   IonImg,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
   IonCardSubtitle,
-  IonItem,
-  IonButton,
 } from "@ionic/react";
 import "./Tile.scss";
-import { useEffect } from "react";
-import { useHistory } from "react-router";
+import SelectExerciseButton from "./SelectExerciseButton";
 
 function Tile(props) {
-  const colour = props.colour || "green";
   const movement = props.movement || {};
   const name = movement.name || "Exercise";
   const progressionLevel = movement.progressionLevel || 1;
-  const image = movement?.images[0] || "";
+  const imageName = movement?.images[0] || "";
   const width = "250px";
   const completedCount = getTimesCompleted(movement);
-  const history = useHistory();
 
   // TODO: implement later
   function getTimesCompleted(movement) {
@@ -64,7 +56,7 @@ function Tile(props) {
               }}
             >
               <IonImg
-                src={process.env.PUBLIC_URL + "/assets/moves/" + image}
+                src={process.env.PUBLIC_URL + "/assets/moves/" + imageName}
                 alt="No Image"
                 className="tile-image"
               ></IonImg>
@@ -76,22 +68,7 @@ function Tile(props) {
             </div>
 
             <div className="tile-button-container">
-              <IonButton
-                className="tile-button"
-                onClick={(event) => {
-                  console.log("Block index", props.blockIndex);
-                  history.push({
-                    pathname: "/",
-                    state: {
-                      [props.blockIndex]: movement,
-                      chosenExercise: movement,
-                      blockIndex: props.blockIndex,
-                    },
-                  });
-                }}
-              >
-                Select
-              </IonButton>
+              <SelectExerciseButton movement={movement}></SelectExerciseButton>
             </div>
           </IonCard>
         </IonCardContent>

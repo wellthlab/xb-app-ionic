@@ -12,9 +12,13 @@ import {
   IonItem,
   IonToolbar,
   IonTitle,
+  IonButton,
+  IonButtons,
 } from "@ionic/react";
 import "./DetailedTile.scss";
 import { useEffect } from "react";
+import { BlockIndexContext } from "../context/BlockIndexContext";
+import SelectExerciseButton from "./SelectExerciseButton";
 
 function DetailedTile(props) {
   const movement = props.movement || {};
@@ -23,13 +27,18 @@ function DetailedTile(props) {
   const description = movement.description || "New description";
   return (
     <div id="detailed-tile" className="centering">
-      <IonCard
-        onClick={() => {
-          props.updateExercise(false, {});
-        }}
-      >
+      <IonCard>
         <IonCardHeader>
           <IonToolbar>
+            <IonButtons slot="end">
+              <IonButton
+                onClick={() => {
+                  props.updateExercise(false, {});
+                }}
+              >
+                Go back
+              </IonButton>
+            </IonButtons>
             <IonCardTitle>{name}</IonCardTitle>
             <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
           </IonToolbar>
@@ -40,6 +49,7 @@ function DetailedTile(props) {
             <img src={"assets/moves/" + movement.images[0]} className="A" />
             <img src={"assets/moves/" + movement.images[1]} className="B" />
           </figure>
+          <SelectExerciseButton movement={movement}></SelectExerciseButton>
         </IonCardContent>
       </IonCard>
     </div>

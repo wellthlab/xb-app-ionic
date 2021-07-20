@@ -1,15 +1,7 @@
-import React, { Component } from "react";
-import Tile from "../components/Tile";
+import React from "react";
 import Moves from "../components/strength/moves.json";
-import {
-  IonContent,
-  IonSlides,
-  IonSlide,
-  IonButton,
-  IonAlert,
-  IonCard,
-  IonCardContent,
-} from "@ionic/react";
+import { IonContent, IonSlides, IonCard, IonCardContent } from "@ionic/react";
+import { BlockIndexContext } from "../context/BlockIndexContext";
 
 import "./MovementPicker.scss";
 import { useState } from "react";
@@ -32,6 +24,10 @@ const MovementPicker = (props) => {
       spaceBetween: 30,
     },
   });
+
+  const [blockIndex, setBlockIndex] = useState(
+    props.location.state?.blockIndex
+  );
 
   // TODO: Implement a method to deep clone this. There are problems otherwise
   const defaultOptions = {
@@ -152,7 +148,6 @@ const MovementPicker = (props) => {
       </IonCard>
     );
   } else if (!showDetailedTile) {
-    const control = !showDetailedTile;
     screen = (
       <IonSlides
         options={columnSlideOpts.options}
@@ -164,31 +159,25 @@ const MovementPicker = (props) => {
       >
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
-          showDetailedTile={control}
           row="top"
           // Considering passing rowSlideOpts[row].options instead
           options={rowSlideOpts}
           movements={passedMovements.upperBody}
           updateExercise={updateExercise}
-          blockIndex={props.location.state?.blockIndex}
         />
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
-          showDetailedTile={control}
           row="middle"
           options={rowSlideOpts}
           movements={passedMovements.fullBody}
           updateExercise={updateExercise}
-          blockIndex={props.location.state?.blockIndex}
         />
         <MovementSlide
           horizonalSlideSwiped={horizonalSlideSwiped}
-          showDetailedTile={control}
           row="bottom"
           options={rowSlideOpts}
           movements={passedMovements.lowerBody}
           updateExercise={updateExercise}
-          blockIndex={props.location.state?.blockIndex}
         />
       </IonSlides>
     );
@@ -200,7 +189,9 @@ const MovementPicker = (props) => {
 
   return (
     <IonContent>
-      <div id="movement-picker">{screen}</div>
+      <BlockIndexContext.Provider value={blockIndex}>
+        <div id="movement-picker">{screen}</div>
+      </BlockIndexContext.Provider>
     </IonContent>
   );
 };
