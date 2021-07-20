@@ -1,8 +1,15 @@
-import { IonContent, IonHeader, IonPage } from "@ionic/react";
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+} from "@ionic/react";
 import React, { Component } from "react";
 import { useEffect } from "react";
-import { useState } from "react";
 import Block from "../components/Block";
+import "./BlockPlanner.css";
 
 const BlockPlanner = (props) => {
   useEffect(() => {}, []);
@@ -43,8 +50,13 @@ const BlockPlanner = (props) => {
 
   return (
     <IonPage>
-      <IonHeader title="Block Planner"></IonHeader>
-      <IonContent style={{ paddingTop: "30px" }}>
+      <IonHeader title="Block Planner">
+        <IonButtons>
+          <IonBackButton defaultHref="/"></IonBackButton>
+        </IonButtons>
+        <IonTitle className="header-title">Block Planner</IonTitle>
+      </IonHeader>
+      <IonContent className="planner-content">
         {blocks.map((filter, index) => (
           <Block
             key={index}

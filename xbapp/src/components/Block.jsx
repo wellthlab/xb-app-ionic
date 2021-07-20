@@ -3,9 +3,11 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonItem,
+  IonCardContent,
+  IonButton,
 } from "@ionic/react";
 import React from "react";
-import { useState } from "react";
 import "./Block.css";
 import { useHistory } from "react-router";
 import Moves from "./strength/moves.json";
@@ -52,24 +54,35 @@ const Block = (props) => {
   processMovements();
   return (
     <IonCard>
-      <IonCardHeader>
-        <IonCardTitle>Block {blockIndex}</IonCardTitle>
-        <IonCardSubtitle>{filter}</IonCardSubtitle>
+      <IonCardHeader className="block-header">
+        <IonCardTitle>Block {blockIndex + 1}</IonCardTitle>
+        <IonCardSubtitle className="block-header-filter">
+          {filter}
+        </IonCardSubtitle>
       </IonCardHeader>
-      <IonCard
-        onClick={(event) => {
-          history.push({
-            pathname: "/movement-picker",
-            state: {
-              movements: movements,
-              blockIndex: blockIndex,
-            },
-          });
-        }}
-      >
-        <p>{moveSelected}</p>
-        <p>Select {">"}</p>
-      </IonCard>
+      <IonCardContent>
+        <IonButton
+          className="block-button"
+          onClick={(event) => {
+            history.push({
+              pathname: "/movement-picker",
+              state: {
+                movements: movements,
+                blockIndex: blockIndex,
+              },
+            });
+          }}
+        >
+          <div className="block-button-container">
+            <div className="container-left">
+              <p id="move-selected">{moveSelected}</p>
+            </div>
+            <div className="container-right">
+              <p id="select-text">Select {">"}</p>
+            </div>
+          </div>
+        </IonButton>
+      </IonCardContent>
     </IonCard>
   );
 };
