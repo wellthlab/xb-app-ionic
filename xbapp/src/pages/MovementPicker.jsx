@@ -52,7 +52,7 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: 0,
+        initialSlide: props.location.state?.initialSlideIndex.upperBody,
         speed: 400,
         // Display two slides and center them
         slidesPerView: 2,
@@ -68,7 +68,7 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: 0,
+        initialSlide: props.location.state?.initialSlideIndex.fullBody,
         speed: 400,
         // Display two slides and center them
         slidesPerView: 2,
@@ -84,7 +84,7 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: 0,
+        initialSlide: props.location.state?.initialSlideIndex.lowerBody,
         speed: 400,
         // Display two slides and center them
         slidesPerView: 2,

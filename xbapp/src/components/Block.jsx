@@ -69,6 +69,11 @@ const Block = (props) => {
               state: {
                 movements: movements,
                 blockIndex: blockIndex,
+                initialSlideIndex: {
+                  upperBody: 0,
+                  fullBody: 3,
+                  lowerBody: 2,
+                },
               },
             });
           }}
