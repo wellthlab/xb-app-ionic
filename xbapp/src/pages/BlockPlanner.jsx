@@ -1,5 +1,6 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -48,6 +49,16 @@ const BlockPlanner = (props) => {
     );
   }
 
+  // Takes an array and looks for 0 occurances of the string ""No exercise chosen"". If the count is zero, it returns true, otherwise false
+  function allExercisesChosen(exercises) {
+    for (let i = 0; i < exercises.length; ++i) {
+      if (exercises[i] === "No exercise chosen") {
+        return false;
+      }
+    }
+    return true;
+  }
+
   return (
     <IonPage>
       <IonHeader title="Block Planner">
@@ -65,6 +76,15 @@ const BlockPlanner = (props) => {
             exerciseChosen={getChosenExercises()[index]}
           ></Block>
         ))}
+        <IonButton
+          onClick={(event) => {
+            const chosenExercises = getChosenExercises();
+            const submitExercises = allExercisesChosen(chosenExercises);
+            console.log(submitExercises);
+          }}
+        >
+          Choose Exercise
+        </IonButton>
       </IonContent>
     </IonPage>
   );
