@@ -976,6 +976,14 @@ function writeAuthFile(data, success, fail) {
     }
   });
 }
+
+function getMovementFromId(id) {
+  const movement = moves.find((alternative, index) => {
+    return alternative.id === id;
+  });
+  return movement;
+}
+
 const Moves = { moves: moves };
 // Create file of Moves
 // writeAuthFile(Moves);
@@ -986,4 +994,15 @@ const pullMoves = Moves.moves.filter((obj) => {
 const pushMoves = Moves.moves.filter((obj) => {
   return obj.type === "push";
 });
+const missing =[]
+// Code to find missing exercises
+for (let i=0;i<moves.length;++i){
+  const move = moves[i];
+  for(let j=0;j<move.alternative.length;++j){
+    const id = move.alternative[j]
+    if (typeof getMovementFromId(id) == "undefined"){
+      console.log("Move", move.id, "has move that does not exist:", id);
+    }
+  }
 
+}

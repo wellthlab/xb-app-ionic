@@ -22,11 +22,14 @@ import SelectExerciseButton from "./SelectExerciseButton";
 
 function DetailedTile(props) {
   const movement = props.movement || {};
+  if (Object.keys(movement).length === 0) {
+    return <p>Empty</p>;
+  }
   const name = movement.name || "Exercise";
   const progressionLevel = movement.progressionLevel || 1;
   const description = movement.description || "New description";
   return (
-    <div id="detailed-tile" className="centering">
+    <div id="detailed-tile" className="centering" style={props.style}>
       <IonCard>
         <IonCardHeader>
           <IonToolbar>

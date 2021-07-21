@@ -1,13 +1,19 @@
 import React from "react";
 import Moves from "../components/strength/moves.json";
-import { IonContent, IonSlides, IonCard, IonCardContent } from "@ionic/react";
+import {
+  IonContent,
+  IonSlides,
+  IonCard,
+  IonCardContent,
+  IonSlide,
+} from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 
 import "./MovementPicker.scss";
 import { useState } from "react";
-import DetailedTile from "../components/DetailedTile";
 import { useEffect } from "react";
 import MovementSlide from "../components/strength/MovementSlide";
+import DetailedMovementSlide from "../components/DetailedMovementSlide";
 
 const MovementPicker = (props) => {
   // Setup states to control the active slide
@@ -183,7 +189,10 @@ const MovementPicker = (props) => {
     );
   } else {
     screen = (
-      <DetailedTile movement={movement} updateExercise={updateExercise} />
+      <DetailedMovementSlide
+        movement={movement}
+        updateExercise={updateExercise}
+      ></DetailedMovementSlide>
     );
   }
 
