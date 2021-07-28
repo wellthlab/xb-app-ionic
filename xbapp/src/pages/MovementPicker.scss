@@ -26,3 +26,19 @@
 .centering {
   text-align: center;
 }
+
+#vertical-next,
+#vertical-prev {
+    left: 50%;
+    transform: rotate(90deg);
+    transform-origin: left center;
+  }
+
+  #vertical-prev {
+    top: 10px;
+  }
+
+  #vertical-next {
+    top: auto;
+    bottom: 10px;
+  }

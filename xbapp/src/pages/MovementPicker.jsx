@@ -6,6 +6,7 @@ import {
   IonCard,
   IonCardContent,
   IonSlide,
+  IonIcon,
 } from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 
@@ -14,6 +15,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import MovementSlide from "../components/strength/MovementSlide";
 import DetailedMovementSlide from "../components/DetailedMovementSlide";
+import { caretUp } from "ionicons/icons";
 
 const MovementPicker = (props) => {
   // Setup states to control the active slide
@@ -28,6 +30,10 @@ const MovementPicker = (props) => {
       slidesPerView: 2,
       centeredSlides: true,
       spaceBetween: 30,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
     },
   });
 
@@ -149,57 +155,67 @@ const MovementPicker = (props) => {
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {
     screen = (
-      <IonCard>
-        <IonCardContent>There are no exercises to choose from</IonCardContent>
-      </IonCard>
+      <div id="movement-picker">
+        <IonCard>
+          <IonCardContent>There are no exercises to choose from</IonCardContent>
+        </IonCard>
+      </div>
     );
   } else if (!showDetailedTile) {
     screen = (
-      <IonSlides
-        options={columnSlideOpts.options}
-        onIonSlideDidChange={(event) => {
-          event.target.getActiveIndex().then((index) => {
-            verticalSlideSwiped(index);
-          });
-        }}
-      >
-        <MovementSlide
-          horizonalSlideSwiped={horizonalSlideSwiped}
-          row="top"
-          // Considering passing rowSlideOpts[row].options instead
-          options={rowSlideOpts}
-          movements={passedMovements.upperBody}
-          updateExercise={updateExercise}
-        />
-        <MovementSlide
-          horizonalSlideSwiped={horizonalSlideSwiped}
-          row="middle"
-          options={rowSlideOpts}
-          movements={passedMovements.fullBody}
-          updateExercise={updateExercise}
-        />
-        <MovementSlide
-          horizonalSlideSwiped={horizonalSlideSwiped}
-          row="bottom"
-          options={rowSlideOpts}
-          movements={passedMovements.lowerBody}
-          updateExercise={updateExercise}
-        />
-      </IonSlides>
+      <div id="movement-picker">
+        <IonSlides
+          options={columnSlideOpts.options}
+          onIonSlideDidChange={(event) => {
+            event.target.getActiveIndex().then((index) => {
+              verticalSlideSwiped(index);
+            });
+          }}
+        >
+          <MovementSlide
+            horizonalSlideSwiped={horizonalSlideSwiped}
+            row="top"
+            // Considering passing rowSlideOpts[row].options instead
+            options={rowSlideOpts}
+            movements={passedMovements.upperBody}
+            updateExercise={updateExercise}
+          />
+          <MovementSlide
+            horizonalSlideSwiped={horizonalSlideSwiped}
+            row="middle"
+            options={rowSlideOpts}
+            movements={passedMovements.fullBody}
+            updateExercise={updateExercise}
+          />
+          <MovementSlide
+            horizonalSlideSwiped={horizonalSlideSwiped}
+            row="bottom"
+            options={rowSlideOpts}
+            movements={passedMovements.lowerBody}
+            updateExercise={updateExercise}
+          />
+        </IonSlides>
+        <div className="swiper-button-prev" id="vertical-prev"></div>
+        <div className="swiper-button-next" id="vertical-next"></div>
+        <div className="swiper-button-prev"></div>
+        <div className="swiper-button-next"></div>
+      </div>
     );
   } else {
     screen = (
-      <DetailedMovementSlide
-        movement={movement}
-        updateExercise={updateExercise}
-      ></DetailedMovementSlide>
+      <div id="movement-picker">
+        <DetailedMovementSlide
+          movement={movement}
+          updateExercise={updateExercise}
+        ></DetailedMovementSlide>
+      </div>
     );
   }
 
   return (
     <IonContent>
       <BlockIndexContext.Provider value={blockIndex}>
-        <div id="movement-picker">{screen}</div>
+        {screen}
       </BlockIndexContext.Provider>
     </IonContent>
   );
