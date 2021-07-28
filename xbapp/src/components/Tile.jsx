@@ -6,6 +6,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonCardSubtitle,
+  IonText,
 } from "@ionic/react";
 import "./Tile.scss";
 import SelectExerciseButton from "./SelectExerciseButton";
@@ -66,9 +67,11 @@ function Tile(props) {
                 />
               </figure>
               <div className="tile-description-container">
-                <IonCardContent className="tile-description">
-                  {movement.description}
-                </IonCardContent>
+                <IonText color="dark">
+                  <IonCardContent className="tile-description">
+                    {movement.description}
+                  </IonCardContent>
+                </IonText>
               </div>
             </div>
 
