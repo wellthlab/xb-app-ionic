@@ -41,7 +41,7 @@ function DetailedTile(props) {
                   props.updateExercise(false, {});
                 }}
               >
-                <IonIcon slot="icon-only" icon={close}></IonIcon>
+                <IonIcon icon={close}></IonIcon>
               </IonButton>
             </IonButtons>
             <IonCardTitle>{name}</IonCardTitle>
