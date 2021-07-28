@@ -15,6 +15,7 @@ import {
   IonButton,
   IonButtons,
   IonIcon,
+  IonText,
 } from "@ionic/react";
 import "./DetailedTile.scss";
 import { useEffect } from "react";
@@ -49,7 +50,11 @@ function DetailedTile(props) {
           </IonToolbar>
         </IonCardHeader>
         <IonCardContent>
-          <IonCardContent>{description}</IonCardContent>
+          <IonText color="dark">
+            <IonCardContent className="tile-description">
+              {description}
+            </IonCardContent>
+          </IonText>
           <figure id="promo">
             <img src={"assets/moves/" + movement.images[0]} className="A" />
             <img src={"assets/moves/" + movement.images[1]} className="B" />

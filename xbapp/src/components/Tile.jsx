@@ -68,7 +68,10 @@ function Tile(props) {
               </figure>
               <div className="tile-description-container">
                 <IonText color="dark">
-                  <IonCardContent className="tile-description">
+                  <IonCardContent
+                    className="tile-description"
+                    id="small-tile-description"
+                  >
                     {movement.description}
                   </IonCardContent>
                 </IonText>
