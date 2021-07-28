@@ -14,11 +14,13 @@ import {
   IonTitle,
   IonButton,
   IonButtons,
+  IonIcon,
 } from "@ionic/react";
 import "./DetailedTile.scss";
 import { useEffect } from "react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 import SelectExerciseButton from "./SelectExerciseButton";
+import { close } from "ionicons/icons";
 
 function DetailedTile(props) {
   const movement = props.movement || {};
@@ -39,7 +41,7 @@ function DetailedTile(props) {
                   props.updateExercise(false, {});
                 }}
               >
-                Go back
+                <IonIcon slot="icon-only" icon={close}></IonIcon>
               </IonButton>
             </IonButtons>
             <IonCardTitle>{name}</IonCardTitle>
