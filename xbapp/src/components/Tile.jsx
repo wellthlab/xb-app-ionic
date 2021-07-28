@@ -55,11 +55,16 @@ function Tile(props) {
                 props.updateExercise(true, movement);
               }}
             >
-              <IonImg
-                src={process.env.PUBLIC_URL + "/assets/moves/" + imageName}
-                alt="No Image"
-                className="tile-image"
-              ></IonImg>
+              <figure id="tile-image" className="tile-image">
+                <img
+                  src={"assets/moves/" + movement.images[0]}
+                  className="A slide-img"
+                />
+                <img
+                  src={"assets/moves/" + movement.images[1]}
+                  className="B slide-img"
+                />
+              </figure>
               <div className="tile-description-container">
                 <IonCardContent className="tile-description">
                   {movement.description}

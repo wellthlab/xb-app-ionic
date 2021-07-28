@@ -95,10 +95,6 @@ const BlockPlanner = (props) => {
     );
   }
 
-  async function test() {
-    console.log("test");
-  }
-
   // Takes an array and looks for 0 occurances of the string ""No exercise chosen"". If the count is zero, it returns true, otherwise false
   function allExercisesChosen(exercises) {
     for (let i = 0; i < exercises.length; ++i) {
