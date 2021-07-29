@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import MovementSlide from "../components/strength/MovementSlide";
 import DetailedMovementSlide from "../components/DetailedMovementSlide";
-import { caretUp } from "ionicons/icons";
+import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 
 const MovementPicker = (props) => {
   // Setup states to control the active slide
@@ -32,7 +32,7 @@ const MovementPicker = (props) => {
       direction: "vertical",
       slidesPerView: 2,
       centeredSlides: true,
-      spaceBetween: 200,
+      spaceBetween: 220,
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
@@ -167,42 +167,52 @@ const MovementPicker = (props) => {
   } else if (!showDetailedTile) {
     screen = (
       <div id="movement-picker">
-        <div id="slides">
-          <IonSlides
-            options={columnSlideOpts.options}
-            onIonSlideDidChange={(event) => {
-              event.target.getActiveIndex().then((index) => {
-                verticalSlideSwiped(index);
-              });
-            }}
-          >
-            <MovementSlide
-              horizonalSlideSwiped={horizonalSlideSwiped}
-              row="top"
-              // Considering passing rowSlideOpts[row].options instead
-              options={rowSlideOpts}
-              movements={passedMovements.upperBody}
-              updateExercise={updateExercise}
-            />
-            <MovementSlide
-              horizonalSlideSwiped={horizonalSlideSwiped}
-              row="middle"
-              options={rowSlideOpts}
-              movements={passedMovements.fullBody}
-              updateExercise={updateExercise}
-            />
-            <MovementSlide
-              horizonalSlideSwiped={horizonalSlideSwiped}
-              row="bottom"
-              options={rowSlideOpts}
-              movements={passedMovements.lowerBody}
-              updateExercise={updateExercise}
-            />
-          </IonSlides>
-          <div className="swiper-button-prev" id="vertical-prev"></div>
-          <div className="swiper-button-next" id="vertical-next"></div>
-          <div className="swiper-button-prev"></div>
-          <div className="swiper-button-next"></div>
+        <div id="tile-gui">
+          <IonIcon icon={caretUp} id="up" className="caret-row"></IonIcon>
+          <IonIcon
+            icon={caretBack}
+            id="left"
+            className="caret-column"
+          ></IonIcon>
+          <div id="slides">
+            <IonSlides
+              options={columnSlideOpts.options}
+              onIonSlideDidChange={(event) => {
+                event.target.getActiveIndex().then((index) => {
+                  verticalSlideSwiped(index);
+                });
+              }}
+            >
+              <MovementSlide
+                horizonalSlideSwiped={horizonalSlideSwiped}
+                row="top"
+                // Considering passing rowSlideOpts[row].options instead
+                options={rowSlideOpts}
+                movements={passedMovements.upperBody}
+                updateExercise={updateExercise}
+              />
+              <MovementSlide
+                horizonalSlideSwiped={horizonalSlideSwiped}
+                row="middle"
+                options={rowSlideOpts}
+                movements={passedMovements.fullBody}
+                updateExercise={updateExercise}
+              />
+              <MovementSlide
+                horizonalSlideSwiped={horizonalSlideSwiped}
+                row="bottom"
+                options={rowSlideOpts}
+                movements={passedMovements.lowerBody}
+                updateExercise={updateExercise}
+              />
+            </IonSlides>
+          </div>
+          <IonIcon
+            icon={caretForward}
+            id="right"
+            className="caret-column"
+          ></IonIcon>
+          <IonIcon icon={caretDown} id="down" className="caret-row"></IonIcon>
         </div>
         <div className="outer-slide">
           <IonList>
