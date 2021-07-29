@@ -15,10 +15,15 @@ function Tile(props) {
   const movement = props.movement || {};
   const name = movement.name || "Exercise";
   const progressionLevel = movement.progressionLevel || 1;
-  const imageName = movement?.images[0] || "";
   const width = "250px";
   const completedCount = getTimesCompleted(movement);
-
+  const alternativeExists = movement.alternative.length !== 0;
+  let border;
+  if (alternativeExists) {
+    border = "gold 2px solid";
+  } else {
+    border = "black 2px solid";
+  }
   // TODO: implement later
   function getTimesCompleted(movement) {
     const id = movement.id;
@@ -32,6 +37,8 @@ function Tile(props) {
           width: width,
           height: width,
           margin: "10px",
+          border: border,
+          borderRadius: "8px",
         }}
       >
         <IonCardHeader className="tile-header">
