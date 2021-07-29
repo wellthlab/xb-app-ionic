@@ -5,8 +5,11 @@ import {
   IonSlides,
   IonCard,
   IonCardContent,
-  IonSlide,
   IonIcon,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonListHeader,
 } from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 
@@ -201,8 +204,39 @@ const MovementPicker = (props) => {
           <div className="swiper-button-prev"></div>
           <div className="swiper-button-next"></div>
         </div>
-        <div>
-          <p>Instructions</p>
+        <div className="outer-slide">
+          <IonList>
+            <IonListHeader lines="inset">
+              <IonLabel>Instructions (Scroll to view all)</IonLabel>
+            </IonListHeader>
+            <IonItem>
+              <p>1. Add a movement to your block planner by clicking select</p>
+            </IonItem>
+            <IonItem>
+              <p>
+                2. To view the full description of the movement, click the image
+              </p>
+            </IonItem>
+            <IonItem>
+              <p>3. Swipe to view movements of different difficulties</p>
+            </IonItem>
+            <IonItem>
+              <p>
+                4. Laudantium eligendi ea et aut. Amet quia alias perspiciatis
+                officiis unde. Aut perferendis est deleniti deserunt aut
+                perspiciatis.
+              </p>
+            </IonItem>
+            <IonItem>
+              <p>
+                5. Laudantium eligendi ea et aut. Amet quia alias perspiciatis
+                officiis unde. Aut perferendis est deleniti deserunt aut
+                perspiciatis. Eos corporis quae voluptas ex expedita non.
+                Doloremque mollitia eius beatae tenetur tempora. Accusamus nihil
+                repudiandae laborum eos dignissimos.
+              </p>
+            </IonItem>
+          </IonList>
         </div>
       </div>
     );

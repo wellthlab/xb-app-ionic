@@ -51,3 +51,9 @@
     top: auto;
     bottom: 10px;
   }
+
+  .outer-slide{
+    min-height: 50px;
+    margin-top: 10px;
+    overflow: scroll;overflow-y:scroll;
+  }
