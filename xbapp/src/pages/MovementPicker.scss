@@ -2,6 +2,9 @@
   height: 100vh;
   width: 100%;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #movement-picker h4 {
@@ -25,6 +28,12 @@
 
 .centering {
   text-align: center;
+}
+
+#slides{
+  height: 400px;
+  width: 300px;
+  margin: 0 auto;
 }
 
 #vertical-next,

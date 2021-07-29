@@ -29,7 +29,7 @@ const MovementPicker = (props) => {
       direction: "vertical",
       slidesPerView: 2,
       centeredSlides: true,
-      spaceBetween: 30,
+      spaceBetween: 200,
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
@@ -164,41 +164,46 @@ const MovementPicker = (props) => {
   } else if (!showDetailedTile) {
     screen = (
       <div id="movement-picker">
-        <IonSlides
-          options={columnSlideOpts.options}
-          onIonSlideDidChange={(event) => {
-            event.target.getActiveIndex().then((index) => {
-              verticalSlideSwiped(index);
-            });
-          }}
-        >
-          <MovementSlide
-            horizonalSlideSwiped={horizonalSlideSwiped}
-            row="top"
-            // Considering passing rowSlideOpts[row].options instead
-            options={rowSlideOpts}
-            movements={passedMovements.upperBody}
-            updateExercise={updateExercise}
-          />
-          <MovementSlide
-            horizonalSlideSwiped={horizonalSlideSwiped}
-            row="middle"
-            options={rowSlideOpts}
-            movements={passedMovements.fullBody}
-            updateExercise={updateExercise}
-          />
-          <MovementSlide
-            horizonalSlideSwiped={horizonalSlideSwiped}
-            row="bottom"
-            options={rowSlideOpts}
-            movements={passedMovements.lowerBody}
-            updateExercise={updateExercise}
-          />
-        </IonSlides>
-        <div className="swiper-button-prev" id="vertical-prev"></div>
-        <div className="swiper-button-next" id="vertical-next"></div>
-        <div className="swiper-button-prev"></div>
-        <div className="swiper-button-next"></div>
+        <div id="slides">
+          <IonSlides
+            options={columnSlideOpts.options}
+            onIonSlideDidChange={(event) => {
+              event.target.getActiveIndex().then((index) => {
+                verticalSlideSwiped(index);
+              });
+            }}
+          >
+            <MovementSlide
+              horizonalSlideSwiped={horizonalSlideSwiped}
+              row="top"
+              // Considering passing rowSlideOpts[row].options instead
+              options={rowSlideOpts}
+              movements={passedMovements.upperBody}
+              updateExercise={updateExercise}
+            />
+            <MovementSlide
+              horizonalSlideSwiped={horizonalSlideSwiped}
+              row="middle"
+              options={rowSlideOpts}
+              movements={passedMovements.fullBody}
+              updateExercise={updateExercise}
+            />
+            <MovementSlide
+              horizonalSlideSwiped={horizonalSlideSwiped}
+              row="bottom"
+              options={rowSlideOpts}
+              movements={passedMovements.lowerBody}
+              updateExercise={updateExercise}
+            />
+          </IonSlides>
+          <div className="swiper-button-prev" id="vertical-prev"></div>
+          <div className="swiper-button-next" id="vertical-next"></div>
+          <div className="swiper-button-prev"></div>
+          <div className="swiper-button-next"></div>
+        </div>
+        <div>
+          <p>Instructions</p>
+        </div>
       </div>
     );
   } else {
