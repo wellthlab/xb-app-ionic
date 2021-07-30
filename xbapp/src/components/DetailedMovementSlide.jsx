@@ -5,6 +5,13 @@ import DetailedTile from "./DetailedTile";
 import Moves from "./strength/moves.json";
 
 const DetailedMovementSlide = (props) => {
+  const options = {
+    initialSlide: 0,
+    speed: 400,
+    centeredSlides: true,
+    spaceBetween: 50,
+    slidesPerView: 1,
+  };
   const movements = [];
 
   movements.push(
@@ -12,8 +19,9 @@ const DetailedMovementSlide = (props) => {
       <DetailedTile
         style={{
           borderStyle: "solid",
-          borderWidth: "5px",
+          borderWidth: "3px",
           borderColor: "gold",
+          margin: 0,
         }}
         movement={props.movement}
         updateExercise={props.updateExercise}
@@ -28,12 +36,20 @@ const DetailedMovementSlide = (props) => {
       movements.push(
         <IonSlide key={i + 1}>
           <DetailedTile
+            style={{
+              margin: 0,
+            }}
             movement={movement}
             updateExercise={props.updateExercise}
           ></DetailedTile>
         </IonSlide>
       );
     }
+  }
+
+  let message = "";
+  if (props.movement.alternative.length !== 0) {
+    message = <IonText>Swipe across for more movements {">"}</IonText>;
   }
 
   function getMovementFromId(id) {
@@ -44,17 +60,13 @@ const DetailedMovementSlide = (props) => {
   }
 
   return (
-    <div>
-      <IonSlides
-        options={{
-          slidesPerView: 2,
-          centeredSlides: true,
-          spaceBetween: 150,
-        }}
-      >
-        {movements}
-      </IonSlides>
-      <IonText>Swipe for alternate exercises</IonText>
+    <div
+      style={{
+        height: "100%",
+      }}
+    >
+      <div style={{ height: "30px" }}>{message}</div>
+      <IonSlides options={options}>{movements}</IonSlides>
     </div>
   );
 };

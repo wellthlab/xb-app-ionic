@@ -32,8 +32,8 @@ function DetailedTile(props) {
   const progressionLevel = movement.progressionLevel || 1;
   const description = movement.description || "New description";
   return (
-    <div id="detailed-tile" className="centering" style={props.style}>
-      <IonCard>
+    <div id="detailed-tile" className="centering" style={{ minWidth: "250px" }}>
+      <IonCard style={props.style}>
         <IonCardHeader>
           <IonToolbar>
             <IonButtons slot="end">
