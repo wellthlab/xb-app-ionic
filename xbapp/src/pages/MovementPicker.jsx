@@ -6,10 +6,6 @@ import {
   IonCard,
   IonCardContent,
   IonIcon,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonListHeader,
   IonText,
 } from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
@@ -51,24 +47,6 @@ const MovementPicker = (props) => {
   const [blockIndex, setBlockIndex] = useState(
     props.location.state?.blockIndex
   );
-
-  // TODO: Implement a method to deep clone this. There are problems otherwise
-  const defaultOptions = {
-    activeIndex: 0,
-    options: {
-      // The index of the intital slide
-      initialSlide: 0,
-      speed: 400,
-      // Display two slides and center them
-      slidesPerView: 2,
-      centeredSlides: true,
-      // The space between slides
-      spaceBetween: 220,
-      // Render 1 slide before and after
-      addSlidesBefore: 1,
-      addSlidesAfer: 1,
-    },
-  };
 
   const [rowSlideOpts, setRowSlideOpts] = useState({
     top: {
