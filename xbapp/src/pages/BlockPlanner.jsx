@@ -42,6 +42,7 @@ const BlockPlanner = (props) => {
     return JSON.parse(window.localStorage.getItem("exercisesChosen"));
   }
 
+  // Stores chosen movements in localStorage to save them during selection
   function setChosenExercises(chosenExercises) {
     window.localStorage.setItem(
       "exercisesChosen",
@@ -70,6 +71,8 @@ const BlockPlanner = (props) => {
           onClick={(event) => {
             // TODO: Submits exercises to be used in another component
             console.log("Exercise chosen");
+            // Clear chosen movements
+            window.localStorage.clear("exerciseChosen");
           }}
         >
           Choose Exercises
