@@ -9,8 +9,9 @@ const DetailedMovementSlide = (props) => {
     initialSlide: 0,
     speed: 400,
     centeredSlides: true,
-    spaceBetween: 50,
-    slidesPerView: 1,
+    spaceBetween: 420,
+    slidesPerView: 2,
+    direction: "vertical",
   };
   const movements = [];
 
@@ -49,7 +50,7 @@ const DetailedMovementSlide = (props) => {
 
   let message = "";
   if (props.movement.alternative.length !== 0) {
-    message = <IonText>Swipe across for more movements {">"}</IonText>;
+    message = <IonText>Swipe up and down for alternative movements</IonText>;
   }
 
   function getMovementFromId(id) {
