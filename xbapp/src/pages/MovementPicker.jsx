@@ -105,8 +105,9 @@ const MovementPicker = (props) => {
   // The state activeIndex is then updated to preserve the current index for the next render
   async function horizonalSlideSwiped(e, index, row) {
     // Gets the active index of the parent slide (which is the vertical index)
+    let activeColumnIndex;
     try {
-      const activeColumnIndex = await e.path[3].getActiveIndex();
+      activeColumnIndex = await e.path[3].getActiveIndex();
       const columnOptions = columnSlideOpts;
       columnOptions.options.initialSlide = activeColumnIndex;
       setColumnSlideOpts(columnOptions);
@@ -117,6 +118,19 @@ const MovementPicker = (props) => {
     const rowOptions = rowSlideOpts;
     rowOptions[row].options.initialSlide = index;
     setRowSlideOpts(rowOptions);
+
+    // Update all slide positions to display the slide at current index
+    const slides = document.getElementsByClassName(
+      "swiper-container-horizontal"
+    );
+    for (let i = 0; i < slides.length; ++i) {
+      // Skips the slide that has been swiped
+      if (i === activeColumnIndex) {
+        continue;
+      }
+      const slide = slides[i].swiper;
+      slide.slideTo(index, 400, 0);
+    }
   }
 
   async function updateExercise(_showDetailedTile, _exercise) {
