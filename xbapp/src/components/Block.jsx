@@ -71,8 +71,8 @@ const Block = (props) => {
                 blockIndex: blockIndex,
                 initialSlideIndex: {
                   upperBody: 0,
-                  fullBody: 3,
-                  lowerBody: 2,
+                  fullBody: 0,
+                  lowerBody: 0,
                 },
               },
             });
