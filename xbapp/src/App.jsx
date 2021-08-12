@@ -25,32 +25,38 @@ import {
   menu,
   newspaperOutline,
   settingsOutline,
+  fastFoodOutline,
+  bicycleOutline
 } from "ionicons/icons";
 
 // Redux stuff
 import { connect } from "react-redux";
 
 // Pages
-import ExpList from "./pages/ExpList";
-import Account from "./pages/Account";
+import Account from "./pages/account/Account";
 import Feed from "./pages/Feed";
-import About from "./pages/About";
-import JourneyPlanner from "./pages/JourneyPlanner";
-import Register from "./pages/Register.jsx";
-import Tutorial from "./pages/Tutorial.jsx";
-import Group from "./pages/Group.jsx";
-import GroupCharts from "./pages/Charts";
-import Day from "./pages/Day";
-import ExperimentYourself from "./pages/ExperimentYourself.jsx";
-import ExperimentInGroup from "./pages/ExperimentInGroup.jsx";
-import CreateTeam from "./pages/CreateTeam";
-import AddResponse from "./pages/AddResponse";
+import About from "./pages/info/About";
+import Tutorial from "./pages/info/Tutorial.jsx";
+
+import Register from "./pages/account/Register.jsx";
+import Login from "./pages/account/Login.jsx";
+import ForgotPassword from "./pages/account/ForgotPassword";
+
 import OptionTabs from "./OptionTabs";
 import Notifications from "./pages/Notifications";
-import ForgotPassword from "./pages/ForgotPassword";
+import ExpList from "./pages/ExpList";
 
-// The login component
-import Login from "./pages/Login.jsx";
+import Group from "./pages/boxes/Group.jsx";
+import GroupCharts from "./pages/boxes/Charts";
+import Day from "./pages/boxes/Day";
+
+import JoinTeam from "./pages/start/JoinTeam.jsx";
+import CreateTeam from "./pages/start/CreateTeam";
+
+import EatPage from "./pages/boxes/Eat";
+import MovePage from "./pages/boxes/Move";
+import AddResponse from "./pages/boxes/AddResponse";
+
 
 import getXBClient from "./model/client";
 
@@ -140,23 +146,32 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route path="/settings" component={OptionTabs} exact={true} />
+
               <Route
-                path="/start/yourself/:id"
-                component={About}
+                path="/box/eat"
+                component={EatPage}
                 exact={true}
               />
+
               <Route
-                path="/start/yourself"
-                component={ExperimentYourself}
+                path="/box/move"
+                component={MovePage}
                 exact={true}
               />
+
+              /**
+              * TODO: Pass box type in the URL on these; linked from the relevant box page
+              */
               <Route
-                path="/start/group"
-                component={ExperimentInGroup}
+                path="/start/group/:id"
+                component={JoinTeam}
                 exact={true}
               />
-              <Route path="/start/create" component={CreateTeam} exact={true} />
-              <Route path="/start" component={JourneyPlanner} exact={true} />
+
+              // Create a new team
+              <Route path="/start/create/:id" component={CreateTeam} exact={true} />
+
+
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
@@ -179,6 +194,16 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
             <IonTabButton tab={"Experiments"} href={"/group"}>
               <IonIcon icon={cubeOutline} />
               <IonLabel>{"Experiments"}</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab={"Move"} href={"/box/move"}>
+              <IonIcon icon={bicycleOutline} />
+              <IonLabel>{"Move"}</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab={"Eat"} href={"/box/eat"}>
+              <IonIcon icon={fastFoodOutline} />
+              <IonLabel>{"Eat"}</IonLabel>
             </IonTabButton>
 
             <IonTabButton tab={"Settings"} href={"/settings"}>

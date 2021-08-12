@@ -24,6 +24,16 @@ const Slice = createSlice({
       state.fetching = false;
       const exps = action.payload.exps;
       state.experiments = exps;
+
+      // Summarise experiments by type for easy lookup
+      state.experiments.bybox = { eat: false, move: false};
+
+
+      for(var e of state.experiments) {
+        if(typeof e.info.boxType !== 'undefined') {
+          state.experiments.bybox[e.info.boxType].push(e);
+        }
+      }
     },
   },
 });

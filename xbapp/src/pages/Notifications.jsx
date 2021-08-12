@@ -12,7 +12,6 @@ import {
   IonButton,
 } from "@ionic/react";
 import XBHeader from "../components/XBHeader";
-import "./Account.css";
 import GenericAlert from "../components/GenericAlert";
 import GenericModal from "../components/GenericModal";
 import mobiscroll from "@mobiscroll/react-lite";
