@@ -16,7 +16,8 @@ h3 .navbuttons {
   font-size: 14px;
 }
 
-.journalTasks ion-label, .journalActions ion-label {
+.journalTasks ion-label,
+.journalActions ion-label {
   font-size: 1em;
   font-weight: bold;
 }

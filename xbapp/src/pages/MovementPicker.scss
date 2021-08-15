@@ -1,0 +1,106 @@
+#movement-picker {
+  height: 100vh;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#movement-picker h4 {
+  text-align: center;
+  margin-top: 4.5rem;
+}
+
+#movement-picker > img {
+  max-width: 260px;
+  width: 50%;
+  min-width: 200px;
+  resize: both;
+  margin: auto auto auto auto;
+  display: block;
+  margin-bottom: 3rem;
+}
+
+#movement-picker > ion-card {
+  margin-bottom: 1.5rem;
+}
+
+.centering {
+  text-align: center;
+}
+
+#slides{
+  height: 450px;
+  width: 300px;
+  margin: 0 auto;
+}
+
+#vertical-next,
+#vertical-prev {
+    left: 50%;
+    transform: rotate(90deg);
+    transform-origin: left center;
+  }
+
+  #vertical-prev {
+    top: 10px;
+  }
+
+  #vertical-next {
+    top: auto;
+    bottom: 10px;
+  }
+
+  .outer-slide{
+    min-height: 50px;
+    margin-top: 10px;
+    overflow: scroll;overflow-y:scroll;
+  }
+
+.caret-row{
+  width: 100%;
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+.caret-column{
+  height: 100%;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+#tile-gui{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: 16px auto 16px;
+}
+
+#up{
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+#down{
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+#left{
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+#right{
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.movement-type-container{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+
+#movement-type{
+  font-size: large;
+}

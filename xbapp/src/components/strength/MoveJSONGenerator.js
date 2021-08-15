@@ -1,23 +1,3 @@
-import React, { useState, useEffect } from "react";
-import {
-  IonSlides,
-  IonSlide,
-  IonButton,
-  IonItem,
-  IonTitle,
-  IonItemDivider,
-} from "@ionic/react";
-import { connect } from "react-redux";
-
-import MovementInfoCard from "./MovementInfoCard";
-
-import "./MovementPicker.css";
-import { createNoSubstitutionTemplateLiteral } from "typescript";
-
-/**
- * The list of moves.
- * TODO: Make this not hard-coded!
- */
 const moves = [
   /**
    * Squats
@@ -984,318 +964,45 @@ const moves = [
   },
 ];
 
-/**
- * Pick movements from a list
- * Props:
-    onSubmit: a callback that's fired when a list of movements has been chosen
-    number: The number of movements to choose
- */
-const MovementPicker = (props) => {
-  const [rate, setRate] = useState(null);
-  const [corrRefSelected, setCorrRefSelected] = useState([]);
-
-  // Number of movements to pick
-  var number = props.number;
-
-  var type = props.type ? props.type : false;
-
-  var showPush = false,
-    showPull = false;
-
-  if (type === false) {
-    showPush = true;
-    showPull = true;
-  } else if (type == "pull") {
-    showPush = false;
-    showPull = true;
-  } else if (type == "push") {
-    showPush = true;
-    showPull = false;
-  }
-
-  var txtAdd = number > 1 ? "Add to Selection" : "Select";
-  var txtRem = "Remove from Selection";
-
-  const [picked, setPicked] = useState([]);
-
-  function change(list) {
-    if (props.onChange) {
-      // console.log("New selection", list);
-      props.onChange(list);
-    }
-  }
-
-  const slideOpts = {
-    initialSlide: 0,
-    speed: 400,
-  };
-
-  var movesPull = [];
-  var movesPush = [];
-
-  var toUpdate = [];
-  for (var m of moves) {
-    if (m.technique != "isolateral") {
-      toUpdate.push({ id: m.id, selection: "false" });
+function writeAuthFile(data, success, fail) {
+  var fs = require("fs");
+  fs.writeFile("auth.json", JSON.stringify(data), function (error) {
+    if (error) {
+      console.log("[write auth]: " + err);
+      if (fail) fail(error);
     } else {
-      toUpdate.push({ id: m.id + "1", selection: "false" });
-      toUpdate.push({ id: m.id + "2", selection: "false" });
+      console.log("[write auth]: success");
+      if (success) success();
     }
-  }
-  for (var m of moves) {
-    (function (m) {
-      // Trap m in a closure
+  });
+}
 
-      //check the week for moves to exclude
-      if (props.week) {
-        // console.log("checking move");
-        if (props.week == 3) {
-          if (
-            m.technique == "isolateral" ||
-            m.name == "Hinge 5: The Swimmer" ||
-            m.name == "Hinge 7: Hollow Body Position"
-          ) {
-            // console.log("move excluded");
-            return;
-          }
-        } else if (props.week == 4 || props.week == 5) {
-          if (
-            (props.blocknum == 1 || props.blocknum == 2) &&
-            m.technique == "bilateral"
-          ) {
-            //excluding bilateral from block 1 and 2
-            return;
-          } else if (props.blocknum == 3 && m.technique == "isolateral") {
-            //excluding isolateral from block 3
-            return;
-          }
-        }
-      }
+function getMovementFromId(id) {
+  const movement = moves.find((alternative, index) => {
+    return alternative.id === id;
+  });
+  return movement;
+}
 
-      //if we are in week 4/5, it means we can give folks the chance of doing the SAME isolateral move in a block
-      if (m.technique == "isolateral" && props.week >= 4) {
-        /*so instead of adding the same isolateral move to both sliders,
-         * we are going to create 2 of the same kind, change their keys, and add them to the sliders
-         * it seems the key that we create here at the top remains as the LAST value
-         * so when re-checking whether a move is "selected", we will be using the BUTTON classNAme rather than the computed key
-         * these KEYS will have a 1 and a 2 at the end (for each isolateral move)
-         */
-        for (var i = 1; i < 3; i++) {
-          //computed key
-          var keyForId = m.id + i.toString();
-
-          //selected value to update the buton text
-          var selected = picked.includes(keyForId);
-          var card = (
-            <IonSlide className="movementSlides">
-              <div
-                style={{
-                  overflow: "auto",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: "40px",
-                }}
-              >
-                <MovementInfoCard
-                  titleSize={"normal"}
-                  key={keyForId}
-                  className={!selected ? "" : "selected"}
-                  name={m.name}
-                  text={m.text}
-                  images={m.images}
-                >
-                  <IonButton
-                    key={keyForId}
-                    className={keyForId}
-                    onClick={(event) => {
-                      //since keyForId cannot be retrieved, we can retrieve the classNAme
-                      var referenceKey = event.target.className.split(" ")[0];
-                      selected = picked.includes(referenceKey);
-                      //Onclick, toggle whether this move is in the list
-                      if (selected) {
-                        //console.log("Remove", referenceKey);
-                        var newpicked = [];
-                        for (var p of picked) {
-                          if (p != referenceKey) {
-                            newpicked.push(p);
-                          }
-                        }
-                        setPicked(newpicked);
-                        //before updating the list back through props, we remove teh 1s and 2s at the end of the move name
-                        var toUpdate = [];
-                        for (var i = 0; i < newpicked.length; i++) {
-                          var mov2 = newpicked[i];
-                          var lastString = mov2.charAt(mov2.length - 1);
-                          if (/\d/.test(lastString)) {
-                            //if the last char is a digit
-                            mov2 = mov2.slice(0, -1);
-                          }
-                          toUpdate.push(mov2);
-                        }
-                        change(toUpdate);
-                      } else {
-                        //adding the move to the list
-                        var newpicked = picked.concat([referenceKey]);
-                        setPicked(newpicked);
-                        var toUpdate = [];
-                        for (var i = 0; i < newpicked.length; i++) {
-                          var mov2 = newpicked[i];
-                          var lastString = mov2.charAt(mov2.length - 1);
-                          if (/\d/.test(lastString)) {
-                            //if the last char is a digit
-                            mov2 = mov2.slice(0, -1);
-                          }
-                          toUpdate.push(mov2);
-                        }
-                        change(toUpdate);
-                      }
-                    }}
-                  >
-                    {!selected ? txtAdd : txtRem}
-                  </IonButton>
-                </MovementInfoCard>
-              </div>
-            </IonSlide>
-          );
-          if (i == 1) {
-            movesPush.push(card);
-          } else {
-            movesPull.push(card);
-          }
-        }
-      } else {
-        //for all other moves that are non isolateral (in week 4/5) or ALL MOVES (non week 4/5), we just add them where they belong
-        var selected = picked.includes(m.id);
-
-        var movementCard = (
-          <IonSlide className="movementSlides">
-            <div
-              style={{
-                overflow: "auto",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginBottom: "40px",
-              }}
-            >
-              <MovementInfoCard
-                titleSize={"normal"}
-                key={m.id}
-                className={!selected ? "" : "selected"}
-                name={m.name}
-                text={m.text}
-                images={m.images}
-              >
-                <IonButton
-                  onClick={() => {
-                    // Onclick, toggle whether this move is in the list
-                    if (selected) {
-                      // console.log("Remove", m);
-                      var newpicked = [];
-                      for (var p of picked) {
-                        if (p != m.id) {
-                          newpicked.push(p);
-                        }
-                      }
-                      setPicked(newpicked);
-                      change(newpicked);
-                    } else {
-                      var newpicked = picked.concat([m.id]);
-                      setPicked(newpicked);
-                      change(newpicked);
-                    }
-                  }}
-                >
-                  {!selected ? txtAdd : txtRem}
-                </IonButton>
-              </MovementInfoCard>
-            </div>
-          </IonSlide>
-        );
-        if (m.type == "push") {
-          movesPush.push(movementCard);
-        } else {
-          movesPull.push(movementCard);
-        }
-      }
-    })(m);
-  }
-
-  var rem = number - picked.length;
-
-  var msg;
-
-  if (rem == 0) {
-    msg = false;
-  } else if (rem == 1) {
-    msg = <>Choose {rem} more movement</>;
-  } else if (rem < number) {
-    msg = <>Choose {rem} more movements</>;
-  } else {
-    msg = <>Choose {number} movements</>;
-  }
-
-  var mbox = "";
-  if (msg !== false) {
-    mbox = (
-      <div className="instruction" slot="fixed">
-        <p>{msg}</p>
-      </div>
-    );
-  }
-
-  var push = "";
-  if (showPush) {
-    push = (
-      <>
-        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-          {movesPush}
-        </IonSlides>
-      </>
-    );
-  }
-
-  var pull = "";
-  if (showPull) {
-    var pull = (
-      <>
-        <IonSlides pager={true} options={slideOpts} className="slidesCharts">
-          {movesPull}
-        </IonSlides>
-      </>
-    );
-  }
-
-  return (
-    <>
-      {mbox}
-      <div id="movementChoices">
-        {push}
-        {showPush && showPull ? <IonItemDivider></IonItemDivider> : ""}
-        {pull}
-      </div>
-    </>
-  );
-};
-
-export default MovementPicker;
-
-var getMove = function (id) {
-  //checking to see if there are 2 isolateral moves i.e. pull1, pull2 or pull2, push1
-  var idToUse = id;
-  var lastString = id.charAt(id.length - 1);
-  if (/\d/.test(lastString)) {
-    //if the last char is a digit
-    idToUse = idToUse.slice(0, -1);
-  }
-  for (var i in moves) {
-    var m = moves[i];
-
-    if (m.id == idToUse) {
-      return m;
+const Moves = { moves: moves };
+// Create file of Moves
+// writeAuthFile(Moves);
+// An array of object that contain the type: "pull" key-value pair
+const pullMoves = Moves.moves.filter((obj) => {
+  return obj.type === "pull";
+});
+const pushMoves = Moves.moves.filter((obj) => {
+  return obj.type === "push";
+});
+const missing =[]
+// Code to find missing exercises
+for (let i=0;i<moves.length;++i){
+  const move = moves[i];
+  for(let j=0;j<move.alternative.length;++j){
+    const id = move.alternative[j]
+    if (typeof getMovementFromId(id) == "undefined"){
+      console.log("Move", move.id, "has move that does not exist:", id);
     }
   }
 
-  return false;
-};
-
-export { moves, getMove };
+}
