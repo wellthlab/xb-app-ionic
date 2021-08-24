@@ -14,7 +14,7 @@ var store = configureStore({
     account: Account,
     teams: Teams,
     experiments: Experiments,
-    feed: Feed
+    feed: Feed,
   }),
 
   // Disable warnings about passing nonserializable values into actions

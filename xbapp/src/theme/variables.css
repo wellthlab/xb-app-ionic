@@ -2,13 +2,13 @@
 http://ionicframework.com/docs/theming/ */
 
 @font-face {
-    font-family: "Nunito";
-    src: url("../fonts/Nunito-Regular.ttf") format("truetype");
+  font-family: "Nunito";
+  src: url("../fonts/Nunito-Regular.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "Nunito-SemiBold";
-    src: url("../fonts/Nunito-SemiBold.ttf") format("truetype");
+  font-family: "Nunito-SemiBold";
+  src: url("../fonts/Nunito-SemiBold.ttf") format("truetype");
 }
 
 ion-content {
@@ -18,11 +18,19 @@ ion-content {
   padding-right: 1.5rem;
 }
 
-ion-modal .ion-page > ion-content, ion-modal .ion-page > ion-content > div {
+ion-modal .ion-page > ion-content,
+ion-modal .ion-page > ion-content > div {
   padding: 0 1.5rem;
 }
 
-h1, h2, h3, h4, ion-title, ion-card-title, ion-card-subtitle, ion-button {
+h1,
+h2,
+h3,
+h4,
+ion-title,
+ion-card-title,
+ion-card-subtitle,
+ion-button {
   font-family: "Nunito-SemiBold", sans-serif;
 }
 

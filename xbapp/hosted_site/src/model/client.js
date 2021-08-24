@@ -29,12 +29,16 @@ function XBClient() {
   self.resetPassword = async function (token, tokenId, password) {
     console.log(token, tokenId, password, sha512(password));
     try {
-      await self.realm.emailPasswordAuth.resetPassword(token, tokenId, sha512(password));
+      await self.realm.emailPasswordAuth.resetPassword(
+        token,
+        tokenId,
+        sha512(password)
+      );
       return true;
     } catch (err) {
       throw Error(err.message);
     }
-  }
+  };
 }
 
 var xbclient = false;

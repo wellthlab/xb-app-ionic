@@ -23,7 +23,8 @@
   overflow-y: scroll;
 }
 
-#tutorial ion-card-header, #tutorial ion-card-content {
+#tutorial ion-card-header,
+#tutorial ion-card-content {
   text-align: left;
 }
 

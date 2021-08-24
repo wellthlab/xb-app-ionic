@@ -52,7 +52,7 @@ function LOAD_TEAMS_IF_REQD(client, store, controllers) {
 
   var f = state.teams.fetching;
   var l = state.teams.loaded;
-  if(!f && !l) {
+  if (!f && !l) {
     console.log("Refresh is required", f, l);
     controllers.LOAD_TEAMS();
   } else {
@@ -123,20 +123,19 @@ async function GET_TEAM_RESPONSES(client, store, controllers, teamid) {
 /**
  * Refresh the content feed
  */
-let Parser = require('rss-parser');
+let Parser = require("rss-parser");
 let parser = new Parser();
 
 async function GET_FEED(client, store, controllers) {
-
   store.dispatch(CLEAR_FEED());
 
-
-
-  const feed = await parser.parseURL('https://svm00146.ecs.soton.ac.uk/xb/feed.rss');
+  const feed = await parser.parseURL(
+    "https://svm00146.ecs.soton.ac.uk/xb/feed.rss"
+  );
 
   var n = 0;
   var time = Date.now();
-  feed.items.forEach(item => {
+  feed.items.forEach((item) => {
     item.type = "news"; // RSS items are 'news' posts
     item.id = "rss-" + time + "-" + n++;
     item.date = item.date ? Date.parse(item.date).getTime() : time;
@@ -144,8 +143,6 @@ async function GET_FEED(client, store, controllers) {
 
   store.dispatch(SET_FEED(feed.items));
 }
-
-
 
 function getControllers(store, client) {
   var out = { client: client, store: store };
@@ -158,7 +155,7 @@ function getControllers(store, client) {
     JOIN_TEAM,
     CREATE_TEAM,
     ADD_RESPONSE,
-    GET_FEED
+    GET_FEED,
   };
 
   for (var n of Object.keys(controllers)) {
