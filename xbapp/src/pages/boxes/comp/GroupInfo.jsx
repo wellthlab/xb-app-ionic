@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import XBHeader from "../../components/XBHeader";
 
 import { connect } from "react-redux";
-import MinutesChart from "../../components/minutesChart";
+import MinutesChart from "../../../components/minutesChart";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -40,16 +39,16 @@ import {
   documentText,
   informationCircleOutline,
 } from "ionicons/icons";
-import Instructions from "../../components/Instructions";
+import Instructions from "../../../components/Instructions";
 
-import { addControllersProp } from "../../model/controllers";
+import { addControllersProp } from "../../../model/controllers";
 
-import DailyJournal from "../../components/journal/DailyJournal";
-import DailyActions from "../../components/DailyActions";
+import DailyJournal from "../../../components/journal/DailyJournal";
+import DailyActions from "../../../components/DailyActions";
 
-import "./Group.scss";
+import "./GroupInfo.scss";
 
-const Group = ({ match, teams, controllers, account }) => {
+const Group = ({ group, controllers, match }) => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
   function toggleAlert() {
@@ -63,38 +62,6 @@ const Group = ({ match, teams, controllers, account }) => {
   console.log(view, match.params);
 
   const [showMenu, setShowMenu] = useState(false);
-
-  // Load team data if required; mostly useful during development
-  controllers.LOAD_TEAMS_IF_REQD();
-
-  // Wait for teams to be loaded
-  if (teams.fetching) {
-    return (
-      <IonPage id="weekInfo">
-        <XBHeader></XBHeader>
-        <IonContent>
-          <ion-spinner name="crescent" />
-        </IonContent>
-      </IonPage>
-    );
-  }
-
-  /**
-   * Look up the group
-   */
-  var gid = match.params.id; // Group ID comes from route
-  var group = false;
-  for (var g of teams.teams) {
-    // Find the group in the store
-    if (g._id == gid) {
-      group = g;
-    }
-  }
-
-  // Check the active day is set, and that group is found etc.
-  if (group === false) {
-    return <IonPage>Nope :(</IonPage>;
-  }
 
   var content = "";
 
@@ -233,9 +200,7 @@ const Group = ({ match, teams, controllers, account }) => {
   };
 
   return (
-    <IonPage id="weekInfo">
-      <XBHeader title={group.name}></XBHeader>
-      <IonContent>
+      <>
         <IonSegment onIonChange={setSegment} value={view}>
           <IonSegmentButton value="info">
             <IonIcon icon={informationCircleOutline} /> Info
@@ -252,17 +217,13 @@ const Group = ({ match, teams, controllers, account }) => {
         </IonSegment>
 
         {content}
-      </IonContent>
-    </IonPage>
+      </>
   );
 };
 
 export default connect(
   (state, ownProps) => {
     return {
-      account: state.account,
-      teams: state.teams,
-      boxes: state.boxes,
     };
   },
   {

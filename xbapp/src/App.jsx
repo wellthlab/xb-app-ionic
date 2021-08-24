@@ -46,7 +46,6 @@ import OptionTabs from "./OptionTabs";
 import Notifications from "./pages/Notifications";
 import ExpList from "./pages/ExpList";
 
-import Group from "./pages/boxes/Group.jsx";
 import GroupCharts from "./pages/boxes/Charts";
 import Day from "./pages/boxes/Day";
 
@@ -129,8 +128,8 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
-              <Route path="/group/:id/:page" component={Group} exact={true} />
-              <Route path="/group/:id/" component={Group} exact={true} />
+              {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
+              {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/group" component={ExpList} exact={true} />
               <Route path="/feed" component={Feed} exact={true} />
               <Route path="/account" component={Account} exact={true} />
@@ -163,13 +162,13 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               * TODO: Pass box type in the URL on these; linked from the relevant box page
               */
               <Route
-                path="/start/group/:id"
+                path="/start/join/:expid"
                 component={JoinTeam}
                 exact={true}
               />
 
               // Create a new team
-              <Route path="/start/create/:id" component={CreateTeam} exact={true} />
+              <Route path="/start/create/:expid" component={CreateTeam} exact={true} />
 
 
               <Route path="/tutorial" component={Tutorial} exact={true} />

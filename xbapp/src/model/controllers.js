@@ -27,7 +27,7 @@ import { CLEAR_FEED, SET_FEED, ADD_FEED } from "./slices/Feed";
 
 /**
  * These controller functions will be returned by getControllers
- * - they'll be wrapped so that client and store are provided
+ * - they'll be wrapped so that client, store and controllers are provided
  */
 
 function LOAD_TEAMS(client, store, controllers) {

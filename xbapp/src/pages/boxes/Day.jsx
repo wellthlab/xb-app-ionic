@@ -31,8 +31,6 @@ import { addControllersProp } from "../../model/controllers";
 
 import DailyJournal from "../../components/journal/DailyJournal";
 
-import "./Group.scss";
-
 const Group = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();

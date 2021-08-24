@@ -254,6 +254,7 @@ function XBClient() {
       return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
     } catch (e) {
       console.log(e);
+      return {success: false, message: "An unexpected error occured"}
     }
   };
 

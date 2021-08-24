@@ -5,7 +5,6 @@ import {
 } from "@reduxjs/toolkit";
 import Account from "./slices/Account";
 import Teams from "./slices/Teams";
-import Boxes from "./slices/Boxes";
 import Experiments from "./slices/Experiments";
 import Feed from "./slices/Feed";
 
@@ -14,7 +13,6 @@ var store = configureStore({
   reducer: combineReducers({
     account: Account,
     teams: Teams,
-    boxes: Boxes,
     experiments: Experiments,
     feed: Feed
   }),

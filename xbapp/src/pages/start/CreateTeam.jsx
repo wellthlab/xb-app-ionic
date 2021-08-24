@@ -13,12 +13,18 @@ import "./CreateTeam.scss";
 const CreateTeam = (props) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [expid, setExpid] = useState("6075b6b384e4a536be04e75a"); // Defaults to the strength challenge
+  const [expid, setExpid] = useState(
+    props.match.params.expid ? props.match.params.expid : false
+  ); // Defaults to the strength challenge
   const [creating, setCreating] = useState(false); // Track if a create operation has been attempted
 
   function create(name, desc, expid) {
     setCreating(true);
     props.controllers.CREATE_TEAM(name, desc, expid);
+  }
+
+  if(expid === false) {
+    return <>No expid :(</>;
   }
 
   var content;
@@ -76,19 +82,19 @@ const CreateTeam = (props) => {
     content = (
       <>
         <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
-          Choose a name for your experiment, and optionally enter a description.
+          Choose a name for your team, and optionally enter a description.
         </p>
         <div className="centering">
           <IonInput
             type="text"
-            placeholder="Experiment Name (e.g. Jane's Movement Minutes)"
+            placeholder="Team Name"
             onIonChange={(e) => {
               setName(e.detail.value);
             }}
           ></IonInput>
           <IonInput
             type="text"
-            placeholder="Experiment Description (e.g. The Finance Team get fit!)"
+            placeholder="Team Description"
             onIonChange={(e) => {
               setDesc(e.detail.value);
             }}

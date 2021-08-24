@@ -144,7 +144,7 @@ const TeamSlice = createSlice({
       state.fetching = false;
       state.loaded = true;
 
-      // Add extra info to each teams
+      // Add extra info to each team
       for (var i in state.teams) {
         var team = state.teams[i];
 
@@ -166,6 +166,17 @@ const TeamSlice = createSlice({
           Math.min(1, team.experiment.day),
           Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experment duration
         );
+      }
+
+      // Organise teams by box
+      state.teams.bybox = { };
+
+      for(var t of state.teams) {
+        if(typeof t.experiment.info.boxType !== 'undefined') {
+          if(typeof state.teams.bybox[t.experiment.info.boxType] == 'undefined')
+            state.teams.bybox[t.experiment.info.boxType] = [];
+          state.teams.bybox[t.experiment.info.boxType].push(t);
+        }
       }
     },
 

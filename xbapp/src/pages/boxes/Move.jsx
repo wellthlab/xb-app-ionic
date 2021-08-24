@@ -13,19 +13,41 @@ import {
   IonTitle,
 } from "@ionic/react";
 import XBHeader from "../../components/XBHeader";
+import Enroller from "./comp/Enroller";
+import GroupInfo from "./comp/GroupInfo"
 import "./Move.scss";
 import { connect } from "react-redux";
+import WithXBSlice from "../../components/util/WithXBSlice";
+import { addControllersProp } from "../../model/controllers";
 
-const EatPage = (props) => {
+
+const MovePage = (props) => {
+
+  // Ask the user to enrol in a move experiment; or show current experiment info
+  if(!props.teams.teams.bybox['move']) {
+    var content = <Enroller boxtype="move" />
+  } else {
+    var content = <GroupInfo group={props.teams.teams.bybox['move'][0]} match={props.match}></GroupInfo>
+  }
+
   return (
     <IonPage>
       <XBHeader title="Move"></XBHeader>
       <IonContent>
-        <h4>Move</h4>
-        <p>TODO</p>
+        {content}
       </IonContent>
     </IonPage>
   );
 };
 
-export default EatPage;
+export default connect(
+  (state, ownProps) => {
+    return {
+      teams: state.teams,
+      experiments: state.experiments,
+    };
+  },
+  {
+    // Actions to include as props
+  }
+)(addControllersProp(WithXBSlice(MovePage, "teams", (props) => { props.controllers.LOAD_TEAMS_IF_REQD(); })));
