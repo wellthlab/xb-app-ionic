@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import Strength21 from "../../experiments/Strength21";
+
+
 const initialState = {
   teams: [],
   fetching: false,
@@ -147,7 +150,10 @@ const TeamSlice = createSlice({
       state.fetching = false;
       state.loaded = true;
 
-      // Add extra info to each team
+      /**
+       * Experiment Status Information
+       * Day number, week number, current stage, daily entries
+       */
       for (var i in state.teams) {
         var team = state.teams[i];
 
@@ -157,21 +163,78 @@ const TeamSlice = createSlice({
           new Date(team.experiment.start)
         );
 
+        // Week number
+        var week = Math.floor((team.experiment.day - 1) / 7) + 1;
+        var dayOfWeek =
+          team.experiment.day - (week - 1) * 7 == 0
+            ? "7"
+            : (team.experiment.day - (week - 1) * 7).toString();
+        team.experiment.week = week;
+        team.experiment.dayOfWeek = dayOfWeek;
+
         // Current experiment phase info
         var stage = dayStage(team.experiment.day, team.experiment.info.stages);
         //console.log("Day", team.experiment.day, "Stages", team.experiment.info.stages);
         team.experiment.current_stage = team.experiment.info.stages[stage];
-
-        // Compile responses into daily entries
-        team.entries = dayify(
-          team.responses.own.responses,
-          team.experiment.start,
-          Math.min(1, team.experiment.day),
-          Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experment duration
-        );
       }
 
-      // Organise teams by box
+      /**
+       * Compile responses into daily blocks
+       */
+      for(var i in state.teams) {
+        var team = state.teams[i];
+
+         team.entries = dayify(
+           team.responses.own.responses,
+           team.experiment.start,
+           Math.min(1, team.experiment.day),
+           Math.min(team.experiment.day, team.experiment.info.duration) // Don't exceed experiment duration
+         );
+      }
+
+      // Set a default experiment type if it's not set in the database
+      if(typeof team.experiment.info.type == 'undefined') {
+        console.warn("Experiment type is not set", team.experiment);
+        team.experiment.type = "_unknown_type";
+      } else {
+        team.experiment.type = team.experiment.info.type;
+      }
+
+
+      // Tasks: Create/fill-in a blank tasks object to track required/optional daily tasks
+      // Tasks can either be defined in the database; or added by the experiment-specific code that's called next
+      if(typeof team.experiment.tasks == 'undefined')
+        team.experiment.tasks = {};
+
+      for(var day = 1; day <= team.experiment.day; day++) {
+        if(typeof team.experiment.tasks[day] == 'undefined')
+          team.experiment.tasks[day] = { required: [], optional: [] };
+      }
+
+
+      /**
+       * Decorate with additional fields, using any registered experiment modules
+       * All experiment-specific code MUST go into another module; DO NOT WRITE IT HERE!
+       */
+      switch(team.experiment.type) {
+
+        case 'strength21':
+          Strength21.decorateTeam(team);
+          break;
+
+        default:
+          console.warn("Experiment is not a known type");
+          break;
+
+      }
+
+
+
+
+      /**
+       * BY-BOX VIEW
+       * Organise teams by box
+       */
       state.teams.bybox = { };
 
       for(var t of state.teams) {
@@ -181,6 +244,9 @@ const TeamSlice = createSlice({
           state.teams.bybox[t.experiment.info.boxType].push(t);
         }
       }
+
+
+
     },
 
     /**
@@ -208,7 +274,12 @@ const TeamSlice = createSlice({
         return;
       }
 
-      // TODO: Pre-process the response data to generate e.g. summaries, totals....
+      /**
+       * TODO: This all needs refactoring. Suggest handing responses off to a
+       * processor stipulated by the experiment that created it. Then this code
+       * is experiment-agnostic and won't get out of hand.
+       *
+       */
 
       //number of days
       var dayData = team.entries;
@@ -267,8 +338,8 @@ const TeamSlice = createSlice({
             nrOfDayMood[correspondingDay] += 1;
           }
         }
-        //process feeling data with averaged weights making use of unweightedFeelingIndividual
 
+        //process feeling data with averaged weights making use of unweightedFeelingIndividual
         var feelingIndividual = [];
         let perceptionMovingAverage = 0;
         for (let eachMood of unweightedFeelingIndividual) {
@@ -307,6 +378,8 @@ const TeamSlice = createSlice({
 
       team.responses.groupMinuteAverage = groupMinutesAverages;
       team.responses.groupMoodAverage = groupMoodAverages;
+
+
       team.responses.fetching = false;
       team.responses.all = responses;
     },

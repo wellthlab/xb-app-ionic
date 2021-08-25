@@ -13,13 +13,13 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import { getMove } from "../strength/MovementPicker";
+import { getMove } from "../../../components/strength/MovementPicker";
 
 import { heart, arrowForward, caretForward, timer } from "ionicons/icons";
 
 import "./JournalFeed.css";
 
-import { MoodImages, MoodStringsRelative } from "../user_input/MoodPicker";
+import { MoodImages, MoodStringsRelative } from "../../../components/user_input/MoodPicker";
 
 const JournalFeed = ({ responses }) => {
   function renderItem(r) {
@@ -214,7 +214,7 @@ const JournalFeed = ({ responses }) => {
                 </IonItem>
 
                 {/*if mood exists
-                mood passed as argument falls within -2 and 2. 
+                mood passed as argument falls within -2 and 2.
                 SO we need to add + 3 in order to correspond to the values on MoodImages and MoodStringsRelative*/}
                 {r.mood > -3 ? (
                   <>

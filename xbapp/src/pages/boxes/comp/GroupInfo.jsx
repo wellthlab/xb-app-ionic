@@ -43,8 +43,8 @@ import Instructions from "../../../components/Instructions";
 
 import { addControllersProp } from "../../../model/controllers";
 
-import DailyJournal from "../../../components/journal/DailyJournal";
-import DailyActions from "../../../components/DailyActions";
+import DailyJournal from "../journal/DailyJournal";
+import DailyActions from "./DailyActions";
 
 import "./GroupInfo.scss";
 
@@ -143,19 +143,6 @@ const Group = ({ group, controllers, match }) => {
     /**
      * Journal & Charts
      */
-    const list = (
-      <IonList>
-        <IonListHeader>Ionic</IonListHeader>
-        <IonItem button>Learn Ionic</IonItem>
-        <IonItem button>Documentation</IonItem>
-        <IonItem button>Showcase</IonItem>
-        <IonItem button>GitHub Repo</IonItem>
-        <IonItem lines="none" detail={false} button onClick={false}>
-          Close
-        </IonItem>
-      </IonList>
-    );
-
     content = (
       <>
         <DailyJournal

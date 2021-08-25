@@ -117,28 +117,22 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
         <IonTabs>
           <IonRouterOutlet id="appContent">
             <Switch>
+
+              <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
-                path="/group/:id/:day/add/:type"
-                component={AddResponse}
+                path="/"
+                render={() => <Redirect to="/feed" />}
                 exact={true}
               />
-              <Route
-                path="/group/:id/charts"
-                component={GroupCharts}
-                exact={true}
-              />
+
+
               {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
               {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
               {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
-              <Route path="/group" component={ExpList} exact={true} />
+
+
               <Route path="/feed" component={Feed} exact={true} />
-              <Route path="/account" component={Account} exact={true} />
-              <Route path="/about" component={About} exact={true} />
-              <Route
-                path="/forgot-password"
-                component={ForgotPassword}
-                exact={true}
-              />
+
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -159,6 +153,29 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               />
 
               /**
+               * Experiment list - Deprecated
+               */
+              <Route path="/group" component={ExpList} exact={true} />
+
+              /**
+               * Data entry / tasks
+               */
+              <Route
+                path="/group/:id/:day/add/:type"
+                component={AddResponse}
+                exact={true}
+              />
+
+              /**
+               * Charts
+               */
+              <Route
+                path="/group/:id/charts"
+                component={GroupCharts}
+                exact={true}
+              />
+
+              /**
               * TODO: Pass box type in the URL on these; linked from the relevant box page
               */
               <Route
@@ -171,17 +188,26 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/start/create/:expid" component={CreateTeam} exact={true} />
 
 
-              <Route path="/tutorial" component={Tutorial} exact={true} />
-              <Route
-                path="/"
-                render={() => <Redirect to="/feed" />}
-                exact={true}
-              />
+
+
+
+
               <Route
                 path="/register"
                 render={() => <Redirect to="/feed" />}
                 exact={true}
               />
+
+              <Route path="/account" component={Account} exact={true} />
+
+              <Route
+                path="/forgot-password"
+                component={ForgotPassword}
+                exact={true}
+              />
+
+              <Route path="/about" component={About} exact={true} />
+
             </Switch>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">

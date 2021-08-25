@@ -220,12 +220,16 @@ function XBClient() {
   /**
    * Create a new team
    */
-  self.createTeam = async function (name, desc, expid, start) {
+  self.createTeam = async function (name, desc, expid, start, parentTeam) {
     var db = getDb();
 
     var collection = db.collection("teams");
 
     var code = genID(6);
+
+    // Parent team defaults to none
+    if(typeof parentTeam == 'undefined')
+      parentTeam = "";
 
     const team = {
       name: name,
@@ -236,6 +240,7 @@ function XBClient() {
         start: start,
       },
       users: [self.realm.currentUser.id],
+      parentTeam: string2ID(parentTeam)
     };
 
     try {
@@ -285,7 +290,7 @@ function XBClient() {
       console.log(e);
       return { success: false, message: e.message };
     }
-
+    
     return { success: true };
   };
 

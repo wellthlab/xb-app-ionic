@@ -14,7 +14,7 @@ import "./Enroller.scss";
 import {connect} from 'react-redux';
 
 
-const Enroller = ({boxtype}) => {
+const Enroller = ({boxtype, expid}) => {
 
   // Look up experiment ID based on box type
   // TODO: Eventually we'll want to look these up?

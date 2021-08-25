@@ -29,7 +29,7 @@ import Instructions from "../../components/Instructions";
 
 import { addControllersProp } from "../../model/controllers";
 
-import DailyJournal from "../../components/journal/DailyJournal";
+import DailyJournal from "./journal/DailyJournal";
 
 const Group = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
