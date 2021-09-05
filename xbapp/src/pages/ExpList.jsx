@@ -15,12 +15,10 @@ import { add } from "ionicons/icons";
 
 import ExperimentList from "../components/ExperimentList";
 
-
 import { addControllersProp } from "../model/controllers";
 
 import { connect } from "react-redux";
 const autoBindReact = require("auto-bind/react");
-
 
 class ExpList extends Component {
   constructor(props) {
@@ -29,14 +27,13 @@ class ExpList extends Component {
   }
 
   render() {
-
     console.log("Teams", this.props.teams.teams);
 
     return (
       <IonPage>
         <XBHeader title="Experiments"></XBHeader>
         <IonContent>
-        <ExperimentList teams={this.props.teams.teams} />
+          <ExperimentList teams={this.props.teams.teams} />
           <IonFab vertical="bottom" horizontal="end" slot="fixed">
             <IonFabButton routerLink="/start">
               <IonIcon icon={add} />
@@ -59,4 +56,12 @@ export default connect(
   {
     // Actions to include as props
   }
-)(addControllersProp(withRouter(WithXBSlice(ExpList, "teams", (props) => { props.controllers.LOAD_TEAMS_IF_REQD(); }))));
+)(
+  addControllersProp(
+    withRouter(
+      WithXBSlice(ExpList, "teams", (props) => {
+        props.controllers.LOAD_TEAMS_IF_REQD();
+      })
+    )
+  )
+);

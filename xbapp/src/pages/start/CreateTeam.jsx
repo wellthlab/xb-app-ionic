@@ -23,7 +23,7 @@ const CreateTeam = (props) => {
     props.controllers.CREATE_TEAM(name, desc, expid);
   }
 
-  if(expid === false) {
+  if (expid === false) {
     return <>No expid :(</>;
   }
 

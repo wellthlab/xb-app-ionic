@@ -26,7 +26,7 @@ import {
   newspaperOutline,
   settingsOutline,
   fastFoodOutline,
-  bicycleOutline
+  bicycleOutline,
 } from "ionicons/icons";
 
 // Redux stuff
@@ -37,6 +37,8 @@ import Account from "./pages/account/Account";
 import Feed from "./pages/Feed";
 import About from "./pages/info/About";
 import Tutorial from "./pages/info/Tutorial.jsx";
+import MoveTutorial from "./pages/MoveTutorial";
+import Timeline from "./pages/Timeline";
 
 import Register from "./pages/account/Register.jsx";
 import Login from "./pages/account/Login.jsx";
@@ -55,7 +57,6 @@ import CreateTeam from "./pages/start/CreateTeam";
 import EatPage from "./pages/boxes/Eat";
 import MovePage from "./pages/boxes/Move";
 import AddResponse from "./pages/boxes/AddResponse";
-
 
 import getXBClient from "./model/client";
 
@@ -117,97 +118,69 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
         <IonTabs>
           <IonRouterOutlet id="appContent">
             <Switch>
-
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
                 render={() => <Redirect to="/feed" />}
                 exact={true}
               />
-
-
               {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
               {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
               {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
-
-
               <Route path="/feed" component={Feed} exact={true} />
-
               <Route
                 path="/notifications"
                 component={Notifications}
                 exact={true}
               />
               <Route path="/settings" component={OptionTabs} exact={true} />
-
-              <Route
-                path="/box/eat"
-                component={EatPage}
-                exact={true}
-              />
-
-              <Route
-                path="/box/move"
-                component={MovePage}
-                exact={true}
-              />
-
-              /**
-               * Experiment list - Deprecated
-               */
+              <Route path="/box/eat" component={EatPage} exact={true} />
+              <Route path="/box/move" component={MovePage} exact={true} />
+              /** * Experiment list - Deprecated */
               <Route path="/group" component={ExpList} exact={true} />
-
-              /**
-               * Data entry / tasks
-               */
+              /** * Data entry / tasks */
               <Route
                 path="/group/:id/:day/add/:type"
                 component={AddResponse}
                 exact={true}
               />
-
-              /**
-               * Charts
-               */
+              /** * Charts */
               <Route
                 path="/group/:id/charts"
                 component={GroupCharts}
                 exact={true}
               />
-
-              /**
-              * TODO: Pass box type in the URL on these; linked from the relevant box page
-              */
+              /** * TODO: Pass box type in the URL on these; linked from the
+              relevant box page */
               <Route
                 path="/start/join/:expid"
                 component={JoinTeam}
                 exact={true}
               />
-
               // Create a new team
-              <Route path="/start/create/:expid" component={CreateTeam} exact={true} />
-
-
-
-
-
-
+              <Route
+                path="/start/create/:expid"
+                component={CreateTeam}
+                exact={true}
+              />
               <Route
                 path="/register"
                 render={() => <Redirect to="/feed" />}
                 exact={true}
               />
-
               <Route path="/account" component={Account} exact={true} />
-
+              <Route path="/timeline" component={Timeline} exact={true} />
+              <Route
+                path="/movetutorial"
+                component={MoveTutorial}
+                exact={true}
+              />
               <Route
                 path="/forgot-password"
                 component={ForgotPassword}
                 exact={true}
               />
-
               <Route path="/about" component={About} exact={true} />
-
             </Switch>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">

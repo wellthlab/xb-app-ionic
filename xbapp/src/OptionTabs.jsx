@@ -1,6 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
-import { Redirect, Route } from "react-router-dom";
-import { Switch } from "react-router";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import WithXBSlice from "./components/util/WithXBSlice";
 import {
   IonApp,
   IonRouterOutlet,
@@ -24,6 +25,10 @@ import XBHeader from "./components/XBHeader";
 //css
 import "./OptionTabs.scss";
 
+import { addControllersProp } from "./model/controllers";
+import { connect } from "react-redux";
+const autoBindReact = require("auto-bind/react");
+
 //code for cancelling notifications
 //   LocalNotifications.getPending().then( res => {
 //     var index = res.notifications.map(x => {
@@ -35,7 +40,7 @@ import "./OptionTabs.scss";
 //     console.log(err);
 //   })
 
-function OptionTabs() {
+class OptionTabs extends Component {
   // function check() {
   //   console.log(LocalNotifications.getPending());
   // }
@@ -169,23 +174,65 @@ function OptionTabs() {
   //   // }
   // }
 
-  return (
-    <>
-      <XBHeader title="Settings"></XBHeader>
-      <IonContent id="settings" fullscreen>
-        <IonList>
-          <IonItem routerLink="/about">About XB</IonItem>
-          <IonItemDivider></IonItemDivider>
-          <IonItem routerLink="/account">Log Out</IonItem>
-          <IonItemDivider></IonItemDivider>
-          {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
-          <IonItemDivider></IonItemDivider>
-        </IonList>
-        {/* <IonButton onClick={trig}>trig</IonButton>
+  constructor(props) {
+    super(props);
+    autoBindReact(this); // Binds 'this' to this object in all methods
+  }
+
+  render() {
+    var week =
+      Math.floor((this.props.teams.teams[0].experiment.day - 1) / 7) + 1;
+
+    return (
+      <>
+        <XBHeader title="Settings"></XBHeader>
+        <IonContent id="settings" fullscreen>
+          <IonList>
+            <IonItem>
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to={{
+                  pathname: `/timeline`,
+                  weekNo: week,
+                }}
+              >
+                Timeline
+              </Link>
+            </IonItem>
+
+            <IonItem routerLink="/movetutorial">Movement Tutorial</IonItem>
+            <IonItem routerLink="/about">About XB</IonItem>
+            <IonItemDivider></IonItemDivider>
+            <IonItem routerLink="/account">Log Out</IonItem>
+            <IonItemDivider></IonItemDivider>
+            {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
+            {/* <IonItemDivider></IonItemDivider> */}
+          </IonList>
+          {/* <IonButton onClick={trig}>trig</IonButton>
         <IonButton onClick={check}>trig2</IonButton> */}
-      </IonContent>
-    </>
-  );
+        </IonContent>
+      </>
+    );
+  }
 }
 
-export default OptionTabs;
+export default connect(
+  (state, ownProps) => {
+    return {
+      teams: state.teams,
+      experiments: state.experiments,
+      boxes: state.boxes,
+    };
+  },
+  {
+    // Actions to include as props
+  }
+)(
+  addControllersProp(
+    withRouter(
+      WithXBSlice(OptionTabs, "teams", (props) => {
+        props.controllers.LOAD_TEAMS_IF_REQD();
+      })
+    )
+  )
+);

@@ -7,12 +7,9 @@ import WithXBSlice from "../../components/util/WithXBSlice";
 import { addControllersProp } from "../../model/controllers";
 
 const ExpChooser = ({ experiment }) => {
-
   // Find eligible experiments
   // These should be assembled in the model
-
-}
-
+};
 
 export default connect(
   (state, ownProps) => {
@@ -24,4 +21,10 @@ export default connect(
   {
     // Actions to include as props
   }
-)(addControllersProp(WithXBSlice("teams", ExpChooser, ({controllers}) => { controllers.LOAD_TEAMS_IF_REQD(); })));
+)(
+  addControllersProp(
+    WithXBSlice("teams", ExpChooser, ({ controllers }) => {
+      controllers.LOAD_TEAMS_IF_REQD();
+    })
+  )
+);

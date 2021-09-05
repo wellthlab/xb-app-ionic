@@ -19,7 +19,10 @@ import { heart, arrowForward, caretForward, timer } from "ionicons/icons";
 
 import "./JournalFeed.css";
 
-import { MoodImages, MoodStringsRelative } from "../../../components/user_input/MoodPicker";
+import {
+  MoodImages,
+  MoodStringsRelative,
+} from "../../../components/user_input/MoodPicker";
 
 const JournalFeed = ({ responses }) => {
   function renderItem(r) {
