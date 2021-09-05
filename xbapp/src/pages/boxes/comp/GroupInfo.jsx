@@ -187,31 +187,30 @@ const Group = ({ group, controllers, match }) => {
   };
 
   return (
-      <>
-        <IonSegment onIonChange={setSegment} value={view}>
-          <IonSegmentButton value="info">
-            <IonIcon icon={informationCircleOutline} /> Info
-          </IonSegmentButton>
-          <IonSegmentButton value="tasks">
-            <IonIcon icon={checkmarkCircleOutline} /> Tasks
-          </IonSegmentButton>
-          <IonSegmentButton value="journal">
-            <IonIcon icon={documentText} /> Journal
-          </IonSegmentButton>
-          <IonSegmentButton value="charts">
-            <IonIcon icon={barChart} /> Charts
-          </IonSegmentButton>
-        </IonSegment>
+    <>
+      <IonSegment onIonChange={setSegment} value={view}>
+        <IonSegmentButton value="info">
+          <IonIcon icon={informationCircleOutline} /> Info
+        </IonSegmentButton>
+        <IonSegmentButton value="tasks">
+          <IonIcon icon={checkmarkCircleOutline} /> Tasks
+        </IonSegmentButton>
+        <IonSegmentButton value="journal">
+          <IonIcon icon={documentText} /> Journal
+        </IonSegmentButton>
+        <IonSegmentButton value="charts">
+          <IonIcon icon={barChart} /> Charts
+        </IonSegmentButton>
+      </IonSegment>
 
-        {content}
-      </>
+      {content}
+    </>
   );
 };
 
 export default connect(
   (state, ownProps) => {
-    return {
-    };
+    return {};
   },
   {
     pure: false,

@@ -23,7 +23,6 @@ import "./ExperimentList.css";
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
 const MinuteEntry = (props) => {
-
   const [rate, setRate] = useState(null);
 
   function save() {
@@ -32,20 +31,18 @@ const MinuteEntry = (props) => {
     }
   }
 
-  function reset() {
-
-  }
+  function reset() {}
 
   function updateBeats(beats) {
-      setRate(beats * 2);
+    setRate(beats * 2);
   }
 
   // TODO
   return (
-      <>
-        <img src="assets/icons/heart.png" alt="Heartrate" />
-        <IonInput type="number" placeholder="Beats" />
-      </>
+    <>
+      <img src="assets/icons/heart.png" alt="Heartrate" />
+      <IonInput type="number" placeholder="Beats" />
+    </>
   );
 };
 

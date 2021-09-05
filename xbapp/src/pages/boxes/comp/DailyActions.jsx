@@ -97,9 +97,7 @@ const DailyActions = ({ group, today }) => {
 
     return (
       <IonItem
-        color={
-            done ? "neutral" : "warning"
-        }
+        color={done ? "neutral" : "warning"}
         key={type.type}
         routerLink={
           "/group/" + group._id + "/" + activeDay + "/add/" + type.type
@@ -136,8 +134,7 @@ const DailyActions = ({ group, today }) => {
 
   return (
     <div className="dailyActions">
-      {
-      /*
+      {/*
       TODO: Refactor the quiz into a standalone widget, like the other daily tasks
       <GenericModal
         showModal={showQuiz}
@@ -145,7 +142,7 @@ const DailyActions = ({ group, today }) => {
         title={"Weekly Quiz! :)"}
         quiz={true}
         message={week.toString() + "." + dayOfWeek}
-      />*/ }
+      />*/}
       <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
         <span className="text">
           <h3>
