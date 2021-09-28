@@ -21,31 +21,31 @@ import {
  */
 
 const BalanceImages = {
-  1: "_.png",
-  2: "_.png",
-  3: "_.png",
-  4: "_.png",
-  5: "_.png",
+  0: "left.png",
+  1: "towardsleft.png",
+  2: "still.png",
+  3: "towardsright.png",
+  4: "right.png",
 };
 
 const BalanceRelative = {
-  1: "Highly unbalanced towards left",
-  2: "Unbalanced towards left",
-  3: "Balanced",
-  4: "Unbalanced towards right",
-  5: "Highly unbalanced towards right",
+  0: "Highly unbalanced towards left",
+  1: "Unbalanced towards left",
+  2: "Balanced",
+  3: "Unbalanced towards right",
+  4: "Highly unbalanced towards right",
 };
 
 const BalanceRelativeExplanations = {
-  1: "Throughout the exercise, you were leaning highly towards left with frequent loss of ballance.",
-  2: "Throughout the exercise, you were leaning towards left with slight unbalance.",
-  3: "Throughout the exercise, you didn't lose balance.",
-  4: "Throughout the exercise, you were leaning towards right with slight unbalance.",
-  5: "Throughout the exercise, you were leaning highly towards right with frequent loss of ballance.",
+  0: "Throughout the exercise, you were leaning highly towards left with frequent loss of ballance.",
+  1: "Throughout the exercise, you were leaning towards left with slight unbalance.",
+  2: "Throughout the exercise, you didn't lose balance.",
+  3: "Throughout the exercise, you were leaning towards right with slight unbalance.",
+  4: "Throughout the exercise, you were leaning highly towards right with frequent loss of ballance.",
 };
 
 const Balance = (props) => {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(2);
   //comparing represents the answers to the "how do you feel compared to yesterday?". Other strings represents the general "how do you feel"
   var sliderValues = [
     "Highly unbalanced towards left",
@@ -81,7 +81,7 @@ const Balance = (props) => {
       </p>
       <img
         style={{ width: "50px", resize: "both", textAlign: "center" }}
-        src={"assets/mood/" + BalanceImages[value]}
+        src={"assets/balance/" + BalanceImages[value]}
         alt="balanced"
       />
       <IonItem style={{ textAlign: "center" }}>
@@ -94,8 +94,8 @@ const Balance = (props) => {
       </IonItem>
       <IonItem>
         <IonRange
-          min={1}
-          max={5}
+          min={0}
+          max={4}
           step={1}
           snaps={true}
           ticks={true}
