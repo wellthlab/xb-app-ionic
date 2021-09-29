@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IonButton, IonIcon, IonInput, IonTitle } from "@ionic/react";
 import { connect } from "react-redux";
-import CountDown from "../user_input/CountDown";
+import CountDown from "../instruments/CountDown";
 
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 

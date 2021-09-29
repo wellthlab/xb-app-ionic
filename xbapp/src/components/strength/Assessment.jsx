@@ -16,7 +16,7 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import Timer, { resetTimer } from "../user_input/Timer";
+import Timer, { resetTimer } from "../instruments/Timer";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 

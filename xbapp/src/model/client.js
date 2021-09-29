@@ -222,16 +222,16 @@ function XBClient() {
    */
   self.createTeam = async function (name, desc, expid, start, parentTeam) {
     var db = getDb();
-
     var collection = db.collection("teams");
 
     var code = genID(6);
 
     // Parent team defaults to none
     if(typeof parentTeam == 'undefined')
-      parentTeam = "";
-
-    const team = {
+      //parentTeam = ""; needs to be a hexadecimal value for ObjectId conversion
+      parentTeam = parentTeam;
+    
+      const team = {
       name: name,
       desc: desc,
       code: code,

@@ -75,11 +75,10 @@ async function JOIN_TEAM(client, store, controllers, code) {
 }
 
 async function CREATE_TEAM(client, store, controllers, name, desc, expid, startDate, parentTeam) {
-  console.log("Create a team", name, desc, expid, startDate);
 
   // Start date defaults to today
-  if(typeof startDate == 'undefined')
-    startDate = (new Date()).toISOString().substring(0,10);
+  // if(typeof startDate == 'undefined'){
+  //   startDate = (new Date()).toISOString().substring(0,10);
 
   store.dispatch(START_CREATE_TEAM());
   var res = await client.createTeam(name, desc, expid, startDate, parentTeam);

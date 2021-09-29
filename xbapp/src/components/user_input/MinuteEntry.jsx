@@ -14,8 +14,8 @@ import {
 } from "@ionic/react";
 import "./MinuteEntry.scss";
 import { connect } from "react-redux";
-import Timer from "./Timer";
-import CountDown from "./CountDown";
+import Timer from "../instruments/Timer";
+import CountDown from "../instruments/CountDown";
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
 

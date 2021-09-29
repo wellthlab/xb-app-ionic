@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IonButton, IonItem, IonInput, IonTitle } from "@ionic/react";
 
 import { connect } from "react-redux";
-import CountDown from "../user_input/CountDown";
+import CountDown from "../instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
 import SetCounter from "./SetCounter";
 

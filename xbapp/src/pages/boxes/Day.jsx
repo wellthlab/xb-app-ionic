@@ -31,7 +31,7 @@ import { addControllersProp } from "../../model/controllers";
 
 import DailyJournal from "./journal/DailyJournal";
 
-const Group = ({ match, teams, controllers, account }) => {
+const Day = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
   function toggleAlert() {
@@ -101,4 +101,4 @@ export default connect(
   {
     pure: false,
   }
-)(addControllersProp(Group));
+)(addControllersProp(Day));

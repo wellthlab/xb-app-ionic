@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
-import WithXBSlice from "./components/util/WithXBSlice";
+import WithXBSlice from "../components/util/WithXBSlice";
 import {
   IonApp,
   IonRouterOutlet,
@@ -20,12 +20,12 @@ import {
   IonBadge,
   IonAlert,
 } from "@ionic/react";
-import XBHeader from "./components/XBHeader";
+import XBHeader from "../components/XBHeader";
 
 //css
-import "./OptionTabs.scss";
+import "./Settings.scss";
 
-import { addControllersProp } from "./model/controllers";
+import { addControllersProp } from "../model/controllers";
 import { connect } from "react-redux";
 const autoBindReact = require("auto-bind/react");
 

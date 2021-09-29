@@ -10,7 +10,7 @@ import {
   IonItemDivider,
   IonButton,
 } from "@ionic/react";
-import XBHeader from "../components/XBHeader";
+import XBHeader from "../../components/XBHeader";
 
 import {
   VerticalTimeline,

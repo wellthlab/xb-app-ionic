@@ -20,7 +20,9 @@ const CreateTeam = (props) => {
 
   function create(name, desc, expid) {
     setCreating(true);
-    props.controllers.CREATE_TEAM(name, desc, expid);
+    // Start date defaults to today
+    var startDate = new Date().toISOString().substring(0, 10);
+    props.controllers.CREATE_TEAM(name, desc, expid, startDate);
   }
 
   if (expid === false) {
@@ -62,7 +64,7 @@ const CreateTeam = (props) => {
             create(name, desc, expid);
           }}
         >
-          Create Experiment
+          Create Team
         </IonButton>
       );
     } else {

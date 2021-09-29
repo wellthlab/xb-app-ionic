@@ -37,22 +37,22 @@ import Account from "./pages/account/Account";
 import Feed from "./pages/Feed";
 import About from "./pages/info/About";
 import Tutorial from "./pages/info/Tutorial.jsx";
-import MoveTutorial from "./pages/MoveTutorial";
-import Timeline from "./pages/Timeline";
+import MoveTutorial from "./pages/info/MoveTutorial";
+import Timeline from "./pages/info/Timeline";
 
 import Register from "./pages/account/Register.jsx";
 import Login from "./pages/account/Login.jsx";
 import ForgotPassword from "./pages/account/ForgotPassword";
 
-import OptionTabs from "./OptionTabs";
+import OptionTabs from "./pages/Settings";
 import Notifications from "./pages/Notifications";
-import ExpList from "./pages/ExpList";
+import Experiments from "./pages/Experiments";
 
 import GroupCharts from "./pages/boxes/Charts";
 import Day from "./pages/boxes/Day";
 
-import JoinTeam from "./pages/start/JoinTeam.jsx";
-import CreateTeam from "./pages/start/CreateTeam";
+import JoinTeam from "./pages/startJourney/JoinTeam.jsx";
+import CreateTeam from "./pages/startJourney/CreateTeam";
 
 import EatPage from "./pages/boxes/Eat";
 import MovePage from "./pages/boxes/Move";
@@ -137,7 +137,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/box/eat" component={EatPage} exact={true} />
               <Route path="/box/move" component={MovePage} exact={true} />
               /** * Experiment list - Deprecated */
-              <Route path="/group" component={ExpList} exact={true} />
+              <Route path="/group" component={Experiments} exact={true} />
               /** * Data entry / tasks */
               <Route
                 path="/group/:id/:day/add/:type"

@@ -13,8 +13,8 @@ import {
   IonTitle,
 } from "@ionic/react";
 import XBHeader from "../../components/XBHeader";
-import Enroller from "./comp/Enroller";
-import GroupInfo from "./comp/GroupInfo";
+import Enroller from "./components/Enroller";
+import GroupInfo from "./components/GroupInfo";
 import "./Move.scss";
 import { connect } from "react-redux";
 import WithXBSlice from "../../components/util/WithXBSlice";

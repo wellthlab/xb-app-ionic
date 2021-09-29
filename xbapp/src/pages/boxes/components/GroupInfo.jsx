@@ -48,7 +48,7 @@ import DailyActions from "./DailyActions";
 
 import "./GroupInfo.scss";
 
-const Group = ({ group, controllers, match }) => {
+const GroupInfo = ({ group, controllers, match }) => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
   function toggleAlert() {
@@ -215,4 +215,4 @@ export default connect(
   {
     pure: false,
   }
-)(addControllersProp(Group));
+)(addControllersProp(GroupInfo));

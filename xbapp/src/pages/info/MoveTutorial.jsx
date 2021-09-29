@@ -12,12 +12,14 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import MovementPicker, { getMove } from "../components/strength/MovementPicker";
-import MovementInfoCard from "../components/strength/MovementInfoCard";
-import MovementTimer from "../components/strength/MovementTimer";
+import MovementPicker, {
+  getMove,
+} from "../../components/strength/MovementPicker";
+import MovementInfoCard from "../../components/strength/MovementInfoCard";
+import MovementTimer from "../../components/strength/MovementTimer";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import mobiscroll from "@mobiscroll/react-lite";
-import CountDown from "../components/user_input/CountDown";
+import CountDown from "../../components/instruments/CountDown";
 
 import "./MoveTutorial.scss";
 
