@@ -29,7 +29,7 @@ export default class OverdueEntry extends Component {
     const { item } = this.props;
 
     var when = dateFromTS(item.date);
-    var link = "/group/" + item.groupid + "/" + item.day;
+    var link = "/box/move/" + item.groupid + "/" + item.day;
 
     return (
       <>

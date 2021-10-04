@@ -14,6 +14,7 @@ import Moves from "../strength/moves.json";
 import { useEffect } from "react";
 
 const Block = (props) => {
+
   const blockIndex = props.blockIndex;
   const filter = props.filter;
   const moveSelected = props.exerciseChosen;
@@ -65,7 +66,7 @@ const Block = (props) => {
           className="block-button"
           onClick={(event) => {
             history.push({
-              pathname: "/movement-picker",
+              pathname: "/box/move/movement-picker",
               state: {
                 movements: movements,
                 blockIndex: blockIndex,

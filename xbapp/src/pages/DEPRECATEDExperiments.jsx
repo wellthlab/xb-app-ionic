@@ -13,7 +13,7 @@ import "./Experiments.css";
 
 import { add } from "ionicons/icons";
 
-import ExperimentList from "../components/ExperimentList";
+import ExperimentList from "../components/DEPRECATEDExperimentList";
 
 import { addControllersProp } from "../model/controllers";
 
@@ -31,16 +31,23 @@ class ExpList extends Component {
 
     return (
       <IonPage>
-        <XBHeader title="Experiments"></XBHeader>
-        <IonContent>
-          <ExperimentList teams={this.props.teams.teams} />
-          <IonFab vertical="bottom" horizontal="end" slot="fixed">
-            <IonFabButton routerLink="/start">
-              <IonIcon icon={add} />
-            </IonFabButton>
-          </IonFab>
-        </IonContent>
-      </IonPage>
+      <XBHeader title="Experiments"></XBHeader>
+      <IonContent id="about">
+        <p>Be patient, we will be launching experiments soon.</p>
+      </IonContent>
+    </IonPage>
+
+      // <IonPage>
+      //   <XBHeader title="Experiments"></XBHeader>
+      //   <IonContent>
+      //     <ExperimentList teams={this.props.teams.teams} />
+      //     <IonFab vertical="bottom" horizontal="end" slot="fixed">
+      //       <IonFabButton routerLink="/start">
+      //         <IonIcon icon={add} />
+      //       </IonFabButton>
+      //     </IonFab>
+      //   </IonContent>
+      // </IonPage>
     );
   }
 }

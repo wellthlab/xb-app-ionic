@@ -100,7 +100,7 @@ const DailyActions = ({ group, today }) => {
         color={done ? "neutral" : "warning"}
         key={type.type}
         routerLink={
-          "/group/" + group._id + "/" + activeDay + "/add/" + type.type
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
         }
         detail={true}
         detailIcon={arrowForwardOutline}
@@ -118,7 +118,7 @@ const DailyActions = ({ group, today }) => {
       <IonItem
         key={type.type}
         routerLink={
-          "/group/" + group._id + "/" + activeDay + "/add/" + type.type
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
         }
         detail={true}
         detailIcon={arrowForwardOutline}

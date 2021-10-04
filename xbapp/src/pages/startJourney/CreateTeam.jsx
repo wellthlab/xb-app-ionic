@@ -47,7 +47,7 @@ const CreateTeam = (props) => {
             You've created a new team! Let's get <strong>started</strong>.
           </p>
           <p className="centering">
-            <IonButton routerLink="/group">Go to Team</IonButton>
+            <IonButton routerLink="/box/move">Go to Team</IonButton>
           </p>
         </div>
       </>

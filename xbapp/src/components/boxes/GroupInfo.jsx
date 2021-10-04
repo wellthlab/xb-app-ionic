@@ -168,7 +168,7 @@ const GroupInfo = ({ group, controllers, match }) => {
               <IonLabel>View Data</IonLabel>
             </IonItemDivider>
 
-            <Link to={"/group/" + group._id + "/charts"}>
+            <Link to={"/box/move/" + group._id + "/charts"}>
               <IonItem
                 color="tertiary"
                 style={{ cursor: "pointer" }}

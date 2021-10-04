@@ -51,14 +51,16 @@ const BlockPlanner = (props) => {
   }
 
   return (
-    <IonPage>
-      <IonHeader title="Block Planner">
-        <IonButtons>
-          <IonBackButton defaultHref="/"></IonBackButton>
-        </IonButtons>
-        <IonTitle className="header-title">Block Planner</IonTitle>
-      </IonHeader>
-      <IonContent className="planner-content">
+   
+    // <IonPage>
+    //   <IonHeader title="Block Planner">
+    //     <IonButtons>
+    //       <IonBackButton defaultHref="/"></IonBackButton>
+    //     </IonButtons>
+    //     <IonTitle className="header-title">Block Planner</IonTitle>
+    //   </IonHeader>
+    //   <IonContent className="planner-content">
+    <div>
         {blocks.map((filter, index) => (
           <Block
             key={index}
@@ -77,8 +79,10 @@ const BlockPlanner = (props) => {
         >
           Choose Exercises
         </IonButton>
-      </IonContent>
-    </IonPage>
+        </div>
+    //   </IonContent>
+    // </IonPage>
+    
   );
 };
 

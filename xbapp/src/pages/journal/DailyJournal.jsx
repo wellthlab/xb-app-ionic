@@ -96,7 +96,7 @@ const DailyJournal = ({ todayNumber, entries, children, group }) => {
         </h3>
         <IonItem
           key="note"
-          routerLink={"/group/" + group._id + "/" + activeDay + "/add/note"}
+          routerLink={"/box/move/" + group._id + "/" + activeDay + "/add/note"}
           detail={true}
           detailIcon={arrowForwardOutline}
         >

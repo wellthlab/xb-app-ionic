@@ -46,7 +46,7 @@ import ForgotPassword from "./pages/account/ForgotPassword";
 
 import OptionTabs from "./pages/Settings";
 import Notifications from "./pages/Notifications";
-import Experiments from "./pages/Experiments";
+import Experiments from "./pages/DEPRECATEDExperiments";
 
 import GroupCharts from "./pages/boxes/Charts";
 import Day from "./pages/boxes/DEPRECATEDDay";
@@ -140,21 +140,21 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/box/eat" component={EatPage} exact={true} />
               <Route path="/box/move" component={MovePage} exact={true} />
               <Route
-                path="/movement-picker"
+                path="/box/move/movement-picker"
                 component={MovementPicker}
                 exact={true}
               />
               /** * Experiment list - Deprecated */
-              <Route path="/group" component={Experiments} exact={true} />
+              <Route path="/experiments" component={Experiments} exact={true} />
               /** * Data entry / tasks */
               <Route
-                path="/group/:id/:day/add/:type"
+                path="/box/move/:id/:day/add/:type"
                 component={AddResponse}
                 exact={true}
               />
               /** * Charts */
               <Route
-                path="/group/:id/charts"
+                path="/box/move/:id/charts"
                 component={GroupCharts}
                 exact={true}
               />
@@ -178,7 +178,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               />
               <Route path="/account" component={Account} exact={true} />
               <Route path="/timeline" component={Timeline} exact={true} />
-              <Route path="/planner" component={BlockPlanner} exact={true} />
+              {/* <Route path="/planner" component={BlockPlanner} exact={true} /> */}
               <Route
                 path="/movetutorial"
                 component={MoveTutorial}
@@ -198,7 +198,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"News & Updates"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Experiments"} href={"/group"}>
+            <IonTabButton tab={"Experiments"} href={"/experiments"}>
               <IonIcon icon={cubeOutline} />
               <IonLabel>{"Experiments"}</IonLabel>
             </IonTabButton>

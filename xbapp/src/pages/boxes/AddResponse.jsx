@@ -22,21 +22,22 @@ import Note from "../../components/user_input/Note";
 import BlockPlanner from "../BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
-const AddResponse = ({ match, teams, account, controllers, history }) => {
-  var gid = match.params.id; // Group ID comes from route
-  var daynumber = match.params.day; // So does day number
-  var type = match.params.type;
+const AddResponse = (props) => {
+  var gid = props.match.params.id; // Group ID comes from route
+  var daynumber = props.match.params.day; // So does day number
+  var type = props.match.params.type;
 
+  console.log("TRIALLLL ", props.location);
   //const history = useHistory();
 
   const [saved, setSaved] = useState(false);
   const [group, setGroup] = useState(false);
 
   // Load team data if required; mostly useful during development
-  controllers.LOAD_TEAMS_IF_REQD();
+  props.controllers.LOAD_TEAMS_IF_REQD();
 
   if (group === false) {
-    for (var g of teams.teams) {
+    for (var g of props.teams.teams) {
       // Find the group in the store
       if (g._id == gid) {
         setGroup(g);
@@ -57,21 +58,21 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
     for (var r of res) {
       r.day = daynumber;
       console.log("Add response", r);
-      await controllers.ADD_RESPONSE(gid, r);
+      await props.controllers.ADD_RESPONSE(gid, r);
     }
 
     setSaved("saved");
   }
 
   function reset() {
-    history.goBack();
+    props.history.goBack();
     setSaved("unsaved");
     // TODO: This is a bit of a hack; better way to completely reset this component ready for next use?
   }
 
   var content;
   if (saved == "saved") {
-    var link = "/group/" + gid + "/journal";
+    var link = "/box/move/" + gid + "/journal";
     content = (
       <>
         <div className="done">
@@ -106,8 +107,8 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
       case "strength":
         var week = Math.floor((daynumber - 1) / 7) + 1;
 
-        input = (
-          <BlockPlanner/>
+        input = ( //TODO: define save function for blockplanner
+          <BlockPlanner location = {props.location} onSubmit={save} />
         );
 
         // input = (
@@ -185,6 +186,8 @@ export default connect(
     return {
       account: state.account,
       teams: state.teams,
+      experiments: state.experiments,
+      boxes: state.boxes,
     };
   },
   {

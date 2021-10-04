@@ -205,14 +205,10 @@ class OptionTabs extends Component {
             <IonItem routerLink="/about">About XB</IonItem>
             <IonItemDivider></IonItemDivider>
             <IonItem routerLink="/account">Log Out</IonItem>
-            <IonItem routerLink="/planner">Planner</IonItem>
             <IonItemDivider></IonItemDivider>
             {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             {/* <IonItemDivider></IonItemDivider> */}
           </IonList>
-          {/* <IonButton onClick={trig}>trig</IonButton>
-        <IonButton onClick={check}>trig2</IonButton> */}
-        {/* <MovementPicker/> */}
         </IonContent>
       </>
     );

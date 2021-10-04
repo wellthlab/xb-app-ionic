@@ -7,6 +7,10 @@ import {
   IonCardContent,
   IonIcon,
   IonText,
+  IonBackButton,
+  IonHeader,
+  IonButtons,
+  IonTitle,
 } from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 
@@ -223,11 +227,6 @@ const MovementPicker = (props) => {
           ></IonIcon>
           <IonIcon icon={caretDown} id="down" className="caret-row"></IonIcon>
         </div>
-        <div className="movement-type-container">
-          <IonText color="dark">
-            <p id="movement-type">{rowHeadings[rowIndex]}</p>
-          </IonText>
-        </div>
       </div>
     );
   } else {
@@ -243,6 +242,13 @@ const MovementPicker = (props) => {
 
   return (
     <IonContent>
+          <IonHeader title="Block Planner">
+         <IonButtons>
+           <IonBackButton defaultHref="/"></IonBackButton>
+           <IonTitle className="header-title" id="movement-type" color="dark">{rowHeadings[rowIndex]}</IonTitle>
+         </IonButtons>
+        
+       </IonHeader>
       <BlockIndexContext.Provider value={blockIndex}>
         {screen}
       </BlockIndexContext.Provider>
