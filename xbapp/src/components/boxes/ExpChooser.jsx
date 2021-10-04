@@ -3,7 +3,7 @@
  */
 
 import { connect } from "react-redux";
-import WithXBSlice from "../../components/util/WithXBSlice";
+import WithXBSlice from "../util/WithXBSlice";
 import { addControllersProp } from "../../model/controllers";
 
 const ExpChooser = ({ experiment }) => {

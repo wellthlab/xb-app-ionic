@@ -19,7 +19,7 @@ import {
 } from "@ionic/react";
 import "./DetailedTile.scss";
 import { useEffect } from "react";
-import { BlockIndexContext } from "../context/BlockIndexContext";
+import { BlockIndexContext } from "../../context/BlockIndexContext";
 import SelectExerciseButton from "./SelectExerciseButton";
 import { close } from "ionicons/icons";
 

@@ -49,7 +49,7 @@ import Notifications from "./pages/Notifications";
 import Experiments from "./pages/Experiments";
 
 import GroupCharts from "./pages/boxes/Charts";
-import Day from "./pages/boxes/Day";
+import Day from "./pages/boxes/DEPRECATEDDay";
 
 import JoinTeam from "./pages/startJourney/JoinTeam.jsx";
 import CreateTeam from "./pages/startJourney/CreateTeam";
@@ -57,6 +57,9 @@ import CreateTeam from "./pages/startJourney/CreateTeam";
 import EatPage from "./pages/boxes/Eat";
 import MovePage from "./pages/boxes/Move";
 import AddResponse from "./pages/boxes/AddResponse";
+
+import BlockPlanner from "./pages/BlockPlanner";
+import MovementPicker from "./pages/MovementPicker";
 
 import getXBClient from "./model/client";
 
@@ -136,6 +139,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/settings" component={OptionTabs} exact={true} />
               <Route path="/box/eat" component={EatPage} exact={true} />
               <Route path="/box/move" component={MovePage} exact={true} />
+              <Route
+                path="/movement-picker"
+                component={MovementPicker}
+                exact={true}
+              />
               /** * Experiment list - Deprecated */
               <Route path="/group" component={Experiments} exact={true} />
               /** * Data entry / tasks */
@@ -170,6 +178,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               />
               <Route path="/account" component={Account} exact={true} />
               <Route path="/timeline" component={Timeline} exact={true} />
+              <Route path="/planner" component={BlockPlanner} exact={true} />
               <Route
                 path="/movetutorial"
                 component={MoveTutorial}
@@ -204,9 +213,9 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Eat"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Settings"} href={"/settings"}>
+            <IonTabButton tab={"Info"} href={"/settings"}>
               <IonIcon icon={settingsOutline} />
-              <IonLabel>{"Settings"}</IonLabel>
+              <IonLabel>{"Info"}</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

@@ -22,7 +22,7 @@ import "./ExperimentList.css";
 //we have the experiment/group ID, we have the day number to require update and we have the account
 //=> can we update the day?
 //need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
-const MinuteEntry = (props) => {
+const HeartRateInput = (props) => {
   const [rate, setRate] = useState(null);
 
   function save() {
@@ -46,4 +46,4 @@ const MinuteEntry = (props) => {
   );
 };
 
-export default MinuteEntry;
+export default HeartRateInput;

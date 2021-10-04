@@ -13,11 +13,13 @@ import { BlockIndexContext } from "../context/BlockIndexContext";
 import "./MovementPicker.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import MovementSlide from "../components/strength/MovementSlide";
-import DetailedMovementSlide from "../components/DetailedMovementSlide";
+import MovementSlide from "../components/movement_puzzle_picker/MovementSlide";
+import DetailedMovementSlide from "../components/movement_puzzle_picker/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 
+
 const MovementPicker = (props) => {
+
   // Used for the page heading
   const rowHeadings = [
     "Upper body movement",
@@ -155,6 +157,7 @@ const MovementPicker = (props) => {
     return false;
   }
 
+ 
   const passedMovements = props.location.state?.movements;
   let screen;
   // Either render the slides filled with tiles or a detialed tile

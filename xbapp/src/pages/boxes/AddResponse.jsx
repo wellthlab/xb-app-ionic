@@ -19,7 +19,7 @@ import StrengthWizard from "../../components/strength/StrengthWizard";
 import StrengthExercisePicker from "../../components/strength/StrengthExercisePicker";
 import Assessment from "../../components/strength/Assessment";
 import Note from "../../components/user_input/Note";
-
+import BlockPlanner from "../BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
 const AddResponse = ({ match, teams, account, controllers, history }) => {
@@ -107,12 +107,16 @@ const AddResponse = ({ match, teams, account, controllers, history }) => {
         var week = Math.floor((daynumber - 1) / 7) + 1;
 
         input = (
-          <StrengthWizard
-            countdownID={daynumber + "-" + gid}
-            week={week}
-            onSubmit={save}
-          />
+          <BlockPlanner/>
         );
+
+        // input = (
+        //   <StrengthWizard
+        //     countdownID={daynumber + "-" + gid}
+        //     week={week}
+        //     onSubmit={save}
+        //   />
+        // );
         break;
 
       case "strength-exercise":

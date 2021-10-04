@@ -108,12 +108,6 @@ function GenericModal(props) {
       })
     : {};
 
-  console.log(
-    quizToShow,
-    quizToShow.length == 0,
-    props.message,
-    props.message.split(".")
-  );
   if (quizToShow.length == 0) {
     quizToShow = props.quiz
       ? quizes.filter(function (item) {

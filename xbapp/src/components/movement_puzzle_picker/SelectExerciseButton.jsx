@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { IonButton } from "@ionic/react";
-import { BlockIndexContext } from "../context/BlockIndexContext";
+import { BlockIndexContext } from "../../context/BlockIndexContext";
 import "./SelectExerciseButton.css";
 
 const SelectExerciseButton = (props) => {

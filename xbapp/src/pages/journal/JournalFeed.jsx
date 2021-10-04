@@ -13,7 +13,7 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import { getMove } from "../../../components/strength/MovementPicker";
+import { getMove } from "../../components/strength/OLDMovementPicker";
 
 import { heart, arrowForward, caretForward, timer } from "ionicons/icons";
 
@@ -22,7 +22,7 @@ import "./JournalFeed.css";
 import {
   MoodImages,
   MoodStringsRelative,
-} from "../../../components/user_input/MoodPicker";
+} from "../../components/user_input/MoodPicker";
 
 const JournalFeed = ({ responses }) => {
   function renderItem(r) {

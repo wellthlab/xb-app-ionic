@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IonButton } from "@ionic/react";
-import MovementPicker, { getMove } from "./MovementPicker";
+import MovementPicker, { getMove } from "./OLDMovementPicker";
 import MovementInfoCard from "./MovementInfoCard";
 import LevelFinder from "./LevelFinder";
 import "./StrengthWizard.css";

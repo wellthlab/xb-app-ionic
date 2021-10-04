@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 
 import MovementPicker, {
   getMove,
-} from "../../components/strength/MovementPicker";
+} from "../../components/strength/OLDMovementPicker";
 import MovementInfoCard from "../../components/strength/MovementInfoCard";
 import MovementTimer from "../../components/strength/MovementTimer";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";

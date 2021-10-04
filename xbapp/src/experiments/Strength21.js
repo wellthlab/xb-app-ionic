@@ -36,7 +36,7 @@ const decorateTeam = (team) => {
     } else {
       //if it's exploration week, let the participants know that they can PRACTICE with a strength exercise - without recording it
       qreq.push({
-        type: "strength-exercise",
+        type: "strength",
         desc: "Explore different Strength Exercises",
         verb: "DO IT",
       });

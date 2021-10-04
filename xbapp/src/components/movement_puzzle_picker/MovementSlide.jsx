@@ -1,7 +1,7 @@
 import React from "react";
 import { IonSlides, IonSlide } from "@ionic/react";
 
-import Tile from "../Tile";
+import Tile from "./Tile";
 
 const MovementSlide = (props) => {
   return (

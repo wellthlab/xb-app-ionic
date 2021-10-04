@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import { IonSlides, IonSlide, IonContent } from "@ionic/react";
 import "./minutesChart.css";
-import { getMove } from "./strength/MovementPicker";
+import { getMove } from "./strength/OLDMovementPicker";
 
 var _ = require("lodash");
 

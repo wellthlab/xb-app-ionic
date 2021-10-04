@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 
 import JournalFeed from "./JournalFeed";
 
-import { getMove } from "../../../components/strength/MovementPicker";
+import { getMove } from "../../components/strength/OLDMovementPicker";
 
 import {
   heart,

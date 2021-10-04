@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { connect } from "react-redux";
-import MinutesChart from "../../../components/minutesChart";
+import MinutesChart from "../minutesChart";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -39,11 +39,11 @@ import {
   documentText,
   informationCircleOutline,
 } from "ionicons/icons";
-import Instructions from "../../../components/Instructions";
+import Instructions from "../Instructions";
 
-import { addControllersProp } from "../../../model/controllers";
+import { addControllersProp } from "../../model/controllers";
 
-import DailyJournal from "../journal/DailyJournal";
+import DailyJournal from "../../pages/journal/DailyJournal";
 import DailyActions from "./DailyActions";
 
 import "./GroupInfo.scss";
@@ -59,6 +59,7 @@ const GroupInfo = ({ group, controllers, match }) => {
     match.params.page ? match.params.page : "info"
   );
 
+
   console.log(view, match.params);
 
   const [showMenu, setShowMenu] = useState(false);
@@ -67,6 +68,7 @@ const GroupInfo = ({ group, controllers, match }) => {
 
   var day = group.experiment.day;
 
+  console.log("just chekding day ", day);
   /**
    * Experiment info
    */
@@ -107,7 +109,7 @@ const GroupInfo = ({ group, controllers, match }) => {
               <IonIcon icon={todayOutline} slot="start" /> {daydesc}
               {daydesc == "Finished"
                 ? " 42 days"
-                : "of" + group.experiment.info.duration}
+                : " of " + group.experiment.info.duration}
             </IonItem>
           </IonCol>
         </IonRow>

@@ -13,7 +13,7 @@ import CountDown from "../instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
 import SetCounter from "./SetCounter";
 
-import { moves, getMove } from "./MovementPicker";
+import { moves, getMove } from "./OLDMovementPicker";
 import "./MovementTimer.scss";
 
 /**
