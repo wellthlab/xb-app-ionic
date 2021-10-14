@@ -29,14 +29,14 @@ const decorateTeam = (team) => {
     var qreq = [];
     if (week > 1) {
       qreq.push({
-        type: "strength-exercise",
+        type: "strength-setter",
         desc: "Set your current Strength Exercise",
         verb: "DO IT",
       });
     } else {
       //if it's exploration week, let the participants know that they can PRACTICE with a strength exercise - without recording it
       qreq.push({
-        type: "strength",
+        type: "strength-explore",
         desc: "Explore different Strength Exercises",
         verb: "DO IT",
       });
@@ -87,6 +87,28 @@ const decorateTeam = (team) => {
     team.experiment.tasks[eday] = { required: qreq, optional: others };
   } // End day loop
 
+  //if we are in the days prior to the start of the experiment
+    for(var eday = -20; eday <= 0; eday++) {
+
+      var week = Math.floor(eday / 7) - 1;
+  
+      console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
+  
+      var qreq = [];
+      qreq.push({
+        type: "strength-explore",
+        desc: "Explore different Strength Exercises",
+        verb: "DO IT",
+      });
+  
+      // Other tasks that can be done, but optionally
+      var others = [
+        { type: "note", desc: "Add Notes", verb: "ADD NOTES" },
+        { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" },
+      ];
+  
+      team.experiment.tasks[eday] = { required: qreq, optional: others };
+    }
    /**
     * Exercise block information
     */

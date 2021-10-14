@@ -88,7 +88,7 @@ const Timeline = (props) => {
             </p>
             <p>
               <strong>
-                You may also need to aquire any workout material i.e. roap to
+                You may also need to aquire any workout material i.e. rope to
                 complete some exercises.
               </strong>
             </p>

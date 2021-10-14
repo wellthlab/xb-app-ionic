@@ -219,6 +219,7 @@ const TeamSlice = createSlice({
       switch(team.experiment.type) {
 
         case 'strength21':
+          console.log("SEEING", team.experiment.day, team.experiment.start);
           Strength21.decorateTeam(team);
           break;
 

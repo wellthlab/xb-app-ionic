@@ -68,7 +68,7 @@ const GroupInfo = ({ group, controllers, match }) => {
 
   var day = group.experiment.day;
 
-  console.log("just chekding day ", day);
+
   /**
    * Experiment info
    */
@@ -78,13 +78,14 @@ const GroupInfo = ({ group, controllers, match }) => {
         ? "Starts tomorrow"
         : day < 0
         ? "Starts in " + Math.abs(day) + " days"
-        : day > 42
+        : day > 119
         ? "Finished"
         : "Today is day " + day;
 
     var members =
       group.users.length > 1 ? group.users.length + " members" : "Just You";
 
+      //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
       <IonGrid>
         <IonRow>
@@ -108,8 +109,9 @@ const GroupInfo = ({ group, controllers, match }) => {
             <IonItem lines="none">
               <IonIcon icon={todayOutline} slot="start" /> {daydesc}
               {daydesc == "Finished"
-                ? " 42 days"
-                : " of " + group.experiment.info.duration}
+                ? " 119 days"
+                : daydesc.includes("Starts") ? ""
+                : " of 119"} 
             </IonItem>
           </IonCol>
         </IonRow>
@@ -117,7 +119,7 @@ const GroupInfo = ({ group, controllers, match }) => {
         <IonRow>
           <IonCol>
             <IonProgressBar
-              value={day > 42 ? 42 / 42 : day / group.experiment.info.duration}
+              value={day > 119 ? 119 / 119 : day / group.experiment.info.duration}
             />
           </IonCol>
         </IonRow>

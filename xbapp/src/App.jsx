@@ -193,9 +193,9 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
             </Switch>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton tab={"News & Updates"} href={"/feed"}>
+            <IonTabButton tab={"News"} href={"/feed"}>
               <IonIcon icon={newspaperOutline} />
-              <IonLabel>{"News & Updates"}</IonLabel>
+              <IonLabel>{"News"}</IonLabel>
             </IonTabButton>
 
             <IonTabButton tab={"Experiments"} href={"/experiments"}>

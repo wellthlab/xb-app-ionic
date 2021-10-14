@@ -107,29 +107,46 @@ const AddResponse = (props) => {
       case "strength":
         var week = Math.floor((daynumber - 1) / 7) + 1;
 
-        input = ( //TODO: define save function for blockplanner
-          <BlockPlanner location = {props.location} onSubmit={save} />
-        );
-
-        // input = (
-        //   <StrengthWizard
-        //     countdownID={daynumber + "-" + gid}
-        //     week={week}
-        //     onSubmit={save}
-        //   />
-        // );
-        break;
-
-      case "strength-exercise":
-        var week = Math.floor((daynumber - 1) / 7) + 1;
 
         input = (
-          <StrengthExercisePicker
+          <StrengthWizard
             countdownID={daynumber + "-" + gid}
             week={week}
             onSubmit={save}
           />
         );
+        break;
+
+        case "strength-setter":
+          var week = Math.floor((daynumber - 1) / 7) + 1;
+  
+          input = ( //TODO: define save function for blockplanner
+            <BlockPlanner location = {props.location} onSubmit={save} explorer={false}/>
+          );
+  
+          // input = (
+          //   <StrengthWizard
+          //     countdownID={daynumber + "-" + gid}
+          //     week={week}
+          //     onSubmit={save}
+          //   />
+          // );
+          break;
+
+      case "strength-explore":
+        var week = Math.floor((daynumber - 1) / 7) + 1;
+
+        input = ( //TODO: define save function for blockplanner
+          <BlockPlanner location = {props.location} onSubmit={save} explorer={true}/>
+        );
+
+        // input = (
+        //   <StrengthExercisePicker
+        //     countdownID={daynumber + "-" + gid}
+        //     week={week}
+        //     onSubmit={save}
+        //   />
+        // );
         break;
 
       case "assessment":

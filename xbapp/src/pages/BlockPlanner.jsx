@@ -12,14 +12,39 @@ import { useEffect } from "react";
 import Block from "../components/movement_puzzle_picker/Block";
 import "./BlockPlanner.css";
 
+const studyPlanner = [
+  [["push", "pull"]], //week 0
+  [["push", "pull"]], //week 1
+  [["push", "pull"], ["push", "pull"]], //week 2
+  [["lower push", "lower pull"], ["balance"], ["upper push", "upper pull"]], //week 3
+  [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"]], //week 4
+  [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"], ["iso push", "iso pull"]], //week 5
+  [["push", "pull", "balance"]], //week 6
+  [["push", "pull", "balance"]], //week 7
+  [["push", "pull", "balance"]], //week 8
+  [["push", "pull", "balance"]], //week 9
+  [["push", "pull", "balance"]], //week 10
+  [["push", "pull", "balance"]], //week 11
+  [["push", "pull", "balance"]], //week 12
+  [["push", "pull", "balance"]], //week 13
+  [["push", "pull", "balance"]], //week 14
+  [["push", "pull", "balance"]], //week 15
+  [["push", "pull", "balance"]], //week 16
+]
+
 const BlockPlanner = (props) => {
   useEffect(() => {}, []);
 
-  // Expecting blocks to be passed as a prop
-  let blocks;
-  if (!("blocks" in props)) {
-    blocks = ["pull", "push", "pull", "push"];
+  //expecting week to be passed as prop
+  let week;
+  if (!(week in props)) {
+    week = 2;
   }
+
+  let blocks = studyPlanner[week];
+  // if (!("blocks" in props)) {
+  //   blocks = ["pull", "push", "pull", "push"];
+  // }
 
   // TODO: set localStorage to clear at some point. Probably best to when leaving the routes associated
   if ("exercisesChosen" in window.localStorage) {
@@ -61,11 +86,12 @@ const BlockPlanner = (props) => {
     //   </IonHeader>
     //   <IonContent className="planner-content">
     <div>
-        {blocks.map((filter, index) => (
+      {/* //iterate through number of blocks needed */}
+        {blocks.map((blockDesc, index) => (
           <Block
+            typeOfBlock={blockDesc}
             key={index}
             blockIndex={index}
-            filter={filter}
             exerciseChosen={getChosenExercises()[index]}
           ></Block>
         ))}
