@@ -9,12 +9,12 @@ import { defineCustomElements } from "@ionic/pwa-elements/loader";
 import { Provider } from "react-redux";
 
 // The redux model for the app
-import store from "./model/store";
+import store from "./util_model/store";
 
-import XBClient from "./model/client";
+import XBClient from "./util_model/client";
 
 // Controllers, for doing things to the model easily
-import ControllerContext, { getControllers } from "./model/controllers";
+import ControllerContext, { getControllers } from "./util_model/controllers";
 
 // Create a new set of controllers, bound to the redux store and a fresh API client
 var controllers = getControllers(store, new XBClient());

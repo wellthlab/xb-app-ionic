@@ -33,41 +33,41 @@ import {
 import { connect } from "react-redux";
 
 // Pages
-import Account from "./pages/account/Account";
-import Feed from "./pages/Feed";
-import About from "./pages/info/About";
-import Tutorial from "./pages/info/Tutorial.jsx";
-import MoveTutorial from "./pages/info/MoveTutorial";
-import Timeline from "./pages/info/Timeline";
+import Account from "./Account/Account";
+import Feed from "./Feed/Feed";
+import About from "./Info/About";
+import Tutorial from "./Info/Tutorial.jsx";
+import MoveTutorial from "./Info/MoveTutorial";
+import Timeline from "./Info/Timeline";
 
-import Register from "./pages/account/Register.jsx";
-import Login from "./pages/account/Login.jsx";
-import ForgotPassword from "./pages/account/ForgotPassword";
+import Register from "./Account/Register.jsx";
+import Login from "./Account/Login.jsx";
+import ForgotPassword from "./Account/ForgotPassword";
 
 import OptionTabs from "./pages/Settings";
-import Notifications from "./pages/Notifications";
-import Experiments from "./pages/DEPRECATEDExperiments";
+import Notifications from "./Account/Notifications";
+import Experiments from "./DEPRECATED/DEPRECATEDExperiments";
 
-import GroupCharts from "./pages/boxes/Charts";
-import Day from "./pages/boxes/DEPRECATEDDay";
+import GroupCharts from "./Boxes/Charts";
+import Day from "./DEPRECATED/DEPRECATEDDay";
 
 import JoinTeam from "./pages/startJourney/JoinTeam.jsx";
-import CreateTeam from "./pages/startJourney/CreateTeam";
+import CreateTeam from "./StartJourney/CreateTeam";
 
-import EatPage from "./pages/boxes/Eat";
-import MovePage from "./pages/boxes/Move";
-import AddResponse from "./pages/boxes/AddResponse";
+import EatPage from "./Boxes/Eat";
+import MovePage from "./Boxes/Move";
+import AddResponse from "./Boxes/AddResponse";
 
-import BlockPlanner from "./pages/BlockPlanner";
-import MovementPicker from "./pages/MovementPicker";
+import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
+import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 
-import getXBClient from "./model/client";
+import getXBClient from "./util_model/client";
 
 import {
   START_LOGIN,
   ACCEPT_LOGIN,
   REJECT_LOGIN,
-} from "./model/slices/Account";
+} from "./util_model/slices/Account";
 
 /*************************************************************
  * CSS
@@ -140,7 +140,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/box/eat" component={EatPage} exact={true} />
               <Route path="/box/move" component={MovePage} exact={true} />
               <Route
-                path="/box/move/movement-picker"
+                path="/box/move/:type/movement-picker"
                 component={MovementPicker}
                 exact={true}
               />
