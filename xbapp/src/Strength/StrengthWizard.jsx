@@ -17,7 +17,7 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import MovementPicker, { getMove } from "../../DEPRECATED/components/OLDMovementPicker";
+import MovementPicker, { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
 import HeartRate from "./HeartRate";

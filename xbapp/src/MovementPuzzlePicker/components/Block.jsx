@@ -10,7 +10,7 @@ import {
 import React from "react";
 import "./Block.css";
 import { useHistory } from "react-router";
-import Moves from "../strength/moves.json";
+import Moves from "../../Strength/moves.json";
 import { useEffect } from "react";
 
 /*

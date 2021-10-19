@@ -3,7 +3,7 @@ import { IonContent, IonPage, IonButton } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 import ContentFeed from "./components/ContentFeed";
 
-import Timer from "../components/instruments/Timer";
+import Timer from "../Instruments/Timer";
 import { Link } from "react-router-dom";
 
 import "./Feed.css";

@@ -1,5 +1,5 @@
 import React from "react";
-import Moves from "../components/strength/moves.json";
+import Moves from "../Strength/moves.json";
 import {
   IonContent,
   IonSlides,
@@ -17,8 +17,8 @@ import { BlockIndexContext } from "./context/BlockIndexContext";
 import "./MovementPicker.scss";
 import { useState } from "react";
 import { useEffect } from "react";
-import MovementSlide from "../components/movement_puzzle_picker/MovementSlide";
-import DetailedMovementSlide from "../components/movement_puzzle_picker/DetailedMovementSlide";
+import MovementSlide from "./components/MovementSlide";
+import DetailedMovementSlide from "./components/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 
 

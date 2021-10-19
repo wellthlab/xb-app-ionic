@@ -44,14 +44,14 @@ import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
 import ForgotPassword from "./Account/ForgotPassword";
 
-import OptionTabs from "./pages/Settings";
+import OptionTabs from "./Account/Settings";
 import Notifications from "./Account/Notifications";
 import Experiments from "./DEPRECATED/DEPRECATEDExperiments";
 
 import GroupCharts from "./Boxes/Charts";
 import Day from "./DEPRECATED/DEPRECATEDDay";
 
-import JoinTeam from "./pages/startJourney/JoinTeam.jsx";
+import JoinTeam from "./StartJourney/JoinTeam.jsx";
 import CreateTeam from "./StartJourney/CreateTeam";
 
 import EatPage from "./Boxes/Eat";
@@ -90,9 +90,9 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 
 /* Theme variables */
-import "./theme/variables.css";
+import "./util_theme/variables.css";
 
-import "./theme/App.css";
+import "./util_theme/App.css";
 
 /****************************************************************/
 

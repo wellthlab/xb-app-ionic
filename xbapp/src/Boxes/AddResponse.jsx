@@ -15,9 +15,9 @@ import { addControllersProp } from "../util_model/controllers";
 
 import MinuteEntry from "../UserInput/MinuteEntry";
 import Questionnaire from "../UserInput/Questionnaire";
-import StrengthWizard from "../components/strength/StrengthWizard";
-import StrengthExercisePicker from "../components/strength/StrengthExercisePicker";
-import Assessment from "../components/strength/Assessment";
+import StrengthWizard from "../Strength/StrengthWizard";
+import StrengthExercisePicker from "../Strength/StrengthExercisePicker";
+import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");

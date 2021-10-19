@@ -3,12 +3,12 @@ http://ionicframework.com/docs/theming/ */
 
 @font-face {
   font-family: "Nunito";
-  src: url("../fonts/Nunito-Regular.ttf") format("truetype");
+  src: url("../util_fonts/Nunito-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "Nunito-SemiBold";
-  src: url("../fonts/Nunito-SemiBold.ttf") format("truetype");
+  src: url("../util_fonts/Nunito-SemiBold.ttf") format("truetype");
 }
 
 ion-content {

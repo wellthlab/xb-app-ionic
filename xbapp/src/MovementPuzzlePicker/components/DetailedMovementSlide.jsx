@@ -2,7 +2,7 @@ import { IonSlide, IonSlides, IonText } from "@ionic/react";
 import { breakpoints } from "@material-ui/core/node_modules/@material-ui/system";
 import React from "react";
 import DetailedTile from "./DetailedTile";
-import Moves from "../strength/moves.json";
+import Moves from "../../Strength/moves.json";
 
 const DetailedMovementSlide = (props) => {
 

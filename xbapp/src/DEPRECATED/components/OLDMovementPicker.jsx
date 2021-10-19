@@ -9,9 +9,8 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import MovementInfoCard from "../../components/strength/MovementInfoCard";
+import MovementInfoCard from "../../Strength/MovementInfoCard";
 
-import "./MovementPicker.css";
 import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 /**

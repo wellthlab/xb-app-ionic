@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { IonContent, IonPage, IonInput, IonButton } from "@ionic/react";
-import XBHeader from "../../util/XBHeader";
+import XBHeader from "../util/XBHeader";
 
-import { addControllersProp } from "../../model/controllers";
+import { addControllersProp } from "../util_model/controllers";
 import { connect } from "react-redux";
 const autoBindReact = require("auto-bind/react");
 

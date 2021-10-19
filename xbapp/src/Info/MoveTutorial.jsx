@@ -15,11 +15,11 @@ import { connect } from "react-redux";
 import MovementPicker, {
   getMove,
 } from "../DEPRECATED/components/OLDMovementPicker";
-import MovementInfoCard from "../components/strength/MovementInfoCard";
-import MovementTimer from "../components/strength/MovementTimer";
+import MovementInfoCard from "../Strength/MovementInfoCard";
+import MovementTimer from "../Strength/MovementTimer";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import mobiscroll from "@mobiscroll/react-lite";
-import CountDown from "../components/instruments/CountDown";
+import CountDown from "../Instruments/CountDown";
 
 import "./MoveTutorial.scss";
 

@@ -64,6 +64,7 @@ const DailyActions = ({ group, today }) => {
   */
 
   var entries = group.entries;
+  console.log("just seeing", group);
 
   // Look up the daily entry we need to render
   var entry;

@@ -9,7 +9,7 @@ import {
 } from "@ionic/react";
 import React, { Component } from "react";
 import { useEffect } from "react";
-import Block from "../components/movement_puzzle_picker/Block";
+import Block from "./components/Block";
 import "./BlockPlanner.css";
 
 const studyPlanner = [

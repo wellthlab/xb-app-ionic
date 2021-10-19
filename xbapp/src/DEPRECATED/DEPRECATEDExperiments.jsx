@@ -9,7 +9,6 @@ import {
 } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 import WithXBSlice from "../util/WithXBSlice";
-import "./Experiments.css";
 
 import { add } from "ionicons/icons";
 

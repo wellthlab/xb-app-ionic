@@ -12,8 +12,8 @@ import { connect } from "react-redux";
 
 //sounds
 import useSound from "use-sound";
-import beep_short from "../../audio/beep_short.mp3";
-import beep_long from "../../audio/beep_long.mp3";
+import beep_short from "../util_audio/beep_short.mp3";
+import beep_long from "../util_audio/beep_long.mp3";
 
 /**
  * Props:
