@@ -79,11 +79,13 @@ const Balance = (props) => {
       <p style={{ padding: "5px 8px 5px 8px" }}>
         Rate your balance throughout the exercise.
       </p>
+      <div style={{margin: "auto"}}>
       <img
-        style={{ width: "50px", resize: "both", textAlign: "center" }}
+        style={{ display: "block", marginLeft: "auto", marginRight: "auto", width: "50px", resize: "both", textAlign: "center" }}
         src={"assets/balance/" + BalanceImages[value]}
         alt="balanced"
       />
+      </div>
       <IonItem style={{ textAlign: "center" }}>
         <IonLabel>{sliderValues[value]}</IonLabel>
       </IonItem>

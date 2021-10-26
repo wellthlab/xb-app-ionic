@@ -61,6 +61,9 @@ import AddResponse from "./Boxes/AddResponse";
 import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
 import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 
+import Balance from "./UserInput/Balance";
+import VAS from "./UserInput/VAS";
+
 import getXBClient from "./util_model/client";
 
 import {
@@ -187,6 +190,17 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/forgot-password"
                 component={ForgotPassword}
+                exact={true}
+              />
+              {/**for testing purposes */}
+              <Route
+                path="/balance"
+                component={Balance}
+                exact={true}
+              />
+              <Route
+                path="/vas"
+                component={VAS}
                 exact={true}
               />
               <Route path="/about" component={About} exact={true} />

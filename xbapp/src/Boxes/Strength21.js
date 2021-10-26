@@ -22,11 +22,14 @@ const decorateTeam = (team) => {
 
   for(var eday = 1; eday <= team.experiment.day; eday++) {
 
-    var week = Math.floor(eday / 7) + 1;
+    var week = Math.floor(eday / 7);
 
     console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
 
     var qreq = [];
+    // Other tasks that can be done, but optionally
+    var others = [];
+
     if (week >= 1) {
       qreq.push({
         type: "strength-setter",
@@ -35,19 +38,17 @@ const decorateTeam = (team) => {
       });
     } else {
       //if it's exploration week, let the participants know that they can PRACTICE with a strength exercise - without recording it
-      qreq.push({
+      others.push({
         type: "strength-explorer",
         desc: "Explore different Strength Exercises",
         verb: "DO IT",
       });
     }
+    others.push({ type: "note", desc: "Add Notes", verb: "ADD NOTES" });
+    others.push({ type: "minutes", desc: "Add Movement Minutes", verb: "ADD" });
+    
 
-    // Other tasks that can be done, but optionally
-    var others = [
-      { type: "note", desc: "Add Notes", verb: "ADD NOTES" },
-      { type: "minutes", desc: "Add Movement Minutes", verb: "ADD" },
-    ];
-
+    if (week >= 1){
     // Strength exercise only on week days
     var dow = eday % 7;
     if (dow == 0 || dow == 6) { //if it's weekend, juat adding it as optional
@@ -63,13 +64,14 @@ const decorateTeam = (team) => {
         verb: "DO IT",
       });
     }
+  
 
     qreq.push({
       type: "questionnaire",
       desc: "Fill in the Daily Review",
       verb: "DO IT",
     });
-
+  }
     if (eday == 1 || eday == 22 || eday == 36) {
       qreq.push({
         type: "assessment",

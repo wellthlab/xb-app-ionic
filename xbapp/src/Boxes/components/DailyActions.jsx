@@ -122,7 +122,6 @@ const DailyActions = ({ group, today }) => {
 
   var otheractions = optional.map((type) => {
     var done = typeof entry.responseTypes[type.type] !== "undefined";
-
     if (
       type.type == "strength-explorer" &&
       "blocks-week-0-day-" + activeDay.toString() in window.localStorage
@@ -163,7 +162,7 @@ const DailyActions = ({ group, today }) => {
           <h3>
             {nextDayExists
               ? "Day " + activeDay + " : " + entry.date
-              : "Today's Tasks"}
+              : "Today's Practice List"}
           </h3>
         </span>
         <span className="navbuttons">

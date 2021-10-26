@@ -181,9 +181,11 @@ class OptionTabs extends Component {
   }
 
   render() {
-    var week =
-      Math.floor((this.props.teams.teams[0].experiment.day - 1) / 7) + 1;
-
+    let day = this.props.teams.teams.bybox["move"][0].experiment.day;
+    var week = Math.floor((day - 1) / 7);
+    if (day <= 0){//before the study
+       week = -1;
+    } 
     return (
       <>
         <XBHeader title="Settings"></XBHeader>
@@ -206,6 +208,8 @@ class OptionTabs extends Component {
             <IonItemDivider></IonItemDivider>
             <IonItem routerLink="/account">Log Out</IonItem>
             <IonItemDivider></IonItemDivider>
+            <IonItem routerLink="/balance">DEMO-Balance</IonItem>
+            <IonItem routerLink="/vas">DEMO-VAS</IonItem>
             {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             {/* <IonItemDivider></IonItemDivider> */}
           </IonList>

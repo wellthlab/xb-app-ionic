@@ -28,7 +28,6 @@ import {
 } from "react-icons/gi";
 
 const Timeline = (props) => {
-  console.log(props.location);
   var week = props.location.weekNo;
   const goToWeek = () => {
     if (week > 17) {

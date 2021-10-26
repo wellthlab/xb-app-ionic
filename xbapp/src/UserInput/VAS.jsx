@@ -20,6 +20,19 @@ import {
     onChange: a callback that's fired when the mood slider changes
  */
 
+    const VASImagesdemo = {
+      0: "happy.png",
+      1: "happy.png",
+      2: "happy.png",
+      3: "happy.png",
+      4: "happy.png",
+      5: "happy.png",
+      6: "happy.png",
+      7: "happy.png",
+      8: "happy.png",
+      9: "happy.png",
+      10: "happy.png",
+    };
 const VASImages = {
   0: "nopain.png",
   1: "verymild.png",
@@ -138,11 +151,13 @@ const Balance = (props) => {
       <p style={{ padding: "5px 8px 5px 8px" }}>
         Rate the state of pain you feel (DOMS).
       </p>
+      <div style={{margin: "auto"}}>
       <img
-        style={{ width: "50px", resize: "both", textAlign: "center" }}
-        src={"assets/balance/" + BalanceImages[value]}
+        style={{ display: "block", marginLeft: "auto", marginRight: "auto", width: "50px", resize: "both", textAlign: "center" }}
+        src={"assets/mood/" + VASImagesdemo[value]}
         alt="balanced"
       />
+      </div>
       <IonItem style={{ textAlign: "center" }}>
         <IonLabel>{sliderVASFace[value]}</IonLabel>
       </IonItem>
@@ -159,7 +174,7 @@ const Balance = (props) => {
       <IonItem>
         <IonRange
           min={0}
-          max={11}
+          max={10}
           step={1}
           snaps={true}
           ticks={true}

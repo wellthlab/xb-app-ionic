@@ -170,8 +170,8 @@ const GroupInfo = ({ group, controllers, match }) => {
             <IonItemDivider>
               <IonLabel>View Data</IonLabel>
             </IonItemDivider>
-
-            <Link to={"/box/move/" + group._id + "/charts"}>
+            <p>Charts will be available soon. Thank you for your patience.</p>
+            {/* <Link to={"/box/move/" + group._id + "/charts"}>
               <IonItem
                 color="tertiary"
                 style={{ cursor: "pointer" }}
@@ -180,7 +180,7 @@ const GroupInfo = ({ group, controllers, match }) => {
                 <IonIcon icon={barChart} slot="start" />
                 View Charts
               </IonItem>
-            </Link>
+            </Link> */}
           </IonItemGroup>
         </IonList>
       </>

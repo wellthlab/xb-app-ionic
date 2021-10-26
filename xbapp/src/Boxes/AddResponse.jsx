@@ -23,7 +23,6 @@ import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
 const AddResponse = (props) => {
-  console.log("ADD RS", props);
   var gid = props.match.params.id; // Group ID comes from route
   var daynumber = props.match.params.day; // So does day number
   var type = props.match.params.type;
@@ -84,7 +83,7 @@ const AddResponse = (props) => {
             progress.
           </p>
           <p className="centering">
-            <IonButton routerLink={link}>Back to Experiment Page</IonButton>
+            <IonButton routerLink={link}>Back to your Move Box</IonButton>
           </p>
         </div>
       </>
@@ -109,6 +108,7 @@ const AddResponse = (props) => {
 
         input = (
           <StrengthWizard
+            location={props.location}
             countdownID={daynumber + "-" + gid}
             week={week}
             onSubmit={save}

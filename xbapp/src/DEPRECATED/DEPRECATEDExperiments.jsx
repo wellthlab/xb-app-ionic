@@ -32,7 +32,7 @@ class ExpList extends Component {
       <IonPage>
         <XBHeader title="Experiments"></XBHeader>
         <IonContent id="about">
-          <p>Be patient, we will be launching experiments soon.</p>
+          <p>We will be launching experiments soon.</p>
         </IonContent>
       </IonPage>
 

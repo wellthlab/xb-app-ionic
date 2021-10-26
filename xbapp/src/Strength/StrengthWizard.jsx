@@ -10,6 +10,7 @@ import {
   IonListHeader,
   IonTextarea,
 } from "@ionic/react";
+import { useHistory } from "react-router";
 import { connect } from "react-redux";
 
 import MovementPicker, {
@@ -65,7 +66,7 @@ function useLocalStorage(key, initialValue) {
 const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   const [stage, setStage] = useState(0);
 
-  var blocks = Math.max(1, week - 1);
+  var blocks = week;
   if (blocks > 5) blocks = 5;
 
   /**
@@ -101,8 +102,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
    */
   const [sets, setSets] = useState(null);
 
-  var blocksAreChosen = "blocks-week-" + week in window.localStorage;
-
+  var blocksAreChosen = "blocks-week-" + week + "-set" in window.localStorage;
   if (blocksAreChosen) {
     var blocksOfWeek = JSON.parse(
       window.localStorage.getItem("blocks-week-" + week)
@@ -388,22 +388,18 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
     rule: () => {
       return true;
     },
-    title: "Record Notes",
+    title: "Record your Notes",
   });
 
+  const history = useHistory();
   if (blocksAreChosen) {
     /**
      * Instructions and stage list
      */
-    if (week < 1) {
-      var rubric =
-        "This week, you're exploring different moves throughout the week. Just make sure to change them when you wish, before starting your exercise.";
-    } else {
-      var rubric =
+    var rubric =
         "This week, you'll do the same exercises each day. You have " +
         blocks +
-        " blocks to complete, with a certain number of moves in each block.";
-    }
+        " blocks to complete. Here is a breakdown of the strength tasks for today:";
     var snum = 1;
     content[0] = {
       el: (
@@ -411,7 +407,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           <p>{rubric}</p>
           <IonList>
             <IonListHeader>
-              <IonLabel>Today's Strength Exercise</IonLabel>
+              <IonLabel>Today's Strength Practice</IonLabel>
             </IonListHeader>
             {content.map((stage, i) => {
               if (stage.title)
@@ -435,11 +431,14 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
     content[0] = {
       el: (
         <>
-          <h3>Go back</h3>
+          <h3>Blocks have not been set.</h3>
           <p>
-            You need to choose two movements for this block. Your choices will
-            be fixed for the rest of the week.
+            Before proceeding to today's strength exercise, please set this week's blocks under today's required tasks.
           </p>
+          <IonButton onClick={() => history.push({
+      pathname:
+        "/box/move/"
+    })}>Back to your Move box</IonButton>
         </>
       ),
       rule: function () {
