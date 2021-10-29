@@ -10,6 +10,7 @@ import {
   IonList,
   IonItem,
   IonIcon,
+  IonLabel
 } from "@ionic/react";
 import { connect } from "react-redux";
 
@@ -204,6 +205,117 @@ const JournalFeed = ({ responses }) => {
           );
           break;
   
+          case "scheduler":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; SCHEDULING
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                {r.scheduling}
+              </IonCardContent>
+            </>
+          );
+          break;
+
+          case "poms":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; POMS
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonItem key="poms">
+                  <span>
+                    POMS Mood Disturbance{" "}
+                    <strong>{r.poms["Total Mood Disturbance"]}</strong>
+                  </span>
+                </IonItem>
+
+                {Object.keys(r.poms).map((type, number) => {
+                  if (type == "Total Mood Disturbance") {
+                    return;
+                  } // Skip; this is the headline number
+
+                  return (
+                    <IonItem key={"poms-" + number}>
+                      <IonIcon icon={caretForward} slot="start" />
+                      <span>
+                        {type} <strong>{number}</strong>
+                      </span>
+                    </IonItem>
+                  );
+                })}
+              </IonCardContent>
+            </>
+          );
+          break;
+
+          case "plank":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; The Plank
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonItem key="plank">
+                  <span>
+                    Plank Time <strong>{r.plankTime} secs</strong>{" "}
+                  </span>
+                </IonItem>
+              </IonCardContent>
+            </>
+          );
+          break;
+
+          case "heartrate":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; Heart Rate
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
+                <span>
+                Have learnt how to do a heart rate!
+                <br></br>
+                  <IonIcon icon={heart} /> 
+                </span>
+                <IonIcon icon={arrowForward} /> <span>{r.heartrate}</span>
+              </p>
+
+              </IonCardContent>
+            </>
+          );
+          break;
+
+          case "wallsit":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; Wall Sit
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonItem key="wall">
+                  <span>
+                    Wall Sit Time <strong>{r.wallTime} secs</strong>{" "}
+                  </span>
+                </IonItem>
+              </IonCardContent>
+            </>
+          );
+          break;
+
       case "questionnaire":
         content = (
           <>

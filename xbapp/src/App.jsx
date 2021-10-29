@@ -64,6 +64,11 @@ import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 import Balance from "./UserInput/Balance";
 import VAS from "./UserInput/VAS";
 import WorkAssessment from "./UserInput/WorkAssessment";
+import HeartRateTask from "./UserInput/HeartRateTask";
+import Plank from "./UserInput/Plank";
+import WallSit from "./UserInput/WallSit";
+import POMS from "./UserInput/POMS";
+import Scheduler from "./UserInput/Scheduler";
 
 import getXBClient from "./util_model/client";
 
@@ -205,8 +210,35 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
+                path="/heartrate"
+                component={HeartRateTask}
+                exact={true}
+              />
+
+              <Route
                 path="/work-assessment"
                 component={WorkAssessment}
+                exact={true}
+              />
+              <Route
+                path="/plank"
+                component={Plank}
+                exact={true}
+              />
+              <Route
+                path="/wallsit"
+                component={WallSit}
+                exact={true}
+              />
+               <Route
+                path="/poms"
+                component={POMS}
+                exact={true}
+              />
+
+              <Route
+                path="/scheduler"
+                component={Scheduler}
                 exact={true}
               />
               <Route path="/about" component={About} exact={true} />

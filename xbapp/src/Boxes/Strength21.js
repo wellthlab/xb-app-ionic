@@ -36,14 +36,7 @@ const decorateTeam = (team) => {
         desc: "Set your current Strength Exercise",
         verb: "DO IT",
       });
-    } else {
-      //if it's exploration week, let the participants know that they can EXPLORE with a strength exercise - without recording it
-      others.push({
-        type: "strength-explorer",
-        desc: "Explore different Strength Exercises",
-        verb: "DO IT",
-      });
-    }
+    } 
     others.push({ type: "note", desc: "Add Notes", verb: "ADD NOTES" });
     others.push({ type: "minutes", desc: "Add Movement Minutes", verb: "ADD" });
 
@@ -71,27 +64,75 @@ const decorateTeam = (team) => {
         desc: "Fill in the Daily Review",
         verb: "DO IT",
       });
+
+      if (eday == 1 || eday == 22 || eday == 36) {
+        qreq.push({
+          type: "assessment",
+          desc: "Do a Strength Assessment",
+          verb: "DO IT",
+        });
+      } else {
+        others.push({
+          type: "assessment",
+          desc: "Do a Strength Assessment",
+          verb: "DO IT",
+        });
+      }
     }
-    if (eday == 1 || eday == 22 || eday == 36) {
+    
+    if ((week == 1 && eday % 7 == 1) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
       qreq.push({
-        type: "assessment",
-        desc: "Do a Strength Assessment",
+        type: "work-assessment",
+        desc: "Do the Work Engagement Questionnaire",
+        verb: "DO IT",
+      });
+    }
+    if (week == 0){
+      if (eday % 7 == 1 || eday % 7 == 5){ //is monday
+        qreq.push({
+          type: "scheduler",
+          desc: "Schedule your Workout",
+          verb: "DO IT",
+        });
+      } else if (eday % 7 == 2){ //is poms - tuesday
+        qreq.push({
+          type: "poms",
+          desc: "Do an assessment - POMS",
+          verb: "DO IT",
+        });
+        qreq.push({
+          type: "heartrate",
+          desc: "Learning HOW TO - Heart rate",
+          verb: "DO IT",
+        });
+
+      } else if (eday % 7 == 3){ //is walls it and plank
+        qreq.push({
+          type: "plank",
+          desc: "Do an assessment - The Plank",
+          verb: "DO IT",
+        });
+        qreq.push({
+          type: "wallsit",
+          desc: "Do an assessment - The Wall Sit",
+          verb: "DO IT",
+        });
+      }
+    }
+    if (week == 0 && eday % 7 == 4) {
+      qreq.push({
+        type: "strength-explorer",
+        desc: "Explore different Strength Exercises",
         verb: "DO IT",
       });
     } else {
+      //if it's exploration week, let the participants know that they can EXPLORE with a strength exercise - without recording it
       others.push({
-        type: "assessment",
-        desc: "Do a Strength Assessment",
+        type: "strength-explorer",
+        desc: "Explore different Strength Exercises",
         verb: "DO IT",
       });
     }
-    // if (eday % 7 == 1 || eday % 7 == 3 || eday % 7 == 5) {
-    //   qreq.push({
-    //     type: "work-assessment",
-    //     desc: "Do the Work Engagement Questionnaire",
-    //     verb: "DO IT",
-    //   });
-    // }
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
   } // End day loop

@@ -102,7 +102,13 @@ const DailyActions = ({ group, today }) => {
     ) {
       done = true;
     }
-
+    if (
+      type.type == "strength-explorer" &&
+      "blocks-week-0-day-" + activeDay.toString() in window.localStorage
+    ) {
+      done = true;
+    }
+    
     return (
       <IonItem
         color={done ? "neutral" : "warning"}

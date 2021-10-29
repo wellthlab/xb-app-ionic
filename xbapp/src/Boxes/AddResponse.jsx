@@ -20,6 +20,11 @@ import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import WorkAssessment from "../UserInput/WorkAssessment";
+import HeartRateTask from "../UserInput/HeartRateTask";
+import Scheduler from "../UserInput/Scheduler";
+import POMS from "../UserInput/POMS";
+import Plank from "../UserInput/Plank";
+import WallSit from "../UserInput/WallSit";
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
@@ -163,10 +168,37 @@ const AddResponse = (props) => {
         case "work-assessment":
         input = <WorkAssessment onSubmit={save} />;
         break;
+        case "hearttare":
+        input = <HeartRateTask onSubmit={save} />;
+        break;
+        case "scheduler":
+          var planner = [];
+          var week = Math.floor((daynumber - 1) / 7);
+          if (week == 0 && daynumber == 1){
+            planner = [{day: "Tuesday", isChecked: false}, {day: "Wednesday", isChecked: false}, {day: "Thursday", isChecked: false}, {day: "Friday", isChecked: false}];
+          } else {
+            planner = [{day: "Monday", isChecked: false}, {day: "Tuesday", isChecked: false}, {day: "Wednesday", isChecked: false}, {day: "Thursday", isChecked: false}, {day: "Friday", isChecked: false}];
+          }
+        input = <Scheduler onSubmit={save} daysCalendar={planner}/>;
+        break;
+        case "poms":
+        input = <POMS onSubmit={save} />;
+        break;
+        case "plank":
+        input = <Plank onSubmit={save} />;
+        break;
+        case "wallsit":
+        input = <WallSit onSubmit={save} />;
+        break;
 
       case "assessment":
         input = <Assessment onSubmit={save} />;
         break;
+
+        case "heartrate":
+        input = <HeartRateTask onSubmit={save} />;
+        break;
+
 
       case "note":
         input = <Note onSubmit={save} />;
@@ -208,6 +240,21 @@ const AddResponse = (props) => {
       break;
       case "work-assessment":
         typedesc = "Work Engagement Questionnaire";
+        break;
+        case "scheduler":
+        typedesc = "Calendar Scheduling";
+        break;
+        case "poms":
+        typedesc = "Assessment: POMS";
+        break;
+        case "plank":
+        typedesc = "Assessment: The Plank";
+        break;
+        case "wallsit":
+        typedesc = "Assessment: The Wall Sit";
+        break;
+        case "heartrate":
+        typedesc = "Learning HOW TO: Taking heart rates";
         break;
   }
 
