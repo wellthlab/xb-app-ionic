@@ -85,13 +85,13 @@ const decorateTeam = (team) => {
         verb: "DO IT",
       });
     }
-    if (eday % 7 == 1 || eday % 7 == 3 || eday % 7 == 5) {
-      qreq.push({
-        type: "work-assessment",
-        desc: "Do the Work Engagement Questionnaire",
-        verb: "DO IT",
-      });
-    }
+    // if (eday % 7 == 1 || eday % 7 == 3 || eday % 7 == 5) {
+    //   qreq.push({
+    //     type: "work-assessment",
+    //     desc: "Do the Work Engagement Questionnaire",
+    //     verb: "DO IT",
+    //   });
+    // }
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
   } // End day loop

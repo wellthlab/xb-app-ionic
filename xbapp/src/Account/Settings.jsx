@@ -208,8 +208,8 @@ class OptionTabs extends Component {
             <IonItemDivider></IonItemDivider>
             <IonItem routerLink="/account">Log Out</IonItem>
             <IonItemDivider></IonItemDivider>
-            <IonItem routerLink="/balance">DEMO-Balance</IonItem>
-            <IonItem routerLink="/vas">DEMO-VAS</IonItem>
+            {/* <IonItem routerLink="/balance">DEMO-Balance</IonItem>
+            <IonItem routerLink="/vas">DEMO-VAS</IonItem> */}
             {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             {/* <IonItemDivider></IonItemDivider> */}
           </IonList>
