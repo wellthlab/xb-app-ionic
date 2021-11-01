@@ -63,6 +63,7 @@ import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 
 import Balance from "./UserInput/Balance";
 import VAS from "./UserInput/VAS";
+import WorkAssessment from "./UserInput/WorkAssessment";
 
 import getXBClient from "./util_model/client";
 
@@ -201,6 +202,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/vas"
                 component={VAS}
+                exact={true}
+              />
+              <Route
+                path="/work-assessment"
+                component={WorkAssessment}
                 exact={true}
               />
               <Route path="/about" component={About} exact={true} />

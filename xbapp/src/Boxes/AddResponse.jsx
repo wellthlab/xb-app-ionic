@@ -19,6 +19,7 @@ import StrengthWizard from "../Strength/StrengthWizard";
 import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
+import WorkAssessment from "../UserInput/WorkAssessment";
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
@@ -159,6 +160,10 @@ const AddResponse = (props) => {
         // );
         break;
 
+        case "work-assessment":
+        input = <WorkAssessment onSubmit={save} />;
+        break;
+
       case "assessment":
         input = <Assessment onSubmit={save} />;
         break;
@@ -201,6 +206,9 @@ const AddResponse = (props) => {
     case "assessment":
       typedesc = "Strength Assessment";
       break;
+      case "work-assessment":
+        typedesc = "Work Engagement Questionnaire";
+        break;
   }
 
   return (

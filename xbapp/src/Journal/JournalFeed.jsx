@@ -189,6 +189,21 @@ const JournalFeed = ({ responses }) => {
         );
         break;
 
+        case "work-assessment":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; WORK ASSESSMENT
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                {r.explanation.split(";").map((explanation, i) => <p key={i}>{explanation}</p>)}
+              </IonCardContent>
+            </>
+          );
+          break;
+  
       case "questionnaire":
         content = (
           <>
