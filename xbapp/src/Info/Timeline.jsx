@@ -82,8 +82,8 @@ const Timeline = (props) => {
             <h3 className="vertical-timeline-element-title">WEEK -1</h3>
             <h4 className="vertical-timeline-element-subtitle">Pre-study</h4>
             <p>
-              During this week you'll have registered for the study, joined the
-              Microsoft Team, and download the XB Strength app.
+              During this week you'll have registered for the study and joined the
+              Microsoft Team.
             </p>
             <p>
               <strong>
@@ -122,7 +122,7 @@ const Timeline = (props) => {
               how to do experiments.
             </p>
             <p>
-              <strong>LEARN about DOMS, balance, contractions!</strong>
+              <strong>LEARN about pushes, pulls!</strong>
             </p>
           </VerticalTimelineElement>
 
@@ -160,7 +160,7 @@ const Timeline = (props) => {
             <p>+ Assessment!</p>
             <p>
               <strong>
-                LEARN about blocks (our Move Tutorial) and about moves!
+                LEARN with your first block and moves!
               </strong>
             </p>
           </VerticalTimelineElement>

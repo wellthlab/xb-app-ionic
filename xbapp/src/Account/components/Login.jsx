@@ -31,6 +31,7 @@ class Login extends Component {
   render() {
     const { account } = this.props;
 
+    
     if (window.localStorage.length != 0) {
       this.props.START_LOGIN({});
       this.props.ACCEPT_LOGIN({});

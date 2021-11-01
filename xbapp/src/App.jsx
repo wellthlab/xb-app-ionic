@@ -111,6 +111,7 @@ const autoBindReact = require("auto-bind/react"); // Needs to go after import, b
 const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
   let content = null;
 
+  console.log("HMMM", account, window.localStorage);
   useEffect(() => {
     if (
       !account.loggedin &&
@@ -118,12 +119,13 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
       window.localStorage.length != 0
     ) {
       var user = getXBClient().getUser();
-      // console.log("Using stored account", user);
+      console.log("Using stored account", user);
+      if (user){
       START_LOGIN({ email: false });
       ACCEPT_LOGIN({});
+      }
     }
   });
-
   if (account.loggedin !== false) {
     content = (
       <>

@@ -181,19 +181,25 @@ class OptionTabs extends Component {
   }
 
   render() {
-    let day = this.props.teams.teams.bybox["move"][0].experiment.day;
+    console.log("TRY,", this.props.teams.teams.bybox["move"]);
+    if (this.props.teams.teams.bybox["move"]){
+      let day = this.props.teams.teams.bybox["move"][0].experiment.day;
     var week = Math.floor((day - 1) / 7);
     if (day <= 0){//before the study
        week = -1;
     } 
+    } else {
+      var week = -1;
+    }
+    
     return (
       <>
-        <XBHeader title="Settings"></XBHeader>
+        <XBHeader title="Info"></XBHeader>
         <IonContent id="settings" fullscreen>
           <IonList>
             <IonItem>
               <Link
-                style={{ textDecoration: "none", color: "white" }}
+                style={{ textDecoration: "none", color: "inherit" }}
                 to={{
                   pathname: `/timeline`,
                   weekNo: week,

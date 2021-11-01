@@ -86,7 +86,7 @@ const CreateTeam = (props) => {
     content = (
       <>
         <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
-          Choose a name for your team, and optionally enter a description.
+          Choose a name for your team, and optionally enter a description. The title must have a minimum of 4 characters.
         </p>
         <div className="centering">
           <IonInput
