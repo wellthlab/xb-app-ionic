@@ -21,10 +21,13 @@ import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import WorkAssessment from "../UserInput/WorkAssessment";
 import HeartRateTask from "../UserInput/HeartRateTask";
+import Quiz from "../UserInput/Quiz";
 import Scheduler from "../UserInput/Scheduler";
 import POMS from "../UserInput/POMS";
 import Plank from "../UserInput/Plank";
 import WallSit from "../UserInput/WallSit";
+import PushPull from "../UserInput/PushPull";
+
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
@@ -199,6 +202,13 @@ const AddResponse = (props) => {
         input = <HeartRateTask onSubmit={save} />;
         break;
 
+        case "quiz":
+          var week = Math.floor((daynumber - 1) / 7);
+        input = <Quiz onSubmit={save} week={week}/>;
+        break;
+        case "pushpull":
+        input = <PushPull onSubmit={save}/>;
+        break;
 
       case "note":
         input = <Note onSubmit={save} />;
@@ -255,6 +265,12 @@ const AddResponse = (props) => {
         break;
         case "heartrate":
         typedesc = "Learning HOW TO: Taking heart rates";
+        break;
+        case "quiz":
+        typedesc = "Weekly QUIZ";
+        break;
+        case "pushpull":
+        typedesc = "Pushes and Pulls";
         break;
   }
 

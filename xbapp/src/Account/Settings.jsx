@@ -181,7 +181,6 @@ class OptionTabs extends Component {
   }
 
   render() {
-    console.log("TRY,", this.props.teams.teams.bybox["move"]);
     if (this.props.teams.teams.bybox["move"]){
       let day = this.props.teams.teams.bybox["move"][0].experiment.day;
     var week = Math.floor((day - 1) / 7);

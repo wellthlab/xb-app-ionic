@@ -69,6 +69,8 @@ import Plank from "./UserInput/Plank";
 import WallSit from "./UserInput/WallSit";
 import POMS from "./UserInput/POMS";
 import Scheduler from "./UserInput/Scheduler";
+import Quiz from "./UserInput/Quiz";
+import PushPull from "./UserInput/PushPull";
 
 import getXBClient from "./util_model/client";
 
@@ -220,6 +222,16 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/work-assessment"
                 component={WorkAssessment}
+                exact={true}
+              />
+              <Route
+                path="/quiz"
+                component={Quiz}
+                exact={true}
+              />
+              <Route
+                path="/pushpull"
+                component={PushPull}
                 exact={true}
               />
               <Route

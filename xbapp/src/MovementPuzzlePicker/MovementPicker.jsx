@@ -29,9 +29,9 @@ const MovementPicker = (props) => {
   }
   // Used for the page heading
   const rowHeadings = [
-    "Upper body movement",
-    "Full body movement",
-    "Lower Body movement",
+    "",
+    "",
+    "",
   ];
   const [rowIndex, setRowIndex] = useState(1);
   // Setup states to control the active slide

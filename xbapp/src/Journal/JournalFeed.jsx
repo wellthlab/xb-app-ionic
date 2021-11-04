@@ -316,6 +316,44 @@ const JournalFeed = ({ responses }) => {
           );
           break;
 
+          case "quiz":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; This week's quiz!
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonItem>
+                  <span>
+                    You answered <strong>{r.isRightAnswer}</strong> to this week's quiz: {r.question}{" "}{r.answer}.{" "}{r.explanation}
+                  </span>
+                </IonItem>
+              </IonCardContent>
+            </>
+          );
+          break;
+
+          case "pushpull":
+          content = (
+            <>
+              <IonCardHeader>
+                <IonCardSubtitle>
+                  {time} &nbsp; You read about Pushes and Pulls
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonItem>
+                  <span>
+                    You have read about pushes and pulls and are now ready to proceed to next week, where you will be using this knowledge further!
+                  </span>
+                </IonItem>
+              </IonCardContent>
+            </>
+          );
+          break;
+
       case "questionnaire":
         content = (
           <>

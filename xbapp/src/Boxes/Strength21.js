@@ -65,7 +65,8 @@ const decorateTeam = (team) => {
         verb: "DO IT",
       });
 
-      if (eday == 1 || eday == 22 || eday == 36) {
+      if (dow == 1){ //it's a monday
+      // if (eday == 1 || eday == 22 || eday == 36) {
         qreq.push({
           type: "assessment",
           desc: "Do a Strength Assessment",
@@ -80,7 +81,7 @@ const decorateTeam = (team) => {
       }
     }
     
-    if ((week == 1 && eday % 7 == 1) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
+    if ((week == 0 && eday % 7 == 1) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
       qreq.push({
         type: "work-assessment",
         desc: "Do the Work Engagement Questionnaire",
@@ -88,7 +89,7 @@ const decorateTeam = (team) => {
       });
     }
     if (week == 0){
-      if (eday % 7 == 1 || eday % 7 == 5){ //is monday
+      if (eday % 7 == 1){ //is monday
         qreq.push({
           type: "scheduler",
           desc: "Schedule your Workout",
@@ -105,8 +106,10 @@ const decorateTeam = (team) => {
           desc: "Learning HOW TO - Heart rate",
           verb: "DO IT",
         });
+        //TODOOOOOOOO
+        
 
-      } else if (eday % 7 == 3){ //is walls it and plank
+      } else if (eday % 7 == 3){ //is walls it and plank- wednesday
         qreq.push({
           type: "plank",
           desc: "Do an assessment - The Plank",
@@ -117,9 +120,32 @@ const decorateTeam = (team) => {
           desc: "Do an assessment - The Wall Sit",
           verb: "DO IT",
         });
+      } else if (eday % 7 == 4){ //ithursday - understanding pushes pulls
+        qreq.push({
+          type: "pushpull",
+          desc: "Understanding Pushes and Pulls",
+          verb: "DO IT",
+        });
+       
+      } else if (eday % 7 == 5){ //is walls it and plank - friday
+        qreq.push({
+          type: "scheduler",
+          desc: "Schedule your Workout",
+          verb: "DO IT",
+        });
+        others.push({
+          type: "pushpull",
+          desc: "Understanding Pushes and Pulls",
+          verb: "DO IT",
+        });
+        qreq.push({
+          type: "quiz",
+          desc: "Weekly QUIZ!",
+          verb: "DO IT",
+        });
       }
     }
-    if (week == 0 && eday % 7 == 4) {
+    if (week == 0 && eday % 7 == 4) { //thursday
       qreq.push({
         type: "strength-explorer",
         desc: "Explore different Strength Exercises",
