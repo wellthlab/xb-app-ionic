@@ -123,6 +123,7 @@ const BlockPlanner = (props) => {
             blockIndex={index}
             exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
             explorer={props.explorer}
+            week={week}
           ></Block>
         ))}
         {props.explorer ? 

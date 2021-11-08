@@ -20,9 +20,12 @@ const Block = (props) => {
   const blockType = props.typeOfBlock;
   const blockIndex = props.blockIndex;
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
+  const weekNo = props.week;
+  
   const history = useHistory();
 
   // Maybe this should be a state?
+ 
   let filteredMoves;
   useEffect(() => {}, []);
 
@@ -30,6 +33,42 @@ const Block = (props) => {
   function processMovements() {
     blockType.map((exercise, index) => {
       const movements = {};
+      //extraordinary flow
+       //TODO: NOT HARD CODE
+       var starter = 0;
+      if (weekNo == 1){ //HARDCODED
+        var movesForweek1 = Moves.moves.filter((obj) => {
+          return obj.weekToApper == 1;
+        });
+        if (exercise.includes("pull")) {
+          filteredMoves = movesForweek1.filter((obj) => {
+            return obj.type === "pull";
+          });
+            movements.upperBody = [];
+            movements.fullBody = filteredMoves.sort((a, b) => {
+              return a.order - b.order;
+            });
+            
+            movements.lowerBody = [];
+            starter = 5;
+          
+        } else if (exercise.includes("push")) {
+          filteredMoves = movesForweek1.filter((obj) => {
+            return obj.type === "push";
+          });
+          
+          movements.upperBody = [];
+          movements.fullBody = filteredMoves.sort((a, b) => {
+            return a.order - b.order;
+          });
+          
+          movements.lowerBody = [];
+          starter = 1;
+        }
+      
+      } else {
+
+      // normal flow
       if (exercise.includes("pull")) {
         filteredMoves = Moves.moves.filter((obj) => {
           return obj.type === "pull";
@@ -186,6 +225,7 @@ const Block = (props) => {
           return a.progressionLevel - b.progressionLevel;
         });
       }
+      }
 
       content.push(
         <IonButton
@@ -202,7 +242,7 @@ const Block = (props) => {
                 blockIndex: blockIndex,
                 initialSlideIndex: {
                   upperBody: 0,
-                  fullBody: 0,
+                  fullBody: starter,
                   lowerBody: 0,
                 },
               },

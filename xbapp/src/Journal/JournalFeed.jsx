@@ -179,7 +179,7 @@ const JournalFeed = ({ responses }) => {
                     <IonItem key={"poms-" + number}>
                       <IonIcon icon={caretForward} slot="start" />
                       <span>
-                        {type} <strong>{number}</strong>
+                        {type} <strong>{r.poms[type]}</strong>
                       </span>
                     </IonItem>
                   );

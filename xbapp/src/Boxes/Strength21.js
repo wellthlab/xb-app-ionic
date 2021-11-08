@@ -81,7 +81,7 @@ const decorateTeam = (team) => {
       }
     }
     
-    if ((week == 0 && eday % 7 == 1) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
+    if ((week == 0 && eday % 7 == 1) || (week == 1 && eday % 7 == 3) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
       qreq.push({
         type: "work-assessment",
         desc: "Do the Work Engagement Questionnaire",
