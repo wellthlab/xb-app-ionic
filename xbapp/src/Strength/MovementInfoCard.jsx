@@ -38,8 +38,8 @@ const MovementInfoCard = (props) => {
           >
             <Typography className={props.titleSize}>{props.name}</Typography>
           </AccordionSummary>
-          <AccordionDetails className="detailsAcc">
-            <figure id="promo">
+          <AccordionDetails className="detailsAcc" style={{padding: "0px"}}>
+            <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
               <img src={"assets/moves/" + props.images[0]} className="A" />
               <img src={"assets/moves/" + props.images[1]} className="B" />
             </figure>
@@ -51,7 +51,7 @@ const MovementInfoCard = (props) => {
             <IonCardTitle className={props.titleSize}>
               {props.name}
             </IonCardTitle>
-            <figure id="promo">
+            <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
               <img src={"assets/moves/" + props.images[0]} className="A" />
               <img src={"assets/moves/" + props.images[1]} className="B" />
             </figure>

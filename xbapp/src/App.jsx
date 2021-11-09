@@ -40,6 +40,7 @@ import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
 import Timeline from "./Info/Timeline";
 import HeartRateChartPage from "./Info/HeartRateChartPage";
+import ProtocolChartPage from "./Info/ProtocolChartPage";
 
 import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
@@ -206,6 +207,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               />
                <Route path="/about" component={About} exact={true} />
                <Route path="/heartratechart" component={HeartRateChartPage} exact={true} />
+               <Route path="/protocolchart" component={ProtocolChartPage} exact={true} />
               
               {/**for testing purposes */}
               <Route

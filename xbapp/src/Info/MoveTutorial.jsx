@@ -100,14 +100,53 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
     title: "What is a REP? (30 sec.)",
   });
 
+
   content.push({
     el: (
       <>
         <h3>What would a SET be?</h3>
         <p>
           A SET represents a collection of reps. Most often a set has
-          repetitions of only one movement. BUT, in our case, ONE SET will
-          consist of 5 REPS of move A, and 5 REPS of move B.
+          repetitions of only one movement. In our case, ONE SET will
+          consist of 5 REPS of a move.
+        </p>
+        <p>For example, let's say we have the following move, below:</p>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <MovementInfoCard
+                accordion={false}
+                titleSize={"small"}
+                key={moveA.id}
+                images={moveA.images}
+                name={moveA.name}
+              ></MovementInfoCard>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+
+        <p>
+          Do 5 REPS of this move.
+        </p>
+        <p>AND THAT'S A SET!</p>
+      </>
+    ),
+    next: true,
+    previous: true,
+    rule: function () {
+      return true;
+    },
+    title: "What is a SET? (30 sec.)",
+  });
+
+  content.push({
+    el: (
+      <>
+        <h3>What would a SUPERSET be?</h3>
+        <p>
+          A SUPERSET is when we put two sets together and we move between those two moves without a break.
+          In our case, ONE SUPERSET will
+          consist of 1 SET of move A, and 1 SET of move B.
         </p>
         <p>For example, let's say we have the 2 moves, below:</p>
         <IonGrid>
@@ -134,10 +173,9 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
         </IonGrid>
 
         <p>
-          Do 5 REPS of the first. PAUSE to recover – with the minimum recovery
-          you need. Now do 5 REPS of the second.
+          Do 1 SET (5 reps) of the first. Now do 1 SET (5 reps) of the second.
         </p>
-        <p>AND THAT'S A SET!</p>
+        <p>AND THAT'S A SUPERSET!</p>
       </>
     ),
     next: true,
@@ -145,9 +183,8 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
     rule: function () {
       return true;
     },
-    title: "What is a SET? (1 min.)",
+    title: "What is a SUPERSET? (1 min.)",
   });
-
   content.push({
     el: (
       <>
@@ -157,13 +194,13 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
           to perform sets. So our BLOCKS in this study are 7 mins.
         </p>
         <p>
-          Inside the BLOCK - we have SETS! As many as you can fit in just 7
+          Inside the BLOCK - we have SUPERSETS, SETS and REPS! As many as you can fit in just 7
           minutes!
         </p>
         <p>
-          When recording your exercising, a BLOCK contains a number of SETS plus
-          any additional REPS for that block (i.e. you may complete 5 full sets
-          + 2 additional reps of move B)
+          When recording your exercising, you will record the number of SETS within your block,
+          any additional REPS for that block (i.e. you may complete 3 sets (5 reps of A, 5 reps of B, 5 reps of A)
+          + 2 reps of move B) - in which case the Journal page will display "3 sets and 2 reps"
         </p>
         <p>
           NOW, let's give it a go! Start the timer below, and try to do as many
@@ -244,12 +281,14 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
         <p>Now let's do a quick re-iteration:</p>
         <ul>
           <li>Doing one MOVE one time - is called a REP</li>
-          <li>5 REPS of move A + 5 REPS of MOVE B - is called a SET</li>
+          <li>5 REPS of a move - is called a SET</li>
+          <li>1 SET of move A + 1 SET of MOVE B - is called a SUPERSET</li>
           <li>
-            A number of SETS + any remaining REPS done to fill 7 minutes - is
-            called a BLOCK
+            We will be recording the number of SETS and REPS, within a block.
           </li>
         </ul>
+        <img src="assets/protocol.png" alt="heart chart" style={{maxWidth: "95%", maxHeight: "95vh", margin: "auto"}}/>
+        <p>Image source: Michael Shaw</p>
         <IonButton onClick={function () {}} routerLink={"/settings"}>
           Finish
         </IonButton>

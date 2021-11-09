@@ -136,6 +136,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               <h3>
                 Block {blocknum} of {blocks}
               </h3>
+              <p>Try to fit in as many sets in the 7-minute limit. Once you complete 5 REPS of a move, tap "+1 SET". Add any remaining reps at the end when the time runs out.</p>
               <MovementTimer
                 exercises={blocksOfWeek[blocknum - 1]}
                 onDone={() => {}}

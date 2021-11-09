@@ -213,6 +213,7 @@ class OptionTabs extends Component {
               </Link>
             </IonItem>
             <IonItem routerLink="/heartratechart">Heart rate numbers</IonItem>
+            <IonItem routerLink="/protocolchart">Understanding the Protocol</IonItem>
             <IonItem routerLink="/about">XB study</IonItem>
           </IonList>
               </IonCardContent>
@@ -226,7 +227,7 @@ class OptionTabs extends Component {
               <IonCardContent>
               <IonList>
               <IonItem routerLink="/pushpull">Pushes and pulls</IonItem>
-            <IonItem routerLink="/movetutorial">The protocol</IonItem>
+            <IonItem routerLink="/movetutorial">Doing the Protocol</IonItem>
           </IonList>
               </IonCardContent>
             </IonCard>

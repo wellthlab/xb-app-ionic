@@ -36,7 +36,7 @@ const Block = (props) => {
       //extraordinary flow
        //TODO: NOT HARD CODE
        var starter = 0;
-      if (weekNo == 1){ //HARDCODED
+      if (weekNo == 2){ //HARDCODED
         var movesForweek1 = Moves.moves.filter((obj) => {
           return obj.weekToApper == 1;
         });
@@ -245,6 +245,11 @@ const Block = (props) => {
                   fullBody: starter,
                   lowerBody: 0,
                 },
+                numberOfItems: {
+                  topRow: movements.upperBody.length,
+                  middleRow: movements.fullBody.length,
+                  bottomRow: movements.lowerBody.length
+                }
               },
             });
           }}

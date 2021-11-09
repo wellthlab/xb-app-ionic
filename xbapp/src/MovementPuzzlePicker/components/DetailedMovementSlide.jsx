@@ -9,7 +9,7 @@ const DetailedMovementSlide = (props) => {
     initialSlide: 0,
     speed: 400,
     centeredSlides: true,
-    spaceBetween: 420,
+    spaceBetween: 400,
     slidesPerView: 2,
     direction: "vertical",
   };
@@ -52,7 +52,7 @@ const DetailedMovementSlide = (props) => {
 
   let message = "";
   if (props.movement.alternative.length !== 0) {
-    message = <IonText>Swipe up and down for alternative movements</IonText>;
+    message = <IonText>Swipe down for alternative movements</IonText>;
   }
 
   function getMovementFromId(id) {
@@ -65,10 +65,10 @@ const DetailedMovementSlide = (props) => {
   return (
     <div
       style={{
-        height: "100%",
+        height: "90%",
       }}
     >
-      <div style={{ height: "30px" }}>{message}</div>
+      <div>{message}</div>
       <IonSlides options={options}>{movements}</IonSlides>
     </div>
   );

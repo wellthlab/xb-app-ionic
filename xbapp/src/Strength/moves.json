@@ -550,7 +550,7 @@
       "progressionLevel": 1,
       "order": -1,
       "description": "Face towards a solid wall. Stand roughly parallel to the surface and place both hands flat on the wall, arms fully extended at about shoulder height.",
-      "images": ["wall_push_up_rest.png", "wall_push_up_engaged.png"],
+      "images": ["wall_pushup_rest.png", "wall_pushup_engaged.png"],
       "difficulty": "Bring your feet back so you're leaning towards the wall - the move becomes more difficult the greater the angle.",
       "warning": "Make sure the wall is solid enough to take your weight.",
       "alternative": ["cobrapushup"],

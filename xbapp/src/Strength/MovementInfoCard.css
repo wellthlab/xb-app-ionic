@@ -3,7 +3,9 @@
 }
 
 #promo img {
-  width: 90px;
+  width: 100px;
+    height: 100px;
+    object-fit: contain;
 }
 
 #promo {
@@ -12,7 +14,7 @@
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
-  min-height: 100px;
+  max-height: 150px;
 }
 
 .A {

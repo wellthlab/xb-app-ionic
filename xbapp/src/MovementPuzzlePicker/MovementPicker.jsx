@@ -24,9 +24,6 @@ import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 const MovementPicker = (props) => {
   var isExplorer = props.location.pathname.includes("explore");
 
-  if (isExplorer) {
-    //if it's explorer day, and they got this far, mark it as complete
-  }
   // Used for the page heading
   const rowHeadings = [
     "",
@@ -65,7 +62,7 @@ const MovementPicker = (props) => {
         initialSlide: props.location.state?.initialSlideIndex.upperBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: 2,
+        slidesPerView: props.location.state?.numberOfItems.topRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -81,7 +78,7 @@ const MovementPicker = (props) => {
         initialSlide: props.location.state?.initialSlideIndex.fullBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: 2,
+        slidesPerView: props.location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -97,7 +94,7 @@ const MovementPicker = (props) => {
         initialSlide: props.location.state?.initialSlideIndex.lowerBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: 2,
+        slidesPerView: props.location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -169,7 +166,7 @@ const MovementPicker = (props) => {
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {
     screen = (
-      <div id="movement-picker">
+      <div id="movement-picker" style={{padding: "0px"}}>
         <IonCard>
           <IonCardContent>There are no exercises to choose from</IonCardContent>
         </IonCard>
@@ -177,7 +174,7 @@ const MovementPicker = (props) => {
     );
   } else if (!showDetailedTile) {
     screen = (
-      <div id="movement-picker">
+      <div id="movement-picker" style={{padding: "0px"}}>
         <div id="tile-gui">
           <IonIcon icon={caretUp} id="up" className="caret-row"></IonIcon>
           <IonIcon
@@ -236,7 +233,7 @@ const MovementPicker = (props) => {
     );
   } else {
     screen = (
-      <div id="movement-picker">
+      <div id="movement-picker" style={{padding: "0px"}}>
         <DetailedMovementSlide
           movement={movement}
           updateExercise={updateExercise}

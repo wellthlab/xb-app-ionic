@@ -181,7 +181,7 @@ function CountDown(props) {
       <IonGrid>
         <IonRow>
           {props.editable ? (
-            <IonCol>
+            <IonCol style={{padding: "0px"}}>
               <div className="time0">
                 <IonInput
                   style={{
@@ -209,7 +209,7 @@ function CountDown(props) {
               </div>
             </IonCol>
           ) : (
-            <IonCol>
+            <IonCol style={{padding: "0px"}}>
               <div className="time">
                 {minutes > 9 ? minutes : "0" + minutes}:
                 {seconds > 9 ? seconds : "0" + seconds}

@@ -17,7 +17,7 @@ const HeartRateChartPage = ({}) => {
 
   return (
     <IonPage>
-      <XBHeader title="About XB"></XBHeader>
+      <XBHeader title="Heart Rate Chart"></XBHeader>
       <IonContent id="about" fullscreen>
         <IonTitle>Understanding Heart Rate numbers</IonTitle>
         {/* <p>A resting heart rate is defined as a pulse that is taken when you are calm, sitting or lying down, and the best time to measure a resting heart rate is in the morning before you leave the bed. Generally speaking, a lower heart rate functions more effectively and efficiently.</p> */}

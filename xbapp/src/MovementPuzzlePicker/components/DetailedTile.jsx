@@ -35,7 +35,7 @@ function DetailedTile(props) {
   return (
     <div id="detailed-tile" className="centering" style={{ minWidth: "250px" }}>
       <IonCard style={props.style}>
-        <IonCardHeader>
+        <IonCardHeader style={{paddingTop: "0px", paddingBottom: "0px"}}>
           <IonToolbar>
             <IonButtons slot="end">
               <IonButton
@@ -56,7 +56,7 @@ function DetailedTile(props) {
               {description}
             </IonCardContent>
           </IonText>
-          <figure id="promo">
+          <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
             <img src={"assets/moves/" + movement.images[0]} className="A" />
             <img src={"assets/moves/" + movement.images[1]} className="B" />
           </figure>

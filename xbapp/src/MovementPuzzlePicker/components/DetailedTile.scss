@@ -4,6 +4,8 @@
 
 #promo img {
   width: 90px;
+  height: 90px;
+  object-fit: contain;
 }
 
 #promo {
@@ -12,7 +14,7 @@
   grid-template-rows: 1fr;
   justify-items: center;
   align-items: center;
-  min-height: 150px;
+  max-height: 150px;
 }
 
 .A {
