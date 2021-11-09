@@ -236,7 +236,11 @@ const PushPull = (props) => {
           onClick={function () {
             var res = {};
             res.type = "pushpull";
-            props.onSubmit(res);
+            if (props.onSubmit){ 
+              props.onSubmit(res);
+            } else {
+              history.goBack();
+            }
           }}
         >
           Finish Tutorial

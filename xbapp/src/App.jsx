@@ -39,6 +39,7 @@ import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
 import Timeline from "./Info/Timeline";
+import HeartRateChartPage from "./Info/HeartRateChartPage";
 
 import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
@@ -190,18 +191,22 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route path="/account" component={Account} exact={true} />
-              <Route path="/timeline" component={Timeline} exact={true} />
-              {/* <Route path="/planner" component={BlockPlanner} exact={true} /> */}
-              <Route
-                path="/movetutorial"
-                component={MoveTutorial}
-                exact={true}
-              />
               <Route
                 path="/forgot-password"
                 component={ForgotPassword}
                 exact={true}
               />
+              
+              // Info page
+              <Route path="/timeline" component={Timeline} exact={true} />
+              <Route
+                path="/movetutorial"
+                component={MoveTutorial}
+                exact={true}
+              />
+               <Route path="/about" component={About} exact={true} />
+               <Route path="/heartratechart" component={HeartRateChartPage} exact={true} />
+              
               {/**for testing purposes */}
               <Route
                 path="/balance"
@@ -213,6 +218,8 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={VAS}
                 exact={true}
               />
+
+              //tasks
               <Route
                 path="/heartrate"
                 component={HeartRateTask}
@@ -255,7 +262,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={Scheduler}
                 exact={true}
               />
-              <Route path="/about" component={About} exact={true} />
+             
             </Switch>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">

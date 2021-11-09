@@ -286,18 +286,21 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               <IonRow>
                 <IonCol>
                   <img
+                    className="img"
                     src={sunrise.sourceSunrise}
                     onClick={() => toggleImagesSun("sunrise")}
                   />
                 </IonCol>
                 <IonCol>
                   <img
+                  className="img"
                     src={sunrise.sourceMidday}
                     onClick={() => toggleImagesSun("midday")}
                   />
                 </IonCol>
                 <IonCol>
                   <img
+                  className="img"
                     src={sunrise.sourceSunset}
                     onClick={() => toggleImagesSun("sunset")}
                   />
@@ -314,12 +317,14 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               <IonRow>
                 <IonCol>
                   <img
+                    className="img"
                     src={environment.sourceIndoors}
                     onClick={() => toggleImagesInOut("indoors")}
                   />
                 </IonCol>
                 <IonCol>
                   <img
+                    className="img"
                     src={environment.sourceOutdoors}
                     onClick={() => toggleImagesInOut("outdoors")}
                   />

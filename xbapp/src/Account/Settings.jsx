@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { withRouter } from "react-router";
 import WithXBSlice from "../util/WithXBSlice";
 import {
-  IonApp,
+  IonCa,
   IonRouterOutlet,
   IonMenu,
   IonToolbar,
@@ -12,10 +12,10 @@ import {
   IonList,
   IonItem,
   IonItemDivider,
-  IonButton,
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
+  IonCardHeader,
+  IonCardContent,
+  IonCard,
+  IonCardTitle,
   IonLabel,
   IonBadge,
   IonAlert,
@@ -195,7 +195,12 @@ class OptionTabs extends Component {
       <>
         <XBHeader title="Info"></XBHeader>
         <IonContent id="settings" fullscreen>
-          <IonList>
+        <IonCard>
+              <IonCardHeader style={{textAlign: "left"}}>
+                <IonCardTitle >About</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonList>
             <IonItem>
               <Link
                 style={{ textDecoration: "none", color: "inherit" }}
@@ -204,20 +209,42 @@ class OptionTabs extends Component {
                   weekNo: week,
                 }}
               >
-                Timeline
+                Study Timeline
               </Link>
             </IonItem>
-
-            <IonItem routerLink="/movetutorial">Movement Tutorial</IonItem>
-            <IonItem routerLink="/about">About XB</IonItem>
-            <IonItemDivider></IonItemDivider>
-            <IonItem routerLink="/account">Log Out</IonItem>
-            <IonItemDivider></IonItemDivider>
-            {/* <IonItem routerLink="/balance">DEMO-Balance</IonItem>
-            <IonItem routerLink="/vas">DEMO-VAS</IonItem> */}
-            {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
-            {/* <IonItemDivider></IonItemDivider> */}
+            <IonItem routerLink="/heartratechart">Heart rate numbers</IonItem>
+            <IonItem routerLink="/about">XB study</IonItem>
           </IonList>
+              </IonCardContent>
+            </IonCard>
+          
+          <IonItemDivider></IonItemDivider>
+          <IonCard>
+              <IonCardHeader style={{textAlign: "left"}}>
+                <IonCardTitle >Tutorials</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonList>
+              <IonItem routerLink="/pushpull">Pushes and pulls</IonItem>
+            <IonItem routerLink="/movetutorial">The protocol</IonItem>
+          </IonList>
+              </IonCardContent>
+            </IonCard>
+
+          <IonItemDivider></IonItemDivider>
+          <IonCard>
+              <IonCardHeader style={{textAlign: "left"}}>
+                <IonCardTitle >Settings</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+              <IonList>
+              <IonItem routerLink="/account">Log Out</IonItem>
+            {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
+          </IonList>
+              </IonCardContent>
+            </IonCard>
+            <IonItemDivider></IonItemDivider>
+            <br></br>
         </IonContent>
       </>
     );
