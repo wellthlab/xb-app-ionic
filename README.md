@@ -28,7 +28,7 @@ Code beautifier: `npx prettier --write .`
 
 ### iOS
 
-`ionic cap open android` To open the xCode project
+`ionic cap open ios` To open the xCode project
 
 `ionic cap run ios -l --external` To run the project on a server in xcode
 
