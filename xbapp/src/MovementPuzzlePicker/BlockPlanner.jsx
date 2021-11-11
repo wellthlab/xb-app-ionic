@@ -11,6 +11,7 @@ import React, { Component } from "react";
 import { useEffect } from "react";
 import Block from "./components/Block";
 import "./BlockPlanner.css";
+import { useHistory } from "react-router-dom";
 
 const studyPlanner = [
   [["push", "pull"]], //week 0
@@ -19,95 +20,126 @@ const studyPlanner = [
   [["lower push", "lower pull"], ["balance"], ["upper push", "upper pull"]], //week 3
   [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"]], //week 4
   [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"], ["iso push", "iso pull"]], //week 5
-  [["push", "pull", "balance"]], //week 6
-  [["push", "pull", "balance"]], //week 7
-  [["push", "pull", "balance"]], //week 8
-  [["push", "pull", "balance"]], //week 9
-  [["push", "pull", "balance"]], //week 10
-  [["push", "pull", "balance"]], //week 11
-  [["push", "pull", "balance"]], //week 12
-  [["push", "pull", "balance"]], //week 13
-  [["push", "pull", "balance"]], //week 14
-  [["push", "pull", "balance"]], //week 15
-  [["push", "pull", "balance"]], //week 16
+  [["push", "pull"]], //week 6
+  [["push", "pull"]], //week 7
+  [["push", "pull"]], //week 8
+  [["push", "pull"]], //week 9
+  [["push", "pull"]], //week 10
+  [["push", "pull"]], //week 11
+  [["push", "pull"]], //week 12
+  [["push", "pull"]], //week 13
+  [["push", "pull"]], //week 14
+  [["push", "pull"]], //week 15
+  [["push", "pull"]], //week 16
 ]
 
 const BlockPlanner = (props) => {
   useEffect(() => {}, []);
+  const history = useHistory();
 
-  console.log("is week", props.week);
   //expecting week to be passed as prop
   let week = props.week;
+  let day = props.day;
+  
+  let blocks = week == -1 ? studyPlanner[0] : studyPlanner[week]; //if it's exploration week, just look at what's gona be in week 0
+  let storageKey = week == -1 ? "blocks-week-0" : "blocks-week-" + week;
 
-
-  let blocks = studyPlanner[week];
-  // if (!("blocks" in props)) {
-  //   blocks = ["pull", "push", "pull", "push"];
-  // }
-
-  // TODO: set localStorage to clear at some point. Probably best to when leaving the routes associated
-  if ("exercisesChosen" in window.localStorage) {
+  if (storageKey in window.localStorage) {
     console.log("Local storage exists. Not overwriting...");
   } else {
     // Fills the array with default messages
-    setChosenExercises(new Array(blocks.length).fill("No exercise chosen"));
+    var blockArray = [];
+    for (const eachBlockIndex in blocks) {
+      const eachBlock = blocks[eachBlockIndex];
+      var moveArray = {};
+      for (const eachMoveIndex in eachBlock) {
+        const eachMove = eachBlock[eachMoveIndex].split(' ').join('+');
+        moveArray[eachMove] = {name: "No move chosen"};
+      }
+      blockArray.push(moveArray);
+    }
+
+    setCurrentBlock(blockArray);
     console.log("Local storage does not exist. Overwriting...");
   }
-  // Need to make sure that state is not undefined first
+  // if the state is undefined then no move has been picked
   if (typeof props.location.state !== "undefined") {
-    const chosenExercises = getChosenExercises();
+    
+    const chosenBlock = getCurrentBlock(); //retrieve prvious exercises
     const index = props.location.state.blockIndex;
     const chosenExercise = props.location.state.chosenExercise;
-    chosenExercises[index] = chosenExercise.name;
-    setChosenExercises(chosenExercises);
+    const type = props.location.state.exerciseType;
+
+    chosenBlock[index][type] = chosenExercise;
+   
+    setCurrentBlock(chosenBlock);
   }
 
-  function getChosenExercises() {
-    return JSON.parse(window.localStorage.getItem("exercisesChosen"));
+  function checkIfExercisesAreChosen() {
+    const chosenBlock = getCurrentBlock();
+    var noExercisesRequired = 0;
+    var noExercisesChosen = 0;
+    for (const eachBlockIndex in chosenBlock) {
+      const eachBlock = chosenBlock[eachBlockIndex];
+      for (const eachMoveIndex in eachBlock) {
+        const eachMove = eachBlock[eachMoveIndex];
+        if (eachMove.name != "No move chosen"){
+          noExercisesChosen++;
+        }
+        noExercisesRequired++
+      }
+    }
+
+    return noExercisesChosen == noExercisesRequired;
+  }
+
+  function getCurrentBlock() {
+    return JSON.parse(window.localStorage.getItem(storageKey));
   }
 
   // Stores chosen movements in localStorage to save them during selection
-  function setChosenExercises(chosenExercises) {
+  function setCurrentBlock(chosenBlock) {
     window.localStorage.setItem(
-      "exercisesChosen",
-      JSON.stringify(chosenExercises)
+      storageKey,
+      JSON.stringify(chosenBlock)
     );
   }
 
+  if (props.explorer){ //if it's explorer, mark task as done in localstorage for the day
+    console.log("EXPLORING DAY", storageKey + "-day-" + day)
+    window.localStorage.setItem(
+      storageKey + "-day-" + day,
+      "explored"
+    );
+  }
   return (
    
-    // <IonPage>
-    //   <IonHeader title="Block Planner">
-    //     <IonButtons>
-    //       <IonBackButton defaultHref="/"></IonBackButton>
-    //     </IonButtons>
-    //     <IonTitle className="header-title">Block Planner</IonTitle>
-    //   </IonHeader>
-    //   <IonContent className="planner-content">
-    <div>
+   <div>
       {/* //iterate through number of blocks needed */}
         {blocks.map((blockDesc, index) => (
           <Block
             typeOfBlock={blockDesc}
             key={index}
             blockIndex={index}
-            exerciseChosen={getChosenExercises()[index]}
+            exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
             explorer={props.explorer}
           ></Block>
         ))}
         {props.explorer ? 
           <></> 
           : 
-          <IonButton
+          checkIfExercisesAreChosen() ? <IonButton
           onClick={(event) => {
-            // TODO: Submits exercises to be used in another component
-            console.log("Exercise chosen");
-            // Clear chosen movements
-            window.localStorage.clear("exerciseChosen");
+
+            window.localStorage.setItem(
+              storageKey + "-set",
+              JSON.stringify(getCurrentBlock())
+            );
+            history.push("/box/move");
           }}
         >
-          Choose Exercises
-        </IonButton>
+          Set Exercises
+        </IonButton> : <></>
           }
         </div>
     //   </IonContent>

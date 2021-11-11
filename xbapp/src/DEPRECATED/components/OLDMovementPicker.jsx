@@ -1279,13 +1279,7 @@ const MovementPicker = (props) => {
 export default MovementPicker;
 
 var getMove = function (id) {
-  //checking to see if there are 2 isolateral moves i.e. pull1, pull2 or pull2, push1
   var idToUse = id;
-  var lastString = id.charAt(id.length - 1);
-  if (/\d/.test(lastString)) {
-    //if the last char is a digit
-    idToUse = idToUse.slice(0, -1);
-  }
   for (var i in moves) {
     var m = moves[i];
 

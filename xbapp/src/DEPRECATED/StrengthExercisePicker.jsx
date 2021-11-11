@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { IonButton } from "@ionic/react";
-import MovementPicker, { getMove } from "../DEPRECATED/components/OLDMovementPicker";
-import MovementInfoCard from "./MovementInfoCard";
-import LevelFinder from "./LevelFinder";
-import "./StrengthWizard.css";
+import MovementPicker, { getMove } from "./components/OLDMovementPicker";
+import MovementInfoCard from "../Strength/MovementInfoCard";
+import LevelFinder from "../Strength/LevelFinder";
 
 function useLocalStorage(key, initialValue) {
   // State to store our value

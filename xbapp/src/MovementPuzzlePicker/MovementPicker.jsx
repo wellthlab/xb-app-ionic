@@ -21,13 +21,11 @@ import MovementSlide from "./components/MovementSlide";
 import DetailedMovementSlide from "./components/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 
-
 const MovementPicker = (props) => {
-
   var isExplorer = props.location.pathname.includes("explore");
-  
-  if (isExplorer){ //if it's explorer day, and they got this far, mark it as complete
 
+  if (isExplorer) {
+    //if it's explorer day, and they got this far, mark it as complete
   }
   // Used for the page heading
   const rowHeadings = [
@@ -166,7 +164,6 @@ const MovementPicker = (props) => {
     return false;
   }
 
- 
   const passedMovements = props.location.state?.movements;
   let screen;
   // Either render the slides filled with tiles or a detialed tile
@@ -251,13 +248,14 @@ const MovementPicker = (props) => {
 
   return (
     <IonContent>
-          <IonHeader title="Block Planner">
-         <IonButtons>
-           <IonBackButton defaultHref="/"></IonBackButton>
-           <IonTitle className="header-title" id="movement-type" color="dark">{rowHeadings[rowIndex]}</IonTitle>
-         </IonButtons>
-        
-       </IonHeader>
+      <IonHeader title="Block Planner">
+        <IonButtons>
+          <IonBackButton defaultHref="/"></IonBackButton>
+          <IonTitle className="header-title" id="movement-type" color="dark">
+            {rowHeadings[rowIndex]}
+          </IonTitle>
+        </IonButtons>
+      </IonHeader>
       <BlockIndexContext.Provider value={blockIndex}>
         {screen}
       </BlockIndexContext.Provider>

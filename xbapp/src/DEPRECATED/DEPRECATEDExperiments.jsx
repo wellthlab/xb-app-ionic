@@ -30,11 +30,11 @@ class ExpList extends Component {
 
     return (
       <IonPage>
-      <XBHeader title="Experiments"></XBHeader>
-      <IonContent id="about">
-        <p>Be patient, we will be launching experiments soon.</p>
-      </IonContent>
-    </IonPage>
+        <XBHeader title="Experiments"></XBHeader>
+        <IonContent id="about">
+          <p>Be patient, we will be launching experiments soon.</p>
+        </IonContent>
+      </IonPage>
 
       // <IonPage>
       //   <XBHeader title="Experiments"></XBHeader>

@@ -17,25 +17,24 @@ import { useEffect } from "react";
 the types are: pull, push, lower push, lower pull, balance, upper push, upper pull, unilateral lower push, unilateral lower pull, iso push, iso pull
 */
 const Block = (props) => {
-
   const blockType = props.typeOfBlock;
   const blockIndex = props.blockIndex;
-  const moveSelected = props.exerciseChosen;
+  const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
   const history = useHistory();
-  const movements = {};
+
   // Maybe this should be a state?
   let filteredMoves;
   useEffect(() => {}, []);
 
   var content = [];
   function processMovements() {
-
     blockType.map((exercise, index) => {
-      if (exercise.includes("pull")){
+      const movements = {};
+      if (exercise.includes("pull")) {
         filteredMoves = Moves.moves.filter((obj) => {
           return obj.type === "pull";
         });
-        if (exercise.includes("upper")){
+        if (exercise.includes("upper")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.area === "upper";
           });
@@ -45,7 +44,7 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
           movements.lowerBody = [];
-        } else if (exercise.includes("lower")){
+        } else if (exercise.includes("lower")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.area === "lower";
           });
@@ -55,7 +54,7 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
           movements.lowerBody = [];
-        } else if (exercise.includes("iso")){
+        } else if (exercise.includes("iso")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.technique === "isolateral";
           });
@@ -97,11 +96,11 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
         }
-      } else if (exercise.includes("push")){
+      } else if (exercise.includes("push")) {
         filteredMoves = Moves.moves.filter((obj) => {
           return obj.type === "push";
         });
-        if (exercise.includes("upper")){
+        if (exercise.includes("upper")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.area === "upper";
           });
@@ -111,7 +110,7 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
           movements.lowerBody = [];
-        } else if (exercise.includes("lower")){
+        } else if (exercise.includes("lower")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.area === "lower";
           });
@@ -121,7 +120,7 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
           movements.lowerBody = [];
-        } else if (exercise.includes("iso")){
+        } else if (exercise.includes("iso")) {
           filteredMoves = Moves.moves.filter((obj) => {
             return obj.technique === "isolateral";
           });
@@ -163,7 +162,8 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
         }
-      } else { //TODO: is balance
+      } else {
+        //TODO: is balance
         filteredMoves = Moves.moves.filter((obj) => {
           return obj.technique === "isolateral";
         });
@@ -186,12 +186,17 @@ const Block = (props) => {
           return a.progressionLevel - b.progressionLevel;
         });
       }
+
       content.push(
         <IonButton
           className="block-button"
           onClick={(event) => {
             history.push({
-              pathname: "/box/move/" + (props.explorer ? "explore" : "setter") +"/movement-picker",
+              pathname:
+                "/box/move/" +
+                (props.explorer ? "explore" : "setter") +
+                "/movement-picker/" +
+                exercise.split(" ").join("+"),
               state: {
                 movements: movements,
                 blockIndex: blockIndex,
@@ -204,36 +209,36 @@ const Block = (props) => {
             });
           }}
         >
-          {props.explorer ? 
-            <p>Explore {exercise}</p> 
-            : 
+          {props.explorer ? (
+            <p>Explore {exercise}</p>
+          ) : (
             <div className="block-button-container">
-            <div className="container-left">
-              <p id="move-selected">{moveSelected}</p>
+              <div className="container-left">
+                <p id="move-selected">
+                  {moveSelected[exercise].name.split("+").join(" ")}
+                </p>
+              </div>
+              <div className="container-right">
+                <p id="select-text">Select {">"}</p>
+              </div>
             </div>
-            <div className="container-right">
-              <p id="select-text">Select {">"}</p>
-            </div>
-          </div>
-          }
-          
+          )}
         </IonButton>
       );
-    })
-
+    });
   }
   processMovements();
   return (
     <IonCard>
       <IonCardHeader className="block-header">
-        <IonCardTitle>Block {props.explorer ? "Explorer" : (blockIndex + 1) }</IonCardTitle>
+        <IonCardTitle>
+          Block {props.explorer ? "Explorer" : blockIndex + 1}
+        </IonCardTitle>
         <IonCardSubtitle className="block-header-filter">
-          Block type: {blockType.join('-')}
+          Block type: {blockType.join("-")}
         </IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent>
-        {content}
-      </IonCardContent>
+      <IonCardContent>{content}</IonCardContent>
     </IonCard>
   );
 };

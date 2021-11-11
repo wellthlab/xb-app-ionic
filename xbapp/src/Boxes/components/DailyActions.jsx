@@ -64,7 +64,6 @@ const DailyActions = ({ group, today }) => {
   */
 
   var entries = group.entries;
-  console.log("just seeing", group);
 
   // Look up the daily entry we need to render
   var entry;
@@ -95,6 +94,14 @@ const DailyActions = ({ group, today }) => {
 
   var tasks = required.map((type) => {
     var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var week = Math.floor(activeDay / 7);
+
+    if (
+      type.type == "strength-setter" &&
+      "blocks-week-" + week.toString() + "-set" in window.localStorage
+    ) {
+      done = true;
+    }
 
     return (
       <IonItem
@@ -114,8 +121,14 @@ const DailyActions = ({ group, today }) => {
   });
 
   var otheractions = optional.map((type) => {
-    console.log("lets see", type);
     var done = typeof entry.responseTypes[type.type] !== "undefined";
+
+    if (
+      type.type == "strength-explorer" &&
+      "blocks-week-0-day-" + activeDay.toString() in window.localStorage
+    ) {
+      done = true;
+    }
     return (
       <IonItem
         key={type.type}
@@ -132,7 +145,6 @@ const DailyActions = ({ group, today }) => {
     );
   });
 
-  console.log("REQ,", required);
   var responses = entry.responses;
 
   return (
@@ -178,7 +190,13 @@ const DailyActions = ({ group, today }) => {
         </span>
       </div>
       <IonList lines="full" className="journalTasks">
-        <IonItemGroup>{required.length != 0 ? tasks : <IonLabel>No task for today.</IonLabel>}</IonItemGroup>
+        <IonItemGroup>
+          {required.length != 0 ? (
+            tasks
+          ) : (
+            <IonLabel>No task for today.</IonLabel>
+          )}
+        </IonItemGroup>
       </IonList>
       <span className="text">
         <h3>Other Activities</h3>

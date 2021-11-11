@@ -140,7 +140,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/box/eat" component={EatPage} exact={true} />
               <Route path="/box/move" component={MovePage} exact={true} />
               <Route
-                path="/box/move/:type/movement-picker"
+                path="/box/move/:type/movement-picker/:exercise"
                 component={MovementPicker}
                 exact={true}
               />

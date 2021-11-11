@@ -60,13 +60,13 @@ function DetailedTile(props) {
             <img src={"assets/moves/" + movement.images[0]} className="A" />
             <img src={"assets/moves/" + movement.images[1]} className="B" />
           </figure>
-          {props.isExplorer ?
-              <></>
-              :
-              <div className="tile-button-container">
-                <SelectExerciseButton movement={movement}></SelectExerciseButton>
-              </div>
-            }
+          {props.isExplorer ? (
+            <></>
+          ) : (
+            <div className="tile-button-container">
+              <SelectExerciseButton movement={movement}></SelectExerciseButton>
+            </div>
+          )}
         </IonCardContent>
       </IonCard>
     </div>

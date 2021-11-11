@@ -5,7 +5,6 @@ import Tile from "./Tile";
 import { convertCompilerOptionsFromJson } from "typescript";
 
 const MovementSlide = (props) => {
-  
   return (
     <IonSlide>
       <IonSlides
@@ -20,7 +19,11 @@ const MovementSlide = (props) => {
       >
         {props.movements.map((exercise, index) => (
           <IonSlide key={index}>
-            <Tile movement={exercise} updateExercise={props.updateExercise} isExplorer={props.isExplorer}/>
+            <Tile
+              movement={exercise}
+              updateExercise={props.updateExercise}
+              isExplorer={props.isExplorer}
+            />
           </IonSlide>
         ))}
       </IonSlides>

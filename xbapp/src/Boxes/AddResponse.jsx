@@ -16,18 +16,18 @@ import { addControllersProp } from "../util_model/controllers";
 import MinuteEntry from "../UserInput/MinuteEntry";
 import Questionnaire from "../UserInput/Questionnaire";
 import StrengthWizard from "../Strength/StrengthWizard";
-import StrengthExercisePicker from "../Strength/StrengthExercisePicker";
+import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 const autoBindReact = require("auto-bind/react");
 
 const AddResponse = (props) => {
+  console.log("ADD RS", props);
   var gid = props.match.params.id; // Group ID comes from route
   var daynumber = props.match.params.day; // So does day number
   var type = props.match.params.type;
 
-  console.log("TRIALLLL ", props.location);
   //const history = useHistory();
 
   const [saved, setSaved] = useState(false);
@@ -72,7 +72,7 @@ const AddResponse = (props) => {
 
   var content;
   if (saved == "saved") {
-    var link = "/box/move/" + gid + "/journal";
+    var link = "/box/move/";
     content = (
       <>
         <div className="done">
@@ -84,7 +84,7 @@ const AddResponse = (props) => {
             progress.
           </p>
           <p className="centering">
-            <IonButton routerLink={link}>Back to Experiment</IonButton>
+            <IonButton routerLink={link}>Back to Experiment Page</IonButton>
           </p>
         </div>
       </>
@@ -105,7 +105,7 @@ const AddResponse = (props) => {
         break;
 
       case "strength":
-        var week = Math.floor((daynumber - 1) / 7) + 1;
+        var week = Math.floor((daynumber - 1) / 7);
 
         input = (
           <StrengthWizard
@@ -116,27 +116,38 @@ const AddResponse = (props) => {
         );
         break;
 
-        case "strength-setter":
-          var week = Math.floor((daynumber - 1) / 7) + 1;
-  
-          input = ( //TODO: define save function for blockplanner
-            <BlockPlanner location = {props.location} onSubmit={save} explorer={false} week={week}/>
-          );
-  
-          // input = (
-          //   <StrengthWizard
-          //     countdownID={daynumber + "-" + gid}
-          //     week={week}
-          //     onSubmit={save}
-          //   />
-          // );
-          break;
-
-      case "strength-explorer":
-        var week = 0;
+      case "strength-setter":
+        var week = Math.floor((daynumber - 1) / 7);
 
         input = ( //TODO: define save function for blockplanner
-          <BlockPlanner location = {props.location} onSubmit={save} explorer={true} week={week}/>
+          <BlockPlanner
+            location={props.location}
+            onSubmit={save}
+            explorer={false}
+            week={week}
+          />
+        );
+
+        // input = (
+        //   <StrengthWizard
+        //     countdownID={daynumber + "-" + gid}
+        //     week={week}
+        //     onSubmit={save}
+        //   />
+        // );
+        break;
+
+      case "strength-explorer":
+        var week = -1;
+
+        input = ( //TODO: define save function for blockplanner
+          <BlockPlanner
+            location={props.location}
+            onSubmit={save}
+            explorer={true}
+            week={week}
+            day={daynumber}
+          />
         );
 
         // input = (
@@ -178,12 +189,12 @@ const AddResponse = (props) => {
     case "strength":
       typedesc = "Daily Strength Session";
       break;
-    case "strength-exercise":
+    case "strength-setter":
       typedesc = "Daily Strength Session";
       break;
-      case "strength-explorer":
-        typedesc = "Daily Strength Session";
-        break;
+    case "strength-explorer":
+      typedesc = "Daily Strength Session";
+      break;
     case "note":
       typedesc = "Note";
       break;

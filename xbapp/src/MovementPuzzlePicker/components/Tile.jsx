@@ -95,14 +95,15 @@ function Tile(props) {
                 </IonText>
               </div>
             </div>
-            {props.isExplorer ?
+            {props.isExplorer ? (
               <></>
-              :
+            ) : (
               <div className="tile-button-container">
-                <SelectExerciseButton movement={movement}></SelectExerciseButton>
+                <SelectExerciseButton
+                  movement={movement}
+                ></SelectExerciseButton>
               </div>
-            }
-
+            )}
           </IonCard>
         </IonCardContent>
       </IonCard>

@@ -5,7 +5,6 @@ import DetailedTile from "./DetailedTile";
 import Moves from "../../Strength/moves.json";
 
 const DetailedMovementSlide = (props) => {
-
   const options = {
     initialSlide: 0,
     speed: 400,

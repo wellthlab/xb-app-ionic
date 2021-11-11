@@ -1,8 +1,3 @@
-/**
- * The Strength input widget steps people through the daily strength routine
- * and returns data about the workout
- *
- */
 import React, { useState, useEffect } from "react";
 import {
   IonButton,
@@ -17,7 +12,9 @@ import {
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import MovementPicker, { getMove } from "../DEPRECATED/components/OLDMovementPicker";
+import MovementPicker, {
+  getMove,
+} from "../DEPRECATED/components/OLDMovementPicker";
 import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
 import HeartRate from "./HeartRate";
@@ -65,23 +62,16 @@ function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 
-/**
- * props:
- *      week: int - Week number; just used to store/retrieve chosen movement
- *
- */
 const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   const [stage, setStage] = useState(0);
 
   var blocks = Math.max(1, week - 1);
   if (blocks > 5) blocks = 5;
-  // console.log("Week", week, "blocks", blocks);
 
   /**
    * Content contains all the pages, plus functions for checking if the stage is complete
    */
   var content = [];
-
   content[0] = { placeholder: true }; // A placeholder for the real first page, which we'll assemble later
 
   /**
@@ -95,7 +85,6 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
         <h3>Pre-Exercise Heart Rate</h3>
         <HeartRate
           onChange={(rate) => {
-            // console.log("Set Heart Rate", rate);
             setPreHeart(rate);
           }}
         />
@@ -108,149 +97,36 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   });
 
   /**
-   * Set up the exercise picker
+   * Go through each block
    */
-
-  // TODO: We need to not jump to "you've picked" when the ex list is updated :/
-  // Remember appropriate flow somehow? i.e. in a useState?
-
-  var exList = [];
-  var setExList = [];
-  [exList[1], setExList[1]] = useLocalStorage(
-    "week" + week + "-block1-exlist",
-    []
-  );
-  [exList[2], setExList[2]] = useLocalStorage(
-    "week" + week + "-block2-exlist",
-    []
-  );
-  [exList[3], setExList[3]] = useLocalStorage(
-    "week" + week + "-block3-exlist",
-    []
-  );
-  [exList[4], setExList[4]] = useLocalStorage(
-    "week" + week + "-block4-exlist",
-    []
-  );
-  [exList[5], setExList[5]] = useLocalStorage(
-    "week" + week + "-block5-exlist",
-    []
-  );
-  [exList[6], setExList[6]] = useLocalStorage(
-    "week" + week + "-block6-exlist",
-    []
-  );
-  [exList[7], setExList[7]] = useLocalStorage(
-    "week" + week + "-block7-exlist",
-    []
-  );
-
-  // console.log("exList[1]", exList[1], exList[1].length);
-
-  // Remember which flow is in use for each block
-  var blockFlow = [];
-  var setBlockFlow = [];
-  [blockFlow[1], setBlockFlow[1]] = useState(
-    exList[1].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[2], setBlockFlow[2]] = useState(
-    exList[2].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[3], setBlockFlow[3]] = useState(
-    exList[3].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[4], setBlockFlow[4]] = useState(
-    exList[4].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[5], setBlockFlow[5]] = useState(
-    exList[5].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[6], setBlockFlow[6]] = useState(
-    exList[6].length < 2 ? "pick" : "show"
-  );
-  [blockFlow[7], setBlockFlow[7]] = useState(
-    exList[7].length < 2 ? "pick" : "show"
-  );
-
-  var [exExpList, setExExpList] = useState([]); // Explore exercise list, week 1
-
-  //var [exList, setExList] = useState([]);
   const [sets, setSets] = useState(null);
 
-  /**
-   * Normal flow is to pick two moves and do them
-   */
-  if (week > 1) {
-    // TODO: Only if exercise is not set; otherwise show a reminder?
+  var blocksAreChosen = "blocks-week-" + week in window.localStorage;
+
+  if (blocksAreChosen) {
+    var blocksOfWeek = JSON.parse(
+      window.localStorage.getItem("blocks-week-" + week)
+    );
+    // they would look like [{push: OBJECT, pull: OBJECT}, {push: OBJECT, pull: OBJECT}]
+
     for (var blocknum = 1; blocknum <= blocks; blocknum++) {
-      var picked = blockFlow[blocknum] == "show";
-      // console.log("Block", blocknum, "List", exList[blocknum], "flow", blockFlow[blocknum])
-
-      if (!picked) {
-        // Either show a picker, or a reminder
-        // console.log("Use picker for block", blocknum);
-        (function (
-          blocknum // Trap blocknum in a closure
-        ) {
-          content.push({
-            el: (
-              <>
-                <h3>
-                  Block {blocknum} of {blocks}
-                </h3>
-                <p>
-                  You need to choose two movements for this block. Your choices
-                  will be fixed for the rest of the week.
-                </p>
-                {((week == 4 || week == 5) && blocknum < 3) || week == 6 ? (
-                  <p>
-                    You may prefer choosing either one <span>push</span>{" "}
-                    movement and one <span>pull</span> movement, OR the{" "}
-                    <span>same</span> isolateral movement (and switch sides).
-                  </p>
-                ) : (
-                  <p>
-                    Please select one <span>push</span> movement and one{" "}
-                    <span>pull</span> movement.
-                  </p>
-                )}
-                <p>
-                  <strong>
-                    Swipe left or right to select different moves.
-                  </strong>
-                </p>
-                <MovementPicker
-                  onChange={(list) => {
-                    setExList[blocknum](list);
-                  }}
-                  number={2}
-                  week={week}
-                  blocknum={blocknum}
-                />
-              </>
-            ),
-            rule: function () {
-              // console.log("Check exList for block", blocknum, exList[blocknum]);
-              return exList[blocknum].length == 2;
-            },
-          });
-        })(blocknum); // Apply value to closure
-      }
-
       /**
        * Set up the timer and set counter
        */
       (function (blocknum) {
-        function updateSets(exercisesTypeArray, block, count) {
+        function updateSets(exercises, block, count) {
           var copy = {};
           Object.assign(copy, sets); //there are actually reps here!!!
 
+          var stringOfExercises = "";
+          Object.entries(exercises).map(([type, exercise]) => {
+            stringOfExercises = stringOfExercises + "+" + exercise.id; 
+          })
+          stringOfExercises = stringOfExercises.substring(1);
           //both exercises will be listed here
           copy[
-            exercisesTypeArray[0] + "+" + exercisesTypeArray[1] + "-" + block
+            stringOfExercises + "-" + block
           ] = count;
-
-          //TODO: what if they choose the same exercise for mltiple blocks - will these reps be overwritten?
           setSets(copy);
         }
 
@@ -261,7 +137,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                 Block {blocknum} of {blocks}
               </h3>
               <MovementTimer
-                exercises={exList[blocknum]}
+                exercises={blocksOfWeek[blocknum - 1]}
                 onDone={() => {}}
                 onSetChange={updateSets}
                 mins={7}
@@ -319,87 +195,6 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           });
       })(blocknum);
     }
-
-    /**
-     * But in week 1, just explore different moves to find a level
-     */
-  } else {
-    content.push({
-      el: (
-        <>
-          <h3>Choose a Move</h3>
-          <p>
-            Please select the <span>push</span> movement you'd like to explore
-            today.
-          </p>
-          <MovementPicker
-            type="push"
-            onChange={(list) => {
-              // console.log("Set exercise list", list);
-              setExExpList(list);
-              var newsets = Object.assign({}, sets);
-              newsets[list[0]] = "explore"; // Record the chosen exercise
-              setSets(newsets);
-              nextSlide();
-            }}
-            number={1}
-            blocknum={0}
-          />
-        </>
-      ),
-      next: false,
-      rule: function () {
-        // console.log(exList);
-        return exExpList.length == 1;
-      },
-      title: "Movement One",
-    });
-
-    content.push({
-      el: <LevelFinder exercise={exExpList[0]} />,
-      rule: () => {
-        return true;
-      },
-      previous: true,
-    });
-
-    content.push({
-      el: (
-        <>
-          <h3>Choose a Move</h3>
-          <p>
-            Please select the <span>pull</span> movement you'd like to explore
-            today.
-          </p>
-          <MovementPicker
-            type="pull"
-            onChange={(list) => {
-              // console.log("Set exercise list", list);
-              setExExpList(list);
-              var newsets = Object.assign({}, sets);
-              newsets[list[0]] = "explore"; // Record the chosen exercise
-              setSets(newsets);
-              nextSlide();
-            }}
-            number={1}
-            blocknum={0}
-          />
-        </>
-      ),
-      rule: function () {
-        return exExpList.length == 1;
-      },
-      next: false,
-      title: "Movement Two",
-    });
-
-    content.push({
-      el: <LevelFinder exercise={exExpList[0]} />,
-      rule: () => {
-        return true;
-      },
-      previous: true,
-    });
   }
 
   /**
@@ -596,46 +391,62 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
     title: "Record Notes",
   });
 
-  /**
-   * Instructions and stage list
-   */
-  if (week <= 1) {
-    var rubric =
-      "This week, you're exploring the different moves. Pick one upper and lower body move each day and try them out. ";
+  if (blocksAreChosen) {
+    /**
+     * Instructions and stage list
+     */
+    if (week < 1) {
+      var rubric =
+        "This week, you're exploring different moves throughout the week. Just make sure to change them when you wish, before starting your exercise.";
+    } else {
+      var rubric =
+        "This week, you'll do the same exercises each day. You have " +
+        blocks +
+        " blocks to complete, with a certain number of moves in each block.";
+    }
+    var snum = 1;
+    content[0] = {
+      el: (
+        <>
+          <p>{rubric}</p>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>Today's Strength Exercise</IonLabel>
+            </IonListHeader>
+            {content.map((stage, i) => {
+              if (stage.title)
+                return (
+                  <IonItem key={i}>
+                    <span className="number" slot="start">
+                      {snum++}
+                    </span>{" "}
+                    <IonLabel>{stage.title}</IonLabel>
+                  </IonItem>
+                );
+            })}
+          </IonList>
+        </>
+      ),
+      rule: function () {
+        return true;
+      },
+    };
   } else {
-    var rubric =
-      "This week, you'll do the same exercises each day. You have " +
-      blocks +
-      " blocks to complete, with two moves in each block.";
+    content[0] = {
+      el: (
+        <>
+          <h3>Go back</h3>
+          <p>
+            You need to choose two movements for this block. Your choices will
+            be fixed for the rest of the week.
+          </p>
+        </>
+      ),
+      rule: function () {
+        return false;
+      },
+    };
   }
-
-  var snum = 1;
-  content[0] = {
-    el: (
-      <>
-        <p>{rubric}</p>
-        <IonList>
-          <IonListHeader>
-            <IonLabel>Today's Strength Exercise</IonLabel>
-          </IonListHeader>
-          {content.map((stage, i) => {
-            if (stage.title)
-              return (
-                <IonItem key={i}>
-                  <span className="number" slot="start">
-                    {snum++}
-                  </span>{" "}
-                  <IonLabel>{stage.title}</IonLabel>
-                </IonItem>
-              );
-          })}
-        </IonList>
-      </>
-    ),
-    rule: function () {
-      return true;
-    },
-  };
 
   /**
    * Final stage, save button!

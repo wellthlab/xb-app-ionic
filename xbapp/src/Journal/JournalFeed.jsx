@@ -19,10 +19,7 @@ import { heart, arrowForward, caretForward, timer } from "ionicons/icons";
 
 import "./JournalFeed.css";
 
-import {
-  MoodImages,
-  MoodStringsRelative,
-} from "../UserInput/MoodPicker";
+import { MoodImages, MoodStringsRelative } from "../UserInput/MoodPicker";
 
 const JournalFeed = ({ responses }) => {
   function renderItem(r) {
@@ -87,24 +84,21 @@ const JournalFeed = ({ responses }) => {
                       var move = getMove(arrMoves[i]);
                       if (move == false) {
                         move = {
-                          name: "Unknown move, " + type,
+                          name: "Unknown move",
                         };
                       }
-                      var mname = move.name.split(/:/).pop();
+                      var mname = move.name;
                       nameOfBothExercises += mname + " and ";
                       var number = r.sets[type];
                     }
                     nameOfBothExercises = nameOfBothExercises.slice(0, -5);
-                    // console.log("ANALYSING ", number % 5, number);
                     return (
                       <IonItem key={i}>
                         <span>
-                          {number == "explore" ? "Tried out" : ""}{" "}
+                          {"Tried out "}
                           {nameOfBothExercises}{" "}
                           <strong>
-                            {number == "explore"
-                              ? ""
-                              : "× " +
+                            {"× " +
                                 Math.floor(number / 5) +
                                 " sets and " +
                                 (number % 5) +
@@ -117,18 +111,17 @@ const JournalFeed = ({ responses }) => {
                     var move = getMove(mtype);
                     if (move == false) {
                       move = {
-                        name: "Unknown move, " + type,
+                        name: "Unknown move",
                       };
                     }
-                    var mname = move.name.split(/:/).pop();
+                    var mname = move.name;
                     var number = r.sets[type];
-                    // console.log(type, number);
                     return (
                       <IonItem key={i}>
                         <span>
-                          {number == "explore" ? "Tried out" : ""} {mname}{" "}
+                          {"Tried out "} {mname}{" "}
                           <strong>
-                            {number == "explore" ? "" : "× " + number}
+                            {"× " + number}
                           </strong>
                         </span>
                       </IonItem>
