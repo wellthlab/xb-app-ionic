@@ -46,7 +46,7 @@ function Tile(props) {
         <IonCardHeader className="tile-header">
           <div className="tile-title-container">
             <IonCardTitle className="tile-title">{name}</IonCardTitle>
-            {/* <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle> */}
+            <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
           </div>
           <div className="completed-container">
             <IonIcon

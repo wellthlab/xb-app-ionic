@@ -216,8 +216,8 @@ function CountDown(props) {
               </div>
             </IonCol>
           )}
-        </IonRow>
-        <IonRow>
+        {/* </IonRow>
+        <IonRow> */}
           <IonCol>
             <IonButton onClick={toggle} style={{ float: "right" }}>
               {isActive ? "Pause" : "Start"}

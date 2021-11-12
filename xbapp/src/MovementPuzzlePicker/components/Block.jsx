@@ -36,176 +36,25 @@ const Block = (props) => {
       //extraordinary flow
        //TODO: NOT HARD CODE
        var starter = 0;
-      if (weekNo == 2){ //HARDCODED
+      // if (weekNo == 1){ //HARDCODED
         var movesForweek1 = Moves.moves.filter((obj) => {
-          return obj.weekToApper == 1;
+          return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
         });
         if (exercise.includes("pull")) {
           filteredMoves = movesForweek1.filter((obj) => {
             return obj.type === "pull";
           });
-            movements.upperBody = [];
-            movements.fullBody = filteredMoves.sort((a, b) => {
-              return a.order - b.order;
-            });
-            
-            movements.lowerBody = [];
-            starter = 5;
+          movements.upperBody = filteredMoves.filter((obj) => {
+                  return obj.area === "upper";
+                });
           
         } else if (exercise.includes("push")) {
           filteredMoves = movesForweek1.filter((obj) => {
             return obj.type === "push";
           });
           
-          movements.upperBody = [];
-          movements.fullBody = filteredMoves.sort((a, b) => {
-            return a.order - b.order;
-          });
-          
-          movements.lowerBody = [];
-          starter = 1;
         }
       
-      } else {
-
-      // normal flow
-      if (exercise.includes("pull")) {
-        filteredMoves = Moves.moves.filter((obj) => {
-          return obj.type === "pull";
-        });
-        if (exercise.includes("upper")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody = [];
-          movements.fullBody = filteredMoves;
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = [];
-        } else if (exercise.includes("lower")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.upperBody = [];
-          movements.fullBody = filteredMoves;
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = [];
-        } else if (exercise.includes("iso")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.technique === "isolateral";
-          });
-          movements.upperBody = filteredMoves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.fullBody = filteredMoves.filter((obj) => {
-            return obj.area === "full";
-          });
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = filteredMoves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.lowerBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-        } else {
-          movements.upperBody = filteredMoves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.fullBody = filteredMoves.filter((obj) => {
-            return obj.area === "full";
-          });
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = filteredMoves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.lowerBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-        }
-      } else if (exercise.includes("push")) {
-        filteredMoves = Moves.moves.filter((obj) => {
-          return obj.type === "push";
-        });
-        if (exercise.includes("upper")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody = [];
-          movements.fullBody = filteredMoves;
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = [];
-        } else if (exercise.includes("lower")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.upperBody = [];
-          movements.fullBody = filteredMoves;
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = [];
-        } else if (exercise.includes("iso")) {
-          filteredMoves = Moves.moves.filter((obj) => {
-            return obj.technique === "isolateral";
-          });
-          movements.upperBody = filteredMoves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.fullBody = filteredMoves.filter((obj) => {
-            return obj.area === "full";
-          });
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = filteredMoves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.lowerBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-        } else {
-          movements.upperBody = filteredMoves.filter((obj) => {
-            return obj.area === "upper";
-          });
-          movements.upperBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.fullBody = filteredMoves.filter((obj) => {
-            return obj.area === "full";
-          });
-          movements.fullBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-          movements.lowerBody = filteredMoves.filter((obj) => {
-            return obj.area === "lower";
-          });
-          movements.lowerBody.sort((a, b) => {
-            return a.progressionLevel - b.progressionLevel;
-          });
-        }
-      } else {
-        //TODO: is balance
-        filteredMoves = Moves.moves.filter((obj) => {
-          return obj.technique === "isolateral";
-        });
         movements.upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
@@ -224,8 +73,167 @@ const Block = (props) => {
         movements.lowerBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
-      }
-      }
+
+      // } else {
+
+      // // normal flow
+      // if (exercise.includes("pull")) {
+      //   filteredMoves = Moves.moves.filter((obj) => {
+      //     return obj.type === "pull";
+      //   });
+      //   if (exercise.includes("upper")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody = [];
+      //     movements.fullBody = filteredMoves;
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = [];
+      //   } else if (exercise.includes("lower")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.upperBody = [];
+      //     movements.fullBody = filteredMoves;
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = [];
+      //   } else if (exercise.includes("iso")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.technique === "isolateral";
+      //     });
+      //     movements.upperBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.fullBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "full";
+      //     });
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.lowerBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //   } else {
+      //     movements.upperBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.fullBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "full";
+      //     });
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.lowerBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //   }
+      // } else if (exercise.includes("push")) {
+      //   filteredMoves = Moves.moves.filter((obj) => {
+      //     return obj.type === "push";
+      //   });
+      //   if (exercise.includes("upper")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody = [];
+      //     movements.fullBody = filteredMoves;
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = [];
+      //   } else if (exercise.includes("lower")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.upperBody = [];
+      //     movements.fullBody = filteredMoves;
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = [];
+      //   } else if (exercise.includes("iso")) {
+      //     filteredMoves = Moves.moves.filter((obj) => {
+      //       return obj.technique === "isolateral";
+      //     });
+      //     movements.upperBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.fullBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "full";
+      //     });
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.lowerBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //   } else {
+      //     movements.upperBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "upper";
+      //     });
+      //     movements.upperBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.fullBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "full";
+      //     });
+      //     movements.fullBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //     movements.lowerBody = filteredMoves.filter((obj) => {
+      //       return obj.area === "lower";
+      //     });
+      //     movements.lowerBody.sort((a, b) => {
+      //       return a.progressionLevel - b.progressionLevel;
+      //     });
+      //   }
+      // } else {
+      //   //TODO: is balance
+      //   filteredMoves = Moves.moves.filter((obj) => {
+      //     return obj.technique === "isolateral";
+      //   });
+      //   movements.upperBody = filteredMoves.filter((obj) => {
+      //     return obj.area === "upper";
+      //   });
+      //   movements.upperBody.sort((a, b) => {
+      //     return a.progressionLevel - b.progressionLevel;
+      //   });
+      //   movements.fullBody = filteredMoves.filter((obj) => {
+      //     return obj.area === "full";
+      //   });
+      //   movements.fullBody.sort((a, b) => {
+      //     return a.progressionLevel - b.progressionLevel;
+      //   });
+      //   movements.lowerBody = filteredMoves.filter((obj) => {
+      //     return obj.area === "lower";
+      //   });
+      //   movements.lowerBody.sort((a, b) => {
+      //     return a.progressionLevel - b.progressionLevel;
+      //   });
+      // }
+      // }
 
       content.push(
         <IonButton

@@ -47,7 +47,7 @@ function DetailedTile(props) {
               </IonButton>
             </IonButtons>
             <IonCardTitle>{name}</IonCardTitle>
-            {/* <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle> */}
+            <IonCardSubtitle>Level {progressionLevel}</IonCardSubtitle>
           </IonToolbar>
         </IonCardHeader>
         <IonCardContent>

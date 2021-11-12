@@ -17,22 +17,6 @@
       "weekToApper": -1
     },
     {
-      "id": "gluteraise",
-      "name": "Glute Raise",
-      "category": "hinge",
-      "type": "push",
-      "progressionLevel": 1,
-      "order": -100,
-      "description": "Lay on your back, arms flat either side, knees bent pointing upwards. Drive your hips upwards until your back is nearly straight, pivoting from your shoulder blades.",
-      "images": ["glute_raise_rest.png", "glute_raise_engaged.png"],
-      "difficulty": "",
-      "warning": "If in a public space, make sure you're clearly visible to others when lying on the ground.",
-      "alternative": [],
-      "technique": "bilateral",
-      "area": "lower",
-      "weekToApper": -1
-    },
-    {
       "id": "pikehold",
       "name": "Pike Hold",
       "category": "hold",
@@ -131,6 +115,22 @@
   ],
   "moves": [
     {
+      "id": "gluteraise",
+      "name": "Glute Raise",
+      "category": "hinge",
+      "type": "push",
+      "progressionLevel": 1,
+      "order": -100,
+      "description": "Lay on your back, arms flat either side, knees bent pointing upwards. Drive your hips upwards until your back is nearly straight, pivoting from your shoulder blades.",
+      "images": ["glute_raise_rest.png", "glute_raise_engaged.png"],
+      "difficulty": "",
+      "warning": "If in a public space, make sure you're clearly visible to others when lying on the ground.",
+      "alternative": [],
+      "technique": "bilateral",
+      "area": "lower",
+      "weekToApper": 2
+    },
+    {
       "id": "supportedsquat",
       "name": "Supported Squat",
       "category": "squat",
@@ -144,7 +144,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "boxsquat",
@@ -160,7 +160,7 @@
       "alternative": ["horsestance"],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "horsestance",
@@ -195,7 +195,7 @@
       "alternative": ["middlesplit"],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "middlesplit",
@@ -227,7 +227,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "stepup",
@@ -345,7 +345,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "singlelegpikelift",
@@ -396,7 +396,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "swimmer",
@@ -476,7 +476,7 @@
       "alternative": ["superman"],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "fullbridge",
@@ -492,7 +492,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "lower",
-      "weekToApper": -1
+      "weekToApper": 2
     },
     {
       "id": "hollowbody",
@@ -668,7 +668,7 @@
       "alternative": [],
       "technique": "bilateral",
       "area": "upper",
-      "weekToApper": 1
+      "weekToApper": -1
     },
     {
       "id": "tricepdip",
@@ -780,7 +780,7 @@
       "alternative": ["pronateddoorhangpull"],
       "technique": "isolateral",
       "area": "upper",
-      "weekToApper": 1
+      "weekToApper": -1
     },
     {
       "id": "facepull",
@@ -977,7 +977,7 @@
       "alternative": ["narrowgrippull"],
       "technique": "bilateral",
       "area": "upper",
-      "weekToApper": 1
+      "weekToApper": -1
     },
     {
       "id": "fingerpull",
@@ -1013,9 +1013,9 @@
       "difficulty": "",
       "warning": "Your body is going to lean to one side, so account for that.",
       "alternative": ["fingerpull"],
-      "technique": "bilateral",
+      "technique": "isolateral",
       "area": "upper",
-      "weekToApper": 1
+      "weekToApper": -1
     }
   ]
 }
