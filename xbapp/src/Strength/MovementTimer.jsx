@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   IonButton,
   IonItem,
-  IonInput,
+  IonLabel,
   IonRow,
   IonGrid,
   IonCol,
@@ -15,6 +15,7 @@ import SetCounter from "./SetCounter";
 
 import { moves, getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import "./MovementTimer.scss";
+import { AlternateEmail } from "@material-ui/icons";
 
 /**
  * Time movements
@@ -30,21 +31,38 @@ const MovementTimer = ({
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
+  const [moveAlternation, setMoveAlternation] = React.useState([null, null]);
+  const [numberOfSets, setNumberOfSets] = React.useState(0);
+  const [showReps, setShowReps] = React.useState(false);
+
+  function alternate(key) {
+    if (moveAlternation[0] == null){
+      var updated = [false, false];
+      updated[key] = true;
+      setMoveAlternation(updated);
+    } else {
+      var updated = [!moveAlternation[0], !moveAlternation[1]];
+      setMoveAlternation(updated);
+      setNumberOfSets(numberOfSets++);
+    }
+  }
+
+
   return (
     <div id="movementTimer">
 
       {mins == 0 && secs == 0 ? (
         ""
       ) : (
-        <CountDown minutes={mins} timerName={"day-" + day} onFinish={onDone} />
+        <CountDown minutes={mins} timerName={"day-" + day} onFinish={() => {onDone(); setShowReps(true);}} />
       )}
 
       <IonGrid>
         <IonRow>
-          {Object.entries(exercises).map(([type, exercise]) => {
-          return (<IonCol>
+          {Object.entries(exercises).map(([type, exercise], key) => {
+          return (<IonCol style={{border: moveAlternation[key] == null ? "": moveAlternation[key] == true ? "" : ""}} onClick={() => alternate(key)}>
           <MovementInfoCard
-            accordion={true}
+            accordion={false}
             titleSize={"small"}
             key={exercise}
             images={exercise.images}
@@ -53,12 +71,17 @@ const MovementTimer = ({
         </IonCol>)
         })}
         </IonRow>
+        {showReps == false ? <IonRow>
+          <IonLabel>Added: {numberOfSets} sets</IonLabel>
+        </IonRow> : <></>}
       </IonGrid>
-      <SetCounter
+        {showReps ? <SetCounter
+        sets={numberOfSets}
         onChange={(reps) => {
           onSetChange(exercises, block, reps);
         }}
-      />
+      /> : <></>}
+      
     </div>
   );
 };

@@ -55,9 +55,9 @@ function MinutesChart(props) {
       for (var j = 0; j < responses.length; j++) {
         var eachResponse = responses[j];
         //console.log("verifying", eachResponse, _.has(eachResponse, "strength"));
-        if (_.has(eachResponse, "sets")) {
+        if (_.has(eachResponse, "sets") && eachResponse.sets != null) {
           //first - retrieve the name of the sets
-
+          console.log("HMM", eachResponse);
           Object.keys(eachResponse.sets).map((type, i) => {
             var block, mtype;
             [mtype, block] = type.split(/-/);

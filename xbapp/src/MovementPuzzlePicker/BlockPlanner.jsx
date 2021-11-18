@@ -17,7 +17,7 @@ const studyPlanner = [
   [["push", "pull"]], //week 0
   [["push", "pull"]], //week 1
   [["push", "pull"], ["push", "pull"]], //week 2
-  [["lower push", "lower pull"], ["balance"], ["upper push", "upper pull"]], //week 3
+  [["upper push", "lower push"], ["unilateral", "unilateral"], ["upper pull", "lower pull"]], //week 3
   [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"]], //week 4
   [["unilateral lower pull"], ["unilateral lower push"], ["balance"], ["upper push", "upper pull"], ["iso push", "iso pull"]], //week 5
   [["push", "pull"]], //week 6

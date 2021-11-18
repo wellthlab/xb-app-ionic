@@ -1,5 +1,7 @@
 {
   "ditched": [
+  ],
+  "moves": [
     {
       "id": "lsit",
       "name": "L Sit",
@@ -111,14 +113,12 @@
       "technique": "isolateral",
       "area": "lower",
       "weekToApper": -1
-    }
-  ],
-  "moves": [
+    },
     {
       "id": "gluteraise",
       "name": "Glute Raise",
       "category": "hinge",
-      "type": "push",
+      "type": "pull",
       "progressionLevel": 1,
       "order": -100,
       "description": "Lay on your back, arms flat either side, knees bent pointing upwards. Drive your hips upwards until your back is nearly straight, pivoting from your shoulder blades.",
@@ -851,7 +851,7 @@
     },
     {
       "id": "suppinatedaustralianpull",
-      "name": "Chin up",
+      "name": "Suppinated Australian Pull",
       "category": "pull",
       "type": "pull",
       "progressionLevel": 5,

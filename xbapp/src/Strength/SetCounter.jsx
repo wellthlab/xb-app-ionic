@@ -15,7 +15,7 @@ import "./SetCounter.css";
  * Count Reps
  */
 const SetCounter = (props) => {
-  const [sets, setSets] = useState(props.start ? props.start : 0);
+  const [sets, setSets] = useState(props.sets);
   const [reps, setReps] = useState(0);
 
   function save(message) {
