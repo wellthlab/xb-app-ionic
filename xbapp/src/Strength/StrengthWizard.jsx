@@ -115,6 +115,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
        */
       (function (blocknum) {
         function updateSets(exercises, block, count) {
+          console.log("SHOULD TRIGGER", exercises, block, count);
           var copy = {};
           Object.assign(copy, sets); //there are actually reps here!!!
 
@@ -128,6 +129,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             stringOfExercises + "-" + block
           ] = count;
           setSets(copy);
+          console.log("so it is", copy);
         }
 
         content.push({
@@ -136,7 +138,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
               <h3>
                 Block {blocknum} of {blocks}
               </h3>
-              <p>Try to fit in as many sets in the 7-minute limit. Once you complete 5 REPS of a move, tap "+1 SET". Add any remaining reps at the end when the time runs out.</p>
+              <p>Try to fit in as many sets in the 7-minute limit. When ready, TAP on the move you want to start with (it will highlight). Tap AGAIN when you completed 5 REPS - and you will switch moves. When the time runs out, you can add any remaining REPS.</p>
               <MovementTimer
                 exercises={blocksOfWeek[blocknum - 1]}
                 onDone={() => {}}
@@ -466,6 +468,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
         </p>
         <IonButton
           onClick={function () {
+            console.log("CHECK", sets);
             var res = {};
             res.sets = sets; // Contains exercises and number of sets
             res.preHeartrate = preHeart;

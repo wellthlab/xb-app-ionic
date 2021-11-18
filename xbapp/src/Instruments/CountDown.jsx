@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import useSound from "use-sound";
 import beep_short from "../util_audio/beep_short.mp3";
 import beep_long from "../util_audio/beep_long.mp3";
+import { toggleSharp } from "ionicons/icons";
 
 /**
  * Props:
@@ -71,6 +72,12 @@ function CountDown(props) {
     // setMinutes(props.minutes ? props.minutes : 0);
     // setSeconds(props.seconds ? props.seconds : 0);
   }
+
+  React.useMemo(() => {
+    //whenever the timer is triggered (when the user presses on image)
+    if (props.timerOn) toggle();
+
+  }, [props.timerOn]);
 
   function toggle() {
     localStorage.setItem("CountDowncountActive", !isActive);
@@ -131,6 +138,8 @@ function CountDown(props) {
     setIsActive(false);
     localStorage.setItem("CountDowncountActive", false);
     localStorage.removeItem("CountDownStartedAt");
+
+    if (props.resetTimer) props.resetTimer();
   }
 
   const [play_short] = useSound(beep_short);
@@ -174,14 +183,13 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  //console.log("countdown", minutes, seconds);
 
   return (
     <IonItem className="contain">
       <IonGrid>
         <IonRow>
           {props.editable ? (
-            <IonCol style={{padding: "0px"}}>
+            <IonCol style={{ padding: "0px" }}>
               <div className="time0">
                 <IonInput
                   style={{
@@ -209,33 +217,52 @@ function CountDown(props) {
               </div>
             </IonCol>
           ) : (
-            <IonCol style={{padding: "0px"}}>
+            <IonCol style={{ padding: "0px" }}>
               <div className="time">
                 {minutes > 9 ? minutes : "0" + minutes}:
                 {seconds > 9 ? seconds : "0" + seconds}
               </div>
             </IonCol>
           )}
-        {/* </IonRow>
-        <IonRow> */}
+          </IonRow>
+        <IonRow>
           <IonCol>
-            <IonButton onClick={toggle} style={{ float: "right" }}>
-              {isActive ? "Pause" : "Start"}
-            </IonButton>
+            {props.isExerciseTimer ?
+              (localStorage.getItem("CountDownStartedAt") != null ? <IonButton onClick={toggle} style={{ float: "right" }}>
+                {isActive ? "Pause" : "Start"}
+              </IonButton> : <></>)
+              :
+              <IonButton onClick={toggle} style={{ float: "right" }}>
+                {isActive ? "Pause" : "Start"}
+              </IonButton>}
+
           </IonCol>
           <IonCol>
-            {!isActive ? (
-              <IonButton
-                style={{
-                  display: "inline-block",
-                }}
-                onClick={reset}
-              >
-                Reset
-              </IonButton>
-            ) : (
-              ""
-            )}
+            {props.isExerciseTimer ?
+              (!isActive && localStorage.getItem("CountDownStartedAt") != null ? (
+                <IonButton
+                  style={{
+                    display: "inline-block",
+                  }}
+                  onClick={reset}
+                >
+                  Reset
+                </IonButton>
+              ) : (
+                ""
+              )) :
+              (!isActive ? (
+                <IonButton
+                  style={{
+                    display: "inline-block",
+                  }}
+                  onClick={reset}
+                >
+                  Reset
+                </IonButton>
+              ) : (
+                ""
+              ))}
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -244,7 +271,7 @@ function CountDown(props) {
 
   function differenceBetweenThenAndNow(type) {
     //what we SHOULD do is remove the number of from the original minutes and seconds the number that passed (then now)
-    console.log("gonna retur");
+
     const then = parseInt(localStorage.getItem("CountDownStartedAt"));
     const currentMillisecondsPassed = new Date().getTime() - then;
 

@@ -72,7 +72,8 @@ const JournalFeed = ({ responses }) => {
             </IonCardHeader>
             <IonCardContent>
               <IonList>
-                {Object.keys(r.sets).map((type, i) => {
+                
+                {r.sets == null ? <></> : Object.keys(r.sets).map((type, i) => {
                   var block, mtype;
                   [mtype, block] = type.split(/-/);
 

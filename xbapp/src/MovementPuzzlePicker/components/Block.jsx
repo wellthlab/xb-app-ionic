@@ -37,11 +37,11 @@ const Block = (props) => {
        //TODO: NOT HARD CODE
        var starter = 0;
       // if (weekNo == 1){ //HARDCODED
-        var movesForweek1 = Moves.moves.filter((obj) => {
-          return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
+        var movesForweek = Moves.moves.filter((obj) => {
+          return obj.weekToApper > 0 && obj.weekToApper == blockIndex + 1;
         });
         if (exercise.includes("pull")) {
-          filteredMoves = movesForweek1.filter((obj) => {
+          filteredMoves = movesForweek.filter((obj) => {
             return obj.type === "pull";
           });
           movements.upperBody = filteredMoves.filter((obj) => {
@@ -49,7 +49,7 @@ const Block = (props) => {
                 });
           
         } else if (exercise.includes("push")) {
-          filteredMoves = movesForweek1.filter((obj) => {
+          filteredMoves = movesForweek.filter((obj) => {
             return obj.type === "push";
           });
           

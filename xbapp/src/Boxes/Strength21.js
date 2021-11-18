@@ -65,7 +65,7 @@ const decorateTeam = (team) => {
         verb: "DO IT",
       });
 
-      if (dow == 1){ //it's a monday
+      if (dow == 99){ //TODO: decide when assessments
       // if (eday == 1 || eday == 22 || eday == 36) {
         qreq.push({
           type: "assessment",
