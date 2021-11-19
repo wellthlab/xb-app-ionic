@@ -91,7 +91,8 @@ const MovementTimer = ({
 
       <IonGrid>
         <IonRow>
-          {Object.entries(exercises).map(([type, exercise], key) => {
+          {Object.entries(exercises).length > 1 ?
+          Object.entries(exercises).map(([type, exercise], key) => {
             return (
 
               <IonCol style={{ borderStyle: moveAlternation[key] == false ? "hidden" : "solid", borderColor: "blue", borderWidth: "1px" }} onClick={() => alternate(key)}>
@@ -109,7 +110,38 @@ const MovementTimer = ({
               </IonCol>
 
             )
-          })}
+          })
+        :
+        <>
+        <IonCol style={{ borderStyle: moveAlternation[0] == false ? "hidden" : "solid", borderColor: "blue", borderWidth: "1px" }} onClick={() => alternate(0)}>
+        <Blur radius={moveAlternation[0] != false ? '0px' : '5px'} transition="400ms">
+          <div>
+            <MovementInfoCard
+              accordion={false}
+              titleSize={"small"}
+              key={Object.entries(exercises)[0][1]}
+              images={Object.entries(exercises)[0][1].images}
+              name={Object.entries(exercises)[0][1].name + " - left side"}
+            ></MovementInfoCard>
+          </div>
+        </Blur>
+      </IonCol>
+       <IonCol style={{ borderStyle: moveAlternation[1] == false ? "hidden" : "solid", borderColor: "blue", borderWidth: "1px" }} onClick={() => alternate(1)}>
+       <Blur radius={moveAlternation[1] != false ? '0px' : '5px'} transition="400ms">
+         <div>
+           <MovementInfoCard
+             accordion={false}
+             titleSize={"small"}
+             key={Object.entries(exercises)[0][1]}
+             images={Object.entries(exercises)[0][1].images}
+             name={Object.entries(exercises)[0][1].name+ " - right side"}
+           ></MovementInfoCard>
+         </div>
+       </Blur>
+     </IonCol>
+     </>
+        }
+          {}
         </IonRow>
         {showReps == false ? <IonRow>
           <IonLabel>Added: {numberOfSets} sets</IonLabel>

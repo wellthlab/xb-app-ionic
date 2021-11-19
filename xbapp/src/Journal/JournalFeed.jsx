@@ -123,7 +123,10 @@ const JournalFeed = ({ responses }) => {
                         <span>
                           {"Tried out "} {mname}{" "}
                           <strong>
-                            {"× " + number}
+                            {"× " + Math.floor(number / 5) +
+                                " sets and " +
+                                (number % 5) +
+                                " reps"}
                           </strong>
                         </span>
                       </IonItem>

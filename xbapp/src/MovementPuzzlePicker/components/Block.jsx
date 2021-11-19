@@ -21,87 +21,130 @@ const Block = (props) => {
   const blockIndex = props.blockIndex;
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
   const weekNo = props.week;
-  
+
+  console.log("YEST", blockType, moveSelected);
   const history = useHistory();
 
   // Maybe this should be a state?
- 
+
   let filteredMoves;
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   var content = [];
   function processMovements() {
     blockType.map((exercise, index) => {
+      exercise = exercise.split(" ").join("+"); 
       const movements = {};
-      //extraordinary flow
-       //TODO: NOT HARD CODE
-       var starter = 0;
-      // if (weekNo == 1){ //HARDCODED
-        var movesForweek = Moves.moves.filter((obj) => {
-          return obj.weekToApper > 0 && obj.weekToApper == blockIndex + 1;
+      var movesForweek = Moves.moves.filter((obj) => {
+        return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
+      });
+      if (exercise.includes("bilateral")) {
+        filteredMoves = movesForweek.filter((obj) => {
+          return obj.technique === "bilateral";
         });
-        if (exercise.includes("pull")) {
-          filteredMoves = movesForweek.filter((obj) => {
-            return obj.type === "pull";
-          });
-          movements.upperBody = filteredMoves.filter((obj) => {
-                  return obj.area === "upper";
-                });
-          
-        } else if (exercise.includes("push")) {
-          filteredMoves = movesForweek.filter((obj) => {
-            return obj.type === "push";
-          });
-          
-        }
-      
-        movements.upperBody = filteredMoves.filter((obj) => {
+      } else if (exercise.includes("isolateral")) {
+        filteredMoves = movesForweek.filter((obj) => {
+          return obj.technique === "isolateral";
+        });
+      }
+      if (exercise.includes("pull")) {
+        filteredMoves = filteredMoves.filter((obj) => {
+          return obj.type === "pull";
+        });
+      } else if (exercise.includes("push")) {
+        filteredMoves = filteredMoves.filter((obj) => {
+          return obj.type === "push";
+        });
+      }
+      var upperBody = [];
+      var fullBody = [];
+      var lowerBody = [];
+
+      if (exercise.includes("upper")) {
+        upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
-        movements.upperBody.sort((a, b) => {
+        if (upperBody.length != 0) upperBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
-        movements.fullBody = filteredMoves.filter((obj) => {
+      } else if (exercise.includes("full")) {
+        fullBody = filteredMoves.filter((obj) => {
           return obj.area === "full";
         });
-        movements.fullBody.sort((a, b) => {
+        if (fullBody.length != 0) fullBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
-        movements.lowerBody = filteredMoves.filter((obj) => {
+
+      } else if (exercise.includes("lower")) {
+        lowerBody = filteredMoves.filter((obj) => {
           return obj.area === "lower";
         });
-        movements.lowerBody.sort((a, b) => {
+        if (lowerBody.length != 0) lowerBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
+      } else { //it's just "isolateral"
+        upperBody = filteredMoves.filter((obj) => {
+          return obj.area === "upper";
+        });
+        if (upperBody.length != 0) upperBody.sort((a, b) => {
+          return a.progressionLevel - b.progressionLevel;
+        });
+        fullBody = filteredMoves.filter((obj) => {
+          return obj.area === "full";
+        });
+        if (fullBody.length != 0) fullBody.sort((a, b) => {
+          return a.progressionLevel - b.progressionLevel;
+        });
+        lowerBody = filteredMoves.filter((obj) => {
+          return obj.area === "lower";
+        });
+        if (lowerBody.length != 0) lowerBody.sort((a, b) => {
+          return a.progressionLevel - b.progressionLevel;
+        });
+      }
+      movements.lowerBody = lowerBody;
+      movements.fullBody = fullBody;
+      movements.upperBody = upperBody;
+
+      // if (exercise.includes("pull")) {
+      //   filteredMoves = movesForweek.filter((obj) => {
+      //     return obj.type === "pull";
+      //   });
+      //   movements.upperBody = filteredMoves.filter((obj) => {
+      //           return obj.area === "upper";
+      //         });
+
+      // } else if (exercise.includes("push")) {
+      //   filteredMoves = movesForweek.filter((obj) => {
+      //     return obj.type === "push";
+      //   });
+
+      // }
+
+      // movements.upperBody = filteredMoves.filter((obj) => {
+      //   return obj.area === "upper";
+      // });
+      // movements.upperBody.sort((a, b) => {
+      //   return a.progressionLevel - b.progressionLevel;
+      // });
+      // movements.fullBody = filteredMoves.filter((obj) => {
+      //   return obj.area === "full";
+      // });
+      // movements.fullBody.sort((a, b) => {
+      //   return a.progressionLevel - b.progressionLevel;
+      // });
+      // movements.lowerBody = filteredMoves.filter((obj) => {
+      //   return obj.area === "lower";
+      // });
+      // movements.lowerBody.sort((a, b) => {
+      //   return a.progressionLevel - b.progressionLevel;
+      // });
 
       // } else {
 
       // // normal flow
-      // if (exercise.includes("pull")) {
-      //   filteredMoves = Moves.moves.filter((obj) => {
-      //     return obj.type === "pull";
-      //   });
-      //   if (exercise.includes("upper")) {
-      //     filteredMoves = Moves.moves.filter((obj) => {
-      //       return obj.area === "upper";
-      //     });
-      //     movements.upperBody = [];
-      //     movements.fullBody = filteredMoves;
-      //     movements.fullBody.sort((a, b) => {
-      //       return a.progressionLevel - b.progressionLevel;
-      //     });
-      //     movements.lowerBody = [];
-      //   } else if (exercise.includes("lower")) {
-      //     filteredMoves = Moves.moves.filter((obj) => {
-      //       return obj.area === "lower";
-      //     });
-      //     movements.upperBody = [];
-      //     movements.fullBody = filteredMoves;
-      //     movements.fullBody.sort((a, b) => {
-      //       return a.progressionLevel - b.progressionLevel;
-      //     });
-      //     movements.lowerBody = [];
-      //   } else if (exercise.includes("iso")) {
+
+
       //     filteredMoves = Moves.moves.filter((obj) => {
       //       return obj.technique === "isolateral";
       //     });
@@ -244,13 +287,13 @@ const Block = (props) => {
                 "/box/move/" +
                 (props.explorer ? "explore" : "setter") +
                 "/movement-picker/" +
-                exercise.split(" ").join("+"),
+                exercise,
               state: {
                 movements: movements,
                 blockIndex: blockIndex,
                 initialSlideIndex: {
                   upperBody: 0,
-                  fullBody: starter,
+                  fullBody: 0,
                   lowerBody: 0,
                 },
                 numberOfItems: {
