@@ -23,25 +23,31 @@ import {
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
 
-import { CLEAR_FEED, SET_FEED, ADD_FEED } from "./slices/Feed";
+import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 
 /**
  * These controller functions will be returned by getControllers
  * - they'll be wrapped so that client, store and controllers are provided
  */
 
-function LOAD_TEAMS(client, store, controllers) {
+async function LOAD_TEAMS(client, store) {
+
   // Clear the current teams and set the fetching flag
+
   store.dispatch(CLEAR_TEAMS());
+
   // Get the teams and pop them into the store
-  client.getTeams().then(
-    (teams) => {
-      store.dispatch(SET_TEAMS({ teams }));
-    },
-    (err) => {
-      console.error(err);
-    }
-  );
+
+  let teams;
+  try {
+    teams = await client.getTeams();
+  }
+  catch (error) {
+    return console.error(error);
+  }
+
+  store.dispatch(SET_TEAMS({ teams }));
+  console.log('SET_TEAMS', teams, teams.bybox);
 }
 
 /**
@@ -54,7 +60,7 @@ function LOAD_TEAMS_IF_REQD(client, store, controllers) {
   var l = state.teams.loaded;
   if (!f && !l) {
     console.log("Refresh is required", f, l);
-    controllers.LOAD_TEAMS();
+    return controllers.LOAD_TEAMS();
   } else {
     console.log("Refresh is not required", f, l);
   }
@@ -144,7 +150,46 @@ async function GET_FEED(client, store, controllers) {
     item.date = item.date ? Date.parse(item.date).getTime() : time;
   });
 
-  store.dispatch(SET_FEED(feed.items));
+  // Get team responses
+
+  await LOAD_TEAMS_IF_REQD(client, store, controllers);
+
+  const state = store.getState();
+
+  const teams = state.teams.teams;
+  const promises = teams.map((team) => GET_TEAM_RESPONSES(client, store, controllers, team._id));
+  await Promise.all(promises);
+
+  const enhancedTeams = store.getState().teams.teams;
+
+  // Process feed
+
+  const feeds = [...feed.items];
+
+  for (const team of enhancedTeams) {
+    const teamResponses = team.responses.all;
+
+    for (const memberResponses of teamResponses) {
+      for (const response of memberResponses.responses) {
+        feeds.push({
+          type: 'team_update',
+          team: team.name,
+          user: memberResponses.user,
+          date: Date.parse(response.submitted),
+          update: response,
+        });
+      }
+    }
+  }
+
+  // Sort feeds chronologically
+
+  feeds.sort((a, b) => {
+
+    return a.date - b.date;
+  });
+
+  store.dispatch(SET_FEED(feeds));
 }
 
 function getControllers(store, client) {
