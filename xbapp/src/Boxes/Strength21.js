@@ -18,13 +18,13 @@ const decorateTeam = (team) => {
    */
   team.availableExperiments = [];
 
-  console.log("Decorating team. Day: ", team.experiment.day);
+  // console.log("Decorating team. Day: ", team.experiment.day);
 
   for (var eday = 1; eday <= team.experiment.day; eday++) {
 
     var week = Math.floor(eday / 7);
 
-    console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
+    // console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
 
     var qreq = [];
     // Other tasks that can be done, but optionally

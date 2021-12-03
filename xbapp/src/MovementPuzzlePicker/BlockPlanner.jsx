@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import Block from "./components/Block";
 import "./BlockPlanner.css";
 import { useHistory } from "react-router-dom";
+import { isPropertyDeclaration } from "typescript";
 
 const studyPlanner = [
   [["bilateral push", "bilateral pull"]], //week 0
@@ -42,7 +43,7 @@ const BlockPlanner = (props) => {
 
   let day = props.day;
   
-  let blocks = week == -1 ? studyPlanner[0] : studyPlanner[week]; //if it's exploration week, just look at what's gona be in week 0
+  let blocks = (week == -1 || props.explorer) ? studyPlanner[15] : studyPlanner[week]; //if it's exploration week, just look at what's gona be in week 0
   let storageKey = week == -1 ? "blocks-week-0" : "blocks-week-" + week;
 
   if (storageKey in window.localStorage) {

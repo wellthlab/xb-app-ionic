@@ -154,7 +154,7 @@ const MovementBalance = (props) => {
 
     if (type == "ECHNCompleted") {
       var newResult = result;
-      newResult.EOHS.completed = value;
+      newResult.ECHN.completed = value;
       setResult(newResult);
     } else if (type == "ECHNComfort") {
       var newResult = result;
@@ -188,6 +188,10 @@ const MovementBalance = (props) => {
       var newResult = resultPractice;
       newResult.diag_right.eye = value;
       setResultPractice(newResult);
+    }
+
+    if (props.onBalanceAssessmentChange) {
+      props.onBalanceAssessmentChange(resultPractice);
     }
   }
 
@@ -601,7 +605,7 @@ const MovementBalance = (props) => {
                     <IonItem>
                       <IonLabel>Eye Position:</IonLabel>
                       <IonSelect value={resultPractice.rotation.eye} placeholder="Select" onIonChange={e => updateResultPractice("rotation", e.detail.value)} style={{ width: "180px" }}>
-                        <IonSelectOption value="yes fixed straight ahead">Eyes fixed straight ahead</IonSelectOption>
+                        <IonSelectOption value="Eyes fixed straight ahead">Eyes fixed straight ahead</IonSelectOption>
                         <IonSelectOption value="Eyes moving with head">Eyes moving with head</IonSelectOption>
                         <IonSelectOption value="Eyes moving opposition to head">Eyes moving opposition to head</IonSelectOption>
                       </IonSelect>

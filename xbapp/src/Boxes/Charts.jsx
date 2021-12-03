@@ -18,7 +18,9 @@ import { peopleOutline, todayOutline, add } from "ionicons/icons";
 import Instructions from "./components/Instructions";
 import GenericAlert from "../Info/components/GenericAlert";
 
+import WithXBSlice from "../util/WithXBSlice";
 import { addControllersProp } from "../util_model/controllers";
+import { withRouter } from "react-router";
 const autoBindReact = require("auto-bind/react");
 
 class GroupCharts extends Component {
@@ -26,7 +28,7 @@ class GroupCharts extends Component {
   constructor(props) {
     super(props);
     autoBindReact(this); // Binds 'this' to this object in all methods
-    this.refresh();
+    // this.refresh();
   }
 
   render() {
@@ -126,12 +128,20 @@ class GroupCharts extends Component {
 export default connect(
   (state, ownProps) => {
     return {
-      account: state.account,
       teams: state.teams,
+      experiments: state.experiments,
       boxes: state.boxes,
     };
   },
   {
-    pure: false,
+    // Actions to include as props
   }
-)(addControllersProp(GroupCharts));
+)(
+  addControllersProp(
+    withRouter(
+      WithXBSlice(GroupCharts, "teams", (props) => {
+        props.controllers.LOAD_TEAMS();
+      })
+    )
+  )
+);

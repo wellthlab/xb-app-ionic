@@ -134,6 +134,123 @@ const JournalFeed = ({ responses }) => {
                     );
                   }
                 })}
+                {"balance" in r ? ("EOHS" in r.balance ? <>
+                  <h3><strong>Balance Assessment Results</strong></h3>
+                  <IonItem>
+                    <p><strong>Eyes Open Head Still</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.EOHS.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.EOHS.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.EOHS.time}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <p><strong>Eyes Closed Head Still</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.ECHS.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.ECHS.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.ECHS.time}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <p><strong>Eyes Open Head Rotation</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.EOHR.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.EOHR.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.EOHR.time}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <p><strong>Eyes Closed Head Rotation</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.ECHR.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.ECHR.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.ECHR.time}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <p><strong>Eyes Open Head Nod</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.EOHN.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.EOHN.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.EOHN.time}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <p><strong>Eyes Closed Head Nod</strong></p>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Capability: {r.balance.ECHN.completed}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Comfort: {r.balance.ECHN.comfort}</IonLabel>
+                  </IonItem>
+                  <IonItem>
+                    <IonLabel>Time: {r.balance.ECHN.time}</IonLabel>
+                  </IonItem>
+                </> : <>
+                <h3><strong>Balance Practice Results</strong></h3>
+                    <IonItem>
+                      <p><strong>Head Rotation</strong></p>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Eyes: {r.balance.rotation.eye}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.rotation.reps / 5)} sets and {r.balance.rotation.reps % 5} reps</IonLabel>
+                    </IonItem>
+
+                    <IonItem>
+                      <p><strong>Head Nod</strong></p>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Eyes: {r.balance.nod.eye}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.nod.reps / 5)} sets and {r.balance.nod.reps % 5} reps</IonLabel>
+                    </IonItem>
+
+                    <IonItem>
+                      <p><strong>Head Diagonal Nod (1)</strong></p>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Eyes: {r.balance.diag_left.eye}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.diag_left.reps / 5)} sets and {r.balance.diag_left.reps % 5} reps</IonLabel>
+                    </IonItem>
+
+                    <IonItem>
+                      <p><strong>Head diagonal Nod (2)</strong></p>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Eyes: {r.balance.diag_right.eye}</IonLabel>
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.diag_right.reps / 5)} sets and {r.balance.diag_right.reps % 5} reps</IonLabel>
+                    </IonItem>
+
+                </>) : <></>}
               </IonList>
               <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
                 <span>

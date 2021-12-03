@@ -213,7 +213,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
    * Go through each block
    */
   const [sets, setSets] = useState(null);
-  const [balanceAssessment, setBalanceAssessments] = useState(null);
+  const [balanceBlock, setBalanceBlock] = useState(null);
 
   var blocksAreChosen = "blocks-week-" + week + "-set" in window.localStorage;
   if (blocksAreChosen) {
@@ -281,7 +281,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                   day={parseInt(countdownID.split("-")[0])} //to updaye
                   onBalanceAssessmentChange={(value) => {
                     console.log(value);
-                    setBalanceAssessments(value);
+                    setBalanceBlock(value);
                   }}
                   block={blocknum}
                 />
@@ -610,6 +610,9 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             console.log("CHECK", sets);
             var res = {};
             res.sets = sets; // Contains exercises and number of REPS
+            if (balanceBlock != null){
+              res.balance = balanceBlock;
+            }
             res.doms = doms;
             res.workQ = workQ;
             res.workQ2 = workQ2Selected;
