@@ -23,7 +23,7 @@ const Block = (props) => {
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
   const weekNo = props.week;
 
-  console.log("YEST", blockType, moveSelected);
+
   const history = useHistory();
 
   // Maybe this should be a state?
@@ -47,7 +47,20 @@ const Block = (props) => {
         filteredMoves = movesForweek.filter((obj) => {
           return obj.technique === "isolateral";
         });
-      }
+      } else if (exercise.includes("balance")) {
+
+        if (exercise.includes("assessment")) { //is balance assessment
+            filteredMoves = movesForweek.filter((obj) => {
+              return obj.type === "assessment";
+            });
+        } else { //is balance practice
+            filteredMoves = movesForweek.filter((obj) => {
+              return obj.type === "practice";
+            });
+        }
+      } 
+
+
       if (exercise.includes("pull")) {
         filteredMoves = filteredMoves.filter((obj) => {
           return obj.type === "pull";
@@ -56,7 +69,7 @@ const Block = (props) => {
         filteredMoves = filteredMoves.filter((obj) => {
           return obj.type === "push";
         });
-      }
+      } 
       var upperBody = [];
       var fullBody = [];
       var lowerBody = [];
@@ -110,7 +123,7 @@ const Block = (props) => {
       movements.lowerBody = lowerBody;
       movements.fullBody = fullBody;
       movements.upperBody = upperBody;
-      console.log("BAI", lowerBody);
+
       function removeAlternativesWhichDontfit(moves){
         for (var i=0; i<moves.length; i++){
           var move = moves[i];
@@ -132,7 +145,6 @@ const Block = (props) => {
         if (move.weekToApper < 0) return false;
         if (move.blockToApperIn[weekNo] < 0) return false;
         return true;
-
       }
       // if (exercise.includes("pull")) {
       //   filteredMoves = movesForweek.filter((obj) => {

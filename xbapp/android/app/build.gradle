@@ -7,8 +7,8 @@ android {
         applicationId "uos.xb.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 47
-        versionName "3.0.9"
+        versionCode 48
+        versionName "3.0.10"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -1032,6 +1032,158 @@
       "area": "upper",
       "weekToApper": 4,
       "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
+    },
+    {
+      "id": "neutralstance",
+      "name": "Neutral Stance",
+      "category": "balance",
+      "type": "assessment",
+      "progressionLevel": 1,
+      "description": "",
+      "images": [
+        "/balance/neutralstance.png",
+        "/balance/neutralstance.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "narrowstance",
+      "name": "Narrow Stance",
+      "category": "balance",
+      "type": "assessment",
+      "progressionLevel": 2,
+      "description": "",
+      "images": [
+        "/balance/narrowstance.png",
+        "/balance/narrowstance.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "singlelegstance",
+      "name": "Single-Leg Stance",
+      "category": "balance",
+      "type": "assessment",
+      "progressionLevel": 3,
+      "description": "",
+      "images": [
+        "/balance/singlelegstance.png",
+        "/balance/singlelegstance.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "neutral",
+      "name": "Neutral Stance",
+      "category": "balance",
+      "type": "practice",
+      "progressionLevel": 1,
+      "description": "",
+      "images": [
+        "/balance/neutral.png",
+        "/balance/neutral.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "narrow",
+      "name": "Narrow Stance",
+      "category": "balance",
+      "type": "practice",
+      "progressionLevel": 2,
+      "description": "",
+      "images": [
+        "/balance/narrow.png",
+        "/balance/narrow.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "split",
+      "name": "Split Stance",
+      "category": "balance",
+      "type": "practice",
+      "progressionLevel": 3,
+      "description": "",
+      "images": [
+        "/balance/split.png",
+        "/balance/split.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "tandem",
+      "name": "Tandem Stance",
+      "category": "balance",
+      "type": "practice",
+      "progressionLevel": 4,
+      "description": "",
+      "images": [
+        "/balance/tandem.png",
+        "/balance/tandem.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
+    },
+    {
+      "id": "singleleg",
+      "name": "Single Leg Stance",
+      "category": "balance",
+      "type": "practice",
+      "progressionLevel": 5,
+      "description": "",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "balance",
+      "area": "full",
+      "weekToApper": 5,
+      "blockToApperIn": [-1, -1, -1, -1, -1, 0, -1, -1, -1, -1]
     }
   ]
 }

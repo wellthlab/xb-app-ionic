@@ -19,7 +19,7 @@ const studyPlanner = [
   [["bilateral upper push", "bilateral upper pull"], ["bilateral lower push", "bilateral lower pull"]], //week 2
   [["bilateral upper pull", "bilateral lower pull"], ["bilateral upper push", "bilateral lower push"], ["isolateral", "isolateral"]], //week 3
   [["isolateral", "isolateral"], ["isolateral", "isolateral"], ["isolateral", "isolateral"], ["isolateral", "isolateral"]], //week 4
-  [["isolateral lower pull"], ["isolateral lower push"], ["balance"], ["upper push", "upper pull"], ["iso push", "iso pull"]], //week 5
+  [["balance assessment", "balance practice"], ["isolateral", "isolateral"], ["isolateral", "isolateral"], ["isolateral", "isolateral"], ["isolateral", "isolateral"]], //week 5
   [["push", "pull"]], //week 6
   [["push", "pull"]], //week 7
   [["push", "pull"]], //week 8
@@ -39,6 +39,7 @@ const BlockPlanner = (props) => {
 
   //expecting week to be passed as prop
   let week = props.week;
+
   let day = props.day;
   
   let blocks = week == -1 ? studyPlanner[0] : studyPlanner[week]; //if it's exploration week, just look at what's gona be in week 0

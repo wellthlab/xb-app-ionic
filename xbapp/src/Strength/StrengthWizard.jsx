@@ -9,7 +9,7 @@ import {
   IonLabel,
   IonListHeader,
   IonTextarea,
-  IonRadio, 
+  IonRadio,
   IonRadioGroup,
   IonItemDivider
 } from "@ionic/react";
@@ -21,6 +21,7 @@ import MovementPicker, {
 } from "../DEPRECATED/components/OLDMovementPicker";
 import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
+import MovementBalance from "./MovementBalance";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
 import RPE from "../UserInput/RPE";
@@ -31,6 +32,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
 import "./StrengthWizard.css";
+import { compassOutline } from "ionicons/icons";
 
 function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -70,7 +72,7 @@ function useLocalStorage(key, initialValue) {
 
 const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   const [stage, setStage] = useState(0);
-
+  // week = 5;
   var blocks = week;
   if (blocks > 5) blocks = 5;
 
@@ -83,38 +85,38 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   /**
    * DOMNS
    */
-   const [doms, setDoms] = useState("Pain Free (No Pain!): Feeling perfectly normal.");
+  const [doms, setDoms] = useState("Pain Free (No Pain!): Feeling perfectly normal.");
 
-   content.push({
-     el: (
-       <>
-         <h3>Rate your DOMS</h3>
-         <VAS
-           onChange={(value, painValue, categoryPain, explanation) => {
+  content.push({
+    el: (
+      <>
+        <h3>Rate your DOMS</h3>
+        <VAS
+          onChange={(value, painValue, categoryPain, explanation) => {
             setDoms(painValue + " (" + categoryPain + "): " + explanation);
-           }}
-         />
-       </>
-     ),
-     rule: () => {
-       return doms !== null;
-     },
-     title: "DOMS",
-   });
+          }}
+        />
+      </>
+    ),
+    rule: () => {
+      return doms !== null;
+    },
+    title: "DOMS",
+  });
 
-   /**
-   * WHERE do you do your workout?
-   */
-    const [workQ, setWorkQ] = useState("");
-    const [workQ2, setWorkQ2] = useState("");
-    const [workQ2Selected, setWorkQ2Selected] = useState("");
-    const [showTags, setShowTags] = useState(false);
+  /**
+  * WHERE do you do your workout?
+  */
+  const [workQ, setWorkQ] = useState("");
+  const [workQ2, setWorkQ2] = useState("");
+  const [workQ2Selected, setWorkQ2Selected] = useState("");
+  const [showTags, setShowTags] = useState(false);
 
-    content.push({
-      el: (
-        <>
-          <h3>Workout Questions</h3>
-          <IonRadioGroup
+  content.push({
+    el: (
+      <>
+        <h3>Workout Questions</h3>
+        <IonRadioGroup
           allow-empty-selection="true"
           value={workQ}
           onIonChange={(e) => setWorkQ(e.detail.value)}
@@ -137,15 +139,15 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
         </IonRadioGroup>
         <IonItemDivider></IonItemDivider>
 
-  
-<IonRadioGroup
+
+        <IonRadioGroup
           allow-empty-selection="true"
           value={workQ2}
-          onIonChange={(e) => {if (e.detail.value == "other") setShowTags(true); setWorkQ2(e.detail.value); setWorkQ2Selected(e.detail.value)}}
+          onIonChange={(e) => { if (e.detail.value == "other") setShowTags(true); setWorkQ2(e.detail.value); setWorkQ2Selected(e.detail.value) }}
         >
           <IonListHeader>
             <IonLabel>
-            Where are you whilst doing this exercise?
+              Where are you whilst doing this exercise?
             </IonLabel>
           </IonListHeader>
 
@@ -162,29 +164,29 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           <IonItem>
             <IonLabel>Other (select below)</IonLabel>
             <IonRadio slot="start" value="other" />
-            </IonItem>
-            
+          </IonItem>
+
         </IonRadioGroup>
         <IonItem>
-            {showTags ? 
-              <TagsInput tagType="workoutLocation" onChange={(tag) => {
-                console.log(tag);
-                setWorkQ2Selected(tag)
-             }}/>
-             :
-             <></>}
-          </IonItem>
+          {showTags ?
+            <TagsInput tagType="workoutLocation" onChange={(tag) => {
+              console.log(tag);
+              setWorkQ2Selected(tag)
+            }} />
+            :
+            <></>}
+        </IonItem>
         <IonItemDivider></IonItemDivider>
 
-        </>
-      ),
-      rule: () => {
-        return workQ !== "" && workQ2Selected !== "" && workQ2Selected !== "other";
-      },
-      title: "Workout Questions",
-    });
- 
-   
+      </>
+    ),
+    rule: () => {
+      return workQ !== "" && workQ2Selected !== "" && workQ2Selected !== "other";
+    },
+    title: "Workout Questions",
+  });
+
+
   /**
    * Heart Rate and effort review
    */
@@ -211,6 +213,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
    * Go through each block
    */
   const [sets, setSets] = useState(null);
+  const [balanceAssessment, setBalanceAssessments] = useState(null);
 
   var blocksAreChosen = "blocks-week-" + week + "-set" in window.localStorage;
   if (blocksAreChosen) {
@@ -231,7 +234,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
 
           var stringOfExercises = "";
           Object.entries(exercises).map(([type, exercise]) => {
-            stringOfExercises = stringOfExercises + "+" + exercise.id; 
+            stringOfExercises = stringOfExercises + "+" + exercise.id;
           })
           stringOfExercises = stringOfExercises.substring(1);
           //both exercises will be listed here
@@ -242,30 +245,56 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           console.log("so it is", copy);
         }
 
-        content.push({
-          el: (
-            <>
-              <h3>
-                Block {blocknum} of {blocks}
-              </h3>
-              <p>Try to fit in as many sets in the 7-minute limit. When ready, TAP on the move you want to start with (it will highlight). Tap AGAIN when you completed 5 REPS - and you will switch moves. When the time runs out, you can add any remaining REPS.</p>
-              <MovementTimer
-                exercises={blocksOfWeek[blocknum - 1]}
-                onDone={() => {}}
-                onSetChange={updateSets}
-                mins={7}
-                countdownID={countdownID}
-                block={blocknum}
-              />
-            </>
-          ),
-          rule: () => {
-            return true;
-          },
-          previous: true,
-          title: "Movement Block " + blocknum,
-        });
+        if (("balance+assessment" in blocksOfWeek[blocknum - 1]) == false) {
+          content.push({
+            el: (
+              <>
+                <h3>
+                  Block {blocknum} of {blocks}
+                </h3>
+                <p>Try to fit in as many sets in the 7-minute limit. When ready, TAP on the move you want to start with (it will highlight). Tap AGAIN when you completed 5 REPS - and you will switch moves. When the time runs out, you can add any remaining REPS.</p>
+                <MovementTimer
+                  exercises={blocksOfWeek[blocknum - 1]}
+                  onDone={() => { }}
+                  onSetChange={updateSets}
+                  mins={7}
+                  countdownID={countdownID}
+                  block={blocknum}
+                />
+              </>
+            ),
+            rule: () => {
+              return true;
+            },
+            previous: true,
+            title: "Movement Block " + blocknum,
+          });
+        } else {
+          content.push({
+            el: (
+              <>
+                <h3>
+                  Block {blocknum} of {blocks}
+                </h3>
+                <MovementBalance
+                  exercises={blocksOfWeek[blocknum - 1]}
+                  day={parseInt(countdownID.split("-")[0])} //to updaye
+                  onBalanceAssessmentChange={(value) => {
+                    console.log(value);
+                    setBalanceAssessments(value);
+                  }}
+                  block={blocknum}
+                />
+              </>
+            ),
+            rule: () => {
+              return true;
+            },
+            previous: true,
+            title: "Movement Block " + blocknum,
+          });
 
+        }
         /**
          * Add countdown of 2 minutes in between blocks
          */
@@ -406,14 +435,14 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                 </IonCol>
                 <IonCol>
                   <img
-                  className="img"
+                    className="img"
                     src={sunrise.sourceMidday}
                     onClick={() => toggleImagesSun("midday")}
                   />
                 </IonCol>
                 <IonCol>
                   <img
-                  className="img"
+                    className="img"
                     src={sunrise.sourceSunset}
                     onClick={() => toggleImagesSun("sunset")}
                   />
@@ -515,9 +544,9 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
      * Instructions and stage list
      */
     var rubric =
-        "This week, you'll do the same exercises each day. You have " +
-        blocks +
-        " blocks to complete. Here is a breakdown of the strength tasks for today:";
+      "This week, you'll do the same exercises each day. You have " +
+      blocks +
+      " blocks to complete. Here is a breakdown of the strength tasks for today:";
     var snum = 1;
     content[0] = {
       el: (
@@ -554,9 +583,9 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             Before proceeding to today's strength exercise, please set this week's blocks under today's required tasks.
           </p>
           <IonButton onClick={() => history.push({
-      pathname:
-        "/box/move/"
-    })}>Back to your Move box</IonButton>
+            pathname:
+              "/box/move/"
+          })}>Back to your Move box</IonButton>
         </>
       ),
       rule: function () {
@@ -655,8 +684,8 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             ""
           )}
           {nextExists &&
-          c.rule() &&
-          (typeof c.next == "undefined" || c.next != false) ? (
+            c.rule() &&
+            (typeof c.next == "undefined" || c.next != false) ? (
             <IonButton onClick={nextSlide} className="next">
               Next
             </IonButton>
