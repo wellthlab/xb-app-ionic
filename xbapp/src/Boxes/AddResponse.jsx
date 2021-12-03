@@ -15,6 +15,8 @@ import { addControllersProp } from "../util_model/controllers";
 
 import MinuteEntry from "../UserInput/MinuteEntry";
 import Questionnaire from "../UserInput/Questionnaire";
+import QuestionnaireEvening from "../UserInput/QuestionnaireEvening";
+import QuestionnaireEndWeek from "../UserInput/QuestionnaireEndWeek";
 import StrengthWizard from "../Strength/StrengthWizard";
 import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
@@ -112,6 +114,14 @@ const AddResponse = (props) => {
         input = <Questionnaire key={time} onSubmit={save} />;
         break;
 
+      case "questionnaire-evening":
+        input = <QuestionnaireEvening key={time} onSubmit={save} />;
+        break;
+
+      case "questionnaire-endWeek":
+        input = <QuestionnaireEndWeek key={time} onSubmit={save} />;
+        break;
+
       case "strength":
         var week = Math.floor((daynumber - 1) / 7);
 
@@ -168,29 +178,29 @@ const AddResponse = (props) => {
         // );
         break;
 
-        case "work-assessment":
+      case "work-assessment":
         input = <WorkAssessment onSubmit={save} />;
         break;
-        case "hearttare":
+      case "hearttare":
         input = <HeartRateTask onSubmit={save} />;
         break;
-        case "scheduler":
-          var planner = [];
-          var week = Math.floor((daynumber - 1) / 7);
-          if (week == 0 && daynumber == 1){
-            planner = [{day: "Tuesday", isChecked: false}, {day: "Wednesday", isChecked: false}, {day: "Thursday", isChecked: false}, {day: "Friday", isChecked: false}];
-          } else {
-            planner = [{day: "Monday", isChecked: false}, {day: "Tuesday", isChecked: false}, {day: "Wednesday", isChecked: false}, {day: "Thursday", isChecked: false}, {day: "Friday", isChecked: false}];
-          }
-        input = <Scheduler onSubmit={save} daysCalendar={planner}/>;
+      case "scheduler":
+        var planner = [];
+        var week = Math.floor((daynumber - 1) / 7);
+        if (week == 0 && daynumber == 1) {
+          planner = [{ day: "Tuesday", isChecked: false }, { day: "Wednesday", isChecked: false }, { day: "Thursday", isChecked: false }, { day: "Friday", isChecked: false }];
+        } else {
+          planner = [{ day: "Monday", isChecked: false }, { day: "Tuesday", isChecked: false }, { day: "Wednesday", isChecked: false }, { day: "Thursday", isChecked: false }, { day: "Friday", isChecked: false }];
+        }
+        input = <Scheduler onSubmit={save} daysCalendar={planner} />;
         break;
-        case "poms":
+      case "poms":
         input = <POMS onSubmit={save} />;
         break;
-        case "plank":
+      case "plank":
         input = <Plank onSubmit={save} />;
         break;
-        case "wallsit":
+      case "wallsit":
         input = <WallSit onSubmit={save} />;
         break;
 
@@ -198,16 +208,16 @@ const AddResponse = (props) => {
         input = <Assessment onSubmit={save} />;
         break;
 
-        case "heartrate":
+      case "heartrate":
         input = <HeartRateTask onSubmit={save} />;
         break;
 
-        case "quiz":
-          var week = Math.floor((daynumber - 1) / 7);
-        input = <Quiz onSubmit={save} week={week}/>;
+      case "quiz":
+        var week = Math.floor((daynumber - 1) / 7);
+        input = <Quiz onSubmit={save} week={week} />;
         break;
-        case "pushpull":
-        input = <PushPull onSubmit={save}/>;
+      case "pushpull":
+        input = <PushPull onSubmit={save} />;
         break;
 
       case "note":
@@ -233,6 +243,12 @@ const AddResponse = (props) => {
     case "questionnaire":
       typedesc = "Daily Questionnaire";
       break;
+    case "questionnaire-evening":
+      typedesc = "Daily Evening Questionnaire";
+      break;
+    case "questionnaire-endWeek":
+      typedesc = "Weekly Reflection Questionnaire";
+      break;
     case "strength":
       typedesc = "Daily Strength Session";
       break;
@@ -248,30 +264,30 @@ const AddResponse = (props) => {
     case "assessment":
       typedesc = "Strength Assessment";
       break;
-      case "work-assessment":
-        typedesc = "Work Engagement Questionnaire";
-        break;
-        case "scheduler":
-        typedesc = "Calendar Scheduling";
-        break;
-        case "poms":
-        typedesc = "Assessment: POMS";
-        break;
-        case "plank":
-        typedesc = "Assessment: The Plank";
-        break;
-        case "wallsit":
-        typedesc = "Assessment: The Wall Sit";
-        break;
-        case "heartrate":
-        typedesc = "Learning HOW TO: Taking heart rates";
-        break;
-        case "quiz":
-        typedesc = "Weekly QUIZ";
-        break;
-        case "pushpull":
-        typedesc = "Pushes and Pulls";
-        break;
+    case "work-assessment":
+      typedesc = "Work Engagement Questionnaire";
+      break;
+    case "scheduler":
+      typedesc = "Calendar Scheduling";
+      break;
+    case "poms":
+      typedesc = "Assessment: POMS";
+      break;
+    case "plank":
+      typedesc = "Assessment: The Plank";
+      break;
+    case "wallsit":
+      typedesc = "Assessment: The Wall Sit";
+      break;
+    case "heartrate":
+      typedesc = "Learning HOW TO: Taking heart rates";
+      break;
+    case "quiz":
+      typedesc = "Weekly QUIZ";
+      break;
+    case "pushpull":
+      typedesc = "Pushes and Pulls";
+      break;
   }
 
   return (

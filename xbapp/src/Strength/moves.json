@@ -16,7 +16,7 @@
       "technique": "isolateral",
       "area": "lower",
       "weekToApper": 3,
-      "blockToApperIn": [-1, -1, -1, 2, 2, 2, 2, 2, 2, 2]
+      "blockToApperIn": [-1, -1, -1, 0, 0, -1, -1, -1, -1, -1]
     }, 
     {
       "id": "lsit",
@@ -45,7 +45,7 @@
       "difficulty": "",
       "warning": "If in a public space, make sure you're clearly visible to others when lying on the ground.",
       "alternative": [],
-      "technique": "isolateral",
+      "technique": "bilateral",
       "area": "full",
       "weekToApper": -1,
       "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
@@ -128,7 +128,7 @@
       "technique": "isolateral",
       "area": "lower",
       "weekToApper": 3,
-      "blockToApperIn": [-1, -1, -1, 2, 2, 2, 2, 2, 2, 2]
+      "blockToApperIn": [-1, -1, -1, 0, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "gluteraise",
@@ -144,7 +144,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, 2, 1, 1, 1, 1, 1, 1, 1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "supportedsquat",
@@ -160,7 +160,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, 2, 2, 2, 2, 2, 2, 2, 2]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "boxsquat",
@@ -176,7 +176,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "horsestance",
@@ -211,7 +211,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "middlesplit",
@@ -243,7 +243,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "stepup",
@@ -258,8 +258,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "bulgariansplitsquat",
@@ -277,8 +277,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "cossacksquat",
@@ -293,8 +293,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "kjsquat",
@@ -312,8 +312,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "boxpistolsquat",
@@ -328,8 +328,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "pistolsquat",
@@ -344,8 +344,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "wallrdlprep",
@@ -361,7 +361,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "singlelegpikelift",
@@ -376,8 +376,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "singlelegromaniandeadlift",
@@ -395,8 +395,8 @@
       "alternative": [],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "shortbridge",
@@ -412,7 +412,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "swimmer",
@@ -459,8 +459,8 @@
       "alternative": ["swimmer","tablebridge"],
       "technique": "isolateral",
       "area": "lower",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "superman",
@@ -492,7 +492,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "fullbridge",
@@ -508,7 +508,7 @@
       "technique": "bilateral",
       "area": "lower",
       "weekToApper": 2,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, -1, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "hollowbody",
@@ -572,7 +572,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "cobrapushup",
@@ -588,7 +588,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "elevatedpushup",
@@ -604,7 +604,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "hindupushup",
@@ -620,7 +620,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [0, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "flatpushup",
@@ -636,7 +636,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "supportedtricepdip",
@@ -668,7 +668,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "archerpushup",
@@ -716,7 +716,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "planchelean",
@@ -729,7 +729,7 @@
       "difficulty": "Reduce difficulty by lowering the angle of your lean.",
       "warning": "If in a public space, make sure you're clearly visible to others when laying on the ground.",
       "alternative": [],
-      "technique": "isolateral",
+      "technique": "bilateral",
       "area": "upper",
       "weekToApper": -1,
       "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
@@ -780,7 +780,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "onearmdoorpull",
@@ -795,8 +795,8 @@
       "alternative": ["pronateddoorhangpull"],
       "technique": "isolateral",
       "area": "upper",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     },
     {
       "id": "facepull",
@@ -812,7 +812,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "tethereddoorpull",
@@ -831,7 +831,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "horizontalpull",
@@ -847,7 +847,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "assistedpullup",
@@ -863,7 +863,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "suppinatedaustralianpull",
@@ -882,7 +882,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "pronatedaustralianpull",
@@ -901,7 +901,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "widegrippull",
@@ -920,7 +920,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "chinup",
@@ -939,7 +939,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "pronateddoorhangpull",
@@ -955,7 +955,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "narrowgrippull",
@@ -974,7 +974,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "typewriterpull",
@@ -1012,7 +1012,7 @@
       "technique": "bilateral",
       "area": "upper",
       "weekToApper": 1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "blockToApperIn": [-1, 0, 0, 0, -1, -1, -1, -1, -1, -1]
     },
     {
       "id": "onearmpull",
@@ -1030,8 +1030,8 @@
       "alternative": ["fingerpull"],
       "technique": "isolateral",
       "area": "upper",
-      "weekToApper": -1,
-      "blockToApperIn": [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+      "weekToApper": 4,
+      "blockToApperIn": [-1, -1, -1, -1, 0, -1, -1, -1, -1, -1]
     }
   ]
 }

@@ -232,6 +232,7 @@ const MovementPicker = (props) => {
       </div>
     );
   } else {
+    console.log("LEYS");
     screen = (
       <div id="movement-picker" style={{padding: "0px"}}>
         <DetailedMovementSlide

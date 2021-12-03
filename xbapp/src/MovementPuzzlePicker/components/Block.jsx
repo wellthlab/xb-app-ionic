@@ -12,6 +12,7 @@ import "./Block.css";
 import { useHistory } from "react-router";
 import Moves from "../../Strength/moves.json";
 import { useEffect } from "react";
+import { getMove } from "../../DEPRECATED/components/OLDMovementPicker";
 
 /*
 the types are: pull, push, lower push, lower pull, balance, upper push, upper pull, unilateral lower push, unilateral lower pull, iso push, iso pull
@@ -102,10 +103,37 @@ const Block = (props) => {
           return a.progressionLevel - b.progressionLevel;
         });
       }
+
+      lowerBody = removeAlternativesWhichDontfit(lowerBody);
+      fullBody = removeAlternativesWhichDontfit(fullBody);
+      upperBody = removeAlternativesWhichDontfit(upperBody);
       movements.lowerBody = lowerBody;
       movements.fullBody = fullBody;
       movements.upperBody = upperBody;
+      console.log("BAI", lowerBody);
+      function removeAlternativesWhichDontfit(moves){
+        for (var i=0; i<moves.length; i++){
+          var move = moves[i];
+          var alternatives = move.alternative;
+          var newAlternatives = [];
+          if (alternatives.length > 0){ //if there are alternatives
+            for (var k=0; k<alternatives.length; k++){ //going through each alternative
+              if (alternativeIsGood(alternatives[k])) newAlternatives.push(alternatives[k]);
+            }
+            //update alternatives
+            moves[i].alternative = newAlternatives;
+          }
+        }
+        return moves;
+      }
 
+      function alternativeIsGood(id){
+        var move = getMove(id);
+        if (move.weekToApper < 0) return false;
+        if (move.blockToApperIn[weekNo] < 0) return false;
+        return true;
+
+      }
       // if (exercise.includes("pull")) {
       //   filteredMoves = movesForweek.filter((obj) => {
       //     return obj.type === "pull";

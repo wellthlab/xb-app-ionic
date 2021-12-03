@@ -36,7 +36,7 @@ const decorateTeam = (team) => {
         desc: "Set your current Strength Exercise",
         verb: "DO IT",
       });
-    } 
+    }
     others.push({ type: "note", desc: "Add Notes", verb: "ADD NOTES" });
     others.push({ type: "minutes", desc: "Add Movement Minutes", verb: "ADD" });
 
@@ -57,16 +57,30 @@ const decorateTeam = (team) => {
           verb: "DO IT",
         });
       }
-
+      
 
       qreq.push({
         type: "questionnaire",
         desc: "Fill in the Daily Review",
         verb: "DO IT",
       });
+      qreq.push({
+        type: "questionnaire-evening",
+        desc: "Fill in an end-of-day review",
+        verb: "DO IT",
+      });
 
-      if (dow == 99){ //TODO: decide when assessments
-      // if (eday == 1 || eday == 22 || eday == 36) {
+      if (dow == 5) { //if it's friday, the end of week reflection
+        qreq.push({
+          type: "questionnaire-endWeek",
+          desc: "Do your Weekly Reflection Exercise",
+          verb: "DO IT",
+        });
+      }
+
+      //TODO: decide when assessments
+      if (dow == 99) { 
+        // if (eday == 1 || eday == 22 || eday == 36) {
         qreq.push({
           type: "assessment",
           desc: "Do a Strength Assessment",
@@ -80,22 +94,22 @@ const decorateTeam = (team) => {
         });
       }
     }
-    
-    if ((week == 0 && eday % 7 == 1) || (week == 1 && eday % 7 == 3) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1) ) {
+
+    if ((week == 0 && eday % 7 == 1) || (week == 1 && eday % 7 == 3) || (week == 7 && eday % 7 == 1) || (week == 16 && eday % 7 == 1)) {
       qreq.push({
         type: "work-assessment",
         desc: "Do the Work Engagement Questionnaire",
         verb: "DO IT",
       });
     }
-    if (week == 0){
-      if (eday % 7 == 1){ //is monday
+    if (week == 0) {
+      if (eday % 7 == 1) { //is monday
         qreq.push({
           type: "scheduler",
           desc: "Schedule your Workout",
           verb: "DO IT",
         });
-      } else if (eday % 7 == 2){ //is poms - tuesday
+      } else if (eday % 7 == 2) { //is poms - tuesday
         qreq.push({
           type: "poms",
           desc: "Do an assessment - POMS",
@@ -107,9 +121,9 @@ const decorateTeam = (team) => {
           verb: "DO IT",
         });
         //TODOOOOOOOO
-        
 
-      } else if (eday % 7 == 3){ //is walls it and plank- wednesday
+
+      } else if (eday % 7 == 3) { //is walls it and plank- wednesday
         qreq.push({
           type: "plank",
           desc: "Do an assessment - The Plank",
@@ -120,14 +134,14 @@ const decorateTeam = (team) => {
           desc: "Do an assessment - The Wall Sit",
           verb: "DO IT",
         });
-      } else if (eday % 7 == 4){ //ithursday - understanding pushes pulls
+      } else if (eday % 7 == 4) { //ithursday - understanding pushes pulls
         qreq.push({
           type: "pushpull",
           desc: "Understanding Pushes and Pulls",
           verb: "DO IT",
         });
-       
-      } else if (eday % 7 == 5){ //is walls it and plank - friday
+
+      } else if (eday % 7 == 5) { //is walls it and plank - friday
         qreq.push({
           type: "scheduler",
           desc: "Schedule your Workout",
