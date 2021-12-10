@@ -49,7 +49,7 @@ function LOAD_TEAMS(client, store, controllers) {
  */
 function LOAD_TEAMS_IF_REQD(client, store, controllers) {
   var state = store.getState();
-
+  console.log("LETS SEE", state);
   var f = state.teams.fetching;
   var l = state.teams.loaded;
   if (!f && !l) {

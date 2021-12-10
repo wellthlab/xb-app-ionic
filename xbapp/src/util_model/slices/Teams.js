@@ -297,6 +297,7 @@
         *
         */
 
+        
         //number of days
         var dayData = team.entries;
         var minutesIndividualReplacer = [];

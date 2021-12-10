@@ -1,5 +1,119 @@
 {
   "ditched": [
+    {
+      "id": "walk",
+      "name": "Walking",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 1,
+      "description": "Walking at your own pace - for the duration of the whole block!",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    },
+    {
+      "id": "run",
+      "name": "Running",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 2,
+      "description": "Running at your own pace - for the duration of the whole block!",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    },
+    {
+      "id": "bike",
+      "name": "Cycling",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 3,
+      "description": "",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "Cycling - for the duration of the whole block!",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    },
+    {
+      "id": "row",
+      "name": "Rowing",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 4,
+      "description": "Rowing - for the duration of the whole block!",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    },
+    {
+      "id": "swim",
+      "name": "Swimming",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 5,
+      "description": "Swimming at your own pace - for the duration of the whole block!",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    },
+    {
+      "id": "other_aerobic",
+      "name": "Other aerobic",
+      "category": "aerobic",
+      "type": "aerobic",
+      "progressionLevel": 6,
+      "description": "Any other aerobic exercise not listed here. You can make a note of the exercise that you choose under the Notes section at the end of your exercise.",
+      "images": [
+        "/balance/singleleg.png",
+        "/balance/singleleg.png"
+      ],
+      "difficulty": "",
+      "warning": "",
+      "alternative": [],
+      "technique": "aerobic",
+      "area": "full",
+      "weekToApper": 6,
+      "blockToApperIn": [-1, -1, -1, -1, -1, -1, 0, 0, 0, -1]
+    }
   ],
   "moves": [
     {

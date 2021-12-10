@@ -11,7 +11,10 @@ import {
   IonTextarea,
   IonRadio,
   IonRadioGroup,
-  IonItemDivider
+  IonItemDivider,
+  IonSelect,
+  IonSelectOption,
+  IonInput
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
@@ -19,6 +22,7 @@ import { connect } from "react-redux";
 import MovementPicker, {
   getMove,
 } from "../DEPRECATED/components/OLDMovementPicker";
+import CountDown from "../Instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
 import MovementBalance from "./MovementBalance";
@@ -71,6 +75,7 @@ function useLocalStorage(key, initialValue) {
 }
 
 const StrengthWizard = ({ week, onSubmit, countdownID }) => {
+  const currentDayOfWeek = parseInt(countdownID.split("-")[0]) % 7; //1monday,2tuesday..6saturday,0sunday
   const [stage, setStage] = useState(0);
   // week = 5;
   var blocks = week;
@@ -215,8 +220,37 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
   const [sets, setSets] = useState(null);
   const [balanceBlock, setBalanceBlock] = useState(null);
 
+  const [aerobic, setAerobic] = useState("");
+  const [aerobicOther, setAerobicOther] = useState("");
   var blocksAreChosen = "blocks-week-" + week + "-set" in window.localStorage;
-  if (blocksAreChosen) {
+  if ((week == 6 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3)) || (week == 7 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3)) || (week == 8 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3))){
+    content.push({
+      el: (
+        <>
+          <h3>
+            Aerobic Block
+          </h3>
+          <p>Today is an aerobic day. For 35 minutes, you can choose to do an aerobic exercise instead.</p>
+          <CountDown minutes={35}/>
+          <IonItem>Which activity are you doing today?</IonItem>
+          <IonSelect value={aerobic} placeholder="Select One" onIonChange={(e) => setAerobic(e.detail.value)}>
+              <IonSelectOption value="walking">Walking</IonSelectOption>
+              <IonSelectOption value="running">Running</IonSelectOption>
+              <IonSelectOption value="cycling">Cycling</IonSelectOption>
+              <IonSelectOption value="rowing">Rowing</IonSelectOption>
+              <IonSelectOption value="swimming">Swimming</IonSelectOption>
+              <IonSelectOption value="other">Other..</IonSelectOption>
+            </IonSelect>
+            {aerobic == "other" ? <IonInput value={aerobicOther} placeholder="Enter other.." onIonChange={(e) => setAerobicOther(e.detail.value)}></IonInput> : <></>}
+        </>
+      ),
+      rule: () => {
+        return true;
+      },
+      previous: true,
+      title: "Movement Block: Aerobic Day ",
+    });
+  } else if (blocksAreChosen) {
     var blocksOfWeek = JSON.parse(
       window.localStorage.getItem("blocks-week-" + week)
     );
@@ -228,7 +262,6 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
        */
       (function (blocknum) {
         function updateSets(exercises, block, count) {
-          console.log("SHOULD TRIGGER", exercises, block, count);
           var copy = {};
           Object.assign(copy, sets); //there are actually reps here!!!
 
@@ -609,6 +642,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
           onClick={function () {
             console.log("CHECK", sets);
             var res = {};
+            res.aerobic = "Aerobic day: " + (aerobic != "other" ? aerobic : aerobicOther);
             res.sets = sets; // Contains exercises and number of REPS
             if (balanceBlock != null){
               res.balance = balanceBlock;

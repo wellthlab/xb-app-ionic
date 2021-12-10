@@ -74,7 +74,11 @@ const JournalFeed = ({ responses }) => {
               <IonList>
                 <IonItem>Rated DOMS: {r.doms}</IonItem>
                 <IonItem>Did this exercise {r.workQ}, whilst being in the next location: {r.workQ2}.</IonItem>
-                {r.sets == null ? <></> : Object.keys(r.sets).map((type, i) => {
+                {r.sets == null ? <> 
+                {/* it means it's aerobic day */}
+                  <IonItem>{r.aerobic}</IonItem>
+                
+                </> : Object.keys(r.sets).map((type, i) => {
                   var block, mtype;
                   [mtype, block] = type.split(/-/);
 

@@ -6,6 +6,7 @@ import {
   IonItem,
   IonCardContent,
   IonButton,
+  IonToggle
 } from "@ionic/react";
 import React from "react";
 import "./Block.css";
@@ -19,13 +20,18 @@ import { CropLandscapeOutlined } from "@material-ui/icons";
 the types are: pull, push, lower push, lower pull, balance, upper push, upper pull, unilateral lower push, unilateral lower pull, iso push, iso pull
 */
 const Block = (props) => {
+  //console.log("BLOCK ", props.blockIndex, props.typeOfBlock, props.exerciseChosen);
+  // const [blockType, setBlockType] = React.useState(props.typeOfBlock);
   const blockType = props.typeOfBlock;
   const blockIndex = props.blockIndex;
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
   const weekNo = props.week;
 
-
   const history = useHistory();
+
+  // const [checked, setChecked] = React.useState([0, 0, 0, 0, 0]);
+  // const choiceForBlock = [["bilateral push", "bilateral pull"], ["isolateral", "isolateral"]]; //0 is false and 1 is true
+  
 
   // Maybe this should be a state?
 
@@ -34,13 +40,17 @@ const Block = (props) => {
 
   var content = [];
   function processMovements() {
-    blockType.map((exercise, index) => {
+      console.log("3 IS PROCESSING", blockIndex, blockType, moveSelected)
+
+      blockType.map((exercise, index) => {
+
       exercise = exercise.split(" ").join("+"); 
       const movements = {};
       var movesForweek = Moves.moves.filter((obj) => {
         return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
       });
       if (props.explorer) filteredMoves = Moves.moves;
+
       if (exercise.includes("bilateral")) {
         filteredMoves = movesForweek.filter((obj) => {
           return obj.technique === "bilateral";
@@ -117,7 +127,7 @@ const Block = (props) => {
         if (lowerBody.length != 0) lowerBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
-      } else { //something else, i.e. explorer/bilateral push
+      } else { //something else, i.e. explorer/bilateral push/aerobic
         upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
@@ -170,7 +180,7 @@ const Block = (props) => {
       }
 
 
-      content.push(
+      content.push(<>
         <IonButton
           className="block-button"
           onClick={(event) => {
@@ -203,8 +213,8 @@ const Block = (props) => {
             <div className="block-button-container">
               <div className="container-left">
                 <p id="move-selected">
-                  {moveSelected[exercise].name.split("+").join(" ")}
-                </p>
+                 {moveSelected[exercise].name.split("+").join(" ")}
+                  </p>
               </div>
               <div className="container-right">
                 <p id="select-text">Select {">"}</p>
@@ -212,10 +222,13 @@ const Block = (props) => {
             </div>
           )}
         </IonButton>
+        </>
       );
+     
     });
   }
   processMovements();
+
   return (
     <IonCard>
       <IonCardHeader className="block-header">
@@ -226,7 +239,9 @@ const Block = (props) => {
           Block type: {blockType.join("-")}
         </IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent>{content}</IonCardContent>
+      <IonCardContent>
+     
+        {content}</IonCardContent>
     </IonCard>
   );
 };
