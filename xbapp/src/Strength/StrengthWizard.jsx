@@ -9,6 +9,12 @@ import {
   IonLabel,
   IonListHeader,
   IonTextarea,
+  IonRadio,
+  IonRadioGroup,
+  IonItemDivider,
+  IonSelect,
+  IonSelectOption,
+  IonInput
 } from "@ionic/react";
 import { useHistory } from "react-router";
 import { connect } from "react-redux";
@@ -16,16 +22,21 @@ import { connect } from "react-redux";
 import MovementPicker, {
   getMove,
 } from "../DEPRECATED/components/OLDMovementPicker";
+import CountDown from "../Instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
 import MovementTimer from "./MovementTimer";
+import MovementBalance from "./MovementBalance";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
 import RPE from "../UserInput/RPE";
+import VAS from "../UserInput/VAS";
+import TagsInput from "../UserInput/TagsInput";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
 
 import "./StrengthWizard.css";
+import { compassOutline } from "ionicons/icons";
 
 function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -64,8 +75,9 @@ function useLocalStorage(key, initialValue) {
 }
 
 const StrengthWizard = ({ week, onSubmit, countdownID }) => {
+  const currentDayOfWeek = parseInt(countdownID.split("-")[0]) % 7; //1monday,2tuesday..6saturday,0sunday
   const [stage, setStage] = useState(0);
-
+  // week = 5;
   var blocks = week;
   if (blocks > 5) blocks = 5;
 
@@ -74,6 +86,111 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
    */
   var content = [];
   content[0] = { placeholder: true }; // A placeholder for the real first page, which we'll assemble later
+
+  /**
+   * DOMNS
+   */
+  const [doms, setDoms] = useState("Pain Free (No Pain!): Feeling perfectly normal.");
+
+  content.push({
+    el: (
+      <>
+        <h3>Rate your DOMS</h3>
+        <VAS
+          onChange={(value, painValue, categoryPain, explanation) => {
+            setDoms(painValue + " (" + categoryPain + "): " + explanation);
+          }}
+        />
+      </>
+    ),
+    rule: () => {
+      return doms !== null;
+    },
+    title: "DOMS",
+  });
+
+  /**
+  * WHERE do you do your workout?
+  */
+  const [workQ, setWorkQ] = useState("");
+  const [workQ2, setWorkQ2] = useState("");
+  const [workQ2Selected, setWorkQ2Selected] = useState("");
+  const [showTags, setShowTags] = useState(false);
+
+  content.push({
+    el: (
+      <>
+        <h3>Workout Questions</h3>
+        <IonRadioGroup
+          allow-empty-selection="true"
+          value={workQ}
+          onIonChange={(e) => setWorkQ(e.detail.value)}
+        >
+          <IonListHeader>
+            <IonLabel>
+              When are you doing this exercise?
+            </IonLabel>
+          </IonListHeader>
+
+          <IonItem>
+            <IonLabel>During work</IonLabel>
+            <IonRadio slot="start" value="during work" />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Outside work</IonLabel>
+            <IonRadio slot="start" value="outside work" />
+          </IonItem>
+        </IonRadioGroup>
+        <IonItemDivider></IonItemDivider>
+
+
+        <IonRadioGroup
+          allow-empty-selection="true"
+          value={workQ2}
+          onIonChange={(e) => { if (e.detail.value == "other") setShowTags(true); setWorkQ2(e.detail.value); setWorkQ2Selected(e.detail.value) }}
+        >
+          <IonListHeader>
+            <IonLabel>
+              Where are you whilst doing this exercise?
+            </IonLabel>
+          </IonListHeader>
+
+          <IonItem>
+            <IonLabel>On site</IonLabel>
+            <IonRadio slot="start" value="on site" />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>At home</IonLabel>
+            <IonRadio slot="start" value="at home" />
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Other (select below)</IonLabel>
+            <IonRadio slot="start" value="other" />
+          </IonItem>
+
+        </IonRadioGroup>
+        <IonItem>
+          {showTags ?
+            <TagsInput tagType="workoutLocation" onChange={(tag) => {
+              console.log(tag);
+              setWorkQ2Selected(tag)
+            }} />
+            :
+            <></>}
+        </IonItem>
+        <IonItemDivider></IonItemDivider>
+
+      </>
+    ),
+    rule: () => {
+      return workQ !== "" && workQ2Selected !== "" && workQ2Selected !== "other";
+    },
+    title: "Workout Questions",
+  });
+
 
   /**
    * Heart Rate and effort review
@@ -101,9 +218,39 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
    * Go through each block
    */
   const [sets, setSets] = useState(null);
+  const [balanceBlock, setBalanceBlock] = useState(null);
 
+  const [aerobic, setAerobic] = useState("");
+  const [aerobicOther, setAerobicOther] = useState("");
   var blocksAreChosen = "blocks-week-" + week + "-set" in window.localStorage;
-  if (blocksAreChosen) {
+  if ((week == 6 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3)) || (week == 7 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3)) || (week == 8 && (currentDayOfWeek ==  2 || currentDayOfWeek ==  3))){
+    content.push({
+      el: (
+        <>
+          <h3>
+            Aerobic Block
+          </h3>
+          <p>Today is an aerobic day. For 35 minutes, you can choose to do an aerobic exercise instead.</p>
+          <CountDown minutes={35}/>
+          <IonItem>Which activity are you doing today?</IonItem>
+          <IonSelect value={aerobic} placeholder="Select One" onIonChange={(e) => setAerobic(e.detail.value)}>
+              <IonSelectOption value="walking">Walking</IonSelectOption>
+              <IonSelectOption value="running">Running</IonSelectOption>
+              <IonSelectOption value="cycling">Cycling</IonSelectOption>
+              <IonSelectOption value="rowing">Rowing</IonSelectOption>
+              <IonSelectOption value="swimming">Swimming</IonSelectOption>
+              <IonSelectOption value="other">Other..</IonSelectOption>
+            </IonSelect>
+            {aerobic == "other" ? <IonInput value={aerobicOther} placeholder="Enter other.." onIonChange={(e) => setAerobicOther(e.detail.value)}></IonInput> : <></>}
+        </>
+      ),
+      rule: () => {
+        return true;
+      },
+      previous: true,
+      title: "Movement Block: Aerobic Day ",
+    });
+  } else if (blocksAreChosen) {
     var blocksOfWeek = JSON.parse(
       window.localStorage.getItem("blocks-week-" + week)
     );
@@ -120,7 +267,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
 
           var stringOfExercises = "";
           Object.entries(exercises).map(([type, exercise]) => {
-            stringOfExercises = stringOfExercises + "+" + exercise.id; 
+            stringOfExercises = stringOfExercises + "+" + exercise.id;
           })
           stringOfExercises = stringOfExercises.substring(1);
           //both exercises will be listed here
@@ -128,32 +275,59 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             stringOfExercises + "-" + block
           ] = count;
           setSets(copy);
+          console.log("so it is", copy);
         }
 
-        content.push({
-          el: (
-            <>
-              <h3>
-                Block {blocknum} of {blocks}
-              </h3>
-              <p>Try to fit in as many sets in the 7-minute limit. Once you complete 5 REPS of a move, tap "+1 SET". Add any remaining reps at the end when the time runs out.</p>
-              <MovementTimer
-                exercises={blocksOfWeek[blocknum - 1]}
-                onDone={() => {}}
-                onSetChange={updateSets}
-                mins={7}
-                countdownID={countdownID}
-                block={blocknum}
-              />
-            </>
-          ),
-          rule: () => {
-            return true;
-          },
-          previous: true,
-          title: "Movement Block " + blocknum,
-        });
+        if (("balance+assessment" in blocksOfWeek[blocknum - 1]) == false) {
+          content.push({
+            el: (
+              <>
+                <h3>
+                  Block {blocknum} of {blocks}
+                </h3>
+                <p>Try to fit in as many sets in the 7-minute limit. When ready, TAP on the move you want to start with (it will highlight). Tap AGAIN when you completed 5 REPS - and you will switch moves. When the time runs out, you can add any remaining REPS.</p>
+                <MovementTimer
+                  exercises={blocksOfWeek[blocknum - 1]}
+                  onDone={() => { }}
+                  onSetChange={updateSets}
+                  mins={7}
+                  countdownID={countdownID}
+                  block={blocknum}
+                />
+              </>
+            ),
+            rule: () => {
+              return true;
+            },
+            previous: true,
+            title: "Movement Block " + blocknum,
+          });
+        } else {
+          content.push({
+            el: (
+              <>
+                <h3>
+                  Block {blocknum} of {blocks}
+                </h3>
+                <MovementBalance
+                  exercises={blocksOfWeek[blocknum - 1]}
+                  day={parseInt(countdownID.split("-")[0])} //to updaye
+                  onBalanceAssessmentChange={(value) => {
+                    console.log(value);
+                    setBalanceBlock(value);
+                  }}
+                  block={blocknum}
+                />
+              </>
+            ),
+            rule: () => {
+              return true;
+            },
+            previous: true,
+            title: "Movement Block " + blocknum,
+          });
 
+        }
         /**
          * Add countdown of 2 minutes in between blocks
          */
@@ -294,14 +468,14 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                 </IonCol>
                 <IonCol>
                   <img
-                  className="img"
+                    className="img"
                     src={sunrise.sourceMidday}
                     onClick={() => toggleImagesSun("midday")}
                   />
                 </IonCol>
                 <IonCol>
                   <img
-                  className="img"
+                    className="img"
                     src={sunrise.sourceSunset}
                     onClick={() => toggleImagesSun("sunset")}
                   />
@@ -403,9 +577,9 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
      * Instructions and stage list
      */
     var rubric =
-        "This week, you'll do the same exercises each day. You have " +
-        blocks +
-        " blocks to complete. Here is a breakdown of the strength tasks for today:";
+      "This week, you'll do the same exercises each day. You have " +
+      blocks +
+      " blocks to complete. Here is a breakdown of the strength tasks for today:";
     var snum = 1;
     content[0] = {
       el: (
@@ -442,9 +616,9 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             Before proceeding to today's strength exercise, please set this week's blocks under today's required tasks.
           </p>
           <IonButton onClick={() => history.push({
-      pathname:
-        "/box/move/"
-    })}>Back to your Move box</IonButton>
+            pathname:
+              "/box/move/"
+          })}>Back to your Move box</IonButton>
         </>
       ),
       rule: function () {
@@ -466,15 +640,23 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
         </p>
         <IonButton
           onClick={function () {
+            console.log("CHECK", sets);
             var res = {};
-            res.sets = sets; // Contains exercises and number of sets
+            res.aerobic = "Aerobic day: " + (aerobic != "other" ? aerobic : aerobicOther);
+            res.sets = sets; // Contains exercises and number of REPS
+            if (balanceBlock != null){
+              res.balance = balanceBlock;
+            }
+            res.doms = doms;
+            res.workQ = workQ;
+            res.workQ2 = workQ2Selected;
             res.preHeartrate = preHeart;
             res.heartrate = postHeart; // Contains heart rate
             res.exertionValue = scoreRPE; //contains the string of exertion type
             res.type = "strength";
             var rmins = {};
             rmins.type = "minutes";
-            rmins.minutes = week > 6 ? 35 : Math.max(1, week - 1) * 7;
+            rmins.minutes = week > 6 ? 35 : Math.max(1, week) * 7;
             rmins.location = variables.place;
             rmins.time = variables.timeOfDay;
             var rnotes = {};
@@ -539,8 +721,8 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
             ""
           )}
           {nextExists &&
-          c.rule() &&
-          (typeof c.next == "undefined" || c.next != false) ? (
+            c.rule() &&
+            (typeof c.next == "undefined" || c.next != false) ? (
             <IonButton onClick={nextSlide} className="next">
               Next
             </IonButton>

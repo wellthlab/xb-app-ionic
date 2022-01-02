@@ -22,7 +22,7 @@ const EatPage = (props) => {
       <XBHeader title="Eat"></XBHeader>
       <IonContent id="about">
         <h4>Eat</h4>
-        <p>The eat box will open in week 4.</p>
+        <p>The eat box will open soon.</p>
       </IonContent>
     </IonPage>
   );

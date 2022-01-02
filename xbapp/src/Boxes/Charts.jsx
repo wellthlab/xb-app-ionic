@@ -30,6 +30,7 @@ class GroupCharts extends Component {
   }
 
   render() {
+
     const { showAlert } = this.state;
     const setState = (state) => this.setState(state);
 
@@ -45,6 +46,7 @@ class GroupCharts extends Component {
         group = g;
       }
     }
+    console.log("OLD", group);
     var c;
     if (this.props.teams.fetching || !this.props.teams.loaded) {
       c = <ion-spinner name="crescent" />;
@@ -119,7 +121,21 @@ class GroupCharts extends Component {
     );
   }
   refresh() {
-    this.props.controllers.LOAD_TEAMS();
+    // this.props.controllers.LOAD_TEAMS();
+
+      // Load team data if required; mostly useful during development
+      this.props.controllers.LOAD_TEAMS_IF_REQD();
+      // var gid = this.props.match.params.id; // Group ID comes from route
+      // var group = false;
+      // for (var g of this.props.teams.teams) {
+      //   // Find the group in the store
+      //   if (g._id == gid) {
+      //     group = g;
+      //   }
+      // }
+   
+      // this.props.controllers.GET_TEAM_RESPONSES(group._id);
+  
   }
 }
 

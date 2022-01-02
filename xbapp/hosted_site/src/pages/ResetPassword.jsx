@@ -67,7 +67,7 @@ function ResetPassword(props) {
     // Extract matches and capturing groups from string
     // Query expected in the form /?token=<tokenString>&tokenId=<tokenIdString>
     const matches = [...query.matchAll(regex)][0];
-    console.log(matches);
+    // console.log(matches);
     const queryParams = {};
     if (matches !== undefined) {
       queryParams.token = matches[1];
@@ -86,13 +86,13 @@ function ResetPassword(props) {
       .resetPassword(token, tokenId, newPassword)
       .then((success) => {
         if (success) {
-          console.log("Password reset");
+          // console.log("Password reset");
           setState2({
             err: <>Password successfully reset</>,
             enableButton: false,
           });
         } else {
-          console.log("Password reset failed");
+          // console.log("Password reset failed");
           setState2({
             err: <>Password not reset</>,
             enableButton: true,
@@ -100,12 +100,12 @@ function ResetPassword(props) {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         const isTokenInvalid = error.message.includes(
           "invalid token data (status 400)"
         );
         if (isTokenInvalid) {
-          console.log("Invalid token used");
+          // console.log("Invalid token used");
           setState({
             pw: state1.pw,
             pw2: state1.pw2,

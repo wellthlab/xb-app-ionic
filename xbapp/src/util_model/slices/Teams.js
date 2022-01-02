@@ -145,6 +145,7 @@
       },
       // Add an experiment to the list
       SET_TEAMS(state, action) {
+        console.log("BABABAB", state);
         const teams = action.payload.teams;
         state.teams = teams;
         state.fetching = false;
@@ -296,6 +297,7 @@
         *
         */
 
+        
         //number of days
         var dayData = team.entries;
         var minutesIndividualReplacer = [];

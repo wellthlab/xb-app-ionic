@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
   constructor(props) {
     super(props);
     autoBindReact(this);
-    console.log("ForgotPassword created with controllers", props.controllers);
+    // console.log("ForgotPassword created with controllers", props.controllers);
     this.state = {
       emailSent: false,
       err: <>Please enter your email</>,

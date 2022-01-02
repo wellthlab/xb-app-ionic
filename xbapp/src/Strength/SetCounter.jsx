@@ -15,8 +15,13 @@ import "./SetCounter.css";
  * Count Reps
  */
 const SetCounter = (props) => {
-  const [sets, setSets] = useState(props.start ? props.start : 0);
+  const [sets, setSets] = useState(props.sets);
   const [reps, setReps] = useState(0);
+
+  React.useMemo(() => {
+    
+    setSets(props.sets)
+  }, [props.sets]);
 
   function save(message) {
     var repsToReturn = sets * 5 + reps;
@@ -40,7 +45,8 @@ const SetCounter = (props) => {
     }
   }
 
-  // TODO
+  if (props.showReps){
+    // TODO
   return (
     <div style={{ paddingTop: "10px" }}>
       <IonItem>
@@ -125,6 +131,10 @@ const SetCounter = (props) => {
       </IonItem>
     </div>
   );
+  } else {
+    return (<></>);
+  }
+  
 };
 
 export default SetCounter;

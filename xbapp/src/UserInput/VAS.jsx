@@ -21,17 +21,17 @@ import {
  */
 
     const VASImagesdemo = {
-      0: "happy.png",
-      1: "happy.png",
-      2: "happy.png",
-      3: "happy.png",
-      4: "happy.png",
-      5: "happy.png",
-      6: "happy.png",
-      7: "happy.png",
-      8: "happy.png",
-      9: "happy.png",
-      10: "happy.png",
+      0: "0.png",
+      1: "1.png",
+      2: "2.png",
+      3: "3.png",
+      4: "4.png",
+      5: "5.png",
+      6: "6.png",
+      7: "7.png",
+      8: "8.png",
+      9: "9.png",
+      10: "10.png",
     };
 const VASImages = {
   0: "nopain.png",
@@ -154,7 +154,7 @@ const Balance = (props) => {
       <div style={{margin: "auto"}}>
       <img
         style={{ display: "block", marginLeft: "auto", marginRight: "auto", width: "50px", resize: "both", textAlign: "center" }}
-        src={"assets/mood/" + VASImagesdemo[value]}
+        src={"assets/vas/" + VASImagesdemo[value]}
         alt="balanced"
       />
       </div>

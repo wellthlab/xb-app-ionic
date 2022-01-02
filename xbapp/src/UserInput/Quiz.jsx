@@ -45,7 +45,7 @@ const quizes = [
       "A Repetition/Rep is: the single performance of both the negative and positive part of a movement - so a squat includes getting down into the squat position (back of legs touching, the negative part of the movement) - and the return to the standing position (the positive part of the movement).",
   },
   {
-    week: 3, //id is week and day
+    week: 2, //id is week and day
     question: "What is an Isolateral exercise?",
     answers: [
       "Creating tension in a muscle without moving a joint",
@@ -58,7 +58,7 @@ const quizes = [
       "An isolateral exercise is the Strength move done on one side of the body. Creating tension in a muscle without moving a joint is called an isometric. Alternating moves between a push and a pull is a great idea for complementing muscle work in a practice but is not an isolateral. Moreover, isolateral movements focus on what is moved in one side of the body, rather than the program of moves over any time period.",
   },
   {
-    week: 4, //id is week and day
+    week: 3, //id is week and day
     question: "What is an isometric exercise?",
     answers: [
       "Using small handheld weights for workouts",
@@ -71,7 +71,7 @@ const quizes = [
       "Creating tension in a muscle without moving joints is correct. Using small handheld weights for workouts would be a focus on the equipment rather than type of exercise. Exercises done outside of a group would be isolation - where a movement is done - rather than a type of exercise. Maximal single lift is usually done with weights to find out what the maximum load one can lift with one big rep only.",
   },
   {
-    week: 5, //id is week and day
+    week: 4, //id is week and day
     question: "What is time under tension (TuT)?",
     answers: [
       "The total time a workout takes",
@@ -84,7 +84,7 @@ const quizes = [
       "The total time one is actually working during the workout is correct, excluding breaks - how long in a workout you are actually working rather than recovering. TuT is a measure actually within the total workout time, but is not itself the total workout time. In terms of the time in one's day when they feel stressed, there should be a name for that, and TuT may help mitigate that, but that's not it. The total number of blocks done in a workout would be the total number of blocks rather than the time spent in blocks doing work.",
   },
   {
-    week: 6, //id is week and day
+    week: 5, //id is week and day
     question: "What is an examples of a bilateral pull exercise?",
     answers: ["Bulgarian split squat", "Pull up", "Horse stance", "Superman"],
     correctAnswer: "Pull up",
