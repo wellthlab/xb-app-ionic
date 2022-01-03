@@ -105,7 +105,7 @@ const MovementPicker = (props) => {
     },
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render
@@ -166,7 +166,7 @@ const MovementPicker = (props) => {
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {
     screen = (
-      <div id="movement-picker" style={{padding: "0px"}}>
+      <div id="movement-picker" style={{ padding: "0px" }}>
         <IonCard>
           <IonCardContent>There are no exercises to choose from</IonCardContent>
         </IonCard>
@@ -174,7 +174,7 @@ const MovementPicker = (props) => {
     );
   } else if (!showDetailedTile) {
     screen = (
-      <div id="movement-picker" style={{padding: "0px"}}>
+      <div id="movement-picker" style={{ padding: "0px" }}>
         <div id="tile-gui">
           <IonIcon icon={caretUp} id="up" className="caret-row"></IonIcon>
           <IonIcon
@@ -189,7 +189,7 @@ const MovementPicker = (props) => {
                 event.target.getActiveIndex().then((index) => {
                   // So that function is only called when the outer most slide is changed
                   // Needs testing on mobile
-                  if (event.path.length === 17) {
+                  if (event.path && event.path.length === 17) {
                     verticalSlideSwiped(index);
                   }
                 });
@@ -234,7 +234,7 @@ const MovementPicker = (props) => {
   } else {
     console.log("LEYS");
     screen = (
-      <div id="movement-picker" style={{padding: "0px"}}>
+      <div id="movement-picker" style={{ padding: "0px" }}>
         <DetailedMovementSlide
           movement={movement}
           updateExercise={updateExercise}
