@@ -167,18 +167,83 @@ async function GET_FEED(client, store, controllers) {
   const feeds = [...feed.items];
 
   for (const team of enhancedTeams) {
+
+    // Ignore single-membered team
+
+    if (team.users.length < 2) {
+      continue;
+    }
+
     const teamResponses = team.responses.all;
+
+    if (!teamResponses) {
+      continue;
+    }
+
+    const updates = {};
 
     for (const memberResponses of teamResponses) {
       for (const response of memberResponses.responses) {
-        feeds.push({
-          type: 'team_update',
-          team: team.name,
-          user: memberResponses.user,
-          date: Date.parse(response.submitted),
-          update: response,
-        });
+        if (response.type !== 'strength' && response.type !== 'questionnaire' && response.type !== 'questionnaire-evening') {
+          continue;
+        }
+
+        const date = new Date(response.submitted);
+        date.setHours(0, 0, 0, 0);                    // Round to the nearest date
+
+        const timestamp = date.getTime();
+
+        let entry = updates[timestamp];
+
+        if (!entry) {
+          entry = {
+            exercised: { set: new Set(), hasOwn: false },
+            answered: { set: new Set(), hasOwn: false },
+          };
+
+          updates[timestamp] = entry;
+        }
+
+        let type;
+
+        if (response.type === 'strength') {
+          type = entry.exercised;
+        }
+
+        if (response.type === 'questionnaire' || response.type === 'questionnaire-evening') {
+          type = entry.answered;
+        }
+
+        type.hasOwn = team.responses.own ? team.responses.own.user === memberResponses.user : false;
+        type.set.add(memberResponses.user);
       }
+    }
+
+    for (const [timestamp, entry] of Object.entries(updates)) {
+
+      const baseFeed = {
+        type: 'team_update',
+        team: team.name,
+        date: timestamp,
+      };
+
+      feeds.push({
+        ...baseFeed,
+        update: {
+          count: entry.exercised.set.size,
+          hasOwn: entry.exercised.hasOwn,
+          display: 'strength exercises',
+        },
+      });
+
+      feeds.push({
+        ...baseFeed,
+        update: {
+          count: entry.answered.set.size,
+          hasOwn: entry.answered.hasOwn,
+          display: 'questionnaire',
+        },
+      });
     }
   }
 
