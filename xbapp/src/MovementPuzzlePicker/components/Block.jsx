@@ -31,7 +31,7 @@ const Block = (props) => {
 
   // const [checked, setChecked] = React.useState([0, 0, 0, 0, 0]);
   // const choiceForBlock = [["bilateral push", "bilateral pull"], ["isolateral", "isolateral"]]; //0 is false and 1 is true
-  
+
 
   // Maybe this should be a state?
 
@@ -40,11 +40,12 @@ const Block = (props) => {
 
   var content = [];
   function processMovements() {
-      console.log("3 IS PROCESSING", blockIndex, blockType, moveSelected)
+    console.log("3 IS PROCESSING", blockIndex, blockType, moveSelected)
 
-      blockType.map((exercise, index) => {
+    blockType.map((exercise, index) => {
 
-      exercise = exercise.split(" ").join("+"); 
+      exercise = exercise.split(" ").join("+");
+      console.log('Exercise', exercise);
       const movements = {};
       var movesForweek = Moves.moves.filter((obj) => {
         return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
@@ -62,15 +63,15 @@ const Block = (props) => {
       } else if (exercise.includes("balance")) {
 
         if (exercise.includes("assessment")) { //is balance assessment
-            filteredMoves = movesForweek.filter((obj) => {
-              return obj.type === "assessment";
-            });
+          filteredMoves = movesForweek.filter((obj) => {
+            return obj.type === "assessment";
+          });
         } else { //is balance practice
-            filteredMoves = movesForweek.filter((obj) => {
-              return obj.type === "practice";
-            });
+          filteredMoves = movesForweek.filter((obj) => {
+            return obj.type === "practice";
+          });
         }
-      } 
+      }
 
 
       if (exercise.includes("pull")) {
@@ -81,7 +82,7 @@ const Block = (props) => {
         filteredMoves = filteredMoves.filter((obj) => {
           return obj.type === "push";
         });
-      } 
+      }
       var upperBody = [];
       var fullBody = [];
       var lowerBody = [];
@@ -108,7 +109,7 @@ const Block = (props) => {
         if (lowerBody.length != 0) lowerBody.sort((a, b) => {
           return a.progressionLevel - b.progressionLevel;
         });
-      } else if (exercise.includes("isolateral")){ 
+      } else if (exercise.includes("isolateral")) {
         upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
@@ -147,22 +148,22 @@ const Block = (props) => {
           return a.progressionLevel - b.progressionLevel;
         });
       }
-      if (!props.explorer){
-      lowerBody = removeAlternativesWhichDontfit(lowerBody);
-      fullBody = removeAlternativesWhichDontfit(fullBody);
-      upperBody = removeAlternativesWhichDontfit(upperBody);
+      if (!props.explorer) {
+        lowerBody = removeAlternativesWhichDontfit(lowerBody);
+        fullBody = removeAlternativesWhichDontfit(fullBody);
+        upperBody = removeAlternativesWhichDontfit(upperBody);
       }
       movements.lowerBody = lowerBody;
       movements.fullBody = fullBody;
       movements.upperBody = upperBody;
 
-      function removeAlternativesWhichDontfit(moves){
-        for (var i=0; i<moves.length; i++){
+      function removeAlternativesWhichDontfit(moves) {
+        for (var i = 0; i < moves.length; i++) {
           var move = moves[i];
           var alternatives = move.alternative;
           var newAlternatives = [];
-          if (alternatives.length > 0){ //if there are alternatives
-            for (var k=0; k<alternatives.length; k++){ //going through each alternative
+          if (alternatives.length > 0) { //if there are alternatives
+            for (var k = 0; k < alternatives.length; k++) { //going through each alternative
               if (alternativeIsGood(alternatives[k])) newAlternatives.push(alternatives[k]);
             }
             //update alternatives
@@ -172,7 +173,7 @@ const Block = (props) => {
         return moves;
       }
 
-      function alternativeIsGood(id){
+      function alternativeIsGood(id) {
         var move = getMove(id);
         if (move.weekToApper < 0) return false;
         if (move.blockToApperIn[weekNo] < 0) return false;
@@ -210,21 +211,21 @@ const Block = (props) => {
           {props.explorer ? (
             <p>Explore {exercise}</p>
           ) : (
-            <div className="block-button-container">
-              <div className="container-left">
-                <p id="move-selected">
-                 {moveSelected[exercise].name.split("+").join(" ")}
+              <div className="block-button-container">
+                <div className="container-left">
+                  <p id="move-selected">
+                    {moveSelected[exercise].name.split("+").join(" ")}
                   </p>
+                </div>
+                <div className="container-right">
+                  <p id="select-text">Select {">"}</p>
+                </div>
               </div>
-              <div className="container-right">
-                <p id="select-text">Select {">"}</p>
-              </div>
-            </div>
-          )}
+            )}
         </IonButton>
-        </>
+      </>
       );
-     
+
     });
   }
   processMovements();
@@ -240,7 +241,7 @@ const Block = (props) => {
         </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
-     
+
         {content}</IonCardContent>
     </IonCard>
   );
