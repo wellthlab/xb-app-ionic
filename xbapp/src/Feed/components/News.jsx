@@ -34,7 +34,7 @@ export default class OverdueEntry extends Component {
     return (
       <>
         <IonCardHeader>
-          <IonCardSubtitle>News</IonCardSubtitle>
+          <IonCardSubtitle>News - {when}</IonCardSubtitle>
           <IonCardTitle>{item.title}</IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
@@ -45,8 +45,8 @@ export default class OverdueEntry extends Component {
                 Read More
               </IonButton>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </p>
         </IonCardContent>
       </>

@@ -219,12 +219,14 @@ async function GET_FEED(client, store, controllers) {
       }
     }
 
+    console.log(updates);
+
     for (const [timestamp, entry] of Object.entries(updates)) {
 
       const baseFeed = {
         type: 'team_update',
         team: team.name,
-        date: timestamp,
+        date: Number(timestamp),
       };
 
       feeds.push({
@@ -251,7 +253,7 @@ async function GET_FEED(client, store, controllers) {
 
   feeds.sort((a, b) => {
 
-    return a.date - b.date;
+    return b.date - a.date;
   });
 
   store.dispatch(SET_FEED(feeds));

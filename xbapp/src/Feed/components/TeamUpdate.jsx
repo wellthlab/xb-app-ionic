@@ -8,6 +8,8 @@ import {
     IonButton,
 } from "@ionic/react";
 
+import dateFromTS from "../../util_lib/dateFromTS";
+
 const TeamUpdate = (props) => {
 
     const item = props.item;
@@ -16,7 +18,7 @@ const TeamUpdate = (props) => {
     return item.update.count > 0 ? (
         <>
             <IonCardHeader>
-                <IonCardSubtitle>Team update</IonCardSubtitle>
+                <IonCardSubtitle>Team update - {dateFromTS(item.date)}</IonCardSubtitle>
                 <IonCardTitle>
                     Team {item.team}&apos;s news
                 </IonCardTitle>
