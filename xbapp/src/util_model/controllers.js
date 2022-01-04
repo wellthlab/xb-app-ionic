@@ -219,9 +219,11 @@ async function GET_FEED(client, store, controllers) {
       }
     }
 
-    console.log(updates);
+    // Sort updates chronologically
 
-    for (const [timestamp, entry] of Object.entries(updates)) {
+    const entries = Object.entries(updates).sort((entry1, entry2) => entry1[0] - entry2[0]);
+
+    for (const [timestamp, entry] of entries) {
 
       const baseFeed = {
         type: 'team_update',
@@ -229,7 +231,7 @@ async function GET_FEED(client, store, controllers) {
         date: Number(timestamp),
       };
 
-      feeds.push({
+      feeds.unshift({
         ...baseFeed,
         update: {
           count: entry.exercised.set.size,
@@ -238,7 +240,7 @@ async function GET_FEED(client, store, controllers) {
         },
       });
 
-      feeds.push({
+      feeds.unshift({
         ...baseFeed,
         update: {
           count: entry.answered.set.size,
@@ -248,13 +250,6 @@ async function GET_FEED(client, store, controllers) {
       });
     }
   }
-
-  // Sort feeds chronologically
-
-  feeds.sort((a, b) => {
-
-    return b.date - a.date;
-  });
 
   store.dispatch(SET_FEED(feeds));
 }
