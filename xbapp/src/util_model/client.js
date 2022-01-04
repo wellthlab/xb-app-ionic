@@ -136,6 +136,17 @@ function XBClient() {
     return self.realm.currentUser;
   };
 
+  self.getAllTeams = async function () {
+
+    const db = getDb();
+    const collection = db.collection('responses');
+    const groups = await collection.find();
+
+    // self.tidy(groups);
+
+    return groups;
+  }
+
   /**
    * Get all groups for the current user
    */
@@ -227,11 +238,11 @@ function XBClient() {
     var code = genID(6);
 
     // Parent team defaults to none
-    if(typeof parentTeam == 'undefined')
+    if (typeof parentTeam == 'undefined')
       //parentTeam = ""; needs to be a hexadecimal value for ObjectId conversion
       parentTeam = parentTeam;
-    
-      const team = {
+
+    const team = {
       name: name,
       desc: desc,
       code: code,
@@ -264,7 +275,7 @@ function XBClient() {
       return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
     } catch (e) {
       console.log(e);
-      return {success: false, message: "An unexpected error occured"}
+      return { success: false, message: "An unexpected error occured" }
     }
   };
 
@@ -290,7 +301,7 @@ function XBClient() {
       console.log(e);
       return { success: false, message: e.message };
     }
-    
+
     return { success: true };
   };
 
