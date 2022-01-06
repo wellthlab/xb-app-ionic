@@ -46,8 +46,8 @@ class Feed extends Component {
               </Link>
             </div>
           ) : (
-            <></>
-          )}
+              <></>
+            )}
           {c}
         </IonContent>
       </IonPage>

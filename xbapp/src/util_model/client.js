@@ -136,10 +136,9 @@ function XBClient() {
     return self.realm.currentUser;
   };
 
-  self.getAllTeams = async function () {
+  self.calculateTeamStats = async function (options) {
 
-    const db = getDb();
-    const res = await db.collection('teams').find({});
+    const res = await self.realm.currentUser.functions.calculateTeamStats(options);
     self.tidy(res);
     return res;
   }
