@@ -17,11 +17,27 @@ import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
 import "./Move.scss";
 import { connect } from "react-redux";
-import WithXBSlice from "../util/WithXBSlice";
 import { addControllersProp } from "../util_model/controllers";
 
 const MovePage = (props) => {
+
+  React.useEffect(() => {
+
+    props.controllers.LOAD_TEAMS();
+  }, [!!props.teams]);
+
+  if (!props.teams.teams.bybox) {
+    return null;
+  }
+
   // Ask the user to enrol in a move experiment; or show current experiment info
+  // React.useEffect(() => {
+  //   //whenever the timer is triggered (when the user presses on image)
+  //   console.log("UPDATED");
+  //   props.controllers.LOAD_TEAMS_IF_REQD();
+  // }, []);
+
+  console.log(props.teams.teams);
   if (!props.teams.teams.bybox["move"]) {
     var content = <Enroller boxtype="move" />;
   } else {
@@ -52,9 +68,5 @@ export default connect(
     // Actions to include as props
   }
 )(
-  addControllersProp(
-    WithXBSlice(MovePage, "teams", (props) => {
-      props.controllers.LOAD_TEAMS_IF_REQD();
-    })
-  )
+  addControllersProp(MovePage)
 );

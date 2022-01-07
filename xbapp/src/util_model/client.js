@@ -208,7 +208,7 @@ function XBClient() {
   self.getTeamResponses = async function (teamid) {
     var info = await self.realm.users[0].functions.getTeamData(teamid);
 
-    console.log("Fetched team responses", info);
+    console.log("Fetched team responses", info, teamid);
 
     return self.tidy(info[0].allresponses);
   };

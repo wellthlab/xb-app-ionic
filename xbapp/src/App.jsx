@@ -117,7 +117,6 @@ const autoBindReact = require("auto-bind/react"); // Needs to go after import, b
 const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
   let content = null;
 
-  console.log("HMMM", account, window.localStorage);
   useEffect(() => {
     if (
       !account.loggedin &&

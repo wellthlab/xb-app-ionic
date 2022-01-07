@@ -23,11 +23,11 @@ function XBClient() {
 
   self.realm = new Realm.App({ id: APP_ID, timeout: 10000 });
 
-  console.log("Created realm client", self.realm);
+  // console.log("Created realm client", self.realm);
 
   //TODO add return types for failures
   self.resetPassword = async function (token, tokenId, password) {
-    console.log(token, tokenId, password, sha512(password));
+    // console.log(token, tokenId, password, sha512(password));
     try {
       await self.realm.emailPasswordAuth.resetPassword(
         token,
