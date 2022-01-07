@@ -27,6 +27,7 @@ import {
   settingsOutline,
   fastFoodOutline,
   bicycleOutline,
+  trophyOutline,
 } from "ionicons/icons";
 
 // Redux stuff
@@ -35,6 +36,7 @@ import { connect } from "react-redux";
 // Pages
 import Account from "./Account/Account";
 import Feed from "./Feed/Feed";
+import Leaderboard from './Leaderboard/Leaderboard';
 import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
@@ -122,10 +124,10 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
       window.localStorage.length != 0
     ) {
       var user = getXBClient().getUser();
-      // console.log("Using stored account", user);
-      if (user){
-      START_LOGIN({ email: false });
-      ACCEPT_LOGIN({});
+      console.log("Using stored account", user);
+      if (user) {
+        START_LOGIN({ email: false });
+        ACCEPT_LOGIN({});
       }
     }
   });
@@ -145,6 +147,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
               {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/feed" component={Feed} exact={true} />
+              <Route path="/leaderboard" component={Leaderboard} exact={true} />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -196,7 +199,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={ForgotPassword}
                 exact={true}
               />
-              
+
               // Info page
               <Route path="/timeline" component={Timeline} exact={true} />
               <Route
@@ -204,10 +207,10 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={MoveTutorial}
                 exact={true}
               />
-               <Route path="/about" component={About} exact={true} />
-               <Route path="/heartratechart" component={HeartRateChartPage} exact={true} />
-               <Route path="/protocolchart" component={ProtocolChartPage} exact={true} />
-              
+              <Route path="/about" component={About} exact={true} />
+              <Route path="/heartratechart" component={HeartRateChartPage} exact={true} />
+              <Route path="/protocolchart" component={ProtocolChartPage} exact={true} />
+
               {/**for testing purposes */}
               <Route
                 path="/balance"
@@ -252,7 +255,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={WallSit}
                 exact={true}
               />
-               <Route
+              <Route
                 path="/poms"
                 component={POMS}
                 exact={true}
@@ -263,7 +266,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={Scheduler}
                 exact={true}
               />
-             
+
             </Switch>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
@@ -271,7 +274,10 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonIcon icon={newspaperOutline} />
               <IonLabel>{"News"}</IonLabel>
             </IonTabButton>
-
+            <IonTabButton tab={"Leaderboard"} href={"/leaderboard"}>
+              <IonIcon icon={trophyOutline} />
+              <IonLabel>Leaderboard</IonLabel>
+            </IonTabButton>
             <IonTabButton tab={"Experiments"} href={"/experiments"}>
               <IonIcon icon={cubeOutline} />
               <IonLabel>{"Experiments"}</IonLabel>
