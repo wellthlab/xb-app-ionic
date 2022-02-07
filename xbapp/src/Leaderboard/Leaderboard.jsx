@@ -89,7 +89,7 @@ const Leaderboard = function (props) {
 
     return (
         <IonPage>
-            <XBHeader title="News &amp; Updates"></XBHeader>
+            <XBHeader title="Teams &amp; Leaderboard"></XBHeader>
             <IonContent fullscreen>
                 <IonDatetime value={date1} color="light" onIonChange={handleDateChange} />
                 <IonButton onClick={handleShowAllTime}>{allTime ? 'Show current date' : 'Show all time'}</IonButton>

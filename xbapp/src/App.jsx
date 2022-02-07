@@ -28,6 +28,8 @@ import {
   fastFoodOutline,
   bicycleOutline,
   trophyOutline,
+  playOutline,
+  barbellOutline,
 } from "ionicons/icons";
 
 // Redux stuff
@@ -36,7 +38,7 @@ import { connect } from "react-redux";
 // Pages
 import Account from "./Account/Account";
 import Feed from "./Feed/Feed";
-import Leaderboard from './Leaderboard/Leaderboard';
+import Leaderboard from "./Leaderboard/Leaderboard";
 import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
@@ -75,6 +77,8 @@ import POMS from "./UserInput/POMS";
 import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
+
+import RecordMovement from "./Instruments/RecordMovement";
 
 import getXBClient from "./util_model/client";
 
@@ -140,7 +144,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/feed" />}
+                render={() => <Redirect to="/box/move" />}
                 exact={true}
               />
               {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
@@ -199,7 +203,6 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={ForgotPassword}
                 exact={true}
               />
-
               // Info page
               <Route path="/timeline" component={Timeline} exact={true} />
               <Route
@@ -208,89 +211,56 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route path="/about" component={About} exact={true} />
-              <Route path="/heartratechart" component={HeartRateChartPage} exact={true} />
-              <Route path="/protocolchart" component={ProtocolChartPage} exact={true} />
-
+              <Route
+                path="/heartratechart"
+                component={HeartRateChartPage}
+                exact={true}
+              />
+              <Route
+                path="/protocolchart"
+                component={ProtocolChartPage}
+                exact={true}
+              />
               {/**for testing purposes */}
-              <Route
-                path="/balance"
-                component={Balance}
-                exact={true}
-              />
-              <Route
-                path="/vas"
-                component={VAS}
-                exact={true}
-              />
-
+              <Route path="/balance" component={Balance} exact={true} />
+              <Route path="/vas" component={VAS} exact={true} />
               //tasks
-              <Route
-                path="/heartrate"
-                component={HeartRateTask}
-                exact={true}
-              />
-
+              <Route path="/heartrate" component={HeartRateTask} exact={true} />
               <Route
                 path="/work-assessment"
                 component={WorkAssessment}
                 exact={true}
               />
-              <Route
-                path="/quiz"
-                component={Quiz}
-                exact={true}
-              />
-              <Route
-                path="/pushpull"
-                component={PushPull}
-                exact={true}
-              />
-              <Route
-                path="/plank"
-                component={Plank}
-                exact={true}
-              />
-              <Route
-                path="/wallsit"
-                component={WallSit}
-                exact={true}
-              />
-              <Route
-                path="/poms"
-                component={POMS}
-                exact={true}
-              />
-
-              <Route
-                path="/scheduler"
-                component={Scheduler}
-                exact={true}
-              />
-
+              <Route path="/quiz" component={Quiz} exact={true} />
+              <Route path="/pushpull" component={PushPull} exact={true} />
+              <Route path="/plank" component={Plank} exact={true} />
+              <Route path="/wallsit" component={WallSit} exact={true} />
+              <Route path="/poms" component={POMS} exact={true} />
+              <Route path="/scheduler" component={Scheduler} exact={true} />
+              {/** Record movement */}
+              <Route path="/timer" component={RecordMovement} exact={true} />
             </Switch>
           </IonRouterOutlet>
+
           <IonTabBar slot="bottom">
-            <IonTabButton tab={"News"} href={"/feed"}>
-              <IonIcon icon={newspaperOutline} />
-              <IonLabel>{"News"}</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab={"Leaderboard"} href={"/leaderboard"}>
-              <IonIcon icon={trophyOutline} />
-              <IonLabel>Leaderboard</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab={"Experiments"} href={"/experiments"}>
-              <IonIcon icon={cubeOutline} />
-              <IonLabel>{"Experiments"}</IonLabel>
+            <IonTabButton tab={"Progress"} href={"/box/move"}>
+              <IonIcon icon={barbellOutline} />
+              <IonLabel>{"Progress"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Move"} href={"/box/move"}>
-              <IonIcon icon={bicycleOutline} />
+            <IonTabButton tab={"Teams"} href={"/leaderboard"}>
+              <IonIcon icon={trophyOutline} />
+              <IonLabel>{"Teams"}</IonLabel>
+            </IonTabButton>
+
+            <IonTabButton tab={"Move"} href={"/timer"}>
+              <IonIcon icon={playOutline} />
               <IonLabel>{"Move"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Eat"} href={"/box/eat"}>
-              <IonIcon icon={fastFoodOutline} />
-              <IonLabel>{"Eat"}</IonLabel>
+            <IonTabButton tab={"News"} href={"/feed"}>
+              <IonIcon icon={newspaperOutline} />
+              <IonLabel>{"News"}</IonLabel>
             </IonTabButton>
 
             <IonTabButton tab={"Info"} href={"/settings"}>
