@@ -100,15 +100,14 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
     title: "What is a REP? (30 sec.)",
   });
 
-
   content.push({
     el: (
       <>
         <h3>What would a SET be?</h3>
         <p>
           A SET represents a collection of reps. Most often a set has
-          repetitions of only one movement. In our case, ONE SET will
-          consist of 5 REPS of a move.
+          repetitions of only one movement. In our case, ONE SET will consist of
+          5 REPS of a move.
         </p>
         <p>For example, let's say we have the following move, below:</p>
         <IonGrid>
@@ -125,9 +124,7 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
           </IonRow>
         </IonGrid>
 
-        <p>
-          Do 5 REPS of this move.
-        </p>
+        <p>Do 5 REPS of this move.</p>
         <p>AND THAT'S A SET!</p>
       </>
     ),
@@ -144,9 +141,9 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
       <>
         <h3>What would a SUPERSET be?</h3>
         <p>
-          A SUPERSET is when we put two sets together and we move between those two moves without a break.
-          In our case, ONE SUPERSET will
-          consist of 1 SET of move A, and 1 SET of move B.
+          A SUPERSET is when we put two sets together and we move between those
+          two moves without a break. In our case, ONE SUPERSET will consist of 1
+          SET of move A, and 1 SET of move B.
         </p>
         <p>For example, let's say we have the 2 moves, below:</p>
         <IonGrid>
@@ -194,13 +191,15 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
           to perform sets. So our BLOCKS in this study are 7 mins.
         </p>
         <p>
-          Inside the BLOCK - we have SUPERSETS, SETS and REPS! As many as you can fit in just 7
-          minutes!
+          Inside the BLOCK - we have SUPERSETS, SETS and REPS! As many as you
+          can fit in just 7 minutes!
         </p>
         <p>
-          When recording your exercising, you will record the number of SETS within your block,
-          any additional REPS for that block (i.e. you may complete 3 sets (5 reps of A, 5 reps of B, 5 reps of A)
-          + 2 reps of move B) - in which case the Journal page will display "3 sets and 2 reps"
+          When recording your exercising, you will record the number of SETS
+          within your block, any additional REPS for that block (i.e. you may
+          complete 3 sets (5 reps of A, 5 reps of B, 5 reps of A) + 2 reps of
+          move B) - in which case the Journal page will display "3 sets and 2
+          reps"
         </p>
         <p>
           NOW, let's give it a go! Start the timer below, and try to do as many
@@ -247,6 +246,7 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
   content[0] = {
     el: (
       <>
+        <br></br>
         <p>
           Welcome to the Movement Tutorial! This is a 7-to-8 minute tutorial
           that will take you through the basics of what you need to know in
@@ -287,7 +287,11 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
             We will be recording the number of SETS and REPS, within a block.
           </li>
         </ul>
-        <img src="assets/protocol.png" alt="heart chart" style={{maxWidth: "95%", maxHeight: "95vh", margin: "auto"}}/>
+        <img
+          src="assets/protocol.png"
+          alt="heart chart"
+          style={{ maxWidth: "95%", maxHeight: "95vh", margin: "auto" }}
+        />
         <p>Image source: Michael Shaw</p>
         <IonButton onClick={function () {}} routerLink={"/settings"}>
           Finish
@@ -363,7 +367,7 @@ const MoveTutorial = ({ week, onSubmit, countdownID }) => {
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent class="ion-padding">
         <div className="StrengthWizard">{slide}</div>
       </IonContent>
     </IonPage>
