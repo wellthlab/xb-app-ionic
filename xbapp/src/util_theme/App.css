@@ -5,7 +5,6 @@ ion-tab-bar {
 button[ion-fab] {
   overflow: visible;
   position: relative;
-
   ion-label {
     position: absolute;
     top: -8px;
@@ -18,4 +17,12 @@ button[ion-fab] {
     border-radius: 4px;
   }
   contain: layout;
+}
+
+/* to center loading spinners*/
+.spin{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
