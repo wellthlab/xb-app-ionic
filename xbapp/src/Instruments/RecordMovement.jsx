@@ -5,66 +5,65 @@ import {
   IonTitle,
   IonDatetime,
   IonHeader,
+  IonButton,
 } from "@ionic/react";
+
 import "./RecordMovement.scss";
-import { connect } from "react-redux";
 import XBHeader from "../util/XBHeader";
+import { connect } from "react-redux";
+import { addControllersProp } from "../util_model/controllers";
+import DailyActions from "../Boxes/components/DailyActions";
 
-function RecordMovement(props) {
+const RecordMovement = (props) => {
   const [activeDay, setActiveDay] = useState(new Date());
-  const [tasks, setTasks] = useState(null);
-
-  // let entry;
-  // let entries = group.entries;
-  // let dayList = [];
-  // for (var i in entries) {
-  //   if (entries[i].day === activeDay) {
-  //     entry = entries[i];
-  //   }
-  //   dayList.push(entries[i].day);
-  // }
-  //
-  // if (typeof entry === "undefined") {
-  //   return <>Can't find entry for day {activeDay}</>;
-  // }
-
-  const loadTasks = async function (dates) {};
-
   useEffect(() => {
-    loadTasks(activeDay);
-  }, []);
+    props.controllers.LOAD_TEAMS();
+  }, [!!props.teams]);
 
   let content;
 
-  if (!tasks) {
-    content = (
-      <>
-        <IonTitle>You have no tasks today.</IonTitle>
-      </>
-    );
+  if (!props.teams.teams.bybox) {
+    content = <ion-spinnder name="crescent" class="spin" />;
   } else {
-    content = "You have tasks today.";
-  }
+    const group = props.teams.teams.bybox["move"][0];
+    const day = group.experiment.day;
+    const tasks = group.experiment.tasks[day].required;
 
-  const date = new Date().toString();
+    if (!tasks) {
+      content = (
+        <>
+          <IonTitle>You have no tasks!</IonTitle>
+        </>
+      );
+    } else {
+      console.log(group.entries);
+      content = (
+        <>
+          <DailyActions group={group} today={day} />
+          <IonButton href="/timer" expand="block">
+            Start
+          </IonButton>
+        </>
+      );
+    }
+  }
 
   return (
     <IonPage>
-      <XBHeader title="Add Movement"></XBHeader>
-      <IonContent fullscreen>
-        <IonHeader>
-          <IonDatetime value={date} color="light" />
-        </IonHeader>
-        {content}
-      </IonContent>
+      <XBHeader title="Record Movement"></XBHeader>
+      <IonContent fullscreen>{content}</IonContent>
     </IonPage>
   );
-}
+};
 
-export default connect((state, ownProps) => {
-  return {
-    account: state.account,
-    teams: state.teams,
-    boxes: state.boxes,
-  };
-}, {})(RecordMovement);
+export default connect(
+  (state, ownProps) => {
+    return {
+      teams: state.teams,
+      experiments: state.experiments,
+    };
+  },
+  {
+    // Actions to include as props
+  }
+)(addControllersProp(RecordMovement));

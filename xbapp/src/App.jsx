@@ -79,6 +79,7 @@ import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
 import RecordMovement from "./Instruments/RecordMovement";
+import Timer from "./Instruments/Timer";
 
 import getXBClient from "./util_model/client";
 
@@ -238,7 +239,12 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/poms" component={POMS} exact={true} />
               <Route path="/scheduler" component={Scheduler} exact={true} />
               {/** Record movement */}
-              <Route path="/timer" component={RecordMovement} exact={true} />
+              <Route
+                path="/addmovement"
+                component={RecordMovement}
+                exact={true}
+              />
+              <Route path="/timer" component={Timer} exact={true} />
             </Switch>
           </IonRouterOutlet>
 
@@ -253,7 +259,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Teams"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Move"} href={"/timer"}>
+            <IonTabButton tab={"Move"} href={"/addmovement"}>
               <IonIcon icon={playOutline} />
               <IonLabel>{"Move"}</IonLabel>
             </IonTabButton>
