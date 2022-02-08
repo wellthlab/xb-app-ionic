@@ -20,7 +20,7 @@ button[ion-fab] {
 }
 
 /* to center loading spinners*/
-.spin{
+.spin {
   position: fixed;
   top: 50%;
   left: 50%;
