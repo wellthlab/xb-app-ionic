@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  IonContent,
-  IonPage,
-  IonTitle,
-  IonDatetime,
-  IonHeader,
-  IonButton,
-} from "@ionic/react";
+import { IonContent, IonPage, IonButton } from "@ionic/react";
+import { connect } from "react-redux";
+import { addControllersProp } from "../util_model/controllers";
 
 import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
-import { connect } from "react-redux";
-import { addControllersProp } from "../util_model/controllers";
 import DayTasks from "./components/DayTasks";
 
-const RecordMovement = (props) => {
+/**
+ * Main page for users to track and record their movements
+ *
+ */
+function RecordMovement(props) {
   useEffect(() => {
     props.controllers.LOAD_TEAMS();
   }, [props.controllers]);
@@ -22,9 +19,9 @@ const RecordMovement = (props) => {
   let content;
 
   if (!props.teams.teams.bybox) {
-    content = <ion-spinnder name="crescent" class="spin" />;
+    return <ion-spinnder name="crescent" class="spin" />;
   } else {
-    const group = props.teams.teams.bybox["move"][0];
+    const group = props.teams.teams.bybox["move"][0]; // TODO: this might need updating
 
     content = (
       <>
@@ -37,12 +34,14 @@ const RecordMovement = (props) => {
   }
 
   return (
-    <IonPage>
-      <XBHeader title="Record Movement"></XBHeader>
-      <IonContent fullscreen>{content}</IonContent>
-    </IonPage>
+    <>
+      <IonContent fullscreen>
+        <XBHeader title="Record Movement"></XBHeader>
+        {content}
+      </IonContent>
+    </>
   );
-};
+}
 
 export default connect(
   (state, ownProps) => {

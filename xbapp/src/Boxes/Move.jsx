@@ -20,9 +20,7 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
 const MovePage = (props) => {
-
   React.useEffect(() => {
-
     props.controllers.LOAD_TEAMS();
   }, [!!props.teams]);
 
@@ -67,6 +65,4 @@ export default connect(
   {
     // Actions to include as props
   }
-)(
-  addControllersProp(MovePage)
-);
+)(addControllersProp(MovePage));

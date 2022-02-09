@@ -1,41 +1,34 @@
 import { useState, useEffect } from "react";
 import {
-  IonButton,
   IonList,
   IonItem,
   IonItemGroup,
   IonLabel,
   IonIcon,
-  IonHeader,
-  IonTitle,
 } from "@ionic/react";
 
 import {
-  caretBlackCricle,
-  caretForwardCircle,
   checkboxOutline,
   squareOutline,
   arrowForwardOutline,
 } from "ionicons/icons";
 
-import "./dayTasks.css";
+import "./DayTasks.css";
 
 /**
- * @param {*} group: The team object to show tasks from
- * @param {*} today: The day number to show tasks for
+ * Display a list of the current exercises/tasks to do today
+ *
+ * @param {Object} group  the group the person belongs to
  */
 function DayTasks({ group }) {
-  const day = group.experiment.day;
-  const week = group.experiment.week;
-  const [activeDay, setActiveDay] = useState(day);
-
-  let icon_done = checkboxOutline;
-  let icon_missing = squareOutline;
-  let entries = group.entries;
+  const [activeDay, setActiveDay] = useState(group.experiment.day);
+  const icon_done = checkboxOutline;
+  const icon_missing = squareOutline;
+  const entries = group.entries;
 
   // Look up the daily entry we need to render
-  var entry;
-  var dayList = [];
+  let entry;
+  const dayList = [];
   for (var i in entries) {
     if (entries[i].day === activeDay) {
       entry = entries[i];
@@ -43,11 +36,10 @@ function DayTasks({ group }) {
     dayList.push(entries[i].day);
   }
 
-  let required = group.experiment.tasks[activeDay].required;
-
-  let tasks = required.map((type) => {
+  const required = group.experiment.tasks[activeDay].required;
+  const tasks = required.map((type) => {
     let done = typeof entry.responseTypes[type.type] !== "undefined";
-    let week = Math.floor(activeDay / 7);
+    const week = Math.floor(activeDay / 7);
 
     if (
       type.type === "strength-setter" &&
@@ -83,13 +75,10 @@ function DayTasks({ group }) {
       <h3> Today, you will </h3>
       <IonList lines="full" className="journalTasks">
         <IonItemGroup>
-          {tasks.length !== 0 ? (
-            tasks
-          ) : (
-            <IonLabel>No tasks for today.</IonLabel>
-          )}
+          {tasks.length !== 0 ? tasks : <IonLabel>No tasks for today</IonLabel>}
         </IonItemGroup>
       </IonList>
+      <h3>for a total of TIME minutes</h3>
     </div>
   );
 }
