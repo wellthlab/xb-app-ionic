@@ -192,8 +192,8 @@ const GroupInfo = ({ group, controllers, match }) => {
   };
 
   return (
-    <>
-      <IonSegment onIonChange={setSegment} value={view}>
+
+      /*<IonSegment onIonChange={setSegment} value={view}>
         <IonSegmentButton value="info">
           <IonIcon icon={informationCircleOutline} /> Info
         </IonSegmentButton>
@@ -206,8 +206,8 @@ const GroupInfo = ({ group, controllers, match }) => {
         <IonSegmentButton value="charts">
           <IonIcon icon={barChart} /> Charts
         </IonSegmentButton>
-      </IonSegment>
-
+      </IonSegment>*/
+    <>
       {content}
     </>
   );

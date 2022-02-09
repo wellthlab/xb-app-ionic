@@ -26,3 +26,9 @@ button[ion-fab] {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+#tab-button-Move {
+  background: #56ad1c;
+  color: #111;
+  font-weight: bold;
+}

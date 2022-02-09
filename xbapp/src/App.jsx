@@ -116,6 +116,11 @@ import "./util_theme/App.css";
 
 /****************************************************************/
 
+const LeaderboardHolder = (props) => {
+  return <><p>Soon, we'll be able to show you which Teams are meeting their targets.</p></>
+}
+
+
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
 
@@ -152,7 +157,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
               {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/feed" component={Feed} exact={true} />
-              <Route path="/leaderboard" component={Leaderboard} exact={true} />
+              <Route path="/leaderboard" component={LeaderboardHolder} exact={true} />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -273,9 +278,9 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"News"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Info"} href={"/settings"}>
+            <IonTabButton tab={"Settings"} href={"/settings"}>
               <IonIcon icon={settingsOutline} />
-              <IonLabel>{"Info"}</IonLabel>
+              <IonLabel>{"Settings"}</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
