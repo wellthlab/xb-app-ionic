@@ -12,13 +12,12 @@ import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
-import DailyActions from "../Boxes/components/DailyActions";
+import DayTasks from "./components/DayTasks";
 
 const RecordMovement = (props) => {
-  const [activeDay, setActiveDay] = useState(new Date());
   useEffect(() => {
     props.controllers.LOAD_TEAMS();
-  }, [!!props.teams]);
+  }, [props.controllers]);
 
   let content;
 
@@ -26,26 +25,15 @@ const RecordMovement = (props) => {
     content = <ion-spinnder name="crescent" class="spin" />;
   } else {
     const group = props.teams.teams.bybox["move"][0];
-    const day = group.experiment.day;
-    const tasks = group.experiment.tasks[day].required;
 
-    if (!tasks) {
-      content = (
-        <>
-          <IonTitle>You have no tasks!</IonTitle>
-        </>
-      );
-    } else {
-      console.log(group.entries);
-      content = (
-        <>
-          <DailyActions group={group} today={day} />
-          <IonButton href="/timer" expand="block">
-            Start
-          </IonButton>
-        </>
-      );
-    }
+    content = (
+      <>
+        <DayTasks group={group} />
+        <IonButton href="/movementTimer" expand="block">
+          Start Exercises
+        </IonButton>
+      </>
+    );
   }
 
   return (

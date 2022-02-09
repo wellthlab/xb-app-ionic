@@ -79,7 +79,7 @@ import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
 import RecordMovement from "./RecordMovement/RecordMovement";
-import Timer from "./Instruments/Timer";
+import MovementTimer from "./RecordMovement/MovementTimer";
 
 import getXBClient from "./util_model/client";
 
@@ -244,7 +244,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={RecordMovement}
                 exact={true}
               />
-              <Route path="/timer" component={Timer} exact={true} />
+              <Route
+                path="/movementTimer"
+                component={MovementTimer}
+                exact={true}
+              />
             </Switch>
           </IonRouterOutlet>
 
