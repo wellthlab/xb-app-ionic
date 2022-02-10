@@ -185,6 +185,7 @@ const TeamSlice = createSlice({
         var team = state.teams[i];
 
         // First arrange all responses into daily blocks
+        // state.teams[].entries
         team.entries = dayify(
           team.responses.own.responses,
           team.experiment.start,
@@ -193,6 +194,7 @@ const TeamSlice = createSlice({
         );
 
         // Also build up an index of responses by type, it's useful to have
+        // state.teams[].lastEntryByType
         team.lastEntryByType = [];
         for(var entry of team.responses.own.responses) {
           if(typeof team.lastEntryByType[entry.type] == 'undefined' || team.lastEntryByType[entry.type].submitted < entry.submitted)
@@ -202,6 +204,7 @@ const TeamSlice = createSlice({
 
       /**
       * set the experiment fields of the team
+        state.teams[].experiment.*
       */
       for(var i in state.teams) {
         var team = state.teams[i];
@@ -253,14 +256,14 @@ const TeamSlice = createSlice({
 
       /**
       * BY-BOX VIEW
-      * Organise teams by box
+      * Organise ACTIVE teams by box
       */
       state.teams.bybox = { };
 
       for(var t of state.teams) {
-        if(typeof t.experiment.info.boxType !== 'undefined') {
+        if(typeof t.experiment.info.boxType !== 'undefined' && t.experiment.day <= t.experiment.info.duration) {
           if(typeof state.teams.bybox[t.experiment.info.boxType] == 'undefined')
-          state.teams.bybox[t.experiment.info.boxType] = [];
+            state.teams.bybox[t.experiment.info.boxType] = [];
           state.teams.bybox[t.experiment.info.boxType].push(t);
         }
       }
