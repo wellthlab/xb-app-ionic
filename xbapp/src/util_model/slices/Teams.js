@@ -256,14 +256,14 @@ const TeamSlice = createSlice({
 
       /**
       * BY-BOX VIEW
-      * Organise teams by box
+      * Organise ACTIVE teams by box
       */
       state.teams.bybox = { };
 
       for(var t of state.teams) {
-        if(typeof t.experiment.info.boxType !== 'undefined') {
+        if(typeof t.experiment.info.boxType !== 'undefined' && t.experiment.day <= t.experiment.info.duration) {
           if(typeof state.teams.bybox[t.experiment.info.boxType] == 'undefined')
-          state.teams.bybox[t.experiment.info.boxType] = [];
+            state.teams.bybox[t.experiment.info.boxType] = [];
           state.teams.bybox[t.experiment.info.boxType].push(t);
         }
       }
