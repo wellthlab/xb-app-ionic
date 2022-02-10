@@ -12,7 +12,7 @@
 */
 const decorateTeam = (team) => {
 
-  for (var eday = 1; eday <= team.experiment.day; eday++) {
+  var eday = team.experiment.day;
 
     var week = Math.floor(eday / 7);
 
@@ -184,7 +184,6 @@ const decorateTeam = (team) => {
 
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
-  } // End day loop
 }
 
 export default { decorateTeam };

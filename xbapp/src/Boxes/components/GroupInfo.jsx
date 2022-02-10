@@ -59,7 +59,7 @@ const GroupInfo = ({ group, controllers, match }) => {
     match.params.page ? match.params.page : "info"
   );
 
-  console.log(view, match.params);
+  //console.log(view, match.params);
 
   const [showMenu, setShowMenu] = useState(false);
 

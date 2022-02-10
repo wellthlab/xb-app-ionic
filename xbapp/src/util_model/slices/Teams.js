@@ -239,9 +239,10 @@ const TeamSlice = createSlice({
             Strength21.decorateTeam(team);
             break;
 
-          case 'swork22':
-            console.log("This is a strrength in work experiment");
+          case 'strength22':
+            console.log("This is a strength in work 22 experiment");
             Strength22.decorateTeam(team);
+            console.log("Team has been decorated", team);
 
           default:
             console.warn("Experiment is not a known type");

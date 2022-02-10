@@ -29,13 +29,6 @@ const MovePage = (props) => {
   }
 
   // Ask the user to enrol in a move experiment; or show current experiment info
-  // React.useEffect(() => {
-  //   //whenever the timer is triggered (when the user presses on image)
-  //   console.log("UPDATED");
-  //   props.controllers.LOAD_TEAMS_IF_REQD();
-  // }, []);
-
-  console.log(props.teams.teams);
   if (!props.teams.teams.bybox["move"]) {
     var content = <Enroller boxtype="move" />;
   } else {
