@@ -16,7 +16,7 @@ const Enroller = ({ boxtype, expid }) => {
   // TODO: Eventually we'll want to look these up?
   switch (boxtype) {
     case "move":
-      var expid = "6113efcc978250a1cfa59a5e";
+      var expid = "6202d10ccc5d2aa4b830856d"; // Strength in work Feb 2022
       break;
     case "eat":
       var expid = "";

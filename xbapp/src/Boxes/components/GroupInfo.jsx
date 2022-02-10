@@ -78,7 +78,7 @@ const GroupInfo = ({ group, controllers, match }) => {
         ? "Starts in " + Math.abs(day) + " days"
         : day > 119
         ? "Finished"
-        : "Today is day " + day;
+        : "Today is day " + day + " of " + group.experiment.info.duration;
 
     var members =
       group.users.length > 1 ? group.users.length + " members" : "Just You";
@@ -106,11 +106,6 @@ const GroupInfo = ({ group, controllers, match }) => {
           <IonCol>
             <IonItem lines="none">
               <IonIcon icon={todayOutline} slot="start" /> {daydesc}
-              {daydesc == "Finished"
-                ? " 119 days"
-                : daydesc.includes("Starts")
-                ? ""
-                : " of 119"}
             </IonItem>
           </IonCol>
         </IonRow>
@@ -119,7 +114,7 @@ const GroupInfo = ({ group, controllers, match }) => {
           <IonCol>
             <IonProgressBar
               value={
-                day > 119 ? 119 / 119 : day / group.experiment.info.duration
+                day > group.experiment.info.duration ? 1 : day / group.experiment.info.duration
               }
             />
           </IonCol>

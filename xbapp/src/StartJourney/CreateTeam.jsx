@@ -23,7 +23,7 @@ const CreateTeam = (props) => {
     // Start date defaults to today
     //var startDate = new Date().toISOString().substring(0, 10);
     // Start date defaults to 1st of nov
-    var startDate = "2021-11-01";
+    var startDate = "2022-02-14";
     props.controllers.CREATE_TEAM(name, desc, expid, startDate);
   }
 
@@ -49,7 +49,7 @@ const CreateTeam = (props) => {
             You've created a new team! Let's get <strong>started</strong>.
           </p>
           <p className="centering">
-            <IonButton routerLink="/box/move">Go to Team</IonButton>
+            <IonButton routerLink="/box/move">Let's Go!</IonButton>
           </p>
         </div>
       </>
@@ -86,7 +86,7 @@ const CreateTeam = (props) => {
     content = (
       <>
         <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
-          Choose a name for your team, and optionally enter a description. The title must have a minimum of 4 characters.
+          Choose a name for your team, and optionally enter a description. The name must have at least 4 characters.
         </p>
         <div className="centering">
           <IonInput
