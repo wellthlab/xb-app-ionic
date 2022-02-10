@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import useSound from "use-sound";
 import beep_short from "../../util_audio/beep_short.mp3";
 import beep_long from "../../util_audio/beep_long.mp3";
-import { toggleSharp } from "ionicons/icons";
 
 /**
  * Props:

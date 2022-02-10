@@ -6,12 +6,14 @@ import { addControllersProp } from "../util_model/controllers";
 import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
 import DayTasks from "./components/DayTasks";
+import MovementTimer from "./MovementTimer";
 
 /**
  * Main page for users to track and record their movements
  *
  */
 function RecordMovement(props) {
+  const [recordingMovement, setRecordingMovement] = useState(false);
   useEffect(() => {
     props.controllers.LOAD_TEAMS();
   }, [props.controllers]);
@@ -20,25 +22,31 @@ function RecordMovement(props) {
 
   if (!props.teams.teams.bybox) {
     return <ion-spinnder name="crescent" class="spin" />;
-  } else {
-    const group = props.teams.teams.bybox["move"][0]; // TODO: this might need updating
+  }
 
+  const team = props.teams.teams.bybox["move"][0]; // TODO: this might need updating
+
+  if (recordingMovement === false) {
     content = (
       <>
-        <DayTasks group={group} />
-        <IonButton href="/movementTimer" expand="block">
+        <DayTasks team={team} />
+        <IonButton onClick={() => setRecordingMovement(true)} expand="block">
           Start Exercises
         </IonButton>
+      </>
+    );
+  } else {
+    content = (
+      <>
+        <MovementTimer team={team} />
       </>
     );
   }
 
   return (
     <>
-      <IonContent fullscreen>
-        <XBHeader title="Record Movement"></XBHeader>
-        {content}
-      </IonContent>
+      <XBHeader title="Record Movement"></XBHeader>
+      <IonContent fullscreen>{content}</IonContent>
     </>
   );
 }
