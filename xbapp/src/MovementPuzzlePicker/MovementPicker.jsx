@@ -20,16 +20,13 @@ import { useEffect } from "react";
 import MovementSlide from "./components/MovementSlide";
 import DetailedMovementSlide from "./components/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
+import XBHeader from "../util/XBHeader";
 
 const MovementPicker = (props) => {
   var isExplorer = props.location.pathname.includes("explore");
 
   // Used for the page heading
-  const rowHeadings = [
-    "",
-    "",
-    "",
-  ];
+  const rowHeadings = ["", "", ""];
   const [rowIndex, setRowIndex] = useState(1);
   // Setup states to control the active slide
   const [showDetailedTile, setShowDetailedTile] = useState(false);
@@ -78,7 +75,8 @@ const MovementPicker = (props) => {
         initialSlide: props.location.state?.initialSlideIndex.fullBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: props.location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
+        slidesPerView:
+          props.location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -94,7 +92,8 @@ const MovementPicker = (props) => {
         initialSlide: props.location.state?.initialSlideIndex.lowerBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: props.location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
+        slidesPerView:
+          props.location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -105,7 +104,7 @@ const MovementPicker = (props) => {
     },
   });
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render

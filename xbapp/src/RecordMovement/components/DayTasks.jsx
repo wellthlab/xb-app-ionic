@@ -20,11 +20,11 @@ import "./DayTasks.css";
  *
  * @param {Object} group  the group the person belongs to
  */
-function DayTasks({ group }) {
-  const [activeDay, setActiveDay] = useState(group.experiment.day);
+function DayTasks({ team }) {
+  const [activeDay, setActiveDay] = useState(team.experiment.day);
   const icon_done = checkboxOutline;
   const icon_missing = squareOutline;
-  const entries = group.entries;
+  const entries = team.entries;
 
   // Look up the daily entry we need to render
   let entry;
@@ -36,7 +36,7 @@ function DayTasks({ group }) {
     dayList.push(entries[i].day);
   }
 
-  const required = group.experiment.tasks[activeDay].required;
+  const required = team.experiment.tasks[activeDay].required;
   const tasks = required.map((type) => {
     let done = typeof entry.responseTypes[type.type] !== "undefined";
     const week = Math.floor(activeDay / 7);
@@ -59,7 +59,7 @@ function DayTasks({ group }) {
         color={done ? "neutral" : "warning"}
         key={type.type}
         routerLink={
-          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
+          "/box/move/" + team._id + "/" + activeDay + "/add/" + type.type
         }
         detail={true}
         detailIcon={arrowForwardOutline}
