@@ -85,6 +85,7 @@ const GroupInfo = ({ group, controllers, match }) => {
 
     //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
+      <>
       <IonGrid>
         <IonRow>
           <IonCol>
@@ -133,6 +134,8 @@ const GroupInfo = ({ group, controllers, match }) => {
           </IonCol>
         </IonRow>
       </IonGrid>
+      <DailyActions group={group} today={day} tabs={false} />
+      </>
     );
   } else if (view == "tasks") {
     /**
