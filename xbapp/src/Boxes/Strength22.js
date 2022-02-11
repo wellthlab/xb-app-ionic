@@ -77,6 +77,22 @@ const decorateTeam = (team) => {
       console.log("No s22 plan has ever been saved");
     }
 
+    // Testing tasks
+    qreq.push({
+      type: 's22assess',
+      desc: "Strength Assessment",
+      verb: "MOVE",
+      mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
+      timed: true
+    });
+    qreq.push({
+      type: 's22video',
+      desc: "Feet and Ankle Mobility",
+      verb: "MOVE",
+      mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
+      timed: true
+    });
+
     // No plan? Require the planning task to be completed
     if(!team.s22plan) {
 
