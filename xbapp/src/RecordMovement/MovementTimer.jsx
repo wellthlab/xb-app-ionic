@@ -5,17 +5,17 @@ import {
   IonCol,
   IonGrid,
   IonRow,
-  IonInput,
   IonItem,
+  IonLabel,
+  IonFooter,
 } from "@ionic/react";
-import { addCircleOutline } from "ionicons/icons";
+import { addCircleOutline, informationCircleOutline } from "ionicons/icons";
 import { connect } from "react-redux";
 
-import "./MovementTimer.css";
-import XBHeader from "../util/XBHeader";
+// import "./MovementTimer.css";
 import CountDown from "./components/CountDown";
 import TotalTimer from "./components/TotalTimer";
-import ManualTime from "./components/ManualTime";
+import ManualTime from "./components/ManualEntry";
 import { addControllersProp } from "../util_model/controllers";
 
 /**
@@ -25,33 +25,33 @@ import { addControllersProp } from "../util_model/controllers";
 function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
+  let [team, setTeam] = useState(props.team);
 
-  const activeExercise = "sit ups";
-  const countdownTime = "7";
-
-  const team = props.team;
-  const day = team.experiment.day;
-
-  useEffect(() => {
-    let minutes = team.entries[day - 1].minutes;
-    console.log("minutes", minutes);
-  }, [team.entries, day]);
+  let [activeExercise, setActiveExercise] = useState("sit ups");
+  let [exerciseTime, setExerciseTime] = useState(7);
 
   return (
     <>
+      {/* Exercise and for how long header -- press for details */}
+      <IonItem
+        detailIcon={informationCircleOutline}
+        detail={true}
+        color={"tertiary"}
+        href={"/"}
+      >
+        <IonLabel>
+          Do {activeExercise.toUpperCase()} for {exerciseTime} minutes
+        </IonLabel>
+      </IonItem>
+
+      {/* Timer and buttons for manual entry of minutes */}
+
       <IonGrid>
-        <IonRow>
-          <IonCol>
-            <h3>
-              Do {activeExercise.toUpperCase()} for {countdownTime} minutes
-            </h3>
-          </IonCol>
-        </IonRow>
         <IonRow>
           {!manualEntry ? (
             <IonCol>
               <CountDown
-                minutes={countdownTime}
+                minutes={exerciseTime}
                 active="false"
                 onPause={() => {
                   setPaused(true);
@@ -71,30 +71,21 @@ function MovementTimer(props) {
                 }}
                 expand="full"
               >
-                <IonIcon icon={addCircleOutline}></IonIcon> &nbsp; Add these
-                minutes manually
+                <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                {manualEntry ? "Go back to timer" : "Enter minutes manually"}
               </IonButton>
             </div>
           </IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol>
-            <TotalTimer />
-          </IonCol>
-        </IonRow>
       </IonGrid>
+
+      {/* Total time exercising today
+      TODO: needs to be at the bottom of the screen*/}
+      <IonFooter>
+        <TotalTimer />
+      </IonFooter>
     </>
   );
 }
 
-export default connect(
-  (state, ownProps) => {
-    return {
-      teams: state.teams,
-      experiments: state.experiments,
-    };
-  },
-  {
-    // Actions to include as props
-  }
-)(addControllersProp(MovementTimer));
+export default MovementTimer;

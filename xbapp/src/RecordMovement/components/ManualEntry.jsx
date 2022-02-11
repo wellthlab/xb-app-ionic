@@ -8,6 +8,9 @@ import { saveOutline } from "ionicons/icons";
  * props.onSave
  */
 function ManualTime(props) {
+  // save input and reset the input box
+  function saveAndReset() {}
+
   return (
     <>
       <IonCol>

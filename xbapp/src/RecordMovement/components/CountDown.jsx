@@ -290,7 +290,7 @@ function CountDown(props) {
             isActive ? (
               ""
             ) : (
-              <IonButton>Next</IonButton>
+              <IonButton>Next exercise</IonButton>
             )}
           </IonCol>
         </IonRow>

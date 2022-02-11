@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { IonContent, IonPage, IonButton } from "@ionic/react";
+import { IonContent, IonSpinner, IonButton } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
-import "./RecordMovement.scss";
+// import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
-import DayTasks from "./components/DayTasks";
+import DayTasks from "./components/Tasks";
 import MovementTimer from "./MovementTimer";
 
 /**
@@ -13,7 +13,7 @@ import MovementTimer from "./MovementTimer";
  *
  */
 function RecordMovement(props) {
-  const [recordingMovement, setRecordingMovement] = useState(false);
+  let [recordingMovement, setRecordingMovement] = useState(false);
   useEffect(() => {
     props.controllers.LOAD_TEAMS();
   }, [props.controllers]);
@@ -21,16 +21,21 @@ function RecordMovement(props) {
   let content;
 
   if (!props.teams.teams.bybox) {
-    return <ion-spinnder name="crescent" class="spin" />;
+    return <IonSpinner name="crescent" class="spin" />;
   }
 
-  const team = props.teams.teams.bybox["move"][0]; // TODO: this might need updating
+  let team = props.teams.teams.bybox["move"][0]; // TODO: this might need updating?
+  let missing = team.entries[0].missing;
 
   if (recordingMovement === false) {
     content = (
       <>
-        <DayTasks team={team} />
-        <IonButton onClick={() => setRecordingMovement(true)} expand="block">
+        <DayTasks day={team.experiment.day} team={team} />
+        <IonButton
+          onClick={() => setRecordingMovement(true)}
+          expand="block"
+          disabled={missing}
+        >
           Start Exercises
         </IonButton>
       </>
