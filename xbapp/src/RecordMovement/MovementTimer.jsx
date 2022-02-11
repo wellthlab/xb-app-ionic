@@ -27,12 +27,10 @@ function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
 
-  // if (!props.task) {
-  //   return <>No task selected</>;
-  // }
-
   let currentTask = JSON.parse(localStorage.getItem("currentTask"));
   let totalMinutes = parseInt(localStorage.getItem("totalMinutes"));
+  let groupId = props.match.params.id;
+  let task = props.match.params.task;
 
   return (
     <>
@@ -53,7 +51,10 @@ function MovementTimer(props) {
         <IonRow>
           {!manualEntry ? (
             <IonCol>
+              {/* entry from timer */}
               <CountDown
+                id={groupId}
+                task={currentTask}
                 minutes={currentTask.mins}
                 active="false"
                 onPause={() => {
@@ -62,7 +63,7 @@ function MovementTimer(props) {
               ></CountDown>
             </IonCol>
           ) : (
-            <ManualTime></ManualTime>
+            <ManualTime id={groupId} task={task}></ManualTime> // manual entry
           )}
         </IonRow>
         <IonRow>
@@ -85,9 +86,9 @@ function MovementTimer(props) {
 
       {/* Total time exercising today
       TODO: needs to be at the bottom of the screen. smile */}
-      <IonFooter>
+      {/* <IonFooter>
         <TotalTimer totalMinutes={totalMinutes} />
-      </IonFooter>
+      </IonFooter> */}
     </>
   );
 }

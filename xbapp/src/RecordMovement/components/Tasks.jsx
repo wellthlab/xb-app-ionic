@@ -26,6 +26,9 @@ function TodoTasks(props) {
   let [activeDay, setActiveDay] = useState(props.day);
   let [requiredTasks, setRequiredTasks] = useState(props.tasks);
   let totalMinutes = props.minutes;
+  let groupID = props.team._id;
+
+  console.log("tasks.jsx requiredTasks", requiredTasks);
 
   // Get the entry for the day
   let entry = null;
@@ -38,8 +41,10 @@ function TodoTasks(props) {
     dayList.push(entries[i].day);
   }
 
+  console.log("entry", entry);
+
   // then no tasks have been set, so return
-  if (requiredTasks.length < 1 || entry === null) {
+  if (requiredTasks.length < 1) {
     if (entry === null) {
       console.log(
         "RecordMovement: entry is null for some reason for day",
@@ -63,29 +68,30 @@ function TodoTasks(props) {
 
   // TODO: double check tasks appear greyed out when done
   const tasks = requiredTasks.map((task) => {
-    let done = typeof entry.responseTypes[task.type] !== "undefined";
-    const week = Math.floor(activeDay / 7);
+    let done = false;
+    // let done = typeof entry.responseTypes[task.type] !== "undefined";
+    // const week = Math.floor(activeDay / 7);
 
-    // todo: these tasks need to be greyed out when done, somehow
-    if (
-      task.type === "strength-setter" &&
-      "blocks-week-" + week.toString() + "-set" in window.localStorage
-    ) {
-      done = true;
-    }
-    if (
-      task.type === "strength-explorer" &&
-      "blocks-week-0-day-" + activeDay.toString() in window.localStorage
-    ) {
-      done = true;
-    }
+    // // todo: these tasks need to be greyed out when done, somehow
+    // if (
+    //   task.type === "strength-setter" &&
+    //   "blocks-week-" + week.toString() + "-set" in window.localStorage
+    // ) {
+    //   done = true;
+    // }
+    // if (
+    //   task.type === "strength-explorer" &&
+    //   "blocks-week-0-day-" + activeDay.toString() in window.localStorage
+    // ) {
+    //   done = true;
+    // }
 
     // TODO: href needs updating to exercise information, or disable clicking until it's in
     return (
       <IonItem
         color={done ? "" : "primary"}
         key={task.type}
-        routerLink={"/timer"}
+        routerLink={"/timer/" + groupID + "/" + task.desc}
         // detail={true}
         // detailIcon={informationCircleOutline}
       >

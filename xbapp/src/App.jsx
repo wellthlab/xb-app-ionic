@@ -261,7 +261,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={RecordMovement}
                 exact={true}
               />
-              <Route path="/timer" component={MovementTimer} exact={true} />
+              <Route
+                path="/timer/:id/:task"
+                component={MovementTimer}
+                exact={true}
+              />
             </Switch>
           </IonRouterOutlet>
 

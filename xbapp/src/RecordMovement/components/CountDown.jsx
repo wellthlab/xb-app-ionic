@@ -13,6 +13,8 @@ import useSound from "use-sound";
 import beep_short from "../../util_audio/beep_short.mp3";
 import beep_long from "../../util_audio/beep_long.mp3";
 
+import { addControllersProp } from "../../util_model/controllers";
+
 /**
  * Props:
  *  onFinish - fired when countdown reaches zero
@@ -197,6 +199,16 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
+  async function saveMovement() {
+    // TODO: calculate elapsed time
+    let minutesToStore = 0;
+    console.log("minutesElapsed", minutesToStore);
+    reset();
+    await props.controllers.ADD_RESPONSE(props.id, [
+      { type: "mins", minutes: minutesToStore, task: props.task },
+    ]);
+  }
+
   return (
     <IonItem className="contain">
       <IonGrid>
@@ -290,7 +302,7 @@ function CountDown(props) {
             isActive ? (
               ""
             ) : (
-              <IonButton href="/addmovement">Done</IonButton>
+              <IonButton onClick={saveMovement}>Done</IonButton>
             )}
           </IonCol>
         </IonRow>
@@ -305,4 +317,4 @@ export default connect((state, ownProps) => {
     teams: state.teams,
     boxes: state.boxes,
   };
-}, {})(CountDown);
+}, {})(addControllersProp(CountDown));

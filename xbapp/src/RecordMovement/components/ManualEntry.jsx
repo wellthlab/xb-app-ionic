@@ -13,9 +13,11 @@ function ManualTime(props) {
 
   // save input and reset the input box
   async function saveMinutes() {
-    // TODO: we need to get where to save this from somewhere.. previously it was given by something in <Route>
-    // let id =
-    // await props.controllers.ADD_RESPONSE();
+    console.log("saveMinutes: saving " + minutes + " minutes");
+    console.log("id", props.id);
+    await props.controllers.ADD_RESPONSE(props.id, [
+      { type: "mins", minutes: minutes, task: props.task },
+    ]);
     setMinutes(null);
   }
 
@@ -28,8 +30,11 @@ function ManualTime(props) {
             value={minutes ? minutes : ""}
             placeholder={"minutes"}
             onIonChange={(e) => setMinutes(parseFloat(e.detail.value))}
+            inputMode={"numeric"}
+            min={"0"}
+            max={"7"}
           ></IonInput>
-          <IonButton onClick={saveMinutes}>
+          <IonButton onClick={saveMinutes} href={"/addmovement"}>
             <IonIcon icon={saveOutline}></IonIcon>
             &nbsp;Save
           </IonButton>
