@@ -9,12 +9,12 @@ import { saveOutline } from "ionicons/icons";
  */
 function ManualTime(props) {
   // save input and reset the input box
-  function saveAndReset() {}
+  function saveMinutes() {}
 
   return (
     <>
       <IonCol>
-        <h3>Enter your MOVEMENT minutes manually</h3>
+        <h3>Enter your MINUTES manually</h3>
         <IonItem>
           <IonInput placeholder={"minutes"}></IonInput>
           <IonButton>

@@ -25,10 +25,10 @@ import { addControllersProp } from "../util_model/controllers";
 function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
-  let [team, setTeam] = useState(props.team);
 
-  let [activeExercise, setActiveExercise] = useState("sit ups");
-  let [exerciseTime, setExerciseTime] = useState(7);
+  if (!props.task) {
+    return <>No task selected</>;
+  }
 
   return (
     <>
@@ -39,9 +39,7 @@ function MovementTimer(props) {
         color={"tertiary"}
         href={"/"}
       >
-        <IonLabel>
-          Do {activeExercise.toUpperCase()} for {exerciseTime} minutes
-        </IonLabel>
+        <IonLabel>Do {props.task.desc.toUpperCase()}</IonLabel>
       </IonItem>
 
       {/* Timer and buttons for manual entry of minutes */}
@@ -51,7 +49,7 @@ function MovementTimer(props) {
           {!manualEntry ? (
             <IonCol>
               <CountDown
-                minutes={exerciseTime}
+                minutes={props.task.mins}
                 active="false"
                 onPause={() => {
                   setPaused(true);
@@ -72,7 +70,7 @@ function MovementTimer(props) {
                 expand="full"
               >
                 <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                {manualEntry ? "Go back to timer" : "Enter minutes manually"}
+                {manualEntry ? "BACK TO TIMER" : "ENTER MINUTES MANUALLY"}
               </IonButton>
             </div>
           </IonCol>
