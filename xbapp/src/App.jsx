@@ -30,6 +30,7 @@ import {
   trophyOutline,
   playOutline,
   barbellOutline,
+  bookOutline
 } from "ionicons/icons";
 
 // Redux stuff
@@ -185,11 +186,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               /** * Experiment list - Deprecated */
               <Route path="/experiments" component={Experiments} exact={true} />
               /** * Data entry / tasks */
-              <Route
-                path="/box/move/:id/:day/add/:type"
-                component={AddResponse}
-                exact={true}
-              />
+
               /** * Charts */
               <Route
                 path="/box/move/:id/charts"
@@ -285,8 +282,8 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
             </IonTabButton>
 
             <IonTabButton tab={"News"} href={"/feed"}>
-              <IonIcon icon={newspaperOutline} />
-              <IonLabel>{"News"}</IonLabel>
+              <IonIcon icon={bookOutline} />
+              <IonLabel>{"Reference"}</IonLabel>
             </IonTabButton>
 
             <IonTabButton tab={"Settings"} href={"/settings"}>
