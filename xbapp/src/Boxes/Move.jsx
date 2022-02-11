@@ -43,7 +43,7 @@ const MovePage = (props) => {
 
   return (
     <IonPage>
-      <XBHeader title="Move"></XBHeader>
+      <XBHeader title="Progress"></XBHeader>
       <IonContent>{content}</IonContent>
     </IonPage>
   );
