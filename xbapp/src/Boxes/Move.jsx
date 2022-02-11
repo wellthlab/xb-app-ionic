@@ -11,6 +11,7 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonSpinner,
 } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
@@ -25,7 +26,7 @@ const MovePage = (props) => {
   }, [!!props.teams]);
 
   if (!props.teams.teams.bybox) {
-    return null;
+    return <IonSpinner class="spin" name="crescent" />;
   }
 
   // Ask the user to enrol in a move experiment; or show current experiment info
