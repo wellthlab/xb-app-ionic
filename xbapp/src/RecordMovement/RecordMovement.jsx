@@ -39,43 +39,21 @@ function RecordMovement(props) {
     }
   }
 
-  // TODO: add way to pick a first task to do. default now is 1st task in list
-  let currentTask = timedTasks[0];
-
-  let content = recordingMovement ? (
-    <>
-      <MovementTimer
-        team={team}
-        task={currentTask}
-        totalMinutes={totalMinutes}
-      />
-    </>
-  ) : (
-    <>
-      <TodoTasks
-        day={day}
-        team={team}
-        tasks={timedTasks}
-        minutes={totalMinutes}
-      />
-      {timedTasks.length > 0 ? (
-        <IonButton
-          onClick={() => setRecordingMovement(true)}
-          expand="block"
-          disabled={!(timedTasks.length > 0)}
-        >
-          START
-        </IonButton>
-      ) : (
-        ""
-      )}
-    </>
-  );
+  // TODO: hack to pass the total expected minutes :)
+  localStorage.setItem("totalMinutes", totalMinutes);
 
   return (
     <>
       <XBHeader title="Record Movement"></XBHeader>
-      <IonContent fullscreen>{content}</IonContent>
+      <IonContent fullscreen>
+        {" "}
+        <TodoTasks
+          day={day}
+          team={team}
+          tasks={timedTasks}
+          minutes={totalMinutes}
+        />
+      </IonContent>
     </>
   );
 }

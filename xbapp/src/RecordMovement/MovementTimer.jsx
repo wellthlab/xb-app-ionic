@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import CountDown from "./components/CountDown";
 import TotalTimer from "./components/TotalTimer";
 import ManualTime from "./components/ManualEntry";
+import XBHeader from "../util/XBHeader";
 
 /**
  *  Display a timer for the current exercise.
@@ -26,20 +27,24 @@ function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
 
-  if (!props.task) {
-    return <>No task selected</>;
-  }
+  // if (!props.task) {
+  //   return <>No task selected</>;
+  // }
+
+  let currentTask = JSON.parse(localStorage.getItem("currentTask"));
+  let totalMinutes = parseInt(localStorage.getItem("totalMinutes"));
 
   return (
     <>
+      <XBHeader title="Record Movement"></XBHeader>
       {/* Exercise and for how long header -- press for details */}
       <IonItem
         detailIcon={informationCircleOutline}
         detail={true}
-        color={"tertiary"}
-        href={"/"}
+        color={"secondary"}
+        // href={"/"}  // todo: link to info page about task
       >
-        <IonLabel>Do {props.task.desc.toUpperCase()}</IonLabel>
+        <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
       </IonItem>
 
       {/* Timer and buttons for manual entry of minutes */}
@@ -49,7 +54,7 @@ function MovementTimer(props) {
           {!manualEntry ? (
             <IonCol>
               <CountDown
-                minutes={props.task.mins}
+                minutes={currentTask.mins}
                 active="false"
                 onPause={() => {
                   setPaused(true);
@@ -70,7 +75,8 @@ function MovementTimer(props) {
                 expand="full"
               >
                 <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                {manualEntry ? "BACK TO TIMER" : "ENTER MINUTES MANUALLY"}
+                {/* if we're in manual entry, show "back to timer" */}
+                {manualEntry ? "Back to timer" : "Enter minutes manually"}
               </IonButton>
             </div>
           </IonCol>
@@ -78,9 +84,9 @@ function MovementTimer(props) {
       </IonGrid>
 
       {/* Total time exercising today
-      TODO: needs to be at the bottom of the screen*/}
+      TODO: needs to be at the bottom of the screen. smile */}
       <IonFooter>
-        <TotalTimer totalMinutes={props.totalMinutes} />
+        <TotalTimer totalMinutes={totalMinutes} />
       </IonFooter>
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { Component, useState, useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Switch } from "react-router";
@@ -121,9 +122,9 @@ const LeaderboardHolder = (props) => {
   return (
     <>
       <XBHeader title="Teams Leaderboard"></XBHeader>
-      <p>
+      <IonContent>
         Soon, we'll be able to show you which Teams are meeting their targets.
-      </p>
+      </IonContent>
     </>
   );
 };
@@ -260,11 +261,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={RecordMovement}
                 exact={true}
               />
-              <Route
-                path="/movementTimer"
-                component={MovementTimer}
-                exact={true}
-              />
+              <Route path="/timer" component={MovementTimer} exact={true} />
             </Switch>
           </IonRouterOutlet>
 

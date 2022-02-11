@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { IonList, IonItem, IonItemGroup, IonIcon } from "@ionic/react";
+import {
+  IonList,
+  IonItem,
+  IonItemGroup,
+  IonIcon,
+  IonButton,
+} from "@ionic/react";
 import {
   checkboxOutline,
   squareOutline,
   informationCircleOutline,
   stopwatchOutline,
+  playOutline,
 } from "ionicons/icons";
 
 /**
@@ -17,10 +24,10 @@ function TodoTasks(props) {
   const icon_done = checkboxOutline;
   const icon_missing = stopwatchOutline;
   let [activeDay, setActiveDay] = useState(props.day);
-  let [requiredTasks, setRequiredTasks] = useState(
-    props.team.experiment.tasks[props.day].required
-  );
+  let [requiredTasks, setRequiredTasks] = useState(props.tasks);
+  let totalMinutes = props.minutes;
 
+  // Get the entry for the day
   let entry = null;
   const dayList = [];
   let entries = props.team.entries;
@@ -31,30 +38,31 @@ function TodoTasks(props) {
     dayList.push(entries[i].day);
   }
 
-  let totalMinutes = 0;
-  const timedTasks = [];
-  for (let i in requiredTasks) {
-    if (typeof requiredTasks[i].timed !== "undefined") {
-      if (requiredTasks[i].timed) {
-        timedTasks.push(requiredTasks[i]);
-        totalMinutes += requiredTasks[i].mins;
-      }
-    }
-  }
-
-  // then no tasks have been set
-  if (timedTasks.length < 1 || entry === null) {
+  // then no tasks have been set, so return
+  if (requiredTasks.length < 1 || entry === null) {
     if (entry === null) {
       console.log(
         "RecordMovement: entry is null for some reason for day",
         activeDay
       );
     }
-    return <h3>You have no TIMED TASKS for today</h3>;
+    return (
+      <div // TODO: add styling to css
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "70vh",
+          textAlign: "center",
+        }}
+      >
+        <h3>You have no TIMED TASKS for today</h3>
+      </div>
+    );
   }
 
   // TODO: double check tasks appear greyed out when done
-  const tasks = timedTasks.map((task) => {
+  const tasks = requiredTasks.map((task) => {
     let done = typeof entry.responseTypes[task.type] !== "undefined";
     const week = Math.floor(activeDay / 7);
 
@@ -75,13 +83,20 @@ function TodoTasks(props) {
     // TODO: href needs updating to exercise information, or disable clicking until it's in
     return (
       <IonItem
-        color={done ? "" : "tertiary"}
+        color={done ? "" : "primary"}
         key={task.type}
-        routerLink={"/"}
-        detail={true}
-        detailIcon={informationCircleOutline}
+        routerLink={"/timer"}
+        // detail={true}
+        // detailIcon={informationCircleOutline}
       >
-        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        <IonButton
+          fill="clear"
+          expand={"full"}
+          onClick={() => {
+            localStorage.setItem("currentTask", JSON.stringify(task));
+          }}
+        ></IonButton>
+        <IonIcon slot="start" icon={done ? icon_done : playOutline} />
         {task.desc}
       </IonItem>
     );
@@ -89,7 +104,7 @@ function TodoTasks(props) {
 
   return (
     <div>
-      <h3> Today, you will </h3>
+      <h3> Today, you can </h3>
       <IonList lines="full">
         <IonItemGroup>{tasks}</IonItemGroup>
       </IonList>
