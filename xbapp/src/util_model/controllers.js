@@ -160,7 +160,8 @@ async function GET_FEED(client, store, controllers) {
   const promises = teams.map((team) => GET_TEAM_RESPONSES(client, store, controllers, team._id));
   await Promise.all(promises);
 
-  const enhancedTeams = store.getState().teams.teams;
+  // Team info is disabled for now
+  const enhancedTeams = []; // store.getState().teams.teams;
 
   // Process feed
 

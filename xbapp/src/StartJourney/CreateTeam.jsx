@@ -83,6 +83,16 @@ const CreateTeam = (props) => {
       err = <></>;
     }
 
+    /**
+    <IonInput
+      type="text"
+      placeholder="Team Description"
+      onIonChange={(e) => {
+        setDesc(e.detail.value);
+      }}
+    ></IonInput>
+    */
+
     content = (
       <>
         <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
@@ -96,13 +106,7 @@ const CreateTeam = (props) => {
               setName(e.detail.value);
             }}
           ></IonInput>
-          <IonInput
-            type="text"
-            placeholder="Team Description"
-            onIonChange={(e) => {
-              setDesc(e.detail.value);
-            }}
-          ></IonInput>
+
         </div>
         {err}
         <div className="centering">{btn}</div>

@@ -63,6 +63,9 @@ const decorateTeam = (team) => {
         },
       }
     }
+    // End of EXAMPLE plan
+
+
 
     // Try to find a s22 plan
     if(typeof team.lastEntryByType.s22plan !== 'undefined') {
@@ -96,11 +99,21 @@ const decorateTeam = (team) => {
     // No plan? Require the planning task to be completed
     if(!team.s22plan) {
 
-      qreq.push({
-        type: 's22plan',
-        desc: 'Plan your week',
-        verb: 'PLAN'
-      });
+      if(!team.s22path) {
+        qreq.push({
+          type: 's22path',
+          desc: 'You need to choose a path',
+          verb: 'CHOOSE'
+        });
+      }
+      else
+      {
+        qreq.push({
+          type: 's22plan',
+          desc: 'You need to plan your week',
+          verb: 'PLAN'
+        });
+      }
 
     } else {
       var dow = (new Date()).getDay();
@@ -108,7 +121,7 @@ const decorateTeam = (team) => {
 
       others.push({
         type: 's22plan',
-        desc: 'Change your weekly plan',
+        desc: 'You can change your weekly plan',
         verb: 'PLAN'
       });
 
