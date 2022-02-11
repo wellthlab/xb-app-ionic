@@ -16,11 +16,11 @@ import { connect } from "react-redux";
 import CountDown from "./components/CountDown";
 import TotalTimer from "./components/TotalTimer";
 import ManualTime from "./components/ManualEntry";
-import { addControllersProp } from "../util_model/controllers";
 
 /**
  *  Display a timer for the current exercise.
- *
+ *  - prop.task
+ *  - totalMinutes : total minutes expected for the day
  */
 function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
@@ -80,7 +80,7 @@ function MovementTimer(props) {
       {/* Total time exercising today
       TODO: needs to be at the bottom of the screen*/}
       <IonFooter>
-        <TotalTimer />
+        <TotalTimer totalMinutes={props.totalMinutes} />
       </IonFooter>
     </>
   );

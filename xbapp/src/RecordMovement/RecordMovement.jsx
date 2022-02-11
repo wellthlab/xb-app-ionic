@@ -14,43 +14,63 @@ import MovementTimer from "./MovementTimer";
  */
 function RecordMovement(props) {
   let [recordingMovement, setRecordingMovement] = useState(false);
-  let [currentTask, setCurrentTask] = useState(null);
+  // let [currentTask, setCurrentTask] = useState(null);
   useEffect(() => {
     props.controllers.LOAD_TEAMS();
   }, [props.controllers]);
-
-  let content;
 
   if (!props.teams.teams.bybox) {
     return <IonSpinner name="crescent" class="spin" />;
   }
 
-  let team = props.teams.teams[0]; // TODO: this might need updating?
+  let team = props.teams.teams[0]; // TODO: is the right way to get the team?
   let day = team.experiment.day;
-  let tasks = team.experiment.tasks[day].required;
+  let requiredTasks = team.experiment.tasks[day].required;
 
-  let task = tasks[0];
+  // Get the tasks which are timed and sum the total minutes expected
+  let totalMinutes = 0;
+  const timedTasks = [];
+  for (let i in requiredTasks) {
+    if (typeof requiredTasks[i].timed !== "undefined") {
+      if (requiredTasks[i].timed) {
+        timedTasks.push(requiredTasks[i]);
+        totalMinutes += requiredTasks[i].mins;
+      }
+    }
+  }
 
-  if (recordingMovement === false) {
-    content = (
-      <>
-        <TodoTasks day={day} team={team} />
+  // TODO: add way to pick a first task to do. default now is 1st task in list
+  let currentTask = timedTasks[0];
+
+  let content = recordingMovement ? (
+    <>
+      <MovementTimer
+        team={team}
+        task={currentTask}
+        totalMinutes={totalMinutes}
+      />
+    </>
+  ) : (
+    <>
+      <TodoTasks
+        day={day}
+        team={team}
+        tasks={timedTasks}
+        minutes={totalMinutes}
+      />
+      {timedTasks.length > 0 ? (
         <IonButton
           onClick={() => setRecordingMovement(true)}
           expand="block"
-          disabled={!(tasks.length > 0)}
+          disabled={!(timedTasks.length > 0)}
         >
           START
         </IonButton>
-      </>
-    );
-  } else {
-    content = (
-      <>
-        <MovementTimer team={team} task={task} />
-      </>
-    );
-  }
+      ) : (
+        ""
+      )}
+    </>
+  );
 
   return (
     <>
