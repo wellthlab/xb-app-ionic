@@ -13,58 +13,76 @@ import {
  *  - day      : the active experiment day
  *  - entries  : the team entries for the day to present
  */
-function DayTasks(props) {
+function TodoTasks(props) {
   const icon_done = checkboxOutline;
-  const icon_missing = squareOutline;
+  const icon_missing = stopwatchOutline;
   let [activeDay, setActiveDay] = useState(props.day);
-  let entries = props.team.entries;
+  let [requiredTasks, setRequiredTasks] = useState(
+    props.team.experiment.tasks[props.day].required
+  );
 
   let entry = null;
   const dayList = [];
-  for (var i in entries) {
+  let entries = props.team.entries;
+  for (let i in entries) {
     if (entries[i].day === activeDay) {
       entry = entries[i];
     }
     dayList.push(entries[i].day);
   }
 
-  let [requiredTasks, setRequiredTasks] = useState(props.team.experiment.tasks);
-  // let requiredTasks = ["Eat some breakfast", "Try to walk somewhere"];
-
-  // then no tasks have been set
-  if (entry.missing || entry === null) {
-    return <h3>You have no EXERCISES set for today</h3>;
+  let totalMinutes = 0;
+  const timedTasks = [];
+  for (let i in requiredTasks) {
+    if (typeof requiredTasks[i].timed !== "undefined") {
+      if (requiredTasks[i].timed) {
+        timedTasks.push(requiredTasks[i]);
+        totalMinutes += requiredTasks[i].mins;
+      }
+    }
   }
 
-  const tasks = requiredTasks.map((type) => {
-    let done = typeof entry.responseTypes[type.type] !== "undefined";
+  // then no tasks have been set
+  if (timedTasks.length < 1 || entry === null) {
+    if (entry === null) {
+      console.log(
+        "RecordMovement: entry is null for some reason for day",
+        activeDay
+      );
+    }
+    return <h3>You have no TIMED TASKS for today</h3>;
+  }
+
+  // TODO: double check tasks appear greyed out when done
+  const tasks = timedTasks.map((task) => {
+    let done = typeof entry.responseTypes[task.type] !== "undefined";
     const week = Math.floor(activeDay / 7);
 
-    // TODO: this needs changing to use the actual task information
+    // todo: these tasks need to be greyed out when done, somehow
     if (
-      type.type === "strength-setter" &&
+      task.type === "strength-setter" &&
       "blocks-week-" + week.toString() + "-set" in window.localStorage
     ) {
       done = true;
     }
     if (
-      type.type === "strength-explorer" &&
+      task.type === "strength-explorer" &&
       "blocks-week-0-day-" + activeDay.toString() in window.localStorage
     ) {
       done = true;
     }
 
-    // TODO: href needs updating to exercise information
+    // TODO: href needs updating to exercise information, or disable clicking until it's in
     return (
       <IonItem
         color={done ? "" : "tertiary"}
-        key={type.type}
+        key={task.type}
         routerLink={"/"}
         detail={true}
         detailIcon={informationCircleOutline}
       >
-        <IonIcon slot="start" icon={done ? icon_done : stopwatchOutline} />
-        {type.desc}
+        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        {task.desc}
       </IonItem>
     );
   });
@@ -75,9 +93,9 @@ function DayTasks(props) {
       <IonList lines="full">
         <IonItemGroup>{tasks}</IonItemGroup>
       </IonList>
-      <h3> for a total of TIME minutes </h3>
+      <h3> for a total of {totalMinutes} minutes </h3>
     </div>
   );
 }
 
-export default DayTasks;
+export default TodoTasks;
