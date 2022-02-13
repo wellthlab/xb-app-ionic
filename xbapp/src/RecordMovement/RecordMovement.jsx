@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { IonContent, IonSpinner, IonButton } from "@ionic/react";
+import {
+  IonContent,
+  IonSpinner,
+  IonButton,
+  IonText,
+  IonGrid,
+  IonLabel,
+  IonCol,
+  IonRow
+
+} from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
@@ -7,52 +17,50 @@ import { addControllersProp } from "../util_model/controllers";
 import XBHeader from "../util/XBHeader";
 import TodoTasks from "./components/Tasks";
 import MovementTimer from "./MovementTimer";
+import TotalTimer from "./components/TotalTimer"
 
 /**
  * Main page for users to track and record their movements
  *
  */
 function RecordMovement(props) {
-  let [recordingMovement, setRecordingMovement] = useState(false);
-  // let [currentTask, setCurrentTask] = useState(null);
-  useEffect(() => {
-    props.controllers.LOAD_TEAMS();
-  }, [props.controllers]);
+
+  props.controllers.LOAD_TEAMS_IF_REQD();
 
   if (!props.teams.teams.bybox) {
     return <IonSpinner name="crescent" class="spin" />;
   }
 
-  let team = props.teams.teams[0]; // TODO: is the right way to get the team?
-  let day = team.experiment.day;
-  let requiredTasks = team.experiment.tasks[day].required;
+  let team = props.teams.teams.bybox.move[0];
+  console.log("Timer using team", team);
 
-  // Get the tasks which are timed and sum the total minutes expected
-  let totalMinutes = 0;
-  const timedTasks = [];
-  for (let i in requiredTasks) {
-    if (typeof requiredTasks[i].timed !== "undefined") {
-      if (requiredTasks[i].timed) {
-        timedTasks.push(requiredTasks[i]);
-        totalMinutes += requiredTasks[i].mins;
-      }
-    }
+  if(!team.s22plan) {
+    return <IonText>You need to plan your week before you can add minutes.</IonText>
   }
 
-  // TODO: hack to pass the total expected minutes :)
-  localStorage.setItem("totalMinutes", totalMinutes);
+  let day = team.experiment.day;
+  let requiredTasks = team.experiment.tasks[day].required;
+  let totalMinutes = team.s22plan.target;
 
   return (
     <>
       <XBHeader title="Record Movement"></XBHeader>
       <IonContent fullscreen>
-        {" "}
+        <IonGrid>
+        <IonRow><IonCol>
         <TodoTasks
           day={day}
           team={team}
-          tasks={timedTasks}
+          tasks={requiredTasks}
           minutes={totalMinutes}
-        />
+        /></IonCol></IonRow>
+        <IonRow>
+          <IonCol style={{marginTop: "30px"}}>
+            <IonLabel>Your Progress Today</IonLabel>
+            <TotalTimer target={team.myTargetToday} logged={team.myMinutesToday} />
+          </IonCol>
+        </IonRow>
+        </IonGrid>
       </IonContent>
     </>
   );

@@ -44,7 +44,7 @@ const TabAccount = ({}) => {
           showAlert={showAlert}
           toggleAlert={toggleAlert}
           message={
-            "If you have any questions, concerns, or want to feedback anything about the app, please contact us at gcm1u16@soton.ac.uk"
+            "If you have any questions, concerns, or want to feedback anything about the app, please contact us at mc@ecs.soton.ac.uk"
           }
         />
         <GenericModal

@@ -34,43 +34,25 @@ const decorateTeam = (team) => {
 
     // Planning for s22 is done in advance. The plan response will look something like
     var examplePlan = {
-      effectiveWeek: 4, // The effective week of the study for the participant; might not be the real week!
-      daily: { // A daily plan of what blocks to include
-        0: {}, // Sunday
-        1: { // Monday
-          strength: 14, // 14 mins of strength
-          cardio: 7 // 7 mins of cardio
-        },
-        2: { // Tuesday
-          strength: 0, // 14 mins of strength
-          cardio: 21 // 7 mins of cardio
-        },
-        3: { // Wednesday
-          strength: 14, // 14 mins of strength
-          cardio: 7 // 7 mins of cardio
-        },
-        4: { // Thursday
-          strength: 0, // 14 mins of strength
-          cardio: 21 // 7 mins of cardio
-        },
-        5: { // Friday
-          strength: 14, // 14 mins of strength
-          cardio: 7 // 7 mins of cardio
-        },
-        6: { // Saturday
-          strength: 0,
-          cardio: 0
-        },
-      }
+      // Week 1 only has a daily target
+      effectiveWeek: 1, // The effective week of the study for the participant; might not be the real week!
+      target: 14
     }
     // End of EXAMPLE plan
 
 
 
+    // Create a handy reference to TODAYS plan
+    var dow = (new Date()).getDay();
+
+
     // Try to find a s22 plan
     if(typeof team.lastEntryByType.s22plan !== 'undefined') {
+
+      var plan = team.lastEntryByType.s22plan;
+
       // Check that the plan is for the current week
-      if(team.experiment.week === team.lastEntryByType.s22plan.week) {
+      if(plan.day % 7 == week) { // week is calculated above, from the experiment day
         team.s22plan = team.lastEntryByType.s22plan;
         console.log("Found a current s22 plan");
       } else {
@@ -80,21 +62,33 @@ const decorateTeam = (team) => {
       console.log("No s22 plan has ever been saved");
     }
 
+
     // Testing tasks
     qreq.push({
-      type: 's22assess',
-      desc: "Strength Assessment",
-      verb: "MOVE",
-      mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-      timed: true
+      type: 's22video',
+      desc: "Try a plank",
+      verb: "TRY",
+      timed: true,
+      video: "oO7_-19AuUI"
     });
+
     qreq.push({
       type: 's22video',
       desc: "Feet and Ankle Mobility",
       verb: "MOVE",
-      mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-      timed: true
+      timed: true,
+      video: ""
     });
+
+    qreq.push({
+      type: 's22video',
+      desc: "Try a Pull and a Push",
+      verb: "TRY",
+      timed: true,
+      video: ""
+    });
+
+
 
     // No plan? Require the planning task to be completed
     if(!team.s22plan) {
@@ -108,6 +102,12 @@ const decorateTeam = (team) => {
       }
       else
       {
+        others.push({
+          type: 's22path',
+          desc: 'You can change your path',
+          verb: 'CHANGE'
+        });
+
         qreq.push({
           type: 's22plan',
           desc: 'You need to plan your week',
@@ -116,17 +116,15 @@ const decorateTeam = (team) => {
       }
 
     } else {
-      var dow = (new Date()).getDay();
-      var dayplan = team.s22plan.daily[dow];
+    // Otherwise generate the daily tasks
 
-      others.push({
+      others.push({ // An optional re-planning task
         type: 's22plan',
         desc: 'You can change your weekly plan',
         verb: 'PLAN'
       });
 
       // Set up other tasks according to week number
-      // TODO: This might need to be influenced by pathway?
       var effWeek = team.s22plan.effectiveWeek;
       if(effWeek == 1) {
         switch(dow) {
@@ -183,36 +181,24 @@ const decorateTeam = (team) => {
             break;
         }
       }
-
-      // Add strength blocks
-      if(dayplan.strength > 0) {
-        for(var i = 1; i < Math.ceil(dayplan.strength / 7); i++) {
-          qreq.push({
-            type: 's22strength',
-            desc: "Resistance Block " + i,
-            verb: "MOVE",
-            mins: 7,
-            timed: true
-          });
-        }
-      }
-
-      // Add the cardio block
-      if(dayplan.cardio > 0) {
-          qreq.push({
-            type: 's22cardio',
-            desc: "Cardio Block",
-            verb: "MOVE",
-            mins: dayplan.cardio,
-            timed: true
-          });
-      }
-
-
     }
 
-
     team.experiment.tasks[eday] = { required: qreq, optional: others };
+
+    // Add today's minutes total
+    team.myMinutesToday = 0;
+    team.myTargetToday = false;
+
+    if(team.s22plan.plan) {
+      team.myTargetToday = team.s22plan.plan.target;
+    }
+
+    team.responses.own.responses.map(function(res){
+      if(res.day == eday && res.minutes) {
+        team.myMinutesToday += res.minutes;
+      }
+    })
+
 }
 
 export default { decorateTeam };

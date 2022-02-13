@@ -186,11 +186,11 @@ class OptionTabs extends Component {
     var week = Math.floor((day - 1) / 7);
     if (day <= 0){//before the study
        week = -1;
-    } 
+    }
     } else {
       var week = -1;
     }
-    
+
     return (
       <>
         <XBHeader title="Info"></XBHeader>
@@ -212,25 +212,12 @@ class OptionTabs extends Component {
                 Study Timeline
               </Link>
             </IonItem>
-            <IonItem routerLink="/heartratechart">Heart rate numbers</IonItem>
-            <IonItem routerLink="/protocolchart">Understanding the Protocol</IonItem>
+
             <IonItem routerLink="/about">XB study</IonItem>
           </IonList>
               </IonCardContent>
             </IonCard>
-          
-          <IonItemDivider></IonItemDivider>
-          <IonCard>
-              <IonCardHeader style={{textAlign: "left"}}>
-                <IonCardTitle >Tutorials</IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
-              <IonList>
-              <IonItem routerLink="/pushpull">Pushes and pulls</IonItem>
-            <IonItem routerLink="/movetutorial">Doing the Protocol</IonItem>
-          </IonList>
-              </IonCardContent>
-            </IonCard>
+
 
           <IonItemDivider></IonItemDivider>
           <IonCard>

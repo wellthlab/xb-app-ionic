@@ -29,14 +29,23 @@
  import PushPull from "../UserInput/PushPull";
  import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
  import PathSelector from "../Strength/PathSelector";
+ import Planner from "../Strength/Planner";
+ import Video from "../Strength/Video"
 
 
-export default function responseFactory(type, groupID, daynumber, onSubmit) {
+export default function responseFactory(type, group, daynumber, onSubmit, info) {
 
   // time key is used to re-create rather than re-use elements on subsequent uses
   var time = Date.now();
 
   var input, typedesc;
+
+  var groupID = group._id;
+
+  // info is an optional param; it's other fields that the type might need
+  if(typeof info == 'undefined') {
+    info = {};
+  }
 
   switch (type) {
     case "minutes":
@@ -171,6 +180,16 @@ export default function responseFactory(type, groupID, daynumber, onSubmit) {
     case "s22path":
       input = <PathSelector onSubmit={onSubmit} />;
       typedesc = "Path Picker";
+      break;
+
+    case "s22plan":
+      input = <Planner onSubmit={onSubmit} group={group} />;
+      typedesc = "Weekly Plan";
+      break;
+
+    case "s22video":
+      input = <Video onSubmit={onSubmit} video={info.video} />
+      typedesc = "video";
       break;
 
     default:

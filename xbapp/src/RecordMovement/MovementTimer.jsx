@@ -9,28 +9,90 @@ import {
   IonLabel,
   IonFooter,
 } from "@ionic/react";
-import { addCircleOutline, informationCircleOutline } from "ionicons/icons";
+import { addCircleOutline, informationCircleOutline, arrowForwardOutline } from "ionicons/icons";
 import { connect } from "react-redux";
 
+import { addControllersProp } from "../util_model/controllers";
+
+import inputFactory from '../Boxes/inputFactory';
+
 // import "./MovementTimer.css";
-import CountDown from "./components/CountDown";
+import Timer from "../Instruments/Timer";
 import TotalTimer from "./components/TotalTimer";
 import ManualTime from "./components/ManualEntry";
 import XBHeader from "../util/XBHeader";
 
 /**
- *  Display a timer for the current exercise.
- *  - prop.task
- *  - totalMinutes : total minutes expected for the day
+ * Display a timer for the current exercise.
+ *
+ * Saves a response to the database that combines the output of the task (if any) with
+ * the number of minutes that it took
  */
 function MovementTimer(props) {
   let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
 
-  let currentTask = JSON.parse(localStorage.getItem("currentTask"));
-  let totalMinutes = parseInt(localStorage.getItem("totalMinutes"));
-  let groupId = props.match.params.id;
-  let task = props.match.params.task;
+  let gid = props.match.params.id;
+  let day = props.match.params.day;
+  let tasktype = props.match.params.task;
+  let taskindex = props.match.params.index;
+
+  const [group, setGroup] = useState(false);
+  const [currentTask, setCurrentTask] = useState(false);
+
+  const [minutes, setMinutes] = useState(false);
+  const [exResponse, setExResponse] = useState({});
+
+  // Load team data if required; mostly useful during development
+  props.controllers.LOAD_TEAMS_IF_REQD();
+
+  if (group === false) { // Find the group if not set already
+    for (var g of props.teams.teams) {
+      // Find the group in the store
+      if (g._id == gid) {
+        setGroup(g);
+      }
+    }
+
+    return <>Group not found</>;
+  }
+
+  // TODO: Looking up tasks like this won't scale; we should create a slice to store the current timer state
+  // and push all the relevant state - including the current task - into that
+  if(currentTask === false) { // Find the task if not found already
+    setCurrentTask(group.experiment.tasks[day].required[taskindex]);
+    return <></>;
+  }
+
+  console.log("Current timer task", currentTask);
+
+  if(typeof currentTask == 'undefined') {
+    return <>ERROR; task is not defined</>;
+  }
+
+  let totalMinutes = group.s22plan.target;
+
+
+  // Save the response, plus the minutes from the timer
+  async function save() {
+      var res = exResponse;
+      res.type = tasktype;
+      res.minutes = minutes;
+      res.day = day;
+      await props.controllers.ADD_RESPONSE(gid, res);
+  }
+
+  const content = inputFactory(tasktype, group, day, setExResponse, currentTask);
+
+  if(content !== false) {
+    var extra = <IonRow>
+      <IonCol>{content.input}</IonCol>
+    </IonRow>
+  } else {
+    var extra = "";
+  }
+
+  var ready = minutes > 0;
 
   return (
     <>
@@ -45,52 +107,58 @@ function MovementTimer(props) {
         <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
       </IonItem>
 
-      {/* Timer and buttons for manual entry of minutes */}
+      {/* Additional content, like the move picker or a video */}
+      { extra }
 
+      {/* Timer and buttons for manual entry of minutes */}
       <IonGrid>
         <IonRow>
           {!manualEntry ? (
             <IonCol>
               {/* entry from timer */}
-              <CountDown
-                id={groupId}
-                task={currentTask}
-                minutes={currentTask.mins}
+              <Timer
+                id={gid}
                 active="false"
-                onPause={() => {
-                  setPaused(true);
-                }}
-              ></CountDown>
+                onPause={setMinutes}
+              ></Timer>
+              <p style={{textAlign: "center"}}>Stop the timer when you're done</p>
             </IonCol>
           ) : (
-            <ManualTime id={groupId} task={task}></ManualTime> // manual entry
+            <ManualTime id={gid} task={currentTask} onSubmit={setMinutes}></ManualTime>
           )}
         </IonRow>
         <IonRow>
-          <IonCol style={{ padding: "0px" }}>
-            <div className="time0">
-              <IonButton
-                onClick={() => {
-                  setManualEntry(!manualEntry);
-                }}
-                expand="full"
-              >
+          <IonCol style={{ padding: "0px", textAlign: "center", paddingBottom: "20px" }}>
+              <a onClick={() => {  setManualEntry(!manualEntry); }} expand="full" >
                 <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                {/* if we're in manual entry, show "back to timer" */}
                 {manualEntry ? "Back to timer" : "Enter minutes manually"}
-              </IonButton>
-            </div>
+              </a>
           </IonCol>
         </IonRow>
+        <IonRow>
+          <IonCol style={{textAlign: "center"}}>
+          { ready ? <IonButton onClick={save} expand="full" routerLink="/addmovement">Save Activity <IonIcon icon={arrowForwardOutline} /></IonButton> : "" }
+          </IonCol>
+        </IonRow>
+        <IonRow><IonCol>
+        <TotalTimer target={group.myTargetToday} logged={group.myMinutesToday + minutes} />
+        </IonCol></IonRow>
       </IonGrid>
 
-      {/* Total time exercising today
-      TODO: needs to be at the bottom of the screen. smile */}
-      {/* <IonFooter>
-        <TotalTimer totalMinutes={totalMinutes} />
-      </IonFooter> */}
     </>
   );
 }
 
-export default MovementTimer;
+export default connect(
+  (state, ownProps) => {
+    return {
+      account: state.account,
+      teams: state.teams,
+      experiments: state.experiments,
+      boxes: state.boxes,
+    };
+  },
+  {
+    pure: false,
+  }
+)(addControllersProp(MovementTimer));

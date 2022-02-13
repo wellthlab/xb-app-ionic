@@ -20,6 +20,8 @@ import "./Move.scss";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
+import Disclaimer from './components/Disclaimer';
+
 const MovePage = (props) => {
   React.useEffect(() => {
     props.controllers.LOAD_TEAMS();
@@ -34,17 +36,21 @@ const MovePage = (props) => {
     var content = <Enroller boxtype="move" />;
   } else {
     var content = (
+      <>
       <GroupInfo
         group={props.teams.teams.bybox["move"][0]}
         match={props.match}
       ></GroupInfo>
+      <Disclaimer checkbox={false} />
+      </>
     );
   }
 
   return (
     <IonPage>
       <XBHeader title="Progress"></XBHeader>
-      <IonContent>{content}</IonContent>
+      <IonContent>
+      {content}</IonContent>
     </IonPage>
   );
 };

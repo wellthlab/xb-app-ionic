@@ -5,27 +5,19 @@ import { IonGrid, IonProgressBar, IonRow, IonCol, IonItem } from "@ionic/react";
  * Tracks the total movement minutes for a user
  * TODO: update hardcoded values of seconds and minutes
  */
-function TotalTimer(props) {
-  const [seconds, setSeconds] = useState(30);
-  const [minutes, setMinutes] = useState(2);
-  const team = props.team;
+function TotalTimer({target, logged}) {
 
-  let totalElapsed = minutes + seconds / 60;
-  let totalExpected = props.totalMinutes;
-  let progress = totalElapsed / totalExpected;
+  let progress = logged / target;
 
-  console.log("totalExpected", totalExpected);
+  console.log("Total timer", logged, target, progress);
+
+  var tstr = target.toString().padStart(2, '0') + ":00";
+  var lstr = Math.floor(logged / 60).toString().padStart(2, '0') + ":" + Math.floor((logged * 60) % 60).toString().padStart(2, '0');
 
   return (
     <>
       <IonProgressBar value={progress}></IonProgressBar>
-      <IonItem>
-        <h1>
-          {minutes > 9 ? minutes : "0" + minutes}:
-          {seconds > 9 ? seconds : "0" + seconds}
-          &nbsp; minutes elapsed
-        </h1>
-      </IonItem>
+      <p>{lstr} of {tstr}</p>
     </>
   );
 }

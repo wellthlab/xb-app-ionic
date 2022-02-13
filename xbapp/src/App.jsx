@@ -184,9 +184,14 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={MovementPicker}
                 exact={true}
               />
-              /** * Experiment list - Deprecated */
-              <Route path="/experiments" component={Experiments} exact={true} />
+
               /** * Data entry / tasks */
+              <Route
+                path="/box/move/:id/:day/add/:type"
+                component={AddResponse}
+                exact={true}
+              />
+
 
               /** * Charts */
               <Route
@@ -209,7 +214,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               />
               <Route
                 path="/register"
-                render={() => <Redirect to="/feed" />}
+                render={() => <Redirect to="/box/move" />}
                 exact={true}
               />
               <Route path="/account" component={Account} exact={true} />
@@ -259,7 +264,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/timer/:id/:task"
+                path="/timer/:id/:day/:task/:index"
                 component={MovementTimer}
                 exact={true}
               />

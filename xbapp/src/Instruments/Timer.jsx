@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { IonButton, IonItem } from "@ionic/react";
+import { IonButton, IonItem, IonIcon } from "@ionic/react";
 import "./Timer.scss";
 import { connect } from "react-redux";
 
-//we have the experiment/group ID, we have the day number to require update and we have the account
-//=> can we update the day?
-//need to handle the click of "submit" in both cases: when they use the timer or when they use an input field
+import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
+
 function Timer(props) {
   const [seconds, setSeconds] = useState(
     localStorage.getItem("timerStartedAt") != null
@@ -49,6 +48,7 @@ function Timer(props) {
       return parseInt(hours);
     }
   }
+
   function toggle() {
     localStorage.setItem("countActive", !isActive);
 
@@ -79,7 +79,10 @@ function Timer(props) {
       var secondsToUse = hours * 3600 + minutes * 60 + seconds;
       localStorage.setItem("time", secondsToUse);
       if (props.onStop) {
-        props.onStop(secondsToUse);
+        props.onStop(secondsToUse / 60);
+      }
+      if(props.onPause) {
+        props.onPause(secondsToUse / 60);
       }
     }
     setIsActive(!isActive);
@@ -92,6 +95,13 @@ function Timer(props) {
     setMinutes(0);
     setHours(0);
     setIsActive(false);
+  }
+
+  var [isReset, setIsReset] = useState(false);
+
+  if(!isReset) {
+    setIsReset(true);
+    reset();
   }
 
   useEffect(() => {
@@ -131,14 +141,14 @@ function Timer(props) {
   return (
     <div>
       <div className="time">
-        {hours > 9 ? hours : "0" + hours}:
+        {hours < 1 ? "" : (hours > 9 ? hours : "0" + hours) + ":"}
         {minutes > 9 ? minutes : "0" + minutes}:
         {seconds > 9 ? seconds : "0" + seconds}
       </div>
       {buttonsOnShow ? (
-        <div className="row">
-          <IonButton onClick={toggle}>{isActive ? "Pause" : "Start"}</IonButton>
-          <IonButton onClick={reset}>Reset</IonButton>
+        <div className="row" style={{textAlign: "center"}}>
+          <IonButton onClick={toggle}><IonIcon icon={isActive ? pauseOutline : playOutline} /></IonButton>
+          <IonButton onClick={reset}><IonIcon icon={refreshOutline} /></IonButton>
         </div>
       ) : (
         <></>
@@ -155,12 +165,6 @@ function resetTimer() {
   localStorage.removeItem("timerStartedAt");
 }
 
-export default connect((state, ownProps) => {
-  return {
-    account: state.account,
-    teams: state.teams,
-    boxes: state.boxes,
-  };
-}, {})(Timer);
+export default Timer;
 
 export { resetTimer };

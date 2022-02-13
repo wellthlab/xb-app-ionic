@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -15,6 +15,8 @@ import {
   IonSpinner,
 } from "@ionic/react";
 
+
+
 import getXBClient from "../util_model/client";
 import { addControllersProp } from "../util_model/controllers";
 
@@ -22,110 +24,100 @@ import "./Login.scss";
 
 const autoBindReact = require("auto-bind/react");
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    autoBindReact(this);
-    console.log("Login created with controllers", props.controllers);
-  }
+const Login = (props) => {
 
-  componentDidMount() {}
+  var account = props.account;
 
-  render() {
-    const { account } = this.props;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    if (account.loggedin) {
-      return (
-        <IonContent>
-          <p>You are logged in as {account.name}</p>
-        </IonContent>
-      );
+  if (account.loggedin) {
+    return (
+      <IonContent>
+        <p>You are logged in as {account.name}</p>
+      </IonContent>
+    );
+  } else {
+    var form;
+
+    if (account.fetching) {
+      form = <IonSpinner name="crescent" />;
     } else {
-      var form;
+      form = (
+        <>
+        <IonCard>
+          <IonItem>
+            <IonInput
+            placeholder="Email"
+            type="email"
+            onIonChange={(e) => {
+              console.log("Set email", e);
+              setEmail(e.detail.value);
+            }}
+            ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonInput
+            placeholder="Password"
+            type="password"
+            onIonChange={(e) => {
+              setPassword(e.detail.value);
+            }}
+            ></IonInput>
+          </IonItem>
+        </IonCard>
+        <div className="centering">
+            <IonButton
+            onclick={() => {
+              login();
+            }}
+            slot="end"
+            >
+            Log In
+            </IonButton>
+        </div>
+        </>
+      );
+    }
 
-      if (account.fetching) {
-        form = <IonSpinner name="crescent" />;
-      } else {
-        form = (
-          <>
-            <IonCard>
-              <IonItem>
-                <IonInput
-                  value=""
-                  placeholder="Email"
-                  type="email"
-                  onIonChange={(e) => {
-                    this.email = e.detail.value;
-                  }}
-                ></IonInput>
-              </IonItem>
-              <IonItem>
-                <IonInput
-                  value=""
-                  placeholder="Password"
-                  type="password"
-                  onIonChange={(e) => {
-                    this.password = e.detail.value;
-                  }}
-                ></IonInput>
-              </IonItem>
-            </IonCard>
-            <div className="centering">
-              <IonButton
-                onclick={() => {
-                  this.login();
-                }}
-                slot="end"
-              >
-                Log In
-              </IonButton>
-            </div>
-          </>
-        );
+    function login(e) {
+      if (!email || !password) {
+        return;
       }
 
-      return (
-        <IonContent>
-          <div id="login">
-            <img src="assets/strength_logo.png" alt="XB Logo" />
-            {form}
-            <div>
-              <div className="centering">
-                <Link to="/forgot-password">Forgotten password?</Link>
-              </div>
-              <h4>New to the app?</h4>
-              <div className="centering">
-                <IonButton routerLink="/register">Register</IonButton>
-                <IonButton routerLink="/tutorial">Tutorial</IonButton>
-              </div>
-            </div>
-          </div>
-        </IonContent>
-      );
-    }
-  }
+      props.START_LOGIN({});
 
-  login(e) {
-    if (!this.email || !this.password) {
-      return;
-    }
-
-    this.props.START_LOGIN({});
-
-    var client = getXBClient();
-    client
-      .setUser(this.email, this.password)
+      var client = getXBClient();
+      client
+      .setUser(email, password)
       .then((user) => {
-        this.props.ACCEPT_LOGIN({ email: this.email, password: this.password });
+        props.ACCEPT_LOGIN({ email: email, password: password });
       })
       .catch((err) => {
         console.log("Login rejected", err);
         console.log(err.message);
-        this.props.REJECT_LOGIN(err.message);
+        props.REJECT_LOGIN(err.message);
       });
-  }
+    }
 
-  register(e) {}
+    return (
+      <IonContent>
+        <div id="login">
+          <img src="assets/strength_logo.png" alt="XB Logo" />
+            {form}
+          <div>
+          <div className="centering">
+            <Link to="/forgot-password">Forgotten password?</Link>
+          </div>
+          <h4>New to the app?</h4>
+            <div className="centering">
+              <IonButton routerLink="/register">Register</IonButton>
+            </div>
+          </div>
+        </div>
+      </IonContent>
+    );
+  }
 }
 
 export default connect(

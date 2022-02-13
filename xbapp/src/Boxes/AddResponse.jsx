@@ -87,7 +87,7 @@ const AddResponse = (props) => {
     content = <></>;
   } else {
 
-    const {input, desc} = inputFactory(type, gid, daynumber, save);
+    const {input, desc} = inputFactory(type, group, daynumber, save);
 
     var exp = group.experiment.info;
     var entries = group.user_responses;

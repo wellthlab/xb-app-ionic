@@ -81,7 +81,7 @@ const GroupInfo = ({ group, controllers, match }) => {
         : "Today is day " + day + " of " + group.experiment.info.duration;
 
     var members =
-      group.users.length > 1 ? group.users.length + " members" : "Just You";
+      group.users.length > 1 ? group.users.length + " members" : "1 member";
 
     //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
@@ -133,8 +133,14 @@ const GroupInfo = ({ group, controllers, match }) => {
             </IonItem>
           </IonCol>
         </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonLabel>Today's Tasks</IonLabel>
+            <DailyActions group={group} today={day} tabs={false} />
+          </IonCol>
+        </IonRow>
       </IonGrid>
-      <DailyActions group={group} today={day} tabs={false} />
+
       </>
     );
   } else if (view == "tasks") {

@@ -9,6 +9,8 @@ import { IonButton } from "@ionic/react";
 import React, { useState } from "react";
 import "./Enroller.scss";
 
+import Disclaimer from './Disclaimer'
+
 import { connect } from "react-redux";
 
 const Enroller = ({ boxtype, expid }) => {
@@ -23,7 +25,10 @@ const Enroller = ({ boxtype, expid }) => {
       break;
   }
 
+  const [disclaimed, setDisclaimed] = useState(false);
+
   return (
+    disclaimed ? (
     <>
       <p className="centering">
         To get started you can either start a new team, or join somebody else's.
@@ -41,7 +46,7 @@ const Enroller = ({ boxtype, expid }) => {
           Start a Team
         </IonButton>
       </div>
-    </>
+    </> ) : ( <Disclaimer checkbox={true} onToggle={setDisclaimed} /> )
   );
 };
 
