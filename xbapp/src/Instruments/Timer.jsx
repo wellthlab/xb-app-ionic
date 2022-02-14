@@ -6,6 +6,10 @@ import { connect } from "react-redux";
 import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
 
 function Timer(props) {
+  return <>ERROR: Use StatelessTimer instead</>
+}
+
+/**
   const [seconds, setSeconds] = useState(
     localStorage.getItem("timerStartedAt") != null
       ? parseInt(localStorage.getItem("timerStartedAt")) != 0
@@ -156,6 +160,8 @@ function Timer(props) {
     </div>
   );
 }
+
+*/
 
 function resetTimer() {
   localStorage.removeItem("recordedSeconds");

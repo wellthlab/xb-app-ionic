@@ -12,7 +12,7 @@ function TotalTimer({target, logged}) {
   console.log("Total timer", logged, target, progress);
 
   var tstr = target.toString().padStart(2, '0') + ":00";
-  var lstr = Math.floor(logged / 60).toString().padStart(2, '0') + ":" + Math.floor((logged * 60) % 60).toString().padStart(2, '0');
+  var lstr = Math.floor(logged).toString().padStart(2, '0') + ":" + Math.floor((logged * 60) % 60).toString().padStart(2, '0');
 
   return (
     <>

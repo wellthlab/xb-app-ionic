@@ -30,9 +30,33 @@
  import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
  import PathSelector from "../Strength/PathSelector";
  import Planner from "../Strength/Planner";
- import Video from "../Strength/Video"
+ import Video from "../Strength/Video";
+ import WebLink from "../Strength/WebLink";
+ import OtherMove from "../Strength/OtherMove";
+ import Timer from "../Instruments/StatelessTimer";
 
+ import React, { useState, useEffect } from "react";
+ import {
+   IonCard,
+   IonCardHeader,
+   IonCardTitle,
+   IonCardSubtitle
+ } from "@ionic/react";
 
+/**
+ * Create input widgets based on task type
+ * type: The type of task to generate widgets for
+ * group: The group ID that the task belongs to
+ * daynumber: The day number of the experiment within the group
+ * onSubmit: A callback that receives a response from the widget(s) [see note, below]
+ * info: The full task object; some types need this
+
+ Note on onSubmit:
+
+ 1) Some widgets will trigger onSubmit multiple times; handle it nicely
+ 2) Some widgets are actually composed of multiple, each of which will trigger onSubmit; so you probably want to merge the response objects together!
+
+ */
 export default function responseFactory(type, group, daynumber, onSubmit, info) {
 
   // time key is used to re-create rather than re-use elements on subsequent uses
@@ -188,8 +212,32 @@ export default function responseFactory(type, group, daynumber, onSubmit, info) 
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={info.video} />
-      typedesc = "video";
+      input = <Video onSubmit={onSubmit} video={info.video} />;
+      typedesc = "Video Move";
+      break;
+
+    case "s22assessedvideo":
+      input = <>
+        <Video onSubmit={onSubmit} video={info.video} />
+        <IonCard>
+        <IonCardHeader>
+        <IonCardTitle>Time your {info.move}</IonCardTitle>
+        <IonCardSubtitle>Timing your move will let you measure your progress</IonCardSubtitle>
+        </IonCardHeader>
+        <Timer onPause={(mins) => { onSubmit({'assTimeSecs': mins * 60}); }} />
+        </IonCard>
+      </>
+      typedesc = "Assessment Move";
+      break;
+
+    case "s22weblink":
+      input = <WebLink onSubmit={onSubmit} link={info.link} info={info} />;
+      typedesc = "Web Link";
+      break;
+
+    case "s22other":
+      input = <OtherMove onSubmit={onSubmit} />
+      typedesc = "Other Movement";
       break;
 
     default:

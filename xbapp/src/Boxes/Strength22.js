@@ -52,41 +52,17 @@ const decorateTeam = (team) => {
       var plan = team.lastEntryByType.s22plan;
 
       // Check that the plan is for the current week
-      if(plan.day % 7 == week) { // week is calculated above, from the experiment day
+      var planweek = Math.floor(plan.day / 7);
+      if(planweek == week) { // week is calculated above, from the experiment day
         team.s22plan = team.lastEntryByType.s22plan;
         console.log("Found a current s22 plan");
       } else {
-        console.log("s22 plan is out of date");
+        console.log("s22 plan is out of date", "Current week: ", week, "Plan week:", planweek);
       }
     } else {
       console.log("No s22 plan has ever been saved");
     }
 
-
-    // Testing tasks
-    qreq.push({
-      type: 's22video',
-      desc: "Try a plank",
-      verb: "TRY",
-      timed: true,
-      video: "oO7_-19AuUI"
-    });
-
-    qreq.push({
-      type: 's22video',
-      desc: "Feet and Ankle Mobility",
-      verb: "MOVE",
-      timed: true,
-      video: ""
-    });
-
-    qreq.push({
-      type: 's22video',
-      desc: "Try a Pull and a Push",
-      verb: "TRY",
-      timed: true,
-      video: ""
-    });
 
 
 
@@ -124,44 +100,88 @@ const decorateTeam = (team) => {
         verb: 'PLAN'
       });
 
+      others.push({
+        type: 's22path',
+        desc: 'You can change your path',
+        verb: 'CHANGE'
+      });
+
+
       // Set up other tasks according to week number
-      var effWeek = team.s22plan.effectiveWeek;
+      var effWeek = team.s22plan.plan.effectiveWeek;
+
+      console.log("effectiveWeek", effWeek);
+
       if(effWeek == 1) {
         switch(dow) {
 
           case 1:
-            qreq.push({
-              type: 's22assess',
-              desc: "Strength Assessment",
-              verb: "MOVE",
-              mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-              timed: true
-            });
-            qreq.push({
-              type: 's22video',
-              desc: "Feet and Ankle Mobility",
-              verb: "MOVE",
-              mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-              timed: true
-            });
+
+              qreq.push({
+                type: 's22assessedvideo',
+                desc: "Try a plank",
+                verb: "TRY",
+                move: 'plank',
+                timed: true,
+                video: "oO7_-19AuUI",
+                protoResponse: {assType: 'plank'}
+              });
+
+              qreq.push({
+                type: 's22video',
+                desc: "Feet and Ankle Mobility",
+                verb: "MOVE",
+                timed: true,
+                video: "ZQdoCjOpFtQ"
+              });
+
+              qreq.push({
+                type: 's22weblink',
+                desc: "Learn about Sets, Reps and Blocks",
+                verb: "TRY",
+                timed: true,
+                link: "https://livinglab.soton.ac.uk/protocol/"
+              });
+
             break;
 
           case 2:
-            qreq.push({
-              type: 's22strength',
-              moves: ['', ''], // Specify the two moves; should disable the move picker
-              desc: "Pull and Push",
-              verb: "MOVE",
-              mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-              timed: true
-            });
-            qreq.push({
-              type: 's22video',
-              desc: "Feet and Ankle Mobility",
-              verb: "MOVE",
-              mins: 7, // TODO: We actually want video task to be timed loosely, like spend longer if you like
-              timed: true
-            });
+
+              qreq.push({
+                type: 's22assessedvideo',
+                desc: "Try a wall sit",
+                verb: "TRY",
+                move: 'wall sit',
+                timed: true,
+                video: "vOledWwAyFU",
+                protoResponse: {assType: 'wallsit'}
+              });
+
+              qreq.push({
+                type: 's22video',
+                desc: "Toe Pulls",
+                verb: "MOVE",
+                timed: true,
+                video: "0Y8La2b8XiA"
+              });
+
+              qreq.push({
+                type: 's22weblink',
+                desc: "Learn about Pushes and Pulls",
+                verb: "LEARN",
+                timed: true,
+                link: "https://livinglab.soton.ac.uk/push-pull/"
+              });
+
+              qreq.push({
+                type: 's22weblink',
+                desc: "Learn about Bilateral Moves",
+                verb: "LEARN",
+                timed: true,
+                link: "https://livinglab.soton.ac.uk/bilateral/"
+              });
+
+
             break;
 
           case 3:
@@ -182,6 +202,13 @@ const decorateTeam = (team) => {
         }
       }
     }
+
+    qreq.push({
+      type: 's22other',
+      desc: "Add some other movement",
+      verb: "ADD",
+      timed: true
+    });
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
 

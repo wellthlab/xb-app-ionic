@@ -8,6 +8,10 @@ import {
   IonItem,
   IonLabel,
   IonContent,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle
 } from "@ionic/react";
 import { addCircleOutline, informationCircleOutline, arrowForwardOutline } from "ionicons/icons";
 import { connect } from "react-redux";
@@ -17,7 +21,7 @@ import { addControllersProp } from "../util_model/controllers";
 import inputFactory from '../Boxes/inputFactory';
 
 // import "./MovementTimer.css";
-import Timer from "../Instruments/Timer";
+import Timer from "../Instruments/StatelessTimer";
 import TotalTimer from "./components/TotalTimer";
 import ManualTime from "./components/ManualEntry";
 import XBHeader from "../util/XBHeader";
@@ -73,16 +77,43 @@ function MovementTimer(props) {
   let totalMinutes = group.s22plan.target;
 
 
-  // Save the response, plus the minutes from the timer
+  // Save the response, plus the minutes from the timer, day number, and type
   async function save() {
-      var res = exResponse;
+      var res = {};
+
+      // Add data from the task's proto response, if there is one
+      for(var k of Object.keys(currentTask.protoResponse ?? {})) {
+        res[k] = currentTask.protoResponse[k];
+      }
+
+      // Add data from the widgets
+      for(var k of Object.keys(exResponse)) {
+        res[k] = exResponse[k];
+      }
+
       res.type = tasktype;
       res.minutes = minutes;
       res.day = day;
       await props.controllers.ADD_RESPONSE(gid, res);
   }
 
-  const content = inputFactory(tasktype, group, day, setExResponse, currentTask);
+  var updateResponse = (res) => {
+    // Merge the prevous response into the new one
+    // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
+    var updated = {};
+
+    for(var k of Object.keys(exResponse)) {
+      updated[k] = exResponse[k];
+    }
+
+    for(var k of Object.keys(res)) {
+      updated[k] = res[k];
+    }
+
+    setExResponse(updated);
+  }
+
+  const content = inputFactory(tasktype, group, day, updateResponse, currentTask);
 
   if(content !== false) {
     var extra = <IonRow>
@@ -112,39 +143,45 @@ function MovementTimer(props) {
         { extra }
 
         {/* Timer and buttons for manual entry of minutes */}
-        <IonGrid>
-          <IonRow>
-            {!manualEntry ? (
-              <IonCol>
-                {/* entry from timer */}
-                <Timer
-                  id={gid}
-                  active="false"
-                  onPause={setMinutes}
-                ></Timer>
-                <p style={{textAlign: "center"}}>Stop the timer when you're done</p>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Time your Session</IonCardTitle>
+            <IonCardSubtitle>Record the time you spend on this activity; it counts towards your daily target</IonCardSubtitle>
+          </IonCardHeader>
+          <IonGrid>
+            <IonRow>
+              {!manualEntry ? (
+                <IonCol>
+                  {/* entry from timer */}
+                  <Timer
+                    id={gid}
+                    active="false"
+                    onPause={setMinutes}
+                  ></Timer>
+                  <p style={{textAlign: "center"}}>Stop the timer when you're done</p>
+                </IonCol>
+              ) : (
+                <ManualTime id={gid} task={currentTask} onChange={setMinutes}></ManualTime>
+              )}
+            </IonRow>
+            <IonRow>
+              <IonCol style={{ padding: "0px", textAlign: "center", paddingBottom: "20px" }}>
+                  <a onClick={() => {  setManualEntry(!manualEntry); }} expand="full" >
+                    <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                    {manualEntry ? "Back to timer" : "Enter minutes manually"}
+                  </a>
               </IonCol>
-            ) : (
-              <ManualTime id={gid} task={currentTask} onSubmit={setMinutes}></ManualTime>
-            )}
-          </IonRow>
-          <IonRow>
-            <IonCol style={{ padding: "0px", textAlign: "center", paddingBottom: "20px" }}>
-                <a onClick={() => {  setManualEntry(!manualEntry); }} expand="full" >
-                  <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                  {manualEntry ? "Back to timer" : "Enter minutes manually"}
-                </a>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol style={{textAlign: "center"}}>
-            { ready ? <IonButton onClick={save} expand="full" routerLink="/addmovement">Save Activity <IonIcon icon={arrowForwardOutline} /></IonButton> : "" }
-            </IonCol>
-          </IonRow>
-          <IonRow><IonCol>
-          <TotalTimer target={group.myTargetToday} logged={group.myMinutesToday + minutes} />
-          </IonCol></IonRow>
-        </IonGrid>
+            </IonRow>
+            <IonRow>
+              <IonCol style={{textAlign: "center"}}>
+              { ready ? <IonButton onClick={save} expand="full" routerLink="/addmovement">Save Activity <IonIcon icon={arrowForwardOutline} /></IonButton> : "" }
+              </IonCol>
+            </IonRow>
+            <IonRow><IonCol>
+              <TotalTimer target={group.myTargetToday} logged={group.myMinutesToday + minutes} />
+            </IonCol></IonRow>
+          </IonGrid>
+        </IonCard>
       </IonContent>
     </>
   );
