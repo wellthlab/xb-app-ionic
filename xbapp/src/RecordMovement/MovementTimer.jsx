@@ -7,7 +7,7 @@ import {
   IonRow,
   IonItem,
   IonLabel,
-  IonFooter,
+  IonContent,
 } from "@ionic/react";
 import { addCircleOutline, informationCircleOutline, arrowForwardOutline } from "ionicons/icons";
 import { connect } from "react-redux";
@@ -97,54 +97,55 @@ function MovementTimer(props) {
   return (
     <>
       <XBHeader title="Record Movement"></XBHeader>
-      {/* Exercise and for how long header -- press for details */}
-      <IonItem
-        detailIcon={informationCircleOutline}
-        detail={true}
-        color={"secondary"}
-        // href={"/"}  // todo: link to info page about task
-      >
-        <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
-      </IonItem>
+      <IonContent>
+        {/* Exercise and for how long header -- press for details */}
+        <IonItem
+          detailIcon={informationCircleOutline}
+          detail={true}
+          color={"secondary"}
+          // href={"/"}  // todo: link to info page about task
+        >
+          <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
+        </IonItem>
 
-      {/* Additional content, like the move picker or a video */}
-      { extra }
+        {/* Additional content, like the move picker or a video */}
+        { extra }
 
-      {/* Timer and buttons for manual entry of minutes */}
-      <IonGrid>
-        <IonRow>
-          {!manualEntry ? (
-            <IonCol>
-              {/* entry from timer */}
-              <Timer
-                id={gid}
-                active="false"
-                onPause={setMinutes}
-              ></Timer>
-              <p style={{textAlign: "center"}}>Stop the timer when you're done</p>
+        {/* Timer and buttons for manual entry of minutes */}
+        <IonGrid>
+          <IonRow>
+            {!manualEntry ? (
+              <IonCol>
+                {/* entry from timer */}
+                <Timer
+                  id={gid}
+                  active="false"
+                  onPause={setMinutes}
+                ></Timer>
+                <p style={{textAlign: "center"}}>Stop the timer when you're done</p>
+              </IonCol>
+            ) : (
+              <ManualTime id={gid} task={currentTask} onSubmit={setMinutes}></ManualTime>
+            )}
+          </IonRow>
+          <IonRow>
+            <IonCol style={{ padding: "0px", textAlign: "center", paddingBottom: "20px" }}>
+                <a onClick={() => {  setManualEntry(!manualEntry); }} expand="full" >
+                  <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                  {manualEntry ? "Back to timer" : "Enter minutes manually"}
+                </a>
             </IonCol>
-          ) : (
-            <ManualTime id={gid} task={currentTask} onSubmit={setMinutes}></ManualTime>
-          )}
-        </IonRow>
-        <IonRow>
-          <IonCol style={{ padding: "0px", textAlign: "center", paddingBottom: "20px" }}>
-              <a onClick={() => {  setManualEntry(!manualEntry); }} expand="full" >
-                <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                {manualEntry ? "Back to timer" : "Enter minutes manually"}
-              </a>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol style={{textAlign: "center"}}>
-          { ready ? <IonButton onClick={save} expand="full" routerLink="/addmovement">Save Activity <IonIcon icon={arrowForwardOutline} /></IonButton> : "" }
-          </IonCol>
-        </IonRow>
-        <IonRow><IonCol>
-        <TotalTimer target={group.myTargetToday} logged={group.myMinutesToday + minutes} />
-        </IonCol></IonRow>
-      </IonGrid>
-
+          </IonRow>
+          <IonRow>
+            <IonCol style={{textAlign: "center"}}>
+            { ready ? <IonButton onClick={save} expand="full" routerLink="/addmovement">Save Activity <IonIcon icon={arrowForwardOutline} /></IonButton> : "" }
+            </IonCol>
+          </IonRow>
+          <IonRow><IonCol>
+          <TotalTimer target={group.myTargetToday} logged={group.myMinutesToday + minutes} />
+          </IonCol></IonRow>
+        </IonGrid>
+      </IonContent>
     </>
   );
 }
