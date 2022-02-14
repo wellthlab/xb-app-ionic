@@ -125,13 +125,13 @@ const GroupInfo = ({ group, controllers, match }) => {
           </IonRow>
 
           <IonRow>
-            <IonCol size="6">
+            <IonCol size="5">
               <IonItem lines="none" style={{ fontSize: "15px" }}>
                 <IonIcon icon={peopleOutline} slot="start" />
                 {members}
               </IonItem>
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="7">
               <IonItem lines="none" style={{ fontSize: "15px" }}>
                 <IonLabel>Team Code:</IonLabel>
                 <IonInput readonly={true} value={group.code}></IonInput>
