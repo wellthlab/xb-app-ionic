@@ -25,6 +25,7 @@ import {
   IonSegmentButton,
   IonFab,
   IonFabButton,
+  IonInput,
   IonFabList,
   IonProgressBar,
 } from "@ionic/react";
@@ -86,61 +87,64 @@ const GroupInfo = ({ group, controllers, match }) => {
     //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
       <>
-      <IonGrid>
-        <IonRow>
-          <IonCol>
-            <h2 slot="start">{group.experiment.title}</h2>
-          </IonCol>
-        </IonRow>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <h2 slot="start">{group.experiment.title}</h2>
+            </IonCol>
+          </IonRow>
 
-        <IonRow>
-          <IonCol>
-            <IonItem lines="none">
-              <Instructions
-                html={group.experiment.current_stage.instructions}
+          <IonRow>
+            <IonCol>
+              <IonItem lines="none">
+                <Instructions
+                  html={group.experiment.current_stage.instructions}
+                />
+              </IonItem>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol>
+              <IonItem lines="none">
+                <IonIcon icon={todayOutline} slot="start" /> {daydesc}
+              </IonItem>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol>
+              <IonProgressBar
+                value={
+                  day > group.experiment.info.duration
+                    ? 1
+                    : day / group.experiment.info.duration
+                }
               />
-            </IonItem>
-          </IonCol>
-        </IonRow>
+            </IonCol>
+          </IonRow>
 
-        <IonRow>
-          <IonCol>
-            <IonItem lines="none">
-              <IonIcon icon={todayOutline} slot="start" /> {daydesc}
-            </IonItem>
-          </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
-            <IonProgressBar
-              value={
-                day > group.experiment.info.duration ? 1 : day / group.experiment.info.duration
-              }
-            />
-          </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
-            <IonItem lines="none">
-              <IonIcon icon={peopleOutline} slot="start" /> {members}
-            </IonItem>
-          </IonCol>
-          <IonCol>
-            <IonItem lines="none">
-              Team Code: <strong>{group.code}</strong>
-            </IonItem>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonLabel>Today's Tasks</IonLabel>
-            <DailyActions group={group} today={day} tabs={false} />
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-
+          <IonRow>
+            <IonCol size="6">
+              <IonItem lines="none" style={{ fontSize: "15px" }}>
+                <IonIcon icon={peopleOutline} slot="start" />
+                {members}
+              </IonItem>
+            </IonCol>
+            <IonCol size="6">
+              <IonItem lines="none" style={{ fontSize: "15px" }}>
+                <IonLabel>Team Code:</IonLabel>
+                <IonInput readonly={true} value={group.code}></IonInput>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonLabel>Today's Tasks</IonLabel>
+              <DailyActions group={group} today={day} tabs={false} />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </>
     );
   } else if (view == "tasks") {
@@ -196,8 +200,7 @@ const GroupInfo = ({ group, controllers, match }) => {
   };
 
   return (
-
-      /*<IonSegment onIonChange={setSegment} value={view}>
+    /*<IonSegment onIonChange={setSegment} value={view}>
         <IonSegmentButton value="info">
           <IonIcon icon={informationCircleOutline} /> Info
         </IonSegmentButton>
@@ -211,9 +214,7 @@ const GroupInfo = ({ group, controllers, match }) => {
           <IonIcon icon={barChart} /> Charts
         </IonSegmentButton>
       </IonSegment>*/
-    <>
-      {content}
-    </>
+    <>{content}</>
   );
 };
 
