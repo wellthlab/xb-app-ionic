@@ -207,17 +207,6 @@ class OptionTabs extends Component {
               </IonCardHeader>
               <IonCardContent>
               <IonList>
-            <IonItem>
-              <Link
-                style={{ textDecoration: "none", color: "inherit" }}
-                to={{
-                  pathname: `/timeline`,
-                  weekNo: week,
-                }}
-              >
-                Study Timeline
-              </Link>
-            </IonItem>
 
             <IonItem routerLink="/about">XB study</IonItem>
           </IonList>
