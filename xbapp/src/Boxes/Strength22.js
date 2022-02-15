@@ -189,7 +189,7 @@ const decorateTeam = (team) => {
           case 3:
 
             qreq.push({
-              type: "s22assessedvideo",
+              type: "s22manage",
               desc: "Try a sit and stand",
               verb: "TRY",
               move: "sit and stand",

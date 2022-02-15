@@ -34,13 +34,19 @@
  import WebLink from "../Strength/WebLink";
  import OtherMove from "../Strength/OtherMove";
  import Timer from "../Instruments/StatelessTimer";
+ import ManageItQuestion from "../Strength/ManageItQuestion";
 
  import React, { useState, useEffect } from "react";
  import {
    IonCard,
    IonCardHeader,
    IonCardTitle,
-   IonCardSubtitle
+   IonCardSubtitle,
+   IonCardContent,
+   IonItem,
+   IonRow,
+   IonCol,
+   IonButton,
  } from "@ionic/react";
 
 /**
@@ -57,7 +63,7 @@
  2) Some widgets are actually composed of multiple, each of which will trigger onSubmit; so you probably want to merge the response objects together!
 
  */
-export default function responseFactory(type, group, daynumber, onSubmit, info) {
+ export default function responseFactory(type, group, daynumber, onSubmit, info) {
 
   // time key is used to re-create rather than re-use elements on subsequent uses
   var time = Date.now();
@@ -238,6 +244,23 @@ export default function responseFactory(type, group, daynumber, onSubmit, info) 
     case "s22other":
       input = <OtherMove onSubmit={onSubmit} />
       typedesc = "Other Movement";
+      break;
+
+    case "s22manage":
+      input = <>
+        {info.video ? <Video onSubmit={onSubmit} video={info.video}/> : ""}
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Did you manage it?</IonCardTitle>
+            <IonCardContent>
+              <ManageItQuestion attempt={1} onSubmit={onSubmit}/>
+              <ManageItQuestion attempt={2} onSubmit={onSubmit}/>
+              <ManageItQuestion attempt={3} onSubmit={onSubmit}/>
+            </IonCardContent>
+          </IonCardHeader>
+        </IonCard>
+      </>
+      typedesc = "Manage It";
       break;
 
     default:
