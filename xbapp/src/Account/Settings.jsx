@@ -19,6 +19,7 @@ import {
   IonLabel,
   IonBadge,
   IonAlert,
+  IonSpinner,
 } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 
@@ -181,6 +182,11 @@ class OptionTabs extends Component {
   }
 
   render() {
+    this.props.controllers.LOAD_TEAMS_IF_REQD();
+    if (!this.props.teams.teams.bybox) {
+      return <IonSpinner name="crescent" class="spin" />;
+    }
+
     if (this.props.teams.teams.bybox["move"]){
       let day = this.props.teams.teams.bybox["move"][0].experiment.day;
     var week = Math.floor((day - 1) / 7);
