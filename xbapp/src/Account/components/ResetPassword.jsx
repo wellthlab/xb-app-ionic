@@ -1,27 +1,31 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { ACCEPT_LOGIN } from "../model/slices/Account";
+import { ACCEPT_LOGIN } from "../../util_model/slices/Account";
 import {
   IonContent,
   IonButton,
   IonItem,
   IonInput,
   IonCard,
-  IonItemDivider,
 } from "@ionic/react";
 
-import getXBClient from "../model/client";
-import XBHeader from "./util/XBHeader";
+import getXBClient from "../../util_model/client";
 import "./Register.scss";
 import { useHistory } from "react-router-dom";
 
-import { NavContext } from "@ionic/react";
-import GenericModal from "./GenericModal";
+import GenericModal from "../../Info/components/GenericModal";
 import PIS from "./PIS";
-import { Search } from "@material-ui/icons";
-import { searchCircleOutline } from "ionicons/icons";
 
-const autoBindReact = require("auto-bind/react");
+function getQueryParamsFromSearch(query) {
+  const regex = /token=([^&]*)&tokenId=([^&]*)/g;
+  // Extract matches and capturing groups from string
+  // Query expected in the form /?token=<tokenString>&tokenId=<tokenIdString>
+  const matches = [...query.matchAll(regex)][0];
+  const queryParams = {};
+  queryParams.token = matches[1];
+  queryParams.tokenId = matches[2];
+  return queryParams;
+}
 
 const Register = ({ query }) => {
   console.log("Token", query);
@@ -61,17 +65,6 @@ const Register = ({ query }) => {
         Reset Password
       </IonButton>
     );
-  }
-
-  function getQueryParamsFromSearch(query) {
-    const regex = /token=([^&]*)&tokenId=([^&]*)/g;
-    // Extract matches and capturing groups from string
-    // Query expected in the form /?token=<tokenString>&tokenId=<tokenIdString>
-    const matches = [...query.matchAll(regex)][0];
-    const queryParams = {};
-    queryParams.token = matches[1];
-    queryParams.tokenId = matches[2];
-    return queryParams;
   }
 
   function resetPassword(e) {

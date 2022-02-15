@@ -51,6 +51,7 @@ import ProtocolChartPage from "./Info/ProtocolChartPage";
 import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
 import ForgotPassword from "./Account/ForgotPassword";
+import ResetPassword from './Account/ResetPassword';
 
 import OptionTabs from "./Account/Settings";
 import Notifications from "./Account/Notifications";
@@ -313,6 +314,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
             component={ForgotPassword}
             exact={true}
           />
+          <Route path="/reset-password" component={ResetPassword} exact />
         </Switch>
       </IonRouterOutlet>
     );
