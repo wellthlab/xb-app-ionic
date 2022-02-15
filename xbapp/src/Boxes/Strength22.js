@@ -199,10 +199,10 @@ const decorateTeam = (team) => {
 
             qreq.push({
               type: "s22video",
-              desc: "Knee  and hip mobility",
+              desc: "Knee and hip mobility",
               verb: "MOVE",
               timed: true,
-              video: ""
+              video: "bWkPB4WgTn0"
             });
 
             qreq.push({
@@ -211,14 +211,6 @@ const decorateTeam = (team) => {
               verb: "LEARN",
               timed: true,
               link: "https://livinglab.soton.ac.uk/unilaterals/"
-            });
-
-            qreq.push({
-              type: "s22weblink",
-              desc: "Learn about reps, sets and blocks",
-              verb: "LEARN",
-              timed: true,
-              link: "https://livinglab.soton.ac.uk/protocol/"
             });
 
             break;
