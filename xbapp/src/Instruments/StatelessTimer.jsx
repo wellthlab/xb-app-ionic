@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
 
 function StatelessTimer({showButtons, onPause}) {
+  const [started, setStarted] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
@@ -14,6 +15,8 @@ function StatelessTimer({showButtons, onPause}) {
       if(onPause) {
         onPause(seconds / 60);
       }
+    } else {
+      setStarted(Date.now() - (seconds* 1000));
     }
     setIsActive(!isActive);
   }
@@ -25,14 +28,15 @@ function StatelessTimer({showButtons, onPause}) {
   useEffect(() => {
     let interval = null;
     if (isActive) {
+      var elapsed = (Date.now() - started) / 1000;
       interval = setInterval(() => {
-        setSeconds(seconds+1);
+        setSeconds(elapsed);
       }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isActive, seconds]);
+  }, [isActive, seconds, started]);
 
   var buttonsOnShow = true;
 
@@ -40,7 +44,7 @@ function StatelessTimer({showButtons, onPause}) {
     showButtons = true;
   }
 
-  var rsecs = seconds % 60;
+  var rsecs = Math.floor(seconds % 60);
   var minutes = Math.floor((seconds % 3600) / 60);
   var hours = Math.floor(seconds / 3600);
 
