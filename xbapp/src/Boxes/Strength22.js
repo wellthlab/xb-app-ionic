@@ -2,6 +2,9 @@
 * This is the experiment-specific code for the Spring 2022 Strength in Work Experiment
 */
 
+import { QueuePlayNextSharp } from "@material-ui/icons";
+import { qrCodeSharp } from "ionicons/icons";
+
 /**
 * The experiment is passed the team record that it represents.
 * The team record will have experiment information attached; but may be
@@ -112,7 +115,7 @@ const decorateTeam = (team) => {
 
       console.log("effectiveWeek", effWeek);
 
-      if(effWeek == 1) {
+      if(effWeek === 1) {
         switch(dow) {
 
           case 1:
@@ -181,23 +184,103 @@ const decorateTeam = (team) => {
                 link: "https://livinglab.soton.ac.uk/bilateral/"
               });
 
-
             break;
 
           case 3:
+
+            qreq.push({
+              type: "s22assessedvideo",
+              desc: "Try a sit and stand",
+              verb: "TRY",
+              move: "sit and stand",
+              timed: true,
+              video: "T7AFlh9HZrs",
+              });
+
+            qreq.push({
+              type: "s22video",
+              desc: "Knee  and hip mobility",
+              verb: "MOVE",
+              timed: true,
+              video: ""
+            });
+
+            qreq.push({
+              type: "s22weblink",
+              desc: "Learn about unilateral moves",
+              verb: "LEARN",
+              timed: true,
+              link: "https://livinglab.soton.ac.uk/unilaterals/"
+            });
+
+            qreq.push({
+              type: "s22weblink",
+              desc: "Learn about reps, sets and blocks",
+              verb: "LEARN",
+              timed: true,
+              link: "https://livinglab.soton.ac.uk/protocol/"
+            });
 
             break;
 
           case 4:
 
+            qreq.push({
+              type: "s22assessedvideo",
+              desc: "Try to balance",
+              verb: "TRY",
+              move: "balance",
+              timed: true,
+              video: "X_2hjT0MmfQ",
+            });
+
+            qreq.push({
+              type: "s22video",
+              desc: "Mid-back, neck and jaw mobility",
+              verb: "MOVE",
+              timed: true,
+              video: "",
+            });
+
+            qrCodeSharp.push({
+              type: "s22weblink",
+              desc: "Learn about carrying, rotations and hanging",
+              verb: "LEARN",
+              timed: true,
+              link: ""
+            })
+
             break;
 
           case 5:
 
+            qreq.push({
+              type: "s22weblink",
+              desc: "Measure your body fat",
+              verb: "TRY",
+              timed: true,
+              link: "https://www.mytecbits.com/tools/medical/navy-body-fat-calculator"
+            });
+
+            qreq.push({
+              type: "s22video",
+              desc: "Shoulder and hand mobility",
+              verb: "MOVE",
+              timed: true,
+              link: ""
+            })
+
+            qreq.push({
+              type: "s22video",
+              desc: "Putting sequences together",
+              verb: "MOVE",
+              timed: true,
+              link: ""
+            })
+
             break;
 
-          case 6:
-
+          default:
             break;
         }
       }
