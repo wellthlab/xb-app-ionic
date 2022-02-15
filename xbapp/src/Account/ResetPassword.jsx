@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import ResetPassword from "../components/ResetPassword";
+import ResetPassword from "./components/ResetPassword";
 import "./ResetPassword.scss";
 
 const TabResetPassword = (props) => {
