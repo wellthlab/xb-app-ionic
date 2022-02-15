@@ -16,7 +16,11 @@ function ManageItQuestion({ attempt, onSubmit }) {
             disabled={yesDisabled}
             onClick={() => {
               setNoDisabled(true);
-              onSubmit({ manageit: "yes", attempt: attempt });
+              onSubmit({
+                assType: "manageit",
+                attempts: attempt,
+                response: "yes",
+              });
             }}
           >
             Yes
@@ -25,7 +29,11 @@ function ManageItQuestion({ attempt, onSubmit }) {
             disabled={noDisabled}
             onClick={() => {
               setYesDisabled(true);
-              onSubmit({ manageit: "no", attempt: attempt });
+              onSubmit({
+                assType: "manageit",
+                attempts: attempt,
+                response: "no",
+              });
             }}
           >
             No
