@@ -17,6 +17,9 @@ import GenericModal from "../../Info/components/GenericModal";
 import PIS from "./PIS";
 
 function getQueryParamsFromSearch(query) {
+
+  // TODO: use URLSearchParams API when refactoring in branch "cleanup"
+
   const regex = /token=([^&]*)&tokenId=([^&]*)/g;
   // Extract matches and capturing groups from string
   // Query expected in the form /?token=<tokenString>&tokenId=<tokenIdString>
