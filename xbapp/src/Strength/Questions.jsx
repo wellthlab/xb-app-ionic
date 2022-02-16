@@ -20,19 +20,21 @@ import {
 import { arrowForwardOutline } from "ionicons/icons";
 
 // Free-form text input
-function QuestionText({ label, type, setValue, disabled }) {
+function QuestionText({ question, type, value, setValue, resLabel, onSubmit }) {
+  var response = {};
   return (
     <>
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonLabel position="floating">{label}</IonLabel>
+            <IonLabel position="floating">{question}</IonLabel>
             <IonInput
+              value={value}
               type={type}
               onIonChange={(e) => {
                 setValue(e.detail.value);
+                onSubmit((response[resLabel] = e.detail.value));
               }}
-              disabled={disabled}
             ></IonInput>
           </IonItem>
         </IonCol>
@@ -42,7 +44,15 @@ function QuestionText({ label, type, setValue, disabled }) {
 }
 
 // Choice question, with a dropdown
-function QuestionChoice({ label, choices, value, setValue, disabled }) {
+function QuestionChoice({
+  question,
+  choices,
+  value,
+  setValue,
+  resLabel,
+  onSubmit,
+}) {
+  let response = {};
   let selections = choices.map((choice) => {
     return <IonSelectOption value={choice}>{choice}</IonSelectOption>;
   });
@@ -52,14 +62,14 @@ function QuestionChoice({ label, choices, value, setValue, disabled }) {
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonLabel position="floating">{label}</IonLabel>
+            <IonLabel position="floating">{question}</IonLabel>
             <IonSelect
               multiple={false}
               value={value}
               onIonChange={(e) => {
                 setValue(e.detail.value);
+                onSubmit((response[resLabel] = e.detail.value));
               }}
-              disabled={disabled}
             >
               {selections}
             </IonSelect>
@@ -80,24 +90,7 @@ function ContextualQuestions({ onSubmit }) {
   let [whoWith, setWhoWith] = useState(undefined);
   let [timeOfDay, setTimeOfDay] = useState(undefined);
   let [indoorsOrOutdoors, setIndoorsOrOutdoors] = useState(undefined);
-  let [inputDisabled, setInputDisabled] = useState(false);
-
-  // if any of the fields are filled, the button is clickable
-  let buttonClickable =
-    location || whoWith || atHomeOrWork || timeOfDay || indoorsOrOutdoors;
-
-  // add the inputs to the onSubmit callback and set input to readonly
-  function saveResponses() {
-    onSubmit({
-      type: "contextualQuestions",
-      location: location,
-      whoWith: whoWith,
-      atHome: atHomeOrWork,
-    });
-    // button is unclickable after submission, to avoid multiple re-submissions messing things up
-    // TOOD: double-check if I need to do this
-    setInputDisabled(true);
-  }
+  let [workDay, setWorkDay] = useState(undefined);
 
   return (
     <>
@@ -112,51 +105,55 @@ function ContextualQuestions({ onSubmit }) {
         <IonCardContent>
           <IonList>
             <QuestionChoice
-              label={"Are you at home, or work?"}
+              question={"Is today a work day?"}
+              choices={["Yes", "No"]}
+              value={workDay}
+              setValue={setWorkDay}
+              resLabel={"workDay"}
+              onSubmit={onSubmit}
+            />
+            <QuestionChoice
+              question={"Are you at home, or work?"}
               choices={["Home", "Work"]}
               value={atHomeOrWork}
               setValue={setAtHomeOrWork}
-              disabled={inputDisabled}
+              resLabel={"atHomeOrWork"}
+              onSubmit={onSubmit}
             />
             <QuestionChoice
-              label={"Indoors or outdoors?"}
+              question={"Indoors or outdoors?"}
               choices={["Indoors", "Outdoors"]}
               value={indoorsOrOutdoors}
               setValue={setIndoorsOrOutdoors}
-              disabled={inputDisabled}
+              resLabel={"indoorsOrOutdoors"}
+              onSubmit={onSubmit}
             />
             <QuestionText
-              label="Where are you, i.e. office or living room?"
+              question="Where are you, i.e. office or living room?"
               type="text"
-              placeholder="home"
+              value={location}
               setValue={setLocation}
-              disabled={inputDisabled}
+              resLabel={"location"}
+              onSubmit={onSubmit}
             />
             <QuestionChoice
-              label={"What time of day is it?"}
+              question={"What time of day is it?"}
               choices={["Morning", "Afternoon", "Evening"]}
               value={timeOfDay}
               setValue={setTimeOfDay}
-              disabled={inputDisabled}
+              resLabel={"timeOfDay"}
+              onSubmit={onSubmit}
             />
             <QuestionChoice
-              label="Alone, or with others?"
+              question="Alone, or with others?"
               choices={["Alone", "With others"]}
               value={whoWith}
               setValue={setWhoWith}
-              disabled={inputDisabled}
+              resLabel={"whoWith"}
+              onSubmit={onSubmit}
             />
           </IonList>
         </IonCardContent>
-        <div className="row" style={{ textAlign: "center" }}>
-          <IonButton
-            expand="full"
-            onClick={saveResponses}
-            disabled={!buttonClickable || inputDisabled} // button only clickable if a field is filled, or if answers not submitted
-          >
-            Save Responses <IonIcon icon={arrowForwardOutline} />
-          </IonButton>
-        </div>
       </IonCard>
     </>
   );
