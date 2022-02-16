@@ -35,6 +35,7 @@
  import OtherMove from "../Strength/OtherMove";
  import Timer from "../Instruments/StatelessTimer";
  import ManageItQuestion from "../Strength/ManageItQuestion";
+ import ContextualQuestions from "../Strength/Questions";
 
  import React, { useState, useEffect } from "react";
  import {
@@ -218,7 +219,10 @@
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={info.video} />;
+      input = <>
+        <Video onSubmit={onSubmit} video={info.video} />;
+        <ContextualQuestions onSubmit={onSubmit}/>
+      </>;
       typedesc = "Video Move";
       break;
 
@@ -232,7 +236,8 @@
         </IonCardHeader>
         <Timer onPause={(mins) => { onSubmit({'assTimeSecs': mins * 60}); }} />
         </IonCard>
-      </>
+        <ContextualQuestions onSubmit={onSubmit}/>
+      </>;
       typedesc = "Assessment Move";
       break;
 
@@ -242,7 +247,10 @@
       break;
 
     case "s22other":
-      input = <OtherMove onSubmit={onSubmit} />
+      input = <>
+        <OtherMove onSubmit={onSubmit} />
+        <ContextualQuestions onSubmit={onSubmit}/>
+      </>;
       typedesc = "Other Movement";
       break;
 
@@ -252,13 +260,13 @@
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>Did you manage it?</IonCardTitle>
-            <IonCardContent>
-              <ManageItQuestion attempt={1} onSubmit={onSubmit}/>
-              <ManageItQuestion attempt={2} onSubmit={onSubmit}/>
-              <ManageItQuestion attempt={3} onSubmit={onSubmit}/>
-            </IonCardContent>
+            <IonCardSubtitle>This will let you track your progress</IonCardSubtitle>
           </IonCardHeader>
+            <ManageItQuestion attempt={1} onSubmit={onSubmit}/>
+            <ManageItQuestion attempt={2} onSubmit={onSubmit}/>
+            <ManageItQuestion attempt={3} onSubmit={onSubmit}/>
         </IonCard>
+        <ContextualQuestions onSubmit={onSubmit}/>
       </>
       typedesc = "Manage It";
       break;
