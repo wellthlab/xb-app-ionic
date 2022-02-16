@@ -2,12 +2,9 @@ import { useState } from "react";
 import {
   IonCard,
   IonInput,
-  IonButton,
-  IonGrid,
   IonList,
   IonRow,
   IonCardTitle,
-  IonIcon,
   IonItem,
   IonCardContent,
   IonLabel,
@@ -17,7 +14,6 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import { arrowForwardOutline } from "ionicons/icons";
 
 // Free-form text input
 function QuestionText({ question, type, value, setValue, resLabel, onSubmit }) {
@@ -32,8 +28,9 @@ function QuestionText({ question, type, value, setValue, resLabel, onSubmit }) {
               value={value}
               type={type}
               onIonChange={(e) => {
+                response[resLabel] = e.detail.value;
                 setValue(e.detail.value);
-                onSubmit((response[resLabel] = e.detail.value));
+                onSubmit(response);
               }}
             ></IonInput>
           </IonItem>
@@ -67,8 +64,9 @@ function QuestionChoice({
               multiple={false}
               value={value}
               onIonChange={(e) => {
+                response[resLabel] = e.detail.value;
                 setValue(e.detail.value);
-                onSubmit((response[resLabel] = e.detail.value));
+                onSubmit(response);
               }}
             >
               {selections}
