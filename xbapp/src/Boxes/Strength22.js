@@ -231,16 +231,16 @@ const decorateTeam = (team) => {
               desc: "Mid-back, neck and jaw mobility",
               verb: "MOVE",
               timed: true,
-              video: "",
+              video: "eMQSeR50d00",
             });
 
-            qrCodeSharp.push({
-              type: "s22weblink",
-              desc: "Learn about carrying, rotations and hanging",
-              verb: "LEARN",
-              timed: true,
-              link: ""
-            })
+            // qreq.push({
+            //   type: "s22weblink",
+            //   desc: "Learn about carrying, rotations and hanging",
+            //   verb: "LEARN",
+            //   timed: true,
+            //   link: ""
+            // })
 
             break;
 
