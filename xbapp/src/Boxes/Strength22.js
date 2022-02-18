@@ -277,7 +277,8 @@ const decorateTeam = (team) => {
       type: 's22other',
       desc: "Add some other movement",
       verb: "ADD",
-      timed: true
+      timed: true,
+      s22onPath: true
     });
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
