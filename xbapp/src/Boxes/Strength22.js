@@ -76,7 +76,8 @@ const decorateTeam = (team) => {
         qreq.push({
           type: 's22path',
           desc: 'You need to choose a path',
-          verb: 'CHOOSE'
+          verb: 'CHOOSE',
+          s22onPath: false,
         });
       }
       else
@@ -84,13 +85,15 @@ const decorateTeam = (team) => {
         others.push({
           type: 's22path',
           desc: 'You can change your path',
-          verb: 'CHANGE'
+          verb: 'CHANGE',
+          s22onPath: false,
         });
 
         qreq.push({
           type: 's22plan',
           desc: 'You need to plan your week',
-          verb: 'PLAN'
+          verb: 'PLAN',
+          s22onPath: false,
         });
       }
 
@@ -100,13 +103,15 @@ const decorateTeam = (team) => {
       others.push({ // An optional re-planning task
         type: 's22plan',
         desc: 'You can change your weekly plan',
-        verb: 'PLAN'
+        verb: 'PLAN',
+        s22onPath: false,
       });
 
       others.push({
         type: 's22path',
         desc: 'You can change your path',
-        verb: 'CHANGE'
+        verb: 'CHANGE',
+        s22onPath: false,
       });
 
 
@@ -261,6 +266,8 @@ const decorateTeam = (team) => {
           desc: "Push and pull block",
           verb: "SET",
           timed: true,
+          s22onPath: true,
+          path: "builder",
           moves: ["lsit", "stepup"]
         })
       }

@@ -292,31 +292,47 @@ export default function responseFactory(
       break;
 
     case "s22superset":
+      // TODO: factor into a superset component
       console.log("info", info);
       let moveA = getMove(info.moves[0]);
       let moveB = getMove(info.moves[1]);
       input = (
         <>
           <IonGrid>
+            {/* Move A */}
             <IonRow>
               <IonCol>
-                <MovementInfoCard
-                  titleSize={"normal"}
-                  key={moveA.id}
-                  images={moveA.images}
-                  name={moveA.name}
-                ></MovementInfoCard>
+                <IonItem routerLink={"/movedetail/" + info.moves[1]}>
+                  <MovementInfoCard
+                    titleSize={"normal"}
+                    key={moveA.id}
+                    images={moveA.images}
+                    name={moveA.name}
+                  />
+                </IonItem>
               </IonCol>
-
+              {/* move B */}
               <IonCol>
-                <MovementInfoCard
-                  titleSize={"normal"}
-                  key={moveB.id}
-                  images={moveB.images}
-                  name={moveB.name}
-                ></MovementInfoCard>
+                {/* click to go to rep counter and info about move -- page doesn't render for some reason SCREAMING AND CRYING */}
+                <IonItem routerLink={"/movedetail/" + info.moves[1]}>
+                  <MovementInfoCard
+                    titleSize={"normal"}
+                    key={moveB.id}
+                    images={moveB.images}
+                    name={moveB.name}
+                  />
+                </IonItem>
               </IonCol>
             </IonRow>
+            {/* Help text etc */}
+            {/* <IonRow>
+              <IonCol>
+                <IonItem class="ion-text-center">
+                  <h3>Click a move to start the super set!</h3>
+                </IonItem>
+              </IonCol>
+            </IonRow> */}
+            {/* Button to change moves if they want */}
             <IonRow>
               <IonCol>
                 <IonButton expand="full">Change your moves</IonButton>
@@ -324,22 +340,6 @@ export default function responseFactory(
             </IonRow>
           </IonGrid>
 
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>Track your super set!</IonCardTitle>
-              <IonCardSubtitle>
-                Track your progress here. Remember, each set is made up of five
-                reps.
-              </IonCardSubtitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <SetCounter
-                sets={0}
-                showReps={true}
-                onSubmit={onSubmit}
-              ></SetCounter>
-            </IonCardContent>
-          </IonCard>
           <ContextualQuestions onSubmit={onSubmit} />
         </>
       );

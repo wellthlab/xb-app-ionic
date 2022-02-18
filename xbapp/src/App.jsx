@@ -31,7 +31,7 @@ import {
   trophyOutline,
   playOutline,
   barbellOutline,
-  bookOutline
+  bookOutline,
 } from "ionicons/icons";
 
 // Redux stuff
@@ -51,7 +51,7 @@ import ProtocolChartPage from "./Info/ProtocolChartPage";
 import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
 import ForgotPassword from "./Account/ForgotPassword";
-import ResetPassword from './Account/ResetPassword';
+import ResetPassword from "./Account/ResetPassword";
 
 import OptionTabs from "./Account/Settings";
 import Notifications from "./Account/Notifications";
@@ -117,6 +117,7 @@ import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
 import XBHeader from "./util/XBHeader";
+import MoveDetail from "./Strength/moveDetail";
 
 /****************************************************************/
 
@@ -185,15 +186,12 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={MovementPicker}
                 exact={true}
               />
-
               /** * Data entry / tasks */
               <Route
                 path="/box/move/:id/:day/add/:type"
                 component={AddResponse}
                 exact={true}
               />
-
-
               /** * Charts */
               <Route
                 path="/box/move/:id/charts"
@@ -267,6 +265,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/timer/:id/:day/:task/:index"
                 component={MovementTimer}
+                exact={true}
+              />
+              <Route
+                path="/movedetail/:name"
+                component={MoveDetail}
                 exact={true}
               />
             </Switch>

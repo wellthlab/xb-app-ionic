@@ -55,63 +55,67 @@ function TodoTasks(props) {
   const tasks = requiredTasks.map((task, taskindex) => {
     let done = false;
 
-    return (
-      <IonItem
-        color={done ? "" : "primary"}
-        key={taskindex}
-        routerLink={
-          "/timer/" +
-          groupID +
-          "/" +
-          activeDay +
-          "/" +
-          task.type +
-          "/" +
-          taskindex
-        }
-      >
-        <IonButton
-          fill="clear"
-          expand={"full"}
-          onClick={() => {
-            localStorage.setItem("currentTask", JSON.stringify(task));
-          }}
-        ></IonButton>
-        <IonIcon slot="start" icon={done ? icon_done : playOutline} />
-        {task.desc}
-      </IonItem>
-    );
+    if (task.timed && task.s22onPath) {
+      return (
+        <IonItem
+          color={done ? "" : "primary"}
+          key={taskindex}
+          routerLink={
+            "/timer/" +
+            groupID +
+            "/" +
+            activeDay +
+            "/" +
+            task.type +
+            "/" +
+            taskindex
+          }
+        >
+          <IonButton
+            fill="clear"
+            expand={"full"}
+            onClick={() => {
+              localStorage.setItem("currentTask", JSON.stringify(task));
+            }}
+          ></IonButton>
+          <IonIcon slot="start" icon={done ? icon_done : playOutline} />
+          {task.desc}
+        </IonItem>
+      );
+    }
   });
 
   const optional = optionalTasks.map((task, taskindex) => {
     let done = false;
 
-    return (
-      <IonItem
-        color={done ? "" : "secondary"}
-        key={taskindex}
-        routerLink={
-          "/timer/" +
-          groupID +
-          "/" +
-          activeDay +
-          "/" +
-          task.type +
-          "/" +
-          taskindex
-        }
-      >
-        <IonButton
-          fill="clear"
-          expand={"full"}
-          onClick={() => {
-            localStorage.setItem("currentTask", JSON.stringify(task));
-          }}
-        ></IonButton>
-        <IonIcon slot="start" icon={done ? icon_done : playOutline} />
-        {task.desc}
-      </IonItem>
-    );
+    if (task.timed && task.s22onPath) {
+      return (
+        <IonItem
+          color={done ? "" : "secondary"}
+          key={taskindex}
+          routerLink={
+            "/timer/" +
+            groupID +
+            "/" +
+            activeDay +
+            "/" +
+            task.type +
+            "/" +
+            taskindex
+          }
+        >
+          <IonButton
+            fill="clear"
+            expand={"full"}
+            onClick={() => {
+              localStorage.setItem("currentTask", JSON.stringify(task));
+            }}
+          ></IonButton>
+          <IonIcon slot="start" icon={done ? icon_done : playOutline} />
+          {task.desc}
+        </IonItem>
+      );
+    }
   });
 
   return (
