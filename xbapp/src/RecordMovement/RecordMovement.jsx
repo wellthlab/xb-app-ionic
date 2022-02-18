@@ -39,6 +39,7 @@ function RecordMovement(props) {
 
   let day = team.experiment.day;
   let requiredTasks = team.experiment.tasks[day].required;
+  let optionalTasks = team.experiment.tasks[day].optional;
   let totalMinutes = team.s22plan.target;
 
   return (
@@ -52,6 +53,7 @@ function RecordMovement(props) {
                 day={day}
                 team={team}
                 tasks={requiredTasks}
+                optional={optionalTasks}
                 minutes={totalMinutes}
               />
             </IonCol>

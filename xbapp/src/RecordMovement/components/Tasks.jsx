@@ -8,7 +8,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonListHeader
+  IonListHeader,
 } from "@ionic/react";
 import {
   checkboxOutline,
@@ -32,27 +32,12 @@ function TodoTasks(props) {
   let totalMinutes = props.minutes;
   let groupID = props.team._id;
   let requiredTasks = props.tasks;
-
-  // Get the entry for the day
-  let entry = null;
-  const dayList = [];
-  let entries = props.team.entries;
-  for (let i in entries) {
-    if (entries[i].day === activeDay) {
-      entry = entries[i];
-    }
-  }
+  let optionalTasks = props.optional;
 
   // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
-    if (entry === null) {
-      console.log(
-        "RecordMovement: entry is null for some reason for day",
-        activeDay
-      );
-    }
     return (
-      <div // TODO: add styling to css
+      <div
         style={{
           display: "flex",
           justifyContent: "center",
@@ -66,7 +51,7 @@ function TodoTasks(props) {
     );
   }
 
-  // TODO: double check tasks appear greyed out when done
+  // TODO: make tasks appear greyed out when done
   const tasks = requiredTasks.map((task, taskindex) => {
     let done = false;
 
@@ -74,7 +59,47 @@ function TodoTasks(props) {
       <IonItem
         color={done ? "" : "primary"}
         key={taskindex}
-        routerLink={"/timer/" + groupID + "/" + activeDay + "/" + task.type + "/" + taskindex}
+        routerLink={
+          "/timer/" +
+          groupID +
+          "/" +
+          activeDay +
+          "/" +
+          task.type +
+          "/" +
+          taskindex
+        }
+      >
+        <IonButton
+          fill="clear"
+          expand={"full"}
+          onClick={() => {
+            localStorage.setItem("currentTask", JSON.stringify(task));
+          }}
+        ></IonButton>
+        <IonIcon slot="start" icon={done ? icon_done : playOutline} />
+        {task.desc}
+      </IonItem>
+    );
+  });
+
+  const optional = optionalTasks.map((task, taskindex) => {
+    let done = false;
+
+    return (
+      <IonItem
+        color={done ? "" : "secondary"}
+        key={taskindex}
+        routerLink={
+          "/timer/" +
+          groupID +
+          "/" +
+          activeDay +
+          "/" +
+          task.type +
+          "/" +
+          taskindex
+        }
       >
         <IonButton
           fill="clear"
@@ -90,10 +115,21 @@ function TodoTasks(props) {
   });
 
   return (
-    <IonList lines="full">
-      <IonListHeader>Today's Activities</IonListHeader>
-      <IonItemGroup>{tasks}</IonItemGroup>
-    </IonList>
+    <>
+      <IonList lines="full">
+        <IonListHeader>
+          <h4>Your path's activities</h4>
+        </IonListHeader>
+        <IonItemGroup>{tasks}</IonItemGroup>
+      </IonList>
+
+      <IonList>
+        <IonListHeader>
+          <h4>Other path's activities</h4>
+        </IonListHeader>
+        <IonItemGroup>{optional}</IonItemGroup>
+      </IonList>
+    </>
   );
 }
 

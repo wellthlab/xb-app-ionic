@@ -112,6 +112,7 @@ const decorateTeam = (team) => {
 
       // Set up other tasks according to week number
       var effWeek = team.s22plan.plan.effectiveWeek;
+      var effWeek = 2;
 
       console.log("effectiveWeek", effWeek);
 
@@ -255,18 +256,13 @@ const decorateTeam = (team) => {
         }
       }
       else if (effWeek === 2) {
-        switch(dow) {
-          case 1:
-            qreq.push({
-              type: "strength-setter",
-              desc: "Set your strength tasks",
-              verb: "SET",
-              timed: false,
-            })
-            break;
-          default:
-            break;
-        }
+        qreq.push({
+          type: "s22superset",
+          desc: "Push and pull block",
+          verb: "SET",
+          timed: true,
+          moves: ["lsit", "stepup"]
+        })
       }
     }
 

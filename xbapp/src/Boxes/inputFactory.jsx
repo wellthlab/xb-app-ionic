@@ -53,7 +53,6 @@ import {
 } from "@ionic/react";
 import MovementInfoCard from "../Strength/MovementInfoCard";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
-import "./Strength22.css";
 
 /**
  * Create input widgets based on task type
@@ -293,33 +292,28 @@ export default function responseFactory(
       break;
 
     case "s22superset":
-      let movePushA = getMove("cobrapushup");
-      let movePushB = getMove("hindupushup");
+      console.log("info", info);
+      let moveA = getMove(info.moves[0]);
+      let moveB = getMove(info.moves[1]);
       input = (
         <>
           <IonGrid>
             <IonRow>
               <IonCol>
-                <IonItem style={{ "text-align": "center" }}>
-                  <strong>Move A</strong>
-                </IonItem>
                 <MovementInfoCard
                   titleSize={"normal"}
-                  key={movePushA.id}
-                  images={movePushA.images}
-                  name={movePushA.name}
+                  key={moveA.id}
+                  images={moveA.images}
+                  name={moveA.name}
                 ></MovementInfoCard>
               </IonCol>
 
               <IonCol>
-                <IonItem>
-                  <strong>Move B</strong>
-                </IonItem>
                 <MovementInfoCard
                   titleSize={"normal"}
-                  key={movePushB.id}
-                  images={movePushB.images}
-                  name={movePushB.name}
+                  key={moveB.id}
+                  images={moveB.images}
+                  name={moveB.name}
                 ></MovementInfoCard>
               </IonCol>
             </IonRow>
