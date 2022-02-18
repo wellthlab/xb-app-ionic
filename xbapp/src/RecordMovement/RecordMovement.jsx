@@ -7,8 +7,7 @@ import {
   IonGrid,
   IonLabel,
   IonCol,
-  IonRow
-
+  IonRow,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
@@ -16,26 +15,26 @@ import { addControllersProp } from "../util_model/controllers";
 // import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
 import TodoTasks from "./components/Tasks";
-import MovementTimer from "./MovementTimer";
-import TotalTimer from "./components/TotalTimer"
+import TotalTimer from "./components/TotalTimer";
 
 /**
  * Main page for users to track and record their movements
  *
  */
 function RecordMovement(props) {
-
   props.controllers.LOAD_TEAMS_IF_REQD();
 
   if (!props.teams.teams.bybox) {
-    return <IonSpinner name="crescent" class="spin" />;
+    return <IonSpinner name="crescent" class="center-spin" />;
   }
 
   let team = props.teams.teams.bybox.move[0];
   console.log("Timer using team", team);
 
-  if(!team.s22plan) {
-    return <IonText>You need to plan your week before you can add minutes.</IonText>
+  if (!team.s22plan) {
+    return (
+      <IonText>You need to plan your week before you can add minutes.</IonText>
+    );
   }
 
   let day = team.experiment.day;
@@ -47,19 +46,25 @@ function RecordMovement(props) {
       <XBHeader title="Record Movement"></XBHeader>
       <IonContent fullscreen>
         <IonGrid>
-        <IonRow><IonCol>
-        <TodoTasks
-          day={day}
-          team={team}
-          tasks={requiredTasks}
-          minutes={totalMinutes}
-        /></IonCol></IonRow>
-        <IonRow>
-          <IonCol style={{marginTop: "30px"}}>
-            <IonLabel>Your Progress Today</IonLabel>
-            <TotalTimer target={team.myTargetToday} logged={team.myMinutesToday} />
-          </IonCol>
-        </IonRow>
+          <IonRow>
+            <IonCol>
+              <TodoTasks
+                day={day}
+                team={team}
+                tasks={requiredTasks}
+                minutes={totalMinutes}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol style={{ marginTop: "30px" }}>
+              <IonLabel>Your Progress Today</IonLabel>
+              <TotalTimer
+                target={team.myTargetToday}
+                logged={team.myMinutesToday}
+              />
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonContent>
     </>

@@ -20,7 +20,7 @@ button[ion-fab] {
 }
 
 /* to center loading spinners*/
-.spin {
+.center-spin {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -31,4 +31,8 @@ button[ion-fab] {
   background: #56ad1c;
   color: #111;
   font-weight: bold;
+}
+
+[has-header]{
+  margin-top: 50px;
 }

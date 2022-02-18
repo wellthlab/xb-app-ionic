@@ -13,16 +13,15 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
 const Feed = (props) => {
-
   let content; // Hold content
 
   const feed = props.feed;
 
   if (feed.fetching) {
-    content = <ion-spinner name="crescent" />;
+    content = <ion-spinner name="crescent" class="center-spin" />;
   } else if (feed.feed.length < 1) {
     props.controllers.GET_FEED();
-    content = <ion-spinner name="crescent" />;
+    content = <ion-spinner name="crescent" class="center-spin" />;
   } else {
     content = <ContentFeed feed={props.feed.feed} />;
   }
@@ -39,8 +38,8 @@ const Feed = (props) => {
             </Link>
           </div>
         ) : (
-            <></>
-          )}
+          <></>
+        )}
         {content}
       </IonContent>
     </IonPage>

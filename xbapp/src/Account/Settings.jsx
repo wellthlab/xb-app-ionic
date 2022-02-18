@@ -184,15 +184,16 @@ class OptionTabs extends Component {
   render() {
     this.props.controllers.LOAD_TEAMS_IF_REQD();
     if (!this.props.teams.teams.bybox) {
-      return <IonSpinner name="crescent" class="spin" />;
+      return <IonSpinner name="crescent" class="center-spin" />;
     }
 
-    if (this.props.teams.teams.bybox["move"]){
+    if (this.props.teams.teams.bybox["move"]) {
       let day = this.props.teams.teams.bybox["move"][0].experiment.day;
-    var week = Math.floor((day - 1) / 7);
-    if (day <= 0){//before the study
-       week = -1;
-    }
+      var week = Math.floor((day - 1) / 7);
+      if (day <= 0) {
+        //before the study
+        week = -1;
+      }
     } else {
       var week = -1;
     }
@@ -201,33 +202,31 @@ class OptionTabs extends Component {
       <>
         <XBHeader title="Info"></XBHeader>
         <IonContent id="settings" fullscreen>
-        <IonCard>
-              <IonCardHeader style={{textAlign: "left"}}>
-                <IonCardTitle >About</IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
+          <IonCard>
+            <IonCardHeader style={{ textAlign: "left" }}>
+              <IonCardTitle>About</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
               <IonList>
-
-            <IonItem routerLink="/about">XB study</IonItem>
-          </IonList>
-              </IonCardContent>
-            </IonCard>
-
+                <IonItem routerLink="/about">XB study</IonItem>
+              </IonList>
+            </IonCardContent>
+          </IonCard>
 
           <IonItemDivider></IonItemDivider>
           <IonCard>
-              <IonCardHeader style={{textAlign: "left"}}>
-                <IonCardTitle >Settings</IonCardTitle>
-              </IonCardHeader>
-              <IonCardContent>
+            <IonCardHeader style={{ textAlign: "left" }}>
+              <IonCardTitle>Settings</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
               <IonList>
-              <IonItem routerLink="/account">Log Out</IonItem>
-            {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
-          </IonList>
-              </IonCardContent>
-            </IonCard>
-            <IonItemDivider></IonItemDivider>
-            <br></br>
+                <IonItem routerLink="/account">Log Out</IonItem>
+                {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
+              </IonList>
+            </IonCardContent>
+          </IonCard>
+          <IonItemDivider></IonItemDivider>
+          <br></br>
         </IonContent>
       </>
     );

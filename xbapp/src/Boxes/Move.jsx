@@ -20,7 +20,7 @@ import "./Move.scss";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
-import Disclaimer from './components/Disclaimer';
+import Disclaimer from "./components/Disclaimer";
 
 const MovePage = (props) => {
   React.useEffect(() => {
@@ -28,7 +28,7 @@ const MovePage = (props) => {
   }, [!!props.teams]);
 
   if (!props.teams.teams.bybox) {
-    return <IonSpinner class="spin" name="crescent" />;
+    return <IonSpinner class="center-spin" name="crescent" />;
   }
 
   // Ask the user to enrol in a move experiment; or show current experiment info
@@ -37,20 +37,30 @@ const MovePage = (props) => {
   } else {
     var content = (
       <>
-      <GroupInfo
-        group={props.teams.teams.bybox["move"][0]}
-        match={props.match}
-      ></GroupInfo>
-      <Disclaimer checkbox={false} />
+        <GroupInfo
+          group={props.teams.teams.bybox["move"][0]}
+          match={props.match}
+        ></GroupInfo>
+        <Disclaimer checkbox={false} />
       </>
     );
   }
 
+  // let task = "testTask";
+  // let group = props.teams.teams.bybox["move"][0];
+  // let tempButton = (
+  //   <>
+  //     <IonItem routerLink={"/journal/" + group._id + "/" + task}>
+  //       <IonButton>Test button to journal</IonButton>
+  //     </IonItem>
+  //   </>
+  // );
+
   return (
     <IonPage>
       <XBHeader title="Progress"></XBHeader>
-      <IonContent>
-      {content}</IonContent>
+      <IonContent>{content}</IonContent>
+      {/* {tempButton} */}
     </IonPage>
   );
 };
