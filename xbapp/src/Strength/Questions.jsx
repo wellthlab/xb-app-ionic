@@ -96,7 +96,7 @@ function ContextualQuestions({ onSubmit }) {
         <IonCardHeader>
           <IonCardTitle>How are you moving?</IonCardTitle>
           <IonCardSubtitle>
-            Answering these will help us understand how you are choosing to move
+            These will help us understand how you are choosing to move
           </IonCardSubtitle>
         </IonCardHeader>
 
@@ -127,7 +127,7 @@ function ContextualQuestions({ onSubmit }) {
               onSubmit={onSubmit}
             />
             <QuestionText
-              question="Where are you, i.e. office or living room?"
+              question="Where are you, e.g. office?"
               type="text"
               value={location}
               setValue={setLocation}
@@ -143,7 +143,7 @@ function ContextualQuestions({ onSubmit }) {
               onSubmit={onSubmit}
             />
             <QuestionChoice
-              question="Alone, or with others?"
+              question="Moving alone, or with others?"
               choices={["Alone", "With others"]}
               value={whoWith}
               setValue={setWhoWith}

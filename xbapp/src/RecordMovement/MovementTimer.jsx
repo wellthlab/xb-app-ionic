@@ -8,10 +8,10 @@ import {
   IonItem,
   IonLabel,
   IonContent,
-  IonView,
   IonCard,
   IonCardHeader,
   IonCardTitle,
+  IonCardContent,
   IonCardSubtitle,
 } from "@ionic/react";
 import {
@@ -127,14 +127,11 @@ function MovementTimer(props) {
     currentTask
   );
 
+  let extra;
   if (content !== false) {
-    var extra = (
-      <IonRow>
-        <IonCol>{content.input}</IonCol>
-      </IonRow>
-    );
+    extra = content.input;
   } else {
-    var extra = "";
+    extra = "";
   }
 
   var ready = minutes > 0;
@@ -165,67 +162,69 @@ function MovementTimer(props) {
               daily target
             </IonCardSubtitle>
           </IonCardHeader>
-          <IonGrid>
-            <IonRow>
-              {!manualEntry ? (
-                <IonCol>
-                  {/* entry from timer */}
-                  <Timer id={gid} active="false" onPause={setMinutes}></Timer>
-                  <p style={{ textAlign: "center" }}>
-                    Stop the timer when you're done
-                  </p>
-                </IonCol>
-              ) : (
-                <ManualTime
-                  id={gid}
-                  task={currentTask}
-                  onChange={setMinutes}
-                ></ManualTime>
-              )}
-            </IonRow>
-            <IonRow>
-              <IonCol
-                style={{
-                  padding: "0px",
-                  textAlign: "center",
-                  paddingBottom: "20px",
-                }}
-              >
-                <a
-                  onClick={() => {
-                    setManualEntry(!manualEntry);
-                  }}
-                  expand="full"
-                >
-                  <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                  {manualEntry ? "Back to timer" : "Enter minutes manually"}
-                </a>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol style={{ textAlign: "center" }}>
-                {ready ? (
-                  <IonButton
-                    onClick={save}
-                    expand="full"
-                    routerLink="/addmovement"
-                  >
-                    Save Activity <IonIcon icon={arrowForwardOutline} />
-                  </IonButton>
+          <IonCardContent>
+            <IonGrid>
+              <IonRow>
+                {!manualEntry ? (
+                  <IonCol>
+                    {/* entry from timer */}
+                    <Timer id={gid} active="false" onPause={setMinutes}></Timer>
+                    <p style={{ textAlign: "center" }}>
+                      Stop the timer when you're done
+                    </p>
+                  </IonCol>
                 ) : (
-                  ""
+                  <ManualTime
+                    id={gid}
+                    task={currentTask}
+                    onChange={setMinutes}
+                  ></ManualTime>
                 )}
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <TotalTimer
-                  target={group.myTargetToday}
-                  logged={group.myMinutesToday + minutes}
-                />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+              </IonRow>
+              <IonRow>
+                <IonCol
+                  style={{
+                    padding: "0px",
+                    textAlign: "center",
+                    paddingBottom: "20px",
+                  }}
+                >
+                  <a
+                    onClick={() => {
+                      setManualEntry(!manualEntry);
+                    }}
+                    expand="full"
+                  >
+                    <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                    {manualEntry ? "Back to timer" : "Enter minutes manually"}
+                  </a>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol style={{ textAlign: "center" }}>
+                  {ready ? (
+                    <IonButton
+                      onClick={save}
+                      expand="full"
+                      routerLink="/addmovement"
+                    >
+                      Save Activity <IonIcon icon={arrowForwardOutline} />
+                    </IonButton>
+                  ) : (
+                    ""
+                  )}
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <TotalTimer
+                    target={group.myTargetToday}
+                    logged={group.myMinutesToday + minutes}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCardContent>
         </IonCard>
       </IonContent>
     </>

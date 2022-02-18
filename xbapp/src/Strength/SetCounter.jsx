@@ -28,112 +28,120 @@ const SetCounter = (props) => {
       //adding 5 reps
       repsToReturn += 5;
       setSets(sets + 1);
-    } else if (message === "-1set") {
+    } else if (message === "-1set" && sets > 0) {
       //removing 5 reps
       repsToReturn -= 5;
       setSets(sets - 1);
     } else if (message === "+1rep") {
       repsToReturn += 1;
       setReps(reps + 1);
-    } else if (message === "-1rep") {
+    } else if (message === "-1rep" && reps > 0) {
       repsToReturn -= 1;
       setReps(reps - 1);
     }
-    if (props.onChange) {
-      props.onChange(repsToReturn);
+    if (reps < 0) {
+      setReps(0);
+    }
+    console.log("repsToReturn", repsToReturn);
+    if (props.onSubmit) {
+      props.onSubmit({ assType: "Super Set", reps: repsToReturn });
     }
   }
 
   if (props.showReps) {
     // TODO
+
+    if (reps > 5) {
+      setReps(0);
+      setSets(sets + 1);
+    }
+
     return (
-      <div style={{ paddingTop: "10px" }}>
-        <IonItem>
-          <IonGrid>
-            {/* SETS COUNTER */}
+      <IonItem>
+        <IonGrid>
+          {/* SETS COUNTER */}
 
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  onClick={() => {
-                    save("-1set");
-                  }}
-                  className="normalButton"
-                >
-                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                  <strong>1 SET</strong>
-                </IonButton>
-              </IonCol>
-              <IonCol>
-                <span
-                  style={{
-                    fontSize: "2em",
-                    fontWeight: "bold",
-                    display: "inline-block",
-                    padding: "0 5px 0 5px",
-                    width: "90px",
-                    textAlign: "center",
-                  }}
-                >
-                  {sets}
-                </span>
-              </IonCol>
-              <IonCol>
-                <IonButton
-                  className="normalButton"
-                  onClick={() => {
-                    save("+1set");
-                  }}
-                >
-                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                  <strong>1 SET</strong>
-                </IonButton>
-              </IonCol>
-            </IonRow>
+          <IonRow>
+            <IonCol class="vertical-align-content">
+              <IonButton
+                onClick={() => {
+                  save("-1set");
+                }}
+                className="bigButton"
+              >
+                <IonIcon icon={removeCircleOutline} /> &nbsp;
+                <strong>1 SET</strong>
+              </IonButton>
+            </IonCol>
 
-            {/* REPS COUNTER */}
+            <IonCol class="vertical-align-content">
+              <span
+                style={{
+                  fontSize: "2em",
+                  fontWeight: "bold",
+                  display: "inline-block",
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                {sets}
+              </span>
+            </IonCol>
 
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  onClick={() => {
-                    save("-1rep");
-                  }}
-                  className="normalButton"
-                >
-                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                  <strong>1 REP</strong>
-                </IonButton>
-              </IonCol>
-              <IonCol>
-                <span
-                  style={{
-                    fontSize: "2em",
-                    fontWeight: "bold",
-                    display: "inline-block",
-                    padding: "0 5px 0 5px",
-                    width: "90px",
-                    textAlign: "center",
-                  }}
-                >
-                  {reps}
-                </span>
-              </IonCol>
-              <IonCol>
-                <IonButton
-                  onClick={() => {
-                    save("+1rep");
-                  }}
-                  className="normalButton"
-                >
-                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                  <strong>1 REP</strong>
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      </div>
+            <IonCol class="vertical-align-content">
+              <IonButton
+                className="bigButton"
+                onClick={() => {
+                  save("+1set");
+                }}
+              >
+                <IonIcon icon={addCircleOutline} /> &nbsp;
+                <strong>1 SET</strong>
+              </IonButton>
+            </IonCol>
+          </IonRow>
+
+          {/* REPS COUNTER */}
+
+          <IonRow>
+            <IonCol class="vertical-align-content">
+              <IonButton
+                onClick={() => {
+                  save("-1rep");
+                }}
+                className="bigButton"
+              >
+                <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
+                <strong>1 REP</strong>
+              </IonButton>
+            </IonCol>
+            <IonCol class="vertical-align-content">
+              <span
+                style={{
+                  fontSize: "2em",
+                  fontWeight: "bold",
+                  display: "inline-block",
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                {reps}
+              </span>
+            </IonCol>
+            <IonCol class="vertical-align-content">
+              <IonButton
+                onClick={() => {
+                  save("+1rep");
+                }}
+                className="bigButton"
+              >
+                <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
+                <strong>1 REP</strong>
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonItem>
     );
   } else {
     return <></>;

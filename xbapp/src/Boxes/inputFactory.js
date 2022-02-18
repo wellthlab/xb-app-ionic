@@ -276,10 +276,13 @@
       input = <>
       <IonCard>
         <IonCardHeader>
-          <IonCardTitle>Count your sets and reps!</IonCardTitle>
+          <IonCardTitle>Track your super set!</IonCardTitle>
+          <IonCardSubtitle>
+            Remember, each set is made up of five reps.
+          </IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
-          <SetCounter sets={5} showReps={true}></SetCounter>
+          <SetCounter sets={0} showReps={true} onSubmit={onSubmit}></SetCounter>
         </IonCardContent>
       </IonCard>
       <ContextualQuestions onSubmit={onSubmit}/>
