@@ -256,19 +256,19 @@ const decorateTeam = (team) => {
 
             qreq.push({
               type: "s22video",
-              desc: "Shoulder and hand mobility",
+              desc: "Lumbar spine mobility",
               verb: "MOVE",
               timed: true,
-              link: ""
+              link: "QMvhS5GwuX4"
             })
 
-            qreq.push({
-              type: "s22video",
-              desc: "Putting sequences together",
-              verb: "MOVE",
-              timed: true,
-              link: ""
-            })
+            // qreq.push({
+            //   type: "s22video",
+            //   desc: "Putting sequences together",
+            //   verb: "MOVE",
+            //   timed: true,
+            //   link: ""
+            // })
 
             break;
 
