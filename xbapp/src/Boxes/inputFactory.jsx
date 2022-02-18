@@ -50,6 +50,7 @@ import {
   IonGrid,
   IonCol,
   IonButton,
+  IonRouterLink,
 } from "@ionic/react";
 import MovementInfoCard from "../Strength/MovementInfoCard";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
@@ -293,54 +294,59 @@ export default function responseFactory(
 
     case "s22superset":
       // TODO: factor into a superset component
+      // TODO: ui needs cleaning up on mobile some more
       console.log("info", info);
       let moveA = getMove(info.moves[0]);
       let moveB = getMove(info.moves[1]);
       input = (
         <>
           <IonGrid>
+            {/* Help text, or similar */}
+            <IonRow>
+              <IonCol>
+                <h3>Click a move to learn more and to start a set</h3>
+              </IonCol>
+            </IonRow>
             {/* Move A */}
             <IonRow>
               <IonCol>
-                <IonItem routerLink={"/movedetail/" + info.moves[1]}>
+                {/* <IonItem routerLink={"/movedetail/" + info.moves[1]}> */}
+                <IonRouterLink routerLink={"/movedetail/" + info.moves[0]}>
                   <MovementInfoCard
                     titleSize={"normal"}
                     key={moveA.id}
                     images={moveA.images}
                     name={moveA.name}
                   />
-                </IonItem>
+                </IonRouterLink>
+                {/* </IonItem> */}
               </IonCol>
               {/* move B */}
               <IonCol>
-                {/* click to go to rep counter and info about move -- page doesn't render for some reason SCREAMING AND CRYING */}
-                <IonItem routerLink={"/movedetail/" + info.moves[1]}>
+                {/* click to go to rep counter and info about move */}
+                {/* <IonItem routerLink={"/movedetail/" + info.moves[1]}> */}
+                <IonRouterLink routerLink={"/movedetail/" + info.moves[1]}>
                   <MovementInfoCard
                     titleSize={"normal"}
                     key={moveB.id}
                     images={moveB.images}
                     name={moveB.name}
                   />
-                </IonItem>
+                </IonRouterLink>
+                {/* </IonItem> */}
               </IonCol>
             </IonRow>
-            {/* Help text etc */}
-            {/* <IonRow>
-              <IonCol>
-                <IonItem class="ion-text-center">
-                  <h3>Click a move to start the super set!</h3>
-                </IonItem>
-              </IonCol>
-            </IonRow> */}
-            {/* Button to change moves if they want */}
+            {/* Button to change their moves if they want */}
             <IonRow>
               <IonCol>
                 <IonButton expand="full">Change your moves</IonButton>
               </IonCol>
             </IonRow>
+            {/* Contextual questions */}
+            <IonRow>
+              <ContextualQuestions onSubmit={onSubmit} />
+            </IonRow>
           </IonGrid>
-
-          <ContextualQuestions onSubmit={onSubmit} />
         </>
       );
       typedesc = "Super Set";

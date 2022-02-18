@@ -26,7 +26,8 @@ function MoveDetail(props) {
   return (
     <>
       <XBHeader title={move.name} />
-      <IonContent>
+      {/* The padding wont work for some reason? */}
+      <IonContent style={{ "--padding-bottom": "85px" }}>
         <IonCard>
           <MovementInfoCard
             titleSize={"normal"}
