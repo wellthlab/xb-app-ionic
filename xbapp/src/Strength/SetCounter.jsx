@@ -19,24 +19,23 @@ const SetCounter = (props) => {
   const [reps, setReps] = useState(0);
 
   React.useMemo(() => {
-    
-    setSets(props.sets)
+    setSets(props.sets);
   }, [props.sets]);
 
   function save(message) {
     var repsToReturn = sets * 5 + reps;
-    if (message == "+1set") {
+    if (message === "+1set") {
       //adding 5 reps
       repsToReturn += 5;
       setSets(sets + 1);
-    } else if (message == "-1set") {
+    } else if (message === "-1set") {
       //removing 5 reps
       repsToReturn -= 5;
       setSets(sets - 1);
-    } else if (message == "+1rep") {
+    } else if (message === "+1rep") {
       repsToReturn += 1;
       setReps(reps + 1);
-    } else if (message == "-1rep") {
+    } else if (message === "-1rep") {
       repsToReturn -= 1;
       setReps(reps - 1);
     }
@@ -45,96 +44,100 @@ const SetCounter = (props) => {
     }
   }
 
-  if (props.showReps){
+  if (props.showReps) {
     // TODO
-  return (
-    <div style={{ paddingTop: "10px" }}>
-      <IonItem>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonButton
-                onClick={() => {
-                  save("-1set");
-                }}
-                className="normalButton"
-              >
-                <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                <strong>1 SET</strong>
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <span
-                style={{
-                  fontSize: "2em",
-                  fontWeight: "bold",
-                  display: "inline-block",
-                  padding: "0 5px 0 5px",
-                  width: "90px",
-                  textAlign: "center",
-                }}
-              >
-                {sets}
-              </span>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                className="bigButton"
-                onClick={() => {
-                  save("+1set");
-                }}
-              >
-                <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                <strong>1 SET</strong>
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonButton
-                onClick={() => {
-                  save("-1rep");
-                }}
-                className="normalButton"
-              >
-                <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                <strong>1 REP</strong>
-              </IonButton>
-            </IonCol>
-            <IonCol>
-              <span
-                style={{
-                  fontSize: "2em",
-                  fontWeight: "bold",
-                  display: "inline-block",
-                  padding: "0 5px 0 5px",
-                  width: "90px",
-                  textAlign: "center",
-                }}
-              >
-                {reps}
-              </span>
-            </IonCol>
-            <IonCol>
-              <IonButton
-                onClick={() => {
-                  save("+1rep");
-                }}
-                className="normalButton"
-              >
-                <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                <strong>1 REP</strong>
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonItem>
-    </div>
-  );
+    return (
+      <div style={{ paddingTop: "10px" }}>
+        <IonItem>
+          <IonGrid>
+            {/* SETS COUNTER */}
+
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  onClick={() => {
+                    save("-1set");
+                  }}
+                  className="normalButton"
+                >
+                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
+                  <strong>1 SET</strong>
+                </IonButton>
+              </IonCol>
+              <IonCol>
+                <span
+                  style={{
+                    fontSize: "2em",
+                    fontWeight: "bold",
+                    display: "inline-block",
+                    padding: "0 5px 0 5px",
+                    width: "90px",
+                    textAlign: "center",
+                  }}
+                >
+                  {sets}
+                </span>
+              </IonCol>
+              <IonCol>
+                <IonButton
+                  className="normalButton"
+                  onClick={() => {
+                    save("+1set");
+                  }}
+                >
+                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
+                  <strong>1 SET</strong>
+                </IonButton>
+              </IonCol>
+            </IonRow>
+
+            {/* REPS COUNTER */}
+
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  onClick={() => {
+                    save("-1rep");
+                  }}
+                  className="normalButton"
+                >
+                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
+                  <strong>1 REP</strong>
+                </IonButton>
+              </IonCol>
+              <IonCol>
+                <span
+                  style={{
+                    fontSize: "2em",
+                    fontWeight: "bold",
+                    display: "inline-block",
+                    padding: "0 5px 0 5px",
+                    width: "90px",
+                    textAlign: "center",
+                  }}
+                >
+                  {reps}
+                </span>
+              </IonCol>
+              <IonCol>
+                <IonButton
+                  onClick={() => {
+                    save("+1rep");
+                  }}
+                  className="normalButton"
+                >
+                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
+                  <strong>1 REP</strong>
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
+      </div>
+    );
   } else {
-    return (<></>);
+    return <></>;
   }
-  
 };
 
 export default SetCounter;

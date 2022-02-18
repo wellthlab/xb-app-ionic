@@ -117,9 +117,7 @@ const decorateTeam = (team) => {
 
       if(effWeek === 1) {
         switch(dow) {
-
           case 1:
-
               qreq.push({
                 type: 's22assessedvideo',
                 desc: "Try a plank",
@@ -129,7 +127,6 @@ const decorateTeam = (team) => {
                 video: "oO7_-19AuUI",
                 protoResponse: {assType: 'plank'}
               });
-
               qreq.push({
                 type: 's22video',
                 desc: "Feet and Ankle Mobility",
@@ -137,7 +134,6 @@ const decorateTeam = (team) => {
                 timed: true,
                 video: "ZQdoCjOpFtQ"
               });
-
               qreq.push({
                 type: 's22weblink',
                 desc: "Learn about Sets, Reps and Blocks",
@@ -145,11 +141,8 @@ const decorateTeam = (team) => {
                 timed: true,
                 link: "https://livinglab.soton.ac.uk/protocol/"
               });
-
             break;
-
           case 2:
-
               qreq.push({
                 type: 's22assessedvideo',
                 desc: "Try a wall sit",
@@ -159,7 +152,6 @@ const decorateTeam = (team) => {
                 video: "vOledWwAyFU",
                 protoResponse: {assType: 'wallsit'}
               });
-
               qreq.push({
                 type: 's22video',
                 desc: "Toe Pulls",
@@ -167,7 +159,6 @@ const decorateTeam = (team) => {
                 timed: true,
                 video: "0Y8La2b8XiA"
               });
-
               qreq.push({
                 type: 's22weblink',
                 desc: "Learn about Pushes and Pulls",
@@ -175,7 +166,6 @@ const decorateTeam = (team) => {
                 timed: true,
                 link: "https://livinglab.soton.ac.uk/push-pull/"
               });
-
               qreq.push({
                 type: 's22weblink',
                 desc: "Learn about Bilateral Moves",
@@ -183,11 +173,8 @@ const decorateTeam = (team) => {
                 timed: true,
                 link: "https://livinglab.soton.ac.uk/bilateral/"
               });
-
             break;
-
           case 3:
-
             qreq.push({
               type: "s22manage",
               desc: "Try a sit and stand",
@@ -196,7 +183,6 @@ const decorateTeam = (team) => {
               timed: true,
               video: "T7AFlh9HZrs",
               });
-
             qreq.push({
               type: "s22video",
               desc: "Knee and hip mobility",
@@ -204,7 +190,6 @@ const decorateTeam = (team) => {
               timed: true,
               video: "bWkPB4WgTn0"
             });
-
             qreq.push({
               type: "s22weblink",
               desc: "Learn about unilateral moves",
@@ -212,11 +197,8 @@ const decorateTeam = (team) => {
               timed: true,
               link: "https://livinglab.soton.ac.uk/unilaterals/"
             });
-
             break;
-
           case 4:
-
             qreq.push({
               type: "s22assessedvideo",
               desc: "Try to balance",
@@ -225,7 +207,6 @@ const decorateTeam = (team) => {
               timed: true,
               video: "X_2hjT0MmfQ",
             });
-
             qreq.push({
               type: "s22video",
               desc: "Mid-back, neck and jaw mobility",
@@ -233,19 +214,14 @@ const decorateTeam = (team) => {
               timed: true,
               video: "eMQSeR50d00",
             });
-
-            // qreq.push({
-            //   type: "s22weblink",
-            //   desc: "Learn about carrying, rotations and hanging",
-            //   verb: "LEARN",
-            //   timed: true,
-            //   link: ""
-            // })
-
+            qreq.push({
+              type: "strength-setter",
+              desc: "Set your strength tasks",
+              verb: "SET",
+              timed: false,
+            })
             break;
-
           case 5:
-
             qreq.push({
               type: "s22weblink",
               desc: "Measure your body fat",
@@ -253,7 +229,6 @@ const decorateTeam = (team) => {
               timed: true,
               link: "https://www.mytecbits.com/tools/medical/navy-body-fat-calculator"
             });
-
             qreq.push({
               type: "s22video",
               desc: "Shoulder and hand mobility",
@@ -261,7 +236,6 @@ const decorateTeam = (team) => {
               timed: true,
               link: ""
             })
-
             qreq.push({
               type: "s22video",
               desc: "Putting sequences together",
@@ -269,9 +243,27 @@ const decorateTeam = (team) => {
               timed: true,
               link: ""
             })
-
+            qreq.push({
+              type: "s22superset",
+              desc: "Try a superset",
+              verb: "SET",
+              timed: true
+            })
             break;
-
+          default:
+            break;
+        }
+      }
+      else if (effWeek === 2) {
+        switch(dow) {
+          case 1:
+            qreq.push({
+              type: "strength-setter",
+              desc: "Set your strength tasks",
+              verb: "SET",
+              timed: false,
+            })
+            break;
           default:
             break;
         }

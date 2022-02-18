@@ -36,6 +36,7 @@
  import Timer from "../Instruments/StatelessTimer";
  import ManageItQuestion from "../Strength/ManageItQuestion";
  import ContextualQuestions from "../Strength/Questions";
+ import SetCounter from "../Strength/SetCounter";
 
  import React, { useState, useEffect } from "react";
  import {
@@ -220,7 +221,7 @@
 
     case "s22video":
       input = <>
-        <Video onSubmit={onSubmit} video={info.video} />;
+        <Video onSubmit={onSubmit} video={info.video} />
         <ContextualQuestions onSubmit={onSubmit}/>
       </>;
       typedesc = "Video Move";
@@ -271,6 +272,20 @@
       typedesc = "Manage It";
       break;
 
+    case "s22superset":
+      input = <>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Count your sets and reps!</IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <SetCounter sets={5} showReps={true}></SetCounter>
+        </IonCardContent>
+      </IonCard>
+      <ContextualQuestions onSubmit={onSubmit}/>
+      </>;
+      typedesc = "Super Set";
+      break;
     default:
       input = <p>Unknown Response Type</p>;
       typedesc = "";
