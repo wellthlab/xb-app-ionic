@@ -25,8 +25,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
  */
 const MovementInfoCard = (props) => {
   // TODO: Show more than one image; use a carousel? Or just fade nicely every second?
-  // console.log(props);
-  function power() {}
   return (
     <>
       {props.accordion ? (
@@ -38,20 +36,26 @@ const MovementInfoCard = (props) => {
           >
             <Typography className={props.titleSize}>{props.name}</Typography>
           </AccordionSummary>
-          <AccordionDetails className="detailsAcc" style={{padding: "0px"}}>
-            <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
+          <AccordionDetails className="detailsAcc" style={{ padding: "0px" }}>
+            <figure
+              id="promo"
+              style={{ marginTop: "0px", marginBottom: "0px" }}
+            >
               <img src={"assets/moves/" + props.images[0]} className="A" />
               <img src={"assets/moves/" + props.images[1]} className="B" />
             </figure>
           </AccordionDetails>
         </Accordion>
       ) : (
-        <IonCard style={{margin: "0px"}}>
+        <IonCard style={{ margin: "0px" }}>
           <IonCardHeader>
             <IonCardTitle className={props.titleSize}>
               {props.name}
             </IonCardTitle>
-            <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
+            <figure
+              id="promo"
+              style={{ marginTop: "0px", marginBottom: "0px" }}
+            >
               <img src={"assets/moves/" + props.images[0]} className="A" />
               <img src={"assets/moves/" + props.images[1]} className="B" />
             </figure>
