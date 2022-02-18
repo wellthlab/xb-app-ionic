@@ -220,7 +220,7 @@
 
     case "s22video":
       input = <>
-        <Video onSubmit={onSubmit} video={info.video} />;
+        <Video onSubmit={onSubmit} video={info.video} />
         <ContextualQuestions onSubmit={onSubmit}/>
       </>;
       typedesc = "Video Move";

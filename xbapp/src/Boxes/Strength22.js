@@ -259,7 +259,7 @@ const decorateTeam = (team) => {
               desc: "Lumbar spine mobility",
               verb: "MOVE",
               timed: true,
-              link: "QMvhS5GwuX4"
+              video: "QMvhS5GwuX4"
             })
 
             // qreq.push({
