@@ -30,7 +30,7 @@ const decorateTeam = (team) => {
     }
 
 
-    var qreq = []; // Mandatory tasks
+    var required = []; // Mandatory tasks
     var others = []; // Other tasks that can be done, but optionally
 
 
@@ -74,7 +74,7 @@ const decorateTeam = (team) => {
     if(!team.s22plan) {
 
       if(!team.s22path) {
-        qreq.push({
+        required.push({
           type: 's22path',
           desc: 'You need to choose a path',
           verb: 'CHOOSE',
@@ -90,7 +90,7 @@ const decorateTeam = (team) => {
           s22onPath: false,
         });
 
-        qreq.push({
+        required.push({
           type: 's22plan',
           desc: 'You need to plan your week',
           verb: 'PLAN',
@@ -125,7 +125,7 @@ const decorateTeam = (team) => {
       if(effWeek === 1) {
         switch(dow) {
           case 1:
-              qreq.push({
+              required.push({
                 type: 's22assessedvideo',
                 desc: "Try a plank",
                 verb: "TRY",
@@ -134,14 +134,14 @@ const decorateTeam = (team) => {
                 video: "oO7_-19AuUI",
                 protoResponse: {assType: 'plank'}
               });
-              qreq.push({
+              required.push({
                 type: 's22video',
                 desc: "Feet and Ankle Mobility",
                 verb: "MOVE",
                 timed: true,
                 video: "ZQdoCjOpFtQ"
               });
-              qreq.push({
+              required.push({
                 type: 's22weblink',
                 desc: "Learn about Sets, Reps and Blocks",
                 verb: "TRY",
@@ -150,7 +150,7 @@ const decorateTeam = (team) => {
               });
             break;
           case 2:
-              qreq.push({
+              required.push({
                 type: 's22assessedvideo',
                 desc: "Try a wall sit",
                 verb: "TRY",
@@ -159,21 +159,21 @@ const decorateTeam = (team) => {
                 video: "vOledWwAyFU",
                 protoResponse: {assType: 'wallsit'}
               });
-              qreq.push({
+              required.push({
                 type: 's22video',
                 desc: "Toe Pulls",
                 verb: "MOVE",
                 timed: true,
                 video: "0Y8La2b8XiA"
               });
-              qreq.push({
+              required.push({
                 type: 's22weblink',
                 desc: "Learn about Pushes and Pulls",
                 verb: "LEARN",
                 timed: true,
                 link: "https://livinglab.soton.ac.uk/push-pull/"
               });
-              qreq.push({
+              required.push({
                 type: 's22weblink',
                 desc: "Learn about Bilateral Moves",
                 verb: "LEARN",
@@ -182,7 +182,7 @@ const decorateTeam = (team) => {
               });
             break;
           case 3:
-            qreq.push({
+            required.push({
               type: "s22manage",
               desc: "Try a sit and stand",
               verb: "TRY",
@@ -190,14 +190,14 @@ const decorateTeam = (team) => {
               timed: true,
               video: "T7AFlh9HZrs",
               });
-            qreq.push({
+            required.push({
               type: "s22video",
               desc: "Knee and hip mobility",
               verb: "MOVE",
               timed: true,
               video: "bWkPB4WgTn0"
             });
-            qreq.push({
+            required.push({
               type: "s22weblink",
               desc: "Learn about unilateral moves",
               verb: "LEARN",
@@ -206,7 +206,7 @@ const decorateTeam = (team) => {
             });
             break;
           case 4:
-            qreq.push({
+            required.push({
               type: "s22assessedvideo",
               desc: "Try to balance",
               verb: "TRY",
@@ -214,14 +214,14 @@ const decorateTeam = (team) => {
               timed: true,
               video: "X_2hjT0MmfQ",
             });
-            qreq.push({
+            required.push({
               type: "s22video",
               desc: "Mid-back, neck and jaw mobility",
               verb: "MOVE",
               timed: true,
               video: "eMQSeR50d00",
             });
-            qreq.push({
+            required.push({
               type: "strength-setter",
               desc: "Set your strength tasks",
               verb: "SET",
@@ -229,21 +229,21 @@ const decorateTeam = (team) => {
             })
             break;
           case 5:
-            qreq.push({
+            required.push({
               type: "s22weblink",
               desc: "Measure your body fat",
               verb: "TRY",
               timed: true,
               link: "https://www.mytecbits.com/tools/medical/navy-body-fat-calculator"
             });
-            qreq.push({
+            required.push({
               type: "s22video",
               desc: "Shoulder and hand mobility",
               verb: "MOVE",
               timed: true,
               link: ""
             })
-            qreq.push({
+            required.push({
               type: "s22video",
               desc: "Putting sequences together",
               verb: "MOVE",
@@ -256,67 +256,91 @@ const decorateTeam = (team) => {
         }
       }
       else if (effWeek === 2) {
-        qreq.push({
-          type: "s22weblink",
-          desc: "Schedule an IN-WORK workout for this week",
-          verb: "TRY",
-          timed: true,
-          s22onPath: true,
-          path: "all",
-          link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
-        })
+        switch(dow) {
+          case 1:
+            required.push({
+              type: "s22weblink",
+              desc: "Schedule an IN-WORK workout for this week",
+              verb: "TRY",
+              timed: true,
+              s22onPath: true,
+              s22path: "all",
+              link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
+            })
 
-        qreq.push({
-          type: "s22video",
-          desc: "Neuro mobility",
-          verb: "MOVE",
-          video: "ok5GEVxx5FI",
-          timed: true,
-          s22onPath: true,
-          path: "all",
-        })
+            required.push({
+              type: "s22video",
+              desc: "Neuro mobility",
+              verb: "MOVE",
+              video: "ok5GEVxx5FI",
+              timed: true,
+              s22onPath: true,
+              s22path: "all",
+            })
 
-        qreq.push({
-          type: "s22video",
-          desc: "How to adjust squats",
-          verb: "TRY",
-          video: "BUnxylgbNNw",
-          timed: true,
-          s22onPath: true,
-          path: "all"
-        })
+            required.push({
+              type: "s22video",
+              desc: "How to adjust squats",
+              verb: "TRY",
+              video: "BUnxylgbNNw",
+              timed: true,
+              s22onPath: true,
+              s22path: "all"
+            })
 
-        qreq.push({
-          type: "s22video",
-          desc: "How to adjust push ups",
-          verb: "TRY",
-          video: "Ezg6pGr3Su8",
-          timed: true,
-          s22onPath: true,
-          path: "all"
-        })
+            required.push({
+              type: "s22video",
+              desc: "How to adjust push ups",
+              verb: "TRY",
+              video: "Ezg6pGr3Su8",
+              timed: true,
+              s22onPath: true,
+              s22path: "all"
+            })
 
-        qreq.push({
-          type: "s22video",
-          desc: "How to EDT",
-          verb: "TRY",
-          video: "PWyhF5_WazY",
-          timed: true,
-          s22onPath: true,
-          path: "all"
-        })
+            required.push({
+              type: "s22video",
+              desc: "How to EDT",
+              verb: "TRY",
+              video: "PWyhF5_WazY",
+              timed: true,
+              s22onPath: true,
+              s22path: "all"
+            })
 
-        qreq.push({
-          type: "s22superset",
-          desc: "Practise set EDT",
-          verb: "SET",
-          timed: true,
-          s22onPath: true,
-          path: "builder",
-          moves: ["supportedsquat", "wallpushup"]
-        })
+            required.push({
+              type: "s22superset",
+              desc: "Practise set EDT",
+              verb: "SET",
+              timed: true,
+              s22onPath: true,
+              s22path: "all",
+              moves: ["supportedsquat", "wallpushup"]
+            })
+              break;
+          default:
+              break;
+        }
       }
     }
+
+    // required.push({
+    //   type: "strength-setter",
+    //   desc: "Set your strength tasks",
+    //   verb: "SET",
+    //   timed: false,
+    //   s22onPath: true,
+    //   s22path: "all"
+    // })
+
+    others.push({
+      type: "s22questions",
+      desc: "Where are you?",
+      verb: "QUESTION",
+      timed: true,
+      s22onPath: true,
+      s22path: "all"
+    })
 
     others.push({
       type: 's22other',
@@ -327,7 +351,7 @@ const decorateTeam = (team) => {
       path: "all"
     });
 
-    team.experiment.tasks[eday] = { required: qreq, optional: others };
+    team.experiment.tasks[eday] = { required: required, optional: others };
 
     // Add today's minutes total
     team.myMinutesToday = 0;

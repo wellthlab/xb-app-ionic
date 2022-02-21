@@ -47,7 +47,7 @@ function TodoTasks(props) {
     if (
       task.timed &&
       task.s22onPath &&
-      (task.path === "all" || task.path === props.team.s22path.path)
+      (task.s22path === "all" || task.s22path === props.team.s22path.path)
     ) {
       return (
         <IonItem

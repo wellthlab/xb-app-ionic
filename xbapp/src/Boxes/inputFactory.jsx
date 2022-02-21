@@ -10,7 +10,7 @@
       desc: a type description string
  * }
  */
-
+import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
 import {
   IonCard,
@@ -42,8 +42,9 @@ import Video from "../Strength/Video";
 import WebLink from "../Strength/WebLink";
 import OtherMove from "../Strength/OtherMove";
 import Timer from "../Instruments/StatelessTimer";
-import SuperSetTask from "../Strength/SupersetTask";
+import MoveTask from "../Strength/SupersetTask";
 import ManageItTask from "../Strength/ManageIt";
+import ContextualQuestions from "../Strength/Questions";
 
 /**
  * Create input widgets based on task type
@@ -256,8 +257,13 @@ export default function responseFactory(
       break;
 
     case "s22superset":
-      input = <SuperSetTask task={info} onSubmit={onSubmit} />;
+      input = <MoveTask task={info} onSubmit={onSubmit} />;
       typedesc = "Super Set";
+      break;
+
+    case "s22questions":
+      input = <ContextualQuestions onSubmit={onSubmit} />;
+      typedesc = "Questions";
       break;
 
     default:

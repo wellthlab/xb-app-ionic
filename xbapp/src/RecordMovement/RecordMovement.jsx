@@ -76,11 +76,13 @@ function RecordMovement(props) {
 export default connect(
   (state, ownProps) => {
     return {
+      account: state.account,
       teams: state.teams,
       experiments: state.experiments,
+      boxes: state.boxes,
     };
   },
   {
-    // Actions to include as props
+    pure: false,
   }
 )(addControllersProp(RecordMovement));

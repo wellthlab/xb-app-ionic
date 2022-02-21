@@ -59,7 +59,7 @@ const SetCounter = (props) => {
           {/* SETS COUNTER */}
 
           <IonRow>
-            <IonCol class="vertical-align-content">
+            {/* <IonCol class="vertical-align-content">
               <IonButton
                 onClick={() => {
                   save("-1set");
@@ -69,7 +69,7 @@ const SetCounter = (props) => {
                 <IonIcon icon={removeCircleOutline} /> &nbsp;
                 <strong>1 SET</strong>
               </IonButton>
-            </IonCol>
+            </IonCol> */}
 
             <IonCol class="vertical-align-content">
               <span
@@ -81,11 +81,11 @@ const SetCounter = (props) => {
                   textAlign: "center",
                 }}
               >
-                {sets}
+                {sets} SETS
               </span>
             </IonCol>
 
-            <IonCol class="vertical-align-content">
+            {/* <IonCol class="vertical-align-content">
               <IonButton
                 className="bigButton"
                 onClick={() => {
@@ -95,48 +95,52 @@ const SetCounter = (props) => {
                 <IonIcon icon={addCircleOutline} /> &nbsp;
                 <strong>1 SET</strong>
               </IonButton>
-            </IonCol>
+            </IonCol> */}
           </IonRow>
 
           {/* REPS COUNTER */}
 
-          <IonRow>
-            <IonCol class="vertical-align-content">
-              <IonButton
-                onClick={() => {
-                  save("-1rep");
-                }}
-                className="bigButton"
-              >
-                <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                <strong>1 REP</strong>
-              </IonButton>
-            </IonCol>
-            <IonCol class="vertical-align-content">
-              <span
-                style={{
-                  fontSize: "2em",
-                  fontWeight: "bold",
-                  display: "inline-block",
-                  width: "100%",
-                  textAlign: "center",
-                }}
-              >
-                {reps}
-              </span>
-            </IonCol>
-            <IonCol class="vertical-align-content">
-              <IonButton
-                onClick={() => {
-                  save("+1rep");
-                }}
-                className="bigButton"
-              >
-                <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                <strong>1 REP</strong>
-              </IonButton>
-            </IonCol>
-          </IonRow>
+          {props.showReps ? (
+            <IonRow>
+              <IonCol class="vertical-align-content">
+                <IonButton
+                  onClick={() => {
+                    save("-1rep");
+                  }}
+                  className="bigButton"
+                >
+                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
+                  <strong>1 REP</strong>
+                </IonButton>
+              </IonCol>
+              <IonCol class="vertical-align-content">
+                <span
+                  style={{
+                    fontSize: "2em",
+                    fontWeight: "bold",
+                    display: "inline-block",
+                    width: "100%",
+                    textAlign: "center",
+                  }}
+                >
+                  {reps}
+                </span>
+              </IonCol>
+              <IonCol class="vertical-align-content">
+                <IonButton
+                  onClick={() => {
+                    save("+1rep");
+                  }}
+                  className="bigButton"
+                >
+                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
+                  <strong>1 REP</strong>
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          ) : (
+            ""
+          )}
         </IonGrid>
       </IonItem>
     );
