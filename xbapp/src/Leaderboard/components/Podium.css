@@ -1,39 +1,39 @@
 .podium-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .stars {
-    display: flex;
-    justify-content: center;
-    font-size: 24px;
-    color: gold;
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  color: gold;
 }
 
 .stars > * {
-    margin-left: 4px;
-    margin-right: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .spotlight {
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 8px;
-    font-size: 20px;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: 8px;
+  font-size: 20px;
 }
 
 .score {
-    font-size: 12px;
-    margin-bottom: 2px;
+  font-size: 12px;
+  margin-bottom: 2px;
 }
 
 .primary-spotlight > .spotlight {
-    height: 180px;
-    width: 180px;
+  height: 180px;
+  width: 180px;
 }
 
 .secondary-spotlight > .spotlight {
-    height: 140px;
-    width: 140px;
+  height: 140px;
+  width: 140px;
 }
