@@ -4,6 +4,7 @@
 
 import { QueuePlayNextSharp, TramRounded } from "@material-ui/icons";
 import { qrCodeSharp } from "ionicons/icons";
+import { GiConsoleController } from "react-icons/gi";
 
 /**
 * The experiment is passed the team record that it represents.
@@ -117,6 +118,7 @@ const decorateTeam = (team) => {
 
       // Set up other tasks according to week number
       var effWeek = team.s22plan.plan.effectiveWeek;
+      effWeek = 2;
 
       console.log("effectiveWeek", effWeek);
 
@@ -254,7 +256,6 @@ const decorateTeam = (team) => {
         }
       }
       else if (effWeek === 2) {
-
         qreq.push({
           type: "s22weblink",
           desc: "Schedule an IN-WORK workout for this week",
