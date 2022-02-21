@@ -1,5 +1,7 @@
+import './Leaderboard.css';
+
 import React from 'react';
-import { IonContent, IonSpinner } from '@ionic/react';
+import { IonContent, IonSpinner, IonButton } from '@ionic/react';
 
 import Podium from './components/Podium';
 import XBHeader from '../util/XBHeader';
@@ -59,6 +61,14 @@ const Leaderboard = function ({ controllers }) {
     fetchTeamsForWeek(monday);        // Use the initial monday state
   }, []);
 
+  const createHandleDayOfWeekChange = function (i) {
+
+    return () => {
+
+      setSelectedDay(i);
+    };
+  }
+
   let content;
 
   if (loading) {
@@ -68,19 +78,35 @@ const Leaderboard = function ({ controllers }) {
     content = 'Sorry, something went wrong';
   }
   else {
+    let subcontent;
+
     if (!leaderboard.length) {
-      content = 'Oops, there\'s nothing to show for the selected week';
+      subcontent = 'Oops, there\'s nothing to show for the selected week';
     }
     else {
-
       const currentLeaderboard = leaderboard[selectedDay].teams;
 
-      content = (
-        <>
-          <Podium items={currentLeaderboard.map((team) => ({ label: team.name, value: Math.round(team.overall.averagePercentage) }))} />
-        </>
-      );
+      if (!currentLeaderboard.length) {
+        subcontent = 'Oops, there\'s nothing to show for the selected day';
+      }
+      else {
+        subcontent =
+          <Podium items={currentLeaderboard.map((team) => ({ label: team.name, value: Math.round(team.overall.averagePercentage) }))} />;
+      }
     }
+
+    content = (
+      <>
+        <div className="day-picker">
+          <IonButton>Last week</IonButton>
+          {daysOfWeek.map((day, i) => (
+            <IonButton key={day} fill="clear" disabled={selectedDay === i} onClick={createHandleDayOfWeekChange(i)}>{day}</IonButton>
+          ))}
+          <IonButton>Next week</IonButton>
+        </div>
+        {subcontent}
+      </>
+    );
   }
 
   return (
