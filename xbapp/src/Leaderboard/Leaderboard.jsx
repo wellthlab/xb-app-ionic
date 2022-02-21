@@ -99,12 +99,11 @@ const Leaderboard = function ({ controllers }) {
       subcontent = 'Oops, there\'s nothing to show for the selected week';
     }
     else {
-      const currentLeaderboard = leaderboard[selectedDay].teams;
-
-      if (!currentLeaderboard.length) {
+      if (!leaderboard[selectedDay]) {
         subcontent = 'Oops, there\'s nothing to show for the selected day';
       }
       else {
+        const currentLeaderboard = leaderboard[selectedDay].teams;
         const firstThree = currentLeaderboard.slice(0, 3);
         const remaining = currentLeaderboard.slice(3);
 
