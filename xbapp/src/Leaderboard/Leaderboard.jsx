@@ -1,7 +1,7 @@
 import './Leaderboard.css';
 
 import React from 'react';
-import { IonContent, IonSpinner, IonButton, IonIcon } from '@ionic/react';
+import { IonPage, IonContent, IonSpinner, IonButton, IonIcon } from '@ionic/react';
 import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 
 import Podium from './components/Podium';
@@ -152,12 +152,12 @@ const Leaderboard = function ({ controllers }) {
   }
 
   return (
-    <>
+    <IonPage>
       <XBHeader title="Teams Leaderboard" />
       <IonContent>
         {content}
       </IonContent>
-    </>
+    </IonPage>
   );
 };
 
