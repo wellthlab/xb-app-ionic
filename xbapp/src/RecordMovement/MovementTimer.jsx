@@ -117,6 +117,14 @@ function MovementTimer(props) {
       updated[k] = res[k];
     }
 
+    console.log("New response", res, updated);
+
+    // If the response contains a minutes key - i.e is setting the number of minutes for the movement
+    // then update our internal minute state
+    if(Object.keys(res).includes('minutes')) {
+      setMinutes(res.minutes);
+    }
+
     setExResponse(updated);
   };
 
@@ -136,6 +144,110 @@ function MovementTimer(props) {
   }
 
   var ready = minutes > 0;
+
+  // Prepare a timer, if required
+  var timer = "";
+  if(tasktype !== "s22superset") {
+    var timer = <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>Time your Session</IonCardTitle>
+        <IonCardSubtitle>
+          Record the time you spend on this activity; it counts towards
+          your daily target
+        </IonCardSubtitle>
+      </IonCardHeader>
+      <IonCardContent>
+        <IonGrid>
+          <IonRow>
+            {!manualEntry ? (
+              <IonCol>
+                {/* entry from timer */}
+                <Timer
+                  id={gid}
+                  active="false"
+                  onPause={setMinutes}
+                ></Timer>
+                <p style={{ textAlign: "center" }}>
+                  Stop the timer when you're done
+                </p>
+              </IonCol>
+            ) : (
+              <ManualTime
+                id={gid}
+                task={currentTask}
+                onChange={setMinutes}
+              ></ManualTime>
+            )}
+          </IonRow>
+          <IonRow>
+            <IonCol
+              style={{
+                padding: "0px",
+                textAlign: "center",
+                paddingBottom: "20px",
+              }}
+            >
+              <a
+                onClick={() => {
+                  setManualEntry(!manualEntry);
+                }}
+                expand="full"
+              >
+                <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                {manualEntry ? "Back to timer" : "Enter minutes manually"}
+              </a>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol style={{ textAlign: "center" }}>
+              {ready ? (
+                <IonButton
+                  onClick={save}
+                  expand="full"
+                  routerLink="/addmovement"
+                >
+                  Save Activity <IonIcon icon={arrowForwardOutline} />
+                </IonButton>
+              ) : (
+                ""
+              )}
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <TotalTimer
+                target={group.myTargetToday}
+                logged={group.myMinutesToday + minutes}
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonCardContent>
+    </IonCard>
+
+  } else {
+    var timer = <IonCard>
+      <IonCardContent>
+        <IonGrid>
+          <IonRow>
+            <IonCol style={{ textAlign: "center" }}>
+              {ready ? (
+                <IonButton
+                  onClick={save}
+                  expand="full"
+                  routerLink="/addmovement"
+                >
+                  Save Activity <IonIcon icon={arrowForwardOutline} />
+                </IonButton>
+              ) : (
+                ""
+              )}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonCardContent>
+    </IonCard>
+  }
 
   return (
     <>
@@ -158,86 +270,8 @@ function MovementTimer(props) {
         {/* The timer is NOT SHOWN when we're doing an EDT super set thing,
         as we are going to be using the old countdown timer there.
         TODO: the responses are not being saved in that view ATM */}
-        {tasktype !== "s22superset" ? (
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>Time your Session</IonCardTitle>
-              <IonCardSubtitle>
-                Record the time you spend on this activity; it counts towards
-                your daily target
-              </IonCardSubtitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <IonGrid>
-                <IonRow>
-                  {!manualEntry ? (
-                    <IonCol>
-                      {/* entry from timer */}
-                      <Timer
-                        id={gid}
-                        active="false"
-                        onPause={setMinutes}
-                      ></Timer>
-                      <p style={{ textAlign: "center" }}>
-                        Stop the timer when you're done
-                      </p>
-                    </IonCol>
-                  ) : (
-                    <ManualTime
-                      id={gid}
-                      task={currentTask}
-                      onChange={setMinutes}
-                    ></ManualTime>
-                  )}
-                </IonRow>
-                <IonRow>
-                  <IonCol
-                    style={{
-                      padding: "0px",
-                      textAlign: "center",
-                      paddingBottom: "20px",
-                    }}
-                  >
-                    <a
-                      onClick={() => {
-                        setManualEntry(!manualEntry);
-                      }}
-                      expand="full"
-                    >
-                      <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                      {manualEntry ? "Back to timer" : "Enter minutes manually"}
-                    </a>
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol style={{ textAlign: "center" }}>
-                    {ready ? (
-                      <IonButton
-                        onClick={save}
-                        expand="full"
-                        routerLink="/addmovement"
-                      >
-                        Save Activity <IonIcon icon={arrowForwardOutline} />
-                      </IonButton>
-                    ) : (
-                      ""
-                    )}
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <TotalTimer
-                      target={group.myTargetToday}
-                      logged={group.myMinutesToday + minutes}
-                    />
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonCardContent>
-          </IonCard>
-        ) : (
-          ""
-        )}
+        {timer}
+
       </IonContent>
     </>
   );

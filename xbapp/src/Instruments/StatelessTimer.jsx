@@ -5,10 +5,20 @@ import { connect } from "react-redux";
 
 import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
 
+//sounds
+import useSound from "use-sound";
+import beep_short from "../util_audio/beep_short.mp3";
+import beep_long from "../util_audio/beep_long.mp3";
+import { toggleSharp } from "ionicons/icons";
+
+
 function StatelessTimer({showButtons, onPause}) {
   const [started, setStarted] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
+
+  const [play_short] = useSound(beep_short);
+  const [play_long] = useSound(beep_long);
 
   function toggle() {
     if (isActive) {
@@ -31,6 +41,15 @@ function StatelessTimer({showButtons, onPause}) {
       var elapsed = (Date.now() - started) / 1000;
       interval = setInterval(() => {
         setSeconds(elapsed);
+
+        // 3 beeps plus long beep at 7 minutes mark
+        if(elapsed % (7 * 60) == 0) {
+          beep_long();
+        }
+        if(elapsed % (7 * 60) > (7 * 60 - 3)) {
+          beep_long();
+        }
+        
       }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);

@@ -31,7 +31,6 @@ import { useHistory } from "react-router";
 const MovementTimer = ({
   exercises,
   block,
-  onSetChange,
   onSubmit,
   mins,
   secs,
@@ -43,6 +42,7 @@ const MovementTimer = ({
   let history = useHistory();
   const [moveAlternation, setMoveAlternation] = React.useState([null, null]);
   const [numberOfSets, setNumberOfSets] = React.useState(0);
+  const [numberOfReps, setNumberOfReps] = React.useState(0);
   const [showReps, setShowReps] = React.useState(false);
   const [timerOn, setTimerOn] = React.useState(false);
 
@@ -63,9 +63,7 @@ const MovementTimer = ({
     } else {
       var updated = [!moveAlternation[0], !moveAlternation[1]];
       setMoveAlternation(updated);
-      var newSets = numberOfSets;
-      newSets++;
-      setNumberOfSets(newSets);
+      setNumberOfSets(numberOfSets + 1);
       toast("You added 1 SET. Keep going!", {
         position: moveAlternation[0] === false ? "bottom-right" : "bottom-left",
         autoClose: 3000,
@@ -75,15 +73,15 @@ const MovementTimer = ({
         draggable: true,
         progress: undefined,
       });
-      onSetChange(exercises, block, newSets * 5);
     }
   }
 
   function timerFinished() {
-    onSubmit({ mins: "7", reps: numberOfSets * 5 });
+    onSubmit({ minutes: 7, sets: numberOfSets, reps: numberOfReps });
     setShowReps(true);
     setMoveAlternation([null, null]);
   }
+
   return (
     <div id="movementTimer">
       <IonRow>
@@ -203,43 +201,17 @@ const MovementTimer = ({
           )}
           {}
         </IonRow>
-        {/* TODO: Random text? */}
-        {/* {showReps === false ? (
-          <IonRow>
-            <IonLabel>Added: {numberOfSets} sets</IonLabel>
-          </IonRow>
-        ) : (
-          <></>
-        )} */}
       </IonGrid>
-      {/* TODO: Random text? */}
-      {/* {showReps === false ? (
-        <IonRow>
-          <IonLabel>Total: {numberOfSets} sets</IonLabel>
-        </IonRow>
-      ) : (
-        <></>
-      )} */}
+      { showReps ? (
       <SetCounter
-        showCounter={showReps}
         showReps={showReps}
         sets={numberOfSets}
-        onChange={(reps) => {
-          onSetChange(exercises, block, reps);
+        onChange={(sets, reps) => {
+          setNumberOfReps(reps);
+          setNumberOfSets(sets);
+          onSubmit({ minutes: 7, sets: sets, reps: reps });
         }}
-      />
-      {showReps ? (
-        <IonButton
-          expand={"full"}
-          onClick={() => {
-            history.goBack();
-          }}
-        >
-          Go Back
-        </IonButton>
-      ) : (
-        ""
-      )}
+      /> ) : ("") }
 
       <ToastContainer
         position={moveAlternation[0] === false ? "bottom-right" : "bottom-left"}

@@ -22,55 +22,50 @@ const SetCounter = (props) => {
     setSets(props.sets);
   }, [props.sets]);
 
-  function save(message) {
-    var repsToReturn = sets * 5 + reps;
-    if (message === "+1set") {
-      //adding 5 reps
-      repsToReturn += 5;
-      setSets(sets + 1);
-    } else if (message === "-1set" && sets > 0) {
-      //removing 5 reps
-      repsToReturn -= 5;
-      setSets(sets - 1);
-    } else if (message === "+1rep") {
-      repsToReturn += 1;
-      setReps(reps + 1);
-    } else if (message === "-1rep" && reps > 0) {
-      repsToReturn -= 1;
-      setReps(reps - 1);
-    }
-    if (reps < 0) {
-      setReps(0);
-    }
-    if (props.onSubmit) {
-      props.onSubmit({ assType: "Super Set", reps: repsToReturn });
+  function set(sets, reps) {
+    setSets(sets);
+    setReps(reps);
+
+    if (props.onChange) {
+      props.onChange(sets, reps);
     }
   }
 
-  if (props.showCounter) {
-    // if (reps >= 5) {
-    //   setReps(0);
-    //   setSets(sets + 1);
-    // }
+  return (
+    <IonItem>
+      <IonGrid>
 
-    return (
-      <IonItem>
-        <IonGrid>
-          {/* SETS COUNTER */}
+        <IonRow>
 
+          <IonCol class="vertical-align-content">
+            <span
+              style={{
+                fontSize: "2em",
+                fontWeight: "bold",
+                display: "inline-block",
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              {sets} SETS
+            </span>
+          </IonCol>
+
+        </IonRow>
+
+        {props.showReps ? (
           <IonRow>
-            {/* <IonCol class="vertical-align-content">
+            <IonCol class="vertical-align-content">
               <IonButton
                 onClick={() => {
-                  save("-1set");
+                  set(sets, Math.max(reps - 1, 0));
                 }}
                 className="bigButton"
               >
-                <IonIcon icon={removeCircleOutline} /> &nbsp;
-                <strong>1 SET</strong>
+                <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
+                <strong>1 REP</strong>
               </IonButton>
-            </IonCol> */}
-
+            </IonCol>
             <IonCol class="vertical-align-content">
               <span
                 style={{
@@ -81,72 +76,27 @@ const SetCounter = (props) => {
                   textAlign: "center",
                 }}
               >
-                {sets} SETS
+                {reps}
               </span>
             </IonCol>
-
-            {/* <IonCol class="vertical-align-content">
+            <IonCol class="vertical-align-content">
               <IonButton
-                className="bigButton"
                 onClick={() => {
-                  save("+1set");
+                  set(sets, reps + 1);
                 }}
+                className="bigButton"
               >
-                <IonIcon icon={addCircleOutline} /> &nbsp;
-                <strong>1 SET</strong>
+                <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
+                <strong>1 REP</strong>
               </IonButton>
-            </IonCol> */}
+            </IonCol>
           </IonRow>
-
-          {/* REPS COUNTER */}
-
-          {props.showReps ? (
-            <IonRow>
-              <IonCol class="vertical-align-content">
-                <IonButton
-                  onClick={() => {
-                    save("-1rep");
-                  }}
-                  className="bigButton"
-                >
-                  <IonIcon icon={removeCircleOutline} /> &nbsp;{" "}
-                  <strong>1 REP</strong>
-                </IonButton>
-              </IonCol>
-              <IonCol class="vertical-align-content">
-                <span
-                  style={{
-                    fontSize: "2em",
-                    fontWeight: "bold",
-                    display: "inline-block",
-                    width: "100%",
-                    textAlign: "center",
-                  }}
-                >
-                  {reps}
-                </span>
-              </IonCol>
-              <IonCol class="vertical-align-content">
-                <IonButton
-                  onClick={() => {
-                    save("+1rep");
-                  }}
-                  className="bigButton"
-                >
-                  <IonIcon icon={addCircleOutline} /> &nbsp;{" "}
-                  <strong>1 REP</strong>
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          ) : (
-            ""
-          )}
-        </IonGrid>
-      </IonItem>
-    );
-  } else {
-    return <></>;
-  }
+        ) : (
+          ""
+        )}
+      </IonGrid>
+    </IonItem>
+  );
 };
 
 export default SetCounter;
