@@ -1,7 +1,7 @@
 import './Leaderboard.css';
 
 import React from 'react';
-import { IonContent, IonSpinner, IonButton } from '@ionic/react';
+import { IonContent, IonSpinner, IonButton, IonCard } from '@ionic/react';
 
 import Podium from './components/Podium';
 import XBHeader from '../util/XBHeader';
@@ -90,8 +90,25 @@ const Leaderboard = function ({ controllers }) {
         subcontent = 'Oops, there\'s nothing to show for the selected day';
       }
       else {
-        subcontent =
-          <Podium items={currentLeaderboard.map((team) => ({ label: team.name, value: Math.round(team.overall.averagePercentage) }))} />;
+        const firstThree = currentLeaderboard.slice(0, 3).map((team) => ({
+          label: team.name,
+          value: Math.round(team.overallCompletion)
+        }));
+
+        const remaining = currentLeaderboard.slice(3);
+
+        subcontent = (
+          <>
+            <Podium items={firstThree} />
+            {remaining.length && (
+              <div className="team-list">
+                {remaining.map((team, i) => (
+                  <IonCard key={team._id}>{team.name}</IonCard>
+                ))}
+              </div>
+            )}
+          </>
+        )
       }
     }
 

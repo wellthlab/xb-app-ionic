@@ -104,6 +104,9 @@ import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
+/* Other CSS from other libs */
+import 'react-circular-progressbar/dist/styles.css';
+
 /* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";

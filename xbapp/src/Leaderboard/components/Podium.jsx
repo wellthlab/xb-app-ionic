@@ -1,10 +1,33 @@
 import './Podium.css';
 
 import React from 'react';
-import {
-    star
-} from "ionicons/icons";
+import { star } from "ionicons/icons";
 import { IonIcon } from '@ionic/react';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+
+const Spotlight = function ({ value, label }) {
+
+    return (
+        <div className="spotlight">
+            <CircularProgressbarWithChildren
+                value={value}
+                styles={{
+                    path: {
+                        stroke: 'var(--ion-color-success-shade)',
+                        width: 8,
+                        strokeLinecap: 'butt',
+                    },
+                    trail: {
+                        stroke: 'var(--ion-color-light)',
+                    },
+                }}
+            >
+                <span className="score">{value}%</span>
+                {label}
+            </CircularProgressbarWithChildren>
+        </div>
+    );
+};
 
 const Podium = function ({ items }) {
 
@@ -16,10 +39,7 @@ const Podium = function ({ items }) {
                         <IonIcon icon={star} />
                         <IonIcon icon={star} />
                     </div>
-                    <div className="spotlight">
-                        <span className="score">{items[1].value}</span>
-                        {items[1].label}
-                    </div>
+                    <Spotlight {...items[1]} />
                 </div>
             )}
             <div className="primary-spotlight">
@@ -28,20 +48,14 @@ const Podium = function ({ items }) {
                     <IonIcon icon={star} />
                     <IonIcon icon={star} />
                 </div>
-                <div className="spotlight">
-                    <span className="score">{items[0].value}</span>
-                    {items[0].label}
-                </div>
+                <Spotlight {...items[0]} />
             </div>
             {items[2] && (
                 <div className="secondary-spotlight">
                     <div className="stars">
                         <IonIcon icon={star} />
                     </div>
-                    <div className="spotlight">
-                        <span className="score">{items[2].value}</span>
-                        {items[2].label}
-                    </div>
+                    <Spotlight {...items[2]} />
                 </div>
             )}
         </div>
