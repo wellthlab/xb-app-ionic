@@ -12,6 +12,7 @@ import {
   IonCardSubtitle,
   IonCardHeader,
   IonSelect,
+  IonText,
   IonSelectOption,
 } from "@ionic/react";
 
@@ -84,6 +85,7 @@ function QuestionChoice({
  */
 function ContextualQuestions({ onSubmit }) {
   let [atHomeOrWork, setAtHomeOrWork] = useState(undefined);
+  let [somewhereElse, setSomewhereElse] = useState(undefined);
   let [location, setLocation] = useState(undefined);
   let [whoWith, setWhoWith] = useState(undefined);
   let [timeOfDay, setTimeOfDay] = useState(undefined);
@@ -96,7 +98,8 @@ function ContextualQuestions({ onSubmit }) {
         <IonCardHeader>
           <IonCardTitle>How are you moving?</IonCardTitle>
           <IonCardSubtitle>
-            These will help us understand how you are choosing to move
+            These <IonText color={"tertiary"}>optional</IonText> questions will
+            help us understand how you are choosing to move
           </IonCardSubtitle>
         </IonCardHeader>
 
@@ -111,13 +114,24 @@ function ContextualQuestions({ onSubmit }) {
               onSubmit={onSubmit}
             />
             <QuestionChoice
-              question={"Are you at home, or work?"}
-              choices={["Home", "Work"]}
+              question={"Are you at home, work, or somewhere where else?"}
+              choices={["Home", "Work", "Somewhere else"]}
               value={atHomeOrWork}
               setValue={setAtHomeOrWork}
               resLabel={"atHomeOrWork"}
               onSubmit={onSubmit}
             />
+            {atHomeOrWork === "Somewhere else" ? (
+              <QuestionText
+                question={"Where is somewhere else?"}
+                value={somewhereElse}
+                setValue={setSomewhereElse}
+                resLabel={"somewhereElse"}
+                onSubmit={onSubmit}
+              />
+            ) : (
+              ""
+            )}
             <QuestionChoice
               question={"Indoors or outdoors?"}
               choices={["Indoors", "Outdoors"]}
@@ -136,7 +150,7 @@ function ContextualQuestions({ onSubmit }) {
             />
             <QuestionChoice
               question={"What time of day is it?"}
-              choices={["Morning", "Afternoon", "Evening"]}
+              choices={["Morning", "Midday", "Afternoon", "Evening"]}
               value={timeOfDay}
               setValue={setTimeOfDay}
               resLabel={"timeOfDay"}
