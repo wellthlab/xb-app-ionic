@@ -1,9 +1,11 @@
 import './Leaderboard.css';
 
 import React from 'react';
-import { IonContent, IonSpinner, IonButton, IonCard } from '@ionic/react';
+import { IonContent, IonSpinner, IonButton, IonIcon } from '@ionic/react';
+import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 
 import Podium from './components/Podium';
+import TeamCard from './components/TeamCard';
 import XBHeader from '../util/XBHeader';
 import { addControllersProp } from '../util_model/controllers';
 
@@ -90,20 +92,16 @@ const Leaderboard = function ({ controllers }) {
         subcontent = 'Oops, there\'s nothing to show for the selected day';
       }
       else {
-        const firstThree = currentLeaderboard.slice(0, 3).map((team) => ({
-          label: team.name,
-          value: Math.round(team.overallCompletion)
-        }));
-
+        const firstThree = currentLeaderboard.slice(0, 3);
         const remaining = currentLeaderboard.slice(3);
 
         subcontent = (
           <>
-            <Podium items={firstThree} />
+            <Podium teams={firstThree} />
             {remaining.length && (
               <div className="team-list">
                 {remaining.map((team, i) => (
-                  <IonCard key={team._id}>{team.name}</IonCard>
+                  <TeamCard key={team._id} team={team} order={4 + i} />
                 ))}
               </div>
             )}
@@ -115,11 +113,11 @@ const Leaderboard = function ({ controllers }) {
     content = (
       <>
         <div className="day-picker">
-          <IonButton>Last week</IonButton>
+          <IonButton><IonIcon icon={chevronBackOutline} /></IonButton>
           {daysOfWeek.map((day, i) => (
             <IonButton key={day} fill="clear" disabled={selectedDay === i} onClick={createHandleDayOfWeekChange(i)}>{day}</IonButton>
           ))}
-          <IonButton>Next week</IonButton>
+          <IonButton><IonIcon icon={chevronForwardOutline} /></IonButton>
         </div>
         {subcontent}
       </>

@@ -5,15 +5,15 @@ import { star } from "ionicons/icons";
 import { IonIcon } from '@ionic/react';
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
-const Spotlight = function ({ value, label }) {
+const Spotlight = function ({ overall, name }) {
 
     return (
         <div className="spotlight">
             <CircularProgressbarWithChildren
-                value={value}
+                value={overall.percentage * 100}
                 styles={{
                     path: {
-                        stroke: 'var(--ion-color-success-shade)',
+                        stroke: 'var(--ion-color-success)',
                         width: 8,
                         strokeLinecap: 'butt',
                     },
@@ -22,24 +22,24 @@ const Spotlight = function ({ value, label }) {
                     },
                 }}
             >
-                <span className="score">{value}%</span>
-                {label}
+                <span className="score">{Math.round(overall.percentage * 100)}%</span>
+                {name}
             </CircularProgressbarWithChildren>
         </div>
     );
 };
 
-const Podium = function ({ items }) {
+const Podium = function ({ teams }) {
 
     return (
         <div className="podium-wrapper">
-            {items[1] && (
+            {teams[1] && (
                 <div className="secondary-spotlight">
                     <div className="stars">
                         <IonIcon icon={star} />
                         <IonIcon icon={star} />
                     </div>
-                    <Spotlight {...items[1]} />
+                    <Spotlight {...teams[1]} />
                 </div>
             )}
             <div className="primary-spotlight">
@@ -48,14 +48,14 @@ const Podium = function ({ items }) {
                     <IonIcon icon={star} />
                     <IonIcon icon={star} />
                 </div>
-                <Spotlight {...items[0]} />
+                <Spotlight {...teams[0]} />
             </div>
-            {items[2] && (
+            {teams[2] && (
                 <div className="secondary-spotlight">
                     <div className="stars">
                         <IonIcon icon={star} />
                     </div>
-                    <Spotlight {...items[2]} />
+                    <Spotlight {...teams[2]} />
                 </div>
             )}
         </div>
