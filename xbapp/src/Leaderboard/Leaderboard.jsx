@@ -69,6 +69,7 @@ const Leaderboard = function ({ controllers }) {
 
       const newDirection = weekDirection + direction;
       setWeekDirection(newDirection);
+      setSelectedDay(0);
 
       const currentMonday = getCurrentMonday();
       const newMonday = currentMonday.setDate(currentMonday.getDate() + newDirection * 7);
@@ -131,7 +132,14 @@ const Leaderboard = function ({ controllers }) {
           </IonButton>
 
           {daysOfWeek.map((day, i) => (
-            <IonButton key={day} fill="clear" disabled={selectedDay === i} onClick={createHandleDayOfWeekChange(i)}>{day}</IonButton>
+            <IonButton
+              key={day}
+              fill="clear"
+              disabled={selectedDay === i}
+              onClick={createHandleDayOfWeekChange(i)}
+            >
+              {day}
+            </IonButton>
           ))}
 
           <IonButton onClick={createHandleMoveWeek(1)} disabled={!weekDirection}>
