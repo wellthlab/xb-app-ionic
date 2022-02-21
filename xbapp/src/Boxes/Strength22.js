@@ -298,7 +298,7 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22video",
-          desc: "HOW TO EDT",
+          desc: "How to EDT",
           verb: "TRY",
           video: "PWyhF5_WazY",
           timed: true,

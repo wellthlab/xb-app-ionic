@@ -1,22 +1,12 @@
-import { useState } from "react";
 import {
   IonList,
   IonItem,
   IonItemGroup,
   IonIcon,
   IonButton,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonListHeader,
 } from "@ionic/react";
-import {
-  checkboxOutline,
-  squareOutline,
-  informationCircleOutline,
-  stopwatchOutline,
-  playOutline,
-} from "ionicons/icons";
+import { checkboxOutline, playOutline } from "ionicons/icons";
 
 /**
  * Display a list of the current exercises/tasks to do today
@@ -26,10 +16,8 @@ import {
  */
 function TodoTasks(props) {
   const icon_done = checkboxOutline;
-  const icon_missing = stopwatchOutline;
 
   let activeDay = props.day;
-  let totalMinutes = props.minutes;
   let groupID = props.team._id;
   let requiredTasks = props.tasks;
   let optionalTasks = props.optional;
@@ -52,6 +40,7 @@ function TodoTasks(props) {
   }
 
   // TODO: make tasks appear greyed out when done
+  // Required tasks for the users' path
   const tasks = requiredTasks.map((task, taskindex) => {
     let done = false;
 
@@ -83,6 +72,8 @@ function TodoTasks(props) {
     }
   });
 
+  // Optional tasks for the users' path
+  // This could also include tasks from other paths TODO: implement this
   const optional = optionalTasks.map((task, taskindex) => {
     let done = false;
 
@@ -110,8 +101,6 @@ function TodoTasks(props) {
     }
   });
 
-  console.log("optional", optional);
-
   return (
     <>
       <IonList lines="full">
@@ -121,7 +110,7 @@ function TodoTasks(props) {
         <IonItemGroup>{tasks}</IonItemGroup>
       </IonList>
 
-      {optional ? (
+      {optional /* TODO: Need to check if properly empty or not */ ? (
         <IonList>
           <IonListHeader>
             <h4>Optional activities</h4>

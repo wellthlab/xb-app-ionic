@@ -34,7 +34,7 @@ import Video from "../Strength/Video";
 import WebLink from "../Strength/WebLink";
 import OtherMove from "../Strength/OtherMove";
 import Timer from "../Instruments/StatelessTimer";
-import ManageItQuestion from "../Strength/ManageItQuestion";
+import ManageItQuestion from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import SetCounter from "../Strength/SetCounter";
 
@@ -54,6 +54,8 @@ import {
 } from "@ionic/react";
 import MovementInfoCard from "../Strength/MovementInfoCard";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
+import SuperSetTask from "../Strength/SupersetTask";
+import ManageItTask from "../Strength/ManageIt";
 
 /**
  * Create input widgets based on task type
@@ -224,12 +226,7 @@ export default function responseFactory(
       break;
 
     case "s22video":
-      input = (
-        <>
-          <Video onSubmit={onSubmit} video={info.video} />
-          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
-        </>
-      );
+      input = <Video onSubmit={onSubmit} video={info.video} />;
       typedesc = "Video Move";
       break;
 
@@ -250,7 +247,6 @@ export default function responseFactory(
               }}
             />
           </IonCard>
-          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
         </>
       );
       typedesc = "Assessment Move";
@@ -262,100 +258,20 @@ export default function responseFactory(
       break;
 
     case "s22other":
-      input = (
-        <>
-          <OtherMove onSubmit={onSubmit} />
-          <ContextualQuestions onSubmit={onSubmit} />
-        </>
-      );
+      input = <OtherMove onSubmit={onSubmit} />;
       typedesc = "Other Movement";
       break;
 
     case "s22manage":
-      input = (
-        <>
-          {info.video ? <Video onSubmit={onSubmit} video={info.video} /> : ""}
-          <IonCard>
-            <IonCardHeader>
-              <IonCardTitle>Did you manage it?</IonCardTitle>
-              <IonCardSubtitle>
-                This will let you track your progress
-              </IonCardSubtitle>
-            </IonCardHeader>
-            <ManageItQuestion attempt={1} onSubmit={onSubmit} />
-            <ManageItQuestion attempt={2} onSubmit={onSubmit} />
-            <ManageItQuestion attempt={3} onSubmit={onSubmit} />
-          </IonCard>
-          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
-        </>
-      );
+      input = <ManageItTask task={info} onSubmit={onSubmit} />;
       typedesc = "Manage It";
       break;
 
     case "s22superset":
-      // TODO: factor into a superset component
-      // TODO: ui needs cleaning up on mobile some more
-      console.log("info", info);
-      let moveA = getMove(info.moves[0]);
-      let moveB = getMove(info.moves[1]);
-      input = (
-        <>
-          <IonGrid>
-            {/* Help text, or similar */}
-            <IonRow>
-              <IonCol>
-                <h3>
-                  Start the timer, then click a move to learn more and start a
-                  set
-                </h3>
-              </IonCol>
-            </IonRow>
-            {/* Move A */}
-            <IonRow>
-              <IonCol>
-                {/* <IonItem routerLink={"/movedetail/" + info.moves[1]}> */}
-                <IonRouterLink routerLink={"/movedetail/" + info.moves[0]}>
-                  <MovementInfoCard
-                    titleSize={"normal"}
-                    key={moveA.id}
-                    images={moveA.images}
-                    name={moveA.name}
-                  />
-                </IonRouterLink>
-                {/* </IonItem> */}
-              </IonCol>
-              {/* move B */}
-              <IonCol>
-                {/* click to go to rep counter and info about move */}
-                {/* <IonItem routerLink={"/movedetail/" + info.moves[1]}> */}
-                <IonRouterLink routerLink={"/movedetail/" + info.moves[1]}>
-                  <MovementInfoCard
-                    titleSize={"normal"}
-                    key={moveB.id}
-                    images={moveB.images}
-                    name={moveB.name}
-                  />
-                </IonRouterLink>
-                {/* </IonItem> */}
-              </IonCol>
-            </IonRow>
-            {/* Button to change their moves if they want */}
-            {/* <IonRow>
-              <IonCol>
-                <IonButton expand="full">Change your moves</IonButton>
-              </IonCol>
-            </IonRow> */}
-            {/* Contextual questions */}
-            <IonRow>
-              <IonCol>
-                <ContextualQuestions onSubmit={onSubmit} />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </>
-      );
+      input = <SuperSetTask task={info} onSubmit={onSubmit} />;
       typedesc = "Super Set";
       break;
+
     default:
       input = <p>Unknown Response Type</p>;
       typedesc = "";

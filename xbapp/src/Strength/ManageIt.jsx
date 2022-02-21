@@ -1,5 +1,16 @@
-import { IonItem, IonRow, IonCol, IonButton } from "@ionic/react";
 import { useState } from "react";
+import {
+  IonItem,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+} from "@ionic/react";
+
+import Video from "./Video";
 
 function ManageItQuestion({ attempt, onSubmit }) {
   let [yesDisabled, setYesDisabled] = useState(false);
@@ -44,4 +55,23 @@ function ManageItQuestion({ attempt, onSubmit }) {
   );
 }
 
-export default ManageItQuestion;
+function ManageItTask({ task, onSubmit }) {
+  return (
+    <>
+      <Video onSubmit={onSubmit} video={task.video} />
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Did you manage it?</IonCardTitle>
+          <IonCardSubtitle>
+            This will let you track your progress
+          </IonCardSubtitle>
+        </IonCardHeader>
+        <ManageItQuestion attempt={1} onSubmit={onSubmit} />
+        <ManageItQuestion attempt={2} onSubmit={onSubmit} />
+        <ManageItQuestion attempt={3} onSubmit={onSubmit} />
+      </IonCard>
+    </>
+  );
+}
+
+export default ManageItTask;

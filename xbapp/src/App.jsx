@@ -83,6 +83,7 @@ import PushPull from "./UserInput/PushPull";
 
 import RecordMovement from "./RecordMovement/RecordMovement";
 import MovementTimer from "./RecordMovement/MovementTimer";
+import MoveDetail from "./Strength/MoveDetail";
 
 import getXBClient from "./util_model/client";
 
@@ -117,7 +118,6 @@ import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
 import XBHeader from "./util/XBHeader";
-import MoveDetail from "./Strength/moveDetail";
 
 /****************************************************************/
 
