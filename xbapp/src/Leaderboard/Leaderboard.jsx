@@ -1,112 +1,95 @@
-import React from "react";
-import {
-  IonContent,
-  IonPage,
-  IonSpinner,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonDatetime,
-  IonButton,
-} from "@ionic/react";
-import XBHeader from "../util/XBHeader";
+import React from 'react';
+import { IonContent, IonSpinner } from '@ionic/react';
 
-import { addControllersProp } from "../util_model/controllers";
+import Podium from './components/Podium';
+import XBHeader from '../util/XBHeader';
+import { addControllersProp } from '../util_model/controllers';
 
-const Leaderboard = function (props) {
-  const [date1, setDate1] = React.useState(new Date().toString());
-  const [allTime, setAllTime] = React.useState(false);
-  const [teams, setTeams] = React.useState(null);
-  const [errored, setErrored] = React.useState(false);
+const getCurrentMonday = function () {
 
-  const loadTeams = async function (dates) {
-    let raw;
+  const thisMonday = new Date();
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const normalisedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
+  thisMonday.setDate(today.getDate() - (normalisedDayOfWeek - 1));
+
+  return thisMonday;
+};
+
+const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const Leaderboard = function ({ controllers }) {
+  const [leaderboard, setLeaderboard] = React.useState([]);
+  const [monday, setMonday] = React.useState(1644797132263);
+  const [selectedDay, setSelectedDay] = React.useState(0);
+
+  const [loading, setLoading] = React.useState(true);
+  const [fetchErrored, setFetchedErrored] = React.useState(false);
+
+  const fetchTeamsForWeek = async function (currentMonday) {
+
+    setLoading(true);
+    setFetchedErrored(false);
+
+    let result;
+    let errored;
     try {
-      raw = await props.controllers.client.calculateTeamStats({
-        all: true,
-        dates,
-      });
-    } catch (error) {
-      setErrored(true);
+      result = await controllers.client.sortTeams(currentMonday);
+    }
+    catch (error) {
+      errored = true;
+      setFetchedErrored(true);
       console.error(error);
+      return;
+    }
+    finally {
+      setLoading(false);
     }
 
-    console.log(raw);
-
-    for (const team of raw) {
-      let overallScore = 0;
-      for (const entry of Object.values(team.stats)) {
-        overallScore += entry.overallScore;
-      }
-
-      team.overallScore = Math.round(overallScore * 1000);
+    if (errored) {
+      return;
     }
 
-    raw.sort((a, b) => b.overallScore - a.overallScore);
-
-    setTeams(raw);
+    const parsed = JSON.parse(result);
+    console.log(parsed, result);
+    setLeaderboard(parsed);
   };
 
   React.useEffect(() => {
-    loadTeams(date1);
+    fetchTeamsForWeek(monday);        // Use the initial monday state
   }, []);
-
-  const handleDateChange = function (e) {
-    const val = e.detail.value;
-    setDate1(val);
-    setAllTime(false);
-    loadTeams(val);
-  };
-
-  const handleShowAllTime = function () {
-    const state = !allTime;
-    setAllTime(state);
-    loadTeams(state ? undefined : date1);
-  };
 
   let content;
 
-  if (!teams) {
-    if (errored) {
-      content = "Something went wrong";
-    } else {
-      content = <IonSpinner name="crescent" class="spin" />;
+  if (loading) {
+    content = <IonSpinner name="crescent" />
+  }
+  else if (fetchErrored) {
+    content = 'Sorry, something went wrong';
+  }
+  else {
+    if (!leaderboard.length) {
+      content = 'Oops, there\'s nothing to show for the selected week';
     }
-  } else {
-    if (teams.length === 0) {
-      content = "There's nothing to show for the selected period";
-    } else {
-      content = teams.map((team) => (
-        <IonCard key={team.id}>
-          <IonCardHeader>
-            <IonCardTitle>{team.name}</IonCardTitle>
-            <IonCardSubtitle>
-              {team.userCount} member{team.userCount > 1 ? "s" : ""}
-            </IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent>{team.overallScore}</IonCardContent>
-        </IonCard>
-      ));
+    else {
+
+      const currentLeaderboard = leaderboard[selectedDay].teams;
+
+      content = (
+        <>
+          <Podium items={currentLeaderboard.map((team) => ({ label: team.name, value: Math.round(team.overall.averagePercentage) }))} />
+        </>
+      );
     }
   }
 
   return (
-    <IonPage>
-      <XBHeader title="Teams &amp; Leaderboard"></XBHeader>
-      <IonContent fullscreen>
-        <IonDatetime
-          value={date1}
-          color="light"
-          onIonChange={handleDateChange}
-        />
-        <IonButton onClick={handleShowAllTime}>
-          {allTime ? "Show current date" : "Show all time"}
-        </IonButton>
+    <>
+      <XBHeader title="Teams Leaderboard" />
+      <IonContent>
         {content}
       </IonContent>
-    </IonPage>
+    </>
   );
 };
 
