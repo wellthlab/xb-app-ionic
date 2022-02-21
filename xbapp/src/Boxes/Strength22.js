@@ -263,10 +263,20 @@ const decorateTeam = (team) => {
       else if (effWeek === 2) {
 
         qreq.push({
+          type: "s22weblink",
+          desc: "Schedule an IN-WORK workout for this week",
+          verb: "TRY",
+          timed: true,
+          s22onPath: true,
+          path: "all",
+          link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
+        })
+
+        qreq.push({
           type: "s22video",
           desc: "Neuro mobility",
           verb: "MOVE",
-          link: "ok5GEVxx5FI",
+          video: "ok5GEVxx5FI",
           timed: true,
           s22onPath: true,
           path: "all",
@@ -276,7 +286,7 @@ const decorateTeam = (team) => {
           type: "s22video",
           desc: "Adapt YOUR move: squats",
           verb: "MOVE",
-          link: "BUnxylgbNNw",
+          video: "BUnxylgbNNw",
           timed: true,
           s22onPath: true,
           path: "all"
@@ -286,7 +296,7 @@ const decorateTeam = (team) => {
           type: "s22video",
           desc: "Adjust YOUR move: push ups",
           verb: "MOVE",
-          link: "Ezg6pGr3Su8",
+          video: "Ezg6pGr3Su8",
           timed: true,
           s22onPath: true,
           path: "all"
@@ -296,7 +306,7 @@ const decorateTeam = (team) => {
           type: "s22video",
           desc: "EDT Blocks",
           verb: "MOVE",
-          link: "PWyhF5_WazY",
+          video: "PWyhF5_WazY",
           timed: true,
           s22onPath: true,
           path: "all"
@@ -304,7 +314,7 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22superset",
-          desc: "Push and pull block",
+          desc: "Squat and push up set (optional)",
           verb: "SET",
           timed: true,
           s22onPath: true,

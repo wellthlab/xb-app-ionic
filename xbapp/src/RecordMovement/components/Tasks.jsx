@@ -75,13 +75,7 @@ function TodoTasks(props) {
             taskindex
           }
         >
-          <IonButton
-            fill="clear"
-            expand={"full"}
-            onClick={() => {
-              localStorage.setItem("currentTask", JSON.stringify(task));
-            }}
-          ></IonButton>
+          <IonButton fill="clear" expand={"full"}></IonButton>
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
           {task.desc}
         </IonItem>
@@ -108,13 +102,7 @@ function TodoTasks(props) {
             taskindex
           }
         >
-          <IonButton
-            fill="clear"
-            expand={"full"}
-            onClick={() => {
-              localStorage.setItem("currentTask", JSON.stringify(task));
-            }}
-          ></IonButton>
+          <IonButton fill="clear" expand={"full"}></IonButton>
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
           {task.desc}
         </IonItem>
