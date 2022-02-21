@@ -11,6 +11,14 @@
  * }
  */
 
+import React, { useState, useEffect } from "react";
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+} from "@ionic/react";
+
 import MinuteEntry from "../UserInput/MinuteEntry";
 import Questionnaire from "../UserInput/Questionnaire";
 import QuestionnaireEvening from "../UserInput/QuestionnaireEvening";
@@ -34,26 +42,6 @@ import Video from "../Strength/Video";
 import WebLink from "../Strength/WebLink";
 import OtherMove from "../Strength/OtherMove";
 import Timer from "../Instruments/StatelessTimer";
-import ManageItQuestion from "../Strength/ManageIt";
-import ContextualQuestions from "../Strength/Questions";
-import SetCounter from "../Strength/SetCounter";
-
-import React, { useState, useEffect } from "react";
-import {
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonItem,
-  IonRow,
-  IonGrid,
-  IonCol,
-  IonButton,
-  IonRouterLink,
-} from "@ionic/react";
-import MovementInfoCard from "../Strength/MovementInfoCard";
-import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import SuperSetTask from "../Strength/SupersetTask";
 import ManageItTask from "../Strength/ManageIt";
 

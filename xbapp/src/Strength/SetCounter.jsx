@@ -42,19 +42,16 @@ const SetCounter = (props) => {
     if (reps < 0) {
       setReps(0);
     }
-    console.log("repsToReturn", repsToReturn);
     if (props.onSubmit) {
       props.onSubmit({ assType: "Super Set", reps: repsToReturn });
     }
   }
 
-  if (props.showReps) {
-    // TODO
-
-    if (reps > 5) {
-      setReps(0);
-      setSets(sets + 1);
-    }
+  if (props.showCounter) {
+    // if (reps >= 5) {
+    //   setReps(0);
+    //   setSets(sets + 1);
+    // }
 
     return (
       <IonItem>

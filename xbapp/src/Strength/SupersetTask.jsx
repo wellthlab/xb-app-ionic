@@ -1,13 +1,20 @@
+import { useState } from "react";
 import {
   IonGrid,
   IonRow,
   IonCol,
   IonRouterLink,
   IonButton,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
 } from "@ionic/react";
 
 import MovementInfoCard from "./MovementInfoCard";
 import TaskQuestions from "./Questions";
+import SetCounter from "./SetCounter";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 
 function SuperSetTask({ task, onSubmit }) {
@@ -20,10 +27,13 @@ function SuperSetTask({ task, onSubmit }) {
         {/* Help text, or similar */}
         <IonRow>
           <IonCol>
-            <h3>Click a task to learn more about it.</h3>
+            <h3>
+              Click a task to learn more about it, including move variations.
+            </h3>
           </IonCol>
         </IonRow>
         {/* Move A */}
+
         <IonRow>
           <IonCol>
             <IonRouterLink routerLink={"/movedetail/" + task.moves[0]}>
@@ -49,6 +59,7 @@ function SuperSetTask({ task, onSubmit }) {
             {/* </IonItem> */}
           </IonCol>
         </IonRow>
+
         {/* Button to change their moves if they want */}
         {/* <IonRow>
               <IonCol>
@@ -56,6 +67,29 @@ function SuperSetTask({ task, onSubmit }) {
               </IonCol>
             </IonRow> */}
         {/* Contextual questions */}
+
+        <IonRow>
+          <IonCol>
+            <IonCard>
+              <IonCardHeader>
+                <IonCardTitle>Track your super set!</IonCardTitle>
+                <IonCardSubtitle>
+                  Track how many sets and reps you managed to do here. Remember,
+                  to rest between sets if you need to and that a set is made up
+                  of five reps.
+                </IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                <SetCounter
+                  sets={0}
+                  showCounter={true}
+                  onSubmit={onSubmit}
+                ></SetCounter>
+              </IonCardContent>
+            </IonCard>
+          </IonCol>
+        </IonRow>
+
         <IonRow>
           <IonCol>
             <TaskQuestions onSubmit={onSubmit} />

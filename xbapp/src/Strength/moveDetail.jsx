@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-
 import {
   IonContent,
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
   IonButton,
+  IonCardContent,
+  IonText,
 } from "@ionic/react";
+
 import XBHeader from "../util/XBHeader";
-import SetCounter from "./SetCounter";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import { useHistory } from "react-router";
 import MovementInfoCard from "./MovementInfoCard";
@@ -33,21 +30,19 @@ function MoveDetail(props) {
             titleSize={"normal"}
             key={move.id}
             images={move.images}
-            text={move.description}
+            text={move.description + " " + move.warning}
           />
         </IonCard>
+
         <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Track your super set!</IonCardTitle>
-            <IonCardSubtitle>
-              Track your progress here, just increment the rep counter after
-              each repetition. Remember, each set is made up of five reps.
-            </IonCardSubtitle>
-          </IonCardHeader>
           <IonCardContent>
-            <SetCounter sets={0} showReps={true}></SetCounter>
+            <IonText>
+              <h1>Too easy for you?</h1>
+            </IonText>
+            {move.difficulty}
           </IonCardContent>
         </IonCard>
+
         <IonButton
           expand="block"
           onClick={() => {
