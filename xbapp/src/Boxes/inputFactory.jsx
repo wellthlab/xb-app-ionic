@@ -304,7 +304,10 @@ export default function responseFactory(
             {/* Help text, or similar */}
             <IonRow>
               <IonCol>
-                <h3>Click a move to learn more and to start a set</h3>
+                <h3>
+                  Start the timer, then click a move to learn more and start a
+                  set
+                </h3>
               </IonCol>
             </IonRow>
             {/* Move A */}
@@ -337,14 +340,16 @@ export default function responseFactory(
               </IonCol>
             </IonRow>
             {/* Button to change their moves if they want */}
-            <IonRow>
+            {/* <IonRow>
               <IonCol>
                 <IonButton expand="full">Change your moves</IonButton>
               </IonCol>
-            </IonRow>
+            </IonRow> */}
             {/* Contextual questions */}
             <IonRow>
-              <ContextualQuestions onSubmit={onSubmit} />
+              <IonCol>
+                <ContextualQuestions onSubmit={onSubmit} />
+              </IonCol>
             </IonRow>
           </IonGrid>
         </>

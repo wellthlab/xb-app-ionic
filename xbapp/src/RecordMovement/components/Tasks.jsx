@@ -55,7 +55,11 @@ function TodoTasks(props) {
   const tasks = requiredTasks.map((task, taskindex) => {
     let done = false;
 
-    if (task.timed && task.s22onPath) {
+    if (
+      task.timed &&
+      task.s22onPath &&
+      (task.path === "all" || task.path === props.team.s22path.path)
+    ) {
       return (
         <IonItem
           color={done ? "" : "primary"}

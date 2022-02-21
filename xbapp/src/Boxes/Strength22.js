@@ -2,7 +2,7 @@
 * This is the experiment-specific code for the Spring 2022 Strength in Work Experiment
 */
 
-import { QueuePlayNextSharp } from "@material-ui/icons";
+import { QueuePlayNextSharp, TramRounded } from "@material-ui/icons";
 import { qrCodeSharp } from "ionicons/icons";
 
 /**
@@ -261,6 +261,47 @@ const decorateTeam = (team) => {
         }
       }
       else if (effWeek === 2) {
+
+        qreq.push({
+          type: "s22video",
+          desc: "Neuro mobility",
+          verb: "MOVE",
+          link: "ok5GEVxx5FI",
+          timed: true,
+          s22onPath: true,
+          path: "all",
+        })
+
+        qreq.push({
+          type: "s22video",
+          desc: "Adapt YOUR move: squats",
+          verb: "MOVE",
+          link: "BUnxylgbNNw",
+          timed: true,
+          s22onPath: true,
+          path: "all"
+        })
+
+        qreq.push({
+          type: "s22video",
+          desc: "Adjust YOUR move: push ups",
+          verb: "MOVE",
+          link: "Ezg6pGr3Su8",
+          timed: true,
+          s22onPath: true,
+          path: "all"
+        })
+
+        qreq.push({
+          type: "s22video",
+          desc: "EDT Blocks",
+          verb: "MOVE",
+          link: "PWyhF5_WazY",
+          timed: true,
+          s22onPath: true,
+          path: "all"
+        })
+
         qreq.push({
           type: "s22superset",
           desc: "Push and pull block",
@@ -268,7 +309,7 @@ const decorateTeam = (team) => {
           timed: true,
           s22onPath: true,
           path: "builder",
-          moves: ["lsit", "stepup"]
+          moves: ["supportedsquat", "wallpushup"]
         })
       }
     }
@@ -278,7 +319,8 @@ const decorateTeam = (team) => {
       desc: "Add some other movement",
       verb: "ADD",
       timed: true,
-      s22onPath: true
+      s22onPath: true,
+      path: "all"
     });
 
     team.experiment.tasks[eday] = { required: qreq, optional: others };
