@@ -227,7 +227,7 @@ export default function responseFactory(
       input = (
         <>
           <Video onSubmit={onSubmit} video={info.video} />
-          <ContextualQuestions onSubmit={onSubmit} />
+          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
         </>
       );
       typedesc = "Video Move";
@@ -250,7 +250,7 @@ export default function responseFactory(
               }}
             />
           </IonCard>
-          <ContextualQuestions onSubmit={onSubmit} />
+          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
         </>
       );
       typedesc = "Assessment Move";
@@ -286,7 +286,7 @@ export default function responseFactory(
             <ManageItQuestion attempt={2} onSubmit={onSubmit} />
             <ManageItQuestion attempt={3} onSubmit={onSubmit} />
           </IonCard>
-          <ContextualQuestions onSubmit={onSubmit} />
+          {/* <ContextualQuestions onSubmit={onSubmit} /> */}
         </>
       );
       typedesc = "Manage It";

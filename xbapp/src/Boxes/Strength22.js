@@ -278,8 +278,8 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22video",
-          desc: "Adapt YOUR move: squats",
-          verb: "MOVE",
+          desc: "How to adjust squats",
+          verb: "TRY",
           video: "BUnxylgbNNw",
           timed: true,
           s22onPath: true,
@@ -288,8 +288,8 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22video",
-          desc: "Adjust YOUR move: push ups",
-          verb: "MOVE",
+          desc: "How to adjust push ups",
+          verb: "TRY",
           video: "Ezg6pGr3Su8",
           timed: true,
           s22onPath: true,
@@ -298,8 +298,8 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22video",
-          desc: "EDT Blocks",
-          verb: "MOVE",
+          desc: "HOW TO EDT",
+          verb: "TRY",
           video: "PWyhF5_WazY",
           timed: true,
           s22onPath: true,
@@ -308,7 +308,7 @@ const decorateTeam = (team) => {
 
         qreq.push({
           type: "s22superset",
-          desc: "Squat and push up set (optional)",
+          desc: "Practise set EDT",
           verb: "SET",
           timed: true,
           s22onPath: true,
@@ -318,9 +318,9 @@ const decorateTeam = (team) => {
       }
     }
 
-    qreq.push({
+    others.push({
       type: 's22other',
-      desc: "Add some other movement",
+      desc: "Do your own thing ",
       verb: "ADD",
       timed: true,
       s22onPath: true,

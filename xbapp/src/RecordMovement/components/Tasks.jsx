@@ -110,6 +110,8 @@ function TodoTasks(props) {
     }
   });
 
+  console.log("optional", optional);
+
   return (
     <>
       <IonList lines="full">
@@ -119,12 +121,16 @@ function TodoTasks(props) {
         <IonItemGroup>{tasks}</IonItemGroup>
       </IonList>
 
-      <IonList>
-        <IonListHeader>
-          <h4>Other path's activities</h4>
-        </IonListHeader>
-        <IonItemGroup>{optional}</IonItemGroup>
-      </IonList>
+      {optional ? (
+        <IonList>
+          <IonListHeader>
+            <h4>Optional activities</h4>
+          </IonListHeader>
+          <IonItemGroup>{optional}</IonItemGroup>
+        </IonList>
+      ) : (
+        ""
+      )}
     </>
   );
 }
