@@ -117,7 +117,6 @@ const decorateTeam = (team) => {
 
       // Set up other tasks according to week number
       var effWeek = team.s22plan.plan.effectiveWeek;
-      var effWeek = 2;
 
       console.log("effectiveWeek", effWeek);
 
@@ -247,13 +246,7 @@ const decorateTeam = (team) => {
               desc: "Putting sequences together",
               verb: "MOVE",
               timed: true,
-              link: ""
-            })
-            qreq.push({
-              type: "s22superset",
-              desc: "Try a superset",
-              verb: "SET",
-              timed: true
+              video: "QMvhS5GwuX4"
             })
             break;
           default:
