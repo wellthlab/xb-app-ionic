@@ -42,7 +42,7 @@ function MoveTask({ task, onSubmit }) {
         block={0} // needs changing to be the actual block?
         onSetChange={updateSets} // using what george did
         onSubmit={onSubmit}
-        mins={1}
+        mins={7}
         secs={0}
       />
     </>

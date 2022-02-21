@@ -5,8 +5,10 @@ import {
   IonItem,
   IonLabel,
   IonRow,
+  IonCard,
   IonGrid,
   IonCol,
+  IonCardContent,
 } from "@ionic/react";
 
 import { connect } from "react-redux";
@@ -84,6 +86,19 @@ const MovementTimer = ({
   }
   return (
     <div id="movementTimer">
+      <IonRow>
+        <IonCol>
+          <IonCard>
+            <IonCardContent>
+              Try to fit in as many sets in the 7-minute limit. When ready, TAP
+              on the move you want to start with. Tap AGAIN when you have
+              completed 5 REPS and you will switch moves. When the time runs
+              out, you can add any outstanding reps.
+            </IonCardContent>
+          </IonCard>
+        </IonCol>
+      </IonRow>
+
       {mins === 0 && secs === 0 ? (
         ""
       ) : (

@@ -128,8 +128,6 @@ function MovementTimer(props) {
     currentTask
   );
 
-  console.log("tasktype", tasktype);
-
   let extra;
   if (content !== false) {
     extra = content.input;
@@ -157,6 +155,9 @@ function MovementTimer(props) {
         {extra}
 
         {/* Timer and buttons for manual entry of minutes */}
+        {/* The timer is NOT SHOWN when we're doing an EDT super set thing,
+        as we are going to be using the old countdown timer there.
+        TODO: the responses are not being saved in that view ATM */}
         {tasktype !== "s22superset" ? (
           <IonCard>
             <IonCardHeader>
