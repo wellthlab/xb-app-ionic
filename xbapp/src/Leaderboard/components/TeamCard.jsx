@@ -9,7 +9,7 @@ const TeamCard = function ({ team, order }) {
                 <IonLabel>{order}. {team.name}</IonLabel>
                 <IonLabel>{team.userCount} member(s)</IonLabel>
                 <IonLabel>{Math.round(team.overall.minutes)} minutes exercised</IonLabel>
-                <IonLabel slot="end">
+                <IonLabel>
                     {Math.round(team.overall.percentage * 100)}%
                     <IonProgressBar color="success" value={team.overall.percentage} />
                 </IonLabel>
