@@ -24,7 +24,7 @@ const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const Leaderboard = function ({ controllers }) {
   const [leaderboard, setLeaderboard] = React.useState([]);
-  const [monday, setMonday] = React.useState(1644797132263);
+  const [weekDirection, setWeekDirection] = React.useState(0);
   const [selectedDay, setSelectedDay] = React.useState(0);
 
   const [loading, setLoading] = React.useState(true);
@@ -60,8 +60,21 @@ const Leaderboard = function ({ controllers }) {
   };
 
   React.useEffect(() => {
-    fetchTeamsForWeek(monday);        // Use the initial monday state
+    fetchTeamsForWeek(getCurrentMonday());        // Use the initial monday state
   }, []);
+
+  const createHandleMoveWeek = function (direction) {
+
+    return () => {
+
+      const newDirection = weekDirection + direction;
+      setWeekDirection(newDirection);
+
+      const currentMonday = getCurrentMonday();
+      const newMonday = currentMonday.setDate(currentMonday.getDate() + newDirection * 7);
+      fetchTeamsForWeek(newMonday);
+    };
+  };
 
   const createHandleDayOfWeekChange = function (i) {
 
@@ -98,6 +111,7 @@ const Leaderboard = function ({ controllers }) {
         subcontent = (
           <>
             <Podium teams={firstThree} />
+
             {remaining.length && (
               <div className="team-list">
                 {remaining.map((team, i) => (
@@ -113,11 +127,17 @@ const Leaderboard = function ({ controllers }) {
     content = (
       <>
         <div className="day-picker">
-          <IonButton><IonIcon icon={chevronBackOutline} /></IonButton>
+          <IonButton onClick={createHandleMoveWeek(-1)}>
+            <IonIcon icon={chevronBackOutline} />
+          </IonButton>
+
           {daysOfWeek.map((day, i) => (
             <IonButton key={day} fill="clear" disabled={selectedDay === i} onClick={createHandleDayOfWeekChange(i)}>{day}</IonButton>
           ))}
-          <IonButton><IonIcon icon={chevronForwardOutline} /></IonButton>
+
+          <IonButton onClick={createHandleMoveWeek(1)} disabled={!weekDirection}>
+            <IonIcon icon={chevronForwardOutline} />
+          </IonButton>
         </div>
         {subcontent}
       </>
