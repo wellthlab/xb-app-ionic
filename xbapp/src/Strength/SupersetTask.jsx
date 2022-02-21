@@ -74,7 +74,7 @@ function SuperSetTask({ task, onSubmit }) {
               <IonCardHeader>
                 <IonCardTitle>Track your super set!</IonCardTitle>
                 <IonCardSubtitle>
-                  Track how many sets and reps you managed to do here. Remember,
+                  Track how many sets and reps you managed to do here. Remember
                   to rest between sets if you need to and that a set is made up
                   of five reps.
                 </IonCardSubtitle>

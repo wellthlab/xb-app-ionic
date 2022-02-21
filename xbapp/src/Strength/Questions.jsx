@@ -114,7 +114,7 @@ function ContextualQuestions({ onSubmit }) {
               onSubmit={onSubmit}
             />
             <QuestionChoice
-              question={"Are you at home, work, or somewhere where else?"}
+              question={"Are you at home, work, or somewhere else?"}
               choices={["Home", "Work", "Somewhere else"]}
               value={atHomeOrWork}
               setValue={setAtHomeOrWork}
