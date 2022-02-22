@@ -13,7 +13,7 @@ import SetCounter from "../SetCounter";
 /**
  * Time movements
  */
-const MovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
+const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
@@ -44,11 +44,11 @@ const MovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
       setNumberOfSets(numberOfSets + 1);
       toast("You added 1 SET. Keep going!", {
         position: moveAlternation[0] === false ? "bottom-right" : "bottom-left",
-        autoClose: 3000,
-        hideProgressBar: false,
+        autoClose: 1500,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        pauseOnHover: false,
+        draggable: false,
         progress: undefined,
       });
     }
@@ -196,9 +196,9 @@ const MovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
 
       <ToastContainer
         position={moveAlternation[0] === false ? "bottom-right" : "bottom-left"}
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
+        autoClose={1500}
+        hideProgressBar={true}
+        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
@@ -209,4 +209,4 @@ const MovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
   );
 };
 
-export default MovementTimer;
+export default EDTMovementTimer;

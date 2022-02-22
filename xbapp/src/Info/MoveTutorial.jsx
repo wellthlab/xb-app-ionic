@@ -16,7 +16,7 @@ import MovementPicker, {
   getMove,
 } from "../DEPRECATED/components/OLDMovementPicker";
 import MovementInfoCard from "../Strength/MovementInfoCard";
-import MovementTimer from "../Strength/components/MovementTimer";
+import EDTMovementTimer from "../Strength/components/MovementTimer";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import mobiscroll from "@mobiscroll/react-lite";
 import CountDown from "../Instruments/CountDown";

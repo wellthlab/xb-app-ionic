@@ -46,8 +46,7 @@ function TodoTasks(props) {
 
     if (
       task.timed &&
-      task.s22onPath &&
-      (task.s22path === "all" || task.s22path === props.team.s22path.path)
+      (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
     ) {
       return (
         <IonItem
@@ -79,7 +78,11 @@ function TodoTasks(props) {
   const optional = optionalTasks.map((task, taskindex) => {
     let done = false;
 
-    if (task.timed && task.s22onPath) {
+    if (
+      task.timed &&
+      task.s22onPath !== false
+      // task.s22path !== props.steam.s22path.path
+    ) {
       return (
         <IonItem
           color={done ? "" : "secondary"}

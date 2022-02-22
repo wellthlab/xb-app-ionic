@@ -24,7 +24,7 @@ import MovementPicker, {
 } from "../DEPRECATED/components/OLDMovementPicker";
 import CountDown from "../Instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
-import MovementTimer from "./components/MovementTimer";
+import EDTMovementTimer from "./components/MovementTimer";
 import MovementBalance from "./MovementBalance";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";
@@ -310,7 +310,7 @@ const StrengthWizard = ({ week, onSubmit, countdownID }) => {
                   Tap AGAIN when you completed 5 REPS - and you will switch
                   moves. When the time runs out, you can add any remaining REPS.
                 </p>
-                <MovementTimer
+                <EDTMovementTimer
                   exercises={blocksOfWeek[blocknum - 1]}
                   onDone={() => {}}
                   onSetChange={updateSets}
