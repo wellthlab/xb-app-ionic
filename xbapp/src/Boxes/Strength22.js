@@ -362,7 +362,7 @@ const decorateTeam = (team) => {
       }
     }
 
-    required.push({
+    others.push({
       type: "s22edtset",
       desc: "Practise set EDT",
       verb: "SET",
@@ -387,6 +387,8 @@ const decorateTeam = (team) => {
       timed: true,
       s22onPath: "all",
     });
+
+    console.log("others", others);
 
     team.experiment.tasks[eday] = { required: required, optional: others };
 

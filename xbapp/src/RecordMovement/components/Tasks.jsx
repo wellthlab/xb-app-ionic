@@ -41,9 +41,8 @@ function TodoTasks(props) {
 
   // TODO: make tasks appear greyed out when done
   // Required tasks for the users' path
-  const tasks = requiredTasks.map((task, taskindex) => {
+  const tasks = requiredTasks.map((task, taskIndex) => {
     let done = false;
-
     if (
       task.timed &&
       (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
@@ -51,16 +50,16 @@ function TodoTasks(props) {
       return (
         <IonItem
           color={done ? "" : "primary"}
-          key={taskindex}
+          key={taskIndex}
           routerLink={
-            "/timer/" +
+            "/timer/required/" +
             groupID +
             "/" +
             activeDay +
             "/" +
             task.type +
             "/" +
-            taskindex
+            taskIndex
           }
         >
           <IonButton fill="clear" expand={"full"}></IonButton>
@@ -75,27 +74,26 @@ function TodoTasks(props) {
 
   // Optional tasks for the users' path
   // This could also include tasks from other paths TODO: implement this
-  const optional = optionalTasks.map((task, taskindex) => {
+  const optional = optionalTasks.map((task, taskIndex) => {
     let done = false;
-
     if (
       task.timed &&
       task.s22onPath !== false
-      // task.s22path !== props.steam.s22path.path
+      // && (task.s22onPath !== "all" || task.s22onPath !== props.team.s22path.path)
     ) {
       return (
         <IonItem
           color={done ? "" : "secondary"}
-          key={taskindex}
+          key={taskIndex}
           routerLink={
-            "/timer/" +
+            "/timer/optional/" +
             groupID +
             "/" +
             activeDay +
             "/" +
             task.type +
             "/" +
-            taskindex
+            taskIndex
           }
         >
           <IonButton fill="clear" expand={"full"}></IonButton>

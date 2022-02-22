@@ -41,6 +41,7 @@ function MovementTimer(props) {
   let gid = props.match.params.id;
   let day = props.match.params.day;
   let tasktype = props.match.params.task;
+  let optionalOrRequired = props.match.params.req;
   let taskindex = props.match.params.index;
 
   const [group, setGroup] = useState(false);
@@ -48,8 +49,6 @@ function MovementTimer(props) {
 
   const [minutes, setMinutes] = useState(false);
   const [exResponse, setExResponse] = useState({});
-
-  console.log("MovementTimer", props);
 
   // Load team data if required; mostly useful during development
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -70,7 +69,11 @@ function MovementTimer(props) {
   // and push all the relevant state - including the current task - into that
   if (currentTask === false) {
     // Find the task if not found already
-    setCurrentTask(group.experiment.tasks[day].required[taskindex]);
+    if (optionalOrRequired === "required") {
+      setCurrentTask(group.experiment.tasks[day].required[taskindex]);
+    } else {
+      setCurrentTask(group.experiment.tasks[day].optional[taskindex]);
+    }
     return <></>;
   }
 
