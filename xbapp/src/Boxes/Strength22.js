@@ -21,8 +21,7 @@ const decorateTeam = (team) => {
   var eday = team.experiment.day;
 
     var week = Math.floor(eday / 7);
-
-    // console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
+    console.log("Add tasks for day/week ", eday, week, " of ", team.experiment.day)
 
     team.isStrength22 = true;
     team.s22path = false;
@@ -31,10 +30,8 @@ const decorateTeam = (team) => {
       team.s22path = team.lastEntryByType.s22path;
     }
 
-
     var required = []; // Mandatory tasks
     var others = []; // Other tasks that can be done, but optionally
-
 
     team.s22plan = false;
 
@@ -46,11 +43,8 @@ const decorateTeam = (team) => {
     }
     // End of EXAMPLE plan
 
-
-
     // Create a handy reference to TODAYS plan
     var dow = (new Date()).getDay();
-
 
     // Try to find a s22 plan
     if(typeof team.lastEntryByType.s22plan !== 'undefined') {
@@ -59,7 +53,7 @@ const decorateTeam = (team) => {
 
       // Check that the plan is for the current week
       var planweek = Math.floor(plan.day / 7);
-      if(planweek == week) { // week is calculated above, from the experiment day
+      if(planweek === week) { // week is calculated above, from the experiment day
         team.s22plan = team.lastEntryByType.s22plan;
         console.log("Found a current s22 plan");
       } else {
@@ -68,9 +62,6 @@ const decorateTeam = (team) => {
     } else {
       console.log("No s22 plan has ever been saved");
     }
-
-
-
 
     // No plan? Require the planning task to be completed
     if(!team.s22plan) {
@@ -120,9 +111,8 @@ const decorateTeam = (team) => {
 
       // Set up other tasks according to week number
       var effWeek = team.s22plan.plan.effectiveWeek;
+      console.log("effectiveWeek from plan", effWeek);
       effWeek = 2;
-
-      console.log("effectiveWeek", effWeek);
 
       if(effWeek === 1) {
         switch(dow) {
@@ -265,8 +255,7 @@ const decorateTeam = (team) => {
               desc: "Schedule an IN-WORK workout for this week",
               verb: "TRY",
               timed: true,
-              s22onPath: true,
-              s22path: "all",
+              s22onPath: "all",
               link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
             })
 
@@ -276,8 +265,7 @@ const decorateTeam = (team) => {
               verb: "MOVE",
               video: "ok5GEVxx5FI",
               timed: true,
-              s22onPath: true,
-              s22path: "all",
+              s22onPath: "all"
             })
 
             required.push({
@@ -286,8 +274,7 @@ const decorateTeam = (team) => {
               verb: "TRY",
               video: "BUnxylgbNNw",
               timed: true,
-              s22onPath: true,
-              s22path: "all"
+              s22onPath: "all"
             })
 
             required.push({
@@ -296,8 +283,7 @@ const decorateTeam = (team) => {
               verb: "TRY",
               video: "Ezg6pGr3Su8",
               timed: true,
-              s22onPath: true,
-              s22path: "all"
+              s22onPath: "all",
             })
 
             required.push({
@@ -306,8 +292,7 @@ const decorateTeam = (team) => {
               verb: "TRY",
               video: "PWyhF5_WazY",
               timed: true,
-              s22onPath: true,
-              s22path: "all"
+              s22onPath: "all"
             })
 
             required.push({
@@ -315,8 +300,7 @@ const decorateTeam = (team) => {
               desc: "Practise set EDT",
               verb: "SET",
               timed: true,
-              s22onPath: true,
-              s22path: "all",
+              s22onPath: "all",
               moves: ["supportedsquat", "wallpushup"]
             })
               break;
@@ -326,8 +310,7 @@ const decorateTeam = (team) => {
               desc: "Neck mobility",
               verb: "MOVE",
               timed: true,
-              s22onPath: true,
-              s22path: "all",
+              s22onPath: "all",
               video: "jvxDJL_cfFU"
             })
 
@@ -336,11 +319,10 @@ const decorateTeam = (team) => {
               desc: "Where are you?",
               verb: "QUESTION",
               timed: true,
-              s22onPath: true,
-              s22path: "all"
+              s22onPath: "all"
             })
 
-            let text2 = <>
+            let text = <>
               <IonRow>
                 <IonCol>
                   For <strong>BUILDER ENDURANCE</strong> this week – go for a walk – or some other non-stop activity that you can do that elevates your pulse above what it is when you're standing. GO for 1-4 blocks as you wish.
@@ -368,9 +350,8 @@ const decorateTeam = (team) => {
               desc: "Endurance",
               verb: "MOVE",
               timed: true,
-              s22onPath: true,
-              s22path: "all",
-              text: text2,
+              s22onPath: "all",
+              text: text,
             })
 
             break;
@@ -380,6 +361,15 @@ const decorateTeam = (team) => {
         }
       }
     }
+
+    required.push({
+      type: "s22edtset",
+      desc: "Practise set EDT",
+      verb: "SET",
+      timed: true,
+      s22onPath: "all",
+      moves: ["fullsquat", "flatpushup"]
+    })
 
     // required.push({
     //   type: "strength-setter",
@@ -392,11 +382,10 @@ const decorateTeam = (team) => {
 
     others.push({
       type: "s22other",
-      desc: "Do your own thing",
+      desc: "Do your own thing!",
       verb: "ADD",
       timed: true,
-      s22onPath: true,
-      path: "all"
+      s22onPath: "all",
     });
 
     team.experiment.tasks[eday] = { required: required, optional: others };

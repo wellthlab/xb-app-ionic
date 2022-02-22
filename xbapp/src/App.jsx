@@ -83,7 +83,6 @@ import PushPull from "./UserInput/PushPull";
 
 import RecordMovement from "./RecordMovement/RecordMovement";
 import MovementTimer from "./RecordMovement/MovementTimer";
-import MoveDetail from "./Strength/MoveDetail";
 
 import getXBClient from "./util_model/client";
 
@@ -256,20 +255,15 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/wallsit" component={WallSit} exact={true} />
               <Route path="/poms" component={POMS} exact={true} />
               <Route path="/scheduler" component={Scheduler} exact={true} />
-              {/** Record movement */}
+              {/** Record movement and timer for Strength 22 */}
               <Route
-                path="/addmovement"
+                path="/add-movement"
                 component={RecordMovement}
                 exact={true}
               />
               <Route
                 path="/timer/:id/:day/:task/:index"
                 component={MovementTimer}
-                exact={true}
-              />
-              <Route
-                path="/movedetail/:name"
-                component={MoveDetail}
                 exact={true}
               />
             </Switch>
@@ -286,7 +280,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Teams"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Move"} href={"/addmovement"}>
+            <IonTabButton tab={"Move"} href={"/add-movement"}>
               <IonIcon icon={playOutline} />
               <IonLabel>{"Move"}</IonLabel>
             </IonTabButton>

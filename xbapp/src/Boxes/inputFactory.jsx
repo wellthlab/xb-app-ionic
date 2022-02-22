@@ -25,7 +25,7 @@ import Questionnaire from "../UserInput/Questionnaire";
 import QuestionnaireEvening from "../UserInput/QuestionnaireEvening";
 import QuestionnaireEndWeek from "../UserInput/QuestionnaireEndWeek";
 import StrengthWizard from "../Strength/StrengthWizard";
-import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
+// import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import WorkAssessment from "../UserInput/WorkAssessment";
@@ -43,10 +43,9 @@ import Video from "../Strength/Video";
 import WebLink from "../Strength/WebLink";
 import OtherMove from "../Strength/OtherMove";
 import Timer from "../Instruments/StatelessTimer";
-import MoveTask from "../Strength/SupersetTask";
+import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
-import { isBreakStatement } from "typescript";
 
 /**
  * Create input widgets based on task type
@@ -258,8 +257,8 @@ export default function responseFactory(
       typedesc = "Manage It";
       break;
 
-    case "s22superset":
-      input = <MoveTask task={info} onSubmit={onSubmit} />;
+    case "s22edtset":
+      input = <EDTSet task={info} onSubmit={onSubmit} />;
       typedesc = "Super Set";
       break;
 

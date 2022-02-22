@@ -69,6 +69,8 @@ function TodoTasks(props) {
           {task.desc}
         </IonItem>
       );
+    } else {
+      return <></>;
     }
   });
 
@@ -98,6 +100,8 @@ function TodoTasks(props) {
           {task.desc}
         </IonItem>
       );
+    } else {
+      return <></>;
     }
   });
 

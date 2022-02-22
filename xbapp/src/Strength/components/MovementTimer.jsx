@@ -1,41 +1,19 @@
 import React, { useState, useEffect } from "react";
-
-import {
-  IonButton,
-  IonItem,
-  IonLabel,
-  IonRow,
-  IonCard,
-  IonGrid,
-  IonCol,
-  IonCardContent,
-} from "@ionic/react";
-
-import { connect } from "react-redux";
-import CountDown from "../Instruments/CountDown";
-import MovementInfoCard from "./MovementInfoCard";
-import SetCounter from "./SetCounter";
-
-import { moves, getMove } from "../DEPRECATED/components/OLDMovementPicker";
-import "./MovementTimer.scss";
-import { AlternateEmail } from "@material-ui/icons";
-
+import { IonRow, IonCard, IonGrid, IonCol, IonCardContent } from "@ionic/react";
+import { useHistory } from "react-router";
 import Blur from "react-css-blur";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useHistory } from "react-router";
+
+import "./MovementTimer.scss";
+import CountDown from "../../Instruments/CountDown";
+import MovementInfoCard from "../MovementInfoCard";
+import SetCounter from "../SetCounter";
 
 /**
  * Time movements
  */
-const MovementTimer = ({
-  exercises,
-  block,
-  onSubmit,
-  mins,
-  secs,
-  day,
-}) => {
+const MovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
@@ -202,16 +180,19 @@ const MovementTimer = ({
           {}
         </IonRow>
       </IonGrid>
-      { showReps ? (
-      <SetCounter
-        showReps={showReps}
-        sets={numberOfSets}
-        onChange={(sets, reps) => {
-          setNumberOfReps(reps);
-          setNumberOfSets(sets);
-          onSubmit({ minutes: 7, sets: sets, reps: reps });
-        }}
-      /> ) : ("") }
+      {showReps ? (
+        <SetCounter
+          showReps={showReps}
+          sets={numberOfSets}
+          onChange={(sets, reps) => {
+            setNumberOfReps(reps);
+            setNumberOfSets(sets);
+            onSubmit({ minutes: 7, sets: sets, reps: reps });
+          }}
+        />
+      ) : (
+        ""
+      )}
 
       <ToastContainer
         position={moveAlternation[0] === false ? "bottom-right" : "bottom-left"}
