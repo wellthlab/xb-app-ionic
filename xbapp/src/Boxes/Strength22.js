@@ -6,6 +6,8 @@ import { QueuePlayNextSharp, TramRounded } from "@material-ui/icons";
 import { qrCodeSharp } from "ionicons/icons";
 import { GiConsoleController } from "react-icons/gi";
 
+import {IonRow, IonCol} from "@ionic/react";
+
 /**
 * The experiment is passed the team record that it represents.
 * The team record will have experiment information attached; but may be
@@ -318,6 +320,52 @@ const decorateTeam = (team) => {
               moves: ["supportedsquat", "wallpushup"]
             })
               break;
+          case 2:
+            required.push({
+              type: "s22video",
+              desc: "Neck mobility",
+              verb: "MOVE",
+              timed: true,
+              s22onPath: true,
+              s22path: "all",
+              video: "jvxDJL_cfFU"
+            })
+
+            let text2 = <>
+              <IonRow>
+                <IonCol>
+                  For <strong>BUILDER ENDURANCE</strong> this week – go for a walk – or some other non-stop activity that you can do that elevates your pulse above what it is when you're standing. GO for 1-4 blocks as you wish.
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  For <strong>Explorers</strong>, we suggest following the BUILDER strength protocol for at least 2 of the three days and for endurance days, please likewise feel free to follow this path or do your own thing.
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  For <strong>Experimentalists</strong> – for those days of the week you might not have a practice – since the target is 35 movement minutes a day – please feel welcome to use our patterns.
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  For <strong>Flaneurs</strong> – please consider keeping up with the mobility before your daily walks/strolls/cycles or other mildly pulse elevating efforts.
+                </IonCol>
+              </IonRow>
+            </>
+
+            required.push({
+              type: "s22instructions",
+              desc: "Endurance",
+              verb: "MOVE",
+              timed: true,
+              s22onPath: true,
+              s22path: "all",
+              text: text2,
+            })
+
+            break;
+
           default:
               break;
         }
