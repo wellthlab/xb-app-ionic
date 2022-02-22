@@ -43,7 +43,7 @@ function RecordMovement(props) {
 
   return (
     <>
-      <XBHeader title="Record Movement"></XBHeader>
+      <XBHeader title="Record Your Movement"></XBHeader>
       <IonContent fullscreen>
         <IonGrid>
           <IonRow>

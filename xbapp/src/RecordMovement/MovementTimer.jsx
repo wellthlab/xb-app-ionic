@@ -255,7 +255,7 @@ function MovementTimer(props) {
   return (
     <>
       <XBHeader title="Record Movement" />
-      <IonContent style={{ "--padding-bottom": "85px" }}>
+      <IonContent style={{ "--padding-bottom": "40px" }}>
         {/* Exercise and for how long header -- press for details */}
         <IonItem
           detailIcon={informationCircleOutline}

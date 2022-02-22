@@ -50,17 +50,18 @@ function TodoTasks(props) {
   const tasks = requiredTasks.map((task, taskIndex) => {
     // TODO: this won't scale very well when there are lots of responses, but for now it's good enough.
     // TODO: on response add, update the model with tasks complete look up
+    // check if task is done
     let done = null;
-    let checkIndex = null;
     for (let i = 0; i < responses.length; i++) {
-      checkIndex = parseInt(responses[i].taskIndex);
+      let checkIndex = parseInt(responses[i].taskIndex);
       let requiredTask = responses[i].requiredTask;
       done = checkIndex === taskIndex && requiredTask === true ? true : false;
+      // break if we found a match
       if (done) {
         break;
       }
     }
-
+    // only include time tasks on the user's path
     if (
       task.timed &&
       (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
@@ -79,8 +80,9 @@ function TodoTasks(props) {
             "/" +
             taskIndex
           }
+          disabled={done}
         >
-          <IonButton fill="clear" expand={"full"}></IonButton>
+          <IonButton fill="clear" expand={"full"} />
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
           {task.desc}
         </IonItem>
@@ -92,16 +94,18 @@ function TodoTasks(props) {
 
   // Optional tasks for the users' path
   const optional = optionalTasks.map((task, taskIndex) => {
+    // check if task is done
     let done = null;
-    let checkIndex = null;
     for (let i = 0; i < responses.length; i++) {
-      checkIndex = parseInt(responses[i].taskIndex);
+      let checkIndex = parseInt(responses[i].taskIndex);
       let requiredTask = responses[i].requiredTask;
       done = checkIndex === taskIndex && requiredTask === false ? true : false;
+      // break if we found a match
       if (done) {
         break;
       }
     }
+    // only include tasks which are timed and are optional
     if (
       task.timed &&
       task.s22onPath !== false
@@ -121,8 +125,9 @@ function TodoTasks(props) {
             "/" +
             taskIndex
           }
+          disabled={done}
         >
-          <IonButton fill="clear" expand={"full"}></IonButton>
+          <IonButton fill="clear" expand={"full"} />
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
           {task.desc}
         </IonItem>
