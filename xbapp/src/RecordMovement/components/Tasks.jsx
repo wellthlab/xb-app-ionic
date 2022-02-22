@@ -110,7 +110,7 @@ function TodoTasks(props) {
         <IonItemGroup>{tasks}</IonItemGroup>
       </IonList>
 
-      {optional /* TODO: Need to check if properly empty or not */ ? (
+      {optional ? (
         <IonList>
           <IonListHeader>
             <h4>Optional activities</h4>

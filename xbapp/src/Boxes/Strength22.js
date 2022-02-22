@@ -331,6 +331,15 @@ const decorateTeam = (team) => {
               video: "jvxDJL_cfFU"
             })
 
+            required.push({
+              type: "s22questions",
+              desc: "Where are you?",
+              verb: "QUESTION",
+              timed: true,
+              s22onPath: true,
+              s22path: "all"
+            })
+
             let text2 = <>
               <IonRow>
                 <IonCol>
@@ -382,17 +391,8 @@ const decorateTeam = (team) => {
     // })
 
     others.push({
-      type: "s22questions",
-      desc: "Where are you?",
-      verb: "QUESTION",
-      timed: true,
-      s22onPath: true,
-      s22path: "all"
-    })
-
-    others.push({
-      type: 's22other',
-      desc: "Do your own thing ",
+      type: "s22other",
+      desc: "Do your own thing",
       verb: "ADD",
       timed: true,
       s22onPath: true,
