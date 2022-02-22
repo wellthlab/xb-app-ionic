@@ -5,6 +5,11 @@ import {
   IonIcon,
   IonButton,
   IonListHeader,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
 } from "@ionic/react";
 import { checkboxOutline, playOutline } from "ionicons/icons";
 
@@ -21,6 +26,8 @@ function TodoTasks(props) {
   let groupID = props.team._id;
   let requiredTasks = props.tasks;
   let optionalTasks = props.optional;
+  let dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
+  let responses = props.team.entries[dayIndexResponses].responses;
 
   // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
@@ -39,10 +46,21 @@ function TodoTasks(props) {
     );
   }
 
-  // TODO: make tasks appear greyed out when done
   // Required tasks for the users' path
   const tasks = requiredTasks.map((task, taskIndex) => {
-    let done = false;
+    // TODO: this won't scale very well when there are lots of responses, but for now it's good enough.
+    // TODO: on response add, update the model with tasks complete look up
+    let done = null;
+    let checkIndex = null;
+    for (let i = 0; i < responses.length; i++) {
+      checkIndex = parseInt(responses[i].taskIndex);
+      let requiredTask = responses[i].requiredTask;
+      done = checkIndex === taskIndex && requiredTask === true ? true : false;
+      if (done) {
+        break;
+      }
+    }
+
     if (
       task.timed &&
       (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
@@ -73,9 +91,17 @@ function TodoTasks(props) {
   });
 
   // Optional tasks for the users' path
-  // This could also include tasks from other paths TODO: implement this
   const optional = optionalTasks.map((task, taskIndex) => {
-    let done = false;
+    let done = null;
+    let checkIndex = null;
+    for (let i = 0; i < responses.length; i++) {
+      checkIndex = parseInt(responses[i].taskIndex);
+      let requiredTask = responses[i].requiredTask;
+      done = checkIndex === taskIndex && requiredTask === false ? true : false;
+      if (done) {
+        break;
+      }
+    }
     if (
       task.timed &&
       task.s22onPath !== false
@@ -108,20 +134,34 @@ function TodoTasks(props) {
 
   return (
     <>
-      <IonList lines="full">
-        <IonListHeader>
-          <h4>Your path's activities</h4>
-        </IonListHeader>
-        <IonItemGroup>{tasks}</IonItemGroup>
-      </IonList>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Your path's activities</IonCardTitle>
+          <IonCardSubtitle>
+            You can do these in any order you like
+          </IonCardSubtitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonList lines="full">
+            <IonItemGroup>{tasks}</IonItemGroup>
+          </IonList>
+        </IonCardContent>
+      </IonCard>
 
       {optional ? (
-        <IonList>
-          <IonListHeader>
-            <h4>Optional activities</h4>
-          </IonListHeader>
-          <IonItemGroup>{optional}</IonItemGroup>
-        </IonList>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Optional activities</IonCardTitle>
+            <IonCardSubtitle>
+              You can do these in any order you like
+            </IonCardSubtitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+              <IonItemGroup>{optional}</IonItemGroup>
+            </IonList>
+          </IonCardContent>
+        </IonCard>
       ) : (
         ""
       )}

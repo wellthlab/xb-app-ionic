@@ -73,8 +73,6 @@ export default function responseFactory(
   var time = Date.now();
   var groupID = group._id;
 
-  console.log("input factory", type, info);
-
   // info is an optional param; it's other fields that the type might need
   if (typeof info == "undefined") {
     info = {};

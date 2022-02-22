@@ -99,6 +99,8 @@ function MovementTimer(props) {
       res[k] = exResponse[k];
     }
 
+    res.taskIndex = taskindex;
+    res.requiredTask = optionalOrRequired === "required";
     res.type = tasktype;
     res.minutes = minutes;
     res.day = day;

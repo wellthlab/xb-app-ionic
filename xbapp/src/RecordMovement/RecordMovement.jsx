@@ -29,7 +29,6 @@ function RecordMovement(props) {
   }
 
   let team = props.teams.teams.bybox.move[0];
-  console.log("Timer using team", team);
 
   if (!team.s22plan) {
     return (
