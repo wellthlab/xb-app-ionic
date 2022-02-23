@@ -1,17 +1,39 @@
+import './TeamCard.css';
+
 import React from 'react';
-import { IonCard, IonItem, IonProgressBar, IonLabel } from '@ionic/react';
+import { IonCard, IonLabel, IonItem } from '@ionic/react';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+
+const strokeColors = { 1: '#FFD700', 2: '#C0C0C0', 3: '#CD7F32' };
 
 const TeamCard = function ({ team, order }) {
 
   return (
-    <IonCard>
+    <IonCard className="team-card">
       <IonItem>
-        <IonLabel>{order}. {team.name}</IonLabel>
-        <IonLabel>{team.userCount} member(s)</IonLabel>
-        <IonLabel>{Math.round(team.overall.cappedMinutes)} minutes exercised / {Math.round(team.overall.target)} minutes target</IonLabel>
+        <div className="progress-wrapper">
+          <CircularProgressbarWithChildren
+            value={team.overall.completion * 100}
+            styles={{
+              path: {
+                stroke: strokeColors[order] || 'var(--ion-color-success)',
+                strokeLinecap: 'butt',
+              },
+              trail: {
+                stroke: 'var(--ion-color-light)',
+              },
+            }}
+          >
+            {order}
+          </CircularProgressbarWithChildren>
+        </div>
         <IonLabel>
-          {Math.round(team.overall.completion * 100)}%
-          <IonProgressBar color="success" value={team.overall.completion} />
+          <h2>{team.name}</h2>
+          <p>{team.userCount} member(s)</p>
+        </IonLabel>
+        <IonLabel slot="end" className="progress ion-text-end">
+          <h2>{Math.round(team.overall.completion * 100)}%</h2>
+          <p>{Math.round(team.overall.minutes)} mins / {Math.round(team.overall.target)} mins target</p>
         </IonLabel>
       </IonItem>
     </IonCard>

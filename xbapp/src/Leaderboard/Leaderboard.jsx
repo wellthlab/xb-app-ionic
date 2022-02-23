@@ -106,7 +106,7 @@ const Leaderboard = function ({ controllers }) {
         subcontent = (
           <div className="team-list">
             {leaderboard[selectedDay].teams.map((team, i) => (
-              <TeamCard key={team._id} team={team} order={i} />
+              <TeamCard key={team._id} team={team} order={i + 1} />
             ))}
           </div>
         );
