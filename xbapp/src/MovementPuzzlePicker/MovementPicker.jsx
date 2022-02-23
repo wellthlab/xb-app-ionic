@@ -244,19 +244,24 @@ const MovementPicker = (props) => {
   }
 
   return (
-    <IonContent>
-      <IonHeader title="Block Planner">
+    <>
+      <XBHeader title={"Movement Picker"} />
+
+      {/* <IonContent> */}
+      {/* <IonHeader title="Block Planner">
         <IonButtons>
           <IonBackButton defaultHref="/"></IonBackButton>
           <IonTitle className="header-title" id="movement-type" color="dark">
             {rowHeadings[rowIndex]}
           </IonTitle>
         </IonButtons>
-      </IonHeader>
+      </IonHeader> */}
       <BlockIndexContext.Provider value={blockIndex}>
         {screen}
       </BlockIndexContext.Provider>
-    </IonContent>
+
+      {/* </IonContent> */}
+    </>
   );
 };
 

@@ -19,7 +19,7 @@ import { useLocation } from "react-router-dom";
 
 var studyPlanner = [
   [["bilateral push", "bilateral pull"]], //week 0
-  [["bilateral push", "bilateral pull"]], //week 1
+  [["bilateral lower push", "bilateral upper push"]], //week 1
   [
     ["bilateral upper push", "bilateral upper pull"],
     ["bilateral lower push", "bilateral lower pull"],

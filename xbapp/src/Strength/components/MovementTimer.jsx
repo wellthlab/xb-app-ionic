@@ -66,10 +66,12 @@ const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
         <IonCol>
           <IonCard>
             <IonCardContent>
-              Try to fit in as many sets in the 7-minute limit. When ready, TAP
-              on the move you want to start with. Tap AGAIN when you have
-              completed 5 REPS and you will switch moves. When the time runs
-              out, you can add any outstanding reps.
+              <div class="ion-text-justify">
+                Try to fit in as many sets in the 7-minute limit. When ready,
+                TAP on the move you want to start with. TAP the OTHER move when
+                you have completed 5 REPS and you will switch moves. When the
+                time runs out, you can add any outstanding reps.
+              </div>
             </IonCardContent>
           </IonCard>
         </IonCol>

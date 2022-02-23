@@ -35,11 +35,11 @@ import XBHeader from "../util/XBHeader";
  * the number of minutes that it took
  */
 function MovementTimer(props) {
-  let [paused, setPaused] = useState(false);
   let [manualEntry, setManualEntry] = useState(false);
 
   let gid = props.match.params.id;
   let day = props.match.params.day;
+  let type = props.match.params.type;
   let tasktype = props.match.params.task;
   let optionalOrRequired = props.match.params.req;
   let taskindex = props.match.params.index;
@@ -57,7 +57,7 @@ function MovementTimer(props) {
     // Find the group if not set already
     for (var g of props.teams.teams) {
       // Find the group in the store
-      if (g._id == gid) {
+      if (g._id === gid) {
         setGroup(g);
       }
     }
@@ -99,9 +99,9 @@ function MovementTimer(props) {
       res[k] = exResponse[k];
     }
 
-    res.taskIndex = taskindex;
     res.requiredTask = optionalOrRequired === "required";
-    res.type = tasktype;
+    res.type = type;
+    res.intype = tasktype;
     res.minutes = minutes;
     res.day = day;
     await props.controllers.ADD_RESPONSE(gid, res);
@@ -228,27 +228,29 @@ function MovementTimer(props) {
     );
   } else {
     timer = (
-      <IonCard>
-        <IonCardContent>
-          <IonGrid>
-            <IonRow>
-              <IonCol style={{ textAlign: "center" }}>
-                {ready ? (
-                  <IonButton
-                    onClick={save}
-                    expand="full"
-                    routerLink="/add-movement"
-                  >
-                    Save Activity <IonIcon icon={arrowForwardOutline} />
-                  </IonButton>
-                ) : (
-                  ""
-                )}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCardContent>
-      </IonCard>
+      <>
+        {ready ? (
+          <IonCard>
+            <IonCardContent>
+              <IonGrid>
+                <IonRow>
+                  <IonCol style={{ textAlign: "center" }}>
+                    <IonButton
+                      onClick={save}
+                      expand="full"
+                      routerLink="/add-movement"
+                    >
+                      Save Activity <IonIcon icon={arrowForwardOutline} />
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonCardContent>
+          </IonCard>
+        ) : (
+          ""
+        )}
+      </>
     );
   }
 

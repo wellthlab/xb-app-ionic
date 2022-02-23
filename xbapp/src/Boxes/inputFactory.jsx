@@ -64,18 +64,20 @@ import ContextualQuestions from "../Strength/Questions";
 export default function responseFactory(
   type,
   group,
-  daynumber,
+  dayNumber,
   onSubmit,
-  info
+  taskObj
 ) {
   // time key is used to re-create rather than re-use elements on subsequent uses
   var input, typedesc;
   var time = Date.now();
   var groupID = group._id;
+  let week = group.experiment.week;
+  let day = group.experiment.day;
 
   // info is an optional param; it's other fields that the type might need
-  if (typeof info == "undefined") {
-    info = {};
+  if (typeof taskObj == "undefined") {
+    taskObj = {};
   }
 
   switch (type) {
@@ -100,11 +102,10 @@ export default function responseFactory(
       break;
 
     case "strength":
-      var week = Math.floor((daynumber - 1) / 7);
       typedesc = "Strength";
       input = (
         <StrengthWizard
-          countdownID={daynumber + "-" + groupID}
+          countdownID={dayNumber + "-" + groupID}
           week={week}
           onSubmit={onSubmit}
         />
@@ -112,20 +113,19 @@ export default function responseFactory(
       break;
 
     case "strength-setter":
-      var week = Math.floor((daynumber - 1) / 7);
       typedesc = "Strength Picker";
       input = <BlockPlanner onSubmit={onSubmit} explorer={false} week={week} />;
       break;
 
     case "strength-explorer":
-      var week = -1;
+      week = -1;
       typedesc = "Block Planner";
-      input = ( //TODO: define save function for blockplanner
+      input = (
         <BlockPlanner
           onSubmit={onSubmit}
           explorer={true}
           week={week}
-          day={daynumber}
+          day={dayNumber}
         />
       );
       break;
@@ -142,8 +142,7 @@ export default function responseFactory(
 
     case "scheduler":
       var planner = [];
-      var week = Math.floor((daynumber - 1) / 7);
-      if (week == 0 && daynumber == 1) {
+      if (week === 0 && dayNumber === 1) {
         planner = [
           { day: "Tuesday", isChecked: false },
           { day: "Wednesday", isChecked: false },
@@ -188,7 +187,6 @@ export default function responseFactory(
       break;
 
     case "quiz":
-      var week = Math.floor((daynumber - 1) / 7);
       input = <Quiz onSubmit={onSubmit} week={week} />;
       typedesc = "Quiz";
       break;
@@ -214,17 +212,17 @@ export default function responseFactory(
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={info.video} />;
+      input = <Video onSubmit={onSubmit} video={taskObj.video} />;
       typedesc = "Video Move";
       break;
 
     case "s22assessedvideo":
       input = (
         <>
-          <Video onSubmit={onSubmit} video={info.video} />
+          <Video onSubmit={onSubmit} video={taskObj.video} />
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>Time your {info.move}</IonCardTitle>
+              <IonCardTitle>Time your {taskObj.move}</IonCardTitle>
               <IonCardSubtitle>
                 Timing your move will let you measure your progress
               </IonCardSubtitle>
@@ -241,7 +239,9 @@ export default function responseFactory(
       break;
 
     case "s22weblink":
-      input = <WebLink onSubmit={onSubmit} link={info.link} info={info} />;
+      input = (
+        <WebLink onSubmit={onSubmit} link={taskObj.link} info={taskObj} />
+      );
       typedesc = "Web Link";
       break;
 
@@ -251,12 +251,20 @@ export default function responseFactory(
       break;
 
     case "s22manage":
-      input = <ManageItTask task={info} onSubmit={onSubmit} />;
+      input = <ManageItTask task={taskObj} onSubmit={onSubmit} />;
       typedesc = "Manage It";
       break;
 
     case "s22edtset":
-      input = <EDTSet task={info} onSubmit={onSubmit} />;
+      input = (
+        <EDTSet
+          task={taskObj}
+          groupId={groupID}
+          day={day}
+          week={week}
+          onSubmit={onSubmit}
+        />
+      );
       typedesc = "Super Set";
       break;
 
@@ -268,7 +276,7 @@ export default function responseFactory(
     case "s22instructions":
       input = (
         <IonCard>
-          <IonCardContent>{info.text}</IonCardContent>
+          <IonCardContent>{taskObj.text}</IonCardContent>
         </IonCard>
       );
       typedesc = "Instructions";
