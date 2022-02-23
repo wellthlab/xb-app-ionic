@@ -27,7 +27,7 @@ function TodoTasks(props) {
   let requiredTasks = props.tasks;
   let optionalTasks = props.optional;
   let dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
-  let responses = props.team.entries[dayIndexResponses].responses;
+  let responseTypes = props.team.entries[dayIndexResponses].responseTypes;
 
   // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
@@ -41,26 +41,15 @@ function TodoTasks(props) {
           textAlign: "center",
         }}
       >
-        <h3>You have no TIMED TASKS for today</h3>
+        <h3>There are no timed tasks for today</h3>
       </div>
     );
   }
 
   // Required tasks for the users' path
   const tasks = requiredTasks.map((task, taskIndex) => {
-    // TODO: this won't scale very well when there are lots of responses, but for now it's good enough.
-    // TODO: on response add, update the model with tasks complete look up
     // check if task is done
-    let done = null;
-    for (let i = 0; i < responses.length; i++) {
-      let checkIndex = parseInt(responses[i].taskIndex);
-      let requiredTask = responses[i].requiredTask;
-      done = checkIndex === taskIndex && requiredTask === true ? true : false;
-      // break if we found a match
-      if (done) {
-        break;
-      }
-    }
+    let done = task.type in responseTypes;
     // only include time tasks on the user's path
     if (
       task.timed &&
@@ -77,6 +66,8 @@ function TodoTasks(props) {
             activeDay +
             "/" +
             task.type +
+            "/" +
+            task.intype +
             "/" +
             taskIndex
           }
@@ -95,16 +86,7 @@ function TodoTasks(props) {
   // Optional tasks for the users' path
   const optional = optionalTasks.map((task, taskIndex) => {
     // check if task is done
-    let done = null;
-    for (let i = 0; i < responses.length; i++) {
-      let checkIndex = parseInt(responses[i].taskIndex);
-      let requiredTask = responses[i].requiredTask;
-      done = checkIndex === taskIndex && requiredTask === false ? true : false;
-      // break if we found a match
-      if (done) {
-        break;
-      }
-    }
+    let done = task.type in responseTypes;
     // only include tasks which are timed and are optional
     if (
       task.timed &&
@@ -122,6 +104,8 @@ function TodoTasks(props) {
             activeDay +
             "/" +
             task.type +
+            "/" +
+            task.intype +
             "/" +
             taskIndex
           }

@@ -65,7 +65,7 @@ const decorateTeam = (team) => {
 
     if(!team.s22path) {
       required.push({
-        type: 's22path',
+        intype: 's22path',
         desc: 'You need to choose a path',
         verb: 'CHOOSE',
         s22onPath: false,
@@ -74,14 +74,14 @@ const decorateTeam = (team) => {
     else
     {
       others.push({
-        type: 's22path',
+        intype: 's22path',
         desc: 'You can change your path',
         verb: 'CHANGE',
         s22onPath: false,
       });
 
       required.push({
-        type: 's22plan',
+        intype: 's22plan',
         desc: 'You need to plan your week',
         verb: 'PLAN',
         s22onPath: false,
@@ -92,14 +92,14 @@ const decorateTeam = (team) => {
   // Otherwise generate the daily tasks
 
     others.push({ // An optional re-planning task
-      type: 's22plan',
+      intype: 's22plan',
       desc: 'You can change your weekly plan',
       verb: 'PLAN',
       s22onPath: false,
     });
 
     others.push({
-      type: 's22path',
+      intype: 's22path',
       desc: 'You can change your path',
       verb: 'CHANGE',
       s22onPath: false,
@@ -115,23 +115,23 @@ const decorateTeam = (team) => {
       switch(dow) {
         case 1:
             required.push({
-              type: 's22assessedvideo',
+              intype: 's22assessedvideo',
               desc: "Try a plank",
               verb: "TRY",
               move: 'plank',
               timed: true,
               video: "oO7_-19AuUI",
-              protoResponse: {assType: 'plank'}
+              protoResponse: {assintype: 'plank'}
             });
             required.push({
-              type: 's22video',
+              intype: 's22video',
               desc: "Feet and Ankle Mobility",
               verb: "MOVE",
               timed: true,
               video: "ZQdoCjOpFtQ"
             });
             required.push({
-              type: 's22weblink',
+              intype: 's22weblink',
               desc: "Learn about Sets, Reps and Blocks",
               verb: "TRY",
               timed: true,
@@ -140,30 +140,30 @@ const decorateTeam = (team) => {
           break;
         case 2:
             required.push({
-              type: 's22assessedvideo',
+              intype: 's22assessedvideo',
               desc: "Try a wall sit",
               verb: "TRY",
               move: 'wall sit',
               timed: true,
               video: "vOledWwAyFU",
-              protoResponse: {assType: 'wallsit'}
+              protoResponse: {assintype: 'wallsit'}
             });
             required.push({
-              type: 's22video',
+              intype: 's22video',
               desc: "Toe Pulls",
               verb: "MOVE",
               timed: true,
               video: "0Y8La2b8XiA"
             });
             required.push({
-              type: 's22weblink',
+              intype: 's22weblink',
               desc: "Learn about Pushes and Pulls",
               verb: "LEARN",
               timed: true,
               link: "https://livinglab.soton.ac.uk/push-pull/"
             });
             required.push({
-              type: 's22weblink',
+              intype: 's22weblink',
               desc: "Learn about Bilateral Moves",
               verb: "LEARN",
               timed: true,
@@ -172,7 +172,7 @@ const decorateTeam = (team) => {
           break;
         case 3:
           required.push({
-            type: "s22manage",
+            intype: "s22manage",
             desc: "Try a sit and stand",
             verb: "TRY",
             move: "sit and stand",
@@ -180,14 +180,14 @@ const decorateTeam = (team) => {
             video: "T7AFlh9HZrs",
             });
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Knee and hip mobility",
             verb: "MOVE",
             timed: true,
             video: "bWkPB4WgTn0"
           });
           required.push({
-            type: "s22weblink",
+            intype: "s22weblink",
             desc: "Learn about unilateral moves",
             verb: "LEARN",
             timed: true,
@@ -196,7 +196,7 @@ const decorateTeam = (team) => {
           break;
         case 4:
           required.push({
-            type: "s22assessedvideo",
+            intype: "s22assessedvideo",
             desc: "Try to balance",
             verb: "TRY",
             move: "balance",
@@ -204,14 +204,14 @@ const decorateTeam = (team) => {
             video: "X_2hjT0MmfQ",
           });
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Mid-back, neck and jaw mobility",
             verb: "MOVE",
             timed: true,
             video: "eMQSeR50d00",
           });
           required.push({
-            type: "strength-setter",
+            intype: "strength-setter",
             desc: "Set your strength tasks",
             verb: "SET",
             timed: false,
@@ -219,21 +219,21 @@ const decorateTeam = (team) => {
           break;
         case 5:
           required.push({
-            type: "s22weblink",
+            intype: "s22weblink",
             desc: "Measure your body fat",
             verb: "TRY",
             timed: true,
             link: "https://www.mytecbits.com/tools/medical/navy-body-fat-calculator"
           });
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Shoulder and hand mobility",
             verb: "MOVE",
             timed: true,
             link: ""
           })
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Putting sequences together",
             verb: "MOVE",
             timed: true,
@@ -248,7 +248,7 @@ const decorateTeam = (team) => {
       switch(dow) {
         case 1:
           required.push({
-            type: "s22weblink",
+            intype: "s22weblink",
             desc: "Schedule an IN-WORK workout for this week",
             verb: "TRY",
             timed: true,
@@ -256,7 +256,7 @@ const decorateTeam = (team) => {
             link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
           })
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Neuro mobility",
             verb: "MOVE",
             video: "ok5GEVxx5FI",
@@ -264,7 +264,7 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "How to adjust squats",
             verb: "TRY",
             video: "BUnxylgbNNw",
@@ -272,7 +272,7 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "How to adjust push ups",
             verb: "TRY",
             video: "Ezg6pGr3Su8",
@@ -280,7 +280,7 @@ const decorateTeam = (team) => {
             s22onPath: "all",
           })
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "How to EDT",
             verb: "TRY",
             video: "PWyhF5_WazY",
@@ -288,7 +288,7 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
-            type: "s22superset",
+            intype: "s22superset",
             desc: "Practise set EDT",
             verb: "SET",
             timed: true,
@@ -298,7 +298,7 @@ const decorateTeam = (team) => {
             break;
         case 2:
           required.push({
-            type: "s22video",
+            intype: "s22video",
             desc: "Neck mobility",
             verb: "MOVE",
             timed: true,
@@ -306,7 +306,7 @@ const decorateTeam = (team) => {
             video: "jvxDJL_cfFU"
           })
           required.push({
-            type: "s22questions",
+            intype: "s22questions",
             desc: "Where are you?",
             verb: "QUESTION",
             timed: true,
@@ -337,7 +337,7 @@ const decorateTeam = (team) => {
           </>
           );
           required.push({
-            type: "s22instructions",
+            intype: "s22instructions",
             desc: "Endurance",
             verb: "MOVE",
             timed: true,
@@ -346,22 +346,48 @@ const decorateTeam = (team) => {
           })
           break;
         case 3:
-
           required.push({
-            type: "s22video",
-            desc: "Mobility",
+            type: "shoulder-mobility",
+            intype: "s22video",
+            desc: "Shoulder mobility",
             verb: "MOVE",
             timed: true,
             s22onPath: "all",
-            video: ""
+            video: "FIsBwVfWal8"
           });
           required.push({
-            type: "s22edtset",
-            desc: "Practise set EDT",
+            type: "questions",
+            intype: "s22questions",
+            desc: "Where are you?",
+            verb: "QUESTION",
+            timed: true,
+            s22onPath: "all"
+          })
+          required.push({
+            type: "strength-setter",
+            intype: "strength-setter",
+            desc: "Set your strength tasks",
+            verb: "SET",
+            timed: false,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "edt-block-1",
+            intype: "s22edtset",
+            desc: "EDT Set - block 1",
             verb: "SET",
             timed: true,
             s22onPath: "all",
-            moves: ["fullsquat", "flatpushup"]
+            strengthBlock: 0,
+          })
+          required.push({
+            type: "edt-block-2",
+            intype: "s22edtset",
+            desc: "EDT set - block 2",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: 1,
           })
           break;
         default:
@@ -371,25 +397,8 @@ const decorateTeam = (team) => {
   }
 
   others.push({
-    type: "s22edtset",
-    desc: "Practise set EDT",
-    verb: "SET",
-    timed: true,
-    s22onPath: "all",
-    moves: ["fullsquat", "flatpushup"]
-  })
-
-  // required.push({
-  //   type: "strength-setter",
-  //   desc: "Set your strength tasks",
-  //   verb: "SET",
-  //   timed: false,
-  //   s22onPath: true,
-  //   s22path: "all"
-  // })
-
-  others.push({
-    type: "s22other",
+    type: "other-movement",
+    intype: "s22other",
     desc: "Do your own thing!",
     verb: "ADD",
     timed: true,

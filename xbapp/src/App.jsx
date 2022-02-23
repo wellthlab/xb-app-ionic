@@ -262,7 +262,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/timer/:req/:id/:day/:task/:index"
+                path="/timer/:req/:id/:day/:type/:task/:index"
                 component={MovementTimer}
                 exact={true}
               />
