@@ -4,7 +4,6 @@ import React from 'react';
 import { IonPage, IonContent, IonSpinner, IonButton, IonIcon } from '@ionic/react';
 import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
 
-import Podium from './components/Podium';
 import TeamCard from './components/TeamCard';
 import XBHeader from '../util/XBHeader';
 import { addControllersProp } from '../util_model/controllers';
@@ -104,23 +103,13 @@ const Leaderboard = function ({ controllers }) {
         subcontent = 'Oops, there\'s nothing to show for the selected day';
       }
       else {
-        const currentLeaderboard = leaderboard[selectedDay].teams;
-        const firstThree = currentLeaderboard.slice(0, 3);
-        const remaining = currentLeaderboard.slice(3);
-
         subcontent = (
-          <>
-            <Podium teams={firstThree} />
-
-            {remaining.length && (
-              <div className="team-list">
-                {remaining.map((team, i) => (
-                  <TeamCard key={team._id} team={team} order={4 + i} />
-                ))}
-              </div>
-            )}
-          </>
-        )
+          <div className="team-list">
+            {leaderboard[selectedDay].teams.map((team, i) => (
+              <TeamCard key={team._id} team={team} order={i} />
+            ))}
+          </div>
+        );
       }
     }
 
