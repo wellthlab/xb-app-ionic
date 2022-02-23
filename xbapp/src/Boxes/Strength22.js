@@ -105,7 +105,6 @@ const decorateTeam = (team) => {
       s22onPath: false,
     });
 
-
     // Set up other tasks according to week number
     var effWeek = team.s22plan.plan.effectiveWeek;
     console.log("effectiveWeek from plan", effWeek);
@@ -248,6 +247,7 @@ const decorateTeam = (team) => {
       switch(dow) {
         case 1:
           required.push({
+            type: "schedule-workout",
             intype: "s22weblink",
             desc: "Schedule an IN-WORK workout for this week",
             verb: "TRY",
@@ -256,6 +256,7 @@ const decorateTeam = (team) => {
             link: "https://teams.microsoft.com/dl/launcher/launcher.html?url=%2F_%23%2Fl%2Fmessage%2F19%3A60c75cb3463c4058b84a340287e7b2f1%40thread.tacv2%2F1645091058587%3FtenantId%3D4a5378f9-29f4-4d3e-be89-669d03ada9d8%26groupId%3Dadc60861-6f1c-42e3-bdcc-a05902c45f71%26parentMessageId%3D1645091058587%26teamName%3Ds22%2520Strength%2520In%2520Work%252022%26channelName%3D1.%2520%2520Experiments%2520(OPTIONAL)%26createdTime%3D1645091058587&type=message&deeplinkId=3d594a88-487a-45d1-940b-c26dc6b83bba&directDl=true&msLaunch=true&enableMobilePage=true&suppressPrompt=true"
           })
           required.push({
+            type: "neuro-mobility",
             intype: "s22video",
             desc: "Neuro mobility",
             verb: "MOVE",
@@ -264,6 +265,7 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
+            type: "adjust-squats",
             intype: "s22video",
             desc: "How to adjust squats",
             verb: "TRY",
@@ -272,6 +274,7 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
+            type: "adjust-pushups",
             intype: "s22video",
             desc: "How to adjust push ups",
             verb: "TRY",
@@ -280,6 +283,7 @@ const decorateTeam = (team) => {
             s22onPath: "all",
           })
           required.push({
+            type: "how-to-edt",
             intype: "s22video",
             desc: "How to EDT",
             verb: "TRY",
@@ -288,16 +292,18 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
+            type: "edt-block-0",
             intype: "s22superset",
             desc: "Practise set EDT",
             verb: "SET",
             timed: true,
             s22onPath: "all",
-            moves: ["supportedsquat", "wallpushup"]
+            strengthBlock: 0
           })
             break;
         case 2:
           required.push({
+            type: "neck-mobility",
             intype: "s22video",
             desc: "Neck mobility",
             verb: "MOVE",
@@ -306,6 +312,7 @@ const decorateTeam = (team) => {
             video: "jvxDJL_cfFU"
           })
           required.push({
+            type: "questions",
             intype: "s22questions",
             desc: "Where are you?",
             verb: "QUESTION",
@@ -337,6 +344,7 @@ const decorateTeam = (team) => {
           </>
           );
           required.push({
+            type: "endurance-block",
             intype: "s22instructions",
             desc: "Endurance",
             verb: "MOVE",

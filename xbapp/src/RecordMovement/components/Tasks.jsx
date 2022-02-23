@@ -47,7 +47,7 @@ function TodoTasks(props) {
   }
 
   // Required tasks for the users' path
-  const tasks = requiredTasks.map((task, taskIndex) => {
+  const required = requiredTasks.map((task, taskIndex) => {
     // check if task is done
     let done = task.type in responseTypes;
     // only include time tasks on the user's path
@@ -117,9 +117,12 @@ function TodoTasks(props) {
         </IonItem>
       );
     } else {
-      return <></>;
+      return null;
     }
   });
+
+  const requiredFiltered = required.filter((el) => el !== null);
+  const optionalFiltered = optional.filter((el) => el !== null);
 
   return (
     <>
@@ -132,12 +135,12 @@ function TodoTasks(props) {
         </IonCardHeader>
         <IonCardContent>
           <IonList lines="full">
-            <IonItemGroup>{tasks}</IonItemGroup>
+            <IonItemGroup>{requiredFiltered}</IonItemGroup>
           </IonList>
         </IonCardContent>
       </IonCard>
 
-      {optional ? (
+      {optionalFiltered.length > 0 ? (
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>Optional activities</IonCardTitle>
@@ -147,7 +150,7 @@ function TodoTasks(props) {
           </IonCardHeader>
           <IonCardContent>
             <IonList>
-              <IonItemGroup>{optional}</IonItemGroup>
+              <IonItemGroup>{optionalFiltered}</IonItemGroup>
             </IonList>
           </IonCardContent>
         </IonCard>
