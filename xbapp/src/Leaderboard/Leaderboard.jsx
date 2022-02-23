@@ -1,3 +1,5 @@
+import './Leaderboard.css';
+
 import React from 'react';
 import { IonPage, IonContent, IonSpinner, IonButton, IonIcon } from '@ionic/react';
 import { chevronForwardOutline, chevronBackOutline } from 'ionicons/icons';
@@ -6,6 +8,9 @@ import DailyLeaderboard from './components/DailyLeaderboard';
 import WeeklyLeaderboard from './components/WeeklyLeaderboard';
 import XBHeader from '../util/XBHeader';
 import { addControllersProp } from '../util_model/controllers';
+import dateFromTs from '../util_lib/dateFromTS';
+
+const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const getCurrentMonday = function () {
 
@@ -14,14 +19,15 @@ const getCurrentMonday = function () {
   const dayOfWeek = today.getDay();
   const normalisedDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
   thisMonday.setDate(today.getDate() - (normalisedDayOfWeek - 1));
+  thisMonday.setHours(0, 0, 0, 0);
 
   return thisMonday;
 };
 
 const Leaderboard = function ({ controllers }) {
   const [leaderboard, setLeaderboard] = React.useState([]);
-  const [weekDirection, setWeekDirection] = React.useState(0);
-  const [viewWeekly, setViewWeekly] = React.useState(false);
+  const [currentMonday, setCurrentMonday] = React.useState(getCurrentMonday());
+  const [selectedDay, setSelectedDay] = React.useState(0);          // -1 = view weekly
 
   const [loading, setLoading] = React.useState(true);
   const [fetchErrored, setFetchedErrored] = React.useState(false);
@@ -56,26 +62,29 @@ const Leaderboard = function ({ controllers }) {
   };
 
   React.useEffect(() => {
-    fetchTeamsForWeek(getCurrentMonday());        // Use the initial monday state
-  }, []);
+    fetchTeamsForWeek(currentMonday);        // Use the initial monday state
+  }, []);                                    // eslint-disable-line react-hooks/exhaustive-deps
 
   const createHandleMoveWeek = function (direction) {
 
     return () => {
 
-      const newDirection = weekDirection + direction;
-      setWeekDirection(newDirection);
+      const newMonday = new Date(currentMonday);
+      newMonday.setDate(currentMonday.getDate() + direction * 7);
 
-      const currentMonday = getCurrentMonday();
-      const newMonday = currentMonday.setDate(currentMonday.getDate() + newDirection * 7);
+      setSelectedDay(0);
+      setCurrentMonday(newMonday);
       fetchTeamsForWeek(newMonday);
     };
   };
 
-  const handleChangeViewMode = function () {
+  const createHandleDayChange = function (i) {
 
-    setViewWeekly(!viewWeekly);
-  };
+    return () => {
+
+      setSelectedDay(i);
+    };
+  }
 
   let content;
 
@@ -88,20 +97,43 @@ const Leaderboard = function ({ controllers }) {
   else {
     content = (
       <>
-        <div>
-          <IonButton onClick={handleChangeViewMode}>
-            {viewWeekly ? 'Daily leaderboard' : 'Weekly leaderboard'}
-          </IonButton>
-
+        <div className="week-picker">
           <IonButton onClick={createHandleMoveWeek(-1)}>
             <IonIcon icon={chevronBackOutline} />
           </IonButton>
 
-          <IonButton onClick={createHandleMoveWeek(1)} disabled={!weekDirection}>
+          <div className="week-range">
+            {dateFromTs(currentMonday)} - {dateFromTs(new Date(currentMonday).setDate(currentMonday.getDate() + 6))}
+          </div>
+
+          <IonButton onClick={createHandleMoveWeek(1)} disabled={currentMonday.getTime() === getCurrentMonday().getTime()}>
             <IonIcon icon={chevronForwardOutline} />
           </IonButton>
         </div>
-        {viewWeekly ? <WeeklyLeaderboard leaderboard={leaderboard} /> : <DailyLeaderboard leaderboard={leaderboard} />}
+
+        <div className="day-picker">
+          {daysOfWeek.map((day, i) => (
+            <IonButton
+              key={day}
+              fill="clear"
+              disabled={selectedDay === i}
+              onClick={createHandleDayChange(i)}
+            >
+              {day}
+            </IonButton>
+          ))}
+
+          <IonButton
+            fill="clear"
+            disabled={selectedDay === -1}
+            onClick={createHandleDayChange(-1)}
+          >
+            Week
+          </IonButton>
+
+        </div>
+
+        {selectedDay === -1 ? <WeeklyLeaderboard leaderboard={leaderboard} /> : <DailyLeaderboard leaderboard={leaderboard[selectedDay]} />}
       </>
     );
   }
