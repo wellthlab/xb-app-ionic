@@ -24,14 +24,17 @@ const convertToWeeklyLeaderboard = function (leaderboard) {
     }
   }
 
-  return Object.values(teams).sort((a, b) => {
+  const res = Object.values(teams).sort((a, b) => {
 
     if (a.overall.completion === b.overall.completion) {
-      return b.overall.minutes - a.overall.minutes;
+      return b.overall.cappedMinutes - a.overall.cappedMinutes;
     }
 
     return b.overall.completion - a.overall.completion;
   });
+
+  console.log(res);
+  return res;
 }
 
 const WeeklyLeaderboard = function ({ leaderboard }) {

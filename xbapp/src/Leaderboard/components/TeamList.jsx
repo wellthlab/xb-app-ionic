@@ -35,7 +35,7 @@ const TeamList = function ({ teams }) {
             </IonLabel>
             <IonLabel slot="end" className="progress ion-text-end">
               <h2>{Math.round(team.overall.completion * 100)}%</h2>
-              <p>{Math.round(team.overall.minutes)} mins / {Math.round(team.overall.target)} mins target</p>
+              <p>{Math.round(team.overall.cappedMinutes)} mins / {Math.round(team.overall.target)} mins target</p>
             </IonLabel>
           </IonItem>
         </IonCard>
