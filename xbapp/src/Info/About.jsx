@@ -12,6 +12,9 @@ import GenericAlert from "./components/GenericAlert";
 import GenericModal from "./components/GenericModal";
 import mobiscroll from "@mobiscroll/react-lite";
 import "@mobiscroll/react-lite/dist/css/mobiscroll.min.css";
+
+import pis from "../Account/components/PIS";
+
 /**
  * Each slice exports some action creators that are used to push changes into the model
  */
@@ -31,6 +34,11 @@ const TabAccount = ({}) => {
   }
   const [showModal, setShowModal] = useState(false);
   function toggleModal() {
+    setShowModal(!showModal);
+  }
+
+  const [showPISModal, setShowPISModal] = useState(false);
+  function togglePISModal() {
     setShowModal(!showModal);
   }
 
@@ -54,6 +62,15 @@ const TabAccount = ({}) => {
           message={privacy_notice}
         />
 
+        <GenericModal
+          showModal={showPISModal}
+          toggleModal={togglePISModal}
+          title={"Participant Information Sheet"}
+          message={pis}
+        />
+
+
+
         <h4>What is XB?</h4>
         <IonButton type="button" class="btn btn-link" routerLink="/tutorial">
           Tutorial
@@ -70,6 +87,16 @@ const TabAccount = ({}) => {
               }}
             >
               Privacy Notice
+            </IonButton>
+          </p>
+
+          <p>
+            <IonButton
+              onClick={() => {
+                togglePISModal();
+              }}
+            >
+              Participant Information
             </IonButton>
           </p>
 
