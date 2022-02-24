@@ -42,6 +42,7 @@ const decorateTeam = (team) => {
 
   // Create a handy reference to TODAYS plan
   var dow = (new Date()).getDay();
+  dow = 5;
 
   // Try to find a s22 plan
   if(typeof team.lastEntryByType.s22plan !== 'undefined') {
@@ -388,15 +389,6 @@ const decorateTeam = (team) => {
             s22onPath: "all",
             strengthBlock: 0,
           })
-          required.push({
-            type: "edt-block-2",
-            intype: "s22edtset",
-            desc: "EDT set - block 2",
-            verb: "SET",
-            timed: true,
-            s22onPath: "all",
-            strengthBlock: 1,
-          })
           break;
         case 4:
           required.push({
@@ -418,11 +410,48 @@ const decorateTeam = (team) => {
             text: enduranceTaskText,
           })
           break;
+        case 5:
+          required.push({
+            type: "-mobility",
+            intype: "s22video",
+            desc: "Mobility",
+            verb: "MOVE",
+            timed: true,
+            s22onPath: "all",
+            video: ""
+          });
+          required.push({
+            type: "strength-setter",
+            intype: "strength-setter",
+            desc: "Set your EDT strength moves",
+            verb: "SET",
+            timed: false,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "edt-block-1",
+            intype: "s22edtset",
+            desc: "EDT Set",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: 0,
+          })
+          break;
         default:
             break;
       }
     }
   }
+
+  required.push({
+    type: "questions",
+    intype: "s22questions",
+    desc: "How are you moving?",
+    verb: "QUESTION",
+    timed: true,
+    s22onPath: "all"
+  })
 
   others.push({
     type: "other-movement",

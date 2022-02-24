@@ -98,7 +98,7 @@ function ContextualQuestions({ onSubmit }) {
     <>
       <IonCard>
         <IonCardHeader>
-          <IonCardTitle>How are you moving?</IonCardTitle>
+          <IonCardTitle>How did you move today?</IonCardTitle>
           <IonCardSubtitle>
             These <IonText color={"tertiary"}>optional</IonText> questions will
             help us understand how you are choosing to move
