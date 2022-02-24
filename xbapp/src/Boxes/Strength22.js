@@ -65,25 +65,25 @@ const decorateTeam = (team) => {
 
     if(!team.s22path) {
       required.push({
-        intype: 's22path',
-        desc: 'You need to choose a path',
-        verb: 'CHOOSE',
+        intype: "s22path",
+        desc: "You need to choose a path",
+        verb: "CHOOSE",
         s22onPath: false,
       });
     }
     else
     {
       others.push({
-        intype: 's22path',
-        desc: 'You can change your path',
-        verb: 'CHANGE',
+        intype: "s22path",
+        desc: "You can change your path",
+        verb: "CHANGE",
         s22onPath: false,
       });
 
       required.push({
-        intype: 's22plan',
-        desc: 'You need to plan your week',
-        verb: 'PLAN',
+        intype: "s22plan",
+        desc: "You need to plan your week",
+        verb: "PLAN",
         s22onPath: false,
       });
     }
@@ -106,9 +106,33 @@ const decorateTeam = (team) => {
     });
 
     // Set up other tasks according to week number
-    var effWeek = team.s22plan.plan.effectiveWeek;
-    console.log("effectiveWeek from plan", effWeek);
-    effWeek = 2;
+    // var effWeek = team.s22plan.plan.effectiveWeek;
+    let effWeek = team.experiment.week;
+
+    let enduranceTaskText = (
+      <>
+        <IonRow>
+          <IonCol>
+            For <strong>BUILDER ENDURANCE</strong> this week – go for a walk – or some other non-stop activity that you can do that elevates your pulse above what it is when you're standing. GO for 1-4 blocks as you wish.
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            For <strong>Explorers</strong>, we suggest following the BUILDER strength protocol for at least 2 of the three days and for endurance days, please likewise feel free to follow this path or do your own thing.
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            For <strong>Experimentalists</strong> – for those days of the week you might not have a practice – since the target is 35 movement minutes a day – please feel welcome to use our patterns.
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            For <strong>Flaneurs</strong> – please consider keeping up with the mobility before your daily walks/strolls/cycles or other mildly pulse elevating efforts.
+          </IonCol>
+        </IonRow>
+      </>
+      );
 
     if(effWeek === 1) {
       switch(dow) {
@@ -319,30 +343,6 @@ const decorateTeam = (team) => {
             timed: true,
             s22onPath: "all"
           })
-          let enduranceTaskText = (
-          <>
-            <IonRow>
-              <IonCol>
-                For <strong>BUILDER ENDURANCE</strong> this week – go for a walk – or some other non-stop activity that you can do that elevates your pulse above what it is when you're standing. GO for 1-4 blocks as you wish.
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                For <strong>Explorers</strong>, we suggest following the BUILDER strength protocol for at least 2 of the three days and for endurance days, please likewise feel free to follow this path or do your own thing.
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                For <strong>Experimentalists</strong> – for those days of the week you might not have a practice – since the target is 35 movement minutes a day – please feel welcome to use our patterns.
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                For <strong>Flaneurs</strong> – please consider keeping up with the mobility before your daily walks/strolls/cycles or other mildly pulse elevating efforts.
-              </IonCol>
-            </IonRow>
-          </>
-          );
           required.push({
             type: "endurance-block",
             intype: "s22instructions",
@@ -398,6 +398,26 @@ const decorateTeam = (team) => {
             strengthBlock: 1,
           })
           break;
+        case 4:
+          required.push({
+            type: "elbow-mobility",
+            intype: "s22video",
+            desc: "Elbow mobility",
+            verb: "MOVE",
+            timed: true,
+            s22onPath: "all",
+            video: "whOriwozb3g"
+          });
+          required.push({
+            type: "endurance-block",
+            intype: "s22instructions",
+            desc: "Endurance",
+            verb: "MOVE",
+            timed: true,
+            s22onPath: "all",
+            text: enduranceTaskText,
+          })
+          break;
         default:
             break;
       }
@@ -425,8 +445,8 @@ const decorateTeam = (team) => {
     team.myTargetToday = team.s22plan.plan.target;
   }
 
-  team.responses.own.responses.map(function(res){
-    if(res.day == eday && res.minutes) {
+  team.responses.own.responses.map((res) => {
+    if(res.day === eday && res.minutes) {
       team.myMinutesToday += res.minutes;
     }
   })

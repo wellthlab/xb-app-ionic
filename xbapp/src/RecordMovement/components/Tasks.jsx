@@ -79,7 +79,7 @@ function TodoTasks(props) {
         </IonItem>
       );
     } else {
-      return <></>;
+      return null;
     }
   });
 

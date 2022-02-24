@@ -80,13 +80,13 @@ const DailyActions = ({ group, today, tabs }) => {
       return;
     }
 
-    var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
         color={done ? "neutral" : "warning"}
         key={type.type}
         routerLink={
-          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.intype
         }
         detail={true}
         detailIcon={arrowForwardOutline}
@@ -103,12 +103,12 @@ const DailyActions = ({ group, today, tabs }) => {
       return;
     }
 
-    var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
         key={type.type}
         routerLink={
-          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.intype
         }
         detail={true}
         detailIcon={arrowForwardOutline}
