@@ -15,50 +15,48 @@ import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
 
 /**
- *  EDT task - includes the ability to change moves to different variations
+ *  EDT task - includes the ability to change moves
  *
  */
 function EDTSet({ task, groupId, day, week, onSubmit }) {
-  // let moves = localStorage.getItem("blocks-week-" + week + "-set");
-  // if (!moves) {
-  //   return (
-  //     <>
-  //       <IonCard>
-  //         <IonCardContent>
-  //           <IonGrid>
-  //             <IonRow>
-  //               <IonCol style={{ textAlign: "center" }}>
-  //                 You don't have any exercises set for this week
-  //               </IonCol>
-  //             </IonRow>
-  //             <IonRow>
-  //               <IonCol>
-  //                 <IonRouterLink
-  //                   routerLink={
-  //                     "/box/move/" +
-  //                     groupId +
-  //                     "/" +
-  //                     day +
-  //                     "/add/strength-setter"
-  //                   }
-  //                 >
-  //                   <IonButton expand={"full"}>SET EXERCISES</IonButton>
-  //                 </IonRouterLink>
-  //               </IonCol>
-  //             </IonRow>
-  //           </IonGrid>
-  //         </IonCardContent>
-  //       </IonCard>
-  //     </>
-  //   );
-  // }
+  let moves = localStorage.getItem("blocks-week-" + week + "-set");
+  if (!moves) {
+    return (
+      <>
+        <IonCard>
+          <IonCardContent>
+            <IonGrid>
+              <IonRow>
+                <IonCol style={{ textAlign: "center" }}>
+                  You don't have any exercises set for this week
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonRouterLink
+                    routerLink={
+                      "/box/move/" +
+                      groupId +
+                      "/" +
+                      day +
+                      "/add/strength-setter"
+                    }
+                  >
+                    <IonButton expand={"full"}>Set Exercises</IonButton>
+                  </IonRouterLink>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
+      </>
+    );
+  }
 
-  // moves = JSON.parse(moves)[task.strengthBlock];
-  // let exercisesInBlock = Object.keys(moves);
-  // let moveA = moves[exercisesInBlock[0]];
-  // let moveB = moves[exercisesInBlock[1]];
-  let moveA = getMove("flatpushup");
-  let moveB = getMove("fullsquat");
+  moves = JSON.parse(moves)[task.strengthBlock];
+  let exercisesInBlock = Object.keys(moves);
+  let moveA = moves[exercisesInBlock[0]];
+  let moveB = moves[exercisesInBlock[1]];
 
   return (
     <>
@@ -69,13 +67,17 @@ function EDTSet({ task, groupId, day, week, onSubmit }) {
         mins={7}
         secs={0}
       />
-      {/* <IonRow>
+      <IonRow>
         <IonCol>
-          <IonButton expand={"full"} onClick={changeExercises}>
-            Change your moves
-          </IonButton>
+          <IonRouterLink
+            routerLink={
+              "/box/move/" + groupId + "/" + day + "/add/strength-setter"
+            }
+          >
+            <IonButton expand={"full"}>Change Your Moves</IonButton>
+          </IonRouterLink>
         </IonCol>
-      </IonRow> */}
+      </IonRow>
     </>
   );
 }

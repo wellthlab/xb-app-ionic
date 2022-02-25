@@ -420,14 +420,14 @@ const decorateTeam = (team) => {
             s22onPath: "all",
             video: "zrcuBwZsHXo"
           });
-          // required.push({
-          //   type: "strength-setter",
-          //   intype: "strength-setter",
-          //   desc: "Set your EDT strength moves",
-          //   verb: "SET",
-          //   timed: false,
-          //   s22onPath: "all",
-          // })
+          required.push({
+            type: "strength-setter",
+            intype: "strength-setter",
+            desc: "Set your EDT strength moves",
+            verb: "SET",
+            timed: false,
+            s22onPath: "all",
+          })
           required.push({
             type: "edt-block-1",
             intype: "s22edtset",
