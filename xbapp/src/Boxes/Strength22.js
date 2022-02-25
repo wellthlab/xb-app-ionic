@@ -412,22 +412,22 @@ const decorateTeam = (team) => {
           break;
         case 5:
           required.push({
-            type: "-mobility",
+            type: "wrist-finger-mobility",
             intype: "s22video",
-            desc: "Mobility",
+            desc: "Wrist and finger mobility",
             verb: "MOVE",
             timed: true,
             s22onPath: "all",
-            video: ""
+            video: "zrcuBwZsHXo"
           });
-          required.push({
-            type: "strength-setter",
-            intype: "strength-setter",
-            desc: "Set your EDT strength moves",
-            verb: "SET",
-            timed: false,
-            s22onPath: "all",
-          })
+          // required.push({
+          //   type: "strength-setter",
+          //   intype: "strength-setter",
+          //   desc: "Set your EDT strength moves",
+          //   verb: "SET",
+          //   timed: false,
+          //   s22onPath: "all",
+          // })
           required.push({
             type: "edt-block-1",
             intype: "s22edtset",

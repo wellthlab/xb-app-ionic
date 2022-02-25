@@ -19,44 +19,46 @@ import BlockPlanner from "../MovementPuzzlePicker/BlockPlanner";
  *
  */
 function EDTSet({ task, groupId, day, week, onSubmit }) {
-  let moves = localStorage.getItem("blocks-week-" + week + "-set");
-  if (!moves) {
-    return (
-      <>
-        <IonCard>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol style={{ textAlign: "center" }}>
-                  You don't have any exercises set for this week
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonRouterLink
-                    routerLink={
-                      "/box/move/" +
-                      groupId +
-                      "/" +
-                      day +
-                      "/add/strength-setter"
-                    }
-                  >
-                    <IonButton expand={"full"}>SET EXERCISES</IonButton>
-                  </IonRouterLink>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-      </>
-    );
-  }
+  // let moves = localStorage.getItem("blocks-week-" + week + "-set");
+  // if (!moves) {
+  //   return (
+  //     <>
+  //       <IonCard>
+  //         <IonCardContent>
+  //           <IonGrid>
+  //             <IonRow>
+  //               <IonCol style={{ textAlign: "center" }}>
+  //                 You don't have any exercises set for this week
+  //               </IonCol>
+  //             </IonRow>
+  //             <IonRow>
+  //               <IonCol>
+  //                 <IonRouterLink
+  //                   routerLink={
+  //                     "/box/move/" +
+  //                     groupId +
+  //                     "/" +
+  //                     day +
+  //                     "/add/strength-setter"
+  //                   }
+  //                 >
+  //                   <IonButton expand={"full"}>SET EXERCISES</IonButton>
+  //                 </IonRouterLink>
+  //               </IonCol>
+  //             </IonRow>
+  //           </IonGrid>
+  //         </IonCardContent>
+  //       </IonCard>
+  //     </>
+  //   );
+  // }
 
-  moves = JSON.parse(moves)[task.strengthBlock];
-  let exercisesInBlock = Object.keys(moves);
-  let moveA = moves[exercisesInBlock[0]];
-  let moveB = moves[exercisesInBlock[1]];
+  // moves = JSON.parse(moves)[task.strengthBlock];
+  // let exercisesInBlock = Object.keys(moves);
+  // let moveA = moves[exercisesInBlock[0]];
+  // let moveB = moves[exercisesInBlock[1]];
+  let moveA = getMove("flatpushup");
+  let moveB = getMove("fullsquat");
 
   return (
     <>
