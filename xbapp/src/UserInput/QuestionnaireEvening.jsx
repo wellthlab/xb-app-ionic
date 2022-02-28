@@ -11,6 +11,9 @@ import {
   IonRange,
   IonItemDivider,
   IonButton,
+  IonCard,
+  IonContent,
+  IonCardContent,
 } from "@ionic/react";
 
 const FeltScale = {
@@ -28,20 +31,17 @@ const FeltScale = {
 };
 
 const QuestionnaireEvening = (props) => {
-
   const [value, setValue] = useState(5);
 
   function onChangeSlider(valueToUpdate) {
     setValue(valueToUpdate);
   }
 
-
   function processData() {
-   
     var response = {};
+    response.minutes = 1e-10;
     response.type = "questionnaire-endWeek";
     response.felt = value;
-
 
     if (props.onSubmit) {
       props.onSubmit(response);
@@ -55,28 +55,36 @@ const QuestionnaireEvening = (props) => {
         <h3>In general, I felt good today.</h3>
         <IonItemDivider></IonItemDivider>
         <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>{FeltScale[value]}</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonRange
-          min={0}
-          max={10}
-          step={1}
-          snaps={true}
-          ticks={true}
-          color="secondary"
-          value={value}
-          onIonChange={(e) => onChangeSlider(e.detail.value)}
-        />
-      </IonItem>
+          <IonLabel>{FeltScale[value]}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonRange
+            min={0}
+            max={10}
+            step={1}
+            snaps={true}
+            ticks={true}
+            color="secondary"
+            value={value}
+            onIonChange={(e) => {
+              console.log("value to update", e.detail.value);
+              onChangeSlider(e.detail.value);
+            }}
+          />
+        </IonItem>
 
-        <IonButton
-          onClick={() => {
-            processData();
-          }}
-        >
-          Submit
-        </IonButton>
+        {/* <IonCard>
+          <IonCardContent>
+            <IonButton
+              expand={"full"}
+              onClick={() => {
+                processData();
+              }}
+            >
+              Submit
+            </IonButton>
+          </IonCardContent>
+        </IonCard> */}
       </div>
     </>
   );

@@ -105,11 +105,36 @@ const decorateTeam = (team) => {
       s22onPath: false,
     });
 
-    // const day = team.s22plan.day;
-    const day = 16;
+    // TODO: we need to get this from the modules on MongoDB, this should be in the team slice
+    const day = team.s22plan.day;
     const tasks = require("../Tasks/tasks.json");
-    required = tasks[day];
+    required.push(tasks[day]);
   }
+
+  // Exit tasks, which are always the same. These are questions to ask at the
+  // end of the day.
+
+  required.push({
+    type: "movement-questions",
+    intype: "s22questions",
+    desc: "How did you move today?",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all"
+  });
+
+  required.push({
+    type: "exit-questions",
+    intype: "questionnaire-evening",  // TODO: we need to check if this still works properly
+    desc: "How are you feeling today?",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all"
+  });
+
+  // Other movement "do your own thing" is always here
 
   others.push({
     type: "other-movement",
