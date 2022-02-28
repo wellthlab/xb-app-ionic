@@ -465,7 +465,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "adjust-pulls",
             intype: "s22video",
-            desc: "How to adjust pull ups",
+            desc: "Find an UPPER PULL variant 1 - pull up",
             verb: "LEARN",
             video: "C3On8eprnew",
             timed: true,
@@ -474,7 +474,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "adjust-rows",
             intype: "s22video",
-            desc: "How to adjust rows",
+            desc: "Find an UPPER PULL variant 2 - row ",
             verb: "LEARN",
             video: "IGOPgua09_4",
             timed: true,
@@ -483,7 +483,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "adjust-hinges",
             intype: "s22video",
-            desc: "How to adjust hinges",
+            desc: "Find your LOWER PULL variant",
             verb: "LEARN",
             video: "NEZwCyFwAqM",
             timed: true,
@@ -492,7 +492,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "pull-superset-demo",
             intype: "s22video",
-            desc: "Putting upper and lower pulls together",
+            desc: "DEMO of Upper & Lower Superset",
             verb: "LEARN",
             video: "oWoS6CU6cBk",
             timed: true,
@@ -501,7 +501,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "mobility-task",
             intype: "s22weblink",
-            desc: "Do some mobility moves",
+            desc: "MOBILITY block",
             verb: "MOVE",
             link: "https://www.youtube.com/playlist?list=PLVjNXk5AEPaHtRCEfLNOINs3Q5SojEMAS",
             timed: true,
@@ -518,7 +518,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "edt-block-1",
             intype: "s22edtset",
-            desc: "EDT practise set",
+            desc: "PULL EDT BLOCK",
             verb: "SET",
             timed: true,
             s22onPath: "all",

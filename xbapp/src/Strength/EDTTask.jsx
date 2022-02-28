@@ -55,8 +55,8 @@ function EDTSet({ task, groupId, day, week, onSubmit }) {
 
   // moves = JSON.parse(moves)[task.strengthBlock];
   // let exercisesInBlock = Object.keys(moves);
-  let moveA = getMove("chinup");
-  let moveB = getMove("singlelegromaniandeadlift");
+  let moveA = getMove("assistedpullup");
+  let moveB = getMove("wallrdlprep");
 
   return (
     <>

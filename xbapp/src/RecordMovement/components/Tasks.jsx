@@ -129,9 +129,9 @@ function TodoTasks(props) {
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>Your path's activities</IonCardTitle>
-          <IonCardSubtitle>
+          {/* <IonCardSubtitle>
             You can do these in any order you like
-          </IonCardSubtitle>
+          </IonCardSubtitle> */}
         </IonCardHeader>
         <IonCardContent>
           <IonList lines="full">
@@ -144,9 +144,9 @@ function TodoTasks(props) {
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>Optional activities</IonCardTitle>
-            <IonCardSubtitle>
+            {/* <IonCardSubtitle>
               You can do these in any order you like
-            </IonCardSubtitle>
+            </IonCardSubtitle> */}
           </IonCardHeader>
           <IonCardContent>
             <IonList>
