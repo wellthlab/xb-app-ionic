@@ -472,11 +472,20 @@ const decorateTeam = (team) => {
             s22onPath: "all"
           })
           required.push({
-            type: "adjust-",
+            type: "adjust-rows",
             intype: "s22video",
             desc: "How to adjust rows",
             verb: "TRY",
             video: "IGOPgua09_4",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "adjust-hinges",
+            intype: "s22video",
+            desc: "How to adjust hinges",
+            verb: "TRY",
+            video: "NEZwCyFwAqM",
             timed: true,
             s22onPath: "all",
           })
