@@ -40,13 +40,12 @@ function MovementTimer(props) {
   let gid = props.match.params.id;
   let day = props.match.params.day;
   let type = props.match.params.type;
-  let tasktype = props.match.params.task;
+  let taskType = props.match.params.task;
   let optionalOrRequired = props.match.params.req;
-  let taskindex = props.match.params.index;
+  let taskIdx = props.match.params.index;
 
   const [group, setGroup] = useState(false);
   const [currentTask, setCurrentTask] = useState(false);
-
   const [minutes, setMinutes] = useState(false);
   const [exResponse, setExResponse] = useState({});
 
@@ -70,17 +69,13 @@ function MovementTimer(props) {
   if (currentTask === false) {
     // Find the task if not found already
     if (optionalOrRequired === "required") {
-      setCurrentTask(group.experiment.tasks[day].required[taskindex]);
+      setCurrentTask(group.experiment.tasks[day].required[taskIdx]);
     } else {
-      setCurrentTask(group.experiment.tasks[day].optional[taskindex]);
+      setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
     }
-    return <></>;
   }
-
-  console.log("Current timer task", currentTask);
-
-  if (typeof currentTask == "undefined") {
-    return <>ERROR; task is not defined</>;
+  if (typeof currentTask == "undefined" || currentTask === false) {
+    return <>The current task has not defined</>;
   }
 
   let totalMinutes = group.s22plan.target;
@@ -88,70 +83,63 @@ function MovementTimer(props) {
   // Save the response, plus the minutes from the timer, day number, and type
   async function save() {
     var res = {};
-
     // Add data from the task's proto response, if there is one
     for (var k of Object.keys(currentTask.protoResponse ?? {})) {
       res[k] = currentTask.protoResponse[k];
     }
-
     // Add data from the widgets
     for (var k of Object.keys(exResponse)) {
       res[k] = exResponse[k];
     }
-
     res.requiredTask = optionalOrRequired === "required";
     res.type = type;
-    res.intype = tasktype;
+    res.intype = taskType;
     res.minutes = minutes;
     res.day = day;
     await props.controllers.ADD_RESPONSE(gid, res);
     console.log("Saved response", res);
   }
 
+  // Merge the prevous response into the new one
+  // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
   var updateResponse = (res) => {
-    // Merge the prevous response into the new one
-    // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
     var updated = {};
-
     for (var k of Object.keys(exResponse)) {
       updated[k] = exResponse[k];
     }
-
     for (var k of Object.keys(res)) {
       updated[k] = res[k];
     }
-
     console.log("New response", res, updated);
-
     // If the response contains a minutes key - i.e is setting the number of minutes for the movement
     // then update our internal minute state
     if (Object.keys(res).includes("minutes")) {
       setMinutes(res.minutes);
     }
-
     setExResponse(updated);
   };
 
   const content = inputFactory(
-    tasktype,
+    taskType,
     group,
     day,
     updateResponse,
     currentTask
   );
 
-  var extra;
+  var taskExtraContent;
   if (content !== false) {
-    extra = content.input;
+    taskExtraContent = content.input;
   } else {
-    extra = "";
+    taskExtraContent = "";
   }
 
   var ready = minutes > 0;
 
   // Prepare a timer, if required
   var timer = "";
-  if (tasktype !== "s22edtset" && tasktype !== "s22questions") {
+
+  if (currentTask.timed) {
     timer = (
       <IonCard>
         <IonCardHeader>
@@ -268,7 +256,7 @@ function MovementTimer(props) {
         </IonItem>
 
         {/* Additional content, like the move picker or a video */}
-        {extra}
+        {taskExtraContent}
 
         {/* Timer and buttons for manual entry of minutes */}
         {/* The timer is NOT SHOWN when we're doing an EDT super set thing,

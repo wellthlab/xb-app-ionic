@@ -52,7 +52,7 @@ function TodoTasks(props) {
     let done = task.type in responseTypes;
     // only include time tasks on the user's path
     if (
-      task.timed &&
+      task.onPlaylist &&
       (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
     ) {
       return (
@@ -89,7 +89,7 @@ function TodoTasks(props) {
     let done = task.type in responseTypes;
     // only include tasks which are timed and are optional
     if (
-      task.timed &&
+      task.onPlaylist &&
       task.s22onPath !== false
       // && (task.s22onPath !== "all" || task.s22onPath !== props.team.s22path.path)
     ) {

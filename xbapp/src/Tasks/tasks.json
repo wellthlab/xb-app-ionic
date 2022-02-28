@@ -351,5 +351,35 @@
             "s22onPath": "all",
             "strengthBlock": 0
         }
+    ],
+    "16": [
+        {
+            "type": "questions",
+            "intype": "s22questions",
+            "desc": "How are you moving?",
+            "verb": "QUESTION",
+            "timed": false,
+            "onPlaylist": true,
+            "s22onPath": "all"
+        },
+        {
+            "type": "strength-setter",
+            "intype": "strength-setter",
+            "desc": "Set your EDT strength moves",
+            "verb": "SET",
+            "timed": false,
+            "onPlaylist": false,
+            "s22onPath": "all"
+        },
+        {
+            "type": "edt-block-1",
+            "intype": "s22edtset",
+            "desc": "EDT set: upper and lower pull",
+            "verb": "SET",
+            "timed": false,
+            "onPlaylist": true,
+            "s22onPath": "all",
+            "strengthBlock": 0
+        }
     ]
 }

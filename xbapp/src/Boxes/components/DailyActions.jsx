@@ -76,7 +76,7 @@ const DailyActions = ({ group, today, tabs }) => {
   var optional = group.experiment.tasks[activeDay].optional;
 
   var tasks = required.map((type) => {
-    if (type.timed) {
+    if (type.onPlaylist) {
       return;
     }
 
@@ -99,7 +99,7 @@ const DailyActions = ({ group, today, tabs }) => {
   });
 
   var otheractions = optional.map((type) => {
-    if (type.timed) {
+    if (type.onPlaylist) {
       return;
     }
 
