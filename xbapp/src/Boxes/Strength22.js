@@ -105,8 +105,10 @@ const decorateTeam = (team) => {
       s22onPath: false,
     });
 
+    // const day = team.s22plan.day;
+    const day = 16;
     const tasks = require("../Tasks/tasks.json");
-    required = tasks[team.s22plan.day];
+    required = tasks[day];
   }
 
   others.push({
@@ -114,11 +116,10 @@ const decorateTeam = (team) => {
     intype: "s22other",
     desc: "Do your own thing!",
     verb: "ADD",
+    onPlaylist: true,
     timed: true,
     s22onPath: "all",
   });
-
-  console.log("others", others);
 
   team.experiment.tasks[eday] = { required: required, optional: others };
 
