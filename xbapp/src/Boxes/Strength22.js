@@ -42,7 +42,6 @@ const decorateTeam = (team) => {
 
   // Create a handy reference to TODAYS plan
   var dow = (new Date()).getDay();
-  dow = 5;
 
   // Try to find a s22 plan
   if(typeof team.lastEntryByType.s22plan !== 'undefined') {
@@ -109,6 +108,7 @@ const decorateTeam = (team) => {
     // Set up other tasks according to week number
     // var effWeek = team.s22plan.plan.effectiveWeek;
     let effWeek = team.experiment.week;
+    console.log("effWeek", effWeek);
 
     let enduranceTaskText = (
       <>
@@ -442,16 +442,87 @@ const decorateTeam = (team) => {
             break;
       }
     }
+    else if (effWeek === 3) {
+      switch (dow) {
+        case 1:
+          required.push({
+            type: "strength-setter",
+            intype: "strength-setter",
+            desc: "Set your EDT strength moves",
+            verb: "SET",
+            timed: false,
+            s22onPath: "all",
+          })
+          // required.push({
+          //   type: "neuro-mobility",
+          //   intype: "s22video",
+          //   desc: " mobility",
+          //   verb: "MOVE",
+          //   video: "",
+          //   timed: true,
+          //   s22onPath: "all"
+          // })
+          required.push({
+            type: "adjust-pulls",
+            intype: "s22video",
+            desc: "How to adjust pull ups",
+            verb: "TRY",
+            video: "C3On8eprnew",
+            timed: true,
+            s22onPath: "all"
+          })
+          required.push({
+            type: "adjust-",
+            intype: "s22video",
+            desc: "How to adjust rows",
+            verb: "TRY",
+            video: "IGOPgua09_4",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "questions",
+            intype: "s22questions",
+            desc: "How are you moving?",
+            verb: "QUESTION",
+            timed: true,
+            s22onPath: "all"
+          })
+          required.push({
+            type: "edt-block-1",
+            intype: "s22edtset",
+            desc: "EDT set: upper and lower pull",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: 0
+          })
+          // required.push({
+          //   type: "edt-block-2",
+          //   intype: "s22superset",
+          //   desc: "EDT Set: pull",
+          //   verb: "SET",
+          //   timed: true,
+          //   s22onPath: "all",
+          //   strengthBlock: 1
+          // })
+            break;
+        default:
+          break;
+      }
+    }
   }
 
-  required.push({
-    type: "questions",
-    intype: "s22questions",
-    desc: "How are you moving?",
-    verb: "QUESTION",
-    timed: true,
-    s22onPath: "all"
-  })
+
+
+  // required.push({
+  //   type: "daily-quiz",
+  //   intype: "quiz",
+  //   desc: "Quiz",
+  //   verb: "QUESTION",
+  //   timed: true,
+  //   s22onPath: "all"
+  // })
 
   others.push({
     type: "other-movement",

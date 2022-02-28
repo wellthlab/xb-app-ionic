@@ -22,10 +22,10 @@ var studyPlanner = [
   [["bilateral lower push", "bilateral upper push"]], //week 1
   [
     ["bilateral lower push", "bilateral upper push"],
-    // ["bilateral lower push", "bilateral lower pull"],
+    ["bilateral lower push", "bilateral lower pull"],
   ], //week 2
   [
-    ["bilateral lower push", "bilateral upper push"],
+    // ["bilateral lower push", "bilateral upper push"],
     ["bilateral lower pull", "bilateral upper pull"],
     // ["isolateral", "isolateral"],
   ], //week 3

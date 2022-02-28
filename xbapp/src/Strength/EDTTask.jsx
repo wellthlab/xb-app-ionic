@@ -67,17 +67,6 @@ function EDTSet({ task, groupId, day, week, onSubmit }) {
         mins={7}
         secs={0}
       />
-      <IonRow>
-        <IonCol>
-          <IonRouterLink
-            routerLink={
-              "/box/move/" + groupId + "/" + day + "/add/strength-setter"
-            }
-          >
-            <IonButton expand={"full"}>Change Your Moves</IonButton>
-          </IonRouterLink>
-        </IonCol>
-      </IonRow>
     </>
   );
 }
