@@ -445,14 +445,14 @@ const decorateTeam = (team) => {
     else if (effWeek === 3) {
       switch (dow) {
         case 1:
-          required.push({
-            type: "strength-setter",
-            intype: "strength-setter",
-            desc: "Set your EDT strength moves",
-            verb: "SET",
-            timed: false,
-            s22onPath: "all",
-          })
+          // required.push({
+          //   type: "strength-setter",
+          //   intype: "strength-setter",
+          //   desc: "Set your EDT strength moves",
+          //   verb: "SET",
+          //   timed: false,
+          //   s22onPath: "all",
+          // })
           // required.push({
           //   type: "neuro-mobility",
           //   intype: "s22video",
@@ -490,6 +490,15 @@ const decorateTeam = (team) => {
             s22onPath: "all",
           })
           required.push({
+            type: "pull-superset-demo",
+            intype: "s22video",
+            desc: "Putting upper and lower pulls together",
+            verb: "LEARN",
+            video: "oWoS6CU6cBk",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
             type: "mobility-task",
             intype: "s22weblink",
             desc: "Do some mobility moves",
@@ -498,7 +507,7 @@ const decorateTeam = (team) => {
             timed: true,
             s22onPath: "all",
           })
-          required.push({
+          others.push({
             type: "questions",
             intype: "s22questions",
             desc: "How are you moving?",
@@ -509,7 +518,7 @@ const decorateTeam = (team) => {
           required.push({
             type: "edt-block-1",
             intype: "s22edtset",
-            desc: "EDT set: upper and lower pull",
+            desc: "EDT practise set",
             verb: "SET",
             timed: true,
             s22onPath: "all",
