@@ -466,7 +466,7 @@ const decorateTeam = (team) => {
             type: "adjust-pulls",
             intype: "s22video",
             desc: "How to adjust pull ups",
-            verb: "TRY",
+            verb: "LEARN",
             video: "C3On8eprnew",
             timed: true,
             s22onPath: "all"
@@ -475,7 +475,7 @@ const decorateTeam = (team) => {
             type: "adjust-rows",
             intype: "s22video",
             desc: "How to adjust rows",
-            verb: "TRY",
+            verb: "LEARN",
             video: "IGOPgua09_4",
             timed: true,
             s22onPath: "all",
@@ -484,8 +484,17 @@ const decorateTeam = (team) => {
             type: "adjust-hinges",
             intype: "s22video",
             desc: "How to adjust hinges",
-            verb: "TRY",
+            verb: "LEARN",
             video: "NEZwCyFwAqM",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "mobility-task",
+            intype: "s22weblink",
+            desc: "Do some mobility moves",
+            verb: "MOVE",
+            link: "https://www.youtube.com/playlist?list=PLVjNXk5AEPaHtRCEfLNOINs3Q5SojEMAS",
             timed: true,
             s22onPath: "all",
           })
