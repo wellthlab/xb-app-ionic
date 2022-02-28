@@ -108,7 +108,6 @@ const decorateTeam = (team) => {
     // Set up other tasks according to week number
     // var effWeek = team.s22plan.plan.effectiveWeek;
     let effWeek = team.experiment.week;
-    console.log("effWeek", effWeek);
 
     let enduranceTaskText = (
       <>
@@ -445,23 +444,6 @@ const decorateTeam = (team) => {
     else if (effWeek === 3) {
       switch (dow) {
         case 1:
-          // required.push({
-          //   type: "strength-setter",
-          //   intype: "strength-setter",
-          //   desc: "Set your EDT strength moves",
-          //   verb: "SET",
-          //   timed: false,
-          //   s22onPath: "all",
-          // })
-          // required.push({
-          //   type: "neuro-mobility",
-          //   intype: "s22video",
-          //   desc: " mobility",
-          //   verb: "MOVE",
-          //   video: "",
-          //   timed: true,
-          //   s22onPath: "all"
-          // })
           required.push({
             type: "adjust-pulls",
             intype: "s22video",
@@ -507,14 +489,6 @@ const decorateTeam = (team) => {
             timed: true,
             s22onPath: "all",
           })
-          others.push({
-            type: "questions",
-            intype: "s22questions",
-            desc: "How are you moving?",
-            verb: "QUESTION",
-            timed: true,
-            s22onPath: "all"
-          })
           required.push({
             type: "edt-block-1",
             intype: "s22edtset",
@@ -522,34 +496,103 @@ const decorateTeam = (team) => {
             verb: "SET",
             timed: true,
             s22onPath: "all",
-            strengthBlock: 0
+            strengthBlock: ["assistedpullup", "wallrdlprep"]
           })
-          // required.push({
-          //   type: "edt-block-2",
-          //   intype: "s22superset",
-          //   desc: "EDT Set: pull",
-          //   verb: "SET",
-          //   timed: true,
-          //   s22onPath: "all",
-          //   strengthBlock: 1
-          // })
             break;
+        case 2:
+          required.push({
+            type: "endurance-block",
+            intype: "s22instructions",
+            desc: "Endurance",
+            verb: "MOVE",
+            timed: true,
+            s22onPath: "all",
+            text: enduranceTaskText,
+          })
+          break;
+        case 3:
+          required.push({
+            type: "mobility-task",
+            intype: "s22weblink",
+            desc: "MOBILITY block",
+            verb: "MOVE",
+            link: "https://www.youtube.com/playlist?list=PLVjNXk5AEPaHtRCEfLNOINs3Q5SojEMAS",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "edt-block-1",
+            intype: "s22edtset",
+            desc: "PUSH EDT BLOCK",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: ["flatpushup", "fullsquat"]
+          })
+          required.push({
+            type: "edt-block-2",
+            intype: "s22edtset",
+            desc: "PULL EDT BLOCK",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: ["assistedpullup", "wallrdlprep"]
+          })
+          break;
+        case 4:
+            required.push({
+              type: "endurance-block",
+              intype: "s22instructions",
+              desc: "Endurance",
+              verb: "MOVE",
+              timed: true,
+              s22onPath: "all",
+              text: enduranceTaskText,
+            })
+            break;
+        case 5:
+          required.push({
+            type: "mobility-task",
+            intype: "s22weblink",
+            desc: "MOBILITY block",
+            verb: "MOVE",
+            link: "https://www.youtube.com/playlist?list=PLVjNXk5AEPaHtRCEfLNOINs3Q5SojEMAS",
+            timed: true,
+            s22onPath: "all",
+          })
+          required.push({
+            type: "edt-block-1",
+            intype: "s22edtset",
+            desc: "PUSH EDT BLOCK",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: ["flatpushup", "fullsquat"]
+          })
+          required.push({
+            type: "edt-block-2",
+            intype: "s22edtset",
+            desc: "PULL EDT BLOCK",
+            verb: "SET",
+            timed: true,
+            s22onPath: "all",
+            strengthBlock: ["assistedpullup", "wallrdlprep"]
+          })
+          break;
         default:
           break;
       }
     }
   }
 
-
-
-  // required.push({
-  //   type: "daily-quiz",
-  //   intype: "quiz",
-  //   desc: "Quiz",
-  //   verb: "QUESTION",
-  //   timed: true,
-  //   s22onPath: "all"
-  // })
+  others.push({
+    type: "questions",
+    intype: "s22questions",
+    desc: "HOW are you MOVING?",
+    verb: "QUESTION",
+    timed: true,
+    s22onPath: "all"
+  })
 
   others.push({
     type: "other-movement",
