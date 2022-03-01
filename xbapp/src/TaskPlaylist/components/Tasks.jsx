@@ -24,10 +24,12 @@ function TodoTasks(props) {
 
   let activeDay = props.day;
   let groupID = props.team._id;
+
   let requiredTasks = props.tasks;
   let optionalTasks = props.optional;
+
   let dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
-  let responseTypes = props.team.entries[dayIndexResponses].responseTypes;
+  let tasksDone = props.team.entries[dayIndexResponses].responseTypes;
 
   // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
@@ -49,7 +51,7 @@ function TodoTasks(props) {
   // Required tasks for the users' path
   const required = requiredTasks.map((task, taskIndex) => {
     // check if task is done
-    let done = task.type in responseTypes;
+    let done = task.type in tasksDone;
     // only include time tasks on the user's path
     if (
       task.onPlaylist &&
@@ -71,7 +73,6 @@ function TodoTasks(props) {
             "/" +
             taskIndex
           }
-          disabled={done}
         >
           <IonButton fill="clear" expand={"full"} />
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
@@ -86,7 +87,7 @@ function TodoTasks(props) {
   // Optional tasks for the users' path
   const optional = optionalTasks.map((task, taskIndex) => {
     // check if task is done
-    let done = task.type in responseTypes;
+    let done = task.type in tasksDone;
     // only include tasks which are timed and are optional
     if (
       task.onPlaylist &&
@@ -109,7 +110,6 @@ function TodoTasks(props) {
             "/" +
             taskIndex
           }
-          disabled={done}
         >
           <IonButton fill="clear" expand={"full"} />
           <IonIcon slot="start" icon={done ? icon_done : playOutline} />
@@ -121,7 +121,9 @@ function TodoTasks(props) {
     }
   });
 
-  const requiredFiltered = required.filter((el) => el !== null);
+  const introTasksFiltered = [];
+  const moduleTasksFiltered = required.filter((el) => el !== null);
+  const exitTasksFiltered = [];
   const optionalFiltered = optional.filter((el) => el !== null);
 
   return (
@@ -134,8 +136,17 @@ function TodoTasks(props) {
           </IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
+          {/* Intro tasks */}
           <IonList lines="full">
-            <IonItemGroup>{requiredFiltered}</IonItemGroup>
+            <IonItemGroup>{introTasksFiltered}</IonItemGroup>
+          </IonList>
+          {/* Module tasks */}
+          <IonList lines="full">
+            <IonItemGroup>{moduleTasksFiltered}</IonItemGroup>
+          </IonList>
+          {/* Exit tasks */}
+          <IonList lines="full">
+            <IonItemGroup>{exitTasksFiltered}</IonItemGroup>
           </IonList>
         </IonCardContent>
       </IonCard>

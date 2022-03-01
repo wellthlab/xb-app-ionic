@@ -81,8 +81,8 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import RecordMovement from "./RecordMovement/RecordMovement";
-import MovementTimer from "./RecordMovement/MovementTimer";
+import RecordMovement from "./TaskPlaylist/TaskPlaylist";
+import MovementTimer from "./TaskPlaylist/MovementTimer";
 
 import getXBClient from "./util_model/client";
 

@@ -8,6 +8,11 @@ import {
   IonLabel,
   IonCol,
   IonRow,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonIcon,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
@@ -21,14 +26,16 @@ import TotalTimer from "./components/TotalTimer";
  * Main page for users to track and record their movements
  *
  */
-function RecordMovement(props) {
+function TaskPlaylist(props) {
   props.controllers.LOAD_TEAMS_IF_REQD();
+  props.controllers.LOAD_MODULES_IF_REQD();
 
-  if (!props.teams.teams.bybox) {
+  if (!props.teams.teams.bybox || !props.modules.modules) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
   let team = props.teams.teams.bybox.move[0];
+  let modules = props.modules.modules;
 
   if (!team.s22plan) {
     return (
@@ -43,7 +50,7 @@ function RecordMovement(props) {
 
   return (
     <>
-      <XBHeader title="Record Your Movement"></XBHeader>
+      <XBHeader title="Your Playlist"></XBHeader>
       <IonContent fullscreen>
         <IonGrid>
           <IonRow>
@@ -78,10 +85,10 @@ export default connect(
       account: state.account,
       teams: state.teams,
       experiments: state.experiments,
-      boxes: state.boxes,
+      modules: state.modules,
     };
   },
   {
     pure: false,
   }
-)(addControllersProp(RecordMovement));
+)(addControllersProp(TaskPlaylist));

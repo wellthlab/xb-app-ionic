@@ -2,12 +2,6 @@
 * This is the experiment-specific code for the Spring 2022 Strength in Work Experiment
 */
 
-import { QueuePlayNextSharp, TramRounded } from "@material-ui/icons";
-import { qrCodeSharp } from "ionicons/icons";
-import { GiConsoleController } from "react-icons/gi";
-
-import {IonRow, IonCol} from "@ionic/react";
-
 /**
 * The experiment is passed the team record that it represents.
 * The team record will have experiment information attached; but may be
@@ -17,8 +11,8 @@ import {IonRow, IonCol} from "@ionic/react";
 * If there are sub-experiments, they will be populated.
 */
 const decorateTeam = (team) => {
-  var eday = team.experiment.day;
-  var week = Math.floor(eday / 7);
+  var expDay = team.experiment.day;
+  var expWeek = Math.floor(expDay / 7);
 
   team.isStrength22 = true;
   team.s22path = false;
@@ -41,20 +35,18 @@ const decorateTeam = (team) => {
   // End of EXAMPLE plan
 
   // Create a handy reference to TODAYS plan
-  var dow = (new Date()).getDay();
+  var dayOfWeek = (new Date()).getDay();
 
   // Try to find a s22 plan
   if(typeof team.lastEntryByType.s22plan !== 'undefined') {
-
     var plan = team.lastEntryByType.s22plan;
-
     // Check that the plan is for the current week
     var planweek = Math.floor(plan.day / 7);
-    if(planweek === week) { // week is calculated above, from the experiment day
+    if(planweek === expWeek) { // week is calculated above, from the experiment day
       team.s22plan = team.lastEntryByType.s22plan;
       console.log("Found a current s22 plan");
     } else {
-      console.log("s22 plan is out of date", "Current week: ", week, "Plan week:", planweek);
+      console.log("s22 plan is out of date", "Current week: ", expWeek, "Plan week:", planweek);
     }
   } else {
     console.log("No s22 plan has ever been saved");
@@ -69,6 +61,7 @@ const decorateTeam = (team) => {
         desc: "You need to choose a path",
         verb: "CHOOSE",
         s22onPath: false,
+        onPlaylist: false,
       });
     }
     else
@@ -78,6 +71,7 @@ const decorateTeam = (team) => {
         desc: "You can change your path",
         verb: "CHANGE",
         s22onPath: false,
+        onPlaylist: false,
       });
 
       required.push({
@@ -85,6 +79,7 @@ const decorateTeam = (team) => {
         desc: "You need to plan your week",
         verb: "PLAN",
         s22onPath: false,
+        onPlaylist: false,
       });
     }
 
@@ -96,6 +91,7 @@ const decorateTeam = (team) => {
       desc: 'You can change your weekly plan',
       verb: 'PLAN',
       s22onPath: false,
+      onPlaylist: false,
     });
 
     others.push({
@@ -103,6 +99,7 @@ const decorateTeam = (team) => {
       desc: 'You can change your path',
       verb: 'CHANGE',
       s22onPath: false,
+      onPlaylist: false,
     });
 
     // TODO: we need to get this from the modules on MongoDB, this should be in the team slice
@@ -146,7 +143,7 @@ const decorateTeam = (team) => {
     s22onPath: "all",
   });
 
-  team.experiment.tasks[eday] = { required: required, optional: others };
+  team.experiment.tasks[expDay] = { required: required, optional: others };
 
   // Add today's minutes total
   team.myMinutesToday = 0;
@@ -157,7 +154,7 @@ const decorateTeam = (team) => {
   }
 
   team.responses.own.responses.map((res) => {
-    if(res.day === eday && res.minutes) {
+    if(res.day === expDay && res.minutes) {
       team.myMinutesToday += res.minutes;
     }
   })
