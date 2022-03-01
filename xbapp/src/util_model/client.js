@@ -144,6 +144,20 @@ function XBClient() {
   }
 
   /**
+   * Get all modules
+   */
+
+  self.getModules = async function () {
+    let db = getDb();
+    let collection = db.collection("modules");
+    let modules = await collection.find({})
+
+    console.log("modules", modules);
+
+    return false;
+  }
+
+  /**
    * Get all groups for the current user
    */
   self.getTeams = async function () {

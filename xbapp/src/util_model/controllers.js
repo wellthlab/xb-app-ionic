@@ -25,10 +25,41 @@ import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
 
 import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 
+import {CLEAR_MODULES, GET_MODULES} from "./slices/Modules";
+
 /**
  * These controller functions will be returned by getControllers
  * - they'll be wrapped so that client, store and controllers are provided
  */
+
+async function LOAD_MODULES(client, store) {
+
+  store.dispatch(CLEAR_MODULES());
+
+  let modules = null;
+  try {
+    modules = await client.getModules();
+  }
+  catch (error) {
+    return console.error(error);
+  }
+
+  store.dispatch(GET_MODULES({ modules }));
+  console.log("SET_MODULES", modules);
+}
+
+async function LOAD_MODULES_IF_REQD(client, store) {
+  var state = store.getState();
+
+  var f = state.modules.fetching;
+  var l = state.modules.loaded;
+  if (!f && !l) {
+    console.log("Refresh of modules is required", f, l);
+    return client.getModules();
+  } else {
+    console.log("Refresh or modules is not required", f, l);
+  }
+}
 
 async function LOAD_TEAMS(client, store) {
 
@@ -267,6 +298,8 @@ function getControllers(store, client) {
     CREATE_TEAM,
     ADD_RESPONSE,
     GET_FEED,
+    LOAD_MODULES,
+    LOAD_MODULES_IF_REQD,
   };
 
   for (var n of Object.keys(controllers)) {
