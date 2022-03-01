@@ -152,9 +152,9 @@ function XBClient() {
     let collection = db.collection("modules");
     let modules = await collection.find({})
 
-    console.log("modules", modules);
+    self.tidy(modules);
 
-    return false;
+    return modules;
   }
 
   /**

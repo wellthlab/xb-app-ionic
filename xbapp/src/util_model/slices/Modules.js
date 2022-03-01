@@ -1,13 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import Strength22 from "../../Boxes/Strength22";
-
 const initialState = {
     modules: [],
     fetching: false,
     loaded: false,
-    joining: false,
-    join_err: false
 }
 
 const ModuleSlice = createSlice({

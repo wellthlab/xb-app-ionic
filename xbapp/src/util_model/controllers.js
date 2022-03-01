@@ -48,14 +48,14 @@ async function LOAD_MODULES(client, store) {
   console.log("SET_MODULES", modules);
 }
 
-async function LOAD_MODULES_IF_REQD(client, store) {
+async function LOAD_MODULES_IF_REQD(client, store, controllers) {
   var state = store.getState();
 
   var f = state.modules.fetching;
   var l = state.modules.loaded;
   if (!f && !l) {
     console.log("Refresh of modules is required", f, l);
-    return client.getModules();
+    return controllers.LOAD_MODULES();
   } else {
     console.log("Refresh or modules is not required", f, l);
   }
