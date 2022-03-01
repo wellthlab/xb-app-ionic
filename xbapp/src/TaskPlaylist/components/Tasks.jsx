@@ -24,12 +24,54 @@ function TodoTasks(props) {
 
   let activeDay = props.day;
   let groupID = props.team._id;
-
   let requiredTasks = props.tasks;
   let optionalTasks = props.optional;
-
   let dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
   let tasksDone = props.team.entries[dayIndexResponses].responseTypes;
+
+  // Create a group of tasks using Array.map
+  function createTasksGroup(taskArr, taskSection, optional) {
+    let tasks = taskArr.map((task, taskIndex) => {
+      let done = task.type in tasksDone;
+      let optionalOrRequired = optional ? "optional" : "required";
+      let colour = optional ? "secondary" : "primary";
+      if (
+        task.onPlaylist &&
+        (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
+      ) {
+        return (
+          <IonItem
+            color={done ? "" : colour}
+            key={taskIndex}
+            routerLink={
+              "/timer/" +
+              optionalOrRequired +
+              "/" +
+              groupID +
+              "/" +
+              activeDay +
+              "/" +
+              task.type +
+              "/" +
+              taskSection +
+              "/" +
+              task.intype +
+              "/" +
+              taskIndex
+            }
+          >
+            <IonButton fill="clear" expand={"full"} />
+            <IonIcon slot="start" icon={done ? icon_done : playOutline} />
+            {task.desc}
+          </IonItem>
+        );
+      } else {
+        return null;
+      }
+    });
+
+    return tasks;
+  }
 
   // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
@@ -48,82 +90,32 @@ function TodoTasks(props) {
     );
   }
 
-  // Required tasks for the users' path
-  const required = requiredTasks.map((task, taskIndex) => {
-    // check if task is done
-    let done = task.type in tasksDone;
-    // only include time tasks on the user's path
-    if (
-      task.onPlaylist &&
-      (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
-    ) {
-      return (
-        <IonItem
-          color={done ? "" : "primary"}
-          key={taskIndex}
-          routerLink={
-            "/timer/required/" +
-            groupID +
-            "/" +
-            activeDay +
-            "/" +
-            task.type +
-            "/" +
-            task.intype +
-            "/" +
-            taskIndex
-          }
-        >
-          <IonButton fill="clear" expand={"full"} />
-          <IonIcon slot="start" icon={done ? icon_done : playOutline} />
-          {task.desc}
-        </IonItem>
-      );
-    } else {
-      return null;
-    }
-  });
+  // First create the task groups
 
-  // Optional tasks for the users' path
-  const optional = optionalTasks.map((task, taskIndex) => {
-    // check if task is done
-    let done = task.type in tasksDone;
-    // only include tasks which are timed and are optional
-    if (
-      task.onPlaylist &&
-      task.s22onPath !== false
-      // && (task.s22onPath !== "all" || task.s22onPath !== props.team.s22path.path)
-    ) {
-      return (
-        <IonItem
-          color={done ? "" : "secondary"}
-          key={taskIndex}
-          routerLink={
-            "/timer/optional/" +
-            groupID +
-            "/" +
-            activeDay +
-            "/" +
-            task.type +
-            "/" +
-            task.intype +
-            "/" +
-            taskIndex
-          }
-        >
-          <IonButton fill="clear" expand={"full"} />
-          <IonIcon slot="start" icon={done ? icon_done : playOutline} />
-          {task.desc}
-        </IonItem>
-      );
-    } else {
-      return null;
-    }
-  });
+  const introTasks = createTasksGroup(
+    requiredTasks["introTasks"],
+    "introTasks",
+    false
+  );
+  const moduleTasks = createTasksGroup(
+    requiredTasks["moduleTasks"],
+    "moduleTasks",
+    false
+  );
+  const exitTasks = createTasksGroup(
+    requiredTasks["exitTasks"],
+    "exitTasks",
+    false
+  );
+  const optional = createTasksGroup(optionalTasks, "undefined", true);
 
-  const introTasksFiltered = [];
-  const moduleTasksFiltered = required.filter((el) => el !== null);
-  const exitTasksFiltered = [];
+  // Then filter out any null items, which are not tasks to be shown on the
+  // playlist. This is done because we conditionally render the tasks to display
+  // to avoid weird blank space
+
+  const introTasksFiltered = introTasks.filter((el) => el !== null);
+  const moduleTasksFiltered = moduleTasks.filter((el) => el !== null);
+  const exitTasksFiltered = exitTasks.filter((el) => el !== null);
   const optionalFiltered = optional.filter((el) => el !== null);
 
   return (
@@ -131,33 +123,36 @@ function TodoTasks(props) {
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>Your path's activities</IonCardTitle>
-          <IonCardSubtitle>
-            You can do these in any order you like
-          </IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
-          {/* Intro tasks */}
-          <IonList lines="full">
-            <IonItemGroup>{introTasksFiltered}</IonItemGroup>
-          </IonList>
-          {/* Module tasks */}
+          {/* Intro tasks -- maybe sometimes wont have these */}
+          {introTasksFiltered.length > 0 ? (
+            <IonList lines="full">
+              <IonItemGroup>{introTasksFiltered}</IonItemGroup>
+            </IonList>
+          ) : (
+            ""
+          )}
+          {/* Module tasks -- there always will be these*/}
           <IonList lines="full">
             <IonItemGroup>{moduleTasksFiltered}</IonItemGroup>
           </IonList>
-          {/* Exit tasks */}
-          <IonList lines="full">
-            <IonItemGroup>{exitTasksFiltered}</IonItemGroup>
-          </IonList>
+          {/* Exit tasks -- maybe sometimes wont have these*/}
+          {exitTasksFiltered.length > 0 ? (
+            <IonList lines="full">
+              <IonItemGroup>{exitTasksFiltered}</IonItemGroup>
+            </IonList>
+          ) : (
+            ""
+          )}
         </IonCardContent>
       </IonCard>
 
+      {/* Optional tasks */}
       {optionalFiltered.length > 0 ? (
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>Optional activities</IonCardTitle>
-            <IonCardSubtitle>
-              You can do these in any order you like
-            </IonCardSubtitle>
           </IonCardHeader>
           <IonCardContent>
             <IonList>

@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from "react";
 import {
   IonContent,
   IonSpinner,
-  IonButton,
   IonText,
   IonGrid,
   IonLabel,
   IonCol,
   IonRow,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonIcon,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
-// import "./RecordMovement.scss";
 import XBHeader from "../util/XBHeader";
 import TodoTasks from "./components/Tasks";
 import TotalTimer from "./components/TotalTimer";
@@ -28,14 +20,12 @@ import TotalTimer from "./components/TotalTimer";
  */
 function TaskPlaylist(props) {
   props.controllers.LOAD_TEAMS_IF_REQD();
-  props.controllers.LOAD_MODULES_IF_REQD();
 
-  if (!props.teams.teams.bybox || !props.modules.modules) {
+  if (!props.teams.teams.bybox) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
-  let team = props.teams.teams.bybox.move[0];
-  let modules = props.modules.modules;
+  const team = props.teams.teams.bybox.move[0];
 
   if (!team.s22plan) {
     return (
@@ -43,10 +33,14 @@ function TaskPlaylist(props) {
     );
   }
 
-  let day = team.experiment.day;
-  let requiredTasks = team.experiment.tasks[day].required;
-  let optionalTasks = team.experiment.tasks[day].optional;
-  let totalMinutes = team.s22plan.target;
+  // const day = team.experiment.day;
+  const day = 0; // TODO: revert back to above
+
+  const requiredTasks = team.experiment.tasks[day].required;
+  const optionalTasks = team.experiment.tasks[day].optional;
+  const totalMinutes = team.s22plan.target;
+
+  console.log("TaskPlaylist: requiredTasks", requiredTasks);
 
   return (
     <>
@@ -84,8 +78,6 @@ export default connect(
     return {
       account: state.account,
       teams: state.teams,
-      experiments: state.experiments,
-      modules: state.modules,
     };
   },
   {

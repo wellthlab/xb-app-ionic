@@ -46,21 +46,10 @@ const MovePage = (props) => {
     );
   }
 
-  // let task = "testTask";
-  // let group = props.teams.teams.bybox["move"][0];
-  // let tempButton = (
-  //   <>
-  //     <IonItem routerLink={"/journal/" + group._id + "/" + task}>
-  //       <IonButton>Test button to journal</IonButton>
-  //     </IonItem>
-  //   </>
-  // );
-
   return (
     <IonPage>
       <XBHeader title="Progress"></XBHeader>
       <IonContent>{content}</IonContent>
-      {/* {tempButton} */}
     </IonPage>
   );
 };

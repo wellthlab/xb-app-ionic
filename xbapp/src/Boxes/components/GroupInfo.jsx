@@ -66,7 +66,9 @@ const GroupInfo = ({ group, controllers, match }) => {
 
   var content = "";
 
-  var day = group.experiment.day;
+  // var day = group.experiment.day;
+  // TODO: change back to above
+  var day = 1;
 
   /**
    * Experiment info

@@ -59,7 +59,7 @@ const DailyActions = ({ group, today, tabs }) => {
   }
 
   if (typeof entry == "undefined") {
-    return <>Can't find entry for day {activeDay}</>;
+    return <>Can't find an entry for day {activeDay}</>;
   }
 
   const nextDayExists = dayList.includes(activeDay + 1);
@@ -72,8 +72,15 @@ const DailyActions = ({ group, today, tabs }) => {
    * Daily task list and buttons
    */
 
+  // TODO: should be an array in the future already.. sigh this is a hack I need to fix
   var required = group.experiment.tasks[activeDay].required;
   var optional = group.experiment.tasks[activeDay].optional;
+
+  console.log(
+    "required",
+    Object.values(group.experiment.tasks[0].required["introTasks"])
+  );
+  // debugger;
 
   var tasks = required.map((type) => {
     if (type.onPlaylist) {
@@ -161,7 +168,7 @@ const DailyActions = ({ group, today, tabs }) => {
     <div className="dailyActions">
       <IonList lines="full" className="journalTasks">
         <IonItemGroup>
-          {required.length != 0 ? (
+          {required.length > 0 ? (
             tasks
           ) : (
             <IonLabel>No tasks need your attention</IonLabel>

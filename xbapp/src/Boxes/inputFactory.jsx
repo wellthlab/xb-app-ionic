@@ -282,7 +282,11 @@ export default function responseFactory(
       typedesc = "Instructions";
       break;
     default:
-      input = <p>Unknown Response Type</p>;
+      input = (
+        <p>
+          Unknown response type of {type} for task {taskObj.desc}{" "}
+        </p>
+      );
       typedesc = "";
       break;
   }

@@ -43,6 +43,7 @@ function MovementTimer(props) {
   let taskType = props.match.params.task;
   let optionalOrRequired = props.match.params.req;
   let taskIdx = props.match.params.index;
+  let section = props.match.params.section;
 
   const [group, setGroup] = useState(false);
   const [currentTask, setCurrentTask] = useState(false);
@@ -69,13 +70,13 @@ function MovementTimer(props) {
   if (currentTask === false) {
     // Find the task if not found already
     if (optionalOrRequired === "required") {
-      setCurrentTask(group.experiment.tasks[day].required[taskIdx]);
+      setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
     } else {
       setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
     }
   }
   if (typeof currentTask == "undefined" || currentTask === false) {
-    return <>The current task has not defined</>;
+    return <>The current task has not been defined</>;
   }
 
   let totalMinutes = group.s22plan.target;
