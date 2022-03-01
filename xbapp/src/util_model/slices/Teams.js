@@ -146,6 +146,7 @@ const TeamSlice = createSlice({
     SET_TEAMS(state, action) {
 
       const teams = action.payload.teams;
+      const modules = action.payload.modules;
       state.teams = teams;
       state.fetching = false;
       state.loaded = true;
@@ -241,19 +242,15 @@ const TeamSlice = createSlice({
 
           case 'strength22':
             console.log("This is a strength in work 22 experiment");
-            Strength22.decorateTeam(team);
+            Strength22.decorateTeam(team, modules);
             console.log("Team has been decorated", team);
+            break;
 
           default:
             console.warn("Experiment is not a known type");
             break;
-
         }
-
-
-
       }
-
 
       /**
       * BY-BOX VIEW

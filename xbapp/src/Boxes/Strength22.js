@@ -10,7 +10,7 @@
 *
 * If there are sub-experiments, they will be populated.
 */
-const decorateTeam = (team) => {
+const decorateTeam = (team, modules) => {
   var expDay = team.experiment.day;
   var expWeek = Math.floor(expDay / 7);
 
@@ -85,6 +85,8 @@ const decorateTeam = (team) => {
 
   } else {
   // Otherwise generate the daily tasks
+
+    console.log("Generating s22 tasks with modules = ", modules);
 
     others.push({ // An optional re-planning task
       intype: 's22plan',
