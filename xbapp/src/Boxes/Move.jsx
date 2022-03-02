@@ -1,18 +1,4 @@
-import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonItem,
-  IonInput,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonSpinner,
-} from "@ionic/react";
+import { IonContent, IonPage, IonSpinner } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
@@ -23,10 +9,7 @@ import { addControllersProp } from "../util_model/controllers";
 import Disclaimer from "./components/Disclaimer";
 
 const MovePage = (props) => {
-  React.useEffect(() => {
-    props.controllers.LOAD_TEAMS();
-  }, [!!props.teams]);
-
+  props.controllers.LOAD_TEAMS_IF_REQD();
   if (!props.teams.teams.bybox) {
     return <IonSpinner class="center-spin" name="crescent" />;
   }
