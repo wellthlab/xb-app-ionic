@@ -104,6 +104,9 @@ import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
+/* Other CSS from other libs */
+import 'react-circular-progressbar/dist/styles.css';
+
 /* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
@@ -117,19 +120,6 @@ import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
 import XBHeader from "./util/XBHeader";
-
-/****************************************************************/
-
-const LeaderboardHolder = (props) => {
-  return (
-    <>
-      <XBHeader title="Teams Leaderboard"></XBHeader>
-      <IonContent>
-        Soon, we'll be able to show you which Teams are meeting their targets.
-      </IonContent>
-    </>
-  );
-};
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -169,7 +159,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/feed" component={Feed} exact={true} />
               <Route
                 path="/leaderboard"
-                component={LeaderboardHolder}
+                component={Leaderboard}
                 exact={true}
               />
               <Route
