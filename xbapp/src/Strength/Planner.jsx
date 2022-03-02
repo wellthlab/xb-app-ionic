@@ -53,13 +53,13 @@ const Planner = ({ onSubmit, group }) => {
     <>
       <IonList>
         <IonListHeader>
-          <IonLabel>Week 1 Plan</IonLabel>
+          <IonLabel>Week 3 Plan</IonLabel>
         </IonListHeader>
 
         <IonItem>
           <IonText>
-            This week, you just need to pick a daily target. For{" "}
-            <strong>{path}s</strong>, we suggest 7 minutes, but you could
+            This week, you just need to pick a daily target. For
+            <strong>{path}s</strong>, we suggest 14 - 21 minutes, but you could
             increase it if you're feeling confident.
           </IonText>
         </IonItem>

@@ -136,9 +136,9 @@ function XBClient() {
     return self.realm.currentUser;
   };
 
-  self.calculateTeamStats = async function (options) {
+  self.sortTeams = async function (monday) {
 
-    const res = await self.realm.currentUser.functions.calculateTeamStats(options);
+    const res = await self.realm.currentUser.functions.sortTeams(monday);
     self.tidy(res);
     return res;
   }
