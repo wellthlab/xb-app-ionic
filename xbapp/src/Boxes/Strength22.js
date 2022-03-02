@@ -158,6 +158,26 @@ const decorateTeam = (team, modules) => {
     console.log("Generated module tasks", moduleTasks);
   }
 
+  moduleTasks.push({
+    type: "test-quiz",
+    intype: "quiz",
+    desc: "Test Quiz",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all",
+    question: "What is the answer to life, the universe, and everything?",
+    answers: [
+      "42",
+      "Eating chocolate",
+      "Sandwich",
+      "I don't know",
+      "Completing this quiz"
+    ],
+    correctAnswer: 0,
+    explanation: "The answer is 42 because of book",
+  });
+
   // Exit tasks, which are always the same. These are questions to ask at the
   // end of the day.
 

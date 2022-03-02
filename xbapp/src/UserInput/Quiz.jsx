@@ -38,7 +38,7 @@ const Quiz = ({ onSubmit, task }) => {
       setConfettiOn(true);
       setReplyTitle("That's correct!");
     } else {
-      setReplyTitle("That's not quite correct");
+      setReplyTitle("That's not quite correct...");
     }
     setReply(explanation);
     onSubmit({ minutes: 1e-10 });
@@ -48,7 +48,7 @@ const Quiz = ({ onSubmit, task }) => {
     return (
       <IonItem>
         <IonLabel style={{ whiteSpace: "normal" }}>{answer}</IonLabel>
-        <IonRadio disabled={answered} value={answer} />
+        <IonRadio slot="start" disabled={answered} value={answer} />
         {answered ? (
           answer === correctAnswer ? (
             <CheckmarkSharp
@@ -91,7 +91,7 @@ const Quiz = ({ onSubmit, task }) => {
         <IonCardHeader>
           <IonCardTitle>{question}</IonCardTitle>
           <IonCardSubtitle>
-            {"Answer the question to reveal the answer and the explanation!"}
+            Answer the question to reveal the answer and the explanation
           </IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
@@ -113,21 +113,17 @@ const Quiz = ({ onSubmit, task }) => {
           ) : (
             ""
           )}
+
+          {reply ? (
+            <>
+              <IonCardTitle>{replyTitle}</IonCardTitle>
+              <IonText style={{ fontSize: "1.1rem" }}>{reply}</IonText>
+            </>
+          ) : (
+            ""
+          )}
         </IonCardContent>
       </IonCard>
-
-      {reply ? (
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{replyTitle}</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonItem>{reply}</IonItem>
-          </IonCardContent>
-        </IonCard>
-      ) : (
-        ""
-      )}
     </>
   );
 };

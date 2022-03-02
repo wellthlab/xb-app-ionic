@@ -13,6 +13,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonCardSubtitle,
+  IonSpinner,
 } from "@ionic/react";
 import {
   addCircleOutline,
@@ -101,9 +102,8 @@ function MovementTimer(props) {
     }
     return (
       <>
-        <div className="center-message">
-          <h3>Your group could not be found</h3>
-        </div>
+        {/* <div className="center-message">Looking for your group</div> */}
+        <IonSpinner name="crescent" className="center-spin" />
       </>
     );
   }

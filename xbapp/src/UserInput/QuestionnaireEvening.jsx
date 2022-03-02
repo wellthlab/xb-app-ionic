@@ -1,93 +1,114 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   IonItem,
-  IonListHeader,
-  IonTextarea,
   IonLabel,
+  IonRange,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonButton,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
   IonRadio,
   IonRadioGroup,
-  IonPage,
-  IonHeader,
-  IonRange,
-  IonItemDivider,
-  IonButton,
-  IonCard,
-  IonContent,
-  IonCardContent,
 } from "@ionic/react";
 
-const FeltScale = {
-  0: "(0) Not at all",
-  1: "(1)",
-  2: "(2)",
-  3: "(3)",
-  4: "(4)",
-  5: "(5) So and so",
-  6: "(6)",
-  7: "(7)",
-  8: "(8)",
-  9: "(9)",
-  10: "(10) A lot",
-};
+const FeltScale = ["1", "2", "3", "4", "5"];
 
-const QuestionnaireEvening = (props) => {
-  const [value, setValue] = useState(5);
+const QuestionnaireEvening = ({ key, onSubmit }) => {
+  const [selected, setSelected] = useState(null);
+  const [answered, setAnswered] = useState(false);
 
-  function onChangeSlider(valueToUpdate) {
-    setValue(valueToUpdate);
+  function submitResults() {
+    setAnswered(true);
+    onSubmit({ minutes: 1e-10 });
   }
 
-  function processData() {
-    var response = {};
-    response.minutes = 1e-10;
-    response.type = "questionnaire-endWeek";
-    response.felt = value;
-
-    if (props.onSubmit) {
-      props.onSubmit(response);
-    }
-  }
+  const selectionChoices = FeltScale.map((choice, index) => {
+    return (
+      <IonCol>
+        <IonItem>
+          <IonLabel>{choice}</IonLabel>
+          <IonRadio slot="end" value={choice} />
+        </IonItem>
+      </IonCol>
+    );
+  });
 
   return (
     <>
-      <div>
-        <h4>Rate the following statement on the scale from 0 to 10:</h4>
-        <h3>In general, I felt good today.</h3>
-        <IonItemDivider></IonItemDivider>
-        <IonItem style={{ textAlign: "center" }}>
-          <IonLabel>{FeltScale[value]}</IonLabel>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            min={0}
-            max={10}
-            step={1}
-            snaps={true}
-            ticks={true}
-            color="secondary"
-            value={value}
-            onIonChange={(e) => {
-              console.log("value to update", e.detail.value);
-              onChangeSlider(e.detail.value);
-            }}
-          />
-        </IonItem>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>
+            Rate the following statement on a scale from 1 to 5
+          </IonCardTitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonGrid>
+            <IonRow>
+              <IonItem>In general, I felt good today</IonItem>
+            </IonRow>
 
-        {/* <IonCard>
-          <IonCardContent>
+            <IonRadioGroup
+              value={selected}
+              onIonChange={(e) => setSelected(e.detail.value)}
+            >
+              <IonRow>{selectionChoices}</IonRow>
+            </IonRadioGroup>
+          </IonGrid>
+
+          {!answered ? (
             <IonButton
               expand={"full"}
-              onClick={() => {
-                processData();
-              }}
+              onClick={submitResults}
+              disabled={!selected}
             >
               Submit
             </IonButton>
-          </IonCardContent>
-        </IonCard> */}
-      </div>
+          ) : (
+            ""
+          )}
+        </IonCardContent>
+      </IonCard>
     </>
   );
 };
 
 export default QuestionnaireEvening;
+
+// return (
+//   <>
+//     <IonCard>
+//       <IonCardHeader>
+//         <IonCardTitle>
+//           Rate the following statement on a scale from 0 to 10
+//         </IonCardTitle>
+//       </IonCardHeader>
+//       <IonCardContent>
+//         <IonItem>In general, I felt good today</IonItem>
+//         <IonItem style={{ textAlign: "center" }}>
+//           <IonLabel>{FeltScale[value]}</IonLabel>
+//         </IonItem>
+//         <IonItem>
+//           <IonRange
+//             min={0}
+//             max={10}
+//             step={1}
+//             snaps={true}
+//             ticks={true}
+//             color="secondary"
+//             value={value}
+//             onIonChange={(e) => {
+//               setValue(e.detail.value);
+//             }}
+//           />
+//         </IonItem>
+//         {/* <IonButton expand={"full"} onClick={() => {}}>
+//           Submit
+//         </IonButton> */}
+//       </IonCardContent>
+//     </IonCard>
+//   </>
+// );
