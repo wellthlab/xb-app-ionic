@@ -187,7 +187,7 @@ export default function responseFactory(
       break;
 
     case "quiz":
-      input = <Quiz onSubmit={onSubmit} week={week} />;
+      input = <Quiz onSubmit={onSubmit} task={taskObj} />;
       typedesc = "Quiz";
       break;
 

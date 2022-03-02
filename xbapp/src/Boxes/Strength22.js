@@ -71,7 +71,7 @@ const decorateTeam = (team, modules) => {
   if(!team.s22plan) {
 
     if(!team.s22path) {
-      introTasks.push({
+      moduleTasks.push({
         intype: "s22path",
         desc: "You need to choose a path",
         verb: "CHOOSE",
@@ -89,7 +89,7 @@ const decorateTeam = (team, modules) => {
         onPlaylist: false,
       });
 
-      introTasks.push({
+      moduleTasks.push({
         intype: "s22plan",
         desc: "You need to plan your week",
         verb: "PLAN",

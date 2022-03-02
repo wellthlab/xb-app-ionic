@@ -89,7 +89,7 @@ const Leaderboard = function ({ controllers }) {
   let content;
 
   if (loading) {
-    content = <IonSpinner name="crescent" />
+    content = <IonSpinner name="crescent" className="center-spin"/>
   }
   else if (fetchErrored) {
     content = 'Sorry, something went wrong';
