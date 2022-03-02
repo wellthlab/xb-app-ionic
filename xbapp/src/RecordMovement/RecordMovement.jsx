@@ -29,7 +29,6 @@ function RecordMovement(props) {
   }
 
   let team = props.teams.teams.bybox.move[0];
-  console.log("Timer using team", team);
 
   if (!team.s22plan) {
     return (
@@ -44,7 +43,7 @@ function RecordMovement(props) {
 
   return (
     <>
-      <XBHeader title="Record Movement"></XBHeader>
+      <XBHeader title="Record Your Movement"></XBHeader>
       <IonContent fullscreen>
         <IonGrid>
           <IonRow>
@@ -76,11 +75,13 @@ function RecordMovement(props) {
 export default connect(
   (state, ownProps) => {
     return {
+      account: state.account,
       teams: state.teams,
       experiments: state.experiments,
+      boxes: state.boxes,
     };
   },
   {
-    // Actions to include as props
+    pure: false,
   }
 )(addControllersProp(RecordMovement));

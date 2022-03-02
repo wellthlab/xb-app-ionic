@@ -30,6 +30,7 @@ function QuestionText({ question, type, value, setValue, resLabel, onSubmit }) {
               type={type}
               onIonChange={(e) => {
                 response[resLabel] = e.detail.value;
+                response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
                 setValue(e.detail.value);
                 onSubmit(response);
               }}
@@ -66,6 +67,7 @@ function QuestionChoice({
               value={value}
               onIonChange={(e) => {
                 response[resLabel] = e.detail.value;
+                response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
                 setValue(e.detail.value);
                 onSubmit(response);
               }}
@@ -96,7 +98,7 @@ function ContextualQuestions({ onSubmit }) {
     <>
       <IonCard>
         <IonCardHeader>
-          <IonCardTitle>How are you moving?</IonCardTitle>
+          <IonCardTitle>How did you move today?</IonCardTitle>
           <IonCardSubtitle>
             These <IonText color={"tertiary"}>optional</IonText> questions will
             help us understand how you are choosing to move

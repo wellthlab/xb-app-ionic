@@ -37,11 +37,11 @@ import {
 import "./DailyActions.css";
 
 /**
-* Props:
-*    today: The day number to show tasks for
-*    group: The team object to show tasks from
-*    tabs: Whether to allow paging between days (True/False)
-*/
+ * Props:
+ *    today: The day number to show tasks for
+ *    group: The team object to show tasks from
+ *    tabs: Whether to allow paging between days (True/False)
+ */
 const DailyActions = ({ group, today, tabs }) => {
   // Track the day we're displaying; default to current day
   const [activeDay, setActiveDay] = useState(today);
@@ -69,55 +69,53 @@ const DailyActions = ({ group, today, tabs }) => {
   var icon_missing = squareOutline;
 
   /**
-  * Daily task list and buttons
-  */
+   * Daily task list and buttons
+   */
 
   var required = group.experiment.tasks[activeDay].required;
   var optional = group.experiment.tasks[activeDay].optional;
 
   var tasks = required.map((type) => {
-
-    if(type.timed) {
+    if (type.timed) {
       return;
     }
 
-    var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
-      color={done ? "neutral" : "warning"}
-      key={type.type}
-      routerLink={
-        "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
-      }
-      detail={true}
-      detailIcon={arrowForwardOutline}
+        color={done ? "neutral" : "warning"}
+        key={type.type}
+        routerLink={
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.intype
+        }
+        detail={true}
+        detailIcon={arrowForwardOutline}
       >
-      <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
-      {type.desc}
-      {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
+        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        {type.desc}
+        {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
       </IonItem>
     );
   });
 
   var otheractions = optional.map((type) => {
-
-    if(type.timed) {
+    if (type.timed) {
       return;
     }
 
-    var done = typeof entry.responseTypes[type.type] !== "undefined";
+    var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
-      key={type.type}
-      routerLink={
-        "/box/move/" + group._id + "/" + activeDay + "/add/" + type.type
-      }
-      detail={true}
-      detailIcon={arrowForwardOutline}
+        key={type.type}
+        routerLink={
+          "/box/move/" + group._id + "/" + activeDay + "/add/" + type.intype
+        }
+        detail={true}
+        detailIcon={arrowForwardOutline}
       >
-      <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
-      {type.desc}
-      {/* span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
+        <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
+        {type.desc}
+        {/* span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
       </IonItem>
     );
   });
@@ -125,55 +123,53 @@ const DailyActions = ({ group, today, tabs }) => {
   var responses = entry.responses;
 
   var daytabs;
-  if(typeof tabs == 'undefined' || tabs == true) {
-    daytabs =
+  if (typeof tabs == "undefined" || tabs == true) {
+    daytabs = (
       <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
         <span className="text">
-          <h3>
-            {"Day " + activeDay + " : " + entry.date}
-          </h3>
+          <h3>{"Day " + activeDay + " : " + entry.date}</h3>
         </span>
         <span className="navbuttons">
-        {
-          <IonButton
-          disabled={!prevDayExists}
-          onClick={() => {
-            setActiveDay(activeDay - 1);
-          }}
-          >
-          <IonIcon icon={caretBackCircle} />
-          </IonButton>
-        }
-        {
-          <IonButton
-          disabled={!nextDayExists}
-          onClick={() => {
-            setActiveDay(activeDay + 1);
-          }}
-          >
-          <IonIcon icon={caretForwardCircle} />
-          </IonButton>
-        }
+          {
+            <IonButton
+              disabled={!prevDayExists}
+              onClick={() => {
+                setActiveDay(activeDay - 1);
+              }}
+            >
+              <IonIcon icon={caretBackCircle} />
+            </IonButton>
+          }
+          {
+            <IonButton
+              disabled={!nextDayExists}
+              onClick={() => {
+                setActiveDay(activeDay + 1);
+              }}
+            >
+              <IonIcon icon={caretForwardCircle} />
+            </IonButton>
+          }
         </span>
       </div>
-
+    );
   } else {
-    daytabs = <></>
+    daytabs = <></>;
   }
 
   return (
     <div className="dailyActions">
       <IonList lines="full" className="journalTasks">
         <IonItemGroup>
-        {required.length != 0 ? (
-          tasks
-        ) : (
-          <IonLabel>No tasks need your attention</IonLabel>
-        )}
+          {required.length != 0 ? (
+            tasks
+          ) : (
+            <IonLabel>No tasks need your attention</IonLabel>
+          )}
         </IonItemGroup>
-        </IonList>
+      </IonList>
 
-        <IonList lines="full" className="journalTasks">
+      <IonList lines="full" className="journalTasks">
         <IonItemGroup>{otheractions}</IonItemGroup>
       </IonList>
     </div>

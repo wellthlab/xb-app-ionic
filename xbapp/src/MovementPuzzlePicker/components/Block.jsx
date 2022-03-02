@@ -6,7 +6,7 @@ import {
   IonItem,
   IonCardContent,
   IonButton,
-  IonToggle
+  IonToggle,
 } from "@ionic/react";
 import React from "react";
 import "./Block.css";
@@ -32,20 +32,26 @@ const Block = (props) => {
   // const [checked, setChecked] = React.useState([0, 0, 0, 0, 0]);
   // const choiceForBlock = [["bilateral push", "bilateral pull"], ["isolateral", "isolateral"]]; //0 is false and 1 is true
 
-
   // Maybe this should be a state?
 
   let filteredMoves;
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   var content = [];
   function processMovements() {
-    console.log("3 IS PROCESSING", blockIndex, blockType, moveSelected)
+    console.log(
+      "3 IS PROCESSING",
+      "blockIndex:",
+      blockIndex,
+      "blockType:",
+      blockType,
+      "moveSeleceted:",
+      moveSelected
+    );
 
     blockType.map((exercise, index) => {
-
       exercise = exercise.split(" ").join("+");
-      console.log('Exercise', exercise);
+      console.log("Exercise", exercise);
       const movements = {};
       var movesForweek = Moves.moves.filter((obj) => {
         return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
@@ -61,18 +67,18 @@ const Block = (props) => {
           return obj.technique === "isolateral";
         });
       } else if (exercise.includes("balance")) {
-
-        if (exercise.includes("assessment")) { //is balance assessment
+        if (exercise.includes("assessment")) {
+          //is balance assessment
           filteredMoves = movesForweek.filter((obj) => {
             return obj.type === "assessment";
           });
-        } else { //is balance practice
+        } else {
+          //is balance practice
           filteredMoves = movesForweek.filter((obj) => {
             return obj.type === "practice";
           });
         }
       }
-
 
       if (exercise.includes("pull")) {
         filteredMoves = filteredMoves.filter((obj) => {
@@ -91,62 +97,71 @@ const Block = (props) => {
         upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
-        if (upperBody.length != 0) upperBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (upperBody.length != 0)
+          upperBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
       } else if (exercise.includes("full")) {
         fullBody = filteredMoves.filter((obj) => {
           return obj.area === "full";
         });
-        if (fullBody.length != 0) fullBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
-
+        if (fullBody.length != 0)
+          fullBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
       } else if (exercise.includes("lower")) {
         lowerBody = filteredMoves.filter((obj) => {
           return obj.area === "lower";
         });
-        if (lowerBody.length != 0) lowerBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (lowerBody.length != 0)
+          lowerBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
       } else if (exercise.includes("isolateral")) {
         upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
-        if (upperBody.length != 0) upperBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (upperBody.length != 0)
+          upperBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
         fullBody = filteredMoves.filter((obj) => {
           return obj.area === "full";
         });
-        if (fullBody.length != 0) fullBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (fullBody.length != 0)
+          fullBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
         lowerBody = filteredMoves.filter((obj) => {
           return obj.area === "lower";
         });
-        if (lowerBody.length != 0) lowerBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
-      } else { //something else, i.e. explorer/bilateral push/aerobic
+        if (lowerBody.length != 0)
+          lowerBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
+      } else {
+        //something else, i.e. explorer/bilateral push/aerobic
         upperBody = filteredMoves.filter((obj) => {
           return obj.area === "upper";
         });
-        if (upperBody.length != 0) upperBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (upperBody.length != 0)
+          upperBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
         lowerBody = filteredMoves.filter((obj) => {
           return obj.area === "lower";
         });
-        if (lowerBody.length != 0) lowerBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (lowerBody.length != 0)
+          lowerBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
         fullBody = filteredMoves.filter((obj) => {
           return obj.area === "full";
         });
-        if (fullBody.length != 0) fullBody.sort((a, b) => {
-          return a.progressionLevel - b.progressionLevel;
-        });
+        if (fullBody.length != 0)
+          fullBody.sort((a, b) => {
+            return a.progressionLevel - b.progressionLevel;
+          });
       }
       if (!props.explorer) {
         lowerBody = removeAlternativesWhichDontfit(lowerBody);
@@ -162,9 +177,12 @@ const Block = (props) => {
           var move = moves[i];
           var alternatives = move.alternative;
           var newAlternatives = [];
-          if (alternatives.length > 0) { //if there are alternatives
-            for (var k = 0; k < alternatives.length; k++) { //going through each alternative
-              if (alternativeIsGood(alternatives[k])) newAlternatives.push(alternatives[k]);
+          if (alternatives.length > 0) {
+            //if there are alternatives
+            for (var k = 0; k < alternatives.length; k++) {
+              //going through each alternative
+              if (alternativeIsGood(alternatives[k]))
+                newAlternatives.push(alternatives[k]);
             }
             //update alternatives
             moves[i].alternative = newAlternatives;
@@ -180,37 +198,37 @@ const Block = (props) => {
         return true;
       }
 
-
-      content.push(<>
-        <IonButton
-          className="block-button"
-          onClick={(event) => {
-            history.push({
-              pathname:
-                "/box/move/" +
-                (props.explorer ? "explore" : "setter") +
-                "/movement-picker/" +
-                exercise,
-              state: {
-                movements: movements,
-                blockIndex: blockIndex,
-                initialSlideIndex: {
-                  upperBody: 0,
-                  fullBody: 0,
-                  lowerBody: 0,
+      content.push(
+        <>
+          <IonButton
+            className="block-button"
+            onClick={(event) => {
+              history.push({
+                pathname:
+                  "/box/move/" +
+                  (props.explorer ? "explore" : "setter") +
+                  "/movement-picker/" +
+                  exercise,
+                state: {
+                  movements: movements,
+                  blockIndex: blockIndex,
+                  initialSlideIndex: {
+                    upperBody: 0,
+                    fullBody: 0,
+                    lowerBody: 0,
+                  },
+                  numberOfItems: {
+                    topRow: movements.upperBody.length,
+                    middleRow: movements.fullBody.length,
+                    bottomRow: movements.lowerBody.length,
+                  },
                 },
-                numberOfItems: {
-                  topRow: movements.upperBody.length,
-                  middleRow: movements.fullBody.length,
-                  bottomRow: movements.lowerBody.length
-                }
-              },
-            });
-          }}
-        >
-          {props.explorer ? (
-            <p>Explore {exercise}</p>
-          ) : (
+              });
+            }}
+          >
+            {props.explorer ? (
+              <p>Explore {exercise}</p>
+            ) : (
               <div className="block-button-container">
                 <div className="container-left">
                   <p id="move-selected">
@@ -222,10 +240,9 @@ const Block = (props) => {
                 </div>
               </div>
             )}
-        </IonButton>
-      </>
+          </IonButton>
+        </>
       );
-
     });
   }
   processMovements();
@@ -240,9 +257,7 @@ const Block = (props) => {
           Block type: {blockType.join("-")}
         </IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent>
-
-        {content}</IonCardContent>
+      <IonCardContent>{content}</IonCardContent>
     </IonCard>
   );
 };
