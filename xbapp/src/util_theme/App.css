@@ -36,3 +36,11 @@ button[ion-fab] {
 [has-header]{
   margin-top: 50px;
 }
+
+.center-message{
+  display: "flex";
+  justifyContent: "center";
+  alignItems: "center";
+  height: "70vh";
+  textAlign: "center";
+}

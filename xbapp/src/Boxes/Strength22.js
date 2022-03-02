@@ -31,7 +31,7 @@ const decorateTeam = (team, modules) => {
   }
 
   var required = []; // Mandatory tasks -- break up into intro, module and exit tasks
-  var others = []; // Other tasks that can be done, but optionally
+  var otherTasks = []; // Other tasks that can be done, but optionally
 
   let introTasks = [];
   let moduleTasks = [];
@@ -40,11 +40,11 @@ const decorateTeam = (team, modules) => {
   team.s22plan = false;
 
   // Planning for s22 is done in advance. The plan response will look something like
-  var examplePlan = {
-    // Week 1 only has a daily target
-    effectiveWeek: 1, // The effective week of the study for the participant; might not be the real week!
-    target: 14
-  }
+  // var examplePlan = {
+  //   // Week 1 only has a daily target
+  //   effectiveWeek: 1, // The effective week of the study for the participant; might not be the real week!
+  //   target: 14
+  // }
   // End of EXAMPLE plan
 
   // Create a handy reference to TODAYS plan
@@ -65,8 +65,7 @@ const decorateTeam = (team, modules) => {
     console.log("No s22 plan has ever been saved");
   }
 
-  // TODO: should this be moved elsewhere?
-  let modulesObj = toModuleObj(modules);  // convert to Obj for better indexing
+  let modulesObj = toModuleObj(modules);  // convert to Obj to index by module name
 
   // No plan? Require the planning task to be completed
   if(!team.s22plan) {
@@ -82,7 +81,7 @@ const decorateTeam = (team, modules) => {
     }
     else
     {
-      others.push({
+      otherTasks.push({
         intype: "s22path",
         desc: "You can change your path",
         verb: "CHANGE",
@@ -100,17 +99,18 @@ const decorateTeam = (team, modules) => {
     }
 
   } else {
-  // Otherwise generate the daily tasks
 
-    introTasks.push({ // An optional re-planning task
+    // Otherwise generate the daily tasks
+
+    otherTasks.push({ // An optional re-planning task
       intype: 's22plan',
       desc: 'You can change your weekly plan',
-      verb: 'PLAN',
+      verb: 'CHANGE',
       s22onPath: false,
       onPlaylist: false,
     });
 
-    introTasks.push({
+    otherTasks.push({
       intype: 's22path',
       desc: 'You can change your path',
       verb: 'CHANGE',
@@ -120,16 +120,14 @@ const decorateTeam = (team, modules) => {
 
     console.log("Generating s22 tasks with modules", modules);
 
-    // TODO: used for debug
-    dayOfWeek = 1;
-    expDay = 0;
+    let theseTasks;
+    const expDayIndex = expDay - 1;  // because the array of tasks on mongodb are zero indexed
 
     // TODO: I think there is something funky with the [0]'s here
 
-    let theseTasks;
     switch (dayOfWeek) {
       case 1: // PREP tasks
-        theseTasks = modulesObj.Prep.tasks[expDay][0];
+        theseTasks = modulesObj.Prep.tasks[expDayIndex][0];
         console.log("Prep tasks for experiment day " + expDay, theseTasks);
         for (let i = 0; i < theseTasks.length; i++) {
           moduleTasks.push(theseTasks[i]);
@@ -138,14 +136,14 @@ const decorateTeam = (team, modules) => {
       case 2:  // ENDURANCE tasks
       case 4:
         console.log("Endurance tasks for experiment day " + expDay, theseTasks);
-        theseTasks = modulesObj.Endurance.tasks[expDay][0];
+        theseTasks = modulesObj.Endurance.tasks[expDayIndex][0];
         for (let i = 0; i < theseTasks.length; i++) {
           moduleTasks.push(theseTasks[i]);
         }
         break;
       case 3: // STRENGTH tasks
       case 5:
-        theseTasks = modulesObj.Strength.tasks[expDay][0];
+        theseTasks = modulesObj.Strength.tasks[expDayIndex][0];
         console.log("Strength tasks for experiment day " + expDay, theseTasks);
         for (let i = 0; i < theseTasks.length; i++) {
           console.log("Adding task", theseTasks[i]);
@@ -199,7 +197,7 @@ const decorateTeam = (team, modules) => {
 
   // Other movement "do your own thing" is always here
 
-  others.push({
+  otherTasks.push({
     type: "other-movement",
     intype: "s22other",
     desc: "Do your own thing",
@@ -210,8 +208,8 @@ const decorateTeam = (team, modules) => {
   });
 
   // TODO: I don't think splitting these tasks up is going to work
-  let requiredObj = {introTasks: introTasks, moduleTasks: moduleTasks, exitTasks: exitTasks};
-  team.experiment.tasks[expDay] = { required: requiredObj, optional: others };
+  const requiredTasksObj = {introTasks: introTasks, moduleTasks: moduleTasks, exitTasks: exitTasks};
+  team.experiment.tasks[expDay] = { required: requiredTasksObj, optional: otherTasks };
 
   // Add today's minutes total
   team.myMinutesToday = 0;

@@ -21,20 +21,19 @@ import { checkboxOutline, playOutline } from "ionicons/icons";
  */
 function TodoTasks(props) {
   const icon_done = checkboxOutline;
-
-  let activeDay = props.day;
-  let groupID = props.team._id;
-  let requiredTasks = props.tasks;
-  let optionalTasks = props.optional;
-  let dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
-  let tasksDone = props.team.entries[dayIndexResponses].responseTypes;
+  const activeDay = props.day;
+  const groupID = props.team._id;
+  const requiredTasks = props.tasks;
+  const optionalTasks = props.optional;
+  const dayIndexResponses = activeDay === 0 ? 0 : activeDay - 1;
+  const tasksDone = props.team.entries[dayIndexResponses].responseTypes;
 
   // Create a group of tasks using Array.map
   function createTasksGroup(taskArr, taskSection, optional) {
     let tasks = taskArr.map((task, taskIndex) => {
-      let done = task.type in tasksDone;
-      let optionalOrRequired = optional ? "optional" : "required";
-      let colour = optional ? "secondary" : "primary";
+      const done = task.type in tasksDone;
+      const optionalOrRequired = optional ? "optional" : "required";
+      const colour = optional ? "secondary" : "primary";
       if (
         task.onPlaylist &&
         (task.s22onPath === "all" || task.s22onPath === props.team.s22path.path)
@@ -73,19 +72,10 @@ function TodoTasks(props) {
     return tasks;
   }
 
-  // then no tasks have been set, so return
   if (requiredTasks.length < 1) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "70vh",
-          textAlign: "center",
-        }}
-      >
-        <h3>There are no timed tasks for today</h3>
+      <div className="center-message">
+        <h3>You have are no items on your playlist for today</h3>
       </div>
     );
   }
@@ -137,7 +127,7 @@ function TodoTasks(props) {
           <IonList lines="full">
             <IonItemGroup>{moduleTasksFiltered}</IonItemGroup>
           </IonList>
-          {/* Exit tasks -- maybe sometimes wont have these*/}
+          {/* Exit tasks -- maybe sometimes wont have these */}
           {exitTasksFiltered.length > 0 ? (
             <IonList lines="full">
               <IonItemGroup>{exitTasksFiltered}</IonItemGroup>

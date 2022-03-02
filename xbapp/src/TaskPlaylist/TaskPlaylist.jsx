@@ -34,7 +34,7 @@ function TaskPlaylist(props) {
   }
 
   // const day = team.experiment.day;
-  const day = 0; // TODO: revert back to above
+  const day = 1; // TODO: revert back to above
 
   const requiredTasks = team.experiment.tasks[day].required;
   const optionalTasks = team.experiment.tasks[day].optional;
@@ -44,7 +44,7 @@ function TaskPlaylist(props) {
 
   return (
     <>
-      <XBHeader title="Your Playlist"></XBHeader>
+      <XBHeader title="Your Activity Playlist"></XBHeader>
       <IonContent fullscreen>
         <IonGrid>
           <IonRow>

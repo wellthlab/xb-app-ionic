@@ -35,7 +35,11 @@ import XBHeader from "../util/XBHeader";
  * the number of minutes that it took
  */
 function MovementTimer(props) {
-  let [manualEntry, setManualEntry] = useState(false);
+  const [manualEntry, setManualEntry] = useState(false);
+  const [group, setGroup] = useState(false);
+  const [currentTask, setCurrentTask] = useState(false);
+  const [minutes, setMinutes] = useState(false);
+  const [exResponse, setExResponse] = useState({});
 
   let gid = props.match.params.id;
   let day = props.match.params.day;
@@ -44,42 +48,6 @@ function MovementTimer(props) {
   let optionalOrRequired = props.match.params.req;
   let taskIdx = props.match.params.index;
   let section = props.match.params.section;
-
-  const [group, setGroup] = useState(false);
-  const [currentTask, setCurrentTask] = useState(false);
-  const [minutes, setMinutes] = useState(false);
-  const [exResponse, setExResponse] = useState({});
-
-  // Load team data if required; mostly useful during development
-  props.controllers.LOAD_TEAMS_IF_REQD();
-
-  if (group === false) {
-    // Find the group if not set already
-    for (var g of props.teams.teams) {
-      // Find the group in the store
-      if (g._id === gid) {
-        setGroup(g);
-      }
-    }
-
-    return <>Group not found</>;
-  }
-
-  // TODO: Looking up tasks like this won't scale; we should create a slice to store the current timer state
-  // and push all the relevant state - including the current task - into that
-  if (currentTask === false) {
-    // Find the task if not found already
-    if (optionalOrRequired === "required") {
-      setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
-    } else {
-      setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
-    }
-  }
-  if (typeof currentTask == "undefined" || currentTask === false) {
-    return <>The current task has not been defined</>;
-  }
-
-  let totalMinutes = group.s22plan.target;
 
   // Save the response, plus the minutes from the timer, day number, and type
   async function save() {
@@ -119,6 +87,49 @@ function MovementTimer(props) {
     }
     setExResponse(updated);
   };
+
+  // Load team data if required; mostly useful during development
+  props.controllers.LOAD_TEAMS_IF_REQD();
+
+  if (group === false) {
+    // Find the group if not set already
+    for (var g of props.teams.teams) {
+      // Find the group in the store
+      if (g._id === gid) {
+        setGroup(g);
+      }
+    }
+    return (
+      <>
+        <div className="center-message">
+          <h3>Your group could not be found</h3>
+        </div>
+      </>
+    );
+  }
+
+  // TODO: Looking up tasks like this won't scale; we should create a slice to
+  // store the current timer state and push all the relevant state - including
+  // the current task - into that
+  if (currentTask === false) {
+    // Find the task if not found already
+    if (optionalOrRequired === "required") {
+      setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
+    } else {
+      setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
+    }
+  }
+  if (typeof currentTask == "undefined" || currentTask === false) {
+    return (
+      <>
+        <div className="center-message">
+          <h3>The current task has not been defined</h3>
+        </div>
+      </>
+    );
+  }
+
+  let totalMinutes = group.s22plan.target;
 
   const content = inputFactory(
     taskType,
@@ -245,7 +256,7 @@ function MovementTimer(props) {
 
   return (
     <>
-      <XBHeader title="Record Movement" />
+      <XBHeader title="Record Your Movement" />
       <IonContent style={{ "--padding-bottom": "40px" }}>
         {/* Exercise and for how long header -- press for details */}
         <IonItem
@@ -255,13 +266,11 @@ function MovementTimer(props) {
         >
           <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
         </IonItem>
-
         {/* Additional content, like the move picker or a video */}
         {taskExtraContent}
-
         {/* Timer and buttons for manual entry of minutes */}
-        {/* The timer is NOT SHOWN when we're doing an EDT super set thing,
-        as we are going to be using the old countdown timer there. */}
+        {/* The timer is NOT SHOWN when we're doing tasks with timed === false
+         */}
         {timer}
       </IonContent>
     </>
@@ -273,8 +282,6 @@ export default connect(
     return {
       account: state.account,
       teams: state.teams,
-      experiments: state.experiments,
-      boxes: state.boxes,
     };
   },
   {
