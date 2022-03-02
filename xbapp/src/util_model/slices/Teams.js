@@ -159,10 +159,13 @@ const TeamSlice = createSlice({
         var team = state.teams[i];
 
         // Day number
-        team.experiment.day = dayNumber(
-          new Date(),
-          new Date(team.experiment.start)
-        );
+        // team.experiment.day = dayNumber(
+        //   new Date(),
+        //   new Date(team.experiment.start)
+        // );
+
+        // TODO: force day to be 1 for debug reasons
+        team.experiment.day = 1;
 
         // Week number
         var week = Math.floor((team.experiment.day - 1) / 7) + 1;
@@ -171,7 +174,7 @@ const TeamSlice = createSlice({
         ? "7"
         : (team.experiment.day - (week - 1) * 7).toString();
         team.experiment.week = week;
-        team.experiment.dayOfWeek = dayOfWeek;
+        team.experiment.dayOfWeek = parseInt(dayOfWeek, 10);
 
         // Current experiment phase info
         var stage = dayStage(team.experiment.day, team.experiment.info.stages);
@@ -243,7 +246,7 @@ const TeamSlice = createSlice({
           case 'strength22':
             console.log("This is a strength in work 22 experiment");
             Strength22.decorateTeam(team, modules);
-            console.log("Team has been decorated", team);
+            console.log("Team has been decorated with tasks", team.experiment.tasks);
             break;
 
           default:
