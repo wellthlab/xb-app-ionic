@@ -25,12 +25,44 @@ import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
 
 import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 
-import {CLEAR_MODULES, GET_MODULES} from "./slices/Modules";
+import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
+
+import { CLEAR_USER, SET_USER } from "./slices/Users";
+import store from "./store";
 
 /**
  * These controller functions will be returned by getControllers
  * - they'll be wrapped so that client, store and controllers are provided
  */
+
+ async function LOAD_USER_PROFILES(client, store, controllers) {
+
+  console.log("LOAD_USER_PROFILES STORE", store);
+  store.dispatch(CLEAR_USER());
+
+  let users = null;
+  try {
+    users = await client.getUserProfile();
+  } catch (error) {
+    return console.error(error);
+  }
+
+  store.dispatch(SET_USER({ users }));
+  console.log("SET_USER", users);
+}
+
+ async function CREATE_USER_PROFILE(client, store, controllers, profile) {
+
+  console.log("CREATE_USER_PROFILE", profile);
+  let res = await client.createUserProfile(profile);
+
+  if (res.success === false) {
+    return false;
+  }
+
+  controllers.LOAD_USER_PROFILES();
+  return true;
+}
 
 async function LOAD_MODULES(client, store) {
 
@@ -302,6 +334,8 @@ function getControllers(store, client) {
     GET_FEED,
     LOAD_MODULES,
     LOAD_MODULES_IF_REQD,
+    LOAD_USER_PROFILES,
+    CREATE_USER_PROFILE,
   };
 
   for (var n of Object.keys(controllers)) {

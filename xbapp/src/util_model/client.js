@@ -227,6 +227,42 @@ function XBClient() {
     return self.tidy(info[0].allresponses);
   };
 
+  /**
+   * Create a user profile
+   */
+  self.createUserProfile = async function (profile) {
+    let db = getDb();
+    let collection = db.collection("usersDetails");
+
+    const user = {
+      _userid: self.realm.currentUser.id,
+      name: profile.name,
+    };
+
+    console.log("Creating user profile", user);
+
+    let insertOneResult;
+    try {
+      insertOneResult = await collection.insertOne(user);
+    } catch (e) {
+      console.log(insertOneResult);
+      console.error("Error creating user", e);
+      return {
+        success: false,
+        message: "Sorry, we couldn't create your user profile"
+      }
+    }
+
+    return { success: true }
+
+  }
+
+  /**
+   * Get a user profile
+   */
+
+  self.getUserProfile = async function () {}
+
   // Helper function for generating a team ID
   function genID(len) {
     var result = "";

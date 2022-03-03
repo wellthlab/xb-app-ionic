@@ -1,12 +1,12 @@
-import { IonContent, IonPage, IonSpinner } from "@ionic/react";
+import { IonContent, IonPage, IonSpinner, IonButton } from "@ionic/react";
+import { connect } from "react-redux";
+
+import "./Move.scss";
 import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
-import "./Move.scss";
-import { connect } from "react-redux";
-import { addControllersProp } from "../util_model/controllers";
-
 import Disclaimer from "./components/Disclaimer";
+import { addControllersProp } from "../util_model/controllers";
 
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -32,7 +32,12 @@ const MovePage = (props) => {
   return (
     <IonPage>
       <XBHeader title="Your Progress"></XBHeader>
-      <IonContent>{content}</IonContent>
+      <IonContent>
+        {content}
+        <IonButton routerLink={"/box/move/user-profile"}>
+          Set up user profile
+        </IonButton>
+      </IonContent>
     </IonPage>
   );
 };

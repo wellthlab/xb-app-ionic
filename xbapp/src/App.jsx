@@ -105,7 +105,7 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Other CSS from other libs */
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
 
 /* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
@@ -120,6 +120,7 @@ import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
 import XBHeader from "./util/XBHeader";
+import UserProfile from "./UserProfile/UserProfile";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -157,11 +158,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
               {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/feed" component={Feed} exact={true} />
-              <Route
-                path="/leaderboard"
-                component={Leaderboard}
-                exact={true}
-              />
+              <Route path="/leaderboard" component={Leaderboard} exact={true} />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -254,6 +251,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/timer/:req/:id/:day/:type/:section/:task/:index"
                 component={MovementTimer}
+                exact={true}
+              />
+              <Route
+                path="/box/move/user-profile"
+                component={UserProfile}
                 exact={true}
               />
             </Switch>
