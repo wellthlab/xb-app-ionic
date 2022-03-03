@@ -183,6 +183,18 @@ const decorateTeam = (team, modules) => {
     explanation: "The answer is 42 because of book",
   });
 
+  // Intro tasks, why will always be here
+
+  introTasks.push({
+    type: "intro-questions",
+    intype: "questionnaire",
+    desc: "TEST TEST How is it going?",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all",
+  });
+
   // Exit tasks, which are always the same. These are questions to ask at the
   // end of the day.
 
@@ -196,31 +208,55 @@ const decorateTeam = (team, modules) => {
     s22onPath: "all"
   });
 
-  if(dayOfWeek === 5)
-  {
-    exitTasks.push({
-      type: "exit-questions-end-week",
-      intype: "questionnaire-endWeek",
-      desc: "How was your week?",
-      verb: "ANSWER",
-      onPlaylist: true,
-      timed: false,
-      s22onPath: "all",
-    })
-  }
-  else {
-    exitTasks.push({
-      type: "exit-questions",
-      intype: "questionnaire-evening",
-      desc: "How are you feeling today?",
-      verb: "ANSWER",
-      onPlaylist: true,
-      timed: false,
-      s22onPath: "all"
-    });
-  }
+  // if(dayOfWeek === 5)
+  // {
+  //   exitTasks.push({
+  //     type: "exit-questions-end-week",
+  //     intype: "questionnaire-endWeek",
+  //     desc: "How was your week?",
+  //     verb: "ANSWER",
+  //     onPlaylist: true,
+  //     timed: false,
+  //     s22onPath: "all",
+  //   })
+  // }
+  // else {
+  //   exitTasks.push({
+  //     type: "exit-questions",
+  //     intype: "questionnaire-evening",
+  //     desc: "How are you feeling today?",
+  //     verb: "ANSWER",
+  //     onPlaylist: true,
+  //     timed: false,
+  //     s22onPath: "all"
+  //   });
+  // }
 
-  // Other movement "do your own thing" is always here
+
+  // TODO: test quizzes are hard coded for now
+
+  exitTasks.push({
+    type: "exit-questions-end-week",
+    intype: "questionnaire-endWeek",
+    desc: "TEST TEST How was your week?",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all",
+  })
+
+  exitTasks.push({
+    type: "exit-questions",
+    intype: "questionnaire-evening",
+    desc: "TEST TEST How are you feeling today?",
+    verb: "ANSWER",
+    onPlaylist: true,
+    timed: false,
+    s22onPath: "all"
+  });
+
+  // Other movement -- "do your own thing" -- is always here and optional
+  // for builders -- what about other paths?
 
   otherTasks.push({
     type: "other-movement",

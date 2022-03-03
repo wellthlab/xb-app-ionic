@@ -13,14 +13,11 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonCheckbox
+  IonCheckbox,
 } from "@ionic/react";
-import {
-  warning
-} from "ionicons/icons";
+import { warning } from "ionicons/icons";
 
-const Disclaimer = ({checkbox, onToggle}) => {
-
+const Disclaimer = ({ checkbox, onToggle }) => {
   const [checked, setChecked] = useState(false);
 
   function change(e) {
@@ -30,30 +27,48 @@ const Disclaimer = ({checkbox, onToggle}) => {
     onToggle(checked);
   }
 
-  if(checkbox) {
-    var check = <IonRow>
-      <IonCol>
-        <IonItem lines="none">
-          <IonCheckbox slot="start" color="danger" checked={checked} onIonChange={change} />
-          <p>I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part</p>
-        </IonItem>
-      </IonCol>
-    </IonRow>
+  if (checkbox) {
+    var check = (
+      <IonRow>
+        <IonCol>
+          <IonItem lines="none">
+            <IonCheckbox
+              slot="start"
+              color="danger"
+              checked={checked}
+              onIonChange={change}
+            />
+            <p>
+              I understand that physical activity can pose the risk of injury,
+              and I have checked that it is safe for me to take part
+            </p>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+    );
   }
 
   return (
     <IonGrid className="disclaimer">
-    <IonRow>
-      <IonCol>
-        <IonItem lines="none">
-          <IonIcon icon={warning} slot="start" />
-          <p>Exercise is safe and beneficial for most people, but some people should check with their doctor before changing their physical activity
-          patterns. Use the <a href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">PAR Questionnaire</a> and/or consult your GP before engaging in
-          physical activity.</p>
-        </IonItem>
-      </IonCol>
-    </IonRow>
-    {check}
+      <IonRow>
+        <IonCol>
+          <IonItem lines="none">
+            <IonIcon icon={warning} slot="start" />
+            <div class="ion-text-justify">
+              <p>
+                Exercise is safe and beneficial for most people, but some people
+                should check with their doctor before changing their physical
+                activity patterns. Use the{" "}
+                <a href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">
+                  PAR Questionnaire
+                </a>{" "}
+                and/or consult your GP before engaging in physical activity.
+              </p>
+            </div>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+      {check}
     </IonGrid>
   );
 };

@@ -36,75 +36,74 @@ import GenericModal from "../Info/components/GenericModal";
 const autoBindReact = require("auto-bind/react");
 
 const OptionTabs = (props) => {
-    props.controllers.LOAD_TEAMS_IF_REQD();
+  props.controllers.LOAD_TEAMS_IF_REQD();
 
-    const [showModal, setShowModal] = useState(false);
-    function toggleModal() {
-      setShowModal(!showModal);
-    }
+  const [showModal, setShowModal] = useState(false);
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
 
-    const [showPISModal, setShowPISModal] = useState(false);
-    function togglePISModal() {
-      setShowPISModal(!showPISModal);
-    }
+  const [showPISModal, setShowPISModal] = useState(false);
+  function togglePISModal() {
+    setShowPISModal(!showPISModal);
+  }
 
+  if (!props.teams.teams.bybox) {
+    return <IonSpinner name="crescent" class="center-spin" />;
+  }
 
-    if (!props.teams.teams.bybox) {
-      return <IonSpinner name="crescent" class="center-spin" />;
-    }
+  var pis = <PIS />;
 
-      var pis = <PIS />;
+  return (
+    <>
+      <XBHeader title="Info"></XBHeader>
+      <IonContent id="settings" fullscreen>
+        <GenericModal
+          showModal={showModal}
+          toggleModal={toggleModal}
+          title={"Privacy Notice"}
+          message={privacy_notice}
+        />
 
-    return (
-      <>
-        <XBHeader title="Info"></XBHeader>
-        <IonContent id="settings" fullscreen>
+        <GenericModal
+          showModal={showPISModal}
+          toggleModal={togglePISModal}
+          title={"Participant Information Sheet"}
+          message={pis}
+        />
 
-          <GenericModal
-            showModal={showModal}
-            toggleModal={toggleModal}
-            title={"Privacy Notice"}
-            message={privacy_notice}
-          />
+        <IonCard>
+          <IonCardHeader style={{ textAlign: "left" }}>
+            <IonCardTitle>About</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+              <IonItem onClick={toggleModal}>Privacy Notice</IonItem>
+              <IonItem onClick={togglePISModal}>
+                Participant Information
+              </IonItem>
+            </IonList>
+          </IonCardContent>
+        </IonCard>
 
-          <GenericModal
-            showModal={showPISModal}
-            toggleModal={togglePISModal}
-            title={"Participant Information Sheet"}
-            message={pis}
-          />
-
-
-          <IonCard>
-            <IonCardHeader style={{ textAlign: "left" }}>
-              <IonCardTitle>About</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <IonList>
-                <IonItem onClick={toggleModal}>Privacy Notice</IonItem>
-                <IonItem onClick={togglePISModal}>Participant Information</IonItem>
-              </IonList>
-            </IonCardContent>
-          </IonCard>
-
-          <IonItemDivider></IonItemDivider>
-          <IonCard>
-            <IonCardHeader style={{ textAlign: "left" }}>
-              <IonCardTitle>Settings</IonCardTitle>
-            </IonCardHeader>
-            <IonCardContent>
-              <IonList>
-                <IonItem routerLink="/account">Log Out</IonItem>
-                {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
-              </IonList>
-            </IonCardContent>
-          </IonCard>
-          <IonItemDivider></IonItemDivider>
-          <br></br>
-        </IonContent>
-      </>
-    );
-}
+        <IonItemDivider></IonItemDivider>
+        <IonCard>
+          <IonCardHeader style={{ textAlign: "left" }}>
+            <IonCardTitle>Settings</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonList>
+              <IonItem routerLink="/account">Log Out</IonItem>
+              {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
+            </IonList>
+          </IonCardContent>
+        </IonCard>
+        <IonItemDivider></IonItemDivider>
+        <br></br>
+      </IonContent>
+    </>
+  );
+};
 
 export default connect(
   (state, ownProps) => {
@@ -128,7 +127,7 @@ export default connect(
 );
 
 var privacy_notice = (
-  <div id="privacyNotice">
+  <div id="privacyNotice" class="ion-text-justify">
     <b>What happens if there is a problem?</b>
     <br></br>
     If you have a concern about any aspect of this study, you should speak to
