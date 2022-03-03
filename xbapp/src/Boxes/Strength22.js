@@ -30,12 +30,13 @@ const decorateTeam = (team, modules) => {
     team.s22path = team.lastEntryByType.s22path;
   }
 
-  var required = []; // Mandatory tasks -- break up into intro, module and exit tasks
-  var otherTasks = []; // Other tasks that can be done, but optionally
+  // var required = []; // Mandatory tasks -- break up into intro, module and exit tasks
 
-  let introTasks = [];
-  let moduleTasks = [];
-  let exitTasks = [];
+  let progressTasks = [];  // go into the progress page task list
+  let introTasks = [];     // intro tasks to go onto the playlist
+  let moduleTasks = [];    // task modules tasks to go onto the playlist
+  let exitTasks = [];      // exit tasks to go onto the playlist
+  var otherTasks = []; // Other tasks that can be done, but optionally, i.e. experiments
 
   team.s22plan = false;
 
@@ -71,7 +72,8 @@ const decorateTeam = (team, modules) => {
   if(!team.s22plan) {
 
     if(!team.s22path) {
-      moduleTasks.push({
+      progressTasks.push({
+        path: "choose-path",
         intype: "s22path",
         desc: "You need to choose a path",
         verb: "CHOOSE",
@@ -82,6 +84,7 @@ const decorateTeam = (team, modules) => {
     else
     {
       otherTasks.push({
+        path: "change-path",
         intype: "s22path",
         desc: "You can change your path",
         verb: "CHANGE",
@@ -89,7 +92,8 @@ const decorateTeam = (team, modules) => {
         onPlaylist: false,
       });
 
-      moduleTasks.push({
+      progressTasks.push({
+        type: "plan-minutes",
         intype: "s22plan",
         desc: "You need to plan your week",
         verb: "PLAN",
@@ -103,6 +107,7 @@ const decorateTeam = (team, modules) => {
     // Otherwise generate the daily tasks
 
     otherTasks.push({ // An optional re-planning task
+      "type": "change-minutes",
       intype: 's22plan',
       desc: 'You can change your weekly plan',
       verb: 'CHANGE',
@@ -111,6 +116,7 @@ const decorateTeam = (team, modules) => {
     });
 
     otherTasks.push({
+      type: "change-path",
       intype: 's22path',
       desc: 'You can change your path',
       verb: 'CHANGE',
@@ -135,8 +141,8 @@ const decorateTeam = (team, modules) => {
         break;
       case 2:  // ENDURANCE tasks
       case 4:
-        console.log("Endurance tasks for experiment day " + expDay, theseTasks);
         theseTasks = modulesObj.Endurance.tasks[expDayIndex][0];
+        console.log("Endurance tasks for experiment day " + expDay, theseTasks);
         for (let i = 0; i < theseTasks.length; i++) {
           moduleTasks.push(theseTasks[i]);
         }
@@ -146,7 +152,6 @@ const decorateTeam = (team, modules) => {
         theseTasks = modulesObj.Strength.tasks[expDayIndex][0];
         console.log("Strength tasks for experiment day " + expDay, theseTasks);
         for (let i = 0; i < theseTasks.length; i++) {
-          console.log("Adding task", theseTasks[i]);
           moduleTasks.push(theseTasks[i]);
         }
         break;
@@ -228,7 +233,7 @@ const decorateTeam = (team, modules) => {
   });
 
   // TODO: I don't think splitting these tasks up is going to work
-  const requiredTasksObj = {introTasks: introTasks, moduleTasks: moduleTasks, exitTasks: exitTasks};
+  const requiredTasksObj = {progressTasks: progressTasks, introTasks: introTasks, moduleTasks: moduleTasks, exitTasks: exitTasks};
   team.experiment.tasks[expDay] = { required: requiredTasksObj, optional: otherTasks };
 
   // Add today's minutes total

@@ -53,7 +53,7 @@ const DailyActions = ({ group, today, tabs }) => {
    */
 
   // TODO: should be an array in the future already.. sigh this is a hack I need to fix
-  var required = group.experiment.tasks[activeDay].required["introTasks"];
+  var required = group.experiment.tasks[activeDay].required["progressTasks"];
   var optional = group.experiment.tasks[activeDay].optional;
 
   var requiredActions = required.map((type) => {

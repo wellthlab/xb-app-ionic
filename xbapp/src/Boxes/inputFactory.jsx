@@ -18,6 +18,8 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
+  IonItem,
+  IonGrid,
 } from "@ionic/react";
 
 import MinuteEntry from "../UserInput/MinuteEntry";
@@ -46,6 +48,7 @@ import Timer from "../Instruments/StatelessTimer";
 import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
+import TaskInstructions from "../Strength/TaskInstructions";
 
 /**
  * Create input widgets based on task type
@@ -274,11 +277,7 @@ export default function responseFactory(
       break;
 
     case "s22instructions":
-      input = (
-        <IonCard>
-          <IonCardContent>{taskObj.text}</IonCardContent>
-        </IonCard>
-      );
+      input = <TaskInstructions task={taskObj} />;
       typedesc = "Instructions";
       break;
     default:
