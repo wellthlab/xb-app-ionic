@@ -75,7 +75,7 @@ const departmentList = [
  *
  */
 function UserProfile(props) {
-  const [profileObj, setProfileObj] = useState({});
+  let profileObj = {};
 
   /**
    * Component for free text input
@@ -85,8 +85,9 @@ function UserProfile(props) {
    * @param {function} updateProfileObj - function to update profile object
    */
   function TextField({ inputLabel, profileObjKey, updateProfileObj }) {
-    const [value, setValue] = useState(profileObj[profileObjKey]);
-    console.log("TextField", profileObjKey, value);
+    const [value, setValue] = useState(
+      profileObj[profileObjKey] ? profileObj[profileObjKey] : ""
+    );
 
     function handleChange(e) {
       updateProfileObj(profileObjKey, e.detail.value);
@@ -151,26 +152,19 @@ function UserProfile(props) {
   }
 
   function updateProfile(newKey, value) {
-    let newProfileObj = { ...profileObj };
-    newProfileObj[newKey] = value;
-    setProfileObj(newProfileObj);
-    console.log("Updated profile: ", profileObj);
+    profileObj[newKey] = value;
   }
 
   function saveProfile() {
+    console.log("Saving profile: ", profileObj);
     props.controllers.CREATE_USER_PROFILE(profileObj);
   }
-
-  useEffect(() => {
-    if (props.userProfile.loaded) {
-      setProfileObj(props.userProfile.userProfile);
-      console.log("useEffect - setProfileObj: ", profileObj);
-    }
-  }, [props.userProfile.userProfile, props.userProfile.loaded, profileObj]);
 
   props.controllers.SET_USER_PROFILE_IF_REQD();
   if (!props.userProfile.loaded) {
     return <IonSpinner name="crescent" className="center-spin" />;
+  } else {
+    profileObj = { ...props.userProfile.userProfile };
   }
 
   /**
@@ -188,6 +182,9 @@ function UserProfile(props) {
       <XBHeader title="User Profile" />
       <IonContent>
         <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Set your profile </IonCardTitle>
+          </IonCardHeader>
           <IonCardContent>
             <IonGrid>
               {/* Preferred name */}

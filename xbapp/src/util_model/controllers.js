@@ -39,26 +39,26 @@ import { CLEAR_USER, SET_USER } from "./slices/Users";
 
   store.dispatch(CLEAR_USER());
 
-  let user = null;
+  let userProfile = null;
   try {
-    user = await client.getUserProfile();
+    userProfile = await client.getUserProfile();
   } catch (error) {
     return console.error(error);
   }
 
-  store.dispatch(SET_USER({ user }));
-  console.log("SET_USER", user);
+  store.dispatch(SET_USER({ userProfile }));
+  console.log("SET_USER", userProfile);
 }
 
 async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
   const state = store.getState();
-  const f = state.userProfile.fetching;
-  const l = state.userProfile.loaded;
-  if (!f && !l) {
-    console.log("Refresh of user profile is required", f, l);
-    await controllers.SET_USER_PROFILE();
+  const fetching = state.userProfile.fetching;
+  const loaded = state.userProfile.loaded;
+  if (!fetching && !loaded) {
+    console.log("Refresh of user profile is required (fetching loading)", fetching, loaded);
+    return controllers.SET_USER_PROFILE();
   } else {
-    console.log("Refresh or user profile is not required", f, l);
+    console.log("Refresh of user profile is not required (fetching loading)", fetching, loaded);
   }
 }
 

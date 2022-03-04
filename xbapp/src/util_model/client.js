@@ -170,7 +170,11 @@ function XBClient() {
         }
       );
 
-      self.tidy(user);
+      console.log("getUserProfile user", user);
+
+      if (user) {
+        return self.tidy(user);
+      }
 
       return user;
    }
@@ -256,12 +260,17 @@ function XBClient() {
       _userid: self.realm.currentUser.id,
       ...userProfile,
     };
-    console.log("Creating or updating user profile", newUserProfile);
 
-    const userProfileInDb = self.getUserProfile();
+    // const userProfileInDb = self.getUserProfile();
+    const user = await collection.findOne({
+      _userid: {$eq: self.realm.currentUser.id}
+    }
+  );
 
-    if (userProfileInDb === null) {
+    console.log("userProfileInDb", user);
 
+    if (user === null) {
+      console.log("Creating new usersProfile document", newUserProfile);
       try {
         const insertOneResult = await collection.insertOne(newUserProfile);
       } catch (e) {
@@ -275,8 +284,8 @@ function XBClient() {
       return { success: true }
     }
     else {
+      console.log("Updating usersProfile document", newUserProfile);
       delete newUserProfile._id;
-      // delete newUserProfile._userid;
       try {
         const updateOneResult = await collection.updateOne({
           _userid: {$eq: self.realm.currentUser.id}

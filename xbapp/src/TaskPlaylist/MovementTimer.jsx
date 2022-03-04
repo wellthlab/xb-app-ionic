@@ -100,12 +100,7 @@ function MovementTimer(props) {
         setGroup(g);
       }
     }
-    return (
-      <>
-        {/* <div className="center-message">Looking for your group</div> */}
-        <IonSpinner name="crescent" className="center-spin" />
-      </>
-    );
+    return <IonSpinner name="crescent" className="center-spin" />;
   }
 
   // TODO: Looking up tasks like this won't scale; we should create a slice to

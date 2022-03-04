@@ -11,12 +11,12 @@ const UserProfileSlice = createSlice({
     initialState,
     reducers: {
         CLEAR_USER(state, action) {
-            state.fetching = true;
             state.userProfile = null;
+            state.fetching = true;
             state.loaded = false;
         },
         SET_USER(state, action) {
-            const userProfile = action.payload.user;
+            const userProfile = action.payload.userProfile;
             state.userProfile = userProfile;
             state.fetching = false;
             state.loaded = true;
