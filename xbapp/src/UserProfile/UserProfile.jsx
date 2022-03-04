@@ -16,6 +16,7 @@ import {
   IonRow,
   IonCol,
   IonSpinner,
+  IonCardSubtitle,
 } from "@ionic/react";
 
 import { addControllersProp } from "../util_model/controllers";
@@ -183,7 +184,8 @@ function UserProfile(props) {
       <IonContent>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Set your profile </IonCardTitle>
+            <IonCardTitle>Set up your user profile</IonCardTitle>
+            <IonCardSubtitle>These can be updated at any time.</IonCardSubtitle>
           </IonCardHeader>
           <IonCardContent>
             <IonGrid>

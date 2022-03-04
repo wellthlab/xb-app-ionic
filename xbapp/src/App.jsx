@@ -254,7 +254,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/box/move/user-profile"
+                path="/user-profile"
                 component={UserProfile}
                 exact={true}
               />
