@@ -15,10 +15,11 @@ const MovePage = (props) => {
   }
 
   // Ask the user to enrol in a move experiment; or show current experiment info
+  let content = null;
   if (!props.teams.teams.bybox["move"]) {
-    var content = <Enroller boxtype="move" />;
+    content = <Enroller boxtype="move" />;
   } else {
-    var content = (
+    content = (
       <>
         <GroupInfo
           group={props.teams.teams.bybox["move"][0]}
@@ -32,12 +33,7 @@ const MovePage = (props) => {
   return (
     <IonPage>
       <XBHeader title="Your Progress"></XBHeader>
-      <IonContent>
-        {content}
-        <IonButton routerLink={"/box/move/user-profile"}>
-          Set up user profile
-        </IonButton>
-      </IonContent>
+      <IonContent>{content}</IonContent>
     </IonPage>
   );
 };
@@ -47,6 +43,7 @@ export default connect(
     return {
       teams: state.teams,
       experiments: state.experiments,
+      userProfile: state.userProfile,
     };
   },
   {

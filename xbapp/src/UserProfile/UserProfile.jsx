@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   IonButton,
@@ -6,37 +6,247 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonSelectOption,
+  IonSelect,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonSpinner,
 } from "@ionic/react";
 
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
 
+const facultyList = [
+  "Research and Innovation Services",
+  "iSolutions",
+  "Faculty of Arts and Humanities",
+  "Library",
+  "Faculty of Engineering and Physical Sciences",
+  "Health and Safety",
+  "Faculty of Social Sciences",
+  "Medicine",
+  "Health Sciences",
+  "Faculty of Environmental and Life Sciences",
+].sort();
+
+const departmentList = [
+  "Winchester School of Art",
+  "Archaeology",
+  "English",
+  "Film",
+  "History",
+  "Modern Languages and Linguistics",
+  "Music",
+  "Philosophy",
+  "Chemisty",
+  "Electronics and Computer Science",
+  "Engineering",
+  "FEPS Enterprise/nC2",
+  "Physics and Astronomy",
+  "Southampton Marine and Maritime Institute",
+  "Web Ccience Institute",
+  "Zepler Institute for Photonics and Nanoelectronics",
+  "Medicine",
+  "Cancer Science",
+  "Human Development and Health",
+  "Clinical and Experimental Science",
+  "Primary Care, Population Sci and Medical Education",
+  "Southampton Law School",
+  "Economic, Social and Political Sciences",
+  "Southampton Business School",
+  "Mathematical Sciences",
+  "Southampton Education School",
+  "HSR",
+  "Biological Sciences",
+  "Health Sciences",
+  "Geography and Environmental Sciences",
+  "Ocean and Earth Science",
+  "Psychology",
+].sort();
+
+/**
+ * Create a user profile
+ *
+ */
 function UserProfile(props) {
-  const [prefName, setPrefName] = useState(null);
+  const [profileObj, setProfileObj] = useState({});
+
+  /**
+   * Component for free text input
+   *
+   * @param {string} label - label for input
+   * @param {string} profileObjKey - unique identifier for input
+   * @param {function} updateProfileObj - function to update profile object
+   */
+  function TextField({ inputLabel, profileObjKey, updateProfileObj }) {
+    const [value, setValue] = useState(profileObj[profileObjKey]);
+    console.log("TextField", profileObjKey, value);
+
+    function handleChange(e) {
+      updateProfileObj(profileObjKey, e.detail.value);
+      setValue(e.detail.value);
+    }
+
+    return (
+      <>
+        <IonItem>
+          <IonLabel position="floating">{inputLabel}</IonLabel>
+          <IonInput value={value} onIonChange={(e) => handleChange(e)} />
+        </IonItem>
+      </>
+    );
+  }
+
+  /**
+   * Component for multiple choice input
+   *
+   * @param {string} label - label for input
+   * @param {array} choices - the choices to be presented
+   * @param {string} profileObjKey - unique identifier for input
+   * @param {function} updateProfileObj - function to update profile object
+   */
+  function ChoiceField({
+    inputLabel,
+    choices,
+    profileObjKey,
+    updateProfileObj,
+  }) {
+    const [value, setValue] = useState(profileObj[profileObjKey]);
+
+    function handleChange(e) {
+      updateProfileObj(profileObjKey, e.detail.value);
+      setValue(e.detail.value);
+    }
+
+    const selections = choices.map((choice) => {
+      return <IonSelectOption value={choice}>{choice}</IonSelectOption>;
+    });
+
+    return (
+      <>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonLabel position="floating">{inputLabel}</IonLabel>
+              <IonSelect
+                multiple={false}
+                value={value}
+                onIonChange={(e) => {
+                  handleChange(e);
+                }}
+              >
+                {selections}
+              </IonSelect>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+      </>
+    );
+  }
+
+  function updateProfile(newKey, value) {
+    let newProfileObj = { ...profileObj };
+    newProfileObj[newKey] = value;
+    setProfileObj(newProfileObj);
+    console.log("Updated profile: ", profileObj);
+  }
 
   function saveProfile() {
-    const profile = {
-      name: prefName,
-    };
-    console.log("Saving profile", profile);
-    props.controllers.CREATE_USER_PROFILE(profile);
+    props.controllers.CREATE_USER_PROFILE(profileObj);
   }
+
+  useEffect(() => {
+    if (props.userProfile.loaded) {
+      setProfileObj(props.userProfile.userProfile);
+      console.log("useEffect - setProfileObj: ", profileObj);
+    }
+  }, [props.userProfile.userProfile, props.userProfile.loaded, profileObj]);
+
+  props.controllers.SET_USER_PROFILE_IF_REQD();
+  if (!props.userProfile.loaded) {
+    return <IonSpinner name="crescent" className="center-spin" />;
+  }
+
+  /**
+   * Questions which are being asked:
+   * - Preferred name (username) - free text
+   * - Unit of faculty - list
+   * - School or department - list
+   * - Campus - list
+   * - Office/building - free text
+   * - Career stage - list
+   */
 
   return (
     <>
       <XBHeader title="User Profile" />
       <IonContent>
-        <h1>User Profile</h1>
-        <IonItem>
-          <IonLabel position="floating">Your preferred name</IonLabel>
-          <IonInput
-            value={prefName}
-            onIonChange={(e) => setPrefName(e.detail.value)}
-          ></IonInput>
-        </IonItem>
-
-        <IonButton onClick={saveProfile}>Submit</IonButton>
+        <IonCard>
+          <IonCardContent>
+            <IonGrid>
+              {/* Preferred name */}
+              <TextField
+                inputLabel={"Your preferred name"}
+                profileObjKey={"prefName"}
+                updateProfileObj={updateProfile}
+              />
+              {/* Unit or faculty */}
+              <ChoiceField
+                inputLabel={"Unit or Faculty"}
+                choices={facultyList}
+                profileObjKey={"unit"}
+                updateProfileObj={updateProfile}
+              />
+              {/* School or department */}
+              <ChoiceField
+                inputLabel={"School or Department"}
+                choices={departmentList}
+                profileObjKey={"department"}
+                updateProfileObj={updateProfile}
+              />
+              {/* Campus */}
+              <ChoiceField
+                inputLabel={"Campus"}
+                choices={[
+                  "Avenue",
+                  "Boldrewood",
+                  "Highfield",
+                  "Waterfront",
+                  "Winchester",
+                ]}
+                profileObjKey={"campus"}
+                updateProfileObj={updateProfile}
+              />
+              {/* Office/building */}
+              <TextField
+                inputLabel={"Office or Building"}
+                profileObjKey={"office"}
+                updateProfileObj={updateProfile}
+              />
+              {/* Career stage */}
+              <ChoiceField
+                inputLabel={"Career stage"}
+                choices={[3, 4, 5, 6, 7]}
+                profileObjKey={"careerStage"}
+                updateProfileObj={updateProfile}
+              />
+              {/* Submit button */}
+              <IonRow>
+                <IonCol>
+                  <IonButton expand={"full"} onClick={saveProfile}>
+                    Save Profile
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
       </IonContent>
     </>
   );
@@ -45,7 +255,7 @@ function UserProfile(props) {
 export default connect(
   (state, ownProps) => {
     return {
-      user: state.user,
+      userProfile: state.userProfile,
     };
   },
   {

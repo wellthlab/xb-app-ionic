@@ -157,6 +157,24 @@ function XBClient() {
     return modules;
   }
 
+
+  /**
+   * Get a user profile
+   */
+
+   self.getUserProfile = async function () {
+      const db = getDb();
+      const collection = db.collection("usersDetails");
+      const user = await collection.findOne({
+          _userid: {$eq: self.realm.currentUser.id}
+        }
+      );
+
+      self.tidy(user);
+
+      return user;
+   }
+
   /**
    * Get all groups for the current user
    */
@@ -230,38 +248,51 @@ function XBClient() {
   /**
    * Create a user profile
    */
-  self.createUserProfile = async function (profile) {
-    let db = getDb();
-    let collection = db.collection("usersDetails");
+  self.createUserProfile = async function (userProfile) {
+    const db = getDb();
+    const collection = db.collection("usersDetails");
 
-    const user = {
+    const newUserProfile = {
       _userid: self.realm.currentUser.id,
-      name: profile.name,
+      ...userProfile,
     };
+    console.log("Creating or updating user profile", newUserProfile);
 
-    console.log("Creating user profile", user);
+    const userProfileInDb = self.getUserProfile();
 
-    let insertOneResult;
-    try {
-      insertOneResult = await collection.insertOne(user);
-    } catch (e) {
-      console.log(insertOneResult);
-      console.error("Error creating user", e);
-      return {
-        success: false,
-        message: "Sorry, we couldn't create your user profile"
+    if (userProfileInDb === null) {
+
+      try {
+        const insertOneResult = await collection.insertOne(newUserProfile);
+      } catch (e) {
+        console.error("Error creating user", e);
+        return {
+          success: false,
+          message: "Sorry, we couldn't create your user profile"
+        }
       }
+
+      return { success: true }
+    }
+    else {
+      delete newUserProfile._id;
+      // delete newUserProfile._userid;
+      try {
+        const updateOneResult = await collection.updateOne({
+          _userid: {$eq: self.realm.currentUser.id}
+        }, newUserProfile);
+
+        } catch (e) {
+          console.error("Error updating user", e);
+          return {
+            success: false,
+            message: "Sorry, we couldn't update your user profile"
+          }
+        }
+        return { success: true }
     }
 
-    return { success: true }
-
   }
-
-  /**
-   * Get a user profile
-   */
-
-  self.getUserProfile = async function () {}
 
   // Helper function for generating a team ID
   function genID(len) {

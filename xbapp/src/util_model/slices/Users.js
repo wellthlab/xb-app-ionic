@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    user: null,
+    userProfile: null,
     fetching: false,
     loaded: false,
 }
 
-const UserSlice = createSlice({
-    name: "user",
+const UserProfileSlice = createSlice({
+    name: "userProfile",
     initialState,
     reducers: {
         CLEAR_USER(state, action) {
             state.fetching = true;
-            state.user = null;
+            state.userProfile = null;
             state.loaded = false;
         },
         SET_USER(state, action) {
-            const user = action.payload.user;
-            state.user = user;
+            const userProfile = action.payload.user;
+            state.userProfile = userProfile;
             state.fetching = false;
             state.loaded = true;
         }
@@ -27,6 +27,6 @@ const UserSlice = createSlice({
 export const {
     CLEAR_USER,
     SET_USER,
-} = UserSlice.actions;
+} = UserProfileSlice.actions;
 
-export default UserSlice.reducer;
+export default UserProfileSlice.reducer;

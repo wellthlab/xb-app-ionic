@@ -85,20 +85,21 @@ const OptionTabs = (props) => {
             </IonList>
           </IonCardContent>
         </IonCard>
-
-        <IonItemDivider></IonItemDivider>
         <IonCard>
           <IonCardHeader style={{ textAlign: "left" }}>
             <IonCardTitle>Settings</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             <IonList>
+              <IonItem routerLink="/box/move/user-profile">
+                Update User Profile
+              </IonItem>
               <IonItem routerLink="/account">Log Out</IonItem>
               {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             </IonList>
           </IonCardContent>
         </IonCard>
-        <IonItemDivider></IonItemDivider>
+        {/* <IonItemDivider></IonItemDivider> */}
         <br></br>
       </IonContent>
     </>

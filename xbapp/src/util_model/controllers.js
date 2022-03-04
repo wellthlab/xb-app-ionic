@@ -28,27 +28,38 @@ import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
 
 import { CLEAR_USER, SET_USER } from "./slices/Users";
-import store from "./store";
+
 
 /**
  * These controller functions will be returned by getControllers
  * - they'll be wrapped so that client, store and controllers are provided
  */
 
- async function LOAD_USER_PROFILES(client, store, controllers) {
+ async function SET_USER_PROFILE(client, store, controllers) {
 
-  console.log("LOAD_USER_PROFILES STORE", store);
   store.dispatch(CLEAR_USER());
 
-  let users = null;
+  let user = null;
   try {
-    users = await client.getUserProfile();
+    user = await client.getUserProfile();
   } catch (error) {
     return console.error(error);
   }
 
-  store.dispatch(SET_USER({ users }));
-  console.log("SET_USER", users);
+  store.dispatch(SET_USER({ user }));
+  console.log("SET_USER", user);
+}
+
+async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
+  const state = store.getState();
+  const f = state.userProfile.fetching;
+  const l = state.userProfile.loaded;
+  if (!f && !l) {
+    console.log("Refresh of user profile is required", f, l);
+    await controllers.SET_USER_PROFILE();
+  } else {
+    console.log("Refresh or user profile is not required", f, l);
+  }
 }
 
  async function CREATE_USER_PROFILE(client, store, controllers, profile) {
@@ -60,7 +71,7 @@ import store from "./store";
     return false;
   }
 
-  controllers.LOAD_USER_PROFILES();
+  controllers.SET_USER_PROFILE();
   return true;
 }
 
@@ -81,10 +92,9 @@ async function LOAD_MODULES(client, store) {
 }
 
 async function LOAD_MODULES_IF_REQD(client, store, controllers) {
-  var state = store.getState();
-
-  var f = state.modules.fetching;
-  var l = state.modules.loaded;
+  const state = store.getState();
+  const f = state.modules.fetching;
+  const l = state.modules.loaded;
   if (!f && !l) {
     console.log("Refresh of modules is required", f, l);
     return controllers.LOAD_MODULES();
@@ -334,7 +344,8 @@ function getControllers(store, client) {
     GET_FEED,
     LOAD_MODULES,
     LOAD_MODULES_IF_REQD,
-    LOAD_USER_PROFILES,
+    SET_USER_PROFILE,
+    SET_USER_PROFILE_IF_REQD,
     CREATE_USER_PROFILE,
   };
 
