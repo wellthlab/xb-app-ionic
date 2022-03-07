@@ -7,6 +7,7 @@ import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
 import Disclaimer from "./components/Disclaimer";
 import { addControllersProp } from "../util_model/controllers";
+import UserProfile from "../UserProfile/UserProfile";
 
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -18,13 +19,16 @@ const MovePage = (props) => {
   let content = null;
   if (!props.teams.teams.bybox["move"]) {
     content = <Enroller boxtype="move" />;
+  } else if (!props.userProfile.userProfile) {
+    content = <UserProfile pageType="move" />;
   } else {
     content = (
       <>
         <GroupInfo
           group={props.teams.teams.bybox["move"][0]}
           match={props.match}
-        ></GroupInfo>
+          controllers={props.controllers}
+        />
         <Disclaimer checkbox={false} />
       </>
     );

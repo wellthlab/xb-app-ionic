@@ -9,7 +9,6 @@ import "react-app-polyfill/stable";
 import * as Realm from "realm-web";
 
 import { ObjectId } from "bson";
-import { isValid } from "date-fns";
 
 var crypto = require("crypto");
 
@@ -157,28 +156,6 @@ function XBClient() {
     return modules;
   }
 
-
-  /**
-   * Get a user profile
-   */
-
-   self.getUserProfile = async function () {
-      const db = getDb();
-      const collection = db.collection("usersDetails");
-      const user = await collection.findOne({
-          _userid: {$eq: self.realm.currentUser.id}
-        }
-      );
-
-      console.log("getUserProfile user", user);
-
-      if (user) {
-        return self.tidy(user);
-      }
-
-      return user;
-   }
-
   /**
    * Get all groups for the current user
    */
@@ -248,60 +225,6 @@ function XBClient() {
 
     return self.tidy(info[0].allresponses);
   };
-
-  /**
-   * Create a user profile
-   */
-  self.createUserProfile = async function (userProfile) {
-    const db = getDb();
-    const collection = db.collection("usersDetails");
-
-    const newUserProfile = {
-      _userid: self.realm.currentUser.id,
-      ...userProfile,
-    };
-
-    // const userProfileInDb = self.getUserProfile();
-    const user = await collection.findOne({
-      _userid: {$eq: self.realm.currentUser.id}
-    }
-  );
-
-    console.log("userProfileInDb", user);
-
-    if (user === null) {
-      console.log("Creating new usersProfile document", newUserProfile);
-      try {
-        const insertOneResult = await collection.insertOne(newUserProfile);
-      } catch (e) {
-        console.error("Error creating user", e);
-        return {
-          success: false,
-          message: "Sorry, we couldn't create your user profile"
-        }
-      }
-
-      return { success: true }
-    }
-    else {
-      console.log("Updating usersProfile document", newUserProfile);
-      delete newUserProfile._id;
-      try {
-        const updateOneResult = await collection.updateOne({
-          _userid: {$eq: self.realm.currentUser.id}
-        }, newUserProfile);
-
-        } catch (e) {
-          console.error("Error updating user", e);
-          return {
-            success: false,
-            message: "Sorry, we couldn't update your user profile"
-          }
-        }
-        return { success: true }
-    }
-
-  }
 
   // Helper function for generating a team ID
   function genID(len) {
@@ -419,6 +342,105 @@ function XBClient() {
 
     return self.tidy(exps);
   };
+
+  /**
+   * Get a user profile
+   */
+
+  self.getUserProfile = async function (id = null) {
+    const db = getDb();
+    const collection = db.collection("usersDetails");
+
+    if (id == null) {
+      id = self.realm.currentUser.id;
+    }
+
+    const user = await collection.findOne({
+        _userid: {$eq: id}
+      }
+    );
+
+    if (user) {
+      return self.tidy(user);
+    }
+
+    return user;
+  }
+
+  /**
+     * Create a user profile
+     */
+  self.createUserProfile = async function (userProfile) {
+    const db = getDb();
+    const collection = db.collection("usersDetails");
+
+    const newUserProfile = {
+      _userid: self.realm.currentUser.id,
+      ...userProfile,
+    };
+
+
+    const user = await collection.findOne({
+        _userid: {$eq: self.realm.currentUser.id}
+      }
+    );
+
+    if (user === null) {
+      console.log("Creating new usersProfile document", newUserProfile);
+      try {
+        const insertOneResult = await collection.insertOne(newUserProfile);
+      } catch (e) {
+        console.error("Error creating user", e);
+        return {
+          success: false,
+          message: "Sorry, we couldn't create your user profile"
+        }
+      }
+
+      return { success: true }
+    }
+    else {
+      delete newUserProfile._id;
+      try {
+        const updateOneResult = await collection.updateOne({
+          _userid: {$eq: self.realm.currentUser.id}
+        }, newUserProfile);
+
+        } catch (e) {
+          console.error("Error updating user", e);
+          return {
+            success: false,
+            message: "Sorry, we couldn't update your user profile"
+          }
+        }
+        return { success: true }
+    }
+  }
+
+
+  /**
+   * Get the userProfile for all the users in a team
+   */
+
+   self.getTeamUserProfiles = async function (teamCode) {
+    const db = getDb();
+    const collection = db.collection("teams");
+    const team = await collection.findOne({ code: {$eq: teamCode} });
+
+    const users = [];
+    for (let i in team.users) {
+      let user = await self.getUserProfile(team.users[i]);
+      if(user === null) {  // this happens when someone joins a team, but closes the app before creating their profile
+        user = { prefName: "Unknown" };
+      }
+
+      users.push(user);
+    }
+
+    self.tidy(users);
+
+    return users;
+  }
 
   /**
    * Tidy up a result so it's safe to pass into redux with warnings about non-serializabilty

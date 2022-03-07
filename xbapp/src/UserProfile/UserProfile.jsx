@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import {
   IonButton,
@@ -178,77 +178,90 @@ function UserProfile(props) {
    * - Career stage - list
    */
 
-  return (
+  const inputCard = (
     <>
-      <XBHeader title="User Profile" />
-      <IonContent>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Set up your user profile</IonCardTitle>
-            <IonCardSubtitle>These can be updated at any time.</IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid>
-              {/* Preferred name */}
-              <TextField
-                inputLabel={"Your preferred name"}
-                profileObjKey={"prefName"}
-                updateProfileObj={updateProfile}
-              />
-              {/* Unit or faculty */}
-              <ChoiceField
-                inputLabel={"Unit or Faculty"}
-                choices={facultyList}
-                profileObjKey={"unit"}
-                updateProfileObj={updateProfile}
-              />
-              {/* School or department */}
-              <ChoiceField
-                inputLabel={"School or Department"}
-                choices={departmentList}
-                profileObjKey={"department"}
-                updateProfileObj={updateProfile}
-              />
-              {/* Campus */}
-              <ChoiceField
-                inputLabel={"Campus"}
-                choices={[
-                  "Avenue",
-                  "Boldrewood",
-                  "Highfield",
-                  "Waterfront",
-                  "Winchester",
-                ]}
-                profileObjKey={"campus"}
-                updateProfileObj={updateProfile}
-              />
-              {/* Office/building */}
-              <TextField
-                inputLabel={"Office or Building"}
-                profileObjKey={"office"}
-                updateProfileObj={updateProfile}
-              />
-              {/* Career stage */}
-              <ChoiceField
-                inputLabel={"Career stage"}
-                choices={[3, 4, 5, 6, 7]}
-                profileObjKey={"careerStage"}
-                updateProfileObj={updateProfile}
-              />
-              {/* Submit button */}
-              <IonRow>
-                <IonCol>
-                  <IonButton expand={"full"} onClick={saveProfile}>
-                    Save Profile
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-      </IonContent>
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Set up your user profile</IonCardTitle>
+          <IonCardSubtitle>
+            Your profile can be updated at any time.
+          </IonCardSubtitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonGrid>
+            {/* Preferred name */}
+            <TextField
+              inputLabel={"Your preferred name"}
+              profileObjKey={"prefName"}
+              updateProfileObj={updateProfile}
+            />
+            {/* Unit or faculty */}
+            <ChoiceField
+              inputLabel={"Unit or Faculty"}
+              choices={facultyList}
+              profileObjKey={"unit"}
+              updateProfileObj={updateProfile}
+            />
+            {/* School or department */}
+            <ChoiceField
+              inputLabel={"School or Department"}
+              choices={departmentList}
+              profileObjKey={"department"}
+              updateProfileObj={updateProfile}
+            />
+            {/* Campus */}
+            <ChoiceField
+              inputLabel={"Campus"}
+              choices={[
+                "Avenue",
+                "Boldrewood",
+                "Highfield",
+                "Waterfront",
+                "Winchester",
+              ]}
+              profileObjKey={"campus"}
+              updateProfileObj={updateProfile}
+            />
+            {/* Office/building */}
+            <TextField
+              inputLabel={"Office or Building"}
+              profileObjKey={"office"}
+              updateProfileObj={updateProfile}
+            />
+            {/* Career stage */}
+            <ChoiceField
+              inputLabel={"Career stage"}
+              choices={[3, 4, 5, 6, 7]}
+              profileObjKey={"careerStage"}
+              updateProfileObj={updateProfile}
+            />
+            {/* Submit button */}
+            <IonRow>
+              <IonCol>
+                <IonButton expand={"full"} onClick={saveProfile}>
+                  Save Profile
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCardContent>
+      </IonCard>
     </>
   );
+
+  let content = null;
+  if (props.pageType === "move") {
+    content = inputCard;
+  } else {
+    content = (
+      <>
+        <XBHeader title="User Profile" />
+        <IonContent>{inputCard}</IonContent>
+      </>
+    );
+  }
+
+  return <>{content}</>;
 }
 
 export default connect(

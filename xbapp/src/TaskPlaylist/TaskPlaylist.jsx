@@ -6,6 +6,7 @@ import {
   IonLabel,
   IonCol,
   IonRow,
+  IonItem,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
@@ -25,22 +26,40 @@ function TaskPlaylist(props) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
-  const team = props.teams.teams.bybox.move[0];
-
-  if (!team.s22plan) {
+  let team;
+  try {
+    team = props.teams.teams.bybox.move[0];
+  } catch (e) {
+    console.warn("Error whilst accessing team data", e);
     return (
-      <IonText>You need to plan your week before you can add minutes.</IonText>
+      <IonContent>
+        <div className="center-message">
+          <h3>There has been an error.</h3>
+          <h3>
+            To take part in this experiment, you first need to join a team and
+            set up your user profile from the progress page.
+          </h3>
+        </div>
+      </IonContent>
     );
   }
 
-  // const day = team.experiment.day;
-  const day = 1; // TODO: revert back to above
+  if (!team.s22plan) {
+    return (
+      <div className="center-message">
+        <h3>
+          You need to plan your week in the progress page before you can add
+          minutes.
+        </h3>
+      </div>
+    );
+  }
+
+  const day = team.experiment.day;
 
   const requiredTasks = team.experiment.tasks[day].required;
   const optionalTasks = team.experiment.tasks[day].optional;
   const totalMinutes = team.s22plan.target;
-
-  console.log("TaskPlaylist: requiredTasks", requiredTasks);
 
   return (
     <>

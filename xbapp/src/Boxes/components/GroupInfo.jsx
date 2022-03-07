@@ -28,6 +28,11 @@ import {
   IonInput,
   IonFabList,
   IonProgressBar,
+  IonModal,
+  IonSpinner,
+  IonCardContent,
+  IonCard,
+  IonText,
 } from "@ionic/react";
 import {
   peopleOutline,
@@ -48,34 +53,54 @@ import DailyJournal from "../../Journal/DailyJournal";
 import DailyActions from "./DailyActions";
 
 import "./GroupInfo.scss";
+import GenericModal from "../../Info/components/GenericModal";
+import { type } from "os";
 
 const GroupInfo = ({ group, controllers, match }) => {
   const [showAlert, setShowAlert] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [memberProfiles, setMemberProfiles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showMemberModal, setShowModal] = useState(false);
+  const [view, setView] = useState(
+    match.params.page ? match.params.page : "info"
+  );
   const history = useHistory();
+
   function toggleAlert() {
     setShowAlert(!showAlert);
   }
 
-  const [view, setView] = useState(
-    match.params.page ? match.params.page : "info"
-  );
+  function toggleMemberModal() {
+    setShowModal(!showMemberModal);
+  }
 
-  //console.log(view, match.params);
+  async function fetchTeamUserInfo() {
+    setLoading(true);
+    const memberProfiles = await controllers.client.getTeamUserProfiles(
+      group.code
+    );
+    setMemberProfiles(memberProfiles);
+    setLoading(false);
+  }
 
-  const [showMenu, setShowMenu] = useState(false);
+  useEffect(() => {
+    fetchTeamUserInfo();
+  });
 
   var content = "";
+  var day = group.experiment.day;
 
-  // var day = group.experiment.day;
-  // TODO: change back to above
-  var day = 1;
+  // if (loading) {
+  //   return <IonSpinner name="crescent" className="center-spin" />;
+  // }
 
   /**
    * Experiment info
    */
-  if (view == "info") {
+  if (view === "info") {
     var daydesc =
-      day == 0
+      day === 0
         ? "Starts tomorrow"
         : day < 0
         ? "Starts in " + Math.abs(day) + " days"
@@ -83,8 +108,34 @@ const GroupInfo = ({ group, controllers, match }) => {
         ? "Finished"
         : "Today is day " + day + " of " + group.experiment.info.duration;
 
-    var members =
+    const members =
       group.users.length > 1 ? group.users.length + " members" : "1 member";
+
+    const memberNames = memberProfiles.map((profile) => {
+      return (
+        <>
+          <IonItem>{profile.prefName}</IonItem>
+        </>
+      );
+    });
+
+    const modalMemberList = (
+      <>
+        <h3>Team Captain</h3>
+        {memberNames.slice(0, 1)}
+
+        {memberNames.length > 1 ? (
+          <>
+            <h3>Team Members</h3>
+            <IonList>
+              <IonItemGroup>{memberNames.slice(1)}</IonItemGroup>
+            </IonList>{" "}
+          </>
+        ) : (
+          ""
+        )}
+      </>
+    );
 
     //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
@@ -127,14 +178,38 @@ const GroupInfo = ({ group, controllers, match }) => {
           </IonRow>
 
           <IonRow>
-            <IonCol size="5">
-              <IonItem lines="none" style={{ fontSize: "15px" }}>
-                <IonIcon icon={peopleOutline} slot="start" />
-                {members}
+            <IonCol>
+              <IonItem className="ion-text-center">
+                <IonLabel>
+                  <IonText style={{ fontSize: "1.2em" }}>{group.name}</IonText>
+                </IonLabel>
               </IonItem>
             </IonCol>
-            <IonCol size="7">
-              <IonItem lines="none" style={{ fontSize: "15px" }}>
+          </IonRow>
+
+          <IonRow>
+            <IonCol>
+              <IonItem
+                style={{ fontSize: "15px" }}
+                button
+                onClick={toggleMemberModal}
+                detail={true}
+                detailIcon={arrowForwardOutline}
+              >
+                <IonIcon icon={peopleOutline} slot="start" />
+                <IonLabel>{members}</IonLabel>
+              </IonItem>
+
+              <GenericModal
+                showModal={showMemberModal}
+                toggleModal={toggleMemberModal}
+                title=""
+                message={modalMemberList}
+              />
+            </IonCol>
+
+            <IonCol>
+              <IonItem style={{ fontSize: "15px" }}>
                 <IonLabel>Team Code:</IonLabel>
                 <IonInput readonly={true} value={group.code}></IonInput>
               </IonItem>
@@ -149,12 +224,12 @@ const GroupInfo = ({ group, controllers, match }) => {
         </IonGrid>
       </>
     );
-  } else if (view == "tasks") {
+  } else if (view === "tasks") {
     /**
      * Task list
      */
     content = <DailyActions group={group} today={day} />;
-  } else if (view == "journal") {
+  } else if (view === "journal") {
     /**
      * Journal & Charts
      */
@@ -172,7 +247,7 @@ const GroupInfo = ({ group, controllers, match }) => {
       </IonFab>*/}
       </>
     );
-  } else if (view == "charts") {
+  } else if (view === "charts") {
     content = (
       <>
         <IonList>
