@@ -7,6 +7,7 @@ import {
   IonCol,
   IonRow,
   IonItem,
+  IonPage,
 } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
@@ -63,31 +64,35 @@ function TaskPlaylist(props) {
 
   return (
     <>
-      <XBHeader title="Your Activity Playlist"></XBHeader>
-      <IonContent fullscreen>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <TodoTasks
-                day={day}
-                team={team}
-                tasks={requiredTasks}
-                optional={optionalTasks}
-                minutes={totalMinutes}
-              />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol style={{ marginTop: "30px" }}>
-              <IonLabel>Your Progress Today</IonLabel>
-              <TotalTimer
-                target={team.myTargetToday}
-                logged={team.myMinutesToday}
-              />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonContent>
+      <IonPage>
+        <XBHeader title="Your Activity Playlist"></XBHeader>
+        <IonContent>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <TodoTasks
+                  day={day}
+                  team={team}
+                  tasks={requiredTasks}
+                  optional={optionalTasks}
+                  minutes={totalMinutes}
+                />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <p>
+                  <IonLabel>Your Progress Today</IonLabel>
+                </p>
+                <TotalTimer
+                  target={team.myTargetToday}
+                  logged={team.myMinutesToday}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonContent>
+      </IonPage>
     </>
   );
 }

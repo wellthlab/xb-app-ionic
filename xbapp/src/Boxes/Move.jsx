@@ -1,12 +1,12 @@
-import { IonContent, IonPage, IonSpinner, IonButton } from "@ionic/react";
+import { IonContent, IonPage, IonSpinner } from "@ionic/react";
 import { connect } from "react-redux";
+import { addControllersProp } from "../util_model/controllers";
 
 import "./Move.scss";
 import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
 import Disclaimer from "./components/Disclaimer";
-import { addControllersProp } from "../util_model/controllers";
 import UserProfile from "../UserProfile/UserProfile";
 
 const MovePage = (props) => {
@@ -15,7 +15,8 @@ const MovePage = (props) => {
     return <IonSpinner class="center-spin" name="crescent" />;
   }
 
-  // Ask the user to enrol in a move experiment; or show current experiment info
+  // Ask the user to enrol in a move experiment, set up their profile or show
+  // current experiment info
   let content = null;
   if (!props.teams.teams.bybox["move"]) {
     content = <Enroller boxtype="move" />;

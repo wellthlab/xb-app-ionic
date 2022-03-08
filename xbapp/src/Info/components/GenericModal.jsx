@@ -8,6 +8,10 @@ import {
   IonRadioGroup,
   IonItemDivider,
   IonItem,
+  IonFooter,
+  IonTitle,
+  IonHeader,
+  IonToolbar,
 } from "@ionic/react";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
@@ -131,7 +135,12 @@ function GenericModal(props) {
   }
   return (
     <div>
-      <IonModal isOpen={props.showModal}>
+      <IonModal isOpen={props.showModal} className="ios-bottom-safe-area">
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle>{props.title}</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonContent>
           <Confetti
             width={width}
@@ -293,17 +302,19 @@ function GenericModal(props) {
             </>
           ) : (
             <>
-              <h1 style={{ textAlign: "center" }}>
+              {/* <h1 style={{ textAlign: "center" }}>
                 <b>{props.title}</b>
-              </h1>
+              </h1> */}
               {props.message}
+              {/* <br />
               <br />
-              <br />
-              <br />
+              <br /> */}
             </>
           )}
         </IonContent>
-        <IonButton onClick={props.toggleModal}>Close</IonButton>
+        <IonButton expand="full" onClick={props.toggleModal}>
+          Close
+        </IonButton>
       </IonModal>
     </div>
   );

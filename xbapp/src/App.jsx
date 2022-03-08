@@ -154,9 +154,6 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 render={() => <Redirect to="/box/move" />}
                 exact={true}
               />
-              {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
-              {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
-              {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/feed" component={Feed} exact={true} />
               <Route path="/leaderboard" component={Leaderboard} exact={true} />
               <Route
@@ -184,7 +181,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={GroupCharts}
                 exact={true}
               />
-              /** * TODO: Pass box type in the URL on these; linked from the
+              /** TODO: Pass box type in the URL on these; linked from the
               relevant box page */
               <Route
                 path="/start/join/:expid"

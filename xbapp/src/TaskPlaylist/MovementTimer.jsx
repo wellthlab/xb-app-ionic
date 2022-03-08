@@ -14,6 +14,7 @@ import {
   IonCardContent,
   IonCardSubtitle,
   IonSpinner,
+  IonPage,
 } from "@ionic/react";
 import {
   addCircleOutline,
@@ -251,23 +252,25 @@ function MovementTimer(props) {
 
   return (
     <>
-      <XBHeader title="Record Your Movement" />
-      <IonContent style={{ "--padding-bottom": "40px" }}>
-        {/* Exercise and for how long header -- press for details */}
-        <IonItem
-          detailIcon={informationCircleOutline}
-          detail={true}
-          color={"secondary"}
-        >
-          <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
-        </IonItem>
-        {/* Additional content, like the move picker or a video */}
-        {taskExtraContent}
-        {/* Timer and buttons for manual entry of minutes */}
-        {/* The timer is NOT SHOWN when we're doing tasks with timed === false
-         */}
-        {timer}
-      </IonContent>
+      <IonPage>
+        <XBHeader title="Record Your Movement" />
+        <IonContent>
+          {/* Exercise and for how long header -- press for details */}
+          <IonItem
+            detailIcon={informationCircleOutline}
+            detail={true}
+            color={"secondary"}
+          >
+            <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
+          </IonItem>
+          {/* Additional content, like the move picker or a video */}
+          {taskExtraContent}
+          {/* Timer and buttons for manual entry of minutes */}
+          {/* The timer is NOT SHOWN when we're doing tasks with timed === false
+           */}
+          {timer}
+        </IonContent>
+      </IonPage>
     </>
   );
 }

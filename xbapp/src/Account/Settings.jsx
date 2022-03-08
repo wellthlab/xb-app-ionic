@@ -1,39 +1,25 @@
-import React, { Component, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import WithXBSlice from "../util/WithXBSlice";
 import {
-  IonCa,
-  IonRouterOutlet,
-  IonMenu,
-  IonToolbar,
-  IonHeader,
   IonContent,
   IonList,
   IonItem,
-  IonItemDivider,
   IonCardHeader,
   IonCardContent,
   IonCard,
   IonCardTitle,
-  IonLabel,
-  IonBadge,
-  IonAlert,
   IonSpinner,
+  IonPage,
 } from "@ionic/react";
-import XBHeader from "../util/XBHeader";
-
-import MovementPicker from "../MovementPuzzlePicker/MovementPicker";
-//css
-import "./Settings.scss";
-
-import { addControllersProp } from "../util_model/controllers";
 import { connect } from "react-redux";
 
-import PIS from "../Account/components/PIS";
-import GenericModal from "../Info/components/GenericModal";
+import { addControllersProp } from "../util_model/controllers";
 
-const autoBindReact = require("auto-bind/react");
+import "./Settings.scss";
+import PIS from "../Account/components/PIS";
+import XBHeader from "../util/XBHeader";
+import GenericModal from "../Info/components/GenericModal";
 
 const OptionTabs = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -49,57 +35,63 @@ const OptionTabs = (props) => {
   }
 
   if (!props.teams.teams.bybox) {
-    return <IonSpinner name="crescent" class="center-spin" />;
+    return <IonSpinner name="crescent" className="center-spin" />;
   }
 
   var pis = <PIS />;
 
   return (
     <>
-      <XBHeader title="Info"></XBHeader>
-      <IonContent id="settings" fullscreen>
-        <GenericModal
-          showModal={showModal}
-          toggleModal={toggleModal}
-          title={"Privacy Notice"}
-          message={privacy_notice}
-        />
+      <IonPage>
+        <XBHeader title="Settings"></XBHeader>
+        <IonContent id="settings" fullscreen>
+          <GenericModal
+            showModal={showModal}
+            toggleModal={toggleModal}
+            title={"Privacy Notice"}
+            message={privacy_notice}
+          />
 
-        <GenericModal
-          showModal={showPISModal}
-          toggleModal={togglePISModal}
-          title={"Participant Information Sheet"}
-          message={pis}
-        />
+          <GenericModal
+            showModal={showPISModal}
+            toggleModal={togglePISModal}
+            title={"Participant Information Sheet"}
+            message={pis}
+          />
 
-        <IonCard>
-          <IonCardHeader style={{ textAlign: "left" }}>
-            <IonCardTitle>About</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonList>
-              <IonItem onClick={toggleModal}>Privacy Notice</IonItem>
-              <IonItem onClick={togglePISModal}>
-                Participant Information
-              </IonItem>
-            </IonList>
-          </IonCardContent>
-        </IonCard>
-        <IonCard>
-          <IonCardHeader style={{ textAlign: "left" }}>
-            <IonCardTitle>Settings</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonList>
-              <IonItem routerLink="/user-profile">Update User Profile</IonItem>
-              <IonItem routerLink="/account">Log Out</IonItem>
-              {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
-            </IonList>
-          </IonCardContent>
-        </IonCard>
-        {/* <IonItemDivider></IonItemDivider> */}
-        <br></br>
-      </IonContent>
+          <IonCard>
+            <IonCardHeader style={{ textAlign: "left" }}>
+              <IonCardTitle>About</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <IonList>
+                <IonItem button onClick={toggleModal}>
+                  Privacy Notice
+                </IonItem>
+                <IonItem button onClick={togglePISModal}>
+                  Participant Information
+                </IonItem>
+              </IonList>
+            </IonCardContent>
+          </IonCard>
+          <IonCard>
+            <IonCardHeader style={{ textAlign: "left" }}>
+              <IonCardTitle>Settings</IonCardTitle>
+            </IonCardHeader>
+            <IonCardContent>
+              <IonList>
+                <IonItem routerLink="/user-profile">
+                  Update User Profile
+                </IonItem>
+                <IonItem routerLink="/account">Log Out</IonItem>
+                {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
+              </IonList>
+            </IonCardContent>
+          </IonCard>
+          {/* <IonItemDivider></IonItemDivider> */}
+          <br></br>
+        </IonContent>
+      </IonPage>
     </>
   );
 };
@@ -126,7 +118,7 @@ export default connect(
 );
 
 var privacy_notice = (
-  <div id="privacyNotice" class="ion-text-justify">
+  <div id="privacyNotice" className="ion-text-justify">
     <b>What happens if there is a problem?</b>
     <br></br>
     If you have a concern about any aspect of this study, you should speak to

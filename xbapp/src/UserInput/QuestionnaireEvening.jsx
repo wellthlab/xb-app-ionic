@@ -1,75 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonItem,
+  IonListHeader,
+  IonTextarea,
   IonLabel,
+  IonRadio,
+  IonRadioGroup,
+  IonPage,
+  IonHeader,
   IonRange,
+  IonItemDivider,
+  IonButton,
   IonCard,
   IonCardHeader,
-  IonCardTitle,
-  IonButton,
   IonCardContent,
+  IonCardTitle,
   IonGrid,
   IonRow,
   IonCol,
-  IonRadio,
-  IonRadioGroup,
 } from "@ionic/react";
 
-const FeltScale = ["1", "2", "3", "4", "5"];
+const FeltScale = {
+  0: "(0) Not at all",
+  1: "(1)",
+  2: "(2)",
+  3: "(3)",
+  4: "(4)",
+  5: "(5) So and so",
+  6: "(6)",
+  7: "(7)",
+  8: "(8)",
+  9: "(9)",
+  10: "(10) A lot",
+};
 
-const QuestionnaireEvening = ({ key, onSubmit }) => {
-  const [selected, setSelected] = useState(null);
-  const [answered, setAnswered] = useState(false);
+const QuestionnaireEvening = (props) => {
+  const [value, setValue] = useState(5);
 
-  function submitResults() {
-    setAnswered(true);
-    onSubmit({ minutes: 1e-10 });
+  const response = {};
+
+  function SliderQuestion({ statement, resKey }) {
+    let [value, setValue] = useState(response[resKey] ? response[resKey] : 0);
+
+    return (
+      <>
+        <IonRow>
+          <IonCol>
+            <IonItem>{statement}</IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem style={{ textAlign: "center" }}>
+              <IonLabel>{FeltScale[value]}</IonLabel>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                min={0}
+                max={10}
+                step={1}
+                snaps={true}
+                ticks={true}
+                color="secondary"
+                value={value}
+                onIonChange={(e) => {
+                  setValue(e.detail.value);
+                  response[resKey] = e.detail.value;
+                }}
+              />
+            </IonItem>
+          </IonCol>
+        </IonRow>
+      </>
+    );
   }
 
-  const selectionChoices = FeltScale.map((choice, index) => {
-    return (
-      <IonCol>
-        <IonItem>
-          <IonLabel>{choice}</IonLabel>
-          <IonRadio slot="end" value={choice} />
-        </IonItem>
-      </IonCol>
-    );
-  });
+  // function onChangeSlider(valueToUpdate) {
+  //   setValue(valueToUpdate);
+  // }
+
+  function processData() {
+    console.log("response", response);
+
+    // var response = {};
+    // response.type = "questionnaire-endWeek";
+    // response.felt = value;
+
+    // if (props.onSubmit) {
+    //   props.onSubmit(response);
+    // }
+  }
+
+  console.log("response", response);
 
   return (
     <>
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>
-            Rate the following statement on a scale from 1 to 5
+            Rate the following on a scale from 0 to 10
           </IonCardTitle>
         </IonCardHeader>
         <IonCardContent>
           <IonGrid>
-            <IonRow>
-              <IonItem>In general, I felt good today</IonItem>
-            </IonRow>
-
-            <IonRadioGroup
-              value={selected}
-              onIonChange={(e) => setSelected(e.detail.value)}
-            >
-              <IonRow>{selectionChoices}</IonRow>
-            </IonRadioGroup>
+            <SliderQuestion
+              statement={"In general, I felt good today"}
+              resKey={"feltGoodToday"}
+            />
           </IonGrid>
 
-          {!answered ? (
-            <IonButton
-              expand={"full"}
-              onClick={submitResults}
-              disabled={!selected}
-            >
-              Submit
-            </IonButton>
-          ) : (
-            ""
-          )}
+          <IonButton
+            expand="full"
+            onClick={() => {
+              processData();
+            }}
+          >
+            Submit
+          </IonButton>
         </IonCardContent>
       </IonCard>
     </>
@@ -77,38 +124,3 @@ const QuestionnaireEvening = ({ key, onSubmit }) => {
 };
 
 export default QuestionnaireEvening;
-
-// return (
-//   <>
-//     <IonCard>
-//       <IonCardHeader>
-//         <IonCardTitle>
-//           Rate the following statement on a scale from 0 to 10
-//         </IonCardTitle>
-//       </IonCardHeader>
-//       <IonCardContent>
-//         <IonItem>In general, I felt good today</IonItem>
-//         <IonItem style={{ textAlign: "center" }}>
-//           <IonLabel>{FeltScale[value]}</IonLabel>
-//         </IonItem>
-//         <IonItem>
-//           <IonRange
-//             min={0}
-//             max={10}
-//             step={1}
-//             snaps={true}
-//             ticks={true}
-//             color="secondary"
-//             value={value}
-//             onIonChange={(e) => {
-//               setValue(e.detail.value);
-//             }}
-//           />
-//         </IonItem>
-//         {/* <IonButton expand={"full"} onClick={() => {}}>
-//           Submit
-//         </IonButton> */}
-//       </IonCardContent>
-//     </IonCard>
-//   </>
-// );

@@ -17,6 +17,7 @@ import {
   IonCol,
   IonSpinner,
   IonCardSubtitle,
+  IonPage,
 } from "@ionic/react";
 
 import { addControllersProp } from "../util_model/controllers";
@@ -181,12 +182,12 @@ function UserProfile(props) {
   const inputCard = (
     <>
       <IonCard>
-        <IonCardHeader>
+        {/* <IonCardHeader>
           <IonCardTitle>Set up your user profile</IonCardTitle>
           <IonCardSubtitle>
             Your profile can be updated at any time.
           </IonCardSubtitle>
-        </IonCardHeader>
+        </IonCardHeader> */}
         <IonCardContent>
           <IonGrid>
             {/* Preferred name */}
@@ -238,7 +239,11 @@ function UserProfile(props) {
             {/* Submit button */}
             <IonRow>
               <IonCol>
-                <IonButton expand={"full"} onClick={saveProfile}>
+                <IonButton
+                  routerLink={"/settings"}
+                  expand={"full"}
+                  onClick={saveProfile}
+                >
                   Save Profile
                 </IonButton>
               </IonCol>
@@ -250,13 +255,15 @@ function UserProfile(props) {
   );
 
   let content = null;
-  if (props.pageType === "move") {
+  if (props.pageType === "move" || props.pageType === "settings") {
     content = inputCard;
   } else {
     content = (
       <>
-        <XBHeader title="User Profile" />
-        <IonContent>{inputCard}</IonContent>
+        <IonPage>
+          <XBHeader title="User Profile" />
+          <IonContent>{inputCard}</IonContent>
+        </IonPage>
       </>
     );
   }
