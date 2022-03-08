@@ -24,7 +24,14 @@ function TaskPlaylist(props) {
   props.controllers.LOAD_TEAMS_IF_REQD();
 
   if (!props.teams.teams.bybox) {
-    return <IonSpinner name="crescent" class="center-spin" />;
+    return (
+      <IonPage>
+        <XBHeader title="Your Activity Playlist" />
+        <IonContent>
+          <IonSpinner class="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
+    );
   }
 
   let team;

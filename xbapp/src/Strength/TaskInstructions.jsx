@@ -40,10 +40,8 @@ function TaskInstructions({ task }) {
     return (
       <IonRow>
         <IonCol>
-          <IonItem>
-            <div class="ion-text-justify">
-              <IonText>{parse(text)}</IonText>
-            </div>
+          <IonItem lines="none" className="ion-text-justify">
+            <IonText>{parse(text)}</IonText>
           </IonItem>
         </IonCol>
       </IonRow>

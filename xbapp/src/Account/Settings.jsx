@@ -35,7 +35,14 @@ const OptionTabs = (props) => {
   }
 
   if (!props.teams.teams.bybox) {
-    return <IonSpinner name="crescent" className="center-spin" />;
+    return (
+      <IonPage>
+        <XBHeader title="Settings" />
+        <IonContent>
+          <IonSpinner class="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
+    );
   }
 
   var pis = <PIS />;

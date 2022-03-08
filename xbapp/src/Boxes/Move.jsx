@@ -12,7 +12,14 @@ import UserProfile from "../UserProfile/UserProfile";
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
   if (!props.teams.teams.bybox) {
-    return <IonSpinner class="center-spin" name="crescent" />;
+    return (
+      <IonPage>
+        <XBHeader title="Move" />
+        <IonContent>
+          <IonSpinner class="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
+    );
   }
 
   // Ask the user to enrol in a move experiment, set up their profile or show

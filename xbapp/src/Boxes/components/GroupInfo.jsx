@@ -19,6 +19,8 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonSearchbar,
+  IonSpinner,
 } from "@ionic/react";
 import {
   peopleOutline,
@@ -43,7 +45,7 @@ const GroupInfo = ({ group, controllers, match }) => {
     match.params.page ? match.params.page : "info"
   );
   // const [showMenu, setShowMenu] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [loadingTeamMembers, setLoadingTeamMembers] = useState(false);
   const history = useHistory();
 
   function toggleAlert() {
@@ -55,15 +57,17 @@ const GroupInfo = ({ group, controllers, match }) => {
   }
 
   async function fetchTeamUserInfo() {
+    setLoadingTeamMembers(true);
     const memberProfiles = await controllers.client.getTeamUserProfiles(
       group.code
     );
     setMemberProfiles(memberProfiles);
+    setLoadingTeamMembers(false);
   }
 
   useEffect(() => {
     fetchTeamUserInfo();
-  });
+  }, [group]);
 
   let content = "";
   const day = group.experiment.day;
@@ -92,7 +96,9 @@ const GroupInfo = ({ group, controllers, match }) => {
       );
     });
 
-    const modalMemberList = (
+    const modalMemberList = loadingTeamMembers ? (
+      <IonSpinner name="crescent" className="center-spinner" />
+    ) : (
       <>
         <IonCard>
           <IonCardHeader>
@@ -191,7 +197,9 @@ const GroupInfo = ({ group, controllers, match }) => {
                         showModal={showMemberModal}
                         toggleModal={toggleMemberModal}
                         title="Your Team Members"
-                        message={modalMemberList}
+                        message={
+                          loadingTeamMembers ? "Loading..." : modalMemberList
+                        }
                       />
                     </IonItem>
                   </IonCol>
