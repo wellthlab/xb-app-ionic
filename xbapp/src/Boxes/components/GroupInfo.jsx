@@ -197,9 +197,7 @@ const GroupInfo = ({ group, controllers, match }) => {
                         showModal={showMemberModal}
                         toggleModal={toggleMemberModal}
                         title="Your Team Members"
-                        message={
-                          loadingTeamMembers ? "Loading..." : modalMemberList
-                        }
+                        message={modalMemberList}
                       />
                     </IonItem>
                   </IonCol>

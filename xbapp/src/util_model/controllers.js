@@ -62,7 +62,7 @@ async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
   }
 }
 
- async function CREATE_USER_PROFILE(client, store, controllers, profile) {
+ async function UPDATE_USER_PROFILE(client, store, controllers, profile) {
 
   console.log("CREATE_USER_PROFILE", profile);
   let res = await client.createUserProfile(profile);
@@ -346,7 +346,7 @@ function getControllers(store, client) {
     LOAD_MODULES_IF_REQD,
     SET_USER_PROFILE,
     SET_USER_PROFILE_IF_REQD,
-    CREATE_USER_PROFILE,
+    UPDATE_USER_PROFILE,
   };
 
   for (var n of Object.keys(controllers)) {

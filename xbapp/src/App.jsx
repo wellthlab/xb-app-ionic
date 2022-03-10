@@ -81,8 +81,12 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import RecordMovement from "./TaskPlaylist/TaskPlaylist";
-import MovementTimer from "./TaskPlaylist/MovementTimer";
+import MovementPage from "./Move/Move";
+import TaskPlaylist from "./Move/PlaylistPicker";
+import MovementTimer from "./Move/MovementTimer";
+import UserProfile from "./UserProfile/UserProfile";
+import SubscribeToModule from "./Move/PlaylistSubscriber";
+import TaskPlayer from "./Move/PlaylistDetail";
 
 import getXBClient from "./util_model/client";
 
@@ -119,8 +123,6 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
-import XBHeader from "./util/XBHeader";
-import UserProfile from "./UserProfile/UserProfile";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -146,12 +148,12 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
     content = (
       <>
         <IonTabs>
-          <IonRouterOutlet id="appContent">
+          <IonRouterOutlet id="appContent" animated={true}>
             <Switch>
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/box/move" />}
+                render={() => <Redirect to="/move" />}
                 exact={true}
               />
               <Route path="/feed" component={Feed} exact={true} />
@@ -240,13 +242,24 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/poms" component={POMS} exact={true} />
               <Route path="/scheduler" component={Scheduler} exact={true} />
               {/** Record movement and timer for Strength 22 */}
+              <Route path="/move" component={MovementPage} exact={true} />
               <Route
-                path="/add-movement"
-                component={RecordMovement}
+                path="/subscribe/modules"
+                component={SubscribeToModule}
                 exact={true}
               />
               <Route
-                path="/timer/:req/:id/:day/:type/:section/:task/:index"
+                path="/move/task-playlist"
+                component={TaskPlaylist}
+                exact={true}
+              />
+              <Route
+                path="/move/task-player/:gid/:id"
+                component={TaskPlayer}
+                exact={true}
+              />
+              <Route
+                path="/move/timer/:gid/:mid"
                 component={MovementTimer}
                 exact={true}
               />
@@ -269,7 +282,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Teams"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Move"} href={"/add-movement"}>
+            <IonTabButton tab={"Move"} href={"/move"}>
               <IonIcon icon={playOutline} />
               <IonLabel>{"Move"}</IonLabel>
             </IonTabButton>

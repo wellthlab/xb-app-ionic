@@ -2,6 +2,8 @@
 * This is the experiment-specific code for the Spring 2022 Strength in Work Experiment
 */
 
+import { FlashOnRounded } from "@material-ui/icons";
+
 function toModuleObj(moduleArr) {
   let obj = {};
   for(let i = 0; i < moduleArr.length; i++) {
@@ -131,34 +133,34 @@ const decorateTeam = (team, modules) => {
 
     // TODO: I think there is something funky with the [0]'s here
 
-    switch (dayOfWeek) {
-      case 1: // PREP tasks
-        theseTasks = modulesObj.Prep.tasks[expDayIndex][0];
-        console.log("Prep tasks for experiment day " + expDay, theseTasks);
-        for (let i = 0; i < theseTasks.length; i++) {
-          moduleTasks.push(theseTasks[i]);
-        }
-        break;
-      case 2:  // ENDURANCE tasks
-      case 4:
-        theseTasks = modulesObj.Endurance.tasks[expDayIndex][0];
-        console.log("Endurance tasks for experiment day " + expDay, theseTasks);
-        for (let i = 0; i < theseTasks.length; i++) {
-          moduleTasks.push(theseTasks[i]);
-        }
-        break;
-      case 3: // STRENGTH tasks
-      case 5:
-        theseTasks = modulesObj.Strength.tasks[expDayIndex][0];
-        console.log("Strength tasks for experiment day " + expDay, theseTasks);
-        for (let i = 0; i < theseTasks.length; i++) {
-          moduleTasks.push(theseTasks[i]);
-        }
-        break;
-      default:
-        console.error("unexpected day of week when adding module tasks", dayOfWeek);
-        break;
-    }
+    // switch (dayOfWeek) {
+    //   case 1: // PREP tasks
+    //     theseTasks = modulesObj.Prep.tasks[expDayIndex][0];
+    //     console.log("Prep tasks for experiment day " + expDay, theseTasks);
+    //     for (let i = 0; i < theseTasks.length; i++) {
+    //       moduleTasks.push(theseTasks[i]);
+    //     }
+    //     break;
+    //   case 2:  // ENDURANCE tasks
+    //   case 4:
+    //     theseTasks = modulesObj.Endurance.tasks[expDayIndex][0];
+    //     console.log("Endurance tasks for experiment day " + expDay, theseTasks);
+    //     for (let i = 0; i < theseTasks.length; i++) {
+    //       moduleTasks.push(theseTasks[i]);
+    //     }
+    //     break;
+    //   case 3: // STRENGTH tasks
+    //   case 5:
+    //     theseTasks = modulesObj.Strength.tasks[expDayIndex][0];
+    //     console.log("Strength tasks for experiment day " + expDay, theseTasks);
+    //     for (let i = 0; i < theseTasks.length; i++) {
+    //       moduleTasks.push(theseTasks[i]);
+    //     }
+    //     break;
+    //   default:
+    //     console.error("unexpected day of week when adding module tasks", dayOfWeek);
+    //     break;
+    // }
 
     console.log("Generated module tasks", moduleTasks);
   }

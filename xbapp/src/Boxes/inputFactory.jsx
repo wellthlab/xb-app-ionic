@@ -49,6 +49,7 @@ import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import TaskInstructions from "../Strength/TaskInstructions";
+import SubscribeToModule from "../Move/PlaylistSubscriber";
 
 /**
  * Create input widgets based on task type
@@ -279,6 +280,11 @@ export default function responseFactory(
     case "s22instructions":
       input = <TaskInstructions task={taskObj} />;
       typedesc = "Instructions";
+      break;
+
+    case "s22subscribe":
+      input = <SubscribeToModule />;
+      typedesc = "Subscribe";
       break;
     default:
       input = (

@@ -135,7 +135,11 @@ function GenericModal(props) {
   }
   return (
     <div>
-      <IonModal isOpen={props.showModal} className="ios-bottom-safe-area">
+      <IonModal
+        swipeToClose={true}
+        isOpen={props.showModal}
+        className="ios-bottom-safe-area"
+      >
         <IonHeader>
           <IonToolbar>
             <IonTitle>{props.title}</IonTitle>

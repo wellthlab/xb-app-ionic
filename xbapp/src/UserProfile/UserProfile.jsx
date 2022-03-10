@@ -159,7 +159,7 @@ function UserProfile(props) {
 
   function saveProfile() {
     console.log("Saving profile: ", profileObj);
-    props.controllers.CREATE_USER_PROFILE(profileObj);
+    props.controllers.UPDATE_USER_PROFILE(profileObj);
   }
 
   props.controllers.SET_USER_PROFILE_IF_REQD();
