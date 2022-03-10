@@ -7,7 +7,6 @@ import {
   IonCardContent,
   IonItem,
 } from "@ionic/react";
-import { useHistory } from "react-router";
 import Blur from "react-css-blur";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,12 +18,12 @@ import SetCounter from "../SetCounter";
 
 /**
  * Time movements
+ * TODO: use IonToast instead of react-toastify
  */
 const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
-  let history = useHistory();
   const [moveAlternation, setMoveAlternation] = React.useState([null, null]);
   const [numberOfSets, setNumberOfSets] = React.useState(0);
   const [numberOfReps, setNumberOfReps] = React.useState(0);
@@ -69,24 +68,16 @@ const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
 
   return (
     <div id="movementTimer">
-      <IonRow>
-        <IonCol>
-          <IonCard>
-            <IonCardContent>
-              <IonItem>
-                <div class="ion-text-justify">
-                  Try to fit in as many sets in the 7-minute limit. When ready,
-                  <strong> TAP</strong> on the move you want to start with.
-                  <strong> TAP</strong> the <strong> OTHER</strong> move when
-                  you have completed 5 <strong> REPS</strong> and you will
-                  switch <strong>MOVES</strong>. When the time runs out, you can
-                  add any outstanding reps to your set.
-                </div>
-              </IonItem>
-            </IonCardContent>
-          </IonCard>
-        </IonCol>
-      </IonRow>
+      <IonItem lines="none">
+        <div class="ion-text-justify">
+          Try to fit in as many sets in the 7-minute limit. When ready,
+          <strong> TAP</strong> on the move you want to start with.
+          <strong> TAP</strong> the <strong> OTHER</strong> move when you have
+          completed 5 <strong> REPS</strong> and you will switch{" "}
+          <strong>MOVES</strong>. When the time runs out, you can add any
+          outstanding reps to your set.
+        </div>
+      </IonItem>
 
       {mins === 0 && secs === 0 ? (
         ""

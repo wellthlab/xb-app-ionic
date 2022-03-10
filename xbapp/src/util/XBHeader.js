@@ -12,7 +12,7 @@ const XBHeader = (props) => {
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
-          <IonBackButton defaultHref="/feed" />
+          <IonBackButton defaultHref="/" />
         </IonButtons>
         <IonTitle>{props.title}</IonTitle>
       </IonToolbar>

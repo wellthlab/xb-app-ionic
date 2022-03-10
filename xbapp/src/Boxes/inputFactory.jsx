@@ -49,7 +49,7 @@ import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import TaskInstructions from "../Strength/TaskInstructions";
-import SubscribeToModule from "../Move/PlaylistSubscriber";
+import SubscribeToModule from "../Move/components/PlaylistSubscriber";
 
 /**
  * Create input widgets based on task type
@@ -65,26 +65,23 @@ import SubscribeToModule from "../Move/PlaylistSubscriber";
  2) Some widgets are actually composed of multiple, each of which will trigger onSubmit; so you probably want to merge the response objects together!
 
  */
-export default function responseFactory(
-  type,
-  group,
-  dayNumber,
-  onSubmit,
-  taskObj
-) {
+export default function responseFactory(task, team, stageNumber, onSubmit) {
   // time key is used to re-create rather than re-use elements on subsequent uses
   var input, typedesc;
   var time = Date.now();
-  var groupID = group._id;
-  let week = group.experiment.week;
-  let day = group.experiment.day;
+  var teamId = team._id;
+  let week = team.experiment.week;
+  let day = team.experiment.day;
 
   // info is an optional param; it's other fields that the type might need
-  if (typeof taskObj == "undefined") {
-    taskObj = {};
+  if (typeof task == "undefined") {
+    return {
+      input: "",
+      desc: "",
+    };
   }
 
-  switch (type) {
+  switch (task.intype) {
     case "minutes":
       typedesc = "Minutes";
       input = <MinuteEntry key={time} onSubmit={onSubmit} />;
@@ -109,7 +106,7 @@ export default function responseFactory(
       typedesc = "Strength";
       input = (
         <StrengthWizard
-          countdownID={dayNumber + "-" + groupID}
+          countdownID={stageNumber + "-" + teamId}
           week={week}
           onSubmit={onSubmit}
         />
@@ -129,7 +126,7 @@ export default function responseFactory(
           onSubmit={onSubmit}
           explorer={true}
           week={week}
-          day={dayNumber}
+          day={stageNumber}
         />
       );
       break;
@@ -146,7 +143,7 @@ export default function responseFactory(
 
     case "scheduler":
       var planner = [];
-      if (week === 0 && dayNumber === 1) {
+      if (week === 0 && stageNumber === 1) {
         planner = [
           { day: "Tuesday", isChecked: false },
           { day: "Wednesday", isChecked: false },
@@ -191,7 +188,7 @@ export default function responseFactory(
       break;
 
     case "quiz":
-      input = <Quiz onSubmit={onSubmit} task={taskObj} />;
+      input = <Quiz onSubmit={onSubmit} task={task} />;
       typedesc = "Quiz";
       break;
 
@@ -211,22 +208,22 @@ export default function responseFactory(
       break;
 
     case "s22plan":
-      input = <Planner onSubmit={onSubmit} group={group} />;
+      input = <Planner onSubmit={onSubmit} group={team} />;
       typedesc = "Weekly Plan";
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={taskObj.video} />;
+      input = <Video onSubmit={onSubmit} video={task.video} />;
       typedesc = "Video Move";
       break;
 
     case "s22assessedvideo":
       input = (
         <>
-          <Video onSubmit={onSubmit} video={taskObj.video} />
+          <Video onSubmit={onSubmit} video={task.video} />
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>Time your {taskObj.move}</IonCardTitle>
+              <IonCardTitle>Time your {task.move}</IonCardTitle>
               <IonCardSubtitle>
                 Timing your move will let you measure your progress
               </IonCardSubtitle>
@@ -243,9 +240,7 @@ export default function responseFactory(
       break;
 
     case "s22weblink":
-      input = (
-        <WebLink onSubmit={onSubmit} link={taskObj.link} info={taskObj} />
-      );
+      input = <WebLink onSubmit={onSubmit} link={task.link} info={task} />;
       typedesc = "Web Link";
       break;
 
@@ -255,15 +250,15 @@ export default function responseFactory(
       break;
 
     case "s22manage":
-      input = <ManageItTask task={taskObj} onSubmit={onSubmit} />;
+      input = <ManageItTask task={task} onSubmit={onSubmit} />;
       typedesc = "Manage It";
       break;
 
     case "s22edtset":
       input = (
         <EDTSet
-          task={taskObj}
-          groupId={groupID}
+          task={task}
+          groupId={teamId}
           day={day}
           week={week}
           onSubmit={onSubmit}
@@ -278,7 +273,7 @@ export default function responseFactory(
       break;
 
     case "s22instructions":
-      input = <TaskInstructions task={taskObj} />;
+      input = <TaskInstructions task={task} />;
       typedesc = "Instructions";
       break;
 
@@ -289,7 +284,7 @@ export default function responseFactory(
     default:
       input = (
         <p>
-          Unknown response type of {type} for task {taskObj.desc}{" "}
+          Unknown response type of {task.intype} for task {task.desc}{" "}
         </p>
       );
       typedesc = "";

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IonContent,
   IonSpinner,
@@ -11,146 +12,170 @@ import {
   IonButton,
   IonIcon,
   IonItemGroup,
+  IonText,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
 } from "@ionic/react";
-import { warningOutline, playOutline } from "ionicons/icons";
+import { warningOutline, playOutline, toggle } from "ionicons/icons";
 
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
+import GenericModal from "../Info/components/GenericModal";
+import PlaylistDetail from "./components/PlaylistDetail";
 
 /**
  * Main page for users to track and record their movements
  *
  */
 function PlaylistPicker(props) {
+  let [showModal, setShowModal] = useState(false);
+  let [playlistTitle, setPlaylistTitle] = useState(undefined);
+  let [activePlaylistId, setActivePlaylistId] = useState(undefined);
+  let [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
 
-  if (!props.teams.teams.bybox) {
+  if (
+    !props.teams.loaded ||
+    !props.userProfile.loaded ||
+    !props.modules.loaded
+  ) {
     return <IonSpinner class="center-spin" name="crescent" />;
   }
 
-  if (!props.userProfile.userProfile) {
-    return <IonSpinner class="center-spin" name="crescent" />;
+  let userProfile = props.userProfile.userProfile;
+  const modules = props.modules.modules;
+  const team = props.teams.teams.bybox.move[0];
+
+  // if (!team) {
+  //   return (
+  //     <IonContent>
+  //       <div className="center-message">
+  //         <h3>
+  //           To take part in this experiment, you first need to join a team and
+  //           set up your user profile from the progress page.
+  //         </h3>
+  //       </div>
+  //     </IonContent>
+  //   );
+  // }
+  // if (!team.s22plan) {
+  //   return (
+  //     <div className="center-message">
+  //       <h3>
+  //         You need to plan your week in the progress page before you can add
+  //         minutes.
+  //       </h3>
+  //     </div>
+  //   );
+  // }
+
+  const userSubscribedModules = userProfile.modules;
+  // userProfile.modules is an object with keys which are the module topics,
+  // i.e. strength-training. We need to loop through each topic and get the
+  // id of the modules the user is subscribed to and push this to a list of
+  // all module ids
+  const subscribedModuleIds = [];
+  for (const [topic, moduleIds] of Object.entries(userSubscribedModules)) {
+    subscribedModuleIds.push(...moduleIds);
   }
 
-  if (!props.modules.modules) {
-    return <IonSpinner class="center-spin" name="crescent" />;
-  }
-
-  let team;
-  try {
-    team = props.teams.teams.bybox.move[0];
-  } catch (e) {
-    console.warn("Error whilst accessing team data", e);
-    return (
-      <IonContent>
-        <div className="center-message">
-          <h3>There has been an error.</h3>
-          <h3>
-            To take part in this experiment, you first need to join a team and
-            set up your user profile from the progress page.
-          </h3>
-        </div>
-      </IonContent>
-    );
-  }
-
-  if (!team.s22plan) {
-    return (
-      <div className="center-message">
-        <h3>
-          You need to plan your week in the progress page before you can add
-          minutes.
-        </h3>
-      </div>
-    );
-  }
-
-  function ActiveModulePlaylist() {
-    let subscribedModules = props.userProfile.userProfile.modules;
-
-    const activeModuleIds = [];
-    for (const [topic, moduleIds] of Object.entries(subscribedModules)) {
-      activeModuleIds.push(...moduleIds);
+  // Now we have a list of all module ids the user is subscribed to, we
+  // construct a list of clickable items to load that module
+  let activePlaylists = subscribedModuleIds.map((id) => {
+    const module = props.modules.modules.find((m) => m._id === id);
+    // const stage = userProfile.progress[id];
+    const stage = 1;
+    function createModal() {
+      toggleModal();
+      setPlaylistTitle(module.name);
+      setActivePlaylistId(module._id);
+      setActivePlaylistStage(stage);
     }
-
-    let activePlaylists = activeModuleIds.map((id) => {
-      let module = props.modules.modules.find((m) => m._id === id);
-      return (
-        <>
-          <IonItem
-            button
-            key={module.id}
-            detail={true}
-            detailIcon={playOutline}
-            routerLink={"/move/task-player/" + module.topic + "/" + module._id}
-          >
-            <IonLabel>{module.name}</IonLabel>
-          </IonItem>
-        </>
-      );
-    });
-
     return (
       <>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Your Active Plans</IonCardTitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  {activePlaylists.length > 0 ? (
-                    <IonList>
-                      <IonItemGroup>{activePlaylists}</IonItemGroup>
-                    </IonList>
-                  ) : (
-                    <IonGrid>
-                      <IonRow>
-                        <IonCol>
-                          <IonItem lines="none">
-                            <IonIcon icon={warningOutline} slot="start" />
-                            <div>You have no active playlists</div>
-                          </IonItem>
-                        </IonCol>
-                      </IonRow>
-                    </IonGrid>
-                  )}
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-
-        <IonCard>
-          <IonCardContent>
-            <IonRow>
-              <IonCol>
-                <IonButton expand="full" routerLink="/subscribe/modules">
-                  Manage Plans
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </IonCardContent>
-        </IonCard>
+        <IonItem
+          button
+          key={module.id}
+          detail={true}
+          detailIcon={playOutline}
+          onClick={createModal}
+        >
+          <IonLabel>{module.name}</IonLabel>
+          <IonLabel>Stage {stage}</IonLabel>
+        </IonItem>
       </>
     );
-  }
+  });
 
   return (
     <>
       <IonPage>
         <XBHeader title="Movement Playlists"></XBHeader>
         <IonContent>
-          <ActiveModulePlaylist />
+          {/* List of plans the user is subscribed to */}
+          <IonItem lines="none">
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    <h4>Your Playlists</h4>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+
+              <IonRow>
+                <IonCol>
+                  {activePlaylists.length ? (
+                    <>
+                      <IonList>
+                        <IonItemGroup>{activePlaylists}</IonItemGroup>
+                      </IonList>
+
+                      <GenericModal
+                        showModal={showModal}
+                        toggleModal={toggleModal}
+                        title={playlistTitle}
+                        message={
+                          <PlaylistDetail
+                            team={team}
+                            modules={modules}
+                            moduleId={activePlaylistId}
+                            currentStage={activePlaylistStage}
+                          />
+                        }
+                      />
+                    </>
+                  ) : (
+                    <IonItem lines="none">
+                      <IonIcon icon={warningOutline} slot="start" />
+                      <div>You have no active playlists</div>
+                    </IonItem>
+                  )}
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+          {/* Where other plans can be picked */}
+          <IonCard>
+            <IonCardContent>
+              <IonRow>
+                <IonCol>
+                  <IonButton expand="full" routerLink="/subscribe/modules">
+                    Manage Plans
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonCardContent>
+          </IonCard>
         </IonContent>
       </IonPage>
     </>
@@ -169,30 +194,3 @@ export default connect(
     pure: false,
   }
 )(addControllersProp(PlaylistPicker));
-
-{
-  /* <IonGrid>
-<IonRow>
-  <IonCol>
-    <TodoTasks
-      day={day}
-      team={team}
-      tasks={requiredTasks}
-      optional={optionalTasks}
-      minutes={totalMinutes}
-    />
-  </IonCol>
-</IonRow>
-<IonRow>
-  <IonCol>
-    <p>
-      <IonLabel>Your Progress Today</IonLabel>
-    </p>
-    <TotalTimer
-      target={team.myTargetToday}
-      logged={team.myMinutesToday}
-    />
-  </IonCol>
-</IonRow>
-</IonGrid> */
-}

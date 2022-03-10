@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   IonButton,
   IonIcon,
@@ -50,12 +50,6 @@ function MovementTimer(props) {
   let optionalOrRequired = props.match.params.req;
   let taskIdx = props.match.params.index;
   let section = props.match.params.section;
-
-  return (
-    <IonPage>
-      <IonContent>We made it!</IonContent>
-    </IonPage>
-  );
 
   // Save the response, plus the minutes from the timer, day number, and type
   async function save() {

@@ -85,8 +85,9 @@ import MovementPage from "./Move/Move";
 import TaskPlaylist from "./Move/PlaylistPicker";
 import MovementTimer from "./Move/MovementTimer";
 import UserProfile from "./UserProfile/UserProfile";
-import SubscribeToModule from "./Move/PlaylistSubscriber";
-import TaskPlayer from "./Move/PlaylistDetail";
+import SubscribeToModule from "./Move/components/PlaylistSubscriber";
+import TaskPlayer from "./Move/components/PlaylistDetail";
+import PlaylistTimer from "./Move/PlaylistTimer";
 
 import getXBClient from "./util_model/client";
 
@@ -259,8 +260,8 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/move/timer/:gid/:mid"
-                component={MovementTimer}
+                path="/move/timer/:teamId/:moduleId/:stage"
+                component={PlaylistTimer}
                 exact={true}
               />
               <Route

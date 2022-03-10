@@ -12,10 +12,14 @@ import {
   IonTitle,
   IonHeader,
   IonToolbar,
+  IonBackButton,
+  IonButtons,
+  IonIcon,
 } from "@ionic/react";
 import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 import { CheckmarkSharp, CloseSharp } from "react-ionicons";
+import { chevronBack } from "ionicons/icons";
 
 const quizes = [
   {
@@ -135,13 +139,12 @@ function GenericModal(props) {
   }
   return (
     <div>
-      <IonModal
-        swipeToClose={true}
-        isOpen={props.showModal}
-        className="ios-bottom-safe-area"
-      >
+      <IonModal swipeToClose={true} isOpen={props.showModal}>
         <IonHeader>
           <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton onClick={props.toggleModal}>Close</IonButton>
+            </IonButtons>
             <IonTitle>{props.title}</IonTitle>
           </IonToolbar>
         </IonHeader>
@@ -316,9 +319,6 @@ function GenericModal(props) {
             </>
           )}
         </IonContent>
-        <IonButton expand="full" onClick={props.toggleModal}>
-          Close
-        </IonButton>
       </IonModal>
     </div>
   );

@@ -15,9 +15,9 @@ import {
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
-import { addControllersProp } from "../util_model/controllers";
+import { addControllersProp } from "../../util_model/controllers";
 
-import XBHeader from "../util/XBHeader";
+import XBHeader from "../../util/XBHeader";
 
 function SubscribeToModule(props) {
   props.controllers.SET_USER_PROFILE_IF_REQD();
