@@ -142,9 +142,13 @@ function GenericModal(props) {
       <IonModal swipeToClose={true} isOpen={props.showModal}>
         <IonHeader>
           <IonToolbar>
-            <IonButtons slot="start">
-              <IonButton onClick={props.toggleModal}>Close</IonButton>
-            </IonButtons>
+            {props.hideCloseButton ? (
+              ""
+            ) : (
+              <IonButtons slot="start">
+                <IonButton onClick={props.toggleModal}>Close</IonButton>
+              </IonButtons>
+            )}
             <IonTitle>{props.title}</IonTitle>
           </IonToolbar>
         </IonHeader>

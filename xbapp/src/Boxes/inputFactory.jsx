@@ -65,7 +65,13 @@ import SubscribeToModule from "../Move/components/PlaylistSubscriber";
  2) Some widgets are actually composed of multiple, each of which will trigger onSubmit; so you probably want to merge the response objects together!
 
  */
-export default function responseFactory(task, team, stageNumber, onSubmit) {
+export default function responseFactory(
+  type,
+  team,
+  stageNumber,
+  onSubmit,
+  task = undefined
+) {
   // time key is used to re-create rather than re-use elements on subsequent uses
   var input, typedesc;
   var time = Date.now();
@@ -73,15 +79,15 @@ export default function responseFactory(task, team, stageNumber, onSubmit) {
   let week = team.experiment.week;
   let day = team.experiment.day;
 
-  // info is an optional param; it's other fields that the type might need
+  // task is an optional param; it's the task object and contains other fields that the type might need
   if (typeof task == "undefined") {
-    return {
+    task = {
       input: "",
       desc: "",
     };
   }
 
-  switch (task.intype) {
+  switch (type) {
     case "minutes":
       typedesc = "Minutes";
       input = <MinuteEntry key={time} onSubmit={onSubmit} />;

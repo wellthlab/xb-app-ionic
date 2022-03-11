@@ -10,73 +10,76 @@ import {
   IonSelect,
   IonCard,
   IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
   IonGrid,
   IonRow,
   IonCol,
   IonSpinner,
-  IonCardSubtitle,
   IonPage,
 } from "@ionic/react";
 
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
+import { useHistory } from "react-router";
 
-const facultyList = [
-  "Research and Innovation Services",
-  "iSolutions",
-  "Faculty of Arts and Humanities",
-  "Library",
-  "Faculty of Engineering and Physical Sciences",
-  "Health and Safety",
-  "Faculty of Social Sciences",
-  "Medicine",
-  "Health Sciences",
-  "Faculty of Environmental and Life Sciences",
-].sort();
+const facultyMap = {
+  "Health, Safety & Risk": [],
+  "Research and Innovation Services": [],
+  iSolutions: [],
+  "Faculty of Arts and Humanities": [
+    "Winchester School of Art",
+    "Archaeology",
+    "English",
+    "Film",
+    "History",
+    "Modern Languages and Linguistics",
+    "Music",
+    "Philosophy",
+  ],
+  Library: [],
+  "Faculty of Engineering and Physical Sciences": [
+    "Chemisty",
+    "Electronics and Computer Science",
+    "Engineering",
+    "FEPS Enterprise/nC2",
+    "Physics and Astronomy",
+    "Southampton Marine and Maritime Institute",
+    "Web Ccience Institute",
+    "Zepler Institute for Photonics and Nanoelectronics",
+  ],
+  "Health and Safety": [],
+  "Faculty of Social Sciences": [
+    "Southampton Law School",
+    "Economic, Social and Political Sciences",
+    "Southampton Business School",
+    "Mathematical Sciences",
+    "Southampton Education School",
+  ],
+  "Faculty of Medicine": [
+    "Medicine",
+    "Cancer Science",
+    "Human Development and Health",
+    "Clinical and Experimental Science",
+    "Primary Care, Population Sci and Medical Education",
+  ],
+  "Health Sciences": [],
+  "Faculty of Environmental and Life Sciences": [
+    "Biological Sciences",
+    "Health Sciences",
+    "Geography and Environmental Sciences",
+    "Ocean and Earth Science",
+    "Psychology",
+  ],
+};
 
-const departmentList = [
-  "Winchester School of Art",
-  "Archaeology",
-  "English",
-  "Film",
-  "History",
-  "Modern Languages and Linguistics",
-  "Music",
-  "Philosophy",
-  "Chemisty",
-  "Electronics and Computer Science",
-  "Engineering",
-  "FEPS Enterprise/nC2",
-  "Physics and Astronomy",
-  "Southampton Marine and Maritime Institute",
-  "Web Ccience Institute",
-  "Zepler Institute for Photonics and Nanoelectronics",
-  "Medicine",
-  "Cancer Science",
-  "Human Development and Health",
-  "Clinical and Experimental Science",
-  "Primary Care, Population Sci and Medical Education",
-  "Southampton Law School",
-  "Economic, Social and Political Sciences",
-  "Southampton Business School",
-  "Mathematical Sciences",
-  "Southampton Education School",
-  "HSR",
-  "Biological Sciences",
-  "Health Sciences",
-  "Geography and Environmental Sciences",
-  "Ocean and Earth Science",
-  "Psychology",
-].sort();
+const facultyList = Object.keys(facultyMap).sort();
 
 /**
  * Create a user profile
  *
  */
 function UserProfile(props) {
+  let history = useHistory();
   let profileObj = {};
 
   /**
@@ -98,10 +101,14 @@ function UserProfile(props) {
 
     return (
       <>
-        <IonItem>
-          <IonLabel position="floating">{inputLabel}</IonLabel>
-          <IonInput value={value} onIonChange={(e) => handleChange(e)} />
-        </IonItem>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonLabel position="floating">{inputLabel}</IonLabel>
+              <IonInput value={value} onIonChange={(e) => handleChange(e)} />
+            </IonItem>
+          </IonCol>
+        </IonRow>
       </>
     );
   }
@@ -160,6 +167,7 @@ function UserProfile(props) {
   function saveProfile() {
     console.log("Saving profile: ", profileObj);
     props.controllers.UPDATE_USER_PROFILE(profileObj);
+    history.goBack();
   }
 
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -182,12 +190,6 @@ function UserProfile(props) {
   const inputCard = (
     <>
       <IonCard>
-        {/* <IonCardHeader>
-          <IonCardTitle>Set up your user profile</IonCardTitle>
-          <IonCardSubtitle>
-            Your profile can be updated at any time.
-          </IonCardSubtitle>
-        </IonCardHeader> */}
         <IonCardContent>
           <IonGrid>
             {/* Preferred name */}
@@ -204,12 +206,16 @@ function UserProfile(props) {
               updateProfileObj={updateProfile}
             />
             {/* School or department */}
-            <ChoiceField
-              inputLabel={"School or Department"}
-              choices={departmentList}
-              profileObjKey={"department"}
-              updateProfileObj={updateProfile}
-            />
+            {profileObj.unit && facultyMap[profileObj.unit].length > 0 ? (
+              <ChoiceField
+                inputLabel={"School or Department"}
+                choices={facultyMap[profileObj.unit]}
+                profileObjKey={"department"}
+                updateProfileObj={updateProfile}
+              />
+            ) : (
+              ""
+            )}
             {/* Campus */}
             <ChoiceField
               inputLabel={"Campus"}

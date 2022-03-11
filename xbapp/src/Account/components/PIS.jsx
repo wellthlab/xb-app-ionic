@@ -3,7 +3,8 @@ import { IonList, IonItem, IonLabel, IonModal, IonButton } from "@ionic/react";
 
 const PIS = ({}) => {
   return (
-    <div class="ion-text-justify">
+    <div id="participant-info" class="ion-text-justify">
+      <br></br>
       <b>Study Title:</b> Experiments-In-A-Box (XB): A Technical Model For
       Cultivating Personal Health Heuristics
       <br></br>

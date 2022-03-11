@@ -50,7 +50,7 @@ function PlaylistDescription({ module, stage }) {
   );
 }
 
-function PlaylistTasks({ tasks, stage }) {
+function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
   const [currentStage, setCurrentStage] = useState(stage);
 
   // These functions are used to control the buttons which control the day to
@@ -69,50 +69,48 @@ function PlaylistTasks({ tasks, stage }) {
     return <IonItem button>{task.desc}</IonItem>;
   });
 
-  return (
-    <IonItem lines="none" style={{ "--padding-top": "25px" }}>
-      <IonGrid>
-        {/* Buttons for switching playlist stage */}
-        <IonRow>
-          <IonCol>
-            <div class="ion-text-center">
-              <IonButton onClick={prevStage} size="default">
-                <IonIcon icon={chevronBackCircleOutline} />
-              </IonButton>
-            </div>
-          </IonCol>
-          <IonCol>
-            <div class="ion-text-center">
-              <IonText>
-                <h4>Stage {currentStage}</h4>
-              </IonText>
-            </div>
-          </IonCol>
-          <IonCol>
-            <div class="ion-text-center">
-              <IonButton onClick={nextStage} size="default">
-                <IonIcon icon={chevronForwardCircleOutline} />
-              </IonButton>
-            </div>
-          </IonCol>
-        </IonRow>
+  const buttonsDisabled = currentStage !== stage;
 
-        {/* Tasks for the day's playlist */}
-        <IonRow>
-          <IonCol>
-            <IonList>
-              <IonItemGroup>{taskItems}</IonItemGroup>
-            </IonList>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </IonItem>
-  );
-}
-
-function PlayButtons({ teamId, moduleId, stage }) {
   return (
     <>
+      <IonItem lines="none" style={{ "--padding-top": "25px" }}>
+        <IonGrid>
+          {/* Buttons for switching playlist stage */}
+          <IonRow>
+            <IonCol>
+              <div class="ion-text-center">
+                <IonButton onClick={prevStage} size="default">
+                  <IonIcon icon={chevronBackCircleOutline} />
+                </IonButton>
+              </div>
+            </IonCol>
+            <IonCol>
+              <div class="ion-text-center">
+                <IonText>
+                  <h4>Stage {currentStage}</h4>
+                </IonText>
+              </div>
+            </IonCol>
+            <IonCol>
+              <div class="ion-text-center">
+                <IonButton onClick={nextStage} size="default">
+                  <IonIcon icon={chevronForwardCircleOutline} />
+                </IonButton>
+              </div>
+            </IonCol>
+          </IonRow>
+
+          {/* Tasks for the day's playlist */}
+          <IonRow>
+            <IonCol>
+              <IonList>
+                <IonItemGroup>{taskItems}</IonItemGroup>
+              </IonList>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonItem>
+
       <IonItem
         lines="none"
         style={{ "--padding-top": "10px", "--padding-bottom": "0px" }}
@@ -120,17 +118,17 @@ function PlayButtons({ teamId, moduleId, stage }) {
         <IonGrid>
           <IonCol>
             <div class="ion-text-center">
-              {/* <IonButton size={"small"}>
+              <IonButton size={"small"} disabled={buttonsDisabled}>
                 <IonIcon icon={calendarOutline} />
-              </IonButton> */}
+              </IonButton>
               <IonButton
+                disabled={buttonsDisabled}
                 routerLink={
                   "/move/timer/" + teamId + "/" + moduleId + "/" + stage
                 }
                 size={"large"}
                 shape={"round"}
               >
-                {/* <IonLabel>Go</IonLabel> */}
                 <IonIcon icon={playOutline} />
               </IonButton>
             </div>
@@ -146,11 +144,11 @@ function PlaylistDetail({ team, modules, moduleId, currentStage }) {
   return (
     <>
       <PlaylistDescription module={module} stage={currentStage} />
-      <PlaylistTasks stage={currentStage} tasks={module.tasks} />
-      <PlayButtons
+      <PlaylistTasks
+        stage={currentStage}
+        tasks={module.tasks}
         teamId={team._id}
         moduleId={module._id}
-        stage={currentStage}
       />
     </>
   );

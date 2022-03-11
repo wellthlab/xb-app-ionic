@@ -26,6 +26,7 @@ import { addControllersProp } from "../util_model/controllers";
 import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
 import PlaylistDetail from "./components/PlaylistDetail";
+import SubscribeToModule from "./components/PlaylistSubscriber";
 
 /**
  * Main page for users to track and record their movements
@@ -55,43 +56,23 @@ function PlaylistPicker(props) {
   const modules = props.modules.modules;
   const team = props.teams.teams.bybox.move[0];
 
-  // if (!team) {
-  //   return (
-  //     <IonContent>
-  //       <div className="center-message">
-  //         <h3>
-  //           To take part in this experiment, you first need to join a team and
-  //           set up your user profile from the progress page.
-  //         </h3>
-  //       </div>
-  //     </IonContent>
-  //   );
-  // }
-  // if (!team.s22plan) {
-  //   return (
-  //     <div className="center-message">
-  //       <h3>
-  //         You need to plan your week in the progress page before you can add
-  //         minutes.
-  //       </h3>
-  //     </div>
-  //   );
-  // }
-
-  const userSubscribedModules = userProfile.modules;
   // userProfile.modules is an object with keys which are the module topics,
   // i.e. strength-training. We need to loop through each topic and get the
   // id of the modules the user is subscribed to and push this to a list of
   // all module ids
+  const userSubscribedModules = userProfile.modules ? userProfile.modules : {};
   const subscribedModuleIds = [];
   for (const [topic, moduleIds] of Object.entries(userSubscribedModules)) {
     subscribedModuleIds.push(...moduleIds);
   }
 
+  console.log("subscribedModuleIds", subscribedModuleIds);
+  console.log("userSubscribedModules", userSubscribedModules);
+
   // Now we have a list of all module ids the user is subscribed to, we
   // construct a list of clickable items to load that module
   let activePlaylists = subscribedModuleIds.map((id) => {
-    const module = props.modules.modules.find((m) => m._id === id);
+    const module = modules.find((m) => m._id === id);
     // const stage = userProfile.progress[id];
     const stage = 1;
     function createModal() {
@@ -165,17 +146,14 @@ function PlaylistPicker(props) {
             </IonGrid>
           </IonItem>
           {/* Where other plans can be picked */}
-          <IonCard>
-            <IonCardContent>
-              <IonRow>
-                <IonCol>
-                  <IonButton expand="full" routerLink="/subscribe/modules">
-                    Manage Plans
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </IonCardContent>
-          </IonCard>
+          <IonItem lines="none">
+            <IonText>
+              <h3>Other Playlists</h3>
+            </IonText>
+          </IonItem>
+          <IonItem lines="none">
+            <SubscribeToModule userProfile={userProfile} modules={modules} />
+          </IonItem>
         </IonContent>
       </IonPage>
     </>

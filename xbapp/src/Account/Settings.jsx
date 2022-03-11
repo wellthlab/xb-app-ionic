@@ -87,8 +87,8 @@ const OptionTabs = (props) => {
             </IonCardHeader>
             <IonCardContent>
               <IonList>
-                <IonItem routerLink="/user-profile">
-                  Update User Profile
+                <IonItem routerLink="/settings/user-profile">
+                  Update Profile
                 </IonItem>
                 <IonItem routerLink="/account">Log Out</IonItem>
                 {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}

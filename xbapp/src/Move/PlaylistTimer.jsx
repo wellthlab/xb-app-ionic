@@ -148,7 +148,13 @@ function PlaylistTimer(props) {
 
   function updateResponse() {}
 
-  const timerContent = inputFactory(currentTask, team, stage, updateResponse);
+  const timerContent = inputFactory(
+    currentTask.intype,
+    team,
+    stage,
+    updateResponse,
+    currentTask
+  );
 
   return (
     <IonPage>
@@ -166,13 +172,16 @@ function PlaylistTimer(props) {
         <IonRow>
           <IonCol>
             {currentTaskIdx < tasks.length - 1 ? (
-              <IonButton onClick={skipTask}>Skip Move</IonButton>
+              <IonButton expand="full" onClick={skipTask}>
+                Next
+              </IonButton>
             ) : (
               <IonButton
+                expand="full"
                 onClick={finishPlaylist}
                 routerLink={"/move/task-playlist"}
               >
-                Submit Activity
+                Finish
               </IonButton>
             )}
           </IonCol>

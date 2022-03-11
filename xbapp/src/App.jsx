@@ -265,7 +265,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route
-                path="/user-profile"
+                path="/settings/user-profile"
                 component={UserProfile}
                 exact={true}
               />
