@@ -87,7 +87,7 @@ import MovementTimer from "./Move/MovementTimer";
 import UserProfile from "./UserProfile/UserProfile";
 import SubscribeToModule from "./Move/components/PlaylistSubscriber";
 import TaskPlayer from "./Move/components/PlaylistDetail";
-import PlaylistTimer from "./Move/PlaylistTimer";
+import PlaylistTimer from "./Move/PlaylistPlayer";
 
 import getXBClient from "./util_model/client";
 

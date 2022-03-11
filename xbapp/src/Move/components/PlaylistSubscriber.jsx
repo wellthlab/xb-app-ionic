@@ -26,9 +26,6 @@ function SubscribeToModule(props) {
   let userModules = {
     ...profile.modules,
   };
-  let modulesUpdated = false;
-
-  console.log("userModules", userModules);
 
   // Update the user profile with the modules they have picked or removed
   function subscribeUser() {
@@ -41,10 +38,6 @@ function SubscribeToModule(props) {
 
   function toggleModal() {
     setShowModal(!showModal);
-    if (modulesUpdated) {
-      subscribeUser();
-      modulesUpdated = false;
-    }
   }
 
   function createModal(title, topic) {
@@ -56,16 +49,21 @@ function SubscribeToModule(props) {
   // Update the userModules object for stuff which is ticked or been unticked
   // for the given topic
   function updateModules(checked, moduleId, topic) {
-    if (checked) {
-      if (!userModules[topic]) {
-        userModules[topic] = [moduleId];
-      } else {
-        userModules[topic] = [...userModules[topic], moduleId];
-      }
-    } else {
-      userModules[topic] = userModules[topic].filter((id) => id !== moduleId);
+    // create the an array for the topic if it doesn't exist
+    if (!userModules[topic]) {
+      userModules[topic] = {};
     }
-    modulesUpdated = true;
+    // If adding this module for the first time then create it, otherwise just
+    // modify the "active" field
+    if (!userModules[topic][moduleId]) {
+      const moduleRes = {
+        active: checked,
+        stage: 0,
+      };
+      userModules[topic][moduleId] = moduleRes;
+    } else {
+      userModules[topic][moduleId].active = checked;
+    }
   }
 
   // Create a list of given playlists for a given topic, displaying the name of

@@ -28,8 +28,6 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 import inputFactory from "../Boxes/inputFactory";
 import Timer from "../Instruments/StatelessTimer";
-import TotalTimer from "./components/TotalTimer";
-import ManualTime from "./components/ManualEntry";
 import XBHeader from "../util/XBHeader";
 
 function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
@@ -56,7 +54,7 @@ function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
             <IonCol>
               <strong>{module.name}</strong>
             </IonCol>
-            <IonCol>Stage {stage}</IonCol>
+            <IonCol>Stage {stage + 1}</IonCol>
           </IonRow>
           <IonRow></IonRow>
         </IonGrid>
@@ -108,7 +106,7 @@ function TimerThing({ task, team }) {
   );
 }
 
-function PlaylistTimer(props) {
+function PlaylistPlayer(props) {
   const [currentTaskIdx, setCurrentTaskIdx] = useState(0);
 
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -120,7 +118,7 @@ function PlaylistTimer(props) {
 
   const team = props.teams.teams.bybox["move"][0];
   const moduleId = props.match.params.moduleId;
-  const stage = props.match.params.stage;
+  const stage = parseInt(props.match.params.stage, 10);
 
   // TODO: this probably won't scale very well
   const module = props.modules.modules.find((m) => m._id === moduleId);
@@ -196,4 +194,4 @@ export default connect((state, ownProps) => {
     teams: state.teams,
     modules: state.modules,
   };
-}, {})(addControllersProp(PlaylistTimer));
+}, {})(addControllersProp(PlaylistPlayer));

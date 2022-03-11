@@ -34,7 +34,7 @@ function PlaylistDescription({ module, stage }) {
           <IonRow>
             <IonCol>
               <IonText>
-                You are currently at <strong>STAGE</strong> {stage} out of{" "}
+                You are currently at <strong>STAGE</strong> {stage + 1} out of{" "}
                 {numStages}
               </IonText>
             </IonCol>
@@ -42,7 +42,7 @@ function PlaylistDescription({ module, stage }) {
         </IonItem>
         <IonRow>
           <IonCol>
-            <IonProgressBar value={stage / numStages} />
+            <IonProgressBar value={(stage + 1) / numStages} />
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -56,7 +56,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
   // These functions are used to control the buttons which control the day to
   // show the playlist for
   function nextStage() {
-    if (currentStage === stage) return;
+    if (currentStage >= tasks.length - 1) return;
     setCurrentStage(currentStage + 1);
   }
   function prevStage() {
@@ -87,7 +87,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
             <IonCol>
               <div class="ion-text-center">
                 <IonText>
-                  <h4>Stage {currentStage}</h4>
+                  <h4>Stage {currentStage + 1}</h4>
                 </IonText>
               </div>
             </IonCol>

@@ -53,28 +53,34 @@ function PlaylistPicker(props) {
   }
 
   let userProfile = props.userProfile.userProfile;
-  const modules = props.modules.modules;
+  const availableModules = props.modules.modules;
   const team = props.teams.teams.bybox.move[0];
 
   // userProfile.modules is an object with keys which are the module topics,
   // i.e. strength-training. We need to loop through each topic and get the
   // id of the modules the user is subscribed to and push this to a list of
   // all module ids
-  const userSubscribedModules = userProfile.modules ? userProfile.modules : {};
-  const subscribedModuleIds = [];
-  for (const [topic, moduleIds] of Object.entries(userSubscribedModules)) {
-    subscribedModuleIds.push(...moduleIds);
+  const userModules = userProfile.modules ? userProfile.modules : {};
+
+  const activeModules = [];
+
+  // this is over each topic
+  for (const topicModuleObjs of Object.values(userModules)) {
+    // this is over modules in a topic
+    for (const [id, module] of Object.entries(topicModuleObjs)) {
+      if (module.active) {
+        activeModules.push(...activeModules, { ...module, id });
+      }
+    }
   }
 
-  console.log("subscribedModuleIds", subscribedModuleIds);
-  console.log("userSubscribedModules", userSubscribedModules);
+  // so then we have an array of module objects the user is subscribed to.
+  // and now we create a list of clickable items
+  let activePlaylists = activeModules.map((userModuleObj) => {
+    console.log("userModuleObj", userModuleObj);
 
-  // Now we have a list of all module ids the user is subscribed to, we
-  // construct a list of clickable items to load that module
-  let activePlaylists = subscribedModuleIds.map((id) => {
-    const module = modules.find((m) => m._id === id);
-    // const stage = userProfile.progress[id];
-    const stage = 1;
+    const module = availableModules.find((m) => m._id === userModuleObj.id);
+    const stage = userModuleObj.stage;
     function createModal() {
       toggleModal();
       setPlaylistTitle(module.name);
@@ -91,7 +97,7 @@ function PlaylistPicker(props) {
           onClick={createModal}
         >
           <IonLabel>{module.name}</IonLabel>
-          <IonLabel>Stage {stage}</IonLabel>
+          <IonLabel>Stage {stage + 1}</IonLabel>
         </IonItem>
       </>
     );
@@ -128,7 +134,7 @@ function PlaylistPicker(props) {
                         message={
                           <PlaylistDetail
                             team={team}
-                            modules={modules}
+                            modules={availableModules}
                             moduleId={activePlaylistId}
                             currentStage={activePlaylistStage}
                           />
@@ -152,7 +158,10 @@ function PlaylistPicker(props) {
             </IonText>
           </IonItem>
           <IonItem lines="none">
-            <SubscribeToModule userProfile={userProfile} modules={modules} />
+            <SubscribeToModule
+              userProfile={userProfile}
+              modules={availableModules}
+            />
           </IonItem>
         </IonContent>
       </IonPage>
