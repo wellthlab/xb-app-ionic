@@ -44,7 +44,7 @@ const facultyMap = {
     "FEPS Enterprise/nC2",
     "Physics and Astronomy",
     "Southampton Marine and Maritime Institute",
-    "Web Ccience Institute",
+    "Web Science Institute",
     "Zepler Institute for Photonics and Nanoelectronics",
   ],
   "Health and Safety": [],
@@ -71,6 +71,40 @@ const facultyMap = {
     "Psychology",
   ],
 };
+
+const departmentMap = [
+  "Winchester School of Art",
+  "Archaeology",
+  "English",
+  "Film",
+  "History",
+  "Modern Languages and Linguistics",
+  "Music",
+  "Philosophy",
+  "Chemisty",
+  "Electronics and Computer Science",
+  "Engineering",
+  "FEPS Enterprise/nC2",
+  "Physics and Astronomy",
+  "Southampton Marine and Maritime Institute",
+  "Web Science Institute",
+  "Zepler Institute for Photonics and Nanoelectronics",
+  "Southampton Law School",
+  "Economic, Social and Political Sciences",
+  "Southampton Business School",
+  "Mathematical Sciences",
+  "Southampton Education School",
+  "Medicine",
+  "Cancer Science",
+  "Human Development and Health",
+  "Clinical and Experimental Science",
+  "Primary Care, Population Sci and Medical Education",
+  "Biological Sciences",
+  "Health Sciences",
+  "Geography and Environmental Sciences",
+  "Ocean and Earth Science",
+  "Psychology",
+].sort();
 
 const facultyList = Object.keys(facultyMap).sort();
 
@@ -130,8 +164,8 @@ function UserProfile(props) {
     const [value, setValue] = useState(profileObj[profileObjKey]);
 
     function handleChange(e) {
-      updateProfileObj(profileObjKey, e.detail.value);
       setValue(e.detail.value);
+      updateProfileObj(profileObjKey, e.detail.value);
     }
 
     const selections = choices.map((choice) => {
@@ -206,16 +240,12 @@ function UserProfile(props) {
               updateProfileObj={updateProfile}
             />
             {/* School or department */}
-            {profileObj.unit && facultyMap[profileObj.unit].length > 0 ? (
-              <ChoiceField
-                inputLabel={"School or Department"}
-                choices={facultyMap[profileObj.unit]}
-                profileObjKey={"department"}
-                updateProfileObj={updateProfile}
-              />
-            ) : (
-              ""
-            )}
+            <ChoiceField
+              inputLabel={"School or Department"}
+              choices={departmentMap}
+              profileObjKey={"department"}
+              updateProfileObj={updateProfile}
+            />
             {/* Campus */}
             <ChoiceField
               inputLabel={"Campus"}
