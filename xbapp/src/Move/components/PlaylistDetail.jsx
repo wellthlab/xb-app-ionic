@@ -79,7 +79,11 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
           <IonRow>
             <IonCol>
               <div class="ion-text-center">
-                <IonButton onClick={prevStage} size="default">
+                <IonButton
+                  onClick={prevStage}
+                  size="default"
+                  disabled={currentStage <= 0}
+                >
                   <IonIcon icon={chevronBackCircleOutline} />
                 </IonButton>
               </div>
@@ -93,7 +97,11 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
             </IonCol>
             <IonCol>
               <div class="ion-text-center">
-                <IonButton onClick={nextStage} size="default">
+                <IonButton
+                  onClick={nextStage}
+                  size="default"
+                  disabled={currentStage >= tasks.length - 1}
+                >
                   <IonIcon icon={chevronForwardCircleOutline} />
                 </IonButton>
               </div>

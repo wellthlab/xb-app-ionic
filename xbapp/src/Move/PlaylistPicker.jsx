@@ -61,15 +61,15 @@ function PlaylistPicker(props) {
   // id of the modules the user is subscribed to and push this to a list of
   // all module ids
   const userModules = userProfile.modules ? userProfile.modules : {};
-
   const activeModules = [];
 
   // this is over each topic
+  // TODO: this is not scalable, and should be refactored
   for (const topicModuleObjs of Object.values(userModules)) {
     // this is over modules in a topic
-    for (const [id, module] of Object.entries(topicModuleObjs)) {
-      if (module.active) {
-        activeModules.push(...activeModules, { ...module, id });
+    for (const thisModule of topicModuleObjs) {
+      if (thisModule.active) {
+        activeModules.push({ ...thisModule });
       }
     }
   }
@@ -77,8 +77,6 @@ function PlaylistPicker(props) {
   // so then we have an array of module objects the user is subscribed to.
   // and now we create a list of clickable items
   let activePlaylists = activeModules.map((userModuleObj) => {
-    console.log("userModuleObj", userModuleObj);
-
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const stage = userModuleObj.stage;
     function createModal() {
