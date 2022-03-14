@@ -65,12 +65,10 @@ function PlaylistPicker(props) {
 
   // this is over each topic
   // TODO: this is not scalable, and should be refactored
-  for (const topicModuleObjs of Object.values(userModules)) {
+  for (const [id, moduleObj] of Object.entries(userModules)) {
     // this is over modules in a topic
-    for (const thisModule of topicModuleObjs) {
-      if (thisModule.active) {
-        activeModules.push({ ...thisModule });
-      }
+    if (moduleObj.active) {
+      activeModules.push(moduleObj);
     }
   }
 

@@ -46,85 +46,70 @@ function SubscribeToModule(props) {
     setModalTopic(topic);
   }
 
-  // TODO: this is a mess, and should be refactored.........
   // Update the userModules object for stuff which is ticked or been unticked
   // for the given topic
   function updateModules(checked, moduleName, moduleId, topic) {
-    // create the an array for the topic if it doesn't exist
-    if (!userModules[topic]) {
-      userModules[topic] = [];
-    }
-    // If adding this module for the first time then create it, otherwise just
-    // modify the "active" field
-    if (!userModules[topic].find((el) => el.id === moduleId)) {
-      // push modules to list
-      userModules[topic] = [
-        ...userModules[topic],
-        { id: moduleId, name: moduleName, active: checked, stage: 0 },
-      ];
+    let stage;
+    if (moduleId in userModules) {
+      stage = userModules[moduleId].stage;
     } else {
-      let stage;
-      userModules[topic] = userModules[topic].filter((el) => {
-        stage = el.stage;
-        return el.id !== moduleId;
-      });
-      userModules[topic] = [
-        ...userModules[topic],
-        { id: moduleId, name: moduleName, active: checked, stage: stage },
-      ];
+      stage = 0;
     }
+
+    userModules[moduleId] = {
+      id: moduleId,
+      name: moduleName,
+      topic: topic,
+      stage: stage,
+      active: checked,
+    };
   }
 
   // Create a of available modules for a given topic. Displays the name and a
   // description of the module, and a toggle to subscribe
   function getPlaylist(topic) {
-    // get all modules for a topic
-    const modulesForTopic = availableModules.filter(
-      (module) => module.topic === topic
+    return (
+      availableModules
+        // get all modules for a topic
+        .filter((module) => module.topic === topic)
+        // then map each module to a list item
+        .map((module) => {
+          // first check to see if the user is already subscribed
+          let checked;
+          if (module._id in userModules) {
+            checked = userModules[module._id].active;
+          } else {
+            checked = false;
+          }
+          return (
+            <IonItem>
+              <IonGrid>
+                <IonRow>
+                  <IonCol>
+                    <IonLabel>{module.name}</IonLabel>
+                  </IonCol>
+                  <IonCol>
+                    <IonToggle
+                      checked={checked}
+                      onIonChange={(e) => {
+                        updateModules(
+                          e.detail.checked,
+                          module.name,
+                          module._id,
+                          topic
+                        );
+                      }}
+                    />
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>{module.desc}</IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonItem>
+          );
+        })
     );
-    // Create item with name, desc and toggle
-    return modulesForTopic.map((module) => {
-      if (!userModules[topic]) {
-        return null;
-      }
-      // first check to see if the user is already subscribed
-      let checked;
-      const index = userModules[topic].findIndex((el) => el.id === module._id);
-      if (index < 0) {
-        checked = false;
-      } else {
-        checked = userModules[topic][index].active;
-      }
-
-      // const checked = userModules[topic].includes(module._id);
-      return (
-        <IonItem>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <IonLabel>{module.name}</IonLabel>
-              </IonCol>
-              <IonCol>
-                <IonToggle
-                  checked={checked}
-                  onIonChange={(e) => {
-                    updateModules(
-                      e.detail.checked,
-                      module.name,
-                      module._id,
-                      topic
-                    );
-                  }}
-                />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{module.desc}</IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      );
-    });
   }
 
   function ModuleSubscriptionModal({ topic }) {
