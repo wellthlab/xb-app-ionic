@@ -48,6 +48,7 @@ function SubscribeToModule(props) {
 
   // Update the userModules object for stuff which is ticked or been unticked
   // for the given topic
+  let updatedSubscriptions = false;
   function updateModules(checked, moduleName, moduleId, topic) {
     let stage;
     if (moduleId in userModules) {
@@ -63,6 +64,8 @@ function SubscribeToModule(props) {
       stage: stage,
       active: checked,
     };
+
+    updatedSubscriptions = true;
   }
 
   // Create a of available modules for a given topic. Displays the name and a
@@ -116,18 +119,33 @@ function SubscribeToModule(props) {
     const playlists = getPlaylist(topic);
     return (
       <>
-        <IonList>
-          <IonItemGroup>{playlists}</IonItemGroup>
-        </IonList>
+        <IonItem lines="none">
+          <IonGrid>
+            <IonRow>
+              <IonList>
+                <IonItemGroup>{playlists}</IonItemGroup>
+              </IonList>
+            </IonRow>
 
-        <IonButton
-          expand="full"
-          onClick={() => {
-            subscribeUser();
-          }}
-        >
-          Update Playlists
-        </IonButton>
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  expand="full"
+                  onClick={() => {
+                    // no reason to update if nothing has changed
+                    if (updatedSubscriptions) {
+                      subscribeUser();
+                    } else {
+                      toggleModal();
+                    }
+                  }}
+                >
+                  Save
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
       </>
     );
   }

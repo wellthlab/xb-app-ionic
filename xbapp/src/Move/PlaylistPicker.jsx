@@ -117,7 +117,7 @@ function PlaylistPicker(props) {
 
               <IonRow>
                 <IonCol>
-                  {activePlaylists.length ? (
+                  {activePlaylists.length > 0 ? (
                     <>
                       <IonList>
                         <IonItemGroup>{activePlaylists}</IonItemGroup>
