@@ -50,7 +50,7 @@ function PlaylistDescription({ module, stage }) {
   );
 }
 
-function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
+function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
   const [currentStage, setCurrentStage] = useState(stage);
 
   // These functions are used to control the buttons which control the day to
@@ -66,7 +66,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
 
   const tasksForStage = tasks[currentStage];
   const taskItems = tasksForStage.map((task) => {
-    return <IonItem button>{task.desc}</IonItem>;
+    return <IonItem>{task.desc}</IonItem>;
   });
 
   const buttonsDisabled = currentStage !== stage;
@@ -78,7 +78,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
           {/* Buttons for switching playlist stage */}
           <IonRow>
             <IonCol>
-              <div class="ion-text-center">
+              <div className="ion-text-center">
                 <IonButton
                   onClick={prevStage}
                   size="default"
@@ -89,14 +89,14 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
               </div>
             </IonCol>
             <IonCol>
-              <div class="ion-text-center">
+              <div className="ion-text-center">
                 <IonText>
                   <h4>Stage {currentStage + 1}</h4>
                 </IonText>
               </div>
             </IonCol>
             <IonCol>
-              <div class="ion-text-center">
+              <div className="ion-text-center">
                 <IonButton
                   onClick={nextStage}
                   size="default"
@@ -118,36 +118,42 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage }) {
           </IonRow>
         </IonGrid>
       </IonItem>
-
       <IonItem
         lines="none"
         style={{ "--padding-top": "10px", "--padding-bottom": "0px" }}
       >
         <IonGrid>
-          <IonCol>
-            <div class="ion-text-center">
-              <IonButton size={"small"} disabled={buttonsDisabled}>
-                <IonIcon icon={calendarOutline} />
-              </IonButton>
-              <IonButton
-                disabled={buttonsDisabled}
-                routerLink={
-                  "/move/timer/" + teamId + "/" + moduleId + "/" + stage
-                }
-                size={"large"}
-                shape={"round"}
-              >
-                <IonIcon icon={playOutline} />
-              </IonButton>
-            </div>
-          </IonCol>
+          <IonRow>
+            <IonCol>
+              <div class="ion-text-center">
+                <IonButton size={"small"} disabled={buttonsDisabled}>
+                  <IonIcon icon={calendarOutline} />
+                </IonButton>
+                <IonButton
+                  disabled={buttonsDisabled}
+                  routerLink={
+                    "/move/timer/" + teamId + "/" + moduleId + "/" + stage
+                  }
+                  onClick={() => {
+                    console.log("toggling modal after i clicked");
+                    console.log(toggleModal);
+                    toggleModal();
+                  }}
+                  size={"large"}
+                  shape={"round"}
+                >
+                  <IonIcon icon={playOutline} />
+                </IonButton>
+              </div>
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonItem>
     </>
   );
 }
 
-function PlaylistDetail({ team, modules, moduleId, currentStage }) {
+function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
   const module = modules.find((m) => m._id === moduleId);
   return (
     <>
@@ -157,6 +163,7 @@ function PlaylistDetail({ team, modules, moduleId, currentStage }) {
         tasks={module.tasks}
         teamId={team._id}
         moduleId={module._id}
+        toggleModal={closeModal}
       />
     </>
   );

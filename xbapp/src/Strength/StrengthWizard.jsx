@@ -24,7 +24,7 @@ import MovementPicker, {
 } from "../DEPRECATED/components/OLDMovementPicker";
 import CountDown from "../Instruments/CountDown";
 import MovementInfoCard from "./MovementInfoCard";
-import EDTMovementTimer from "./components/MovementTimer";
+import EDTMovementTimer from "./components/EDTMovementTimer";
 import MovementBalance from "./MovementBalance";
 import HeartRate from "./HeartRate";
 import LevelFinder from "./LevelFinder";

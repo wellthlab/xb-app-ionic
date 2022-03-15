@@ -19,6 +19,7 @@ import {
   IonLabel,
   IonBadge,
   IonAlert,
+  setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
@@ -130,6 +131,8 @@ const autoBindReact = require("auto-bind/react"); // Needs to go after import, b
 
 const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
   let content = null;
+
+  setupIonicReact();
 
   useEffect(() => {
     if (

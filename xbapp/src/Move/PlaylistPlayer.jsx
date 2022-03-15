@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonButton,
   IonIcon,
@@ -15,8 +15,11 @@ import {
   IonCardTitle,
   IonCardContent,
   IonCardSubtitle,
-  IonPopover,
   IonItemGroup,
+  IonAccordionGroup,
+  IonAccordion,
+  IonLabel,
+  IonFooter,
 } from "@ionic/react";
 import {
   addCircleOutline,
@@ -28,14 +31,34 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 import inputFactory from "../Boxes/inputFactory";
 import Timer from "../Instruments/StatelessTimer";
+import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 
-function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
+function TaskAccordionList({ tasks, currentTaskName }) {
+  return (
+    <IonAccordionGroup>
+      <IonAccordion value="tasks">
+        <IonItem slot="header">
+          <IonLabel>
+            <strong>Doing {currentTaskName}</strong>
+          </IonLabel>
+        </IonItem>
+        <IonList slot="content">
+          <IonItemGroup>{tasks}</IonItemGroup>
+        </IonList>
+      </IonAccordion>
+    </IonAccordionGroup>
+  );
+}
+
+function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
+  const currentTaskName = tasks[currentTaskIdx].desc;
   const taskItems = tasks.map((task, index) => {
     return (
       <IonItem
         button
-        color={index === currentTaskIdx ? "warning" : ""}
+        key={index}
+        color={index === currentTaskIdx ? "success" : ""}
         lines="none"
         onClick={() => {
           setCurrentTask(index);
@@ -45,7 +68,6 @@ function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonItem>
     );
   });
-
   return (
     <>
       <IonItem lines="none">
@@ -56,17 +78,20 @@ function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
             </IonCol>
             <IonCol>Stage {stage + 1}</IonCol>
           </IonRow>
-          <IonRow></IonRow>
+          <IonRow>
+            <IonCol>
+              <TaskAccordionList
+                tasks={taskItems}
+                currentTaskName={currentTaskName}
+              />
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonItem>
       <IonItem lines="none">
         <IonGrid>
           <IonRow>
-            <IonCol>
-              <IonList>
-                <IonItemGroup>{taskItems}</IonItemGroup>
-              </IonList>
-            </IonCol>
+            <IonCol></IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
@@ -79,25 +104,61 @@ function TimerTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
   );
 }
 
-function TimerThing({ task, team }) {
+function TaskTimer({ task, team, manualEntry, setManualEntry, setMinutes }) {
+  let content;
+
+  if (manualEntry) {
+    content = (
+      <>
+        <ManualTime
+          id={team._id}
+          task={task}
+          onChange={(minutes) => setMinutes(minutes)}
+        />
+      </>
+    );
+  } else {
+    content = (
+      <>
+        <IonCol>
+          {/* entry from timer */}
+          <Timer
+            id={team._id}
+            active="false"
+            onPause={(minutes) => setMinutes(minutes)}
+          />
+          <p style={{ textAlign: "center", paddingTop: "5px" }}>
+            Stop the timer when you're done
+          </p>
+        </IonCol>
+      </>
+    );
+  }
+
   return (
     <IonCard>
       <IonCardHeader>
         <IonCardTitle>Time Your Session</IonCardTitle>
-        <IonCardSubtitle>
-          Record the time you spend on this activity; it counts towards your
-          daily target
-        </IonCardSubtitle>
       </IonCardHeader>
       <IonCardContent>
         <IonGrid>
+          <IonRow>{content}</IonRow>
           <IonRow>
-            <IonCol>
-              {/* entry from timer */}
-              <Timer id={team._id} active="false" onPause={() => {}} />
-              <p style={{ textAlign: "center" }}>
-                Stop the timer when you're done
-              </p>
+            <IonCol
+              style={{
+                padding: "0px",
+                textAlign: "center",
+                paddingBottom: "20px",
+              }}
+            >
+              <IonButton
+                onClick={() => {
+                  setManualEntry(!manualEntry);
+                }}
+              >
+                <IonIcon icon={addCircleOutline} /> &nbsp;
+                {manualEntry ? "Back to timer" : "Enter minutes manually"}
+              </IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -108,6 +169,9 @@ function TimerThing({ task, team }) {
 
 function PlaylistPlayer(props) {
   const [currentTaskIdx, setCurrentTaskIdx] = useState(0);
+  const [externalResponse, setExternalResponse] = useState({});
+  const [minutes, setMinutes] = useState(0);
+  const [manualTimeEntry, setManualEntry] = useState(false);
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
@@ -120,33 +184,75 @@ function PlaylistPlayer(props) {
   const moduleId = props.match.params.moduleId;
   const stage = parseInt(props.match.params.stage, 10);
 
-  // TODO: this probably won't scale very well
+  // This may not scale very well if we have a lot of modules in the future
   const module = props.modules.modules.find((m) => m._id === moduleId);
   if (!module) {
-    return <IonSpinner name="crescent" class="center-spin" />;
+    return <div>Module not found</div>;
   }
 
-  const name = module.name;
   const tasks = module.tasks[stage];
   const currentTask = tasks[currentTaskIdx];
 
-  function skipTask() {
+  // Save the time spent on the tasks
+  async function saveResponse() {
+    let response = {};
+    // Add data from task's protoResponse if required
+    for (let k of Object.keys(currentTask.protoResponse ?? {})) {
+      response[k] = currentTask.protoResponse[k];
+    }
+    // Add data from widgets
+    for (let k of Object.keys(externalResponse)) {
+      response[k] = externalResponse[k];
+    }
+    // Add additional data and save
+    response.type = currentTask.type;
+    response.intype = currentTask.intype;
+    response.minutes = minutes;
+    response.minutes = team.experiment.day;
+    await props.controllers.ADD_RESPONSE(team._id, response);
+  }
+
+  // Update the response from the widgets
+  function updateResponse(response) {
+    console.log("Updating response with", response);
+    let updated = {};
+    for (let k of Object.keys(externalResponse)) {
+      updated[k] = externalResponse[k];
+    }
+    for (let k of Object.keys(response)) {
+      updated[k] = response[k];
+    }
+    if (Object.keys(response).includes("minutes")) {
+      setMinutes(response.minutes);
+    }
+    setExternalResponse(updated);
+    console.log("Updated response", externalResponse);
+  }
+
+  let readyToSave = minutes > 0;
+  console.log("Ready to save?", readyToSave);
+  console.log("minutes", minutes);
+
+  // Go to the next task
+  function nextTask() {
     if (currentTaskIdx < tasks.length - 1) {
       setCurrentTaskIdx(currentTaskIdx + 1);
     }
+    if (readyToSave) {
+      saveResponse();
+      setExternalResponse({});
+      setMinutes(0);
+    }
   }
 
-  function finishPlaylist() {
-    setCurrentTaskIdx(0);
+  // Go to the previous task
+  function prevTask() {
+    if (currentTaskIdx > 0) {
+      setCurrentTaskIdx(currentTaskIdx - 1);
+    }
   }
 
-  function setCurrentTask(index) {
-    setCurrentTaskIdx(index);
-  }
-
-  function updateResponse() {}
-
-  const timerContent = inputFactory(
+  const taskContent = inputFactory(
     currentTask.intype,
     team,
     stage,
@@ -158,33 +264,65 @@ function PlaylistPlayer(props) {
     <IonPage>
       <XBHeader title={"Movement"} />
       <IonContent>
-        <TimerTopBar
+        <InfoTopBar
           module={module}
           stage={stage}
           tasks={tasks}
           currentTaskIdx={currentTaskIdx}
-          setCurrentTask={setCurrentTask}
+          setCurrentTask={(index) => {
+            setCurrentTaskIdx(index);
+          }}
         />
-        {timerContent.input}
-        {currentTask.timed ? <TimerThing task={currentTask} team={team} /> : ""}
+        {/* Task specific UI */}
+        {taskContent.input}
+        {/* Timer or Save Activity */}
+        {currentTask.timed ? (
+          <TaskTimer
+            task={currentTask}
+            team={team}
+            manualEntry={manualTimeEntry}
+            setManualEntry={setManualEntry}
+            setMinutes={setMinutes}
+          />
+        ) : (
+          ""
+        )}
+      </IonContent>
+      {/* Previous and Next/Finished button */}
+      <IonFooter>
         <IonRow>
           <IonCol>
-            {currentTaskIdx < tasks.length - 1 ? (
-              <IonButton expand="full" onClick={skipTask}>
-                Next
-              </IonButton>
-            ) : (
-              <IonButton
-                expand="full"
-                onClick={finishPlaylist}
-                routerLink={"/move/task-playlist"}
-              >
-                Finish
-              </IonButton>
-            )}
+            <>
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    expand="full"
+                    onClick={prevTask}
+                    disabled={currentTaskIdx <= 0}
+                  >
+                    Previous
+                  </IonButton>
+                </IonCol>
+                <IonCol>
+                  {currentTaskIdx < tasks.length - 1 ? (
+                    <IonButton expand="full" onClick={nextTask}>
+                      Next
+                    </IonButton>
+                  ) : (
+                    <IonButton
+                      expand="full"
+                      routerLink={"/move/task-playlist"}
+                      onClick={saveResponse}
+                    >
+                      Finish
+                    </IonButton>
+                  )}
+                </IonCol>
+              </IonRow>
+            </>
           </IonCol>
         </IonRow>
-      </IonContent>
+      </IonFooter>
     </IonPage>
   );
 }

@@ -52,7 +52,7 @@ import TaskInstructions from "../Strength/TaskInstructions";
 import SubscribeToModule from "../Move/components/PlaylistSubscriber";
 
 /**
- * Create input widgets based on task type
+ * Create input widgets based on task type}
  * type: The type of task to generate widgets for
  * group: The group ID that the task belongs to
  * daynumber: The day number of the experiment within the group

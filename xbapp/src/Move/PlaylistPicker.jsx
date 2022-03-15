@@ -38,7 +38,9 @@ function PlaylistPicker(props) {
   let [activePlaylistId, setActivePlaylistId] = useState(undefined);
   let [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
   function toggleModal() {
+    console.log("1. showModal = ", showModal, !showModal);
     setShowModal(!showModal);
+    console.log("2. showModal = ", showModal);
   }
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -49,7 +51,7 @@ function PlaylistPicker(props) {
     !props.userProfile.loaded ||
     !props.modules.loaded
   ) {
-    return <IonSpinner class="center-spin" name="crescent" />;
+    return <IonSpinner className="center-spin" name="crescent" />;
   }
 
   let userProfile = props.userProfile.userProfile;
@@ -127,12 +129,15 @@ function PlaylistPicker(props) {
                         showModal={showModal}
                         toggleModal={toggleModal}
                         title={playlistTitle}
-                        message={
+                        body={
                           <PlaylistDetail
                             team={team}
                             modules={availableModules}
                             moduleId={activePlaylistId}
                             currentStage={activePlaylistStage}
+                            closeModal={() => {
+                              setShowModal(false);
+                            }}
                           />
                         }
                       />

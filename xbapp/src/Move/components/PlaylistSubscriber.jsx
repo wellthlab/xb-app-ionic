@@ -36,16 +36,6 @@ function SubscribeToModule(props) {
     props.controllers.UPDATE_USER_PROFILE(user);
   }
 
-  function toggleModal() {
-    setShowModal(!showModal);
-  }
-
-  function createModal(title, topic) {
-    toggleModal();
-    setModalTitle(title);
-    setModalTopic(topic);
-  }
-
   // Update the userModules object for stuff which is ticked or been unticked
   // for the given topic
   let updatedSubscriptions = false;
@@ -66,6 +56,22 @@ function SubscribeToModule(props) {
     };
 
     updatedSubscriptions = true;
+  }
+
+  // Toggle to modal -- if the user has changed their subscriptions, then update
+  // otherwise just close
+  function toggleModal() {
+    if (updatedSubscriptions) {
+      subscribeUser();
+    }
+    setShowModal(!showModal);
+  }
+
+  // Fill in data for subscription modal
+  function createModal(title, topic) {
+    toggleModal();
+    setModalTitle(title);
+    setModalTopic(topic);
   }
 
   // Create a of available modules for a given topic. Displays the name and a
@@ -131,13 +137,9 @@ function SubscribeToModule(props) {
               <IonCol>
                 <IonButton
                   expand="full"
+                  size="normal"
                   onClick={() => {
-                    // no reason to update if nothing has changed
-                    if (updatedSubscriptions) {
-                      subscribeUser();
-                    } else {
-                      toggleModal();
-                    }
+                    toggleModal();
                   }}
                 >
                   Save
@@ -203,10 +205,12 @@ function SubscribeToModule(props) {
 
       <GenericModal
         showModal={showModal}
-        toggleModal={toggleModal}
+        toggleModal={() => {
+          toggleModal();
+          updateModules();
+        }}
         title={modalTitle}
-        message={<ModuleSubscriptionModal topic={modalTopic} />}
-        hideCloseButton={true}
+        body={<ModuleSubscriptionModal topic={modalTopic} />}
       />
     </>
   );

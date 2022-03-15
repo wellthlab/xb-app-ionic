@@ -10,7 +10,7 @@ import {
   IonRow,
 } from "@ionic/react";
 
-import TimerEDT from "./components/MovementTimer";
+import TimerEDT from "./components/EDTMovementTimer";
 import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 
 /**

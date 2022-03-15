@@ -97,7 +97,7 @@ const GroupInfo = ({ group, controllers, match }) => {
     });
 
     const modalMemberList = loadingTeamMembers ? (
-      <IonSpinner name="crescent" className="center-spinner" />
+      <IonSpinner name="crescent" className="center-spin" />
     ) : (
       <>
         <IonCard>
@@ -187,7 +187,9 @@ const GroupInfo = ({ group, controllers, match }) => {
                       lines="none"
                       style={{ fontSize: "14px" }}
                       button
-                      onClick={toggleMemberModal}
+                      onClick={() => {
+                        toggleMemberModal();
+                      }}
                       detail={true}
                       detailIcon={arrowForwardOutline}
                     >
@@ -197,7 +199,7 @@ const GroupInfo = ({ group, controllers, match }) => {
                         showModal={showMemberModal}
                         toggleModal={toggleMemberModal}
                         title="Your Team Members"
-                        message={modalMemberList}
+                        body={modalMemberList}
                       />
                     </IonItem>
                   </IonCol>

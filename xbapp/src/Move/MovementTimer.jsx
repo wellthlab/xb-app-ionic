@@ -27,7 +27,7 @@ import { addControllersProp } from "../util_model/controllers";
 import inputFactory from "../Boxes/inputFactory";
 import Timer from "../Instruments/StatelessTimer";
 import TotalTimer from "./components/TotalTimer";
-import ManualTime from "./components/ManualEntry";
+import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 
 /**
@@ -68,134 +68,167 @@ function MovementTimer(props) {
     res.minutes = minutes;
     res.day = day;
     await props.controllers.ADD_RESPONSE(gid, res);
-
-    // Merge the prevous response into the new one
-    // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
-    var updateResponse = (res) => {
-      var updated = {};
-      for (var k of Object.keys(exResponse)) {
-        updated[k] = exResponse[k];
-      }
-      for (var k of Object.keys(res)) {
-        updated[k] = res[k];
-      }
-      console.log("New response", res, updated);
-      // If the response contains a minutes key - i.e is setting the number of minutes for the movement
-      // then update our internal minute state
-      if (Object.keys(res).includes("minutes")) {
-        setMinutes(res.minutes);
-      }
-      setExResponse(updated);
-    };
-
-    // Load team data if required; mostly useful during development
-    props.controllers.LOAD_TEAMS_IF_REQD();
-
-    if (group === false) {
-      // Find the group if not set already
-      for (var g of props.teams.teams) {
-        // Find the group in the store
-        if (g._id === gid) {
-          setGroup(g);
-        }
-      }
-      return <IonSpinner name="crescent" className="center-spin" />;
+  }
+  // Merge the prevous response into the new one
+  // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
+  var updateResponse = (res) => {
+    var updated = {};
+    for (var k of Object.keys(exResponse)) {
+      updated[k] = exResponse[k];
     }
+    for (var k of Object.keys(res)) {
+      updated[k] = res[k];
+    }
+    console.log("New response", res, updated);
+    // If the response contains a minutes key - i.e is setting the number of minutes for the movement
+    // then update our internal minute state
+    if (Object.keys(res).includes("minutes")) {
+      setMinutes(res.minutes);
+    }
+    setExResponse(updated);
+  };
 
-    // TODO: Looking up tasks like this won't scale; we should create a slice to
-    // store the current timer state and push all the relevant state - including
-    // the current task - into that
-    if (currentTask === false) {
-      // Find the task if not found already
-      if (optionalOrRequired === "required") {
-        setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
-      } else {
-        setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
+  // Load team data if required; mostly useful during development
+  props.controllers.LOAD_TEAMS_IF_REQD();
+
+  if (group === false) {
+    // Find the group if not set already
+    for (var g of props.teams.teams) {
+      // Find the group in the store
+      if (g._id === gid) {
+        setGroup(g);
       }
     }
-    if (typeof currentTask == "undefined" || currentTask === false) {
-      return (
-        <>
-          <div className="center-message">
-            <h3>The current task has not been defined</h3>
-          </div>
-        </>
-      );
-    }
+    return <IonSpinner name="crescent" className="center-spin" />;
+  }
 
-    let totalMinutes = group.s22plan.target;
-
-    const content = inputFactory(
-      taskType,
-      group,
-      day,
-      updateResponse,
-      currentTask
-    );
-
-    var taskExtraContent;
-    if (content !== false) {
-      taskExtraContent = content.input;
+  // TODO: Looking up tasks like this won't scale; we should create a slice to
+  // store the current timer state and push all the relevant state - including
+  // the current task - into that
+  if (currentTask === false) {
+    // Find the task if not found already
+    if (optionalOrRequired === "required") {
+      setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
     } else {
-      taskExtraContent = "";
+      setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
     }
+  }
+  if (typeof currentTask == "undefined" || currentTask === false) {
+    return (
+      <>
+        <div className="center-message">
+          <h3>The current task has not been defined</h3>
+        </div>
+      </>
+    );
+  }
 
-    var ready = minutes > 0;
+  let totalMinutes = group.s22plan.target;
 
-    // Prepare a timer, if required
-    var timer = "";
+  const content = inputFactory(
+    taskType,
+    group,
+    day,
+    updateResponse,
+    currentTask
+  );
 
-    if (currentTask.timed) {
-      timer = (
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Time your Session</IonCardTitle>
-            <IonCardSubtitle>
-              Record the time you spend on this activity; it counts towards your
-              daily target
-            </IonCardSubtitle>
-          </IonCardHeader>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                {!manualEntry ? (
-                  <IonCol>
-                    {/* entry from timer */}
-                    <Timer id={gid} active="false" onPause={setMinutes}></Timer>
-                    <p style={{ textAlign: "center" }}>
-                      Stop the timer when you're done
-                    </p>
-                  </IonCol>
-                ) : (
-                  <ManualTime
-                    id={gid}
-                    task={currentTask}
-                    onChange={setMinutes}
-                  ></ManualTime>
-                )}
-              </IonRow>
-              <IonRow>
-                <IonCol
-                  style={{
-                    padding: "0px",
-                    textAlign: "center",
-                    paddingBottom: "20px",
-                  }}
-                >
-                  <a
-                    onClick={() => {
-                      setManualEntry(!manualEntry);
-                    }}
-                    expand="full"
-                  >
-                    <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
-                    {manualEntry ? "Back to timer" : "Enter minutes manually"}
-                  </a>
+  var taskExtraContent;
+  if (content !== false) {
+    taskExtraContent = content.input;
+  } else {
+    taskExtraContent = "";
+  }
+
+  var ready = minutes > 0;
+
+  // Prepare a timer, if required
+  var timer = "";
+
+  if (currentTask.timed) {
+    timer = (
+      <IonCard>
+        <IonCardHeader>
+          <IonCardTitle>Time your Session</IonCardTitle>
+          <IonCardSubtitle>
+            Record the time you spend on this activity; it counts towards your
+            daily target
+          </IonCardSubtitle>
+        </IonCardHeader>
+        <IonCardContent>
+          <IonGrid>
+            <IonRow>
+              {!manualEntry ? (
+                <IonCol>
+                  {/* entry from timer */}
+                  <Timer id={gid} active="false" onPause={setMinutes}></Timer>
+                  <p style={{ textAlign: "center" }}>
+                    Stop the timer when you're done
+                  </p>
                 </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol style={{ textAlign: "center" }}>
-                  {ready ? (
+              ) : (
+                <ManualTime
+                  id={gid}
+                  task={currentTask}
+                  onChange={setMinutes}
+                ></ManualTime>
+              )}
+            </IonRow>
+            <IonRow>
+              <IonCol
+                style={{
+                  padding: "0px",
+                  textAlign: "center",
+                  paddingBottom: "20px",
+                }}
+              >
+                <a
+                  onClick={() => {
+                    setManualEntry(!manualEntry);
+                  }}
+                  expand="full"
+                >
+                  <IonIcon icon={addCircleOutline}></IonIcon> &nbsp;
+                  {manualEntry ? "Back to timer" : "Enter minutes manually"}
+                </a>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol style={{ textAlign: "center" }}>
+                {ready ? (
+                  <IonButton
+                    onClick={save}
+                    expand="full"
+                    routerLink="/add-movement"
+                  >
+                    Save Activity <IonIcon icon={arrowForwardOutline} />
+                  </IonButton>
+                ) : (
+                  ""
+                )}
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <TotalTimer
+                  target={group.myTargetToday}
+                  logged={group.myMinutesToday + minutes}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCardContent>
+      </IonCard>
+    );
+  } else {
+    timer = (
+      <>
+        {ready ? (
+          <IonCard>
+            <IonCardContent>
+              <IonGrid>
+                <IonRow>
+                  <IonCol style={{ textAlign: "center" }}>
                     <IonButton
                       onClick={save}
                       expand="full"
@@ -203,75 +236,41 @@ function MovementTimer(props) {
                     >
                       Save Activity <IonIcon icon={arrowForwardOutline} />
                     </IonButton>
-                  ) : (
-                    ""
-                  )}
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <TotalTimer
-                    target={group.myTargetToday}
-                    logged={group.myMinutesToday + minutes}
-                  />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-      );
-    } else {
-      timer = (
-        <>
-          {ready ? (
-            <IonCard>
-              <IonCardContent>
-                <IonGrid>
-                  <IonRow>
-                    <IonCol style={{ textAlign: "center" }}>
-                      <IonButton
-                        onClick={save}
-                        expand="full"
-                        routerLink="/add-movement"
-                      >
-                        Save Activity <IonIcon icon={arrowForwardOutline} />
-                      </IonButton>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonCardContent>
-            </IonCard>
-          ) : (
-            ""
-          )}
-        </>
-      );
-    }
-
-    return (
-      <>
-        <IonPage>
-          <XBHeader title="Record Your Movement" />
-          <IonContent>
-            {/* Exercise and for how long header -- press for details */}
-            <IonItem
-              detailIcon={informationCircleOutline}
-              detail={true}
-              color={"secondary"}
-            >
-              <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
-            </IonItem>
-            {/* Additional content, like the move picker or a video */}
-            {taskExtraContent}
-            {/* Timer and buttons for manual entry of minutes */}
-            {/* The timer is NOT SHOWN when we're doing tasks with timed === false
-             */}
-            {timer}
-          </IonContent>
-        </IonPage>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonCardContent>
+          </IonCard>
+        ) : (
+          ""
+        )}
       </>
     );
   }
+
+  return (
+    <>
+      <IonPage>
+        <XBHeader title="Record Your Movement" />
+        <IonContent>
+          {/* Exercise and for how long header -- press for details */}
+          <IonItem
+            detailIcon={informationCircleOutline}
+            detail={true}
+            color={"secondary"}
+          >
+            <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
+          </IonItem>
+          {/* Additional content, like the move picker or a video */}
+          {taskExtraContent}
+          {/* Timer and buttons for manual entry of minutes */}
+          {/* The timer is NOT SHOWN when we're doing tasks with timed === false
+           */}
+          {timer}
+        </IonContent>
+      </IonPage>
+    </>
+  );
 }
 
 export default connect(

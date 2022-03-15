@@ -47,7 +47,7 @@ const MovementInfoCard = (props) => {
           </AccordionDetails>
         </Accordion>
       ) : (
-        <IonCard style={{ margin: "0px" }}>
+        <IonCard style={{ margin: "0px", boxShadow: "none" }}>
           <IonCardHeader>
             <IonCardTitle className={props.titleSize}>
               {props.name}

@@ -54,16 +54,20 @@ const OptionTabs = (props) => {
         <IonContent id="settings" fullscreen>
           <GenericModal
             showModal={showModal}
-            toggleModal={toggleModal}
+            toggleModal={() => {
+              toggleModal();
+            }}
             title={"Privacy Notice"}
-            message={privacy_notice}
+            body={privacy_notice}
           />
 
           <GenericModal
             showModal={showPISModal}
-            toggleModal={togglePISModal}
+            toggleModal={() => {
+              togglePISModal();
+            }}
             title={"Participant Information Sheet"}
-            message={pis}
+            body={pis}
           />
 
           <IonCard>
