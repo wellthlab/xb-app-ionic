@@ -19,7 +19,6 @@ import {
   IonLabel,
   IonBadge,
   IonAlert,
-  setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
@@ -125,6 +124,7 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
+import PlaylistDetail from "./Move/components/PlaylistDetail";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -132,7 +132,7 @@ const autoBindReact = require("auto-bind/react"); // Needs to go after import, b
 const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
   let content = null;
 
-  setupIonicReact();
+  // setupIonicReact();
 
   useEffect(() => {
     if (
@@ -248,7 +248,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               {/** Record movement and timer for Strength 22 */}
               <Route path="/move" component={MovementPage} exact={true} />
               <Route
-                path="/subscribe/modules"
+                path="/move/subscribe"
                 component={SubscribeToModule}
                 exact={true}
               />
@@ -257,6 +257,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={TaskPlaylist}
                 exact={true}
               />
+              {/* <Route
+                path="/move/task-playlist/:id"
+                component={PlaylistDetail}
+                exact={true}
+              /> */}
               <Route
                 path="/move/task-player/:gid/:id"
                 component={TaskPlayer}

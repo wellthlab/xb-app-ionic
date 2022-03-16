@@ -14,19 +14,22 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonCardSubtitle,
   IonItemGroup,
-  IonAccordionGroup,
-  IonAccordion,
+  // IonAccordionGroup,
+  // IonAccordion,
   IonLabel,
   IonFooter,
 } from "@ionic/react";
-import {
-  addCircleOutline,
-  informationCircleOutline,
-  arrowForwardOutline,
-} from "ionicons/icons";
+import { addCircleOutline } from "ionicons/icons";
 import { connect } from "react-redux";
+
+import "./PlaylistPlayer.css";
+
+import Accordion from "@material-ui/core/Accordion";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Typography from "@material-ui/core/Typography";
 
 import { addControllersProp } from "../util_model/controllers";
 import inputFactory from "../Boxes/inputFactory";
@@ -36,18 +39,18 @@ import XBHeader from "../util/XBHeader";
 
 function TaskAccordionList({ tasks, currentTaskName }) {
   return (
-    <IonAccordionGroup>
-      <IonAccordion value="tasks">
-        <IonItem slot="header">
-          <IonLabel>
-            <strong>Doing {currentTaskName}</strong>
-          </IonLabel>
-        </IonItem>
-        <IonList slot="content">
-          <IonItemGroup>{tasks}</IonItemGroup>
-        </IonList>
-      </IonAccordion>
-    </IonAccordionGroup>
+    <>
+      <Accordion className="AccordionBox">
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>{currentTaskName}</Typography>
+        </AccordionSummary>
+        <AccordionDetails className="AccordionDetails">
+          <IonGrid className="ion-no-padding">
+            <IonItemGroup>{tasks}</IonItemGroup>
+          </IonGrid>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }
 
@@ -55,17 +58,22 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
   const currentTaskName = tasks[currentTaskIdx].desc;
   const taskItems = tasks.map((task, index) => {
     return (
-      <IonItem
-        button
-        key={index}
-        color={index === currentTaskIdx ? "success" : ""}
-        lines="none"
-        onClick={() => {
-          setCurrentTask(index);
-        }}
-      >
-        {task.desc}
-      </IonItem>
+      <IonRow className="ion-no-padding">
+        <IonCol className="ion-no-padding">
+          <IonItem
+            button
+            detail={false}
+            key={index}
+            color={index === currentTaskIdx ? "success" : "transparent"}
+            lines="none"
+            onClick={() => {
+              setCurrentTask(index);
+            }}
+          >
+            <IonLabel>{task.desc}</IonLabel>
+          </IonItem>
+        </IonCol>
+      </IonRow>
     );
   });
   return (
@@ -230,8 +238,6 @@ function PlaylistPlayer(props) {
   }
 
   let readyToSave = minutes > 0;
-  console.log("Ready to save?", readyToSave);
-  console.log("minutes", minutes);
 
   // Go to the next task
   function nextTask() {
@@ -249,6 +255,11 @@ function PlaylistPlayer(props) {
   function prevTask() {
     if (currentTaskIdx > 0) {
       setCurrentTaskIdx(currentTaskIdx - 1);
+    }
+    if (readyToSave) {
+      saveResponse();
+      setExternalResponse({});
+      setMinutes(0);
     }
   }
 
@@ -290,38 +301,51 @@ function PlaylistPlayer(props) {
       </IonContent>
       {/* Previous and Next/Finished button */}
       <IonFooter>
-        <IonRow>
-          <IonCol>
-            <>
-              <IonRow>
-                <IonCol>
+        <IonItem lines="none">
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  expand="full"
+                  onClick={prevTask}
+                  disabled={currentTaskIdx <= 0}
+                  size="normal"
+                >
+                  Previous
+                </IonButton>
+              </IonCol>
+              <IonCol>
+                {currentTaskIdx < tasks.length - 1 ? (
+                  <IonButton expand="full" onClick={nextTask} size="normal">
+                    Next
+                  </IonButton>
+                ) : (
                   <IonButton
                     expand="full"
-                    onClick={prevTask}
-                    disabled={currentTaskIdx <= 0}
+                    routerLink={"/move/task-playlist"}
+                    onClick={() => {
+                      saveResponse();
+                      // Insomnia.allowSleepAgain().then(
+                      //   () =>
+                      //     console.log(
+                      //       "Insomnia will no longer keep the screen on"
+                      //     ),
+                      //   (err) =>
+                      //     console.log(
+                      //       "Insomnia was unable to be disabled for some reason: ",
+                      //       err
+                      //     )
+                      // );
+                    }}
+                    size="normal"
                   >
-                    Previous
+                    Finish
                   </IonButton>
-                </IonCol>
-                <IonCol>
-                  {currentTaskIdx < tasks.length - 1 ? (
-                    <IonButton expand="full" onClick={nextTask}>
-                      Next
-                    </IonButton>
-                  ) : (
-                    <IonButton
-                      expand="full"
-                      routerLink={"/move/task-playlist"}
-                      onClick={saveResponse}
-                    >
-                      Finish
-                    </IonButton>
-                  )}
-                </IonCol>
-              </IonRow>
-            </>
-          </IonCol>
-        </IonRow>
+                )}
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
       </IonFooter>
     </IonPage>
   );

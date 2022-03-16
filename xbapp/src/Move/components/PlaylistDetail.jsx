@@ -10,6 +10,9 @@ import {
   IonProgressBar,
   IonText,
   IonList,
+  IonPage,
+  IonContent,
+  IonRouterLink,
 } from "@ionic/react";
 import {
   chevronBackCircleOutline,
@@ -19,6 +22,7 @@ import {
 } from "ionicons/icons";
 
 import { useState } from "react";
+import XBHeader from "../../util/XBHeader";
 
 function PlaylistDescription({ module, stage }) {
   const numStages = module.tasks.length;
@@ -118,6 +122,8 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
           </IonRow>
         </IonGrid>
       </IonItem>
+
+      {/* Play buttons */}
       <IonItem
         lines="none"
         style={{ "--padding-top": "10px", "--padding-bottom": "0px" }}
@@ -129,16 +135,13 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
                 <IonButton size={"small"} disabled={buttonsDisabled}>
                   <IonIcon icon={calendarOutline} />
                 </IonButton>
+
                 <IonButton
                   disabled={buttonsDisabled}
                   routerLink={
                     "/move/timer/" + teamId + "/" + moduleId + "/" + stage
                   }
-                  onClick={() => {
-                    console.log("toggling modal after i clicked");
-                    console.log(toggleModal);
-                    toggleModal();
-                  }}
+                  onClick={toggleModal}
                   size={"large"}
                   shape={"round"}
                 >
@@ -157,6 +160,9 @@ function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
   const module = modules.find((m) => m._id === moduleId);
   return (
     <>
+      {/* <IonPage>
+        <XBHeader title={module.name} />
+        <IonContent> */}
       <PlaylistDescription module={module} stage={currentStage} />
       <PlaylistTasks
         stage={currentStage}
@@ -165,6 +171,8 @@ function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
         moduleId={module._id}
         toggleModal={closeModal}
       />
+      {/* </IonContent>
+      </IonPage> */}
     </>
   );
 }

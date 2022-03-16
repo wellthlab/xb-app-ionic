@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IonContent,
   IonSpinner,
@@ -38,10 +38,9 @@ function PlaylistPicker(props) {
   let [activePlaylistId, setActivePlaylistId] = useState(undefined);
   let [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
   function toggleModal() {
-    console.log("1. showModal = ", showModal, !showModal);
     setShowModal(!showModal);
-    console.log("2. showModal = ", showModal);
   }
+
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
@@ -92,6 +91,7 @@ function PlaylistPicker(props) {
           key={module.id}
           detail={true}
           detailIcon={playOutline}
+          // routerLink={"/move/task-playlist/" + module.}
           onClick={createModal}
         >
           <IonLabel>{module.name}</IonLabel>
@@ -124,7 +124,6 @@ function PlaylistPicker(props) {
                       <IonList>
                         <IonItemGroup>{activePlaylists}</IonItemGroup>
                       </IonList>
-
                       <GenericModal
                         showModal={showModal}
                         toggleModal={toggleModal}
@@ -135,9 +134,7 @@ function PlaylistPicker(props) {
                             modules={availableModules}
                             moduleId={activePlaylistId}
                             currentStage={activePlaylistStage}
-                            closeModal={() => {
-                              setShowModal(false);
-                            }}
+                            closeModal={toggleModal}
                           />
                         }
                       />

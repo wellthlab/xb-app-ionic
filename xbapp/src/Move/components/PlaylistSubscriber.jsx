@@ -123,16 +123,17 @@ function SubscribeToModule(props) {
 
   function ModuleSubscriptionModal({ topic }) {
     const playlists = getPlaylist(topic);
-    return (
-      <>
+    if (playlists.length === 0) {
+      return (
         <IonItem lines="none">
           <IonGrid>
             <IonRow>
-              <IonList>
-                <IonItemGroup>{playlists}</IonItemGroup>
-              </IonList>
+              <IonCol>
+                <IonLabel>
+                  <h1>There are no playlists available for this module</h1>
+                </IonLabel>
+              </IonCol>
             </IonRow>
-
             <IonRow>
               <IonCol>
                 <IonButton
@@ -142,14 +143,42 @@ function SubscribeToModule(props) {
                     toggleModal();
                   }}
                 >
-                  Save
+                  Close
                 </IonButton>
               </IonCol>
             </IonRow>
           </IonGrid>
         </IonItem>
-      </>
-    );
+      );
+    } else {
+      return (
+        <>
+          <IonItem lines="none">
+            <IonGrid>
+              <IonRow>
+                <IonList>
+                  <IonItemGroup>{playlists}</IonItemGroup>
+                </IonList>
+              </IonRow>
+
+              <IonRow>
+                <IonCol>
+                  <IonButton
+                    expand="full"
+                    size="normal"
+                    onClick={() => {
+                      toggleModal();
+                    }}
+                  >
+                    Save
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+        </>
+      );
+    }
   }
 
   return (
@@ -196,7 +225,13 @@ function SubscribeToModule(props) {
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonButton expand="full" size="large" onClick={() => {}}>
+            <IonButton
+              expand="full"
+              size="large"
+              onClick={() => {
+                createModal("Experiments", "experiment");
+              }}
+            >
               Experiments
             </IonButton>
           </IonCol>
