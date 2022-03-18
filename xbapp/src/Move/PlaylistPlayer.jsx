@@ -7,7 +7,7 @@ import {
   IonRow,
   IonItem,
   IonContent,
-  IonList,
+  IonText,
   IonSpinner,
   IonPage,
   IonCard,
@@ -47,7 +47,7 @@ function TaskAccordionList({ tasks, taskIdx, currentTaskName }) {
           </Typography>
         </AccordionSummary>
         <AccordionDetails className="AccordionDetails">
-          <IonGrid className="ion-no-padding">
+          <IonGrid className="ion-no-padding ion-text-wrap">
             <IonItemGroup>{tasks}</IonItemGroup>
           </IonGrid>
         </AccordionDetails>
@@ -66,45 +66,50 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
             button
             detail={false}
             key={index}
-            color={index === currentTaskIdx ? "success" : "transparent"}
+            color={index === currentTaskIdx ? "secondary" : "transparent"}
             lines="none"
             onClick={() => {
               setCurrentTask(index);
             }}
           >
-            <IonLabel>{task.desc}</IonLabel>
+            <IonLabel className="ion-text-wrap">{task.desc}</IonLabel>
           </IonItem>
         </IonCol>
       </IonRow>
     );
   });
-  const color = module.info.colour ? module.info.colour : "primary";
+  const colour = module.info.colour;
   return (
     <>
-      <IonItem lines="none" style={{ "--paddingBottom": "0px" }}>
-        {/* <IonGrid className="ion-no-padding"> */}
+      <IonItem lines="none">
         <IonGrid>
           <IonRow>
-            <IonCol size="10">
+            <IonCol size="1" style={{ "background-color": colour }}></IonCol>
+            <IonCol>
               <IonRow>
                 <IonCol>
-                  <h1>{module.name}</h1>
-                  Stage {stage + 1}
+                  <IonItem lines="none">
+                    <IonLabel
+                      style={{ "font-size": "1.2em", "font-weight": "bold" }}
+                      slot="start"
+                    >
+                      <IonText className="ion-text-wrap">{module.name}</IonText>
+                    </IonLabel>
+                    <IonLabel slot="end">
+                      <IonText>Stage {stage + 1}</IonText>
+                    </IonLabel>
+                  </IonItem>
                 </IonCol>
               </IonRow>
-            </IonCol>
-            <IonCol
-              className="ion-no-padding"
-              style={{ "background-color": color, radius: "5px" }}
-            ></IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <TaskAccordionList
-                tasks={taskItems}
-                taskIdx={currentTaskIdx + 1}
-                currentTaskName={currentTaskName}
-              />
+              <IonRow>
+                <IonCol>
+                  <TaskAccordionList
+                    tasks={taskItems}
+                    taskIdx={currentTaskIdx + 1}
+                    currentTaskName={currentTaskName}
+                  />
+                </IonCol>
+              </IonRow>
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -195,7 +200,7 @@ function PlaylistPlayer(props) {
     return <div>Module not found</div>;
   }
 
-  const tasks = module.tasks[stage];
+  const tasks = module.playlists[stage].tasks;
   const currentTask = tasks[currentTaskIdx];
 
   // Save the time spent on the tasks
@@ -240,9 +245,9 @@ function PlaylistPlayer(props) {
   function nextTask() {
     if (currentTaskIdx < tasks.length - 1) {
       setCurrentTaskIdx(currentTaskIdx + 1);
-    }
-    if (readyToSave) {
-      saveResponse();
+      if (readyToSave) {
+        saveResponse();
+      }
       setExternalResponse({});
       setMinutes(0);
     }
@@ -252,9 +257,9 @@ function PlaylistPlayer(props) {
   function prevTask() {
     if (currentTaskIdx > 0) {
       setCurrentTaskIdx(currentTaskIdx - 1);
-    }
-    if (readyToSave) {
-      saveResponse();
+      if (readyToSave) {
+        saveResponse();
+      }
       setExternalResponse({});
       setMinutes(0);
     }
@@ -296,7 +301,7 @@ function PlaylistPlayer(props) {
           ""
         )}
         {/* Previous and next task buttons */}
-        <IonItem lines="none">
+        <IonItem lines="none" color="transparent">
           <IonGrid className="PlaylistNavigation">
             <IonRow>
               <IonCol>
@@ -320,17 +325,6 @@ function PlaylistPlayer(props) {
                     routerLink={"/move/task-playlist"}
                     onClick={() => {
                       saveResponse();
-                      // Insomnia.allowSleepAgain().then(
-                      //   () =>
-                      //     console.log(
-                      //       "Insomnia will no longer keep the screen on"
-                      //     ),
-                      //   (err) =>
-                      //     console.log(
-                      //       "Insomnia was unable to be disabled for some reason: ",
-                      //       err
-                      //     )
-                      // );
                     }}
                     size="normal"
                   >
@@ -342,54 +336,6 @@ function PlaylistPlayer(props) {
           </IonGrid>
         </IonItem>
       </IonContent>
-      {/* Previous and Next/Finished button */}
-      {/* <IonFooter>
-        <IonItem lines="none">
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  expand="full"
-                  onClick={prevTask}
-                  disabled={currentTaskIdx <= 0}
-                  size="normal"
-                >
-                  Previous
-                </IonButton>
-              </IonCol>
-              <IonCol>
-                {currentTaskIdx < tasks.length - 1 ? (
-                  <IonButton expand="full" onClick={nextTask} size="normal">
-                    Next
-                  </IonButton>
-                ) : (
-                  <IonButton
-                    expand="full"
-                    routerLink={"/move/task-playlist"}
-                    onClick={() => {
-                      saveResponse();
-                      // Insomnia.allowSleepAgain().then(
-                      //   () =>
-                      //     console.log(
-                      //       "Insomnia will no longer keep the screen on"
-                      //     ),
-                      //   (err) =>
-                      //     console.log(
-                      //       "Insomnia was unable to be disabled for some reason: ",
-                      //       err
-                      //     )
-                      // );
-                    }}
-                    size="normal"
-                  >
-                    Finish
-                  </IonButton>
-                )}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      </IonFooter> */}
     </IonPage>
   );
 }

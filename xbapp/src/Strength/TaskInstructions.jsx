@@ -6,6 +6,7 @@ import {
   IonCardContent,
   IonItemGroup,
   IonItem,
+  IonLabel,
   IonText,
 } from "@ionic/react";
 import parse from "html-react-parser";
@@ -40,9 +41,7 @@ function TaskInstructions({ task }) {
     return (
       <IonRow>
         <IonCol>
-          <IonItem lines="none" className="ion-text-justify">
-            <IonText>{parse(text)}</IonText>
-          </IonItem>
+          <IonText>{parse(text)}</IonText>
         </IonCol>
       </IonRow>
     );
@@ -52,7 +51,9 @@ function TaskInstructions({ task }) {
     <IonCard>
       <IonCardContent>
         <IonGrid>
-          <IonItemGroup>{instructionText}</IonItemGroup>
+          <IonItem className="ion-text-justify" lines="none">
+            <IonItemGroup>{instructionText}</IonItemGroup>
+          </IonItem>
         </IonGrid>
       </IonCardContent>
     </IonCard>

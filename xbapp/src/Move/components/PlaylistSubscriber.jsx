@@ -10,9 +10,8 @@ import {
   IonItemGroup,
   IonToggle,
   IonText,
-  IonBadge,
 } from "@ionic/react";
-import { connect } from "react-redux";
+import parse from "html-react-parser";
 
 import "./PlaylistSubscriber.css";
 import GenericModal from "../../Info/components/GenericModal";
@@ -134,7 +133,7 @@ function SubscribeToModule(props) {
                       <IonCol>
                         <IonItem lines="none">
                           <IonText className="ion-text-justify">
-                            {module.desc}
+                            {parse(module.desc)}
                           </IonText>
                         </IonItem>
                       </IonCol>

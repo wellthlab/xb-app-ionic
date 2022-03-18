@@ -20,9 +20,10 @@ import {
   calendarOutline,
   playOutline,
 } from "ionicons/icons";
+import parse from "html-react-parser";
 
 function PlaylistDescription({ module, stage }) {
-  const numStages = module.tasks.length;
+  const numStages = module.playlists.length;
   return (
     <IonItem
       lines="none"
@@ -32,9 +33,7 @@ function PlaylistDescription({ module, stage }) {
       <IonGrid>
         <IonRow>
           <IonCol>
-            {/* <IonLabel className="ion-text-center"> */}
-            <IonText>{module.desc}</IonText>
-            {/* </IonLabel> */}
+            <IonText>{parse(module.desc)}</IonText>
           </IonCol>
         </IonRow>
         <IonRow>
@@ -57,13 +56,13 @@ function PlaylistDescription({ module, stage }) {
   );
 }
 
-function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
+function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
   const [currentStage, setCurrentStage] = useState(stage);
 
   // These functions are used to control the buttons which control the day to
   // show the playlist for
   function nextStage() {
-    if (currentStage >= tasks.length - 1) return;
+    if (currentStage >= playlists.length - 1) return;
     setCurrentStage(currentStage + 1);
   }
   function prevStage() {
@@ -71,7 +70,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
     setCurrentStage(currentStage - 1);
   }
 
-  const tasksForStage = tasks[currentStage];
+  const tasksForStage = playlists[currentStage].tasks;
   const taskItems = tasksForStage.map((task) => {
     return <IonItem>{task.desc}</IonItem>;
   });
@@ -107,7 +106,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
                 <IonButton
                   onClick={nextStage}
                   size="default"
-                  disabled={currentStage >= tasks.length - 1}
+                  disabled={currentStage >= playlists.length - 1}
                 >
                   <IonIcon icon={chevronForwardCircleOutline} />
                 </IonButton>
@@ -173,7 +172,7 @@ function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
         {/* <IonCardContent> */}
         <PlaylistTasks
           stage={currentStage}
-          tasks={module.tasks}
+          playlists={module.playlists}
           teamId={team._id}
           moduleId={module._id}
           toggleModal={closeModal}

@@ -15,11 +15,25 @@ import { arrowDownOutline } from "ionicons/icons";
 // import Confetti from "react-confetti";
 // import { CheckmarkSharp, CloseSharp } from "react-ionicons";
 
-function GenericModal({ showModal, toggleModal, hideMinimize, title, body }) {
+import "./GenericModal.css";
+
+function GenericModal({
+  showModal,
+  toggleModal,
+  hideMinimize,
+  titleBarColour,
+  title,
+  body,
+}) {
   return (
     <IonModal isOpen={showModal} swipeToClose={false}>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar
+          className="toolbar"
+          style={{
+            "--background": titleBarColour,
+          }}
+        >
           {hideMinimize ? (
             ""
           ) : (
@@ -34,7 +48,9 @@ function GenericModal({ showModal, toggleModal, hideMinimize, title, body }) {
               </IonButton>
             </IonButtons>
           )}
-          <IonTitle>{title}</IonTitle>
+          <IonTitle style={{ "mix-blend-mode": "difference" }}>
+            {title}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>{body}</IonContent>

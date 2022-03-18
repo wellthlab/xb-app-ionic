@@ -33,10 +33,11 @@ import SubscribeToModule from "./components/PlaylistSubscriber";
  *
  */
 function PlaylistPicker(props) {
-  let [showModal, setShowModal] = useState(false);
-  let [playlistTitle, setPlaylistTitle] = useState(undefined);
-  let [activePlaylistId, setActivePlaylistId] = useState(undefined);
-  let [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
+  const [showModal, setShowModal] = useState(false);
+  const [playlistTitle, setPlaylistTitle] = useState(undefined);
+  const [activePlaylistId, setActivePlaylistId] = useState(undefined);
+  const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
+  const [titleBarColour, setTitleBarColour] = useState("");
   function toggleModal() {
     setShowModal(!showModal);
   }
@@ -79,33 +80,43 @@ function PlaylistPicker(props) {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const colour = module.info.colour;
     const stage = userModuleObj.stage;
+    const minutes = module.playlists[stage].minutes;
     function createModal() {
       toggleModal();
       setPlaylistTitle(module.name);
       setActivePlaylistId(module._id);
       setActivePlaylistStage(stage);
+      setTitleBarColour(module.info.colour);
     }
     return (
       <>
-        <IonRow>
-          <IonCol size="1" style={{ "background-color": colour }}></IonCol>
-          <IonCol>
-            <IonItem
-              button
-              key={module.id}
-              detail={false}
-              detailIcon={playOutline}
-              onClick={createModal}
-            >
-              <IonLabel>{module.name}</IonLabel>
-              <IonLabel slot="end">
-                <IonButton>
-                  <IonIcon icon={playOutline}></IonIcon>
-                </IonButton>
-              </IonLabel>
-            </IonItem>
-          </IonCol>
-        </IonRow>
+        <IonItem>
+          <IonGrid>
+            <IonRow>
+              <IonCol size="1" style={{ "background-color": colour }}></IonCol>
+              <IonCol>
+                <IonItem
+                  button
+                  lines="none"
+                  key={module.id}
+                  detail={false}
+                  detailIcon={playOutline}
+                  onClick={createModal}
+                >
+                  <IonLabel>
+                    <IonRow>{module.name}</IonRow>
+                    <IonRow>{minutes} minutes</IonRow>
+                  </IonLabel>
+                  <IonLabel slot="end">
+                    <IonButton>
+                      <IonIcon icon={playOutline}></IonIcon>
+                    </IonButton>
+                  </IonLabel>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
       </>
     );
   });
@@ -134,6 +145,7 @@ function PlaylistPicker(props) {
                         <IonItemGroup>{activePlaylists}</IonItemGroup>
                       </IonList>
                       <GenericModal
+                        titleBarColour={titleBarColour}
                         showModal={showModal}
                         toggleModal={toggleModal}
                         title={playlistTitle}
