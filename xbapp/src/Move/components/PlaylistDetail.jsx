@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IonItem,
   IonItemGroup,
@@ -9,10 +10,9 @@ import {
   IonLabel,
   IonProgressBar,
   IonText,
+  IonCard,
+  IonCardContent,
   IonList,
-  IonPage,
-  IonContent,
-  IonRouterLink,
 } from "@ionic/react";
 import {
   chevronBackCircleOutline,
@@ -21,29 +21,32 @@ import {
   playOutline,
 } from "ionicons/icons";
 
-import { useState } from "react";
-import XBHeader from "../../util/XBHeader";
-
 function PlaylistDescription({ module, stage }) {
   const numStages = module.tasks.length;
   return (
-    <IonItem lines="none">
+    <IonItem
+      lines="none"
+      className="ion-text-justify"
+      style={{ "--padding-bottom": "10px" }}
+    >
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonLabel>{module.desc}</IonLabel>
+            {/* <IonLabel className="ion-text-center"> */}
+            <IonText>{module.desc}</IonText>
+            {/* </IonLabel> */}
           </IonCol>
         </IonRow>
-        <IonItem lines="none">
-          <IonRow>
-            <IonCol>
+        <IonRow>
+          <IonCol>
+            <IonLabel className="ion-text-center ">
               <IonText>
-                You are currently at <strong>STAGE</strong> {stage + 1} out of{" "}
+                You are currently at <strong>STAGE</strong> {stage + 1} of{" "}
                 {numStages}
               </IonText>
-            </IonCol>
-          </IonRow>
-        </IonItem>
+            </IonLabel>
+          </IonCol>
+        </IonRow>
         <IonRow>
           <IonCol>
             <IonProgressBar value={(stage + 1) / numStages} />
@@ -77,7 +80,7 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
 
   return (
     <>
-      <IonItem lines="none" style={{ "--padding-top": "25px" }}>
+      <IonItem lines="none" style={{ "--padding-top": "15px" }}>
         <IonGrid>
           {/* Buttons for switching playlist stage */}
           <IonRow>
@@ -132,18 +135,23 @@ function PlaylistTasks({ tasks, teamId, moduleId, stage, toggleModal }) {
           <IonRow>
             <IonCol>
               <div class="ion-text-center">
-                <IonButton size={"small"} disabled={buttonsDisabled}>
+                <IonButton
+                  size="large"
+                  shape="circle"
+                  disabled={buttonsDisabled}
+                >
                   <IonIcon icon={calendarOutline} />
                 </IonButton>
 
                 <IonButton
+                  size="large"
+                  shape="circle"
+                  color="success"
                   disabled={buttonsDisabled}
                   routerLink={
                     "/move/timer/" + teamId + "/" + moduleId + "/" + stage
                   }
                   onClick={toggleModal}
-                  size={"large"}
-                  shape={"round"}
                 >
                   <IonIcon icon={playOutline} />
                 </IonButton>
@@ -160,19 +168,18 @@ function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
   const module = modules.find((m) => m._id === moduleId);
   return (
     <>
-      {/* <IonPage>
-        <XBHeader title={module.name} />
-        <IonContent> */}
       <PlaylistDescription module={module} stage={currentStage} />
-      <PlaylistTasks
-        stage={currentStage}
-        tasks={module.tasks}
-        teamId={team._id}
-        moduleId={module._id}
-        toggleModal={closeModal}
-      />
-      {/* </IonContent>
-      </IonPage> */}
+      <IonCard>
+        {/* <IonCardContent> */}
+        <PlaylistTasks
+          stage={currentStage}
+          tasks={module.tasks}
+          teamId={team._id}
+          moduleId={module._id}
+          toggleModal={closeModal}
+        />
+        {/* </IonCardContent> */}
+      </IonCard>
     </>
   );
 }

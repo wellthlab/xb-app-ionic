@@ -15,21 +15,25 @@ import { arrowDownOutline } from "ionicons/icons";
 // import Confetti from "react-confetti";
 // import { CheckmarkSharp, CloseSharp } from "react-ionicons";
 
-function GenericModal({ showModal, toggleModal, title, body }) {
+function GenericModal({ showModal, toggleModal, hideMinimize, title, body }) {
   return (
-    <IonModal isOpen={showModal}>
+    <IonModal isOpen={showModal} swipeToClose={false}>
       <IonHeader>
         <IonToolbar>
-          <IonButtons slot="start">
-            <IonButton
-              shape="round"
-              onClick={() => {
-                toggleModal();
-              }}
-            >
-              <IonIcon icon={arrowDownOutline} />
-            </IonButton>
-          </IonButtons>
+          {hideMinimize ? (
+            ""
+          ) : (
+            <IonButtons slot="start">
+              <IonButton
+                shape="round"
+                onClick={() => {
+                  toggleModal();
+                }}
+              >
+                <IonIcon icon={arrowDownOutline} />
+              </IonButton>
+            </IonButtons>
+          )}
           <IonTitle>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>

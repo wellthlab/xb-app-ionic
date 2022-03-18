@@ -37,12 +37,14 @@ import Timer from "../Instruments/StatelessTimer";
 import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 
-function TaskAccordionList({ tasks, currentTaskName }) {
+function TaskAccordionList({ tasks, taskIdx, currentTaskName }) {
   return (
     <>
       <Accordion className="AccordionBox">
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{currentTaskName}</Typography>
+          <Typography>
+            {taskIdx} of {tasks.length}: {currentTaskName}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails className="AccordionDetails">
           <IonGrid className="ion-no-padding">
@@ -76,34 +78,33 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonRow>
     );
   });
+  const color = module.info.colour ? module.info.colour : "primary";
   return (
     <>
-      <IonItem lines="none">
+      <IonItem lines="none" style={{ "--paddingBottom": "0px" }}>
+        {/* <IonGrid className="ion-no-padding"> */}
         <IonGrid>
           <IonRow>
-            <IonCol>
-              <strong>{module.name}</strong>
+            <IonCol size="10">
+              <IonRow>
+                <IonCol>
+                  <h1>{module.name}</h1>
+                  Stage {stage + 1}
+                </IonCol>
+              </IonRow>
             </IonCol>
-            <IonCol>Stage {stage + 1}</IonCol>
+            <IonCol
+              className="ion-no-padding"
+              style={{ "background-color": color, radius: "5px" }}
+            ></IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
               <TaskAccordionList
                 tasks={taskItems}
+                taskIdx={currentTaskIdx + 1}
                 currentTaskName={currentTaskName}
               />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonItem>
-      <IonItem lines="none">
-        <IonGrid>
-          <IonRow>
-            <IonCol></IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              {currentTaskIdx + 1} of {taskItems.length}
             </IonCol>
           </IonRow>
         </IonGrid>
@@ -118,11 +119,7 @@ function TaskTimer({ task, team, manualEntry, setManualEntry, setMinutes }) {
   if (manualEntry) {
     content = (
       <>
-        <ManualTime
-          id={team._id}
-          task={task}
-          onChange={(minutes) => setMinutes(minutes)}
-        />
+        <ManualTime id={team._id} task={task} onChange={setMinutes} />
       </>
     );
   } else {
@@ -298,9 +295,55 @@ function PlaylistPlayer(props) {
         ) : (
           ""
         )}
+        {/* Previous and next task buttons */}
+        <IonItem lines="none">
+          <IonGrid className="PlaylistNavigation">
+            <IonRow>
+              <IonCol>
+                <IonButton
+                  expand="full"
+                  onClick={prevTask}
+                  disabled={currentTaskIdx <= 0}
+                  size="normal"
+                >
+                  Previous
+                </IonButton>
+              </IonCol>
+              <IonCol>
+                {currentTaskIdx < tasks.length - 1 ? (
+                  <IonButton expand="full" onClick={nextTask} size="normal">
+                    Next
+                  </IonButton>
+                ) : (
+                  <IonButton
+                    expand="full"
+                    routerLink={"/move/task-playlist"}
+                    onClick={() => {
+                      saveResponse();
+                      // Insomnia.allowSleepAgain().then(
+                      //   () =>
+                      //     console.log(
+                      //       "Insomnia will no longer keep the screen on"
+                      //     ),
+                      //   (err) =>
+                      //     console.log(
+                      //       "Insomnia was unable to be disabled for some reason: ",
+                      //       err
+                      //     )
+                      // );
+                    }}
+                    size="normal"
+                  >
+                    Finish
+                  </IonButton>
+                )}
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
       </IonContent>
       {/* Previous and Next/Finished button */}
-      <IonFooter>
+      {/* <IonFooter>
         <IonItem lines="none">
           <IonGrid>
             <IonRow>
@@ -346,7 +389,7 @@ function PlaylistPlayer(props) {
             </IonRow>
           </IonGrid>
         </IonItem>
-      </IonFooter>
+      </IonFooter> */}
     </IonPage>
   );
 }

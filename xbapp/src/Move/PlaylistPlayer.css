@@ -10,3 +10,9 @@
     background-color: var(--ion-background-color);
     cursor: pointer;
 }
+
+.PlaylistNavigation {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

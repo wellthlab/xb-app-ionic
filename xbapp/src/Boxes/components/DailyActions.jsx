@@ -32,6 +32,8 @@ const DailyActions = ({ group, today, tabs }) => {
     dayList.push(entries[i].day);
   }
 
+  debugger;
+
   if (typeof entry == "undefined") {
     return (
       <>
@@ -137,6 +139,8 @@ const DailyActions = ({ group, today, tabs }) => {
   // } else {
   //   daytabs = <></>;
   // }
+
+  debugger;
 
   return (
     <div className="dailyActions">

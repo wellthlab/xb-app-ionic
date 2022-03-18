@@ -77,6 +77,7 @@ function PlaylistPicker(props) {
   // and now we create a list of clickable items
   let activePlaylists = activeModules.map((userModuleObj) => {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
+    const colour = module.info.colour;
     const stage = userModuleObj.stage;
     function createModal() {
       toggleModal();
@@ -86,17 +87,25 @@ function PlaylistPicker(props) {
     }
     return (
       <>
-        <IonItem
-          button
-          key={module.id}
-          detail={true}
-          detailIcon={playOutline}
-          // routerLink={"/move/task-playlist/" + module.}
-          onClick={createModal}
-        >
-          <IonLabel>{module.name}</IonLabel>
-          <IonLabel>Stage {stage + 1}</IonLabel>
-        </IonItem>
+        <IonRow>
+          <IonCol size="1" style={{ "background-color": colour }}></IonCol>
+          <IonCol>
+            <IonItem
+              button
+              key={module.id}
+              detail={false}
+              detailIcon={playOutline}
+              onClick={createModal}
+            >
+              <IonLabel>{module.name}</IonLabel>
+              <IonLabel slot="end">
+                <IonButton>
+                  <IonIcon icon={playOutline}></IonIcon>
+                </IonButton>
+              </IonLabel>
+            </IonItem>
+          </IonCol>
+        </IonRow>
       </>
     );
   });

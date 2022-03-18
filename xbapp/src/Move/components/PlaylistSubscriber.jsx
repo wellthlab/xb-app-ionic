@@ -9,12 +9,14 @@ import {
   IonCol,
   IonItemGroup,
   IonToggle,
+  IonText,
+  IonBadge,
 } from "@ionic/react";
 import { connect } from "react-redux";
 
-import { addControllersProp } from "../../util_model/controllers";
-
+import "./PlaylistSubscriber.css";
 import GenericModal from "../../Info/components/GenericModal";
+import { addControllersProp } from "../../util_model/controllers";
 
 function SubscribeToModule(props) {
   const [showModal, setShowModal] = useState(false);
@@ -61,9 +63,6 @@ function SubscribeToModule(props) {
   // Toggle to modal -- if the user has changed their subscriptions, then update
   // otherwise just close
   function toggleModal() {
-    if (updatedSubscriptions) {
-      subscribeUser();
-    }
     setShowModal(!showModal);
   }
 
@@ -90,29 +89,57 @@ function SubscribeToModule(props) {
           } else {
             checked = false;
           }
+          const colour = module.info.colour;
+
           return (
             <IonItem>
               <IonGrid>
                 <IonRow>
+                  <IonCol
+                    style={{
+                      "background-color": colour,
+                    }}
+                    size="1"
+                  ></IonCol>
                   <IonCol>
-                    <IonLabel>{module.name}</IonLabel>
+                    <IonRow>
+                      <IonCol>
+                        <IonItem lines="none">
+                          <IonLabel slot="start" className="ion-text-wrap">
+                            <IonText
+                              style={{
+                                "font-size": "1.3em",
+                                "font-weight": "bold",
+                              }}
+                            >
+                              {module.name}
+                            </IonText>
+                          </IonLabel>
+                          <IonToggle
+                            slot="end"
+                            checked={checked}
+                            onIonChange={(e) => {
+                              updateModules(
+                                e.detail.checked,
+                                module.name,
+                                module._id,
+                                topic
+                              );
+                            }}
+                          />
+                        </IonItem>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <IonItem lines="none">
+                          <IonText className="ion-text-justify">
+                            {module.desc}
+                          </IonText>
+                        </IonItem>
+                      </IonCol>
+                    </IonRow>
                   </IonCol>
-                  <IonCol>
-                    <IonToggle
-                      checked={checked}
-                      onIonChange={(e) => {
-                        updateModules(
-                          e.detail.checked,
-                          module.name,
-                          module._id,
-                          topic
-                        );
-                      }}
-                    />
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>{module.desc}</IonCol>
                 </IonRow>
               </IonGrid>
             </IonItem>
@@ -129,9 +156,9 @@ function SubscribeToModule(props) {
           <IonGrid>
             <IonRow>
               <IonCol>
-                <IonLabel>
-                  <h1>There are no playlists available for this module</h1>
-                </IonLabel>
+                <IonText className="ion-text-center">
+                  <h1>There are no playlists available for this topic</h1>
+                </IonText>
               </IonCol>
             </IonRow>
             <IonRow>
@@ -167,10 +194,14 @@ function SubscribeToModule(props) {
                     expand="full"
                     size="normal"
                     onClick={() => {
-                      toggleModal();
+                      if (updatedSubscriptions) {
+                        subscribeUser();
+                      } else {
+                        toggleModal();
+                      }
                     }}
                   >
-                    Save
+                    Close
                   </IonButton>
                 </IonCol>
               </IonRow>
@@ -203,10 +234,10 @@ function SubscribeToModule(props) {
               expand="full"
               size="large"
               onClick={() => {
-                createModal("Increasing your strength", "endurance-training");
+                createModal("Improving your endurance", "endurance-training");
               }}
             >
-              Increasing your endurance
+              Improving your endurance
             </IonButton>
           </IonCol>
         </IonRow>
@@ -237,13 +268,14 @@ function SubscribeToModule(props) {
           </IonCol>
         </IonRow>
       </IonGrid>
-
+      {/* Modal */}
       <GenericModal
         showModal={showModal}
         toggleModal={() => {
           toggleModal();
           updateModules();
         }}
+        hideMinimize={true}
         title={modalTitle}
         body={<ModuleSubscriptionModal topic={modalTopic} />}
       />
@@ -251,11 +283,4 @@ function SubscribeToModule(props) {
   );
 }
 
-export default connect(
-  (state, ownProps) => {
-    return {};
-  },
-  {
-    pure: false,
-  }
-)(addControllersProp(SubscribeToModule));
+export default addControllersProp(SubscribeToModule);
