@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { IonList, IonItem, IonItemGroup, IonIcon } from "@ionic/react";
+import {
+  IonList,
+  IonItem,
+  IonItemGroup,
+  IonIcon,
+  IonLabel,
+} from "@ionic/react";
 
 import {
   checkboxOutline,
@@ -32,8 +38,6 @@ const DailyActions = ({ group, today, tabs }) => {
     dayList.push(entries[i].day);
   }
 
-  debugger;
-
   if (typeof entry == "undefined") {
     return (
       <>
@@ -54,15 +58,10 @@ const DailyActions = ({ group, today, tabs }) => {
    * Daily task list and buttons
    */
 
-  // TODO: should be an array in the future already.. sigh this is a hack I need to fix
-  var required = group.experiment.tasks[activeDay].required["progressTasks"];
-  var optional = group.experiment.tasks[activeDay].optional;
+  let required = group.experiment.tasks[activeDay].required;
+  let optional = group.experiment.tasks[activeDay].optional;
 
   var requiredActions = required.map((type) => {
-    if (type.onPlaylist) {
-      return null;
-    }
-
     var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
@@ -81,10 +80,6 @@ const DailyActions = ({ group, today, tabs }) => {
   });
 
   var optionalActions = optional.map((type) => {
-    if (type.onPlaylist) {
-      return null;
-    }
-
     var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
@@ -140,8 +135,6 @@ const DailyActions = ({ group, today, tabs }) => {
   //   daytabs = <></>;
   // }
 
-  debugger;
-
   return (
     <div className="dailyActions">
       <IonList lines="full" className="journalTasks">
@@ -151,7 +144,9 @@ const DailyActions = ({ group, today, tabs }) => {
           ) : optionalActionsFiltered.length > 0 ? (
             "" // only display no task msg when there are no optional tasks either
           ) : (
-            <IonItem>No tasks need your attention</IonItem>
+            <IonItem className="ion-text-wrap">
+              <IonLabel>Nothing needs your attention right now</IonLabel>
+            </IonItem>
           )}
         </IonItemGroup>
       </IonList>

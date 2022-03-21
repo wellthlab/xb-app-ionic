@@ -229,8 +229,22 @@ const GroupInfo = ({ group, controllers, match }) => {
           {/* DISPLAY DAILY TASKS */}
           <IonRow>
             <IonCol>
-              <IonLabel>Today's Tasks</IonLabel>
-              <DailyActions group={group} today={day} tabs={false} />
+              <IonItem lines="none">
+                <IonGrid>
+                  <IonRow>
+                    <IonCol>
+                      <IonText style={{ fontSize: "1.2em" }}>
+                        Today's Tasks
+                      </IonText>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <DailyActions group={group} today={day} tabs={false} />
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
+              </IonItem>
             </IonCol>
           </IonRow>
         </IonGrid>

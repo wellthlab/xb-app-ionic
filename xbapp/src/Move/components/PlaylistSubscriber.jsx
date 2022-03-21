@@ -10,6 +10,8 @@ import {
   IonItemGroup,
   IonToggle,
   IonText,
+  IonThumbnail,
+  IonImg,
 } from "@ionic/react";
 import parse from "html-react-parser";
 
@@ -72,9 +74,9 @@ function SubscribeToModule(props) {
     setModalTopic(topic);
   }
 
-  // Create a of available modules for a given topic. Displays the name and a
+  // Create a list of available modules for a given topic. Displays the name and a
   // description of the module, and a toggle to subscribe
-  function getPlaylist(topic) {
+  function getModulesForTopic(topic) {
     return (
       availableModules
         // get all modules for a topic
@@ -147,8 +149,8 @@ function SubscribeToModule(props) {
     );
   }
 
-  function ModuleSubscriptionModal({ topic }) {
-    const playlists = getPlaylist(topic);
+  function SubscriptionModal({ topic }) {
+    const playlists = getModulesForTopic(topic);
     if (playlists.length === 0) {
       return (
         <IonItem lines="none">
@@ -211,59 +213,59 @@ function SubscribeToModule(props) {
     }
   }
 
+  function TopicSubscriptionButton({ topic, title, img }) {
+    return (
+      <IonItem
+        button
+        detail={true}
+        expand="full"
+        size="normal"
+        onClick={() => {
+          createModal(title, topic);
+        }}
+      >
+        <IonThumbnail slot="start">
+          <IonImg src={img}></IonImg>
+        </IonThumbnail>
+        <IonLabel>{title}</IonLabel>
+      </IonItem>
+    );
+  }
+
+  // Actual return for the main component
   return (
     <>
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonButton
-              expand="full"
-              size="large"
-              onClick={() => {
-                createModal("Building your strength", "strength-training");
-              }}
-            >
-              Building your strength
-            </IonButton>
+            <TopicSubscriptionButton
+              topic="strength-training"
+              title="Strength"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </IonCol>
+          <IonCol>
+            <TopicSubscriptionButton
+              topic="endurance-training"
+              title="Endurance"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonButton
-              expand="full"
-              size="large"
-              onClick={() => {
-                createModal("Improving your endurance", "endurance-training");
-              }}
-            >
-              Improving your endurance
-            </IonButton>
+            <TopicSubscriptionButton
+              topic="neuro-mobility"
+              title="Neuromobility"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
           </IonCol>
-        </IonRow>
-        <IonRow>
           <IonCol>
-            <IonButton
-              expand="full"
-              size="large"
-              onClick={() => {
-                createModal("Improving your mobility", "neuro-mobility");
-              }}
-            >
-              Improving your mobility
-            </IonButton>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonButton
-              expand="full"
-              size="large"
-              onClick={() => {
-                createModal("Experiments", "experiment");
-              }}
-            >
-              Experiments
-            </IonButton>
+            <TopicSubscriptionButton
+              topic="experiment"
+              title="Experiments"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -276,7 +278,7 @@ function SubscribeToModule(props) {
         }}
         hideMinimize={true}
         title={modalTitle}
-        body={<ModuleSubscriptionModal topic={modalTopic} />}
+        body={<SubscriptionModal topic={modalTopic} />}
       />
     </>
   );

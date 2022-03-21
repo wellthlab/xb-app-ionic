@@ -10,7 +10,7 @@ import React from "react";
 const XBHeader = (props) => {
   return (
     <IonHeader>
-      <IonToolbar>
+      <IonToolbar style={{"--background": props.colour}}>
         <IonButtons slot="start">
           <IonBackButton defaultHref="/" />
         </IonButtons>

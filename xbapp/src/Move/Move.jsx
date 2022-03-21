@@ -8,6 +8,7 @@ import {
   IonCol,
   IonIcon,
   useIonAlert,
+  IonThumbnail,
 } from "@ionic/react";
 import {
   mailOutline,

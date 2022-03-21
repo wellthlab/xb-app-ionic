@@ -78,20 +78,19 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonRow>
     );
   });
-  const colour = module.info.colour;
+  // const colour = module.info.colour;
   return (
     <>
       <IonItem lines="none">
         <IonGrid>
           <IonRow>
-            <IonCol size="1" style={{ "background-color": colour }}></IonCol>
+            {/* <IonCol size="1" style={{ "background-color": colour }}></IonCol> */}
             <IonCol>
               <IonRow>
                 <IonCol>
                   <IonItem lines="none">
                     <IonLabel
                       style={{ "font-size": "1.2em", "font-weight": "bold" }}
-                      slot="start"
                     >
                       <IonText className="ion-text-wrap">{module.name}</IonText>
                     </IonLabel>
@@ -219,6 +218,7 @@ function PlaylistPlayer(props) {
     response.intype = currentTask.intype;
     response.minutes = minutes;
     response.minutes = team.experiment.day;
+    response.day = team.experiment.day;
     await props.controllers.ADD_RESPONSE(team._id, response);
   }
 
@@ -275,7 +275,7 @@ function PlaylistPlayer(props) {
 
   return (
     <IonPage>
-      <XBHeader title={"Movement"} />
+      <XBHeader title={"Movement"} colour={module.info.colour} />
       <IonContent>
         <InfoTopBar
           module={module}
@@ -306,7 +306,7 @@ function PlaylistPlayer(props) {
             <IonRow>
               <IonCol>
                 <IonButton
-                  expand="full"
+                  expand="block"
                   onClick={prevTask}
                   disabled={currentTaskIdx <= 0}
                   size="normal"
@@ -316,12 +316,12 @@ function PlaylistPlayer(props) {
               </IonCol>
               <IonCol>
                 {currentTaskIdx < tasks.length - 1 ? (
-                  <IonButton expand="full" onClick={nextTask} size="normal">
+                  <IonButton expand="block" onClick={nextTask} size="normal">
                     Next
                   </IonButton>
                 ) : (
                   <IonButton
-                    expand="full"
+                    expand="block"
                     routerLink={"/move/task-playlist"}
                     onClick={() => {
                       saveResponse();

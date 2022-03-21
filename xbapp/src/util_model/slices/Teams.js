@@ -35,6 +35,12 @@ function dayify(responses, start, minday, maxday) {
   for (var r of responses) {
     var day = r.day;
 
+    // Some responses don't have a day key, so we need to skip them
+    // because they will be incorrect
+    if (isNaN(day)) {
+      continue;
+    }
+
     minday = Math.min(minday, day);
     maxday = Math.max(maxday, day);
 
