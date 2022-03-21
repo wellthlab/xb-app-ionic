@@ -50,6 +50,7 @@ import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import TaskInstructions from "../Strength/TaskInstructions";
 import SubscribeToModule from "../Move/components/PlaylistSubscriber";
+import quizFactory from "../Quiz/quizFactory";
 
 /**
  * Create input widgets based on task type}
@@ -287,6 +288,17 @@ export default function responseFactory(
       input = <SubscribeToModule />;
       typedesc = "Subscribe";
       break;
+
+    case "s22quiz":
+      const quizInput = [];
+      for (let i in task.questions) {
+        const subQ = task.questions[i];
+        quizInput.push(quizFactory(subQ.tag, subQ.type, subQ, onSubmit));
+      }
+      input = <>{quizInput}</>;
+      typedesc = "Quiz";
+      break;
+
     default:
       input = (
         <p>
@@ -296,7 +308,6 @@ export default function responseFactory(
       typedesc = "";
       break;
   }
-
   return {
     input: input,
     desc: typedesc,
