@@ -174,6 +174,11 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid, startD
   }
 }
 
+async function PROGRESS_ALONG_MODULE(client, store, controllers, moduleId) {
+  client.progressUserModule(moduleId);
+  await controllers.SET_USER_PROFILE();
+}
+
 async function ADD_RESPONSE(client, store, controllers, expid, value) {
   value.submitted = new Date().toISOString();
   client.addResponse(expid, value);
@@ -347,6 +352,7 @@ function getControllers(store, client) {
     SET_USER_PROFILE,
     SET_USER_PROFILE_IF_REQD,
     UPDATE_USER_PROFILE,
+    PROGRESS_ALONG_MODULE,
   };
 
   for (var n of Object.keys(controllers)) {

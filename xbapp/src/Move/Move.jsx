@@ -23,7 +23,7 @@ import XBHeader from "../util/XBHeader";
 function MovementWelcome(props) {
   const [notImplementedAlert] = useIonAlert();
   const notImplementedClick = () => {
-    notImplementedAlert("This isn't ready just yet!", [{ text: "Ok" }]);
+    notImplementedAlert("This isn't ready just yet!", [{ text: "Close" }]);
   };
 
   return (

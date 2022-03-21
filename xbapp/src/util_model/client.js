@@ -379,44 +379,120 @@ function XBClient() {
       ...userProfile,
     };
 
+    delete newUserProfile._id;
 
-    const user = await collection.findOne({
+    try {
+      const updateOneResult = await collection.updateOne({
         _userid: {$eq: self.realm.currentUser.id}
+      }, newUserProfile, {upsert: true});
+    } catch (e) {
+      console.error("Error updating user", e);
+      return {
+        success: false,
+        message: "Sorry, we couldn't update your user profile"
       }
-    );
-
-    if (user === null) {
-      console.log("Creating new usersProfile document", newUserProfile);
-      try {
-        const insertOneResult = await collection.insertOne(newUserProfile);
-      } catch (e) {
-        console.error("Error creating user", e);
-        return {
-          success: false,
-          message: "Sorry, we couldn't create your user profile"
-        }
-      }
-
-      return { success: true }
     }
-    else {
-      delete newUserProfile._id;
-      try {
-        const updateOneResult = await collection.updateOne({
-          _userid: {$eq: self.realm.currentUser.id}
-        }, newUserProfile);
 
-        } catch (e) {
-          console.error("Error updating user", e);
-          return {
-            success: false,
-            message: "Sorry, we couldn't update your user profile"
-          }
-        }
-        return { success: true }
-    }
+    return { success: true }
+
+    // const user = await collection.findOne({
+    //     _userid: {$eq: self.realm.currentUser.id}
+    //   }
+    // );
+
+    // if (user === null) {
+    //   console.log("Creating new usersProfile document", newUserProfile);
+    //   try {
+    //     const insertOneResult = await collection.insertOne(newUserProfile);
+    //   } catch (e) {
+    //     console.error("Error creating user", e);
+    //     return {
+    //       success: false,
+    //       message: "Sorry, we couldn't create your user profile"
+    //     }
+    //   }
+
+    //   return { success: true }
+    // }
+    // else {
+    //   delete newUserProfile._id;
+    //   try {
+    //     const updateOneResult = await collection.updateOne({
+    //       _userid: {$eq: self.realm.currentUser.id}
+    //     }, newUserProfile);
+
+    //     } catch (e) {
+    //       console.error("Error updating user", e);
+    //       return {
+    //         success: false,
+    //         message: "Sorry, we couldn't update your user profile"
+    //       }
+    //     }
+    //     return { success: true }
+    // }
   }
 
+  /**
+   * Progress a user along their module
+   */
+
+  self.progressUserModule = async function (moduleId) {
+    const db = getDb();
+    const userCollection = db.collection("usersDetails");
+    const moduleCollection = db.collection("modules");
+    const user = await userCollection.findOne({
+        _userid: {$eq: self.realm.currentUser.id}
+    })
+
+    if (user === null) {
+      console.error("Unable to find user to progress them along a module")
+      return {
+        success: false,
+        message: "user profile doesn't exist"
+      }
+    }
+
+    const moduleObjectId = new ObjectId(moduleId);
+    const module = await moduleCollection.findOne({
+      _id: { $eq: moduleObjectId }
+    });
+
+    if(module === null) {
+      console.error("Trying to update a module which doesn't exist");
+      return {
+        success: false,
+        message: "module doesn't exist"
+      }
+    }
+
+    const numPlaylists = module.playlists.length;
+    const stage = user.modules[moduleId].stage;
+    const newStage = stage > numPlaylists - 1 ? numPlaylists - 1 : stage + 1;
+
+    const updated = {
+      ...user.modules
+    }
+    updated[moduleId].stage = newStage;
+
+
+    try {
+      const updateOneResult = await userCollection.updateOne({
+        _userid: {$eq: self.realm.currentUser.id}
+      }, {
+        $set: {
+          modules: updated
+        }
+      });
+      console.log("Progressed user by 1 stage in module", moduleId);
+    } catch (e) {
+      console.error("Error updating user", e);
+      return {
+        success: false,
+        message: "Sorry, we couldn't update your progress"
+      }
+    }
+
+  }
 
   /**
    * Get the userProfile for all the users in a team

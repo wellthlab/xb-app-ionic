@@ -15,10 +15,7 @@ import {
   IonCardTitle,
   IonCardContent,
   IonItemGroup,
-  // IonAccordionGroup,
-  // IonAccordion,
   IonLabel,
-  IonFooter,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
 import { connect } from "react-redux";
@@ -196,7 +193,7 @@ function PlaylistPlayer(props) {
   // This may not scale very well if we have a lot of modules in the future
   const module = props.modules.modules.find((m) => m._id === moduleId);
   if (!module) {
-    return <div>Module not found</div>;
+    return <div>The requested playlist could not be found for some reason</div>;
   }
 
   const tasks = module.playlists[stage].tasks;
@@ -217,9 +214,14 @@ function PlaylistPlayer(props) {
     response.type = currentTask.type;
     response.intype = currentTask.intype;
     response.minutes = minutes;
-    response.minutes = team.experiment.day;
     response.day = team.experiment.day;
+    response.moduleId = moduleId;
+    response.stage = stage;
     await props.controllers.ADD_RESPONSE(team._id, response);
+  }
+
+  async function progressStage() {
+    await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
   }
 
   // Update the response from the widgets
@@ -325,6 +327,7 @@ function PlaylistPlayer(props) {
                     routerLink={"/move/task-playlist"}
                     onClick={() => {
                       saveResponse();
+                      progressStage();
                     }}
                     size="normal"
                   >

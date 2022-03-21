@@ -33,7 +33,7 @@ function PlaylistDescription({ module, stage }) {
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonText>{parse(module.desc)}</IonText>
+            <IonText>{parse(module.info.desc)}</IonText>
           </IonCol>
         </IonRow>
         <IonRow>

@@ -135,7 +135,7 @@ function SubscribeToModule(props) {
                       <IonCol>
                         <IonItem lines="none">
                           <IonText className="ion-text-justify">
-                            {parse(module.desc)}
+                            {parse(module.info.desc)}
                           </IonText>
                         </IonItem>
                       </IonCol>
