@@ -11,7 +11,7 @@ import {
   IonProgressBar,
   IonText,
   IonCard,
-  IonCardContent,
+  useIonAlert,
   IonList,
 } from "@ionic/react";
 import {
@@ -58,6 +58,12 @@ function PlaylistDescription({ module, stage }) {
 
 function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
   const [currentStage, setCurrentStage] = useState(stage);
+  const [notImplementedAlert] = useIonAlert();
+  const notImplementedClick = () => {
+    notImplementedAlert("Going back in time isn't ready yet!", [
+      { text: "Close" },
+    ]);
+  };
 
   // These functions are used to control the buttons which control the day to
   // show the playlist for
@@ -138,6 +144,7 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                   size="large"
                   shape="circle"
                   disabled={buttonsDisabled}
+                  onClick={notImplementedClick}
                 >
                   <IonIcon icon={calendarOutline} />
                 </IonButton>

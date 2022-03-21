@@ -175,7 +175,7 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid, startD
 }
 
 async function PROGRESS_ALONG_MODULE(client, store, controllers, moduleId) {
-  client.progressUserModule(moduleId);
+  const ret = await client.progressUserModule(moduleId);
   await controllers.SET_USER_PROFILE();
 }
 

@@ -80,6 +80,9 @@ function PlaylistPicker(props) {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const colour = module.info.colour;
     const stage = userModuleObj.stage;
+
+    // debugger;
+
     const minutes = module.playlists[stage].minutes;
     function createModal() {
       toggleModal();

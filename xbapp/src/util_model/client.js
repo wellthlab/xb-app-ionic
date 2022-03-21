@@ -394,42 +394,6 @@ function XBClient() {
     }
 
     return { success: true }
-
-    // const user = await collection.findOne({
-    //     _userid: {$eq: self.realm.currentUser.id}
-    //   }
-    // );
-
-    // if (user === null) {
-    //   console.log("Creating new usersProfile document", newUserProfile);
-    //   try {
-    //     const insertOneResult = await collection.insertOne(newUserProfile);
-    //   } catch (e) {
-    //     console.error("Error creating user", e);
-    //     return {
-    //       success: false,
-    //       message: "Sorry, we couldn't create your user profile"
-    //     }
-    //   }
-
-    //   return { success: true }
-    // }
-    // else {
-    //   delete newUserProfile._id;
-    //   try {
-    //     const updateOneResult = await collection.updateOne({
-    //       _userid: {$eq: self.realm.currentUser.id}
-    //     }, newUserProfile);
-
-    //     } catch (e) {
-    //       console.error("Error updating user", e);
-    //       return {
-    //         success: false,
-    //         message: "Sorry, we couldn't update your user profile"
-    //       }
-    //     }
-    //     return { success: true }
-    // }
   }
 
   /**
@@ -467,13 +431,12 @@ function XBClient() {
 
     const numPlaylists = module.playlists.length;
     const stage = user.modules[moduleId].stage;
-    const newStage = stage > numPlaylists - 1 ? numPlaylists - 1 : stage + 1;
+    const newStage  = stage >= numPlaylists - 1 ? stage : stage + 1;
 
     const updated = {
       ...user.modules
     }
     updated[moduleId].stage = newStage;
-
 
     try {
       const updateOneResult = await userCollection.updateOne({
@@ -483,7 +446,7 @@ function XBClient() {
           modules: updated
         }
       });
-      console.log("Progressed user by 1 stage in module", moduleId);
+      console.log("Progressed user in module", module.name, "from", stage, "to stage", newStage);
     } catch (e) {
       console.error("Error updating user", e);
       return {

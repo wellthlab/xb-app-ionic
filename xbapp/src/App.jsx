@@ -157,7 +157,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/move" />}
+                render={() => <Redirect to="/box/move" />}
                 exact={true}
               />
               <Route path="/feed" component={Feed} exact={true} />
