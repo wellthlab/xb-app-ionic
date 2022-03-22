@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IonCol,
   IonGrid,
@@ -6,7 +7,6 @@ import {
   IonText,
   IonTextarea,
 } from "@ionic/react";
-import { useState } from "react";
 
 function FreeText({ tag, statement, onSubmit }) {
   const [text, setText] = useState("");
@@ -28,7 +28,13 @@ function FreeText({ tag, statement, onSubmit }) {
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonTextarea value={text} onIonChange={(e) => handleChange(e)} />
+            <IonTextarea
+              value={text}
+              placeholder={"Enter your response here"}
+              autoGrow={true}
+              rows={1}
+              onIonChange={(e) => handleChange(e)}
+            />
           </IonCol>
         </IonRow>
       </IonGrid>

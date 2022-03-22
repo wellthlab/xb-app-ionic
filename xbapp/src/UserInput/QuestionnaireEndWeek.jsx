@@ -43,9 +43,7 @@ const EasierScale = {
   10: "(10) Impossible/Didn't happen",
 };
 
-
 const QuestionnaireEndWeek = (props) => {
-
   const [valueBenefit, setValueBenefit] = useState(0);
   const [valueEasier, setValueEasier] = useState(0);
   const [valueScheduling, setValueScheduling] = useState(0);
@@ -57,13 +55,25 @@ const QuestionnaireEndWeek = (props) => {
   const [showTags, setShowTags] = useState(false);
 
   function processData() {
-
     var response = {};
     response.type = "questionnaire-endWeek";
-    response.benefit = "The Strength study is having a benefit: rated " + valueBenefit + "/10; ";
-    response.easier = "Daily strength sessions are making work easier: rated " + valueEasier + "/10; ";
-    response.scheduling = "Scheduling workouts this week is " + EasierScale[valueScheduling] + "(out of 10)" + (whyScheduling != "" ? (" because of - " + whyScheduling + ";") : ";");
-    response.building = "On building strength -  confidence on doing the exercise - overall I’m feeling " + building + " because of - " + buildingWhy + ";";
+    response.benefit =
+      "The Strength study is having a benefit: rated " + valueBenefit + "/10; ";
+    response.easier =
+      "Daily strength sessions are making work easier: rated " +
+      valueEasier +
+      "/10; ";
+    response.scheduling =
+      "Scheduling workouts this week is " +
+      EasierScale[valueScheduling] +
+      "(out of 10)" +
+      (whyScheduling != "" ? " because of - " + whyScheduling + ";" : ";");
+    response.building =
+      "On building strength -  confidence on doing the exercise - overall I’m feeling " +
+      building +
+      " because of - " +
+      buildingWhy +
+      ";";
     response.busy = "In terms of how busy I am, I am " + busy;
 
     if (props.onSubmit) {
@@ -79,86 +89,99 @@ const QuestionnaireEndWeek = (props) => {
         <p>I feel like the strength practice is having a benefit</p>
         <IonItemDivider></IonItemDivider>
         <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>{FeltScale[valueBenefit]}</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonRange
-          min={0}
-          max={10}
-          step={1}
-          snaps={true}
-          ticks={true}
-          color="secondary"
-          value={valueBenefit}
-          onIonChange={(e) => setValueBenefit(e.detail.value)}
-        />
-      </IonItem>
-      
+          <IonLabel>{FeltScale[valueBenefit]}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonRange
+            min={0}
+            max={10}
+            step={1}
+            snaps={true}
+            ticks={true}
+            color="secondary"
+            value={valueBenefit}
+            onIonChange={(e) => setValueBenefit(e.detail.value)}
+          />
+        </IonItem>
+
         <IonItemDivider></IonItemDivider>
 
         <p>Daily strength sessions are making work easier</p>
         <IonItemDivider></IonItemDivider>
         <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>{EasierScale[valueEasier]}</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonRange
-          min={0}
-          max={10}
-          step={1}
-          snaps={true}
-          ticks={true}
-          color="secondary"
-          value={valueEasier}
-          onIonChange={(e) => setValueEasier(e.detail.value)}
-        />
-      </IonItem>
+          <IonLabel>{EasierScale[valueEasier]}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonRange
+            min={0}
+            max={10}
+            step={1}
+            snaps={true}
+            ticks={true}
+            color="secondary"
+            value={valueEasier}
+            onIonChange={(e) => setValueEasier(e.detail.value)}
+          />
+        </IonItem>
 
-
-      <IonItemDivider></IonItemDivider>
+        <IonItemDivider></IonItemDivider>
 
         <p>Scheduling workouts this week is:</p>
         <IonItemDivider></IonItemDivider>
         <IonItem style={{ textAlign: "center" }}>
-        <IonLabel>{EasierScale[valueScheduling]}</IonLabel>
-      </IonItem>
-      <IonItem>
-        <IonRange
-          min={0}
-          max={10}
-          step={1}
-          snaps={true}
-          ticks={true}
-          color="secondary"
-          value={valueScheduling}
-          onIonChange={(e) => {setValueScheduling(e.detail.value); if (e.detail.value >= 5) {setShowTags(true)} else {setShowTags(false)}}}
-        />
-      </IonItem>
-        
-        {showTags ?
-        <>
-        <p>Why? (tap on tag to select)</p>
+          <IonLabel>{EasierScale[valueScheduling]}</IonLabel>
+        </IonItem>
+        <IonItem>
+          <IonRange
+            min={0}
+            max={10}
+            step={1}
+            snaps={true}
+            ticks={true}
+            color="secondary"
+            value={valueScheduling}
+            onIonChange={(e) => {
+              setValueScheduling(e.detail.value);
+              if (e.detail.value >= 5) {
+                setShowTags(true);
+              } else {
+                setShowTags(false);
+              }
+            }}
+          />
+        </IonItem>
+
+        {showTags ? (
+          <>
+            <p>Why? (tap on tag to select)</p>
             <IonItem>
-            
+              <br></br>
+              <TagsInput
+                tagType="whyScheduling"
+                onChange={(tag) => {
+                  setWhyScheduling(tag);
+                }}
+              />
+            </IonItem>
             <br></br>
-            <TagsInput tagType="whyScheduling" onChange={(tag) => {
-              setWhyScheduling(tag)
-            }} /></IonItem>
-            <br></br>
-            <p>Selected: {whyScheduling}</p></>
-            :
-            <></>}
-        
+            <p>Selected: {whyScheduling}</p>
+          </>
+        ) : (
+          <></>
+        )}
 
         <IonItemDivider></IonItemDivider>
         <IonRadioGroup
           allow-empty-selection="true"
           value={building}
-          onIonChange={(e) => { setBuilding(e.detail.value) }}
+          onIonChange={(e) => {
+            setBuilding(e.detail.value);
+          }}
         >
           <IonListHeader>
             <p>
-            On building strength -  confidence on doing the exercise - overall I’m feeling
+              On building strength - confidence on doing the exercise - overall
+              I’m feeling
             </p>
           </IonListHeader>
 
@@ -176,33 +199,37 @@ const QuestionnaireEndWeek = (props) => {
             <IonLabel>Less confident this week</IonLabel>
             <IonRadio slot="start" value="Less confident this week" />
           </IonItem>
-
         </IonRadioGroup>
 
-        {building != "" ?
-        <>
-        <p>Why? (tap on tag to select)</p>
+        {building != "" ? (
+          <>
+            <p>Why? (tap on tag to select)</p>
             <IonItem>
-            
+              <br></br>
+              <TagsInput
+                tagType="whyBuilding"
+                onChange={(tag) => {
+                  setBuildingWhy(tag);
+                }}
+              />
+            </IonItem>
             <br></br>
-            <TagsInput tagType="whyBuilding" onChange={(tag) => {
-              setBuildingWhy(tag)
-            }} /></IonItem>
-            <br></br>
-            <p>Selected: {buildingWhy}</p></>
-            :
-            <></>}
+            <p>Selected: {buildingWhy}</p>
+          </>
+        ) : (
+          <></>
+        )}
 
         <IonItemDivider></IonItemDivider>
         <IonRadioGroup
           allow-empty-selection="true"
           value={busy}
-          onIonChange={(e) => { setBusy(e.detail.value) }}
+          onIonChange={(e) => {
+            setBusy(e.detail.value);
+          }}
         >
           <IonListHeader>
-            <p>
-            How busy are you?
-            </p>
+            <p>How busy are you?</p>
           </IonListHeader>
 
           <IonItem>
@@ -219,9 +246,7 @@ const QuestionnaireEndWeek = (props) => {
             <IonLabel>Less busy this week</IonLabel>
             <IonRadio slot="start" value="Less busy this week" />
           </IonItem>
-
         </IonRadioGroup>
-
 
         <IonItemDivider></IonItemDivider>
 

@@ -27,9 +27,7 @@ function Slider({ tag, statement, min, max, onSubmit }) {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonLabel>
-                <IonText style={{ fontSize: "1.2em" }}>{statement}</IonText>
-              </IonLabel>
+              <IonText style={{ fontSize: "1.2em" }}>{statement}</IonText>
             </IonCol>
           </IonRow>
           <IonRow>

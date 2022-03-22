@@ -1,6 +1,9 @@
-import Slider from "./components/Slider";
+import AgreeSlider from "./components/AgreeSlider";
 import FreeText from "./components/FreeText";
-
+import MultipleChoice from "./components/MultipleChoice";
+import QuestionnaireEvening from "./components/Evening";
+import QuestionnaireEndWeek from "./components/EndWeek";
+import KnowledgeQuiz from "./components/Test";
 /*
  * The quiz factory is responsible for creating the quiz components.
  *  type: the type of quiz component to create
@@ -12,9 +15,29 @@ function quizFactory(tag, type, info, onSubmit) {
   let input = null;
 
   switch (type) {
-    case "slider":
+    // These next THREE types will return a pre-made questionnaire
+    case "endWeek":
+      input = <QuestionnaireEndWeek onSubmit={onSubmit} />;
+      break;
+    case "evening":
+      input = <QuestionnaireEvening onSubmit={onSubmit} />;
+      break;
+    case "test":
       input = (
-        <Slider
+        <KnowledgeQuiz
+          tag={tag}
+          statement={info.statement}
+          choices={info.choices}
+          correct={info.correct}
+          explanation={info.explanation}
+          onSubmit={onSubmit}
+        />
+      );
+      break;
+    // The follow types can be used to build a custom questionnaire
+    case "agree-slider":
+      input = (
+        <AgreeSlider
           tag={tag}
           statement={info.statement}
           min={info.min}
@@ -26,6 +49,16 @@ function quizFactory(tag, type, info, onSubmit) {
     case "free-text":
       input = (
         <FreeText tag={tag} statement={info.statement} onSubmit={onSubmit} />
+      );
+      break;
+    case "multiple-choice":
+      input = (
+        <MultipleChoice
+          tag={tag}
+          statement={info.statement}
+          choices={info.choices}
+          onSubmit={onSubmit}
+        />
       );
       break;
     default:
