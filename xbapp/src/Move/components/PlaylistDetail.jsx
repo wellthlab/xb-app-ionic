@@ -81,8 +81,6 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
     return <IonItem>{task.desc}</IonItem>;
   });
 
-  const buttonsDisabled = currentStage !== stage;
-
   return (
     <>
       <IonItem lines="none" style={{ "--padding-top": "15px" }}>
@@ -143,7 +141,6 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                 <IonButton
                   size="large"
                   shape="circle"
-                  disabled={buttonsDisabled}
                   onClick={notImplementedClick}
                 >
                   <IonIcon icon={calendarOutline} />
@@ -153,9 +150,13 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                   size="large"
                   shape="circle"
                   color="success"
-                  disabled={buttonsDisabled}
                   routerLink={
-                    "/move/timer/" + teamId + "/" + moduleId + "/" + stage
+                    "/move/timer/" +
+                    teamId +
+                    "/" +
+                    moduleId +
+                    "/" +
+                    currentStage
                   }
                   onClick={toggleModal}
                 >
