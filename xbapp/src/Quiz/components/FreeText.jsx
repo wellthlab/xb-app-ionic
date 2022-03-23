@@ -23,7 +23,7 @@ function FreeText({ tag, statement, onSubmit }) {
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonText>{statement}</IonText>
+            <IonText style={{ fontSize: "1.2em" }}>{statement}</IonText>
           </IonCol>
         </IonRow>
         <IonRow>

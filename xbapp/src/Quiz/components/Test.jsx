@@ -20,8 +20,6 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
   const [value, setValue] = useState(null);
   const { width, height } = useWindowSize();
 
-  console.log("explanation", explanation, typeof explanation);
-
   const choiceItems = choices.map((choice, index) => {
     return (
       <IonItem>
@@ -108,6 +106,9 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
                   disabled={!value}
                   onClick={() => {
                     setAnswered(true);
+                    if (value === correct) {
+                      setConfettiOn(true);
+                    }
                   }}
                 >
                   Submit

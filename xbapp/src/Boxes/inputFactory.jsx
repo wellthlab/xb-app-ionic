@@ -291,8 +291,8 @@ export default function responseFactory(
 
     case "s22quiz":
       const quizInput = [];
-      for (let i in task.questions) {
-        const subQ = task.questions[i];
+      for (let i in task.quiz) {
+        const subQ = task.quiz[i];
         quizInput.push(quizFactory(subQ.tag, subQ.type, subQ, onSubmit));
       }
       input = <>{quizInput}</>;
