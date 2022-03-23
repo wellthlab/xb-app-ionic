@@ -78,28 +78,28 @@ const decorateTeam = (team) => {
         onPlaylist: false,
       });
 
-      progressTasks.push({
-        type: "plan-minutes",
-        intype: "s22plan",
-        desc: "You need to plan your week",
-        verb: "PLAN",
-        s22onPath: false,
-        onPlaylist: false,
-      });
+      // progressTasks.push({
+      //   type: "plan-minutes",
+      //   intype: "s22plan",
+      //   desc: "You need to plan your week",
+      //   verb: "PLAN",
+      //   s22onPath: false,
+      //   onPlaylist: false,
+      // });
     }
 
   } else {
 
     // Otherwise generate the daily tasks
 
-    otherTasks.push({ // An optional re-planning task
-      "type": "change-minutes",
-      intype: 's22plan',
-      desc: 'You can change your weekly plan',
-      verb: 'CHANGE',
-      s22onPath: false,
-      onPlaylist: false,
-    });
+    // otherTasks.push({ // An optional re-planning task
+    //   "type": "change-minutes",
+    //   intype: 's22plan',
+    //   desc: 'You can change your weekly plan',
+    //   verb: 'CHANGE',
+    //   s22onPath: false,
+    //   onPlaylist: false,
+    // });
 
     otherTasks.push({
       type: "change-path",
