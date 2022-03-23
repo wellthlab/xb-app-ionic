@@ -112,16 +112,14 @@ async function LOAD_TEAMS(client, store) {
   // Get the teams and pop them into the store
 
   let teams;
-  let modules;
   try {
     teams = await client.getTeams();
-    modules = await client.getModules();
   }
   catch (error) {
     return console.error(error);
   }
 
-  store.dispatch(SET_TEAMS({ teams, modules }));
+  store.dispatch(SET_TEAMS({ teams }));
   console.log('SET_TEAMS', teams, teams.bybox);
 }
 

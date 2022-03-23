@@ -18,7 +18,13 @@ import {
   IonCardHeader,
   IonCardTitle,
 } from "@ionic/react";
-import { warningOutline, playOutline, toggle } from "ionicons/icons";
+import {
+  warningOutline,
+  playOutline,
+  checkboxOutline,
+  squareOutline,
+  arrowForwardOutline,
+} from "ionicons/icons";
 
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
@@ -57,6 +63,7 @@ function PlaylistPicker(props) {
   let userProfile = props.userProfile.userProfile;
   const availableModules = props.modules.modules;
   const team = props.teams.teams.bybox.move[0];
+  const expDay = team.experiment.day;
 
   // userProfile.modules is an object with keys which are the module topics,
   // i.e. strength-training. We need to loop through each topic and get the
@@ -80,10 +87,14 @@ function PlaylistPicker(props) {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const colour = module.info.colour;
     const stage = userModuleObj.stage;
-
-    // debugger;
-
     const minutes = module.playlists[stage].minutes;
+
+    // TODO: figure out if the experiment starts at day 1 or not...
+    const expDayIdx = expDay === 0 ? 0 : expDay - 1;
+    const done = userModuleObj.id in team.entries[expDayIdx].completedModules;
+
+    // When the user clicks on a playlist, this will fill in the details
+    // required to show the details of it in the GenericModal
     function createModal() {
       toggleModal();
       setPlaylistTitle(module.name);
@@ -91,6 +102,7 @@ function PlaylistPicker(props) {
       setActivePlaylistStage(stage);
       setTitleBarColour(module.info.colour);
     }
+
     return (
       <>
         <IonItem>
@@ -103,7 +115,7 @@ function PlaylistPicker(props) {
                   lines="none"
                   key={module.id}
                   detail={false}
-                  detailIcon={playOutline}
+                  detailIcon={arrowForwardOutline}
                   onClick={createModal}
                 >
                   <IonLabel>
@@ -111,9 +123,13 @@ function PlaylistPicker(props) {
                     <IonRow>{minutes} minutes</IonRow>
                   </IonLabel>
                   <IonLabel slot="end">
-                    <IonButton>
-                      <IonIcon icon={playOutline}></IonIcon>
-                    </IonButton>
+                    {done ? (
+                      <IonIcon size="large" icon={checkboxOutline} />
+                    ) : (
+                      <IonButton>
+                        <IonIcon icon={playOutline}></IonIcon>
+                      </IonButton>
+                    )}
                   </IonLabel>
                 </IonItem>
               </IonCol>

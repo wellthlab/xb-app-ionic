@@ -86,11 +86,13 @@ function dayify(responses, start, minday, maxday) {
   for (var day of entries) {
     var mins = 0;
     day.responseTypes = {};
+    day.completedModules = {};
 
     //console.log("Generate summary for", day);
     for (var res of day.responses) {
       // Make a list of answered question types
       day.responseTypes[res.type] = true;
+      day.completedModules[res.moduleId] = true;
 
       // Add minutes up
       if (res.type == "minutes") {
@@ -152,7 +154,6 @@ const TeamSlice = createSlice({
     SET_TEAMS(state, action) {
 
       const teams = action.payload.teams;
-      const modules = action.payload.modules;
       state.teams = teams;
       state.fetching = false;
       state.loaded = true;
@@ -165,13 +166,13 @@ const TeamSlice = createSlice({
         var team = state.teams[i];
 
         // Day number
-        // team.experiment.day = dayNumber(
-        //   new Date(),
-        //   new Date(team.experiment.start)
-        // );
+        team.experiment.day = dayNumber(
+          new Date(),
+          new Date(team.experiment.start)
+        );
 
         // TODO: force day to be 1 for debug reasons
-        team.experiment.day = 1;
+        // team.experiment.day = 1;
 
         // Week number
         var week = Math.floor((team.experiment.day - 1) / 7) + 1;
@@ -251,7 +252,7 @@ const TeamSlice = createSlice({
 
           case 'strength22':
             console.log("This is a strength in work 22 experiment");
-            Strength22.decorateTeam(team, modules);
+            Strength22.decorateTeam(team);
             console.log("Team has been decorated with tasks", team.experiment.tasks);
             break;
 

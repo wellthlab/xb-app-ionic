@@ -10,7 +10,7 @@
 *
 * If there are sub-experiments, they will be populated.
 */
-const decorateTeam = (team, modules) => {
+const decorateTeam = (team) => {
   var expDay = team.experiment.day;
   var expWeek = Math.floor(expDay / 7);
 
