@@ -13,7 +13,6 @@ import {
   IonCard,
   useIonAlert,
   IonList,
-  IonThumbnail,
 } from "@ionic/react";
 import {
   chevronBackCircleOutline,
@@ -24,37 +23,49 @@ import {
 import parse from "html-react-parser";
 import getTaskIcon from "./TaskIcons";
 
-function PlaylistDescription({ module, stage }) {
-  const numStages = module.playlists.length;
+function PlaylistDescription({ module, stage: level }) {
+  const numLevels = module.playlists.length;
   return (
-    <IonItem
-      lines="none"
-      className="ion-text-justify"
-      style={{ "--padding-bottom": "10px" }}
-    >
+    <>
       <IonGrid>
-        <IonRow>
-          <IonCol>
-            <IonText>{parse(module.info.desc)}</IonText>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonLabel className="ion-text-center ">
-              <IonText>
-                You are currently at <strong>STAGE</strong> {stage + 1} of{" "}
-                {numStages}
+        {/* Playlist description */}
+        <IonItem
+          lines="none"
+          className="ion-text-justify"
+          style={{
+            "--padding-bottom": "10px",
+            "--padding-start": "10px",
+            "--inner-padding-end": "10px",
+          }}
+        >
+          <IonRow>
+            <IonCol>
+              <IonText className="ion-text-justify">
+                {parse(module.info.desc)}
               </IonText>
-            </IonLabel>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonProgressBar value={(stage + 1) / numStages} />
-          </IonCol>
-        </IonRow>
+            </IonCol>
+          </IonRow>
+        </IonItem>
+
+        <IonItem
+          lines="none"
+          style={{
+            "--padding-bottom": "0px",
+            "--padding-start": "10px",
+            "--inner-padding-end": "10px",
+          }}
+        >
+          <IonLabel className="ion-text-center">
+            <IonText style={{ fontSize: "1.2em" }}>
+              You are at <strong>LEVEL</strong> {level + 1} of {numLevels}
+            </IonText>
+          </IonLabel>
+        </IonItem>
+        <IonItem lines="none">
+          <IonProgressBar value={(level + 1) / numLevels} />
+        </IonItem>
       </IonGrid>
-    </IonItem>
+    </>
   );
 }
 
@@ -78,98 +89,114 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
     setCurrentStage(currentStage - 1);
   }
 
+  const tasksDesc = playlists[currentStage].desc;
   const tasksForStage = playlists[currentStage].tasks;
   const taskItems = tasksForStage.map((task) => {
     return (
       <IonItem lines="none">
         <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
-        <IonLabel>{task.desc}</IonLabel>
+        <IonLabel>
+          <IonText className="ion-text-wrap">{task.desc}</IonText>
+        </IonLabel>
       </IonItem>
     );
   });
 
   return (
     <>
-      <IonItem lines="none" style={{ "--padding-top": "15px" }}>
+      <IonItem
+        lines="none"
+        style={{
+          "--padding-start": "0px",
+          "--inner-padding-end": "0px",
+          "--padding-top": "15px",
+        }}
+      >
         <IonGrid>
           {/* Buttons for switching playlist stage */}
           <IonRow>
             <IonCol>
-              <div className="ion-text-center">
+              <IonItem
+                lines="none"
+                style={{
+                  "--inner-padding-start": "0px",
+                  "--padding-end": "0px",
+                }}
+              >
                 <IonButton
+                  slot="start"
+                  size="regular"
                   onClick={prevStage}
-                  size="default"
                   disabled={currentStage <= 0}
                 >
                   <IonIcon icon={chevronBackCircleOutline} />
                 </IonButton>
-              </div>
-            </IonCol>
-            <IonCol>
-              <div className="ion-text-center">
-                <IonText>
-                  <h4>Stage {currentStage + 1}</h4>
-                </IonText>
-              </div>
-            </IonCol>
-            <IonCol>
-              <div className="ion-text-center">
+                <IonLabel className="ion-text-center">
+                  <IonText style={{ fontSize: "1.2em" }}>{tasksDesc}</IonText>
+                </IonLabel>
                 <IonButton
+                  slot="end"
+                  size="regular"
                   onClick={nextStage}
-                  size="default"
                   disabled={currentStage >= playlists.length - 1}
                 >
                   <IonIcon icon={chevronForwardCircleOutline} />
                 </IonButton>
-              </div>
+              </IonItem>
             </IonCol>
           </IonRow>
 
           {/* Tasks for the day's playlist */}
-          <IonRow>
-            <IonCol>
-              <IonList>
-                <IonItemGroup>{taskItems}</IonItemGroup>
-              </IonList>
-            </IonCol>
-          </IonRow>
+          <IonItem
+            lines="none"
+            style={{ "--padding-start": "10px", "--padding-top": "15px" }}
+          >
+            <IonRow>
+              <IonCol>
+                <IonList>
+                  <IonItemGroup>{taskItems}</IonItemGroup>
+                </IonList>
+              </IonCol>
+            </IonRow>
+          </IonItem>
         </IonGrid>
       </IonItem>
 
       {/* Play buttons */}
       <IonItem
         lines="none"
-        style={{ "--padding-top": "10px", "--padding-bottom": "0px" }}
+        style={{
+          "--padding-top": "10px",
+          "--padding-bottom": "0px",
+          "--padding-start": "0px",
+          "--inner-padding-end": "0px",
+        }}
       >
         <IonGrid>
           <IonRow>
             <IonCol>
-              <div class="ion-text-center">
-                <IonButton
-                  size="large"
-                  shape="circle"
-                  onClick={notImplementedClick}
-                >
-                  <IonIcon icon={calendarOutline} />
-                </IonButton>
-
-                <IonButton
-                  size="large"
-                  shape="circle"
-                  color="success"
-                  routerLink={
-                    "/move/timer/" +
-                    teamId +
-                    "/" +
-                    moduleId +
-                    "/" +
-                    currentStage
-                  }
-                  onClick={toggleModal}
-                >
-                  <IonIcon icon={playOutline} />
-                </IonButton>
-              </div>
+              <IonButton
+                expand="block"
+                size="large"
+                shape="circle"
+                color="success"
+                routerLink={
+                  "/move/timer/" + teamId + "/" + moduleId + "/" + currentStage
+                }
+                onClick={toggleModal}
+              >
+                <IonIcon icon={playOutline} />
+              </IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton
+                expand="block"
+                size="large"
+                shape="circle"
+                onClick={notImplementedClick}
+              >
+                <IonIcon icon={calendarOutline} />
+              </IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
