@@ -33,15 +33,24 @@ import inputFactory from "../Boxes/inputFactory";
 import Timer from "../Instruments/StatelessTimer";
 import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
+import getTaskIcon from "./components/TaskIcons";
 
-function TaskAccordionList({ tasks, taskIdx, currentTaskName }) {
+function TaskAccordionList({ tasks, taskIdx, currentTask }) {
   return (
     <>
       <Accordion className="AccordionBox">
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>
-            {taskIdx} of {tasks.length}: {currentTaskName}
-          </Typography>
+          <IonCol>
+            <Typography>
+              <IonItem lines="none" color="transparent">
+                <IonIcon icon={getTaskIcon(currentTask.verb)} slot="start" />
+                <IonLabel>{currentTask.desc}</IonLabel>
+                <IonLabel slot="end">
+                  {taskIdx}/{tasks.length}
+                </IonLabel>
+              </IonItem>
+            </Typography>
+          </IonCol>
         </AccordionSummary>
         <AccordionDetails className="AccordionDetails">
           <IonGrid className="ion-no-padding ion-text-wrap">
@@ -54,7 +63,7 @@ function TaskAccordionList({ tasks, taskIdx, currentTaskName }) {
 }
 
 function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
-  const currentTaskName = tasks[currentTaskIdx].desc;
+  const currentTask = tasks[currentTaskIdx];
   const taskItems = tasks.map((task, index) => {
     return (
       <IonRow className="ion-no-padding">
@@ -69,6 +78,7 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
               setCurrentTask(index);
             }}
           >
+            <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
             <IonLabel className="ion-text-wrap">{task.desc}</IonLabel>
           </IonItem>
         </IonCol>
@@ -102,7 +112,7 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
                   <TaskAccordionList
                     tasks={taskItems}
                     taskIdx={currentTaskIdx + 1}
-                    currentTaskName={currentTaskName}
+                    currentTask={currentTask}
                   />
                 </IonCol>
               </IonRow>

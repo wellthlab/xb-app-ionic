@@ -126,9 +126,7 @@ function PlaylistPicker(props) {
                     {done ? (
                       <IonIcon size="large" icon={checkboxOutline} />
                     ) : (
-                      <IonButton>
-                        <IonIcon icon={playOutline}></IonIcon>
-                      </IonButton>
+                      <IonIcon size="large" icon={playOutline} />
                     )}
                   </IonLabel>
                 </IonItem>

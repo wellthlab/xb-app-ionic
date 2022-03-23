@@ -13,6 +13,7 @@ import {
   IonCard,
   useIonAlert,
   IonList,
+  IonThumbnail,
 } from "@ionic/react";
 import {
   chevronBackCircleOutline,
@@ -21,6 +22,7 @@ import {
   playOutline,
 } from "ionicons/icons";
 import parse from "html-react-parser";
+import getTaskIcon from "./TaskIcons";
 
 function PlaylistDescription({ module, stage }) {
   const numStages = module.playlists.length;
@@ -78,7 +80,12 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
 
   const tasksForStage = playlists[currentStage].tasks;
   const taskItems = tasksForStage.map((task) => {
-    return <IonItem>{task.desc}</IonItem>;
+    return (
+      <IonItem lines="none">
+        <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
+        <IonLabel>{task.desc}</IonLabel>
+      </IonItem>
+    );
   });
 
   return (
