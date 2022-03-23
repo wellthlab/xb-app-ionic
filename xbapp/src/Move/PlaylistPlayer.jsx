@@ -42,9 +42,9 @@ function TaskAccordionList({ tasks, taskIdx, currentTask }) {
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <IonCol>
             <Typography>
-              <IonItem lines="none" color="transparent">
+              <IonItem lines="none" color="primary">
                 <IonIcon icon={getTaskIcon(currentTask.verb)} slot="start" />
-                <IonLabel>{currentTask.desc}</IonLabel>
+                {currentTask.desc}
                 <IonLabel slot="end">
                   {taskIdx}/{tasks.length}
                 </IonLabel>
