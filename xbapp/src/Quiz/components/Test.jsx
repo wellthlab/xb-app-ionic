@@ -54,6 +54,10 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
 
   function handleChange(e) {
     setValue(e.detail.value);
+    setAnswered(true);
+    if (e.detail.value === correct) {
+      setConfettiOn(true);
+    }
   }
 
   return (
@@ -101,18 +105,7 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
                   <IonText>{explanation}</IonText>
                 </>
               ) : (
-                <IonButton
-                  expand="block"
-                  disabled={!value}
-                  onClick={() => {
-                    setAnswered(true);
-                    if (value === correct) {
-                      setConfettiOn(true);
-                    }
-                  }}
-                >
-                  Submit
-                </IonButton>
+                ""
               )}
             </IonCol>
           </IonRow>
