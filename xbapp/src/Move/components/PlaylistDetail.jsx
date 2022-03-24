@@ -93,7 +93,7 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
   const tasksForStage = playlists[currentStage].tasks;
   const taskItems = tasksForStage.map((task) => {
     return (
-      <IonItem lines="none">
+      <IonItem color="transparent" lines="none">
         <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
         <IonLabel>
           <IonText className="ion-text-wrap">{task.desc}</IonText>

@@ -56,7 +56,7 @@ async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
   const loaded = state.userProfile.loaded;
   if (!fetching && !loaded) {
     console.log("Refresh of user profile is required (fetching loading)", fetching, loaded);
-    return controllers.SET_USER_PROFILE();
+    return await controllers.SET_USER_PROFILE();
   } else {
     console.log("Refresh of user profile is not required (fetching loading)", fetching, loaded);
   }
@@ -97,10 +97,69 @@ async function LOAD_MODULES_IF_REQD(client, store, controllers) {
   const l = state.modules.loaded;
   if (!f && !l) {
     console.log("Refresh of modules is required", f, l);
-    return controllers.LOAD_MODULES();
+    return await controllers.LOAD_MODULES();
   } else {
     console.log("Refresh or modules is not required", f, l);
   }
+}
+
+
+async function UPDATE_USER_MODULE(client, store, controllers, user, module, subscribe) {
+  const userModules = user.modules || {};
+  const modules = { ...userModules };
+
+  if (subscribe) {
+    modules[module._id] = {
+      id: module._id,
+      name: module.name,
+      topic: module.topic,
+      stage: 0,
+      active: true
+    }
+  } else {
+    modules[module._id] = {
+      ...userModules[module._id],
+      active: false
+    }
+  }
+
+  const newUser = {
+    ...user,
+    modules: modules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
+}
+
+
+/**
+ * Subscribe a user to their path's module and unsubscribe from the others
+ */
+
+async function SET_MODULE_FOR_PATH(client, store, controllers, newPath, oldPath) {
+  const allModules = store.getState().modules.modules;
+  const userProfile = store.getState().userProfile.userProfile;
+
+  // Unsubscribe the user from their old path module if they were subscribed
+  if (oldPath !== newPath) {
+    const oldPathModuleTopic = oldPath + "-path"
+    const oldPathModule = allModules.find(m => m.topic === oldPathModuleTopic);
+    if (!oldPathModule) {
+      console.error("No module found for path", oldPath, "with tag", oldPathModule);
+    } else {
+      await controllers.UPDATE_USER_MODULE(userProfile, oldPathModule, false);
+    }
+  }
+
+  // Subscribe the user to their new path module
+  const pathModuleTopic = newPath + "-path"
+  const pathModule = allModules.find(m => m.topic === pathModuleTopic);
+  if (!pathModule) {
+    return console.error("No module found for path", newPath, "with tag", pathModuleTopic);
+  }
+
+  await controllers.UPDATE_USER_MODULE(userProfile, pathModule, true);
 }
 
 async function LOAD_TEAMS(client, store) {
@@ -351,6 +410,8 @@ function getControllers(store, client) {
     SET_USER_PROFILE_IF_REQD,
     UPDATE_USER_PROFILE,
     PROGRESS_ALONG_MODULE,
+    SET_MODULE_FOR_PATH,
+    UPDATE_USER_MODULE
   };
 
   for (var n of Object.keys(controllers)) {

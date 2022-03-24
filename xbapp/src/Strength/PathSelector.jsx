@@ -10,9 +10,12 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonSpinner,
 } from "@ionic/react";
+import { connect } from "react-redux";
 
 import "./PathSelector.css";
+import { addControllersProp } from "../util_model/controllers";
 
 /**
  * Props:
@@ -22,10 +25,27 @@ import "./PathSelector.css";
     children: Child elements; rendered in a control area. Use for buttons etc.
  *
  */
-const PathSelector = ({ onSubmit }) => {
-  // TODO: Find the current path from somewhere
-  //var path = team.s22path;
+const PathSelector = ({
+  controllers,
+  modules,
+  userProfile,
+  teams,
+  onSubmit,
+}) => {
+  controllers.LOAD_MODULES_IF_REQD();
+  controllers.SET_USER_PROFILE_IF_REQD();
+  controllers.LOAD_TEAMS_IF_REQD();
 
+  // Modules and user profile loaded here (not in the controller) as this ended
+  // up being a better experience for the user with feedback that something is
+  // happening
+  if (!modules.loaded || !userProfile.loaded || !teams.loaded) {
+    return <IonSpinner name="crescent" className="center-spin" />;
+  }
+
+  const oldPath = teams.teams[0].s22path.path;
+
+  // Save the path choice
   function onSelect(path) {
     onSubmit([
       {
@@ -33,6 +53,9 @@ const PathSelector = ({ onSubmit }) => {
         path: path,
       },
     ]);
+
+    // Subscribe to that path's module
+    controllers.SET_MODULE_FOR_PATH(path, oldPath);
   }
 
   return (
@@ -111,7 +134,7 @@ const PathSelector = ({ onSubmit }) => {
         <IonCardHeader>
           <IonCardTitle>Experimentalist</IonCardTitle>
           <IonCardSubtitle>
-            You have an establised movement practice
+            You have an established movement practice
           </IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
@@ -180,4 +203,10 @@ const PathSelector = ({ onSubmit }) => {
   );
 };
 
-export default PathSelector;
+export default connect((state, ownProps) => {
+  return {
+    teams: state.teams,
+    modules: state.modules,
+    userProfile: state.userProfile,
+  };
+}, {})(addControllersProp(PathSelector));
