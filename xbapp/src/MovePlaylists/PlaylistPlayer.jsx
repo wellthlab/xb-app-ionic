@@ -329,7 +329,7 @@ function PlaylistPlayer(props) {
     // Only progress along playlists IF the user is on their latest playlist.
     // The model here allows a user to progress to the next playlist if they
     // interact with any part of the playlist
-    if (playlistIdx === userProgress) {
+    if (minutes > 0 && playlistIdx === userProgress) {
       await progressToNextPlaylist();
     }
   }
@@ -352,11 +352,14 @@ function PlaylistPlayer(props) {
   // Save the response and progress the user to the next playlist if they
   // press the finish button. But we shouldn't progress if the user just keeps
   // pressing the button to go next
-  function saveOnFinish() {
-    saveResponse();
-
+  async function saveOnFinish() {
+    await saveResponse();
     if (minutes > 0) {
-      progressToNextPlaylist();
+      console.log(
+        "On finish, progressing to next playlist with minutes",
+        minutes
+      );
+      await progressToNextPlaylist();
     }
   }
 
