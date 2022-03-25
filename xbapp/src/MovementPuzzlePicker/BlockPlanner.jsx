@@ -9,13 +9,12 @@ import {
   IonCol,
   IonToggle,
 } from "@ionic/react";
-import React, { Component } from "react";
-import { useEffect } from "react";
+import React from "react";
 import Block from "./components/Block";
-import "./BlockPlanner.css";
 import { useHistory } from "react-router-dom";
-import { isPropertyDeclaration } from "typescript";
 import { useLocation } from "react-router-dom";
+
+import "./BlockPlanner.css";
 
 var studyPlanner = [
   [["bilateral push", "bilateral pull"]], //week 0
@@ -25,9 +24,9 @@ var studyPlanner = [
     ["bilateral lower push", "bilateral lower pull"],
   ], //week 2
   [
-    // ["bilateral lower push", "bilateral upper push"],
+    ["bilateral lower push", "bilateral upper push"],
     ["bilateral lower pull", "bilateral upper pull"],
-    // ["isolateral", "isolateral"],
+    ["isolateral", "isolateral"],
   ], //week 3
   [
     ["isolateral", "isolateral"],
@@ -121,41 +120,52 @@ var studyPlanner = [
   ], //week 16
 ];
 
+const explorerPlan = [
+  ["bilateral push", "bilateral pull"],
+  ["bilateral push", "bilateral pull"],
+  ["bilateral push", "bilateral pull"],
+  ["bilateral push", "bilateral pull"],
+  ["bilateral push", "bilateral pull"],
+];
+
 const BlockPlanner = (props) => {
   const location = useLocation(); // switched to location hook
   const history = useHistory();
+
+  let moveTypes = props.moveTypes;
 
   //expecting week to be passed as prop
   let week = props.week;
   let day = props.day;
 
-  if (week >= 6 && week <= 8) {
-    var oldStudyPlanner = studyPlanner[week];
-    for (var i = 0; i < 5; i++) {
-      //going through all blocks
-      if (
-        !(
-          window.localStorage.getItem("block-type-" + (i + 1).toString()) ==
-          null
-        )
-      ) {
-        var booleanInMemory = window.localStorage.getItem(
-          "block-type-" + (i + 1).toString()
-        );
-        oldStudyPlanner[i] =
-          booleanInMemory === false
-            ? ["bilateral push", "bilateral pull"]
-            : ["isolateral", "isolateral"];
-        console.log("BLOCK ", oldStudyPlanner[i]);
-      }
-    }
-    studyPlanner[week] = oldStudyPlanner;
-    console.log("STUDY PLANNER<", studyPlanner);
-  }
+  // if (week >= 6 && week <= 8) {
+  //   var oldStudyPlanner = studyPlanner[week];
+  //   for (var i = 0; i < 5; i++) {
+  //     //going through all blocks
+  //     if (
+  //       !(
+  //         window.localStorage.getItem("block-type-" + (i + 1).toString()) ==
+  //         null
+  //       )
+  //     ) {
+  //       var booleanInMemory = window.localStorage.getItem(
+  //         "block-type-" + (i + 1).toString()
+  //       );
+  //       oldStudyPlanner[i] =
+  //         booleanInMemory === false
+  //           ? ["bilateral push", "bilateral pull"]
+  //           : ["isolateral", "isolateral"];
+  //       console.log("BLOCK ", oldStudyPlanner[i]);
+  //     }
+  //   }
+  //   studyPlanner[week] = oldStudyPlanner;
+  //   console.log("STUDY PLANNER<", studyPlanner);
+  // }
 
   const [blocks, setBlocks] = React.useState(
-    week === -1 || props.explorer ? studyPlanner[15] : studyPlanner[week]
+    props.explorer ? explorerPlan : moveTypes
   ); //if it's exploration week, just look at what's gona be in week 0
+
   let storageKey = week === -1 ? "blocks-week-0" : "blocks-week-" + week;
 
   if (storageKey in window.localStorage) {
@@ -300,79 +310,24 @@ const BlockPlanner = (props) => {
     setBlocks(newArray);
     setBlocksTypeInMemory(blockNumber, valueOFtoggle);
   }
+
+  debugger;
+
   return (
     <div>
-      {week >= 5 ? (
-        <>
-          <p>
-            You have the option to select what types each block is. Use the
-            toggle button to change these as you wish.
-          </p>
-          <IonItem>
-            Block 1: Bilaterals
-            <IonToggle
-              checked={block1Check}
-              onIonChange={(e) => {
-                setBlocksAgain(1, e.detail.checked);
-              }}
-            />
-            Isolaterals
-          </IonItem>
-          <IonItem>
-            Block 2: Bilaterals
-            <IonToggle
-              checked={block2Check}
-              onIonChange={(e) => {
-                setBlocksAgain(2, e.detail.checked);
-              }}
-            />
-            Isolaterals
-          </IonItem>
-          <IonItem>
-            Block 3: Bilaterals
-            <IonToggle
-              checked={block3Check}
-              onIonChange={(e) => {
-                setBlocksAgain(3, e.detail.checked);
-              }}
-            />
-            Isolaterals
-          </IonItem>
-          <IonItem>
-            Block 4: Bilaterals
-            <IonToggle
-              checked={block4Check}
-              onIonChange={(e) => {
-                setBlocksAgain(4, e.detail.checked);
-              }}
-            />
-            Isolaterals
-          </IonItem>
-          <IonItem>
-            Block 5: Bilaterals
-            <IonToggle
-              checked={block5Check}
-              onIonChange={(e) => {
-                setBlocksAgain(5, e.detail.checked);
-              }}
-            />
-            Isolaterals
-          </IonItem>
-        </>
-      ) : (
-        <></>
-      )}
       {/* //iterate through number of blocks needed */}
-      {blocks.map((blockDesc, index) => (
-        <Block
-          typeOfBlock={blockDesc}
-          key={index}
-          blockIndex={index}
-          exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
-          explorer={props.explorer}
-          week={week}
-        ></Block>
-      ))}
+      {blocks.map((blockDesc, index) => {
+        return (
+          <Block
+            typeOfBlock={blockDesc}
+            key={index}
+            blockIndex={index}
+            exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
+            explorer={props.explorer}
+            week={week}
+          ></Block>
+        );
+      })}
       {props.explorer ? (
         <></>
       ) : checkIfExercisesAreChosen() ? (
@@ -400,3 +355,64 @@ const BlockPlanner = (props) => {
 };
 
 export default BlockPlanner;
+
+//  {/* {week >= 5 ? (
+//     <>
+//       <p>
+//         You have the option to select what types each block is. Use the
+//         toggle button to change these as you wish.
+//       </p>
+//       <IonItem>
+//         Block 1: Bilaterals
+//         <IonToggle
+//           checked={block1Check}
+//           onIonChange={(e) => {
+//             setBlocksAgain(1, e.detail.checked);
+//           }}
+//         />
+//         Isolaterals
+//       </IonItem>
+//       <IonItem>
+//         Block 2: Bilaterals
+//         <IonToggle
+//           checked={block2Check}
+//           onIonChange={(e) => {
+//             setBlocksAgain(2, e.detail.checked);
+//           }}
+//         />
+//         Isolaterals
+//       </IonItem>
+//       <IonItem>
+//         Block 3: Bilaterals
+//         <IonToggle
+//           checked={block3Check}
+//           onIonChange={(e) => {
+//             setBlocksAgain(3, e.detail.checked);
+//           }}
+//         />
+//         Isolaterals
+//       </IonItem>
+//       <IonItem>
+//         Block 4: Bilaterals
+//         <IonToggle
+//           checked={block4Check}
+//           onIonChange={(e) => {
+//             setBlocksAgain(4, e.detail.checked);
+//           }}
+//         />
+//         Isolaterals
+//       </IonItem>
+//       <IonItem>
+//         Block 5: Bilaterals
+//         <IonToggle
+//           checked={block5Check}
+//           onIonChange={(e) => {
+//             setBlocksAgain(5, e.detail.checked);
+//           }}
+//         />
+//         Isolaterals
+//       </IonItem>
+//     </>
+//   ) : (
+//     <></>
+//   )} */}

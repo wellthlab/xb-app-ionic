@@ -85,7 +85,7 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonRow>
     );
   });
-  // const colour = module.info.colour;
+
   return (
     <>
       <IonItem lines="none">
@@ -191,14 +191,20 @@ function PlaylistPlayer(props) {
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
+  props.controllers.SET_USER_PROFILE_IF_REQD();
 
-  if (!props.teams.loaded || !props.modules.loaded) {
+  if (
+    !props.teams.loaded ||
+    !props.modules.loaded ||
+    !props.userProfile.loaded
+  ) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
   const team = props.teams.teams.bybox["move"][0];
   const moduleId = props.match.params.moduleId;
   const stage = parseInt(props.match.params.stage, 10);
+  const userProfile = props.userProfile.userProfile;
 
   // This may not scale very well if we have a lot of modules in the future
   const module = props.modules.modules.find((m) => m._id === moduleId);
@@ -207,7 +213,8 @@ function PlaylistPlayer(props) {
   }
 
   const tasks = module.playlists[stage].tasks;
-  const currentTask = tasks[currentTaskIdx];
+  const currentTask = { ...tasks[currentTaskIdx] };
+  currentTask["moduleId"] = module._id;
 
   // Save the time spent on the tasks
   async function saveResponse() {
@@ -277,11 +284,26 @@ function PlaylistPlayer(props) {
     }
   }
 
+  // For an EDT set, we need to get the moves from somewhere, probably the
+  // user's profile
+  if (currentTask.intype === "s22edtset") {
+    const edtTasks = tasks.filter((task) => task.intype === "s22edtset");
+    const moveTypes = [];
+    for (let task of edtTasks) {
+      moveTypes.push(task.edtMoves);
+    }
+    currentTask["moveTypes"] = moveTypes; // required for setting moves for all blocks
+
+    // Get the moves from the user's profile
+    currentTask["chosenMoves"] = userProfile.modules[module._id].moves;
+  }
+
   const taskContent = inputFactory(
     currentTask.intype,
     team,
     stage,
     updateResponse,
+    userProfile,
     currentTask
   );
 
@@ -357,5 +379,6 @@ export default connect((state, ownProps) => {
   return {
     teams: state.teams,
     modules: state.modules,
+    userProfile: state.userProfile,
   };
 }, {})(addControllersProp(PlaylistPlayer));

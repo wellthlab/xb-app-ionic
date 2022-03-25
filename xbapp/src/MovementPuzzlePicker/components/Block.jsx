@@ -35,9 +35,9 @@ const Block = (props) => {
   // Maybe this should be a state?
 
   let filteredMoves;
-  useEffect(() => {}, []);
 
   var content = [];
+
   function processMovements() {
     console.log(
       "3 IS PROCESSING",
@@ -52,29 +52,33 @@ const Block = (props) => {
     blockType.map((exercise, index) => {
       exercise = exercise.split(" ").join("+");
       console.log("Exercise", exercise);
+
       const movements = {};
-      var movesForweek = Moves.moves.filter((obj) => {
+
+      let movesForWeek = Moves.moves.filter((obj) => {
         return obj.weekToApper > 0 && obj.weekToApper <= weekNo;
       });
+      // let movesForWeek = Moves.moves;
+
       if (props.explorer) filteredMoves = Moves.moves;
 
       if (exercise.includes("bilateral")) {
-        filteredMoves = movesForweek.filter((obj) => {
+        filteredMoves = movesForWeek.filter((obj) => {
           return obj.technique === "bilateral";
         });
       } else if (exercise.includes("isolateral")) {
-        filteredMoves = movesForweek.filter((obj) => {
+        filteredMoves = movesForWeek.filter((obj) => {
           return obj.technique === "isolateral";
         });
       } else if (exercise.includes("balance")) {
         if (exercise.includes("assessment")) {
           //is balance assessment
-          filteredMoves = movesForweek.filter((obj) => {
+          filteredMoves = movesForWeek.filter((obj) => {
             return obj.type === "assessment";
           });
         } else {
           //is balance practice
-          filteredMoves = movesForweek.filter((obj) => {
+          filteredMoves = movesForWeek.filter((obj) => {
             return obj.type === "practice";
           });
         }
@@ -163,6 +167,7 @@ const Block = (props) => {
             return a.progressionLevel - b.progressionLevel;
           });
       }
+
       if (!props.explorer) {
         lowerBody = removeAlternativesWhichDontfit(lowerBody);
         fullBody = removeAlternativesWhichDontfit(fullBody);
@@ -173,6 +178,8 @@ const Block = (props) => {
       movements.upperBody = upperBody;
 
       function removeAlternativesWhichDontfit(moves) {
+        if (moves.length === 0) return moves;
+
         for (var i = 0; i < moves.length; i++) {
           var move = moves[i];
           var alternatives = move.alternative;
@@ -197,6 +204,8 @@ const Block = (props) => {
         if (move.blockToApperIn[weekNo] < 0) return false;
         return true;
       }
+
+      debugger;
 
       content.push(
         <>
