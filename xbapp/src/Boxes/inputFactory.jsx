@@ -235,11 +235,13 @@ export default function responseFactory(
                 Timing your move will let you measure your progress
               </IonCardSubtitle>
             </IonCardHeader>
-            <Timer
-              onPause={(mins) => {
-                onSubmit({ assTimeSecs: mins * 60 });
-              }}
-            />
+            <IonCardContent>
+              <Timer
+                onPause={(mins) => {
+                  onSubmit({ assTimeSecs: mins * 60 });
+                }}
+              />
+            </IonCardContent>
           </IonCard>
         </>
       );
