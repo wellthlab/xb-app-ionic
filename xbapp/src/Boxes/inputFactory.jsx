@@ -49,7 +49,7 @@ import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import TaskInstructions from "../Strength/TaskInstructions";
-import SubscribeToModule from "../Move/components/PlaylistSubscriber";
+import SubscribeToModule from "../MovePlaylists/components/PlaylistSubscriber";
 import quizFactory from "../Quiz/quizFactory";
 
 /**

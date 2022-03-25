@@ -214,7 +214,7 @@ const GroupInfo = ({ group, controllers, match }) => {
             </IonCol>
           </IonRow>
           {/* DISPLAY PATH */}
-          <IonRow>
+          {/* <IonRow>
             <IonCol>
               <IonItem lines="none" className="ion-text-center">
                 <IonLabel>
@@ -225,7 +225,7 @@ const GroupInfo = ({ group, controllers, match }) => {
                 </IonLabel>
               </IonItem>
             </IonCol>
-          </IonRow>
+          </IonRow> */}
           {/* DISPLAY DAILY TASKS */}
           <IonRow>
             <IonCol>

@@ -239,31 +239,15 @@ function SubscribeToModule(props) {
         <IonRow>
           <IonCol>
             <TopicSubscriptionButton
-              topic="strength-training"
-              title="Strength"
+              topic="movement-path"
+              title="Movement Paths"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>
           <IonCol>
             <TopicSubscriptionButton
-              topic="endurance-training"
-              title="Endurance"
-              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-            />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <TopicSubscriptionButton
-              topic="neuro-mobility"
-              title="Neuromobility"
-              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
-            />
-          </IonCol>
-          <IonCol>
-            <TopicSubscriptionButton
-              topic="experiment"
-              title="Experiments"
+              topic="movement-snack"
+              title="Movement Snacks"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   IonButton,
   IonIcon,
@@ -85,13 +85,12 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonRow>
     );
   });
-  // const colour = module.info.colour;
+
   return (
     <>
       <IonItem lines="none">
         <IonGrid>
           <IonRow>
-            {/* <IonCol size="1" style={{ "background-color": colour }}></IonCol> */}
             <IonCol>
               <IonRow>
                 <IonCol>
@@ -102,7 +101,16 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
                       <IonText className="ion-text-wrap">{module.name}</IonText>
                     </IonLabel>
                     <IonLabel slot="end">
-                      <IonText>Stage {stage + 1}</IonText>
+                      <IonRow class="ion-text-center">
+                        <IonText style={{ "font-weight": "bold" }}>
+                          {module.playlists[stage].desc}
+                        </IonText>
+                      </IonRow>
+                      <IonRow>
+                        <IonText>
+                          Playlist {stage + 1}/{module.playlists.length}
+                        </IonText>
+                      </IonRow>
                     </IonLabel>
                   </IonItem>
                 </IonCol>

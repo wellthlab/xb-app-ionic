@@ -23,8 +23,8 @@ import {
 import parse from "html-react-parser";
 import getTaskIcon from "./TaskIcons";
 
-function PlaylistDescription({ module, stage: level }) {
-  const numLevels = module.playlists.length;
+function PlaylistDescription({ module, stage: currentPlaylist }) {
+  const numPlaylists = module.playlists.length;
   return (
     <>
       <IonGrid>
@@ -57,20 +57,26 @@ function PlaylistDescription({ module, stage: level }) {
         >
           <IonLabel className="ion-text-center">
             <IonText style={{ fontSize: "1.2em" }}>
-              You are at <strong>LEVEL</strong> {level + 1} of {numLevels}
+              You have tried {currentPlaylist + 1} of {numPlaylists} playlists
             </IonText>
           </IonLabel>
         </IonItem>
         <IonItem lines="none">
-          <IonProgressBar value={(level + 1) / numLevels} />
+          <IonProgressBar value={(currentPlaylist + 1) / numPlaylists} />
         </IonItem>
       </IonGrid>
     </>
   );
 }
 
-function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
-  const [currentStage, setCurrentStage] = useState(stage);
+function PlaylistTasks({
+  playlists,
+  teamId,
+  moduleId,
+  userProgressIdx,
+  toggleModal,
+}) {
+  const [currentPlaylist, setCurrentStage] = useState(userProgressIdx);
   const [notImplementedAlert] = useIonAlert();
   const notImplementedClick = () => {
     notImplementedAlert("Going back in time isn't ready yet!", [
@@ -81,17 +87,17 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
   // These functions are used to control the buttons which control the day to
   // show the playlist for
   function nextStage() {
-    if (currentStage >= playlists.length - 1) return;
-    setCurrentStage(currentStage + 1);
+    if (currentPlaylist >= playlists.length - 1) return;
+    setCurrentStage(currentPlaylist + 1);
   }
   function prevStage() {
-    if (currentStage <= 0) return;
-    setCurrentStage(currentStage - 1);
+    if (currentPlaylist <= 0) return;
+    setCurrentStage(currentPlaylist - 1);
   }
 
-  const tasksDesc = playlists[currentStage].desc;
-  const tasksForStage = playlists[currentStage].tasks;
-  const taskItems = tasksForStage.map((task) => {
+  const tasksDesc = playlists[currentPlaylist].desc;
+  const tasksForPlaylist = playlists[currentPlaylist].tasks;
+  const taskIonItems = tasksForPlaylist.map((task) => {
     return (
       <IonItem color="transparent" lines="none">
         <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
@@ -127,7 +133,7 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                   slot="start"
                   size="regular"
                   onClick={prevStage}
-                  disabled={currentStage <= 0}
+                  disabled={currentPlaylist <= 0}
                 >
                   <IonIcon icon={chevronBackCircleOutline} />
                 </IonButton>
@@ -138,7 +144,10 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                   slot="end"
                   size="regular"
                   onClick={nextStage}
-                  disabled={currentStage >= playlists.length - 1}
+                  disabled={
+                    currentPlaylist >= userProgressIdx ||
+                    currentPlaylist >= playlists.length - 1
+                  }
                 >
                   <IonIcon icon={chevronForwardCircleOutline} />
                 </IonButton>
@@ -154,7 +163,7 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
             <IonRow>
               <IonCol>
                 <IonList>
-                  <IonItemGroup>{taskItems}</IonItemGroup>
+                  <IonItemGroup>{taskIonItems}</IonItemGroup>
                 </IonList>
               </IonCol>
             </IonRow>
@@ -181,7 +190,12 @@ function PlaylistTasks({ playlists, teamId, moduleId, stage, toggleModal }) {
                 shape="circle"
                 color="success"
                 routerLink={
-                  "/move/timer/" + teamId + "/" + moduleId + "/" + currentStage
+                  "/move/timer/" +
+                  teamId +
+                  "/" +
+                  moduleId +
+                  "/" +
+                  currentPlaylist
                 }
                 onClick={toggleModal}
               >
@@ -213,7 +227,7 @@ function PlaylistDetail({ team, modules, moduleId, currentStage, closeModal }) {
       <IonCard>
         {/* <IonCardContent> */}
         <PlaylistTasks
-          stage={currentStage}
+          userProgressIdx={currentStage}
           playlists={module.playlists}
           teamId={team._id}
           moduleId={module._id}

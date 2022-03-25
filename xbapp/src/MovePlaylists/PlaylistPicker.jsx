@@ -180,7 +180,7 @@ function PlaylistPicker(props) {
                   ) : (
                     <IonItem lines="none">
                       <IonIcon icon={warningOutline} slot="start" />
-                      <div>You have no active playlists</div>
+                      <div>You have no active playlists, pick some below</div>
                     </IonItem>
                   )}
                 </IonCol>
