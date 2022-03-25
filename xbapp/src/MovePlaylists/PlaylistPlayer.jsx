@@ -35,34 +35,17 @@ import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 import getTaskIcon from "./components/TaskIcons";
 
-function TaskAccordionList({ tasks, taskIdx, currentTask }) {
-  return (
-    <>
-      <Accordion className="AccordionBox">
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <IonCol>
-            <Typography>
-              <IonItem lines="none" color="primary">
-                <IonIcon icon={getTaskIcon(currentTask.verb)} slot="start" />
-                {currentTask.desc}
-                <IonLabel slot="end">
-                  {taskIdx}/{tasks.length}
-                </IonLabel>
-              </IonItem>
-            </Typography>
-          </IonCol>
-        </AccordionSummary>
-        <AccordionDetails className="AccordionDetails">
-          <IonGrid className="ion-no-padding ion-text-wrap">
-            <IonItemGroup>{tasks}</IonItemGroup>
-          </IonGrid>
-        </AccordionDetails>
-      </Accordion>
-    </>
-  );
-}
-
-function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
+/**
+ * Displays some useful information about the current playlist, and allows the
+ * user to switch between tasks using an accordion style dropdown menu
+ */
+function PlaylistInfoBar({
+  module,
+  currentPlaylist,
+  tasks,
+  currentTaskIdx,
+  setCurrentTask,
+}) {
   const currentTask = tasks[currentTaskIdx];
   const taskItems = tasks.map((task, index) => {
     return (
@@ -72,7 +55,9 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
             button
             detail={false}
             key={index}
-            color={index === currentTaskIdx ? "secondary" : "transparent"}
+            color={
+              index === tasks[currentTaskIdx] ? "secondary" : "transparent"
+            }
             lines="none"
             onClick={() => {
               setCurrentTask(index);
@@ -85,6 +70,29 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
       </IonRow>
     );
   });
+
+  const accordionTaskList = (
+    <Accordion className="AccordionBox">
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <IonCol>
+          <Typography>
+            <IonItem lines="none" color="primary">
+              <IonIcon icon={getTaskIcon(currentTask.verb)} slot="start" />
+              {currentTask.desc}
+              <IonLabel slot="end">
+                {currentTaskIdx + 1}/{tasks.length}
+              </IonLabel>
+            </IonItem>
+          </Typography>
+        </IonCol>
+      </AccordionSummary>
+      <AccordionDetails className="AccordionDetails">
+        <IonGrid className="ion-no-padding ion-text-wrap">
+          <IonItemGroup>{taskItems}</IonItemGroup>
+        </IonGrid>
+      </AccordionDetails>
+    </Accordion>
+  );
 
   return (
     <>
@@ -103,12 +111,13 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
                     <IonLabel slot="end">
                       <IonRow class="ion-text-center">
                         <IonText style={{ "font-weight": "bold" }}>
-                          {module.playlists[stage].desc}
+                          {module.playlists[currentPlaylist].desc}
                         </IonText>
                       </IonRow>
                       <IonRow>
                         <IonText>
-                          Playlist {stage + 1}/{module.playlists.length}
+                          Playlist {currentPlaylist + 1}/
+                          {module.playlists.length}
                         </IonText>
                       </IonRow>
                     </IonLabel>
@@ -116,13 +125,7 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol>
-                  <TaskAccordionList
-                    tasks={taskItems}
-                    taskIdx={currentTaskIdx + 1}
-                    currentTask={currentTask}
-                  />
-                </IonCol>
+                <IonCol>{accordionTaskList}</IonCol>
               </IonRow>
             </IonCol>
           </IonRow>
@@ -132,10 +135,20 @@ function InfoTopBar({ module, stage, tasks, currentTaskIdx, setCurrentTask }) {
   );
 }
 
-function TaskTimer({ task, team, manualEntry, setManualEntry, setMinutes }) {
+/**
+ * Timer UI for timing tasks, or manual entry of minutes
+ *
+ * @param task
+ * @param team
+ * @param manualEntry
+ * @param setManualEntry
+ * @param setMinutes
+ */
+
+function TaskTimer({ task, team, useManualEntry, setManualEntry, setMinutes }) {
   let content;
 
-  if (manualEntry) {
+  if (useManualEntry) {
     content = (
       <>
         <ManualTime id={team._id} task={task} onChange={setMinutes} />
@@ -177,11 +190,11 @@ function TaskTimer({ task, team, manualEntry, setManualEntry, setMinutes }) {
             >
               <IonButton
                 onClick={() => {
-                  setManualEntry(!manualEntry);
+                  setManualEntry(!useManualEntry);
                 }}
               >
                 <IonIcon icon={addCircleOutline} /> &nbsp;
-                {manualEntry ? "Back to timer" : "Enter minutes manually"}
+                {useManualEntry ? "Back to timer" : "Enter minutes manually"}
               </IonButton>
             </IonCol>
           </IonRow>
@@ -191,6 +204,74 @@ function TaskTimer({ task, team, manualEntry, setManualEntry, setMinutes }) {
   );
 }
 
+/**
+ * Provides previous and next buttons at the bottom of the playlist player
+ * to navigate through the playlist tasks
+ *
+ * @param numTasks
+ * @param currentTaskIdx
+ * @param nextTaskInPlaylist
+ * @param prevTaskInPlaylist
+ * @param saveOnFinish
+ */
+function PlayerProgressionButtons({
+  numTasks,
+  currentTaskIdx,
+  nextTaskInPlaylist,
+  prevTaskInPlaylist,
+  saveOnFinish,
+}) {
+  return (
+    <IonItem lines="none" color="transparent">
+      <IonGrid className="PlaylistNavigation">
+        <IonRow>
+          <IonCol>
+            <IonButton
+              expand="block"
+              onClick={prevTaskInPlaylist}
+              disabled={currentTaskIdx <= 0}
+              size="normal"
+            >
+              Previous
+            </IonButton>
+          </IonCol>
+          <IonCol>
+            {currentTaskIdx < numTasks - 1 ? (
+              <IonButton
+                expand="block"
+                onClick={nextTaskInPlaylist}
+                size="normal"
+              >
+                Next
+              </IonButton>
+            ) : (
+              <IonButton
+                expand="block"
+                routerLink={"/move/task-playlist"}
+                onClick={saveOnFinish}
+                size="normal"
+              >
+                Finish
+              </IonButton>
+            )}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonItem>
+  );
+}
+
+/**
+ * The main UI element for displaying playlist information, task specific UI
+ * and saving responses and progressing the user along their module
+ *
+ * @param props.controllers
+ * @param props.modules
+ * @param props.teams
+ * @param props.match.params.moduleId
+ * @param props.match.params.playlistIdx
+ * @param props.match.params.progress
+ */
 function PlaylistPlayer(props) {
   const [currentTaskIdx, setCurrentTaskIdx] = useState(0);
   const [externalResponse, setExternalResponse] = useState({});
@@ -206,15 +287,17 @@ function PlaylistPlayer(props) {
 
   const team = props.teams.teams.bybox["move"][0];
   const moduleId = props.match.params.moduleId;
-  const stage = parseInt(props.match.params.stage, 10);
+  const playlistIdx = parseInt(props.match.params.playlistIdx, 10);
+  const userProgress = parseInt(props.match.params.progress, 10);
 
   // This may not scale very well if we have a lot of modules in the future
   const module = props.modules.modules.find((m) => m._id === moduleId);
+
   if (!module) {
     return <div>The requested playlist could not be found for some reason</div>;
   }
 
-  const tasks = module.playlists[stage].tasks;
+  const tasks = module.playlists[playlistIdx].tasks;
   const currentTask = tasks[currentTaskIdx];
 
   // Save the time spent on the tasks
@@ -233,18 +316,26 @@ function PlaylistPlayer(props) {
     response.intype = currentTask.intype;
     response.minutes = minutes;
     response.day = team.experiment.day;
-    response.moduleId = moduleId;
-    response.stage = stage;
-    await props.controllers.ADD_RESPONSE(team._id, response);
-  }
+    response.playlist = playlistIdx;
 
-  async function progressStage() {
-    await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
+    // This is used to determine if the user has completed the playlist for
+    // the day or not. If they are replaying old playlists, should we count
+    // the playlist as being completed today?
+    // if (playlistIdx === userProgress) {
+    response.moduleId = moduleId;
+    // }
+
+    await props.controllers.ADD_RESPONSE(team._id, response);
+    // Only progress along playlists IF the user is on their latest playlist.
+    // The model here allows a user to progress to the next playlist if they
+    // interact with any part of the playlist
+    if (playlistIdx === userProgress) {
+      await progressToNextPlaylist();
+    }
   }
 
   // Update the response from the widgets
   function updateResponse(response) {
-    console.log("Updating response with", response);
     let updated = {};
     for (let k of Object.keys(externalResponse)) {
       updated[k] = externalResponse[k];
@@ -256,13 +347,28 @@ function PlaylistPlayer(props) {
       setMinutes(response.minutes);
     }
     setExternalResponse(updated);
-    console.log("Updated response", externalResponse);
   }
 
-  let readyToSave = minutes > 0;
+  // Save the response and progress the user to the next playlist if they
+  // press the finish button. But we shouldn't progress if the user just keeps
+  // pressing the button to go next
+  function saveOnFinish() {
+    saveResponse();
 
-  // Go to the next task
-  function nextTask() {
+    if (minutes > 0) {
+      progressToNextPlaylist();
+    }
+  }
+
+  // Progress the user to the next playlist using the controller
+  async function progressToNextPlaylist() {
+    await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
+  }
+
+  const readyToSave = minutes > 0;
+
+  // Go to the next task in the playlist
+  function nextTaskInPlaylist() {
     if (currentTaskIdx < tasks.length - 1) {
       setCurrentTaskIdx(currentTaskIdx + 1);
       if (readyToSave) {
@@ -273,8 +379,8 @@ function PlaylistPlayer(props) {
     }
   }
 
-  // Go to the previous task
-  function prevTask() {
+  // Go to the previous task in the playlist
+  function prevTaskInPlaylist() {
     if (currentTaskIdx > 0) {
       setCurrentTaskIdx(currentTaskIdx - 1);
       if (readyToSave) {
@@ -285,10 +391,12 @@ function PlaylistPlayer(props) {
     }
   }
 
+  // The UI to display for the specific task being played is returned from the
+  // input factory
   const taskContent = inputFactory(
     currentTask.intype,
     team,
-    stage,
+    playlistIdx,
     updateResponse,
     currentTask
   );
@@ -297,9 +405,9 @@ function PlaylistPlayer(props) {
     <IonPage>
       <XBHeader title={"Movement"} colour={module.info.colour} />
       <IonContent>
-        <InfoTopBar
+        <PlaylistInfoBar
           module={module}
-          stage={stage}
+          currentPlaylist={playlistIdx}
           tasks={tasks}
           currentTaskIdx={currentTaskIdx}
           setCurrentTask={(index) => {
@@ -313,7 +421,7 @@ function PlaylistPlayer(props) {
           <TaskTimer
             task={currentTask}
             team={team}
-            manualEntry={manualTimeEntry}
+            useManualEntry={manualTimeEntry}
             setManualEntry={setManualEntry}
             setMinutes={setMinutes}
           />
@@ -321,41 +429,13 @@ function PlaylistPlayer(props) {
           ""
         )}
         {/* Previous and next task buttons */}
-        <IonItem lines="none" color="transparent">
-          <IonGrid className="PlaylistNavigation">
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  expand="block"
-                  onClick={prevTask}
-                  disabled={currentTaskIdx <= 0}
-                  size="normal"
-                >
-                  Previous
-                </IonButton>
-              </IonCol>
-              <IonCol>
-                {currentTaskIdx < tasks.length - 1 ? (
-                  <IonButton expand="block" onClick={nextTask} size="normal">
-                    Next
-                  </IonButton>
-                ) : (
-                  <IonButton
-                    expand="block"
-                    routerLink={"/move/task-playlist"}
-                    onClick={() => {
-                      saveResponse();
-                      progressStage();
-                    }}
-                    size="normal"
-                  >
-                    Finish
-                  </IonButton>
-                )}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
+        <PlayerProgressionButtons
+          numTasks={tasks.length}
+          currentTaskIdx={currentTaskIdx}
+          nextTaskInPlaylist={nextTaskInPlaylist}
+          prevTaskInPlaylist={prevTaskInPlaylist}
+          saveOnFinish={saveOnFinish}
+        />
       </IonContent>
     </IonPage>
   );

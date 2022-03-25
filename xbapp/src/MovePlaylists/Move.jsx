@@ -7,6 +7,7 @@ import {
   IonRow,
   IonCol,
   IonIcon,
+  IonSpinner,
   useIonAlert,
   IonThumbnail,
 } from "@ionic/react";
@@ -19,12 +20,25 @@ import {
 
 import "./Move.css";
 import XBHeader from "../util/XBHeader";
+import { addControllersProp } from "../util_model/controllers";
+import { connect } from "react-redux";
 
-function MovementWelcome(props) {
+function MovementWelcome({ controllers, teams, userProfile, modules }) {
   const [notImplementedAlert] = useIonAlert();
   const notImplementedClick = () => {
     notImplementedAlert("This isn't ready just yet!", [{ text: "Close" }]);
   };
+
+  // Preload all this useful data as it's going to be needed for all the other
+  // views.
+
+  controllers.LOAD_TEAMS_IF_REQD();
+  controllers.SET_USER_PROFILE_IF_REQD();
+  controllers.LOAD_MODULES_IF_REQD();
+
+  if (!teams.loaded || !userProfile.loaded || !modules.loaded) {
+    return <IonSpinner className="center-spin" name="crescent" />;
+  }
 
   return (
     <IonPage>
@@ -88,4 +102,10 @@ function MovementWelcome(props) {
   );
 }
 
-export default MovementWelcome;
+export default connect((state, ownProps) => {
+  return {
+    teams: state.teams,
+    userProfile: state.userProfile,
+    modules: state.modules,
+  };
+}, {})(addControllersProp(MovementWelcome));
