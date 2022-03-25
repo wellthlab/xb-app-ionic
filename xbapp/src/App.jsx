@@ -81,13 +81,13 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import MovementPage from "./Move/Move";
-import TaskPlaylist from "./Move/PlaylistPicker";
-import MovementTimer from "./Move/MovementTimer";
+import MovementPage from "./MovePlaylists/Move";
+import TaskPlaylist from "./MovePlaylists/PlaylistPicker";
+import MovementTimer from "./MovePlaylists/MovementTimer";
 import UserProfile from "./UserProfile/UserProfile";
-import SubscribeToModule from "./Move/components/PlaylistSubscriber";
-import TaskPlayer from "./Move/components/PlaylistDetail";
-import PlaylistTimer from "./Move/PlaylistPlayer";
+import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
+import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
+import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
 
 import getXBClient from "./util_model/client";
 
@@ -124,7 +124,7 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
-import PlaylistDetail from "./Move/components/PlaylistDetail";
+import PlaylistDetail from "./MovePlaylists/components/PlaylistDetail";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -157,7 +157,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/box/move" />}
+                render={() => <Redirect to="/move" />}
                 exact={true}
               />
               <Route path="/feed" component={Feed} exact={true} />
