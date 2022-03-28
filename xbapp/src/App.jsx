@@ -71,7 +71,7 @@ import UserProfile from "./UserProfile/UserProfile";
 import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
 import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
 import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
-import HistoricPlaylistEntry from "./MovePlaylists/PlaylistHistoric";
+import HistoricPlaylistEntry from "./MovePlaylists/PlaylistPreviousDay";
 
 import getXBClient from "./util_model/client";
 
