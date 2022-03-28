@@ -92,7 +92,7 @@ function HistoricPlaylistEntry({ teams, modules, controllers, match }) {
                         firstDayOWeek={1}
                         placeholder="Select a date"
                         pickerFormat="DD MMMM YYYY HH mm"
-                        displayFormat="DD MMMM YYYY, hh:mm a"
+                        displayFormat="DDDD DD MMMM YYYY, hh:mm a"
                         onIonChange={(e) => setDate(e.detail.value)}
                         min={experimentStart.toISOString()}
                       ></IonDatetime>

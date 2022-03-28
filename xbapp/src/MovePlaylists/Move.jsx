@@ -17,11 +17,13 @@ import {
   bodyOutline,
   libraryOutline,
 } from "ionicons/icons";
+import { connect } from "react-redux";
 
 import "./Move.css";
 import XBHeader from "../util/XBHeader";
+import Enroller from "../Boxes/components/Enroller";
+import UserProfile from "../UserProfile/UserProfile";
 import { addControllersProp } from "../util_model/controllers";
-import { connect } from "react-redux";
 
 function MovementWelcome({ controllers, teams, userProfile, modules }) {
   const [notImplementedAlert] = useIonAlert();
@@ -40,64 +42,74 @@ function MovementWelcome({ controllers, teams, userProfile, modules }) {
     return <IonSpinner className="center-spin" name="crescent" />;
   }
 
+  let content;
+
+  if (!teams.teams.bybox["move"]) {
+    content = <Enroller boxtype="move" />;
+  } else if (!userProfile.userProfile) {
+    content = <UserProfile pageType="move" />;
+  } else {
+    content = (
+      <IonItem className="vcs" lines="none">
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonItem
+                button
+                className="ion-text-center"
+                routerLink="/move/task-playlist"
+                routerDirection="forward"
+              >
+                <IonLabel>Move</IonLabel>
+                <IonIcon icon={bodyOutline} />
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonItem
+                button
+                className="ion-text-center"
+                onClick={notImplementedClick}
+              >
+                <IonLabel>Journal</IonLabel>
+                <IonIcon icon={journalOutline} />
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonItem
+                button
+                className="ion-text-center"
+                onClick={notImplementedClick}
+              >
+                <IonLabel>Invitations</IonLabel>
+                <IonIcon icon={mailOutline} />
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonItem
+                button
+                className="ion-text-center"
+                onClick={notImplementedClick}
+              >
+                <IonLabel>Library</IonLabel>
+                <IonIcon icon={libraryOutline} />
+              </IonItem>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonItem>
+    );
+  }
+
   return (
     <IonPage>
       <XBHeader title={"Move"} />
-      <IonContent>
-        <IonItem className="vcs" lines="none">
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <IonItem
-                  button
-                  className="ion-text-center"
-                  routerLink="/move/task-playlist"
-                  routerDirection="forward"
-                >
-                  <IonLabel>Move</IonLabel>
-                  <IonIcon icon={bodyOutline} />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem
-                  button
-                  className="ion-text-center"
-                  onClick={notImplementedClick}
-                >
-                  <IonLabel>Journal</IonLabel>
-                  <IonIcon icon={journalOutline} />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem
-                  button
-                  className="ion-text-center"
-                  onClick={notImplementedClick}
-                >
-                  <IonLabel>Invitations</IonLabel>
-                  <IonIcon icon={mailOutline} />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonItem
-                  button
-                  className="ion-text-center"
-                  onClick={notImplementedClick}
-                >
-                  <IonLabel>Library</IonLabel>
-                  <IonIcon icon={libraryOutline} />
-                </IonItem>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      </IonContent>
+      <IonContent>{content}</IonContent>
     </IonPage>
   );
 }

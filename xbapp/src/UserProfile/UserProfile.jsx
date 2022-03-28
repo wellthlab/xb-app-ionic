@@ -198,9 +198,9 @@ function UserProfile(props) {
     profileObj[newKey] = value;
   }
 
-  function saveProfile() {
+  async function saveProfile() {
     console.log("Saving profile: ", profileObj);
-    props.controllers.UPDATE_USER_PROFILE(profileObj);
+    await props.controllers.UPDATE_USER_PROFILE(profileObj);
     history.goBack();
   }
 

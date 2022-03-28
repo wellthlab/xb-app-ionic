@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { IonContent, IonPage, IonInput, IonButton } from "@ionic/react";
+import {
+  IonContent,
+  IonPage,
+  IonInput,
+  IonButton,
+  IonSpinner,
+  IonText,
+} from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 
 import { addControllersProp } from "../util_model/controllers";
@@ -14,10 +21,10 @@ const ExperimentInGroup = (props) => {
   const [number, setNumber] = useState();
   const [joining, setJoining] = useState(false);
 
-  function addTeam(code) {
+  async function addTeam(code) {
     setJoining(true);
     //console.log(code);
-    props.controllers.JOIN_TEAM(code);
+    await props.controllers.JOIN_TEAM(code);
   }
 
   var content;
@@ -31,7 +38,7 @@ const ExperimentInGroup = (props) => {
     content = (
       <>
         <div className="centering">
-          <ion-text color="success">Great, you've joined a new team!</ion-text>
+          <IonText color="success">Great, you've joined a new team!</IonText>
         </div>
         <div className="centering">
           <IonButton routerLink="/box/move">Go to your Team</IonButton>
@@ -42,7 +49,7 @@ const ExperimentInGroup = (props) => {
     // Otherwise show the entry interfae
     var btn, err;
     if (props.teams.joining) {
-      btn = <ion-spinner name="crescent" />;
+      btn = <IonSpinner name="crescent" className="center-spin" />;
     } else if (typeof number !== "undefined" && number.length == 6) {
       btn = (
         <IonButton
