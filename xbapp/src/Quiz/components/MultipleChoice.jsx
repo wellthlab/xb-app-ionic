@@ -9,10 +9,17 @@ import {
   IonLabel,
   IonRadioGroup,
 } from "@ionic/react";
-import { CheckmarkSharp, CloseSharp } from "react-ionicons";
 
 function MultipleChoice({ tag, statement, choices, onSubmit }) {
   const [value, setValue] = useState(null);
+
+  function handleChange(e) {
+    let response = {};
+    response[tag] = e.detail.value;
+    response["minutes"] = 1e-10;
+    onSubmit(response);
+    setValue(e.detail.value);
+  }
 
   const radioChoices = choices.map((choice, index) => {
     return (
@@ -22,13 +29,6 @@ function MultipleChoice({ tag, statement, choices, onSubmit }) {
       </IonItem>
     );
   });
-
-  function handleChange(e) {
-    let response = {};
-    response[tag] = e.detail.value;
-    onSubmit(response);
-    setValue(e.detail.value);
-  }
 
   return (
     <IonItem>
