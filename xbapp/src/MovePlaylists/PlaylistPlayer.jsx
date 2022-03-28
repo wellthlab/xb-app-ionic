@@ -7,133 +7,24 @@ import {
   IonRow,
   IonItem,
   IonContent,
-  IonText,
   IonSpinner,
   IonPage,
   IonCard,
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonItemGroup,
-  IonLabel,
 } from "@ionic/react";
 import { addCircleOutline } from "ionicons/icons";
 import { connect } from "react-redux";
 
 import "./PlaylistPlayer.css";
 
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Typography from "@material-ui/core/Typography";
-
 import { addControllersProp } from "../util_model/controllers";
 import inputFactory from "../Boxes/inputFactory";
 import Timer from "../Instruments/StatelessTimer";
 import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
-import getTaskIcon from "./components/TaskIcons";
-
-/**
- * Displays some useful information about the current playlist, and allows the
- * user to switch between tasks using an accordion style dropdown menu
- */
-function PlaylistInfoBar({
-  module,
-  currentPlaylist,
-  tasks,
-  currentTaskIdx,
-  setCurrentTask,
-}) {
-  const currentTask = tasks[currentTaskIdx];
-  const taskItems = tasks.map((task, index) => {
-    return (
-      <IonRow className="ion-no-padding">
-        <IonCol className="ion-no-padding">
-          <IonItem
-            button
-            detail={false}
-            key={index}
-            color={
-              index === tasks[currentTaskIdx] ? "secondary" : "transparent"
-            }
-            lines="none"
-            onClick={() => {
-              setCurrentTask(index);
-            }}
-          >
-            <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
-            <IonLabel className="ion-text-wrap">{task.desc}</IonLabel>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    );
-  });
-
-  const accordionTaskList = (
-    <Accordion className="AccordionBox">
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <IonCol>
-          <Typography>
-            <IonItem lines="none" color="primary">
-              <IonIcon icon={getTaskIcon(currentTask.verb)} slot="start" />
-              {currentTask.desc}
-              <IonLabel slot="end">
-                {currentTaskIdx + 1}/{tasks.length}
-              </IonLabel>
-            </IonItem>
-          </Typography>
-        </IonCol>
-      </AccordionSummary>
-      <AccordionDetails className="AccordionDetails">
-        <IonGrid className="ion-no-padding ion-text-wrap">
-          <IonItemGroup>{taskItems}</IonItemGroup>
-        </IonGrid>
-      </AccordionDetails>
-    </Accordion>
-  );
-
-  return (
-    <>
-      <IonItem lines="none">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonRow>
-                <IonCol>
-                  <IonItem lines="none">
-                    <IonLabel
-                      style={{ "font-size": "1.2em", "font-weight": "bold" }}
-                    >
-                      <IonText className="ion-text-wrap">{module.name}</IonText>
-                    </IonLabel>
-                    <IonLabel slot="end">
-                      <IonRow class="ion-text-center">
-                        <IonText style={{ "font-weight": "bold" }}>
-                          {module.playlists[currentPlaylist].desc}
-                        </IonText>
-                      </IonRow>
-                      <IonRow>
-                        <IonText>
-                          Playlist {currentPlaylist + 1}/
-                          {module.playlists.length}
-                        </IonText>
-                      </IonRow>
-                    </IonLabel>
-                  </IonItem>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>{accordionTaskList}</IonCol>
-              </IonRow>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonItem>
-    </>
-  );
-}
+import PlaylistInfoBarWithTasks from "./components/PlaylistInfoBarWithTasks";
 
 /**
  * Timer UI for timing tasks, or manual entry of minutes
@@ -408,7 +299,7 @@ function PlaylistPlayer(props) {
     <IonPage>
       <XBHeader title={"Movement"} colour={module.info.colour} />
       <IonContent>
-        <PlaylistInfoBar
+        <PlaylistInfoBarWithTasks
           module={module}
           currentPlaylist={playlistIdx}
           tasks={tasks}

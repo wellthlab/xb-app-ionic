@@ -237,7 +237,9 @@ async function PROGRESS_ALONG_MODULE(client, store, controllers, moduleId) {
 }
 
 async function ADD_RESPONSE(client, store, controllers, expid, value) {
-  value.submitted = new Date().toISOString();
+  if(!value.submitted) {
+    value.submitted = new Date().toISOString();
+  }
   client.addResponse(expid, value);
 
   await controllers.LOAD_TEAMS(); // Refresh team info, since that includes responses

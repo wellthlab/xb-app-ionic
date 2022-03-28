@@ -11,7 +11,6 @@ import {
   IonProgressBar,
   IonText,
   IonCard,
-  useIonAlert,
   IonList,
 } from "@ionic/react";
 import {
@@ -44,12 +43,6 @@ function PlaylistDetail({
 }) {
   const [userProgressIdx, _] = useState(currentPlaylistIdx); // don't need to set this, but am storing it as a state variable
   const [currentPlaylist, setCurrentStage] = useState(currentPlaylistIdx);
-  const [notImplementedAlert] = useIonAlert();
-  const notImplementedClick = () => {
-    notImplementedAlert("Going back in time isn't ready yet!", [
-      { text: "Close" },
-    ]);
-  };
 
   const module = modules.find((m) => m._id === moduleId);
   const playlists = module.playlists;
@@ -66,6 +59,7 @@ function PlaylistDetail({
   }
 
   const playlistName = playlists[currentPlaylist].desc;
+  const playlistTime = playlists[currentPlaylist].minutes;
   const tasksForPlaylist = playlists[currentPlaylist].tasks;
   const taskIonItems = tasksForPlaylist.map((task) => {
     return (
@@ -95,7 +89,7 @@ function PlaylistDetail({
                   <IonIcon icon={chevronBackCircleOutline} />
                 </IonButton>
                 <IonLabel className="ion-text-center">
-                  <IonText style={{ fontSize: "1.2em" }}>
+                  <IonText className="ion-text-big">
                     {currentPlaylist + 1}.&nbsp;&nbsp;&nbsp;&nbsp;{playlistName}
                   </IonText>
                 </IonLabel>
@@ -116,13 +110,22 @@ function PlaylistDetail({
 
           {/* Tasks for the day's playlist */}
           <IonItem lines="none" className="task-padding">
-            <IonRow>
-              <IonCol>
-                <IonList>
-                  <IonItemGroup>{taskIonItems}</IonItemGroup>
-                </IonList>
-              </IonCol>
-            </IonRow>
+            <IonGrid>
+              <IonRow>
+                <IonCol className="ion-text-center ion-text-big">
+                  <IonText>
+                    This playlist will take you {playlistTime} minutes
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonList>
+                    <IonItemGroup>{taskIonItems}</IonItemGroup>
+                  </IonList>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonItem>
         </IonGrid>
       </IonItem>
@@ -157,7 +160,16 @@ function PlaylistDetail({
                 expand="block"
                 size="large"
                 shape="circle"
-                onClick={notImplementedClick}
+                routerLink={
+                  "/move/task-player-historic/" +
+                  team._id +
+                  "/" +
+                  moduleId +
+                  "/" +
+                  currentPlaylist +
+                  "/" +
+                  userProgressIdx
+                }
               >
                 <IonIcon icon={calendarOutline} />
               </IonButton>

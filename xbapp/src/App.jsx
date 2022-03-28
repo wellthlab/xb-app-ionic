@@ -71,6 +71,7 @@ import UserProfile from "./UserProfile/UserProfile";
 import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
 import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
 import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
+import HistoricPlaylistEntry from "./MovePlaylists/PlaylistHistoric";
 
 import getXBClient from "./util_model/client";
 
@@ -252,6 +253,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/settings/user-profile"
                 component={UserProfile}
+                exact={true}
+              />
+              <Route
+                path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
+                component={HistoricPlaylistEntry}
                 exact={true}
               />
             </Switch>
