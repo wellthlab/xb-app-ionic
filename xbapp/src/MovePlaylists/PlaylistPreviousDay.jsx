@@ -51,7 +51,7 @@ function HistoricPlaylistEntry({ teams, modules, controllers, match }) {
     const dateDiff = dateObj - experimentStart;
 
     let response = {};
-    response.submitted = dateObj.toISOString();
+    // response.submitted = dateObj.toISOString();
     response.intype = "previous-day";
     response.type = "previous-day";
     response.minutes = minutes;

@@ -19,6 +19,9 @@ import {
   START_CREATE_TEAM,
   CLEAR_CREATE_TEAM,
   ABORT_CREATE_TEAM,
+  START_LEAVE_TEAM,
+  CLEAR_LEAVE_TEAM,
+  ABORT_LEAVE_TEAM,
 } from "./slices/Teams";
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
@@ -207,6 +210,20 @@ async function JOIN_TEAM(client, store, controllers, code) {
     return false;
   } else {
     store.dispatch(CLEAR_JOIN_TEAM());
+    controllers.LOAD_TEAMS();
+    return true;
+  }
+}
+
+async function LEAVE_TEAM(client, store, controllers, code) {
+  store.dispatch(START_LEAVE_TEAM());
+  var res = await client.leaveTeam(code);
+
+  if (res.success === false) {
+    store.dispatch(ABORT_LEAVE_TEAM(res.message));
+    return false;
+  } else {
+    store.dispatch(CLEAR_LEAVE_TEAM());
     controllers.LOAD_TEAMS();
     return true;
   }
@@ -413,7 +430,8 @@ function getControllers(store, client) {
     UPDATE_USER_PROFILE,
     PROGRESS_ALONG_MODULE,
     SET_MODULE_FOR_PATH,
-    UPDATE_USER_MODULE
+    UPDATE_USER_MODULE,
+    LEAVE_TEAM
   };
 
   for (var n of Object.keys(controllers)) {

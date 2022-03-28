@@ -27,6 +27,11 @@ const CreateTeam = (props) => {
     props.controllers.CREATE_TEAM(name, desc, expid, startDate);
   }
 
+  async function removeFromTeam(code) {
+    setCreating(true);
+    await props.controllers.LEAVE_TEAM(code);
+  }
+
   if (expid === false) {
     return <>No expid :(</>;
   }
@@ -63,6 +68,9 @@ const CreateTeam = (props) => {
       btn = (
         <IonButton
           onClick={() => {
+            if (props.teams.teams.bybox["move"]) {
+              removeFromTeam(props.teams.teams.bybox["move"][0].code);
+            }
             create(name, desc, expid);
           }}
         >
@@ -96,7 +104,8 @@ const CreateTeam = (props) => {
     content = (
       <>
         <p style={{ textAlign: "center", margin: "20px 0 20px 0" }}>
-          Choose a name for your team, and optionally enter a description. The name must have at least 4 characters.
+          Choose a name for your team, and optionally enter a description. The
+          name must have at least 4 characters.
         </p>
         <div className="centering">
           <IonInput
@@ -106,7 +115,6 @@ const CreateTeam = (props) => {
               setName(e.detail.value);
             }}
           ></IonInput>
-
         </div>
         {err}
         <div className="centering">{btn}</div>

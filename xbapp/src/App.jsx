@@ -72,6 +72,7 @@ import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
 import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
 import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
 import HistoricPlaylistEntry from "./MovePlaylists/PlaylistPreviousDay";
+import ChangeTeam from "./StartJourney/ChangeTeam";
 
 import getXBClient from "./util_model/client";
 
@@ -258,6 +259,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route
                 path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
                 component={HistoricPlaylistEntry}
+                exact={true}
+              />
+              <Route
+                path={"/settings/change-team"}
+                component={ChangeTeam}
                 exact={true}
               />
             </Switch>

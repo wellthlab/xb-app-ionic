@@ -21,10 +21,21 @@ const ExperimentInGroup = (props) => {
   const [number, setNumber] = useState();
   const [joining, setJoining] = useState(false);
 
+  props.controllers.LOAD_TEAMS_IF_REQD();
+
+  if (!props.teams.loaded) {
+    return <IonSpinner className="center-spin" name="crescent" />;
+  }
+
   async function addTeam(code) {
     setJoining(true);
     //console.log(code);
     await props.controllers.JOIN_TEAM(code);
+  }
+
+  async function removeFromTeam(code) {
+    setJoining(true);
+    await props.controllers.LEAVE_TEAM(code);
   }
 
   var content;
@@ -46,7 +57,7 @@ const ExperimentInGroup = (props) => {
       </>
     );
   } else {
-    // Otherwise show the entry interfae
+    // Otherwise show the entry interface
     var btn, err;
     if (props.teams.joining) {
       btn = <IonSpinner name="crescent" className="center-spin" />;
@@ -54,6 +65,9 @@ const ExperimentInGroup = (props) => {
       btn = (
         <IonButton
           onClick={() => {
+            if (props.teams.teams.bybox["move"]) {
+              removeFromTeam(props.teams.teams.bybox["move"][0].code);
+            }
             addTeam(number);
           }}
         >
@@ -90,8 +104,8 @@ const ExperimentInGroup = (props) => {
               marginBottom: "30px",
             }}
             placeholder="Enter your Team Code"
+            maxlength={6}
             onIonChange={(e) => {
-              console.log(e);
               setNumber(e.detail.value);
             }}
           ></IonInput>

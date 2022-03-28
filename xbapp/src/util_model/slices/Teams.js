@@ -429,6 +429,19 @@ const TeamSlice = createSlice({
       state.join_err = action.payload;
     },
 
+    START_LEAVE_TEAM(state, action) {
+      state.leaving = true;
+      state.leave_err = false;
+    },
+    CLEAR_LEAVE_TEAM(state, action) {
+      state.leaving = false;
+      state.leave_err = false;
+    },
+    ABORT_LEAVE_TEAM(state, action) {
+      state.leaving = false;
+      state.leave_err = action.payload;
+    },
+
     START_CREATE_TEAM(state, action) {
       state.creating = true;
       state.create_err = false;
@@ -455,6 +468,9 @@ export const {
   START_CREATE_TEAM,
   CLEAR_CREATE_TEAM,
   ABORT_CREATE_TEAM,
+  START_LEAVE_TEAM,
+  CLEAR_LEAVE_TEAM,
+  ABORT_LEAVE_TEAM,
 } = TeamSlice.actions;
 
 export default TeamSlice.reducer;
