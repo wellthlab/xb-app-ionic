@@ -19,14 +19,15 @@ import {
   checkboxOutline,
   arrowForwardOutline,
 } from "ionicons/icons";
-
 import { connect } from "react-redux";
+
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
 import PlaylistDetail from "./components/PlaylistDetail";
 import SubscribeToModule from "./components/PlaylistSubscriber";
+import ColorBar from "./components/ColorBar";
 
 /**
  * Renders a page where users can see their active playlists, and click to
@@ -45,6 +46,7 @@ function PlaylistPicker(props) {
   const [activePlaylistId, setActivePlaylistId] = useState(undefined);
   const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
   const [titleBarColour, setTitleBarColour] = useState("");
+  const [totMins, setTotMins] = useState(0);
   function toggleModal() {
     setShowModal(!showModal);
   }
@@ -141,6 +143,58 @@ function PlaylistPicker(props) {
     );
   });
 
+  function getMinuteBreakdown() {
+    let colorBarData = [];
+    let totalMinutes = 0;
+
+    // Loop though all the responses today and look for minutes contributed
+    // from each module the user has done "movement" for
+    for (const response of team.entries[expDay - 1].responses) {
+      if (response.minutes && response.minutes > 1e-10) {
+        // the > 1e-10 is for tasks like quizzes which have minutes 1e-10
+        totalMinutes += parseFloat(response.minutes);
+        const module = availableModules.find(
+          (m) => m._id === response.moduleId
+        );
+        colorBarData.push({
+          moduleId: response.moduleId,
+          value: response.minutes,
+          color: module.info.colour,
+        });
+      }
+    }
+
+    // Combine multiple entries for the same module into one entry by adding
+    // the minute values together
+    const combinedData = new Map();
+    colorBarData.forEach((item) => {
+      const moduleId = item["moduleId"];
+      if (combinedData.has(moduleId)) {
+        let totalMinutes =
+          parseFloat(item.value) + parseFloat(combinedData.get(moduleId).value);
+        combinedData.set(moduleId, { ...item, value: totalMinutes });
+      } else {
+        combinedData.set(moduleId, item);
+      }
+    });
+    colorBarData = Array.from(combinedData.values());
+
+    // Now we deed to calculate the percentage of the total minutes for the
+    // colorbar component
+    for (let i in colorBarData) {
+      colorBarData[i].percentage = `${Math.round(
+        (colorBarData[i].value / totalMinutes) * 100
+      )}%`;
+    }
+
+    return {
+      totalMinutes: totalMinutes,
+      colorBarData: colorBarData,
+    };
+  }
+
+  const minuteBreakDown = getMinuteBreakdown();
+
   return (
     <>
       {/* Modal for detailed playlist page */}
@@ -191,6 +245,23 @@ function PlaylistPicker(props) {
                       </div>
                     </IonItem>
                   )}
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol className="ion-text-center">
+                  <IonText>
+                    {minuteBreakDown.totalMinutes > 0 ? (
+                      <>
+                        You've moved for{" "}
+                        <strong>{minuteBreakDown.totalMinutes} minutes</strong>{" "}
+                        today!
+                      </>
+                    ) : (
+                      <>You haven't done any movement yet!</>
+                    )}
+                  </IonText>
+
+                  <ColorBar visualParts={minuteBreakDown.colorBarData} />
                 </IonCol>
               </IonRow>
             </IonGrid>
