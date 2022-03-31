@@ -46,7 +46,6 @@ function PlaylistPicker(props) {
   const [activePlaylistId, setActivePlaylistId] = useState(undefined);
   const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
   const [titleBarColour, setTitleBarColour] = useState("");
-  const [totMins, setTotMins] = useState(0);
   function toggleModal() {
     setShowModal(!showModal);
   }
@@ -143,6 +142,9 @@ function PlaylistPicker(props) {
     );
   });
 
+  // Generates a breakdown of how many minutes a user has moved today, as well
+  // as creates an array of objects used to display a multi-coloured progress
+  // bar
   function getMinuteBreakdown() {
     let colorBarData = [];
     let totalMinutes = 0;
@@ -247,27 +249,41 @@ function PlaylistPicker(props) {
                   )}
                 </IonCol>
               </IonRow>
-              <IonRow>
-                <IonCol className="ion-text-center">
-                  <IonText>
-                    {minuteBreakDown.totalMinutes > 0 ? (
-                      <>
-                        You've moved for{" "}
-                        <strong>{minuteBreakDown.totalMinutes} minutes</strong>{" "}
-                        today!
-                      </>
-                    ) : (
-                      <>You haven't done any movement yet!</>
-                    )}
-                  </IonText>
-
-                  <ColorBar visualParts={minuteBreakDown.colorBarData} />
-                </IonCol>
-              </IonRow>
+              <div style={{ "padding-top": "10px", "padding-bottom": "0px" }}>
+                <IonRow>
+                  <IonCol className="ion-text-center">
+                    {/* <IonItem> */}
+                    <IonRow
+                      style={{ "--padding-top": "100px", fontSize: "1.2em" }}
+                    >
+                      <IonCol>
+                        <IonText>
+                          {minuteBreakDown.totalMinutes > 0 ? (
+                            <>
+                              You've moved for{" "}
+                              <strong>
+                                {minuteBreakDown.totalMinutes} minutes
+                              </strong>{" "}
+                              today!
+                            </>
+                          ) : (
+                            <>You haven't done any movement yet!</>
+                          )}
+                        </IonText>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <ColorBar visualParts={minuteBreakDown.colorBarData} />
+                      </IonCol>
+                    </IonRow>
+                  </IonCol>
+                </IonRow>
+              </div>
             </IonGrid>
           </IonItem>
           {/* Where other plans can be picked */}
-          <IonItem lines="none">
+          <IonItem lines="none" style={{ "--padding-top": "0px" }}>
             <IonText>
               <h3>Other Playlists</h3>
             </IonText>

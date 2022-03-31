@@ -197,11 +197,24 @@ function PlaylistDetail({
         <IonItem lines="none" className="playlist-progress">
           <IonLabel className="ion-text-center">
             <IonText className="ion-text-big">
-              You are on playlist {userProgressIdx + 1} of {playlists.length}
+              {/* TODO: the 2nd branch should be unreachable until I figure out
+              how best to keep track of finishing a module  */}
+              {userProgressIdx + 1 < playlists.length + 1 ? (
+                <>
+                  You are on playlist {userProgressIdx + 1} of{" "}
+                  {playlists.length}
+                </>
+              ) : (
+                <>
+                  You have <strong>completed</strong> this module!
+                  <br />
+                  Feel free to replay it!
+                </>
+              )}
             </IonText>
           </IonLabel>
         </IonItem>
-        <IonItem lines="none">
+        <IonItem lines="full">
           <IonProgressBar value={(userProgressIdx + 1) / playlists.length} />
         </IonItem>
       </IonGrid>

@@ -12,6 +12,7 @@ import {
   IonCol,
   IonRow,
   IonText,
+  IonLabel,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Enroller.scss";
@@ -37,11 +38,11 @@ const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
 
   const content = disclaimed ? (
     <>
-      <IonItem lines="none" color="transparent">
+      <IonItem lines="none" color="transparent" className="ion-text-justify">
         <IonGrid>
           <IonRow>
             <IonCol>
-              <IonText className="ion-text-center">
+              <IonText className="ion-text-center ion-text-justify">
                 To get started you can either start a new team, or join somebody
                 else's. If you start a new team, you can keep it just for you,
                 or invite other people to join you.
