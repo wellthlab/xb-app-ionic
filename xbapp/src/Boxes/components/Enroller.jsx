@@ -12,7 +12,6 @@ import {
   IonCol,
   IonRow,
   IonText,
-  IonLabel,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Enroller.scss";
