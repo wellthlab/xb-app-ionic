@@ -171,12 +171,18 @@ function PlaylistPlayer(props) {
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
+  props.controllers.SET_USER_PROFILE_IF_REQD();
 
-  if (!props.teams.loaded || !props.modules.loaded) {
+  if (
+    !props.teams.loaded ||
+    !props.modules.loaded ||
+    !props.userProfile.loaded
+  ) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
   const team = props.teams.teams.bybox["move"][0];
+  const userProfile = props.userProfile.userProfile;
   const moduleId = props.match.params.moduleId;
   const playlistIdx = parseInt(props.match.params.playlistIdx, 10);
   const userProgress = parseInt(props.match.params.progress, 10);
@@ -189,7 +195,7 @@ function PlaylistPlayer(props) {
   }
 
   const tasks = module.playlists[playlistIdx].tasks;
-  const currentTask = tasks[currentTaskIdx];
+  const currentTask = { ...tasks[currentTaskIdx], moduleId: module._id };
 
   // Save the time spent on the tasks
   async function saveResponse() {
@@ -285,12 +291,27 @@ function PlaylistPlayer(props) {
     }
   }
 
+  // For an EDT set, we need to get the moves from somewhere, probably the
+  // user's profile
+  if (currentTask.intype === "s22edtset") {
+    const edtTasks = tasks.filter((task) => task.intype === "s22edtset");
+    const moveTypes = [];
+    for (let task of edtTasks) {
+      moveTypes.push(task.edtMoves);
+    }
+    currentTask["moveTypes"] = moveTypes; // required for setting moves for all blocks
+
+    // Get the moves from the user's profile
+    currentTask["chosenMoves"] = userProfile.modules[module._id].moves;
+  }
+
   // The UI to display for the specific task being played is returned from the
   // input factory
   const taskContent = inputFactory(
     currentTask.intype,
     team,
     playlistIdx,
+    userProfile,
     updateResponse,
     currentTask
   );
@@ -339,5 +360,6 @@ export default connect((state, ownProps) => {
   return {
     teams: state.teams,
     modules: state.modules,
+    userProfile: state.userProfile,
   };
 }, {})(addControllersProp(PlaylistPlayer));

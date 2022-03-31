@@ -17,7 +17,7 @@ import BlockPlanner from "../../MovementPuzzlePicker/BlockPlanner";
 function MovePicker({ moduleId, week, userProfile, moveTypes, toggleView }) {
   function saveMovesToProfile() {}
 
-  const movesPicked = userProfile.modules[moduleId].edtMoves || [
+  let movesPicked = userProfile.modules[moduleId].edtMoves || [
     "No move",
     "No move",
   ];
