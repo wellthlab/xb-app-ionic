@@ -17,6 +17,7 @@ function Slider({ tag, statement, min, max, onSubmit }) {
   function handleChange(e) {
     let response = {};
     response[tag] = e.detail.value;
+    response["minutes"] = 1e-10;
     onSubmit(response);
     setValue(e.detail.value);
   }

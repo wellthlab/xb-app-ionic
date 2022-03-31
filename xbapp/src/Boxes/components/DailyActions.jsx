@@ -5,12 +5,14 @@ import {
   IonItemGroup,
   IonIcon,
   IonLabel,
+  IonText,
 } from "@ionic/react";
 
 import {
   checkboxOutline,
   squareOutline,
   arrowForwardOutline,
+  happyOutline,
 } from "ionicons/icons";
 
 //css
@@ -144,8 +146,13 @@ const DailyActions = ({ group, today, tabs }) => {
           ) : optionalActionsFiltered.length > 0 ? (
             "" // only display no task msg when there are no optional tasks either
           ) : (
-            <IonItem className="ion-text-wrap">
-              <IonLabel>Nothing needs your attention right now</IonLabel>
+            <IonItem lines="none">
+              <IonIcon icon={happyOutline} slot="start" />
+              <IonLabel>
+                <IonText className="ion-text-wrap">
+                  Nothing needs your attention right now
+                </IonText>
+              </IonLabel>
             </IonItem>
           )}
         </IonItemGroup>

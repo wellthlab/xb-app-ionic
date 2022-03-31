@@ -289,6 +289,34 @@ function XBClient() {
   };
 
   /**
+   * Remove the current user from their team
+   */
+  self.leaveTeam = async function (code) {
+    const db = getDb();
+    const collection = db.collection("teams");
+    const team = await collection.findOne({ code: {$eq: code} });
+
+    if (!team) {
+      return { success: false, message: "Team not found" };
+    }
+
+    const user = self.realm.currentUser;
+    const newUsers = team.users.filter((u) => u !== user.id);
+
+    try {
+      const updateResult = await collection.updateOne(
+        { code: {$eq: code} },
+        { $set: { users: newUsers } }
+      );
+    } catch (e) {
+      console.log(e);
+      return { success: false, message: "Couldn't update the team" }
+    }
+
+    return { success: true };
+  }
+
+  /**
    * Add a response for the given team
    */
   self.addResponse = async function (teamid, response) {

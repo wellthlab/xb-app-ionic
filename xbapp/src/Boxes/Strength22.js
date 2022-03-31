@@ -58,25 +58,25 @@ const decorateTeam = (team) => {
   if(!team.s22plan) {
 
     if(!team.s22path) {
-      progressTasks.push({
-        path: "choose-path",
-        intype: "s22path",
-        desc: "You need to choose a path",
-        verb: "CHOOSE",
-        s22onPath: false,
-        onPlaylist: false,
-      });
+      // progressTasks.push({
+      //   path: "choose-path",
+      //   intype: "s22path",
+      //   desc: "You need to choose a path",
+      //   verb: "CHOOSE",
+      //   s22onPath: false,
+      //   onPlaylist: false,
+      // });
     }
     else
     {
-      otherTasks.push({
-        path: "change-path",
-        intype: "s22path",
-        desc: "You can change your path",
-        verb: "CHANGE",
-        s22onPath: false,
-        onPlaylist: false,
-      });
+      // otherTasks.push({
+      //   path: "change-path",
+      //   intype: "s22path",
+      //   desc: "You can change your path",
+      //   verb: "CHANGE",
+      //   s22onPath: false,
+      //   onPlaylist: false,
+      // });
 
       // progressTasks.push({
       //   type: "plan-minutes",
@@ -101,14 +101,14 @@ const decorateTeam = (team) => {
     //   onPlaylist: false,
     // });
 
-    otherTasks.push({
-      type: "change-path",
-      intype: 's22path',
-      desc: 'You can change your path',
-      verb: 'CHANGE',
-      s22onPath: false,
-      onPlaylist: false,
-    });
+    // otherTasks.push({
+    //   type: "change-path",
+    //   intype: 's22path',
+    //   desc: 'You can change your path',
+    //   verb: 'CHANGE',
+    //   s22onPath: false,
+    //   onPlaylist: false,
+    // });
   }
 
   team.experiment.tasks[expDay] = { required: progressTasks, optional: otherTasks };

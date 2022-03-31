@@ -1,33 +1,19 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { Component, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import {
   IonApp,
   IonRouterOutlet,
-  IonMenu,
-  IonToolbar,
-  IonHeader,
-  IonContent,
-  IonList,
-  IonItem,
-  IonItemDivider,
   IonTabs,
   IonTabBar,
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonBadge,
-  IonAlert,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  cubeOutline,
-  menu,
-  newspaperOutline,
   settingsOutline,
-  fastFoodOutline,
-  bicycleOutline,
   trophyOutline,
   playOutline,
   barbellOutline,
@@ -55,10 +41,8 @@ import ResetPassword from "./Account/ResetPassword";
 
 import OptionTabs from "./Account/Settings";
 import Notifications from "./Account/Notifications";
-import Experiments from "./DEPRECATED/DEPRECATEDExperiments";
 
 import GroupCharts from "./Boxes/Charts";
-import Day from "./DEPRECATED/DEPRECATEDDay";
 
 import JoinTeam from "./StartJourney/JoinTeam.jsx";
 import CreateTeam from "./StartJourney/CreateTeam";
@@ -81,13 +65,14 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import MovementPage from "./Move/Move";
-import TaskPlaylist from "./Move/PlaylistPicker";
-import MovementTimer from "./Move/MovementTimer";
+import MovementPage from "./MovePlaylists/Move";
+import TaskPlaylist from "./MovePlaylists/PlaylistPicker";
 import UserProfile from "./UserProfile/UserProfile";
-import SubscribeToModule from "./Move/components/PlaylistSubscriber";
-import TaskPlayer from "./Move/components/PlaylistDetail";
-import PlaylistTimer from "./Move/PlaylistPlayer";
+import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
+import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
+import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
+import HistoricPlaylistEntry from "./MovePlaylists/PlaylistPreviousDay";
+import ChangeTeam from "./StartJourney/ChangeTeam";
 
 import getXBClient from "./util_model/client";
 
@@ -124,7 +109,6 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
-import PlaylistDetail from "./Move/components/PlaylistDetail";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -157,7 +141,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/box/move" />}
+                render={() => <Redirect to="/move" />}
                 exact={true}
               />
               <Route path="/feed" component={Feed} exact={true} />
@@ -257,24 +241,29 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={TaskPlaylist}
                 exact={true}
               />
-              {/* <Route
-                path="/move/task-playlist/:id"
-                component={PlaylistDetail}
-                exact={true}
-              /> */}
               <Route
                 path="/move/task-player/:gid/:id"
                 component={TaskPlayer}
                 exact={true}
               />
               <Route
-                path="/move/timer/:teamId/:moduleId/:stage"
+                path="/move/timer/:teamId/:moduleId/:playlistIdx/:progress"
                 component={PlaylistTimer}
                 exact={true}
               />
               <Route
                 path="/settings/user-profile"
                 component={UserProfile}
+                exact={true}
+              />
+              <Route
+                path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
+                component={HistoricPlaylistEntry}
+                exact={true}
+              />
+              <Route
+                path={"/settings/change-team"}
+                component={ChangeTeam}
                 exact={true}
               />
             </Switch>

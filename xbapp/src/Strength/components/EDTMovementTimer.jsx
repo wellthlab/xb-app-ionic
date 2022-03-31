@@ -62,7 +62,12 @@ const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
   }
 
   function timerFinished() {
-    onSubmit({ minutes: 7, sets: numberOfSets, reps: numberOfReps });
+    onSubmit({
+      minutes: 7,
+      sets: numberOfSets,
+      reps: numberOfReps,
+      exercises: exercises,
+    });
     setShowReps(true);
     setMoveAlternation([null, null]);
   }
@@ -200,7 +205,12 @@ const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
               onChange={(sets, reps) => {
                 setNumberOfReps(reps);
                 setNumberOfSets(sets);
-                onSubmit({ minutes: 7, sets: sets, reps: reps });
+                onSubmit({
+                  minutes: 7,
+                  sets: sets,
+                  reps: reps,
+                  exercises: exercises,
+                });
               }}
             />
           ) : (

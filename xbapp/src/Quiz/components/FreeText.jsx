@@ -14,6 +14,7 @@ function FreeText({ tag, statement, onSubmit }) {
   function handleChange(e) {
     let response = {};
     response[tag] = e.detail.value;
+    response["minutes"] = 1e-10;
     onSubmit(response);
     setText(e.detail.value);
   }
