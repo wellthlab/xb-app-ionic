@@ -21,9 +21,12 @@ import MovementSlide from "./components/MovementSlide";
 import DetailedMovementSlide from "./components/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 import XBHeader from "../util/XBHeader";
+import { useLocation, useHistory } from "react-router";
 
 const MovementPicker = (props) => {
-  var isExplorer = props.location.pathname.includes("explore");
+  const location = useLocation();
+  const history = useHistory();
+  var isExplorer = location.pathname.includes("explore");
 
   // Used for the page heading
   const rowHeadings = ["", "", ""];
@@ -47,19 +50,17 @@ const MovementPicker = (props) => {
     },
   });
 
-  const [blockIndex, setBlockIndex] = useState(
-    props.location.state?.blockIndex
-  );
+  const [blockIndex, setBlockIndex] = useState(location.state?.blockIndex);
 
   const [rowSlideOpts, setRowSlideOpts] = useState({
     top: {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.upperBody,
+        initialSlide: location.state?.initialSlideIndex.upperBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: props.location.state?.numberOfItems.topRow > 1 ? 2 : 1,
+        slidesPerView: location.state?.numberOfItems.topRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -72,11 +73,10 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.fullBody,
+        initialSlide: location.state?.initialSlideIndex.fullBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView:
-          props.location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
+        slidesPerView: location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -89,11 +89,10 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.lowerBody,
+        initialSlide: location.state?.initialSlideIndex.lowerBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView:
-          props.location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
+        slidesPerView: location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -160,7 +159,10 @@ const MovementPicker = (props) => {
     return false;
   }
 
-  const passedMovements = props.location.state?.movements;
+  const passedMovements = location.state?.movements;
+
+  debugger;
+
   let screen;
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {

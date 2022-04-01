@@ -16,6 +16,8 @@ import { useEffect } from "react";
 import { getMove } from "../../DEPRECATED/components/OLDMovementPicker";
 import { CropLandscapeOutlined } from "@material-ui/icons";
 
+import { useLocation } from "react-router";
+
 /*
 the types are: pull, push, lower push, lower pull, balance, upper push, upper pull, unilateral lower push, unilateral lower pull, iso push, iso pull
 */
@@ -26,8 +28,10 @@ const Block = (props) => {
   const blockIndex = props.blockIndex;
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
   const weekNo = props.week;
+  const moveTypes = props.moveTypes;
 
   const history = useHistory();
+  const location = useLocation();
 
   // const [checked, setChecked] = React.useState([0, 0, 0, 0, 0]);
   // const choiceForBlock = [["bilateral push", "bilateral pull"], ["isolateral", "isolateral"]]; //0 is false and 1 is true
@@ -211,29 +215,51 @@ const Block = (props) => {
         <>
           <IonButton
             className="block-button"
-            onClick={(event) => {
-              history.push({
-                pathname:
-                  "/box/move/" +
-                  (props.explorer ? "explore" : "setter") +
-                  "/movement-picker/" +
-                  exercise,
-                state: {
-                  movements: movements,
-                  blockIndex: blockIndex,
-                  initialSlideIndex: {
-                    upperBody: 0,
-                    fullBody: 0,
-                    lowerBody: 0,
-                  },
-                  numberOfItems: {
-                    topRow: movements.upperBody.length,
-                    middleRow: movements.fullBody.length,
-                    bottomRow: movements.lowerBody.length,
-                  },
-                },
-              });
+            routerLink={
+              "/box/move/" +
+              (props.explorer ? "explore" : "setter") +
+              "/movement-picker/" +
+              exercise
+            }
+            onClick={(e) => {
+              const newState = { ...location.state };
+              newState.movements = movements;
+              newState.blockIndex = blockIndex;
+              newState.initialSlideIndex = {
+                upperBody: 0,
+                fullBody: 0,
+                lowerBody: 0,
+              };
+              newState.numberOfItems = {
+                topRow: movements.upperBody.length,
+                middleRow: movements.fullBody.length,
+                bottomRow: movements.lowerBody.length,
+              };
+              debugger;
+              history.replace(newState);
             }}
+
+            // onClick={(event) => {
+            //   history.push({
+            //     pathname:
+            //       "/box/move/" +
+            //       (props.explorer ? "explore" : "setter") +
+            //       "/movement-picker/" +
+            //       exercise,
+            //     state: {
+            //       moveTypes: moveTypes,
+            //       movements: movements,
+            //       blockIndex: blockIndex,
+            //       initialSlideIndex: {
+            //         upperBody: 0,
+            //         fullBody: 0,
+            //         lowerBody: 0,
+            //       },
+            //
+            //       },
+            //     },
+            //   });
+            // }}
           >
             {props.explorer ? (
               <p>Explore {exercise}</p>
