@@ -6,6 +6,7 @@ import {
   stopwatchOutline,
   flaskOutline,
   informationCircleOutline,
+  trailSignOutline,
 } from "ionicons/icons";
 
 export default function getTaskIcon(verb) {
@@ -22,6 +23,8 @@ export default function getTaskIcon(verb) {
       return stopwatchOutline;
     case "EXPERIMENT":
       return flaskOutline;
+    case "FOLLOW":
+      return trailSignOutline;
     default:
       return informationCircleOutline;
   }
