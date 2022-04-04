@@ -38,19 +38,20 @@ import DailyActions from "./DailyActions";
 import GenericModal from "../../Info/components/GenericModal";
 
 const GroupInfo = ({ group, controllers, match }) => {
-  const [showAlert, setShowAlert] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
   const [memberProfiles, setMemberProfiles] = useState([]);
+  const [memberMinutes, setMemberMinutes] = useState([]);
   const [showMemberModal, setShowModal] = useState(false);
   const [view, setView] = useState(
     match.params.page ? match.params.page : "info"
   );
   // const [showMenu, setShowMenu] = useState(false);
   const [loadingTeamMembers, setLoadingTeamMembers] = useState(false);
-  const history = useHistory();
+  // const history = useHistory();
 
-  function toggleAlert() {
-    setShowAlert(!showAlert);
-  }
+  // function toggleAlert() {
+  //   setShowAlert(!showAlert);
+  // }
 
   function toggleMemberModal() {
     setShowModal(!showMemberModal);
@@ -61,7 +62,14 @@ const GroupInfo = ({ group, controllers, match }) => {
     const memberProfiles = await controllers.client.getTeamUserProfiles(
       group.code
     );
+
+    const minutes = await controllers.client.getTeamMinutes(
+      group,
+      group.experiment.day
+    );
+
     setMemberProfiles(memberProfiles);
+    setMemberMinutes(minutes);
     setLoadingTeamMembers(false);
   }
 
@@ -88,11 +96,12 @@ const GroupInfo = ({ group, controllers, match }) => {
     const numberOfMembers =
       group.users.length > 1 ? group.users.length + " members" : "1 member";
 
-    const memberNames = memberProfiles.map((profile) => {
+    const memberNames = memberProfiles.map((profile, index) => {
       return (
-        <>
-          <IonItem lines="none">{profile.prefName}</IonItem>
-        </>
+        <IonItem lines="none">
+          <IonLabel slot="start">{profile.prefName}</IonLabel>
+          <IonLabel slot="end">{memberMinutes[index]} minutes</IonLabel>
+        </IonItem>
       );
     });
 
@@ -231,13 +240,13 @@ const GroupInfo = ({ group, controllers, match }) => {
             <IonCol>
               <IonItem lines="none">
                 <IonGrid>
-                  <IonRow>
+                  {/* <IonRow>
                     <IonCol>
                       <IonText style={{ fontSize: "1.2em" }}>
                         Today's Tasks
                       </IonText>
                     </IonCol>
-                  </IonRow>
+                  </IonRow> */}
                   <IonRow>
                     <IonCol>
                       <DailyActions group={group} today={day} tabs={false} />

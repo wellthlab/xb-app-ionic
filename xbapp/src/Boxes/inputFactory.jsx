@@ -254,7 +254,7 @@ export default function responseFactory(
       break;
 
     case "s22other":
-      input = <OtherMove onSubmit={onSubmit} />;
+      input = <OtherMove onSubmit={onSubmit} task={task} />;
       typedesc = "Other Movement";
       break;
 
