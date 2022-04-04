@@ -12,17 +12,84 @@ import {
   IonText,
   IonThumbnail,
   IonImg,
+  IonIcon,
 } from "@ionic/react";
 import parse from "html-react-parser";
 
 import "./PlaylistSubscriber.css";
 import GenericModal from "../../Info/components/GenericModal";
 import { addControllersProp } from "../../util_model/controllers";
+import { chevronBack } from "ionicons/icons";
+
+function ModuleItem({ topic, module, userModules, updateModules }) {
+  // first check to see if the user is already subscribed
+  let checked;
+  if (module._id in userModules) {
+    checked = userModules[module._id].active;
+  } else {
+    checked = false;
+  }
+
+  return (
+    <IonItem>
+      <IonGrid>
+        <IonRow>
+          <IonCol
+            style={{
+              "background-color": module.info.colour,
+            }}
+            size="1"
+          ></IonCol>
+          <IonCol>
+            <IonRow>
+              <IonCol>
+                <IonItem lines="none">
+                  <IonLabel slot="start" className="ion-text-wrap">
+                    <IonText
+                      style={{
+                        "font-size": "1.2em",
+                        "font-weight": "bold",
+                      }}
+                    >
+                      {module.name}
+                    </IonText>
+                  </IonLabel>
+                  <IonToggle
+                    slot="end"
+                    checked={checked}
+                    onIonChange={(e) => {
+                      updateModules(
+                        e.detail.checked,
+                        module.name,
+                        module._id,
+                        topic
+                      );
+                    }}
+                  />
+                </IonItem>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonItem lines="none">
+                  <IonText className="ion-text-justify">
+                    {parse(module.info.desc)}
+                  </IonText>
+                </IonItem>
+              </IonCol>
+            </IonRow>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonItem>
+  );
+}
 
 function SubscribeToModule(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalTitle, setModalTitle] = useState(undefined);
   const [modalTopic, setModalTopic] = useState(undefined);
+  const [subModules, setSubModules] = useState(false);
 
   const availableModules = props.modules;
   const profile = props.userProfile;
@@ -77,76 +144,106 @@ function SubscribeToModule(props) {
   // Create a list of available modules for a given topic. Displays the name and a
   // description of the module, and a toggle to subscribe
   function getModulesForTopic(topic) {
-    return (
-      availableModules
-        // get all modules for a topic
-        .filter((module) => module.topic === topic)
-        // then map each module to a list item
-        .map((module) => {
-          // first check to see if the user is already subscribed
-          let checked;
-          if (module._id in userModules) {
-            checked = userModules[module._id].active;
-          } else {
-            checked = false;
+    // get all modules for a topic
+    // topic looks like "strength" or "path/builder"
+    const modulesForTopic = availableModules.filter((module) =>
+      module.topic.split("/").includes(topic)
+    );
+
+    // create an array of the actual topics (without any duplicates)
+    // assumes the format of mainTopic/subTopic
+    const subTopics = [
+      ...new Set(
+        modulesForTopic
+          .map((module) => {
+            const subTopic = module.topic.split("/")[1];
+            if (subTopic) {
+              return subTopic;
+            } else {
+              return null;
+            }
+          })
+          .filter((el) => el !== null)
+      ),
+    ].sort(); // lol now this is a bit of a mess
+
+    let content;
+
+    if (subTopics.length === 0) {
+      content = modulesForTopic.map((module) => {
+        return (
+          <ModuleItem
+            topic={topic}
+            module={module}
+            userModules={userModules}
+            updateModules={updateModules}
+          />
+        );
+      });
+    } else {
+      //
+      if (subModules) {
+        // Then the user has clicked the subtopic button
+        const moduleThing = subModules.map((module) => {
+          return (
+            <>
+              <ModuleItem
+                topic={topic}
+                module={module}
+                userModules={userModules}
+                updateModules={updateModules}
+              />
+            </>
+          );
+        });
+
+        content = (
+          <>
+            <IonButton
+              onClick={() => {
+                setSubModules(false);
+              }}
+            >
+              <IonIcon icon={chevronBack} />
+              Back
+            </IonButton>
+            {moduleThing}
+          </>
+        );
+        //
+      } else {
+        // Then we need to display all of the main topics
+        content = subTopics.map((subTopic) => {
+          // why isn't this a method for strings?
+          function capitalize(s) {
+            return s.charAt(0).toUpperCase() + s.slice(1);
           }
-          const colour = module.info.colour;
+
+          const subModules = modulesForTopic.filter((module) => {
+            return module.topic.split("/")[1] === subTopic;
+          });
 
           return (
-            <IonItem>
-              <IonGrid>
+            <>
+              <IonItem
+                button
+                onClick={() => {
+                  setSubModules(subModules);
+                }}
+              >
                 <IonRow>
-                  <IonCol
-                    style={{
-                      "background-color": colour,
-                    }}
-                    size="1"
-                  ></IonCol>
                   <IonCol>
-                    <IonRow>
-                      <IonCol>
-                        <IonItem lines="none">
-                          <IonLabel slot="start" className="ion-text-wrap">
-                            <IonText
-                              style={{
-                                "font-size": "1.3em",
-                                "font-weight": "bold",
-                              }}
-                            >
-                              {module.name}
-                            </IonText>
-                          </IonLabel>
-                          <IonToggle
-                            slot="end"
-                            checked={checked}
-                            onIonChange={(e) => {
-                              updateModules(
-                                e.detail.checked,
-                                module.name,
-                                module._id,
-                                topic
-                              );
-                            }}
-                          />
-                        </IonItem>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <IonItem lines="none">
-                          <IonText className="ion-text-justify">
-                            {parse(module.info.desc)}
-                          </IonText>
-                        </IonItem>
-                      </IonCol>
-                    </IonRow>
+                    <IonLabel>{capitalize(subTopic)}</IonLabel>
                   </IonCol>
                 </IonRow>
-              </IonGrid>
-            </IonItem>
+              </IonItem>
+            </>
           );
-        })
-    );
+        });
+      }
+    }
+
+    return content;
   }
 
   function SubscriptionModal({ topic }) {
@@ -184,9 +281,11 @@ function SubscribeToModule(props) {
           <IonItem lines="none">
             <IonGrid>
               <IonRow>
-                <IonList>
-                  <IonItemGroup>{playlists}</IonItemGroup>
-                </IonList>
+                <IonCol>
+                  <IonList>
+                    <IonItemGroup>{playlists}</IonItemGroup>
+                  </IonList>
+                </IonCol>
               </IonRow>
 
               <IonRow>
@@ -233,21 +332,51 @@ function SubscribeToModule(props) {
   }
 
   // Actual return for the main component
+  // TODO: we should figure out the possible tags from the database, and just automatically generate this list
   return (
     <>
       <IonGrid>
         <IonRow>
           <IonCol>
             <TopicSubscriptionButton
-              topic="movement-path"
-              title="Movement Paths"
+              topic="path"
+              title="Paths"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>
+        </IonRow>
+        <IonRow>
           <IonCol>
             <TopicSubscriptionButton
-              topic="movement-snack"
-              title="Movement Snacks"
+              topic="snack"
+              title="Snacks"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <TopicSubscriptionButton
+              topic="strength"
+              title="Strength"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <TopicSubscriptionButton
+              topic="Endurance"
+              title="Endurance"
+              img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
+            />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <TopicSubscriptionButton
+              topic="neuro"
+              title="Neuromobility"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>
