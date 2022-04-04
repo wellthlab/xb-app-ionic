@@ -87,7 +87,8 @@ function PlaylistPicker(props) {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const moduleColour = module.info.colour;
     const currentPlaylist = userModuleObj.stage;
-    const playlistMinutes = module.playlists[currentPlaylist].minutes;
+    const playlistMinutes =
+      parseInt(module.playlists[currentPlaylist].minutes, 10) || 0;
 
     // TODO: redundant code if an experiment starts on day 1 :)
     const expDayIdx = expDay === 0 ? 0 : expDay - 1;
@@ -124,7 +125,11 @@ function PlaylistPicker(props) {
                 >
                   <IonLabel>
                     <IonRow>{module.name}</IonRow>
-                    <IonRow>{playlistMinutes} minutes</IonRow>
+                    {playlistMinutes > 0 ? (
+                      <IonRow>{playlistMinutes} minutes</IonRow>
+                    ) : (
+                      ""
+                    )}
                   </IonLabel>
                   <IonLabel slot="end">
                     {moduleDoneToday ? (

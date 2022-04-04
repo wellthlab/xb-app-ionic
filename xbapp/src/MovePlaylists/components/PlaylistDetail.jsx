@@ -59,7 +59,7 @@ function PlaylistDetail({
   }
 
   const playlistName = playlists[currentPlaylist].desc;
-  const playlistTime = playlists[currentPlaylist].minutes;
+  const playlistTime = parseInt(playlists[currentPlaylist].minutes, 10) || 0;
   const tasksForPlaylist = playlists[currentPlaylist].tasks;
   const taskIonItems = tasksForPlaylist.map((task) => {
     return (
@@ -114,7 +114,11 @@ function PlaylistDetail({
               <IonRow>
                 <IonCol className="ion-text-center ion-text-big">
                   <IonText>
-                    This playlist will take you {playlistTime} minutes
+                    {playlistTime > 0 ? (
+                      <>This playlist will take you {playlistTime} minutes</>
+                    ) : (
+                      ""
+                    )}
                   </IonText>
                 </IonCol>
               </IonRow>

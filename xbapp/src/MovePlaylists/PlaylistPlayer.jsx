@@ -188,7 +188,9 @@ function PlaylistPlayer(props) {
     return <div>The requested playlist could not be found for some reason</div>;
   }
 
-  const tasks = module.playlists[playlistIdx].tasks;
+  const tasks = module.playlists[playlistIdx].tasks.filter(
+    (task) => Object.keys(task).length !== 0
+  );
   const currentTask = tasks[currentTaskIdx];
 
   // Save the time spent on the tasks
