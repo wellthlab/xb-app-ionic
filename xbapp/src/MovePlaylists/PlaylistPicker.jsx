@@ -297,6 +297,7 @@ function PlaylistPicker(props) {
             <SubscribeToModule
               userProfile={userProfile}
               modules={availableModules}
+              team={team}
             />
           </IonItem>
         </IonContent>

@@ -258,7 +258,9 @@ function PlaylistPlayer(props) {
 
   // Progress the user to the next playlist using the controller
   async function progressToNextPlaylist() {
-    await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
+    if (!module.topic.includes("snack/")) {
+      await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
+    }
   }
 
   const readyToSave = minutes > 0;

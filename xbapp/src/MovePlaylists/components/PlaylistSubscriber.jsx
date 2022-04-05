@@ -19,9 +19,21 @@ import parse from "html-react-parser";
 import "./PlaylistSubscriber.css";
 import GenericModal from "../../Info/components/GenericModal";
 import { addControllersProp } from "../../util_model/controllers";
-import { chevronBack } from "ionicons/icons";
+import { chevronBack, playCircleOutline } from "ionicons/icons";
 
-function ModuleItem({ topic, module, userModules, updateModules }) {
+/**
+ * A component which includes the module colour, as well as the name and
+ * description of the module. Depending on the topic, the button will either
+ * include a subscription toggle or a play button (for snacks) to start the
+ * movement snack immediately.
+ *
+ * @param team - the team object for the user
+ * @param topic  - only the main topic is sent
+ * @param module - the module object
+ * @param userModules - the user's modules from their user profile
+ * @param updatedModules - function to update the user's modules
+ */
+function ModuleItem({ team, topic, module, userModules, updateModules }) {
   // first check to see if the user is already subscribed
   let checked;
   if (module._id in userModules) {
@@ -29,6 +41,8 @@ function ModuleItem({ topic, module, userModules, updateModules }) {
   } else {
     checked = false;
   }
+
+  console.log("topic", topic);
 
   return (
     <IonItem>
@@ -54,18 +68,29 @@ function ModuleItem({ topic, module, userModules, updateModules }) {
                       {module.name}
                     </IonText>
                   </IonLabel>
-                  <IonToggle
-                    slot="end"
-                    checked={checked}
-                    onIonChange={(e) => {
-                      updateModules(
-                        e.detail.checked,
-                        module.name,
-                        module._id,
-                        topic
-                      );
-                    }}
-                  />
+                  {topic !== "snack" ? (
+                    <IonToggle
+                      slot="end"
+                      checked={checked}
+                      onIonChange={(e) => {
+                        updateModules(
+                          e.detail.checked,
+                          module.name,
+                          module._id,
+                          topic
+                        );
+                      }}
+                    />
+                  ) : (
+                    <IonButton
+                      slot="end"
+                      routerLink={
+                        "/move/timer/" + team._id + "/" + module._id + "/0/0"
+                      }
+                    >
+                      <IonIcon icon={playCircleOutline} />
+                    </IonButton>
+                  )}
                 </IonItem>
               </IonCol>
             </IonRow>
@@ -91,6 +116,7 @@ function SubscribeToModule(props) {
   const [modalTopic, setModalTopic] = useState(undefined);
   const [subModules, setSubModules] = useState(false);
 
+  const team = props.team;
   const availableModules = props.modules;
   const profile = props.userProfile;
   let userModules = {
@@ -173,6 +199,7 @@ function SubscribeToModule(props) {
       content = modulesForTopic.map((module) => {
         return (
           <ModuleItem
+            team={team}
             topic={topic}
             module={module}
             userModules={userModules}
@@ -188,6 +215,7 @@ function SubscribeToModule(props) {
           return (
             <>
               <ModuleItem
+                team={team}
                 topic={topic}
                 module={module}
                 userModules={userModules}
@@ -340,7 +368,7 @@ function SubscribeToModule(props) {
           <IonCol>
             <TopicSubscriptionButton
               topic="path"
-              title="Paths"
+              title="Movement Paths"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>
@@ -349,7 +377,7 @@ function SubscribeToModule(props) {
           <IonCol>
             <TopicSubscriptionButton
               topic="snack"
-              title="Snacks"
+              title="Movement Snacks"
               img="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"
             />
           </IonCol>
