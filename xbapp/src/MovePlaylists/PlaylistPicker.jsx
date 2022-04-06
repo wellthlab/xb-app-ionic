@@ -24,10 +24,10 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
-import GenericModal from "../Info/components/GenericModal";
-import PlaylistDetail from "./components/PlaylistDetail";
-import SubscribeToModule from "./components/PlaylistSubscriber";
-import ColorBar from "./components/ColorBar";
+// import GenericModal from "../Info/components/GenericModal";
+import ModuleSubscriptionButtons from "./components/TopicSubscriptionButtons";
+import TopicButton from "./components/TopicButton";
+import ActivityProgressBreakdownBar from "./components/ActivityProgressBreakdownBar";
 
 /**
  * Renders a page where users can see their active playlists, and click to
@@ -41,14 +41,14 @@ import ColorBar from "./components/ColorBar";
  *
  */
 function PlaylistPicker(props) {
-  const [showModal, setShowModal] = useState(false);
-  const [playlistTitle, setPlaylistTitle] = useState(undefined);
-  const [activePlaylistId, setActivePlaylistId] = useState(undefined);
-  const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
-  const [titleBarColour, setTitleBarColour] = useState("");
-  function toggleModal() {
-    setShowModal(!showModal);
-  }
+  // const [showModal, setShowModal] = useState(false);
+  // const [playlistTitle, setPlaylistTitle] = useState(undefined);
+  // const [activePlaylistId, setActivePlaylistId] = useState(undefined);
+  // const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
+  // const [titleBarColour, setTitleBarColour] = useState("");
+  // function toggleModal() {
+  //   setShowModal(!showModal);
+  // }
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -97,13 +97,13 @@ function PlaylistPicker(props) {
 
     // When the user clicks on a playlist, this will fill in the details
     // required to show the details of it in the GenericModal
-    function createPlaylistDetailModal() {
-      toggleModal();
-      setPlaylistTitle(module.name);
-      setActivePlaylistId(module._id);
-      setActivePlaylistStage(currentPlaylist);
-      setTitleBarColour(module.info.colour);
-    }
+    // function createPlaylistDetailModal() {
+    //   toggleModal();
+    //   setPlaylistTitle(module.name);
+    //   setActivePlaylistId(module._id);
+    //   setActivePlaylistStage(currentPlaylist);
+    //   setTitleBarColour(module.info.colour);
+    // }
 
     return (
       <>
@@ -121,7 +121,15 @@ function PlaylistPicker(props) {
                   key={module.id}
                   detail={false}
                   detailIcon={arrowForwardOutline}
-                  onClick={createPlaylistDetailModal}
+                  routerLink={
+                    "/move/task-detail/" +
+                    team._id +
+                    "/" +
+                    module._id +
+                    "/" +
+                    currentPlaylist
+                  }
+                  // onClick={createPlaylistDetailModal}
                 >
                   <IonLabel>
                     <IonRow>{module.name}</IonRow>
@@ -205,7 +213,7 @@ function PlaylistPicker(props) {
   return (
     <>
       {/* Modal for detailed playlist page */}
-      <GenericModal
+      {/* <GenericModal
         titleBarColour={titleBarColour}
         showModal={showModal}
         toggleModal={toggleModal}
@@ -219,11 +227,10 @@ function PlaylistPicker(props) {
             closeModal={toggleModal}
           />
         }
-      />
-
+      /> */}
       {/* Playlist picker page */}
       <IonPage>
-        <XBHeader title="Movement Playlists"></XBHeader>
+        <XBHeader title="Playlists"></XBHeader>
         <IonContent>
           {/* List of plans the user is subscribed to */}
           <IonItem lines="none">
@@ -231,7 +238,7 @@ function PlaylistPicker(props) {
               <IonRow>
                 <IonCol>
                   <IonText>
-                    <h4>Your Playlists</h4>
+                    <h3>Your Playlists</h3>
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -254,51 +261,45 @@ function PlaylistPicker(props) {
                   )}
                 </IonCol>
               </IonRow>
-              <div style={{ "padding-top": "10px", "padding-bottom": "0px" }}>
-                <IonRow>
-                  <IonCol className="ion-text-center">
-                    {/* <IonItem> */}
-                    <IonRow
-                      style={{ "--padding-top": "100px", fontSize: "1.2em" }}
-                    >
-                      <IonCol>
-                        <IonText>
-                          {minuteBreakDown.totalMinutes > 0 ? (
-                            <>
-                              You've moved for{" "}
-                              <strong>
-                                {minuteBreakDown.totalMinutes} minutes
-                              </strong>{" "}
-                              today!
-                            </>
-                          ) : (
-                            <>You haven't done any movement yet!</>
-                          )}
-                        </IonText>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <ColorBar visualParts={minuteBreakDown.colorBarData} />
-                      </IonCol>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
-              </div>
+            </IonGrid>
+          </IonItem>
+          {/* Movement Snacks, because they are different */}
+          <IonItem lines="none">
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    <h3> Movement Snacks</h3>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <TopicButton topic="snack" title="Together or Alone" />
+                </IonCol>
+              </IonRow>
             </IonGrid>
           </IonItem>
           {/* Where other plans can be picked */}
-          <IonItem lines="none" style={{ "--padding-top": "0px" }}>
-            <IonText>
-              <h3>Other Playlists</h3>
-            </IonText>
-          </IonItem>
           <IonItem lines="none">
-            <SubscribeToModule
-              userProfile={userProfile}
-              modules={availableModules}
-              team={team}
-            />
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    <h3>Other Playlists</h3>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <ModuleSubscriptionButtons
+                    userProfile={userProfile}
+                    modules={availableModules}
+                    team={team}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonItem>
         </IonContent>
       </IonPage>
@@ -318,3 +319,35 @@ export default connect(
     pure: false,
   }
 )(addControllersProp(PlaylistPicker));
+
+// {/* <div style={{ "padding-top": "10px", "padding-bottom": "0px" }}>
+//   <IonRow>
+//     <IonCol className="ion-text-center">
+//       {/* <IonItem> */}
+//       <IonRow
+//         style={{ "--padding-top": "100px", fontSize: "1.2em" }}
+//       >
+//         <IonCol>
+//           <IonText>
+//             {minuteBreakDown.totalMinutes > 0 ? (
+//               <>
+//                 You've moved for{" "}
+//                 <strong>
+//                   {minuteBreakDown.totalMinutes} minutes
+//                 </strong>{" "}
+//                 today!
+//               </>
+//             ) : (
+//               <>You haven't done any movement yet!</>
+//             )}
+//           </IonText>
+//         </IonCol>
+//       </IonRow>
+//       <IonRow>
+//         <IonCol>
+//           <ActivityProgressBreakdownBar visualParts={minuteBreakDown.colorBarData} />
+//         </IonCol>
+//       </IonRow>
+//     </IonCol>
+//   </IonRow>
+// </div> */}

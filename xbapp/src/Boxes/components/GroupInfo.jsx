@@ -98,9 +98,13 @@ const GroupInfo = ({ group, controllers, match }) => {
 
     const memberNames = memberProfiles.map((profile, index) => {
       return (
-        <IonItem lines="none">
+        <IonItem lines="none" key={index}>
           <IonLabel slot="start">{profile.prefName}</IonLabel>
-          <IonLabel slot="end">{memberMinutes[index]} minutes</IonLabel>
+          {profile.prefName !== "Unknown" ? (
+            <IonLabel slot="end">{memberMinutes[index]} minutes</IonLabel>
+          ) : (
+            ""
+          )}
         </IonItem>
       );
     });

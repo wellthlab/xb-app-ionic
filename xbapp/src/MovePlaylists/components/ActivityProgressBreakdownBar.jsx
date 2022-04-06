@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import "./ColorBar.css";
+import "./ActivityProgressBreakdownBar.css";
 
-const ColorBar = ({
+const ActivityProgressBreakdownBar = ({
   label,
   backgroundColor = "#e5e5e5",
   // expected format for visual parts
@@ -67,4 +67,4 @@ const ColorBar = ({
   );
 };
 
-export default ColorBar;
+export default ActivityProgressBreakdownBar;

@@ -49,7 +49,7 @@ import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import TaskInstructions from "../Strength/TaskInstructions";
-import SubscribeToModule from "../MovePlaylists/components/PlaylistSubscriber";
+import ModuleSubscriptionButtons from "../MovePlaylists/components/TopicSubscriptionButtons";
 import quizFactory from "../Quiz/quizFactory";
 
 /**
@@ -287,7 +287,7 @@ export default function responseFactory(
       break;
 
     case "s22subscribe":
-      input = <SubscribeToModule />;
+      input = <ModuleSubscriptionButtons />;
       typedesc = "Subscribe";
       break;
 

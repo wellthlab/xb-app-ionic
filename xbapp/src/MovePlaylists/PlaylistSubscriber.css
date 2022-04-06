@@ -1,0 +1,12 @@
+.MuiPaper-root.MuiAccordion-root.AccordionModuleTitle {
+    color: var(--ion-color-primary-contrast);
+    background-color: var(--ion-color-primary);
+    cursor: pointer;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px 0px var(--ion-color-medium);
+}
+.MuiAccordionDetails-root.AccordionModuleDetails {
+    color: var(--ion-text-color);
+    background-color: var(--ion-item-background);
+    cursor: pointer;
+}

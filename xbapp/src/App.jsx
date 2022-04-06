@@ -51,7 +51,7 @@ import EatPage from "./Boxes/Eat";
 import MovePage from "./Boxes/Move";
 import AddResponse from "./Boxes/AddResponse";
 
-import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
+// import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
 import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 
 import Balance from "./UserInput/Balance";
@@ -68,11 +68,11 @@ import PushPull from "./UserInput/PushPull";
 import MovementPage from "./MovePlaylists/Move";
 import TaskPlaylist from "./MovePlaylists/PlaylistPicker";
 import UserProfile from "./UserProfile/UserProfile";
-import SubscribeToModule from "./MovePlaylists/components/PlaylistSubscriber";
-import TaskPlayer from "./MovePlaylists/components/PlaylistDetail";
-import PlaylistTimer from "./MovePlaylists/PlaylistPlayer";
+import ModuleSubscription from "./MovePlaylists/PlaylistSubscriber";
+import PlaylistPlayer from "./MovePlaylists/PlaylistPlayer";
 import HistoricPlaylistEntry from "./MovePlaylists/PlaylistPreviousDay";
 import ChangeTeam from "./StartJourney/ChangeTeam";
+import PlaylistDetail from "./MovePlaylists/PlaylistDetail";
 
 import getXBClient from "./util_model/client";
 
@@ -232,23 +232,23 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               {/** Record movement and timer for Strength 22 */}
               <Route path="/move" component={MovementPage} exact={true} />
               <Route
-                path="/move/subscribe"
-                component={SubscribeToModule}
-                exact={true}
-              />
-              <Route
                 path="/move/task-playlist"
                 component={TaskPlaylist}
                 exact={true}
               />
               <Route
-                path="/move/task-player/:gid/:id"
-                component={TaskPlayer}
+                path="/move/task-detail/:teamId/:moduleId/:progress"
+                component={PlaylistDetail}
                 exact={true}
               />
               <Route
                 path="/move/timer/:teamId/:moduleId/:playlistIdx/:progress"
-                component={PlaylistTimer}
+                component={PlaylistPlayer}
+                exact={true}
+              />
+              <Route
+                path={"/move/module-subscriber/:topic"}
+                component={ModuleSubscription}
                 exact={true}
               />
               <Route

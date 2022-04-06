@@ -301,7 +301,7 @@ function PlaylistPlayer(props) {
 
   return (
     <IonPage>
-      <XBHeader title={"Movement"} colour={module.info.colour} />
+      <XBHeader title="Movement" colour={module.info.colour} />
       <IonContent>
         <PlaylistInfoBarWithTasks
           module={module}

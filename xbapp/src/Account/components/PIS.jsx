@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-import { IonList, IonItem, IonLabel, IonModal, IonButton } from "@ionic/react";
-
-const PIS = ({}) => {
+const PIS = () => {
   return (
     <div id="participant-info" class="ion-text-justify">
       <br></br>
