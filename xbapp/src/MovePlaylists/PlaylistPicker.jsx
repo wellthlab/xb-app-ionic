@@ -275,7 +275,13 @@ function PlaylistPicker(props) {
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <TopicButton topic="snack" title="Together or Alone" />
+                  <IonGrid>
+                    <IonRow>
+                      <IonCol>
+                        <TopicButton topic="snack" title="Together or Alone" />
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
                 </IonCol>
               </IonRow>
             </IonGrid>
