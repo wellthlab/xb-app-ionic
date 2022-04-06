@@ -150,7 +150,7 @@ const DailyActions = ({ group, today, tabs }) => {
               <IonIcon icon={happyOutline} slot="start" />
               <IonLabel>
                 <IonText className="ion-text-wrap">
-                  Nothing needs your attention right now
+                  Nothing needs your attention
                 </IonText>
               </IonLabel>
             </IonItem>
