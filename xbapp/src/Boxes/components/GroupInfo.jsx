@@ -21,6 +21,7 @@ import {
   IonCardContent,
   IonSearchbar,
   IonSpinner,
+  IonChip,
 } from "@ionic/react";
 import {
   peopleOutline,
@@ -36,21 +37,23 @@ import Instructions from "./Instructions";
 import DailyJournal from "../../Journal/DailyJournal";
 import DailyActions from "./DailyActions";
 import GenericModal from "../../Info/components/GenericModal";
+import ActivityProgressBreakdownBar from "../../MovePlaylists/components/ActivityProgressBreakdownBar";
 
-const GroupInfo = ({ group, controllers, match }) => {
-  const [showAlert, setShowAlert] = useState(false);
+const GroupInfo = ({ group, modules, controllers, match }) => {
+  // const [showAlert, setShowAlert] = useState(false);
   const [memberProfiles, setMemberProfiles] = useState([]);
+  const [memberMinutes, setMemberMinutes] = useState([]);
   const [showMemberModal, setShowModal] = useState(false);
   const [view, setView] = useState(
     match.params.page ? match.params.page : "info"
   );
   // const [showMenu, setShowMenu] = useState(false);
   const [loadingTeamMembers, setLoadingTeamMembers] = useState(false);
-  const history = useHistory();
+  // const history = useHistory();
 
-  function toggleAlert() {
-    setShowAlert(!showAlert);
-  }
+  // function toggleAlert() {
+  //   setShowAlert(!showAlert);
+  // }
 
   function toggleMemberModal() {
     setShowModal(!showMemberModal);
@@ -61,7 +64,14 @@ const GroupInfo = ({ group, controllers, match }) => {
     const memberProfiles = await controllers.client.getTeamUserProfiles(
       group.code
     );
+
+    const minutes = await controllers.client.getTeamMinutes(
+      group,
+      group.experiment.day
+    );
+
     setMemberProfiles(memberProfiles);
+    setMemberMinutes(minutes);
     setLoadingTeamMembers(false);
   }
 
@@ -88,11 +98,16 @@ const GroupInfo = ({ group, controllers, match }) => {
     const numberOfMembers =
       group.users.length > 1 ? group.users.length + " members" : "1 member";
 
-    const memberNames = memberProfiles.map((profile) => {
+    const memberNames = memberProfiles.map((profile, index) => {
       return (
-        <>
-          <IonItem lines="none">{profile.prefName}</IonItem>
-        </>
+        <IonItem lines="none" key={index}>
+          <IonLabel slot="start">{profile.prefName}</IonLabel>
+          {profile.prefName !== "Unknown" ? (
+            <IonLabel slot="end">{memberMinutes[index]} minutes</IonLabel>
+          ) : (
+            ""
+          )}
+        </IonItem>
       );
     });
 
@@ -126,6 +141,61 @@ const GroupInfo = ({ group, controllers, match }) => {
       </>
     );
 
+    // Generates a breakdown of how many minutes a user has moved today, as well
+    // as creates an array of objects used to display a multi-coloured progress
+    // bar
+    function getMinuteBreakdown() {
+      let colorBarData = [];
+      let totalMinutes = 0;
+
+      // Loop though all the responses today and look for minutes contributed
+      // from each module the user has done "movement" for
+      for (const response of group.entries[group.experiment.day - 1]
+        .responses) {
+        if (response.minutes && response.minutes > 1e-10) {
+          // the > 1e-10 is for tasks like quizzes which have minutes 1e-10
+          totalMinutes += parseFloat(response.minutes);
+          const module = modules.find((m) => m._id === response.moduleId);
+          colorBarData.push({
+            moduleId: response.moduleId,
+            value: response.minutes,
+            color: module.info.colour,
+          });
+        }
+      }
+
+      // Combine multiple entries for the same module into one entry by adding
+      // the minute values together
+      const combinedData = new Map();
+      colorBarData.forEach((item) => {
+        const moduleId = item["moduleId"];
+        if (combinedData.has(moduleId)) {
+          let totalMinutes =
+            parseFloat(item.value) +
+            parseFloat(combinedData.get(moduleId).value);
+          combinedData.set(moduleId, { ...item, value: totalMinutes });
+        } else {
+          combinedData.set(moduleId, item);
+        }
+      });
+      colorBarData = Array.from(combinedData.values());
+
+      // Now we deed to calculate the percentage of the total minutes for the
+      // colorbar component
+      for (let i in colorBarData) {
+        colorBarData[i].percentage = `${Math.round(
+          (colorBarData[i].value / totalMinutes) * 100
+        )}%`;
+      }
+
+      return {
+        totalMinutes: totalMinutes,
+        colorBarData: colorBarData,
+      };
+    }
+
+    const minuteBreakDown = getMinuteBreakdown();
+
     //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
     content = (
       <>
@@ -152,11 +222,6 @@ const GroupInfo = ({ group, controllers, match }) => {
               <IonItem lines="none">
                 <IonIcon icon={todayOutline} slot="start" /> {dayDescription}
               </IonItem>
-            </IonCol>
-          </IonRow>
-          {/* DISPLAY PROGRESS THROUGH EXPERIMENT */}
-          <IonRow>
-            <IonCol>
               <IonProgressBar
                 value={
                   day > group.experiment.info.duration
@@ -231,10 +296,57 @@ const GroupInfo = ({ group, controllers, match }) => {
             <IonCol>
               <IonItem lines="none">
                 <IonGrid>
+                  <div
+                    style={{ "padding-top": "10px", "padding-bottom": "0px" }}
+                  >
+                    <IonRow>
+                      <IonCol className="ion-text-center">
+                        {/* <IonItem> */}
+                        <IonRow
+                          style={{
+                            "--padding-top": "100px",
+                            fontSize: "1.1em",
+                          }}
+                        >
+                          <IonCol>
+                            <IonText>
+                              {minuteBreakDown.totalMinutes > 0 ? (
+                                <>
+                                  You've moved for{" "}
+                                  <strong>
+                                    {minuteBreakDown.totalMinutes} minutes
+                                  </strong>{" "}
+                                  today!
+                                </>
+                              ) : (
+                                <>You haven't done any movement today!</>
+                              )}
+                            </IonText>
+                          </IonCol>
+                        </IonRow>
+                        <IonRow>
+                          <IonCol>
+                            <ActivityProgressBreakdownBar
+                              visualParts={minuteBreakDown.colorBarData}
+                            />
+                          </IonCol>
+                        </IonRow>
+                      </IonCol>
+                    </IonRow>
+                  </div>
+                </IonGrid>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+
+          <IonRow>
+            <IonCol>
+              <IonItem lines="none">
+                <IonGrid>
                   <IonRow>
                     <IonCol>
                       <IonText style={{ fontSize: "1.2em" }}>
-                        Today's Tasks
+                        Notification Centre
                       </IonText>
                     </IonCol>
                   </IonRow>

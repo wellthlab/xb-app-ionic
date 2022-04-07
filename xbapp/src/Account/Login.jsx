@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -15,17 +15,14 @@ import {
   IonSpinner,
 } from "@ionic/react";
 
-
-
 import getXBClient from "../util_model/client";
 import { addControllersProp } from "../util_model/controllers";
 
 import "./Login.scss";
 
-const autoBindReact = require("auto-bind/react");
+// const autoBindReact = require("auto-bind/react");
 
 const Login = (props) => {
-
   var account = props.account;
 
   const [email, setEmail] = useState("");
@@ -45,37 +42,37 @@ const Login = (props) => {
     } else {
       form = (
         <>
-        <IonCard>
-          <IonItem>
-            <IonInput
-            placeholder="Email"
-            type="email"
-            onIonChange={(e) => {
-              console.log("Set email", e);
-              setEmail(e.detail.value);
-            }}
-            ></IonInput>
-          </IonItem>
-          <IonItem>
-            <IonInput
-            placeholder="Password"
-            type="password"
-            onIonChange={(e) => {
-              setPassword(e.detail.value);
-            }}
-            ></IonInput>
-          </IonItem>
-        </IonCard>
-        <div className="centering">
+          <IonCard>
+            <IonItem>
+              <IonInput
+                placeholder="Email"
+                type="email"
+                onIonChange={(e) => {
+                  console.log("Set email", e);
+                  setEmail(e.detail.value);
+                }}
+              ></IonInput>
+            </IonItem>
+            <IonItem>
+              <IonInput
+                placeholder="Password"
+                type="password"
+                onIonChange={(e) => {
+                  setPassword(e.detail.value);
+                }}
+              ></IonInput>
+            </IonItem>
+          </IonCard>
+          <div className="centering">
             <IonButton
-            onclick={() => {
-              login();
-            }}
-            slot="end"
+              onclick={() => {
+                login();
+              }}
+              slot="end"
             >
-            Log In
+              Log In
             </IonButton>
-        </div>
+          </div>
         </>
       );
     }
@@ -89,27 +86,27 @@ const Login = (props) => {
 
       var client = getXBClient();
       client
-      .setUser(email, password)
-      .then((user) => {
-        props.ACCEPT_LOGIN({ email: email, password: password });
-      })
-      .catch((err) => {
-        console.log("Login rejected", err);
-        console.log(err.message);
-        props.REJECT_LOGIN(err.message);
-      });
+        .setUser(email, password)
+        .then((user) => {
+          props.ACCEPT_LOGIN({ email: email, password: password });
+        })
+        .catch((err) => {
+          console.log("Login rejected", err);
+          console.log(err.message);
+          props.REJECT_LOGIN(err.message);
+        });
     }
 
     return (
       <IonContent>
         <div id="login">
           <img src="assets/strength_logo.png" alt="XB Logo" />
-            {form}
+          {form}
           <div>
-          <div className="centering">
-            <Link to="/forgot-password">Forgotten password?</Link>
-          </div>
-          <h4>New to the app?</h4>
+            <div className="centering">
+              <Link to="/forgot-password">Forgotten password?</Link>
+            </div>
+            <h4>New to the app?</h4>
             <div className="centering">
               <IonButton routerLink="/register">Register</IonButton>
             </div>
@@ -118,7 +115,7 @@ const Login = (props) => {
       </IonContent>
     );
   }
-}
+};
 
 export default connect(
   (state, ownProps) => {

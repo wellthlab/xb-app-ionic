@@ -11,7 +11,13 @@ import UserProfile from "../UserProfile/UserProfile";
 
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
-  if (!props.teams.teams.bybox) {
+  props.controllers.LOAD_MODULES_IF_REQD();
+  props.controllers.SET_USER_PROFILE_IF_REQD();
+  if (
+    !props.teams.loaded ||
+    !props.modules.loaded ||
+    !props.userProfile.loaded
+  ) {
     return (
       <IonPage>
         <XBHeader title="Move" />
@@ -34,6 +40,7 @@ const MovePage = (props) => {
       <>
         <GroupInfo
           group={props.teams.teams.bybox["move"][0]}
+          modules={props.modules.modules}
           match={props.match}
           controllers={props.controllers}
         />
@@ -56,6 +63,7 @@ export default connect(
       teams: state.teams,
       experiments: state.experiments,
       userProfile: state.userProfile,
+      modules: state.modules,
     };
   },
   {

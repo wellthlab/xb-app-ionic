@@ -359,6 +359,30 @@ function XBClient() {
   };
 
   /**
+   * Get the number of minutes exercised by the team members for the given
+   * day
+   */
+  self.getTeamMinutes = async function (team, day) {
+    const allTeamData = await self.realm.currentUser.functions.getTeamData(new ObjectId(team._id));
+    const allResponses = allTeamData[0].allresponses;
+    const teamMinutes = [];
+
+    for (const userId of team.users) {
+      // Get the user's responses for the given day
+      const userResponses = allResponses.filter(r => r.user === userId)[0].responses;
+      const todaysResponses = userResponses.filter(r => r.day === day);
+      // Add the minutes to the total
+      let userMinutes = 0;
+      for(const r of todaysResponses) {
+        userMinutes += r.minutes || 0;
+      }
+      teamMinutes.push(userMinutes);
+    }
+
+    return teamMinutes;
+  }
+
+  /**
    * Get details of an experiment
    */
   self.getExperiments = async function (exid) {
@@ -495,8 +519,8 @@ function XBClient() {
     const team = await collection.findOne({ code: {$eq: teamCode} });
 
     const users = [];
-    for (let i in team.users) {
-      let user = await self.getUserProfile(team.users[i]);
+    for (const id of team.users) {
+      let user = await self.getUserProfile(id);
       if(user === null) {  // this happens when someone joins a team, but closes the app before creating their profile
         user = { prefName: "Unknown" };
       }

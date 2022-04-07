@@ -12,7 +12,11 @@ import {
   IonText,
   IonCard,
   IonList,
+  IonPage,
+  IonContent,
+  IonSpinner,
 } from "@ionic/react";
+import { connect } from "react-redux";
 import {
   chevronBackCircleOutline,
   chevronForwardCircleOutline,
@@ -20,9 +24,11 @@ import {
   playOutline,
 } from "ionicons/icons";
 import parse from "html-react-parser";
-import getTaskIcon from "./TaskIcons";
+import getTaskIcon from "./components/taskIcons";
 
 import "./PlaylistDetail.css";
+import XBHeader from "../util/XBHeader";
+import { addControllersProp } from "../util_model/controllers";
 
 /**
  * Renders information for the module, as well as a list of tasks for the
@@ -34,17 +40,23 @@ import "./PlaylistDetail.css";
  * @param currentPlaylistIdx
  * @param closeModal
  */
-function PlaylistDetail({
-  team,
-  modules,
-  moduleId,
-  currentPlaylistIdx,
-  closeModal,
-}) {
-  const [userProgressIdx, _] = useState(currentPlaylistIdx); // don't need to set this, but am storing it as a state variable
-  const [currentPlaylist, setCurrentStage] = useState(currentPlaylistIdx);
+function PlaylistDetail({ teams, modules, userProfile, controllers, match }) {
+  const teamId = match.params.teamId;
+  const moduleId = match.params.moduleId;
+  // const playlist = parseInt(match.params.playlist, 10);
+  const progress = parseInt(match.params.progress, 10);
 
-  const module = modules.find((m) => m._id === moduleId);
+  const [userProgressIdx, _] = useState(progress); // don't need to set this, but am storing it as a state variable
+  const [currentPlaylist, setCurrentStage] = useState(progress);
+
+  controllers.LOAD_MODULES_IF_REQD();
+  controllers.SET_USER_PROFILE_IF_REQD();
+
+  if (!modules.loaded || !userProfile.loaded) {
+    return <IonSpinner name="crescent" className="center-spin" />;
+  }
+
+  const module = modules.modules.find((m) => m._id === moduleId);
   const playlists = module.playlists;
 
   // These functions are used to control the buttons which control the day to
@@ -59,11 +71,11 @@ function PlaylistDetail({
   }
 
   const playlistName = playlists[currentPlaylist].desc;
-  const playlistTime = playlists[currentPlaylist].minutes;
+  const playlistTime = parseInt(playlists[currentPlaylist].minutes, 10) || 0;
   const tasksForPlaylist = playlists[currentPlaylist].tasks;
-  const taskIonItems = tasksForPlaylist.map((task) => {
+  const taskIonItems = tasksForPlaylist.map((task, index) => {
     return (
-      <IonItem color="transparent" lines="none">
+      <IonItem color="transparent" lines="none" key={index}>
         <IonIcon icon={getTaskIcon(task.verb)} slot="start" />
         <IonLabel>
           <IonText className="ion-text-wrap">{task.desc}</IonText>
@@ -114,7 +126,11 @@ function PlaylistDetail({
               <IonRow>
                 <IonCol className="ion-text-center ion-text-big">
                   <IonText>
-                    This playlist will take you {playlistTime} minutes
+                    {playlistTime > 0 ? (
+                      <>This playlist will take you {playlistTime} minutes</>
+                    ) : (
+                      ""
+                    )}
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -142,7 +158,7 @@ function PlaylistDetail({
                 color="success"
                 routerLink={
                   "/move/timer/" +
-                  team._id +
+                  teamId +
                   "/" +
                   moduleId +
                   "/" +
@@ -150,7 +166,7 @@ function PlaylistDetail({
                   "/" +
                   userProgressIdx
                 }
-                onClick={closeModal}
+                // onClick={closeModal}
               >
                 <IonIcon icon={playOutline} />
               </IonButton>
@@ -162,7 +178,7 @@ function PlaylistDetail({
                 shape="circle"
                 routerLink={
                   "/move/task-player-historic/" +
-                  team._id +
+                  teamId +
                   "/" +
                   moduleId +
                   "/" +
@@ -184,6 +200,15 @@ function PlaylistDetail({
     <>
       <IonGrid>
         {/* Playlist description */}
+        <IonItem lines="none" className="ion-text-header">
+          {/* <IonRow>
+            <IonCol> */}
+          <IonLabel className="ion-text-center">
+            <IonText>{module.name.toUpperCase()}</IonText>
+          </IonLabel>
+          {/* </IonCol>
+          </IonRow> */}
+        </IonItem>
         <IonItem lines="none" className="ion-text-justify playlist-description">
           <IonRow>
             <IonCol>
@@ -222,11 +247,19 @@ function PlaylistDetail({
   );
 
   return (
-    <>
-      {moduleDescription}
-      <IonCard>{playlistTasks}</IonCard>
-    </>
+    <IonPage>
+      <XBHeader title={"Movement"} colour={module.info.colour} />
+      <IonContent>
+        {moduleDescription}
+        <IonCard>{playlistTasks}</IonCard>
+      </IonContent>
+    </IonPage>
   );
 }
 
-export default PlaylistDetail;
+export default connect((state, ownProps) => {
+  return {
+    modules: state.modules,
+    userProfile: state.userProfile,
+  };
+}, {})(addControllersProp(PlaylistDetail));

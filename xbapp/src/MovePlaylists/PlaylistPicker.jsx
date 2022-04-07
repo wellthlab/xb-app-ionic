@@ -24,10 +24,10 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
-import GenericModal from "../Info/components/GenericModal";
-import PlaylistDetail from "./components/PlaylistDetail";
-import SubscribeToModule from "./components/PlaylistSubscriber";
-import ColorBar from "./components/ColorBar";
+// import GenericModal from "../Info/components/GenericModal";
+import ModuleSubscriptionButtons from "./components/TopicSubscriptionButtons";
+import TopicButton from "./components/TopicButton";
+import ActivityProgressBreakdownBar from "./components/ActivityProgressBreakdownBar";
 
 /**
  * Renders a page where users can see their active playlists, and click to
@@ -41,14 +41,14 @@ import ColorBar from "./components/ColorBar";
  *
  */
 function PlaylistPicker(props) {
-  const [showModal, setShowModal] = useState(false);
-  const [playlistTitle, setPlaylistTitle] = useState(undefined);
-  const [activePlaylistId, setActivePlaylistId] = useState(undefined);
-  const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
-  const [titleBarColour, setTitleBarColour] = useState("");
-  function toggleModal() {
-    setShowModal(!showModal);
-  }
+  // const [showModal, setShowModal] = useState(false);
+  // const [playlistTitle, setPlaylistTitle] = useState(undefined);
+  // const [activePlaylistId, setActivePlaylistId] = useState(undefined);
+  // const [activePlaylistStage, setActivePlaylistStage] = useState(undefined);
+  // const [titleBarColour, setTitleBarColour] = useState("");
+  // function toggleModal() {
+  //   setShowModal(!showModal);
+  // }
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -87,7 +87,8 @@ function PlaylistPicker(props) {
     const module = availableModules.find((m) => m._id === userModuleObj.id);
     const moduleColour = module.info.colour;
     const currentPlaylist = userModuleObj.stage;
-    const playlistMinutes = module.playlists[currentPlaylist].minutes;
+    const playlistMinutes =
+      parseInt(module.playlists[currentPlaylist].minutes, 10) || 0;
 
     // TODO: redundant code if an experiment starts on day 1 :)
     const expDayIdx = expDay === 0 ? 0 : expDay - 1;
@@ -96,13 +97,13 @@ function PlaylistPicker(props) {
 
     // When the user clicks on a playlist, this will fill in the details
     // required to show the details of it in the GenericModal
-    function createPlaylistDetailModal() {
-      toggleModal();
-      setPlaylistTitle(module.name);
-      setActivePlaylistId(module._id);
-      setActivePlaylistStage(currentPlaylist);
-      setTitleBarColour(module.info.colour);
-    }
+    // function createPlaylistDetailModal() {
+    //   toggleModal();
+    //   setPlaylistTitle(module.name);
+    //   setActivePlaylistId(module._id);
+    //   setActivePlaylistStage(currentPlaylist);
+    //   setTitleBarColour(module.info.colour);
+    // }
 
     return (
       <>
@@ -120,11 +121,23 @@ function PlaylistPicker(props) {
                   key={module.id}
                   detail={false}
                   detailIcon={arrowForwardOutline}
-                  onClick={createPlaylistDetailModal}
+                  routerLink={
+                    "/move/task-detail/" +
+                    team._id +
+                    "/" +
+                    module._id +
+                    "/" +
+                    currentPlaylist
+                  }
+                  // onClick={createPlaylistDetailModal}
                 >
                   <IonLabel>
                     <IonRow>{module.name}</IonRow>
-                    <IonRow>{playlistMinutes} minutes</IonRow>
+                    {playlistMinutes > 0 ? (
+                      <IonRow>{playlistMinutes} minutes</IonRow>
+                    ) : (
+                      ""
+                    )}
                   </IonLabel>
                   <IonLabel slot="end">
                     {moduleDoneToday ? (
@@ -142,65 +155,10 @@ function PlaylistPicker(props) {
     );
   });
 
-  // Generates a breakdown of how many minutes a user has moved today, as well
-  // as creates an array of objects used to display a multi-coloured progress
-  // bar
-  function getMinuteBreakdown() {
-    let colorBarData = [];
-    let totalMinutes = 0;
-
-    // Loop though all the responses today and look for minutes contributed
-    // from each module the user has done "movement" for
-    for (const response of team.entries[expDay - 1].responses) {
-      if (response.minutes && response.minutes > 1e-10) {
-        // the > 1e-10 is for tasks like quizzes which have minutes 1e-10
-        totalMinutes += parseFloat(response.minutes);
-        const module = availableModules.find(
-          (m) => m._id === response.moduleId
-        );
-        colorBarData.push({
-          moduleId: response.moduleId,
-          value: response.minutes,
-          color: module.info.colour,
-        });
-      }
-    }
-
-    // Combine multiple entries for the same module into one entry by adding
-    // the minute values together
-    const combinedData = new Map();
-    colorBarData.forEach((item) => {
-      const moduleId = item["moduleId"];
-      if (combinedData.has(moduleId)) {
-        let totalMinutes =
-          parseFloat(item.value) + parseFloat(combinedData.get(moduleId).value);
-        combinedData.set(moduleId, { ...item, value: totalMinutes });
-      } else {
-        combinedData.set(moduleId, item);
-      }
-    });
-    colorBarData = Array.from(combinedData.values());
-
-    // Now we deed to calculate the percentage of the total minutes for the
-    // colorbar component
-    for (let i in colorBarData) {
-      colorBarData[i].percentage = `${Math.round(
-        (colorBarData[i].value / totalMinutes) * 100
-      )}%`;
-    }
-
-    return {
-      totalMinutes: totalMinutes,
-      colorBarData: colorBarData,
-    };
-  }
-
-  const minuteBreakDown = getMinuteBreakdown();
-
   return (
     <>
       {/* Modal for detailed playlist page */}
-      <GenericModal
+      {/* <GenericModal
         titleBarColour={titleBarColour}
         showModal={showModal}
         toggleModal={toggleModal}
@@ -214,11 +172,10 @@ function PlaylistPicker(props) {
             closeModal={toggleModal}
           />
         }
-      />
-
+      /> */}
       {/* Playlist picker page */}
       <IonPage>
-        <XBHeader title="Movement Playlists"></XBHeader>
+        <XBHeader title="Playlists"></XBHeader>
         <IonContent>
           {/* List of plans the user is subscribed to */}
           <IonItem lines="none">
@@ -226,7 +183,7 @@ function PlaylistPicker(props) {
               <IonRow>
                 <IonCol>
                   <IonText>
-                    <h4>Your Playlists</h4>
+                    <h3>Your Playlists</h3>
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -249,50 +206,51 @@ function PlaylistPicker(props) {
                   )}
                 </IonCol>
               </IonRow>
-              <div style={{ "padding-top": "10px", "padding-bottom": "0px" }}>
-                <IonRow>
-                  <IonCol className="ion-text-center">
-                    {/* <IonItem> */}
-                    <IonRow
-                      style={{ "--padding-top": "100px", fontSize: "1.2em" }}
-                    >
-                      <IonCol>
-                        <IonText>
-                          {minuteBreakDown.totalMinutes > 0 ? (
-                            <>
-                              You've moved for{" "}
-                              <strong>
-                                {minuteBreakDown.totalMinutes} minutes
-                              </strong>{" "}
-                              today!
-                            </>
-                          ) : (
-                            <>You haven't done any movement yet!</>
-                          )}
-                        </IonText>
-                      </IonCol>
-                    </IonRow>
+            </IonGrid>
+          </IonItem>
+          {/* Movement Snacks, because they are different */}
+          <IonItem lines="none">
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    <h3> Movement Snacks</h3>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <IonGrid>
                     <IonRow>
                       <IonCol>
-                        <ColorBar visualParts={minuteBreakDown.colorBarData} />
+                        <TopicButton topic="snack" title="Together or Alone" />
                       </IonCol>
                     </IonRow>
-                  </IonCol>
-                </IonRow>
-              </div>
+                  </IonGrid>
+                </IonCol>
+              </IonRow>
             </IonGrid>
           </IonItem>
           {/* Where other plans can be picked */}
-          <IonItem lines="none" style={{ "--padding-top": "0px" }}>
-            <IonText>
-              <h3>Other Playlists</h3>
-            </IonText>
-          </IonItem>
           <IonItem lines="none">
-            <SubscribeToModule
-              userProfile={userProfile}
-              modules={availableModules}
-            />
+            <IonGrid>
+              <IonRow>
+                <IonCol>
+                  <IonText>
+                    <h3>Other Playlists</h3>
+                  </IonText>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <ModuleSubscriptionButtons
+                    userProfile={userProfile}
+                    modules={availableModules}
+                    team={team}
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonItem>
         </IonContent>
       </IonPage>

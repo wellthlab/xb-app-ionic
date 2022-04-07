@@ -39,7 +39,14 @@ function MovementWelcome({ controllers, teams, userProfile, modules }) {
   controllers.LOAD_MODULES_IF_REQD();
 
   if (!teams.loaded || !userProfile.loaded || !modules.loaded) {
-    return <IonSpinner className="center-spin" name="crescent" />;
+    return (
+      <IonPage>
+        <XBHeader title={"Move"} />
+        <IonContent>
+          <IonSpinner className="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
+    );
   }
 
   let content;

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   IonButton,
   IonContent,
@@ -48,9 +47,7 @@ function GenericModal({
               </IonButton>
             </IonButtons>
           )}
-          <IonTitle style={{ "mix-blend-mode": "difference" }}>
-            {title}
-          </IonTitle>
+          <IonTitle style={{ mixBlendMode: "difference" }}>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>{body}</IonContent>

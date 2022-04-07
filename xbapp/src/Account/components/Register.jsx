@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { ACCEPT_LOGIN } from "../../util_model/slices/Account";
 import {
@@ -7,19 +7,16 @@ import {
   IonItem,
   IonInput,
   IonCard,
-  IonItemDivider,
 } from "@ionic/react";
 
 import getXBClient from "../../util_model/client";
-import XBHeader from "../../util/XBHeader";
 import "./Register.scss";
 import { useHistory } from "react-router-dom";
 
-import { NavContext } from "@ionic/react";
 import GenericModal from "../../Info/components/GenericModal";
 import PIS from "../components/PIS";
 
-const autoBindReact = require("auto-bind/react");
+// const autoBindReact = require("auto-bind/react");
 
 const Register = ({ ACCEPT_LOGIN }) => {
   const [state1, setState] = useState({

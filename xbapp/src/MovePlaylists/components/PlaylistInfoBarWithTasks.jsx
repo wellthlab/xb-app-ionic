@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 
 import "../PlaylistPlayer.css";
-import getTaskIcon from "./TaskIcons";
+import getTaskIcon from "./taskIcons";
 
 /**
  * Displays some useful information about the current playlist, and allows the
