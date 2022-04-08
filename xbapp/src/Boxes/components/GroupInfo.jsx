@@ -345,9 +345,7 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
                 <IonGrid>
                   <IonRow>
                     <IonCol>
-                      <IonText style={{ fontSize: "1.2em" }}>
-                        Notification Centre
-                      </IonText>
+                      <IonText style={{ fontSize: "1.2em" }}>Actions</IonText>
                     </IonCol>
                   </IonRow>
                   <IonRow>

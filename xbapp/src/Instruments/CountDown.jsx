@@ -6,7 +6,9 @@ import {
   IonRow,
   IonCol,
   IonGrid,
+  IonIcon,
 } from "@ionic/react";
+import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
 import "./CountDown.scss";
 import { connect } from "react-redux";
 
@@ -228,14 +230,14 @@ function CountDown(props) {
             {props.isExerciseTimer ? (
               localStorage.getItem("CountDownStartedAt") != null ? (
                 <IonButton onClick={toggle} style={{ float: "right" }}>
-                  {isActive ? "Pause" : "Start"}
+                  <IonIcon icon={isActive ? pauseOutline : playOutline} />
                 </IonButton>
               ) : (
                 <></>
               )
             ) : (
               <IonButton onClick={toggle} style={{ float: "right" }}>
-                {isActive ? "Pause" : "Start"}
+                <IonIcon icon={isActive ? pauseOutline : playOutline} />
               </IonButton>
             )}
           </IonCol>
@@ -249,7 +251,7 @@ function CountDown(props) {
                   }}
                   onClick={reset}
                 >
-                  Reset
+                  <IonIcon icon={refreshOutline} />
                 </IonButton>
               ) : (
                 ""
@@ -261,7 +263,7 @@ function CountDown(props) {
                 }}
                 onClick={reset}
               >
-                Reset
+                <IonIcon icon={refreshOutline} />
               </IonButton>
             ) : (
               ""

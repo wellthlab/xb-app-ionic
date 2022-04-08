@@ -159,9 +159,7 @@ function ModuleSubscription(props) {
   }
 
   const topic = props.match.params.topic;
-  const title = topic.includes("snack")
-    ? "Movement Picker"
-    : "Movement Subscriber";
+  const title = topic.includes("snack") ? "Pick a Snack" : "Add Playlists";
 
   const team = props.teams.teams.bybox["move"][0];
   const availableModules = props.modules.modules;
