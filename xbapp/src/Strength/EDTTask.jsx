@@ -49,8 +49,6 @@ function EDTSet({
 
   const moves = chosenMovements.chosenMovements;
 
-  // debugger;
-
   let content;
 
   if (showMovePicker) {

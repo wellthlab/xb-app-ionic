@@ -240,6 +240,7 @@ const Block = (props) => {
           onClick={() => {
             const content = (
               <MovementPicker
+                typeOfExercise={exercise}
                 movements={movements}
                 blockIndex={blockIndex}
                 initialSlideIndex={{ upperBody: 0, lowerBody: 0, fullBody: 0 }}
@@ -251,8 +252,6 @@ const Block = (props) => {
                 setContent={props.setContent}
               />
             );
-
-            console.log("AAA", moveSelected, exercise);
 
             props.setContent(content);
           }}

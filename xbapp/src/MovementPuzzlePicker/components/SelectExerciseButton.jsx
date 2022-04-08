@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { IonButton } from "@ionic/react";
 import { BlockIndexContext } from "../context/BlockIndexContext";
 import "./SelectExerciseButton.css";
@@ -7,30 +7,29 @@ import { connect } from "react-redux";
 import { addControllersProp } from "../../util_model/controllers";
 
 const SelectExerciseButton = (props) => {
-  const pathArray = window.location.pathname.split("/");
-  const typeOfExercise = pathArray[pathArray.length - 1];
+  const path = window.location.pathname;
   const team = props.teams.teams.bybox["move"][0];
-  //const typeOfExercise = props.
-  const history = useHistory();
+  const typeOfExercise = props.typeOfExercise;
+  // const history = useHistory();
+  // const location = useLocation();
   function selectExercise(blockIndex) {
-    // history.push({
-    //   pathname:
-    //     "/box/move/" +
-    //     team._id +
-    //     "/" +
-    //     team.experiment.day +
-    //     "/add/strength-setter",
-    //   state: {
-    //     [blockIndex]: props.movement,
-    //     chosenExercise: props.movement,
-    //     blockIndex: blockIndex,
-    //     exerciseType: typeOfExercise,
-    //   },
-    // });
+    window.history.pushState(
+      {
+        [blockIndex]: props.movement,
+        chosenExercise: props.movement,
+        blockIndex: blockIndex,
+        exerciseType: typeOfExercise,
+        exercisesSet: true,
+      },
+      "",
+      path
+    );
 
-    const movePicked = props.movement;
-    const moveBlockIndex = blockIndex;
-    const moveTypeOfExercise = typeOfExercise;
+    // const movePicked = props.movement;
+    // const moveBlockIndex = blockIndex;
+    // const moveTypeOfExercise = typeOfExercise;
+
+    // console.log(movePicked, moveBlockIndex, moveTypeOfExercise);
 
     props.setContent(undefined); // this stops the movement picker from being displayed
   }

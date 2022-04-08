@@ -38,7 +38,13 @@ function MovePicker({ moduleId, week, userProfile, moveTypes, toggleView }) {
           <IonCard>
             <IonRow>
               <IonCol>
-                <IonButton expand="block" onClick={toggleView}>
+                <IonButton
+                  expand="block"
+                  onClick={() => {
+                    saveMovesToProfile();
+                    toggleView();
+                  }}
+                >
                   Done
                 </IonButton>
               </IonCol>

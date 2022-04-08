@@ -27,6 +27,7 @@ const MovementPicker = (props) => {
   const location = useLocation();
   const history = useHistory();
   var isExplorer = location.pathname.includes("explore");
+  const typeOfExercise = props.typeOfExercise;
 
   // Used for the page heading
   const rowHeadings = ["", "", ""];
@@ -204,6 +205,7 @@ const MovementPicker = (props) => {
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -213,6 +215,7 @@ const MovementPicker = (props) => {
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -222,6 +225,7 @@ const MovementPicker = (props) => {
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
               />
             </IonSlides>
           </div>

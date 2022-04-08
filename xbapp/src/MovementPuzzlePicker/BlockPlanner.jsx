@@ -28,7 +28,7 @@ const BlockPlanner = (props) => {
   const location = useLocation(); // switched to location hook
   const history = useHistory();
 
-  let moveTypes = props.moveTypes || location.state.moveTypes;
+  let moveTypes = props.moveTypes;
 
   //expecting week to be passed as prop
   let week = props.week;
@@ -38,55 +38,56 @@ const BlockPlanner = (props) => {
     props.explorer ? explorerPlan : moveTypes
   ); //if it's exploration week, just look at what's gona be in week 0
 
+  console.log("blocks", blocks);
+
   let storageKey = week === -1 ? "blocks-week-0" : "blocks-week-" + week;
 
-  if (storageKey in window.localStorage) {
-    console.log("Local storage exists. Not overwriting...");
-  } else {
-    // Fills the array with default messages
+  // If there are no movements in localStorage, then fill it with default
+  // message
+  if (!(storageKey in window.localStorage)) {
     var blockArray = [];
     for (const eachBlockIndex in blocks) {
       const eachBlock = blocks[eachBlockIndex];
-      var moveArray = {};
+      var movesPicked = {};
       for (const eachMoveIndex in eachBlock) {
         const eachMove = eachBlock[eachMoveIndex].split(" ").join("+");
-        moveArray[eachMove] = { name: "No move chosen" };
+        movesPicked[eachMove] = { name: "Select a Move" };
       }
-      blockArray.push(moveArray);
+      blockArray.push(movesPicked);
     }
 
     setCurrentBlock(blockArray);
-    console.log("Local storage does not exist. Overwriting...");
   }
+
   // if the state is undefined then no move has been picked
-  if (typeof location.state !== "undefined") {
+  if (window.history.state.exercisesSet === true) {
+    console.log("Looking at the state");
     const chosenBlock = getCurrentBlock(); //retrieve previous exercises
-    const index = location.state.blockIndex;
-    const chosenExercise = location.state.chosenExercise;
-    const type = location.state.exerciseType;
+    const index = window.history.state.blockIndex;
+    const chosenExercise = window.history.state.chosenExercise;
+    const type = window.history.state.exerciseType;
 
     chosenBlock[index][type] = chosenExercise;
-
     setCurrentBlock(chosenBlock);
   }
 
-  function checkIfExercisesAreChosen() {
-    const chosenBlock = getCurrentBlock();
-    var numExercisesRequired = 0;
-    var numExercisesChosen = 0;
-    for (const eachBlockIndex in chosenBlock) {
-      const eachBlock = chosenBlock[eachBlockIndex];
-      for (const eachMoveIndex in eachBlock) {
-        const eachMove = eachBlock[eachMoveIndex];
-        if (eachMove.name !== "No move chosen") {
-          numExercisesChosen++;
-        }
-        numExercisesRequired++;
-      }
-    }
+  // function checkIfExercisesAreChosen() {
+  //   const chosenBlock = getCurrentBlock();
+  //   var numExercisesRequired = 0;
+  //   var numExercisesChosen = 0;
+  //   for (const eachBlockIndex in chosenBlock) {
+  //     const eachBlock = chosenBlock[eachBlockIndex];
+  //     for (const eachMoveIndex in eachBlock) {
+  //       const eachMove = eachBlock[eachMoveIndex];
+  //       if (eachMove.name !== "No move chosen") {
+  //         numExercisesChosen++;
+  //       }
+  //       numExercisesRequired++;
+  //     }
+  //   }
 
-    return numExercisesChosen === numExercisesRequired;
-  }
+  //   return numExercisesChosen === numExercisesRequired;
+  // }
 
   function getCurrentBlock() {
     return JSON.parse(window.localStorage.getItem(storageKey));
@@ -101,8 +102,6 @@ const BlockPlanner = (props) => {
     //if it's explorer, mark task as done in localstorage for the day
     window.localStorage.setItem(storageKey + "-day-" + day, "explored");
   }
-
-  // debugger;
 
   const blockButtons = blocks.map((blockDesc, index) => {
     return (
