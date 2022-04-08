@@ -24,13 +24,10 @@ const SelectExerciseButton = (props) => {
       "",
       path
     );
-
     // const movePicked = props.movement;
     // const moveBlockIndex = blockIndex;
     // const moveTypeOfExercise = typeOfExercise;
-
     // console.log(movePicked, moveBlockIndex, moveTypeOfExercise);
-
     props.setContent(undefined); // this stops the movement picker from being displayed
   }
   return (

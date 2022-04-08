@@ -417,15 +417,15 @@ async function GET_FEED(client, store, controllers) {
 async function GET_MOVEMENT_CHOICES(client, store, controllers, moduleId) {
   store.dispatch(CLEAR_MOVES());
 
-  let moves = [];
+  // let moves = [];
 
-  try {
-    moves = await client.getChosenMovements(moduleId);
-  } catch(e) {
-    console.error(e);
-  }
+  // try {
+  //   moves = await client.getChosenMovements(moduleId);
+  // } catch(e) {
+  //   console.error(e);
+  // }
 
-  store.dispatch(SET_MOVES({moves: moves}));
+  store.dispatch(SET_MOVES({moves: []}));
 }
 
 async function GET_MOVEMENT_CHOICES_IF_REQD(client, store, controllers, moduleId) {
@@ -446,6 +446,13 @@ async function ADD_MOVEMENT_TO_BLOCK(client, store, controllers, block, movement
   console.log(`Adding movement ${movement} to block ${block}`);
 
 }
+
+async function SET_CHOSEN_MOVEMENTS(client, store, controllers, moves) {
+
+  store.dispatch(SET_MOVES({moves: moves}));
+
+}
+
 
 function getControllers(store, client) {
   var out = { client: client, store: store };
@@ -470,7 +477,8 @@ function getControllers(store, client) {
     LEAVE_TEAM,
     GET_MOVEMENT_CHOICES,
     GET_MOVEMENT_CHOICES_IF_REQD,
-    ADD_MOVEMENT_TO_BLOCK
+    ADD_MOVEMENT_TO_BLOCK,
+    SET_CHOSEN_MOVEMENTS
   };
 
   for (var n of Object.keys(controllers)) {

@@ -14,7 +14,6 @@ import {
 import { connect } from "react-redux";
 
 import TimerEDT from "./components/EDTMovementTimer";
-import { getMove } from "../DEPRECATED/components/OLDMovementPicker";
 import MovePicker from "./components/MovePicker";
 import { addControllersProp } from "../util_model/controllers";
 
@@ -33,8 +32,8 @@ function EDTSet({
   controllers,
 }) {
   const [showMovePicker, setShowMovePicker] = useState(false);
-  const [moveA, setMoveA] = useState("");
-  const [moveB, setMoveB] = useState("");
+  // const [moveA, setMoveA] = useState("");
+  // const [moveB, setMoveB] = useState("");
 
   function toggleShowMovePicker() {
     console.log("Toggling showMovePicker");
@@ -99,9 +98,13 @@ function EDTSet({
       </>
     );
   } else {
+    const block = chosenMovements.chosenMovements.moves[task.edtBlock];
+    const moveA = block[task.moveTypes[task.edtBlock][0].replaceAll(" ", "+")];
+    const moveB = block[task.moveTypes[task.edtBlock][1].replaceAll(" ", "+")];
     content = (
       <>
         <TimerEDT
+          changeMoves={toggleShowMovePicker}
           exercises={[moveA, moveB]}
           block={task.edtBlock}
           onSubmit={onSubmit}

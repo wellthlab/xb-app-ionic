@@ -7,6 +7,7 @@ import {
   IonCardContent,
   IonText,
   IonItem,
+  IonButton,
 } from "@ionic/react";
 import Blur from "react-css-blur";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,12 +17,21 @@ import "./MovementTimer.scss";
 import CountDown from "../../Instruments/CountDown";
 import MovementInfoCard from "../MovementInfoCard";
 import SetCounter from "../SetCounter";
+import { PinDropSharp } from "@material-ui/icons";
 
 /**
  * Time movements
  * TODO: use IonToast instead of react-toastify
  */
-const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
+const EDTMovementTimer = ({
+  exercises,
+  block,
+  onSubmit,
+  mins,
+  secs,
+  day,
+  changeMoves,
+}) => {
   if (!mins) var mins = 0;
   if (!secs) var secs = 0;
 
@@ -197,6 +207,22 @@ const EDTMovementTimer = ({ exercises, block, onSubmit, mins, secs, day }) => {
                 </>
               )}
             </IonRow>
+            {timerOn ? (
+              ""
+            ) : (
+              <IonRow>
+                <IonCol>
+                  <br />
+                  <IonButton
+                    expand="block"
+                    onClick={changeMoves}
+                    disabled={timerOn}
+                  >
+                    Choose moves
+                  </IonButton>
+                </IonCol>
+              </IonRow>
+            )}
           </IonGrid>
           {showReps ? (
             <SetCounter

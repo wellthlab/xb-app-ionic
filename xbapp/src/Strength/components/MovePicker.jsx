@@ -14,11 +14,25 @@ import {
 
 import "../../MovementPuzzlePicker/BlockPlanner.css";
 import BlockPlanner from "../../MovementPuzzlePicker/BlockPlanner";
+import { addControllersProp } from "../../util_model/controllers";
 
-function MovePicker({ moduleId, week, userProfile, moveTypes, toggleView }) {
+function MovePicker({
+  moduleId,
+  week,
+  userProfile,
+  moveTypes,
+  toggleView,
+  controllers,
+}) {
   const [movePickerContent, setMovePickerContent] = useState(undefined);
 
-  function saveMovesToProfile() {}
+  async function saveMovesToProfile() {
+    if (window.history.state.exercisesSet) {
+      const storageKey = week === -1 ? "blocks-week-0" : "blocks-week-" + week;
+      const moves = JSON.parse(window.localStorage.getItem(storageKey));
+      await controllers.SET_CHOSEN_MOVEMENTS({ moves: moves });
+    }
+  }
 
   console.log("movePickerContent", movePickerContent);
 
@@ -56,4 +70,4 @@ function MovePicker({ moduleId, week, userProfile, moveTypes, toggleView }) {
   );
 }
 
-export default MovePicker;
+export default addControllersProp(MovePicker);
