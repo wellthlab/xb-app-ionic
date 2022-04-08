@@ -101,6 +101,7 @@ function Tile(props) {
               <div className="tile-button-container">
                 <SelectExerciseButton
                   movement={movement}
+                  setContent={props.setContent}
                 ></SelectExerciseButton>
               </div>
             )}

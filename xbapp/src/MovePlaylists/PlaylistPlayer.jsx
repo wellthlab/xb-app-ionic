@@ -25,6 +25,7 @@ import Timer from "../Instruments/StatelessTimer";
 import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 import PlaylistInfoBarWithTasks from "./components/PlaylistInfoBarWithTasks";
+import UserProfile from "../UserProfile/UserProfile";
 
 /**
  * Timer UI for timing tasks, or manual entry of minutes
@@ -171,11 +172,17 @@ function PlaylistPlayer(props) {
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
+  props.controllers.SET_USER_PROFILE_IF_REQD();
 
-  if (!props.teams.loaded || !props.modules.loaded) {
+  if (
+    !props.teams.loaded ||
+    !props.modules.loaded ||
+    !props.userProfile.loaded
+  ) {
     return <IonSpinner name="crescent" class="center-spin" />;
   }
 
+  const userProfile = props.userProfile.userProfile;
   const team = props.teams.teams.bybox["move"][0];
   const moduleId = props.match.params.moduleId;
   const playlistIdx = parseInt(props.match.params.playlistIdx, 10);
@@ -191,7 +198,22 @@ function PlaylistPlayer(props) {
   const tasks = module.playlists[playlistIdx].tasks.filter(
     (task) => Object.keys(task).length !== 0
   );
-  const currentTask = tasks[currentTaskIdx];
+
+  // Get the task, and add some useful data as well to be passed around
+  const currentTask = { ...tasks[currentTaskIdx] };
+  currentTask.moduleId = moduleId;
+
+  // We need more useful data for the EDT set
+  if (currentTask.intype === "s22edtset") {
+    const edtTasks = tasks.filter((task) => task.intype === "s22edtset");
+    const moveTypes = [];
+    for (let task of edtTasks) {
+      moveTypes.push(task.edtMoves);
+    }
+
+    currentTask.moveTypes = moveTypes;
+    currentTask.chosenMoves = userProfile.modules[module._id].moves || [];
+  }
 
   // Save the time spent on the tasks
   async function saveResponse() {
@@ -248,16 +270,14 @@ function PlaylistPlayer(props) {
   async function saveOnFinish() {
     await saveResponse();
     if (minutes > 0) {
-      console.log(
-        "On finish, progressing to next playlist with minutes",
-        minutes
-      );
       await progressToNextPlaylist();
     }
   }
 
   // Progress the user to the next playlist using the controller
   async function progressToNextPlaylist() {
+    // no progression is possible for movement snacks, but can cause issues if
+    // we do try to progress someone along a movement snack
     if (!module.topic.includes("snack/")) {
       await props.controllers.PROGRESS_ALONG_MODULE(moduleId);
     }
@@ -266,6 +286,7 @@ function PlaylistPlayer(props) {
   const readyToSave = minutes > 0;
 
   // Go to the next task in the playlist
+  // The response object is cleared and minutes set to 0 so the user starts over
   function nextTaskInPlaylist() {
     if (currentTaskIdx < tasks.length - 1) {
       setCurrentTaskIdx(currentTaskIdx + 1);
@@ -278,6 +299,7 @@ function PlaylistPlayer(props) {
   }
 
   // Go to the previous task in the playlist
+  // The response object is cleared and minutes set to 0 so the user starts over
   function prevTaskInPlaylist() {
     if (currentTaskIdx > 0) {
       setCurrentTaskIdx(currentTaskIdx - 1);
@@ -295,6 +317,7 @@ function PlaylistPlayer(props) {
     currentTask.intype,
     team,
     playlistIdx,
+    userProfile,
     updateResponse,
     currentTask
   );
@@ -343,5 +366,6 @@ export default connect((state, ownProps) => {
   return {
     teams: state.teams,
     modules: state.modules,
+    userProfile: state.userProfile,
   };
 }, {})(addControllersProp(PlaylistPlayer));

@@ -8,6 +8,7 @@ import {
   IonRow,
   IonCol,
   IonPage,
+  IonCard,
   IonContent,
 } from "@ionic/react";
 
@@ -15,27 +16,36 @@ import "../../MovementPuzzlePicker/BlockPlanner.css";
 import BlockPlanner from "../../MovementPuzzlePicker/BlockPlanner";
 
 function MovePicker({ moduleId, week, userProfile, moveTypes, toggleView }) {
+  const [movePickerContent, setMovePickerContent] = useState(undefined);
+
   function saveMovesToProfile() {}
 
-  let movesPicked = userProfile.modules[moduleId].edtMoves || [
-    "No move",
-    "No move",
-  ];
+  console.log("movePickerContent", movePickerContent);
 
   return (
     <>
-      <BlockPlanner
-        explorer={false}
-        onSubmit={() => {}}
-        moveTypes={moveTypes}
-        week={week}
-      />
-
-      <IonRow>
-        <IonCol>
-          <IonButton onClick={toggleView}>Done</IonButton>
-        </IonCol>
-      </IonRow>
+      {movePickerContent ? (
+        <>{movePickerContent}</>
+      ) : (
+        <>
+          <BlockPlanner
+            explorer={false}
+            onSubmit={() => {}}
+            moveTypes={moveTypes}
+            week={week}
+            setContent={setMovePickerContent}
+          />
+          <IonCard>
+            <IonRow>
+              <IonCol>
+                <IonButton expand="block" onClick={toggleView}>
+                  Done
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonCard>
+        </>
+      )}
     </>
   );
 }

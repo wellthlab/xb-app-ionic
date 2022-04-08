@@ -9,6 +9,7 @@ import Experiments from "./slices/Experiments";
 import Feed from "./slices/Feed";
 import Modules from "./slices/Modules";
 import UserProfile from "./slices/Users";
+import ChosenMovements from "./slices/Movements";
 
 // See: https://redux-toolkit.js.org/api/configureStore
 var store = configureStore({
@@ -19,6 +20,7 @@ var store = configureStore({
     feed: Feed,
     modules: Modules,
     userProfile: UserProfile,
+    chosenMovements: ChosenMovements,
   }),
 
   // Disable warnings about passing nonserializable values into actions

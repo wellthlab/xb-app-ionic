@@ -13,20 +13,26 @@ const SelectExerciseButton = (props) => {
   //const typeOfExercise = props.
   const history = useHistory();
   function selectExercise(blockIndex) {
-    history.push({
-      pathname:
-        "/box/move/" +
-        team._id +
-        "/" +
-        team.experiment.day +
-        "/add/strength-setter",
-      state: {
-        [blockIndex]: props.movement,
-        chosenExercise: props.movement,
-        blockIndex: blockIndex,
-        exerciseType: typeOfExercise,
-      },
-    });
+    // history.push({
+    //   pathname:
+    //     "/box/move/" +
+    //     team._id +
+    //     "/" +
+    //     team.experiment.day +
+    //     "/add/strength-setter",
+    //   state: {
+    //     [blockIndex]: props.movement,
+    //     chosenExercise: props.movement,
+    //     blockIndex: blockIndex,
+    //     exerciseType: typeOfExercise,
+    //   },
+    // });
+
+    const movePicked = props.movement;
+    const moveBlockIndex = blockIndex;
+    const moveTypeOfExercise = typeOfExercise;
+
+    props.setContent(undefined); // this stops the movement picker from being displayed
   }
   return (
     <BlockIndexContext.Consumer>
@@ -50,6 +56,7 @@ export default connect(
       teams: state.teams,
       experiments: state.experiments,
       boxes: state.boxes,
+      chosenMovements: state.chosenMovements,
     };
   },
   {

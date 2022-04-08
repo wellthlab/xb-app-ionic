@@ -72,20 +72,20 @@ const BlockPlanner = (props) => {
 
   function checkIfExercisesAreChosen() {
     const chosenBlock = getCurrentBlock();
-    var noExercisesRequired = 0;
-    var noExercisesChosen = 0;
+    var numExercisesRequired = 0;
+    var numExercisesChosen = 0;
     for (const eachBlockIndex in chosenBlock) {
       const eachBlock = chosenBlock[eachBlockIndex];
       for (const eachMoveIndex in eachBlock) {
         const eachMove = eachBlock[eachMoveIndex];
         if (eachMove.name !== "No move chosen") {
-          noExercisesChosen++;
+          numExercisesChosen++;
         }
-        noExercisesRequired++;
+        numExercisesRequired++;
       }
     }
 
-    return noExercisesChosen === noExercisesRequired;
+    return numExercisesChosen === numExercisesRequired;
   }
 
   function getCurrentBlock() {
@@ -99,29 +99,31 @@ const BlockPlanner = (props) => {
 
   if (props.explorer) {
     //if it's explorer, mark task as done in localstorage for the day
-    console.log("EXPLORING DAY", storageKey + "-day-" + day);
     window.localStorage.setItem(storageKey + "-day-" + day, "explored");
   }
 
   // debugger;
 
+  const blockButtons = blocks.map((blockDesc, index) => {
+    return (
+      <Block
+        typeOfBlock={blockDesc}
+        key={index}
+        blockIndex={index}
+        exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
+        explorer={props.explorer}
+        week={week}
+        setContent={props.setContent}
+      />
+    );
+  });
+
   return (
-    <div>
+    <>
       {/* //iterate through number of blocks needed */}
-      {blocks.map((blockDesc, index) => {
-        return (
-          <Block
-            moveTypes={blocks}
-            typeOfBlock={blockDesc}
-            key={index}
-            blockIndex={index}
-            exerciseChosen={getCurrentBlock()[index]} // would be {push: "no move", pull: "nomove"}
-            explorer={props.explorer}
-            week={week}
-          ></Block>
-        );
-      })}
-      {props.explorer ? (
+      {blockButtons}
+
+      {/* {props.explorer ? (
         <></>
       ) : checkIfExercisesAreChosen() ? (
         <IonButton
@@ -142,8 +144,8 @@ const BlockPlanner = (props) => {
         </IonButton>
       ) : (
         <></>
-      )}
-    </div>
+      )} */}
+    </>
   );
 };
 

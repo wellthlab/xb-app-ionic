@@ -22,6 +22,7 @@ import {
   START_LEAVE_TEAM,
   CLEAR_LEAVE_TEAM,
   ABORT_LEAVE_TEAM,
+
 } from "./slices/Teams";
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
@@ -31,6 +32,8 @@ import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
 
 import { CLEAR_USER, SET_USER } from "./slices/Users";
+
+import { SET_MOVES, CLEAR_MOVES } from "./slices/Movements";
 
 
 /**
@@ -411,6 +414,39 @@ async function GET_FEED(client, store, controllers) {
   store.dispatch(SET_FEED(feeds));
 }
 
+async function GET_MOVEMENT_CHOICES(client, store, controllers, moduleId) {
+  store.dispatch(CLEAR_MOVES());
+
+  let moves = [];
+
+  try {
+    moves = await client.getChosenMovements(moduleId);
+  } catch(e) {
+    console.error(e);
+  }
+
+  store.dispatch(SET_MOVES({moves: moves}));
+}
+
+async function GET_MOVEMENT_CHOICES_IF_REQD(client, store, controllers, moduleId) {
+  const state = store.getState();
+  const fetching = state.chosenMovements.fetching;
+  const loaded = state.chosenMovements.loaded;
+
+  if (!fetching && !loaded) {
+    await controllers.GET_MOVEMENT_CHOICES(moduleId);
+  }
+}
+
+async function ADD_MOVEMENT_TO_BLOCK(client, store, controllers, block, movement) {
+
+  const state = store.getState();
+
+  console.log("state", state);
+  console.log(`Adding movement ${movement} to block ${block}`);
+
+}
+
 function getControllers(store, client) {
   var out = { client: client, store: store };
 
@@ -431,7 +467,10 @@ function getControllers(store, client) {
     PROGRESS_ALONG_MODULE,
     SET_MODULE_FOR_PATH,
     UPDATE_USER_MODULE,
-    LEAVE_TEAM
+    LEAVE_TEAM,
+    GET_MOVEMENT_CHOICES,
+    GET_MOVEMENT_CHOICES_IF_REQD,
+    ADD_MOVEMENT_TO_BLOCK
   };
 
   for (var n of Object.keys(controllers)) {

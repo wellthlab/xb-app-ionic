@@ -22,11 +22,34 @@ import { addControllersProp } from "../util_model/controllers";
  *  EDT task - includes the ability to change moves`
  *
  */
-function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
+function EDTSet({
+  task,
+  team,
+  userProfile,
+  day,
+  week,
+  onSubmit,
+  chosenMovements,
+  controllers,
+}) {
   const [showMovePicker, setShowMovePicker] = useState(false);
+  const [moveA, setMoveA] = useState("");
+  const [moveB, setMoveB] = useState("");
+
   function toggleShowMovePicker() {
+    console.log("Toggling showMovePicker");
     setShowMovePicker(!showMovePicker);
   }
+
+  controllers.GET_MOVEMENT_CHOICES_IF_REQD(task.moduleId);
+
+  // if (!chosenMovements.loaded) {
+  //   return <></>;
+  // }
+
+  const moves = chosenMovements.chosenMovements;
+
+  // debugger;
 
   let content;
 
@@ -42,21 +65,39 @@ function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
         />
       </>
     );
-  } else if (!task.chosenMoves || Object.keys(task.chosenMoves).length === 0) {
+  } else if (!chosenMovements.loaded || moves.length === 0) {
     content = (
       <>
-        <IonGrid>
-          <IonRow>
-            <IonCol className="ion-text-center">
-              <IonText>You do not have any moves set</IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol className="ion-text-center">
-              <IonButton onClick={toggleShowMovePicker}>Choose Moves</IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonCard>
+          <IonCardContent>
+            <IonGrid>
+              {chosenMovements.loaded ? (
+                <>
+                  <IonRow>
+                    <IonCol className="ion-text-center">
+                      <IonText>
+                        <h2>You need to select your moves</h2>
+                      </IonText>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol className="ion-text-center">
+                      <IonButton onClick={toggleShowMovePicker}>
+                        Choose Moves
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                </>
+              ) : (
+                <IonRow>
+                  <IonCol className="ion-text-center">
+                    <IonSpinner name="crescent" />
+                  </IonCol>
+                </IonRow>
+              )}
+            </IonGrid>
+          </IonCardContent>
+        </IonCard>
       </>
     );
   } else {
@@ -73,50 +114,11 @@ function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
     );
   }
 
-  // let moves = localStorage.getItem("blocks-week-" + week + "-set");
-  // if (!moves) {
-  //   return (
-  //     <>
-  //       <IonCard>
-  //         <IonCardContent>
-  //           <IonGrid>
-  //             <IonRow>
-  //               <IonCol style={{ textAlign: "center" }}>
-  //                 You don't have any exercises set for this week
-  //               </IonCol>
-  //             </IonRow>
-  //             <IonRow>
-  //               <IonCol>
-  //                 <IonRouterLink
-  //                   routerLink={
-  //                     "/box/move/" +
-  //                     groupId +
-  //                     "/" +
-  //                     day +
-  //                     "/add/strength-setter"
-  //                   }
-  //                 >
-  //                   <IonButton expand={"full"}>Set Exercises</IonButton>
-  //                 </IonRouterLink>
-  //               </IonCol>
-  //             </IonRow>
-  //           </IonGrid>
-  //         </IonCardContent>
-  //       </IonCard>
-  //     </>
-  //   );
-  // }
-
-  // moves = JSON.parse(moves)[task.strengthBlock];
-  // let exercisesInBlock = Object.keys(moves);
-  // let moveA = moves[exercisesInBlock[0]];
-  // let moveB = moves[exercisesInBlock[1]];
-
-  // TODO: go back to movement picker when ready
-  let moveA = getMove("fullsquat");
-  let moveB = getMove("flatpushup");
-
   return <>{content}</>;
 }
 
-export default EDTSet;
+export default connect((state, ownProps) => {
+  return {
+    chosenMovements: state.chosenMovements,
+  };
+}, {})(addControllersProp(EDTSet));

@@ -23,6 +23,7 @@ const MovementSlide = (props) => {
               movement={exercise}
               updateExercise={props.updateExercise}
               isExplorer={props.isExplorer}
+              setContent={props.setContent}
             />
           </IonSlide>
         ))}
