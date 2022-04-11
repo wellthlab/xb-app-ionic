@@ -25,7 +25,6 @@ import { PinDropSharp } from "@material-ui/icons";
  */
 const EDTMovementTimer = ({
   exercises,
-  block,
   onSubmit,
   mins,
   secs,

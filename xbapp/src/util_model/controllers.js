@@ -34,6 +34,7 @@ import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
 import { CLEAR_USER, SET_USER } from "./slices/Users";
 
 import { SET_MOVES, CLEAR_MOVES } from "./slices/Movements";
+import { weekdays } from "moment";
 
 
 /**
@@ -414,43 +415,24 @@ async function GET_FEED(client, store, controllers) {
   store.dispatch(SET_FEED(feeds));
 }
 
-async function GET_MOVEMENT_CHOICES(client, store, controllers, moduleId) {
-  store.dispatch(CLEAR_MOVES());
-
-  // let moves = [];
-
-  // try {
-  //   moves = await client.getChosenMovements(moduleId);
-  // } catch(e) {
-  //   console.error(e);
-  // }
-
-  store.dispatch(SET_MOVES({moves: []}));
-}
-
-async function GET_MOVEMENT_CHOICES_IF_REQD(client, store, controllers, moduleId) {
+async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
   const state = store.getState();
-  const fetching = state.chosenMovements.fetching;
-  const loaded = state.chosenMovements.loaded;
 
-  if (!fetching && !loaded) {
-    await controllers.GET_MOVEMENT_CHOICES(moduleId);
+  const user = {...state.userProfile.userProfile};
+  const module = { ...user.modules[moduleId]};
+  if(!module.edtMoves) {
+    module.edtMoves = {};
   }
-}
+  module.edtMoves = {...module.edtMoves, [key]: movements};
 
-async function ADD_MOVEMENT_TO_BLOCK(client, store, controllers, block, movement) {
+  const modules = {...user.modules, [moduleId]: module};
+  const newUser = {
+    ...user,
+    modules: modules
+  }
 
-  const state = store.getState();
-
-  console.log("state", state);
-  console.log(`Adding movement ${movement} to block ${block}`);
-
-}
-
-async function SET_CHOSEN_MOVEMENTS(client, store, controllers, moves) {
-
-  store.dispatch(SET_MOVES({moves: moves}));
-
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
 }
 
 
@@ -475,9 +457,6 @@ function getControllers(store, client) {
     SET_MODULE_FOR_PATH,
     UPDATE_USER_MODULE,
     LEAVE_TEAM,
-    GET_MOVEMENT_CHOICES,
-    GET_MOVEMENT_CHOICES_IF_REQD,
-    ADD_MOVEMENT_TO_BLOCK,
     SET_CHOSEN_MOVEMENTS
   };
 

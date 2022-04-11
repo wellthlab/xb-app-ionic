@@ -206,6 +206,7 @@ const MovementPicker = (props) => {
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -216,6 +217,7 @@ const MovementPicker = (props) => {
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -226,6 +228,7 @@ const MovementPicker = (props) => {
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
             </IonSlides>
           </div>

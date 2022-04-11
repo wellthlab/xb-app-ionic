@@ -13,11 +13,9 @@ import {
 import "./Block.css";
 
 import Moves from "../../Strength/moves.json";
-// import getMove from "../../DEPRECATED/components/OLDMovementPicker";
 import MovementPicker from "../MovementPicker";
 
 var getMove = function (id) {
-  //var moves = Moves;
   var idToUse = id;
   for (var i in Moves.moves) {
     var m = Moves.moves[i];
@@ -232,10 +230,13 @@ const Block = (props) => {
     movements.fullBody = fullBody;
     movements.upperBody = upperBody;
 
+    // TODO: some things don't have unique keys
+    const buttonKey = index + 2 * blockIndex;
+
     return (
       <>
         <IonButton
-          key={index}
+          key={buttonKey}
           className="block-button"
           onClick={() => {
             const content = (
@@ -250,32 +251,12 @@ const Block = (props) => {
                   bottomRow: movements.lowerBody.length,
                 }}
                 setContent={props.setContent}
+                updateExercises={props.updateExercises}
               />
             );
 
             props.setContent(content);
           }}
-          // onClick={(event) => {
-          //   history.push({
-          //     pathname:
-          //       "/box/move/" +
-          //       (props.explorer ? "explore" : "setter") +
-          //       "/movement-picker/" +
-          //       exercise,
-          //     state: {
-          //       moveTypes: moveTypes,
-          //       movements: movements,
-          //       blockIndex: blockIndex,
-          //       initialSlideIndex: {
-          //         upperBody: 0,
-          //         fullBody: 0,
-          //         lowerBody: 0,
-          //       },
-          //
-          //       },
-          //     },
-          //   });
-          // }}
         >
           {props.explorer ? (
             <p>Explore {exercise}</p>

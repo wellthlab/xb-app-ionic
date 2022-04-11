@@ -103,6 +103,7 @@ function Tile(props) {
                   movement={movement}
                   setContent={props.setContent}
                   typeOfExercise={props.typeOfExercise}
+                  updateExercises={props.updateExercises}
                 ></SelectExerciseButton>
               </div>
             )}
