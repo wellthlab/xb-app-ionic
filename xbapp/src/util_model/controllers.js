@@ -33,9 +33,6 @@ import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
 
 import { CLEAR_USER, SET_USER } from "./slices/Users";
 
-import { SET_MOVES, CLEAR_MOVES } from "./slices/Movements";
-import { weekdays } from "moment";
-
 
 /**
  * These controller functions will be returned by getControllers

@@ -21,51 +21,10 @@ const BlockPlanner = (props) => {
   );
 
   let storageKey = week === -1 ? "blocks-week-0" : "blocks-week-" + week;
-
-  // If there are no movements in localStorage, then fill it with default
-  // message
-
   const exercisesChosen = props.exercises;
 
-  // for(const block of exercisesChosen) {
-  //   setCurrentBlock()
-  // }
-
-  // if (!(storageKey in window.localStorage)) {
-  //   var blockArray = [];
-  //   for (const eachBlockIndex in blocks) {
-  //     const eachBlock = blocks[eachBlockIndex];
-  //     var movesPicked = {};
-  //     for (const eachMoveIndex in eachBlock) {
-  //       const eachMove = eachBlock[eachMoveIndex].split(" ").join("+");
-  //       movesPicked[eachMove] = { name: "Select a Move" };
-  //     }
-  //     blockArray.push(movesPicked);
-  //   }
-
-  //   debugger;
-  //   setCurrentBlock(blockArray);
-  // }
-
-  // if the state is undefined then no move has been picked
-  // if (window.history.state.exercisesSet === true) {
-  //   const chosenBlock = getCurrentBlock(); //retrieve previous exercises
-  //   const index = window.history.state.blockIndex;
-  //   const chosenExercise = window.history.state.chosenExercise;
-  //   const type = window.history.state.exerciseType;
-
-  //   chosenBlock[index][type] = chosenExercise;
-  //   setCurrentBlock(chosenBlock);
-  // }
-
   function getCurrentBlock() {
-    // return JSON.parse(window.localStorage.getItem(storageKey));
     return exercisesChosen;
-  }
-
-  // Stores chosen movements in localStorage to save them during selection
-  function setCurrentBlock(chosenBlock) {
-    window.localStorage.setItem(storageKey, JSON.stringify(chosenBlock));
   }
 
   if (props.explorer) {
