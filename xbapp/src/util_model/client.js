@@ -539,7 +539,7 @@ function XBClient() {
       users.push(user);
     }
 
-    self.tidy(users);
+    // self.tidy(users);
 
     return users;
   }
