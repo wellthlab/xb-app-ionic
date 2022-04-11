@@ -22,7 +22,7 @@ const ModuleSlice = createSlice({
             state.loaded = true;
         }
     }
-})
+});
 
 export const {
     CLEAR_MODULES,

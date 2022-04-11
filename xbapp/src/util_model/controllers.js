@@ -22,6 +22,7 @@ import {
   START_LEAVE_TEAM,
   CLEAR_LEAVE_TEAM,
   ABORT_LEAVE_TEAM,
+
 } from "./slices/Teams";
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
@@ -411,6 +412,27 @@ async function GET_FEED(client, store, controllers) {
   store.dispatch(SET_FEED(feeds));
 }
 
+async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
+  const state = store.getState();
+
+  const user = {...state.userProfile.userProfile};
+  const module = { ...user.modules[moduleId]};
+  if(!module.edtMoves) {
+    module.edtMoves = {};
+  }
+  module.edtMoves = {...module.edtMoves, [key]: movements};
+
+  const modules = {...user.modules, [moduleId]: module};
+  const newUser = {
+    ...user,
+    modules: modules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
+}
+
+
 function getControllers(store, client) {
   var out = { client: client, store: store };
 
@@ -431,7 +453,8 @@ function getControllers(store, client) {
     PROGRESS_ALONG_MODULE,
     SET_MODULE_FOR_PATH,
     UPDATE_USER_MODULE,
-    LEAVE_TEAM
+    LEAVE_TEAM,
+    SET_CHOSEN_MOVEMENTS
   };
 
   for (var n of Object.keys(controllers)) {

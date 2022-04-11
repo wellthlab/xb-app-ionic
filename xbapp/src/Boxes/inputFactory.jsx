@@ -18,8 +18,6 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
-  IonItem,
-  IonGrid,
 } from "@ionic/react";
 
 import MinuteEntry from "../UserInput/MinuteEntry";
@@ -70,6 +68,7 @@ export default function responseFactory(
   type,
   team,
   stageNumber,
+  userProfile,
   onSubmit,
   task = undefined
 ) {
@@ -267,6 +266,8 @@ export default function responseFactory(
       input = (
         <EDTSet
           task={task}
+          team={team}
+          userProfile={userProfile}
           groupId={teamId}
           day={day}
           week={week}

@@ -21,9 +21,13 @@ import MovementSlide from "./components/MovementSlide";
 import DetailedMovementSlide from "./components/DetailedMovementSlide";
 import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
 import XBHeader from "../util/XBHeader";
+import { useLocation, useHistory } from "react-router";
 
 const MovementPicker = (props) => {
-  var isExplorer = props.location.pathname.includes("explore");
+  const location = useLocation();
+  const history = useHistory();
+  var isExplorer = location.pathname.includes("explore");
+  const typeOfExercise = props.typeOfExercise;
 
   // Used for the page heading
   const rowHeadings = ["", "", ""];
@@ -47,19 +51,17 @@ const MovementPicker = (props) => {
     },
   });
 
-  const [blockIndex, setBlockIndex] = useState(
-    props.location.state?.blockIndex
-  );
+  const [blockIndex, setBlockIndex] = useState(props.blockIndex);
 
   const [rowSlideOpts, setRowSlideOpts] = useState({
     top: {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.upperBody,
+        initialSlide: props.initialSlideIndex.upperBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView: props.location.state?.numberOfItems.topRow > 1 ? 2 : 1,
+        slidesPerView: props.numberOfItems.topRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -72,11 +74,10 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.fullBody,
+        initialSlide: props.initialSlideIndex.fullBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView:
-          props.location.state?.numberOfItems.middleRow > 1 ? 2 : 1,
+        slidesPerView: props.numberOfItems.middleRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -89,11 +90,10 @@ const MovementPicker = (props) => {
       activeIndex: 0,
       options: {
         // The index of the intital slide
-        initialSlide: props.location.state?.initialSlideIndex.lowerBody,
+        initialSlide: props.initialSlideIndex.lowerBody,
         speed: 400,
         // Display two slides and center them
-        slidesPerView:
-          props.location.state?.numberOfItems.bottomRow > 1 ? 2 : 1,
+        slidesPerView: props.numberOfItems.bottomRow > 1 ? 2 : 1,
         centeredSlides: true,
         // The space between slides
         spaceBetween: 220,
@@ -103,8 +103,6 @@ const MovementPicker = (props) => {
       },
     },
   });
-
-  useEffect(() => {}, []);
 
   // Slide is clicked and the view changes to display DetailedTile
   // The state activeIndex is then updated to preserve the current index for the next render
@@ -160,7 +158,10 @@ const MovementPicker = (props) => {
     return false;
   }
 
-  const passedMovements = props.location.state?.movements;
+  const passedMovements = props.movements;
+
+  // debugger;
+
   let screen;
   // Either render the slides filled with tiles or a detialed tile
   if (invalidMovements(passedMovements)) {
@@ -173,7 +174,8 @@ const MovementPicker = (props) => {
     );
   } else if (!showDetailedTile) {
     screen = (
-      <div id="movement-picker" style={{ padding: "0px" }}>
+      // <div id="movement-picker" style={{ padding: "0px" }}>
+      <>
         <div id="tile-gui">
           <IonIcon icon={caretUp} id="up" className="caret-row"></IonIcon>
           <IonIcon
@@ -202,6 +204,9 @@ const MovementPicker = (props) => {
                 movements={passedMovements.upperBody}
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
+                setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -210,6 +215,9 @@ const MovementPicker = (props) => {
                 movements={passedMovements.fullBody}
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
+                setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
               <MovementSlide
                 horizonalSlideSwiped={horizonalSlideSwiped}
@@ -218,6 +226,9 @@ const MovementPicker = (props) => {
                 movements={passedMovements.lowerBody}
                 updateExercise={updateExercise}
                 isExplorer={isExplorer}
+                setContent={props.setContent}
+                typeOfExercise={typeOfExercise}
+                updateExercises={props.updateExercises}
               />
             </IonSlides>
           </div>
@@ -228,10 +239,10 @@ const MovementPicker = (props) => {
           ></IonIcon>
           <IonIcon icon={caretDown} id="down" className="caret-row"></IonIcon>
         </div>
-      </div>
+        {/* </div> */}
+      </>
     );
   } else {
-    console.log("LEYS");
     screen = (
       <div id="movement-picker" style={{ padding: "0px" }}>
         <DetailedMovementSlide
@@ -245,7 +256,7 @@ const MovementPicker = (props) => {
 
   return (
     <>
-      <XBHeader title={"Movement Picker"} />
+      {/* <XBHeader title={"Movement Picker"} /> */}
 
       {/* <IonContent> */}
       {/* <IonHeader title="Block Planner">

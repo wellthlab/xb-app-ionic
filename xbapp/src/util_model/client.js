@@ -146,7 +146,12 @@ function XBClient() {
    * Get all modules
    */
 
+  let _modules = undefined;
   self.getModules = async function () {
+    if (_modules !== undefined) {
+      return _modules;
+    }
+
     let db = getDb();
     let collection = db.collection("modules");
     let modules = await collection.find({})
@@ -399,7 +404,13 @@ function XBClient() {
    * Get a user profile
    */
 
+  let _userProfile = undefined;
   self.getUserProfile = async function (id = null) {
+
+    if(_userProfile !== undefined) {
+      return _userProfile;
+    }
+
     const db = getDb();
     const collection = db.collection("usersDetails");
 
@@ -416,7 +427,7 @@ function XBClient() {
       return self.tidy(user);
     }
 
-    return user;
+    return (_userProfile = user);
   }
 
   /**
@@ -445,6 +456,7 @@ function XBClient() {
       }
     }
 
+    _userProfile = newUserProfile;
     return { success: true }
   }
 
@@ -454,11 +466,10 @@ function XBClient() {
 
   self.progressUserModule = async function (moduleId) {
     const db = getDb();
-    const userCollection = db.collection("usersDetails");
     const moduleCollection = db.collection("modules");
-    const user = await userCollection.findOne({
-        _userid: {$eq: self.realm.currentUser.id}
-    })
+    const userCollection = db.collection("userDetails");
+
+    const user = this.getUserProfile(self.realm.currentUser.id);
 
     if (user === null) {
       console.error("Unable to find user to progress them along a module")
@@ -531,6 +542,23 @@ function XBClient() {
     self.tidy(users);
 
     return users;
+  }
+
+  /**
+   * Get the edt moves for a given module, as this is stored in the user profile
+   */
+  self.getChosenMovements = async function (moduleId) {
+    const user = await self.getUserProfile(self.realm.currentUser.id);
+
+    // debugger;
+
+    let moves = user.modules[moduleId].edtMoves || [];
+
+    // debugger;
+
+    console.log("Moves for user", moves);
+
+    return moves;
   }
 
   /**
