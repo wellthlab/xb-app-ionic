@@ -40,23 +40,23 @@ function defaultMoveForType(type) {
     case "bilateral upper pull":
       return "chinup";
     // Unilateral
-    // case "unilateral lower push":
-    //   return "lunge";
-    // case "unilateral lower pull":
-    //   return "singlelegromaniandeadlift";
-    // case "unilateral upper push":
-    //   return "archerpushup";
-    // case "unilateral upper pull":
-    //   return "flatpushup";
-    // Isometric
-    case "isolateral lower push":
+    case "unilateral lower push":
       return "vsit";
-    case "isolateral lower pull":
+    case "unilateral lower pull":
       return "lsit";
-    case "isolateral upper push":
+    case "unilateral upper push":
       return "sideplank";
-    case "isolateral upper pull":
+    case "unilateral upper pull":
       return "onearmpull";
+    // Isometric -- TODO: need to hear back from mc
+    // case "isolateral lower push":
+    //   return "vsit";
+    // case "isolateral lower pull":
+    //   return "lsit";
+    // case "isolateral upper push":
+    //   return "sideplank";
+    // case "isolateral upper pull":
+    //   return "onearmpull";
     default:
       return "fullsquat";
   }
