@@ -24,6 +24,7 @@ import { PinDropSharp } from "@material-ui/icons";
  * TODO: use IonToast instead of react-toastify
  */
 const EDTMovementTimer = ({
+  isSnack,
   exercises,
   onSubmit,
   mins,
@@ -206,7 +207,7 @@ const EDTMovementTimer = ({
                 </>
               )}
             </IonRow>
-            {timerOn ? (
+            {timerOn || isSnack ? (
               ""
             ) : (
               <IonRow>

@@ -202,6 +202,7 @@ function PlaylistPlayer(props) {
   // Get the task, and add some useful data as well to be passed around
   const currentTask = { ...tasks[currentTaskIdx] };
   currentTask.moduleId = moduleId;
+  currentTask.module = module;
 
   // We need more useful data for the EDT set
   if (currentTask.intype === "s22edtset") {
@@ -212,7 +213,6 @@ function PlaylistPlayer(props) {
     }
 
     currentTask.moveTypes = moveTypes;
-    currentTask.chosenMoves = userProfile.modules[module._id].moves || [];
   }
 
   // Save the time spent on the tasks

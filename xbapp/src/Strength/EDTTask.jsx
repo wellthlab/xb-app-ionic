@@ -12,6 +12,56 @@ import {
 import { addControllersProp } from "../util_model/controllers";
 import TimerEDT from "./components/EDTMovementTimer";
 import TaskMovementPicker from "./components/TaskMovementPicker";
+
+import Moves from "./moves.json";
+
+const moves = Moves.moves;
+
+function getMove(id) {
+  for (const i in moves) {
+    let m = moves[i];
+    if (m.id === id) {
+      return m;
+    }
+  }
+
+  return false;
+}
+
+function defaultMoveForType(type) {
+  switch (type) {
+    // Bilateral
+    case "bilateral lower push":
+      return "fullsquat";
+    case "bilateral lower pull":
+      return "wallrdlprep";
+    case "bilateral upper push":
+      return "flatpushup";
+    case "bilateral upper pull":
+      return "chinup";
+    // Unilateral
+    // case "unilateral lower push":
+    //   return "lunge";
+    // case "unilateral lower pull":
+    //   return "singlelegromaniandeadlift";
+    // case "unilateral upper push":
+    //   return "archerpushup";
+    // case "unilateral upper pull":
+    //   return "flatpushup";
+    // Isometric
+    case "isolateral lower push":
+      return "vsit";
+    case "isolateral lower pull":
+      return "lsit";
+    case "isolateral upper push":
+      return "sideplank";
+    case "isolateral upper pull":
+      return "onearmpull";
+    default:
+      return "fullsquat";
+  }
+}
+
 /**
  * Render the UI for an EDT set or for picking move variations.
  *
@@ -31,7 +81,14 @@ function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
     setShowMovePicker(!showMovePicker);
   }
 
-  const key = "blocks-week-" + week;
+  const isSnack = task.module.topic.includes("snack/");
+
+  // TODO: decide if should be by playlist week, or absolute week?
+  const playlistWeek = isSnack
+    ? 0
+    : parseInt((userProfile.modules[task.moduleId].stage + 1) % 5, 10);
+  const key = "blocks-week-" + playlistWeek;
+  // const key = "blocks-week-" + week;
 
   // When there are no exercises, then fill with default "Select a Move"
   // messages
@@ -50,11 +107,31 @@ function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
     return blockArray;
   }
 
+  function getDefaultMoves() {
+    const blockArray = [];
+    for (const eachBlockIndex in task.moveTypes) {
+      const eachBlock = task.moveTypes[eachBlockIndex];
+      const movesPicked = {};
+      for (const eachMoveIndex in eachBlock) {
+        const eachMove = eachBlock[eachMoveIndex];
+        movesPicked[eachMove.replaceAll(" ", "+")] = getMove(
+          defaultMoveForType(eachMove)
+        );
+      }
+      blockArray.push(movesPicked);
+    }
+
+    return blockArray;
+  }
+
   // Set up the exercisesChosen variable, where it will either be taken from
   // the userProfile or the default "Select a Move" messages. These are
   // displayed on the buttons for BlockPlanner
+  // TODO: nested ternary is not readable
   const [exercisesChosen, setExercisesChosen] = useState(
-    userProfile.modules[task.moduleId].edtMoves[key]
+    isSnack
+      ? getDefaultMoves()
+      : userProfile.modules[task.moduleId].edtMoves[key]
       ? userProfile.modules[task.moduleId].edtMoves[key]
       : createEmptyMovementsChosen()
   );
@@ -156,6 +233,7 @@ function EDTSet({ task, team, userProfile, day, week, onSubmit, controllers }) {
     content = (
       <>
         <TimerEDT
+          isSnack={isSnack}
           changeMoves={toggleShowMovePicker}
           exercises={[moveA, moveB]}
           onSubmit={onSubmit}
