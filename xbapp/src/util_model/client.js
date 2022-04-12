@@ -404,12 +404,12 @@ function XBClient() {
    * Get a user profile
    */
 
-  let _userProfile = undefined;
+
   self.getUserProfile = async function (id = null) {
 
-    if(_userProfile !== undefined) {
-      return _userProfile;
-    }
+    // if(_userProfile !== undefined) {
+    //   return _userProfile;
+    // }
 
     const db = getDb();
     const collection = db.collection("usersDetails");
@@ -427,7 +427,7 @@ function XBClient() {
       return self.tidy(user);
     }
 
-    return (_userProfile = user);
+    return null;
   }
 
   /**
@@ -456,7 +456,6 @@ function XBClient() {
       }
     }
 
-    _userProfile = newUserProfile;
     return { success: true }
   }
 
@@ -467,9 +466,9 @@ function XBClient() {
   self.progressUserModule = async function (moduleId) {
     const db = getDb();
     const moduleCollection = db.collection("modules");
-    const userCollection = db.collection("userDetails");
+    const userCollection = db.collection("usersDetails");
 
-    const user = this.getUserProfile(self.realm.currentUser.id);
+    const user = await this.getUserProfile(self.realm.currentUser.id);
 
     if (user === null) {
       console.error("Unable to find user to progress them along a module")
@@ -495,14 +494,14 @@ function XBClient() {
     const numPlaylists = module.playlists.length;
     const stage = user.modules[moduleId].stage;
     const newStage  = stage >= numPlaylists - 1 ? stage : stage + 1;
-
     const updated = {
       ...user.modules
     }
+
     updated[moduleId].stage = newStage;
 
     try {
-      const updateOneResult = await userCollection.updateOne({
+      await userCollection.updateOne({
         _userid: {$eq: self.realm.currentUser.id}
       }, {
         $set: {
@@ -517,7 +516,6 @@ function XBClient() {
         message: "Sorry, we couldn't update your progress"
       }
     }
-
   }
 
   /**
