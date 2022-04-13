@@ -103,7 +103,9 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
         <IonItem lines="none" key={index}>
           <IonLabel slot="start">{profile.prefName}</IonLabel>
           {profile.prefName !== "Unknown" ? (
-            <IonLabel slot="end">{memberMinutes[index]} minutes</IonLabel>
+            <IonLabel slot="end">
+              {parseInt(memberMinutes[index], 10)} minutes
+            </IonLabel>
           ) : (
             ""
           )}
