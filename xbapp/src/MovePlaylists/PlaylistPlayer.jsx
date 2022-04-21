@@ -14,7 +14,13 @@ import {
   IonCardTitle,
   IonCardContent,
 } from "@ionic/react";
-import { addCircleOutline } from "ionicons/icons";
+import {
+  addCircleOutline,
+  chevronBackCircleOutline,
+  chevronForwardCircleOutline,
+  saveOutline,
+} from "ionicons/icons";
+
 import { connect } from "react-redux";
 
 import "./PlaylistPlayer.css";
@@ -25,7 +31,6 @@ import Timer from "../Instruments/StatelessTimer";
 import ManualTime from "../Instruments/ManualTimeEntry";
 import XBHeader from "../util/XBHeader";
 import PlaylistInfoBarWithTasks from "./components/PlaylistInfoBarWithTasks";
-import UserProfile from "../UserProfile/UserProfile";
 
 /**
  * Timer UI for timing tasks, or manual entry of minutes
@@ -114,42 +119,40 @@ function PlayerProgressionButtons({
   saveOnFinish,
 }) {
   return (
-    <IonItem lines="none" color="transparent">
-      <IonGrid className="PlaylistNavigation">
-        <IonRow>
-          <IonCol>
+    <IonGrid className="PlaylistNavigation">
+      <IonRow>
+        <IonCol>
+          <IonButton
+            expand="block"
+            onClick={prevTaskInPlaylist}
+            disabled={currentTaskIdx <= 0}
+            size="normal"
+          >
+            <IonIcon icon={chevronBackCircleOutline} />
+          </IonButton>
+        </IonCol>
+        <IonCol>
+          {currentTaskIdx < numTasks - 1 ? (
             <IonButton
               expand="block"
-              onClick={prevTaskInPlaylist}
-              disabled={currentTaskIdx <= 0}
+              onClick={nextTaskInPlaylist}
               size="normal"
             >
-              Previous
+              <IonIcon icon={chevronForwardCircleOutline} />
             </IonButton>
-          </IonCol>
-          <IonCol>
-            {currentTaskIdx < numTasks - 1 ? (
-              <IonButton
-                expand="block"
-                onClick={nextTaskInPlaylist}
-                size="normal"
-              >
-                Next
-              </IonButton>
-            ) : (
-              <IonButton
-                expand="block"
-                routerLink={"/move/task-playlist"}
-                onClick={saveOnFinish}
-                size="normal"
-              >
-                Finish
-              </IonButton>
-            )}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </IonItem>
+          ) : (
+            <IonButton
+              expand="block"
+              routerLink={"/move/task-playlist"}
+              onClick={saveOnFinish}
+              size="normal"
+            >
+              <IonIcon icon={saveOutline} />
+            </IonButton>
+          )}
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   );
 }
 
@@ -350,13 +353,19 @@ function PlaylistPlayer(props) {
           ""
         )}
         {/* Previous and next task buttons */}
-        <PlayerProgressionButtons
-          numTasks={tasks.length}
-          currentTaskIdx={currentTaskIdx}
-          nextTaskInPlaylist={nextTaskInPlaylist}
-          prevTaskInPlaylist={prevTaskInPlaylist}
-          saveOnFinish={saveOnFinish}
-        />
+        <IonItem
+          lines="none"
+          color="transparent"
+          style={{ "--padding-start": "0px", "--inner-padding-end": "0px" }}
+        >
+          <PlayerProgressionButtons
+            numTasks={tasks.length}
+            currentTaskIdx={currentTaskIdx}
+            nextTaskInPlaylist={nextTaskInPlaylist}
+            prevTaskInPlaylist={prevTaskInPlaylist}
+            saveOnFinish={saveOnFinish}
+          />
+        </IonItem>
       </IonContent>
     </IonPage>
   );

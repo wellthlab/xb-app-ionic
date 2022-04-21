@@ -8,20 +8,19 @@ import {
   IonText,
   IonItem,
   IonButton,
+  useIonToast,
 } from "@ionic/react";
 import Blur from "react-css-blur";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 import "./MovementTimer.scss";
 import CountDown from "../../Instruments/CountDown";
 import MovementInfoCard from "../MovementInfoCard";
 import SetCounter from "../SetCounter";
-import { PinDropSharp } from "@material-ui/icons";
 
 /**
  * Time movements
- * TODO: use IonToast instead of react-toastify
  */
 const EDTMovementTimer = ({
   isSnack,
@@ -40,6 +39,7 @@ const EDTMovementTimer = ({
   const [numberOfReps, setNumberOfReps] = React.useState(0);
   const [showReps, setShowReps] = React.useState(false);
   const [timerOn, setTimerOn] = React.useState(false);
+  const [setToast, dismissSetToast] = useIonToast();
 
   function resetTimer() {
     setMoveAlternation([null, null]);
@@ -48,25 +48,32 @@ const EDTMovementTimer = ({
   }
 
   function alternate(key) {
+    let updated;
     if (moveAlternation[0] == null) {
       setNumberOfSets(0);
-      var updated = [false, false];
+      updated = [false, false];
       updated[key] = true;
       setMoveAlternation(updated);
       setTimerOn(true);
       setShowReps(false);
     } else {
-      var updated = [!moveAlternation[0], !moveAlternation[1]];
+      updated = [!moveAlternation[0], !moveAlternation[1]];
       setMoveAlternation(updated);
       setNumberOfSets(numberOfSets + 1);
-      toast("You added 1 SET. Keep going!", {
-        position: moveAlternation[0] === false ? "bottom-right" : "bottom-left",
-        autoClose: 1500,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
+      // toast("You added 1 SET. Keep going!", {
+      //   position: moveAlternation[0] === false ? "bottom-right" : "bottom-left",
+      //   autoClose: 1500,
+      //   hideProgressBar: true,
+      //   closeOnClick: true,
+      //   pauseOnHover: false,
+      //   draggable: false,
+      //   progress: undefined,
+      // });
+      setToast({
+        color: "primary",
+        message: "You've added 1 SET, keep going!",
+        duration: 1500,
+        buttons: [{ text: "OK", handler: dismissSetToast }],
       });
     }
   }
@@ -245,7 +252,7 @@ const EDTMovementTimer = ({
         </IonCardContent>
       </IonCard>
 
-      <ToastContainer
+      {/* <ToastContainer
         position={moveAlternation[0] === false ? "bottom-right" : "bottom-left"}
         autoClose={1500}
         hideProgressBar={true}
@@ -255,7 +262,7 @@ const EDTMovementTimer = ({
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />
+      /> */}
     </>
   );
 };
