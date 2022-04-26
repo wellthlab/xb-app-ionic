@@ -214,8 +214,6 @@ function PlaylistPlayer(props) {
       .slice(0, currentTaskIdx)
       .filter((e) => e.intype === "s22edtset").length;
 
-    console.log("edtBlock", currentTask.edtBlock);
-
     // Add all the moveTypes for all the EDT tasks, used for movement picking
     const moveTypes = [];
     for (let task of edtTasks) {
