@@ -26,7 +26,8 @@ import { connect } from "react-redux";
 // Pages
 import Account from "./Account/Account";
 import Feed from "./Feed/Feed";
-import Leaderboard from "./Leaderboard/Leaderboard";
+// import Leaderboard from "./Leaderboard/Leaderboard";
+import Teams from "./Teams/Teams";
 import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
@@ -145,7 +146,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 exact={true}
               />
               <Route path="/feed" component={Feed} exact={true} />
-              <Route path="/leaderboard" component={Leaderboard} exact={true} />
+              <Route path="/teams" component={Teams} exact={true} />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -275,7 +276,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Progress"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Teams"} href={"/leaderboard"}>
+            <IonTabButton tab={"Teams"} href={"/teams"}>
               <IonIcon icon={trophyOutline} />
               <IonLabel>{"Teams"}</IonLabel>
             </IonTabButton>
