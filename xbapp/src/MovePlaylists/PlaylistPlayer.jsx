@@ -204,19 +204,30 @@ function PlaylistPlayer(props) {
 
   // Get the task, and add some useful data as well to be passed around
   const currentTask = { ...tasks[currentTaskIdx] };
-  currentTask.moduleId = moduleId;
-  currentTask.module = module;
 
   // We need more useful data for the EDT set
   if (currentTask.intype === "s22edtset") {
     const edtTasks = tasks.filter((task) => task.intype === "s22edtset");
+    // determine which EDT block this is, by counting how many EDT sets before
+    // this one
+    currentTask.edtBlock = edtTasks
+      .slice(0, currentTaskIdx)
+      .filter((e) => e.intype === "s22edtset").length;
+
+    console.log("edtBlock", currentTask.edtBlock);
+
+    // Add all the moveTypes for all the EDT tasks, used for movement picking
     const moveTypes = [];
     for (let task of edtTasks) {
       moveTypes.push(task.edtMoves);
     }
-
     currentTask.moveTypes = moveTypes;
   }
+
+  // Add these as fields to the task as well, so we can save and pass info
+  // about the module
+  currentTask.moduleId = moduleId;
+  currentTask.module = module;
 
   // Save the time spent on the tasks
   async function saveResponse() {
