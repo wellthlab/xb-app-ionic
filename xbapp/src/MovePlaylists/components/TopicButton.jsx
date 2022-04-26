@@ -27,6 +27,7 @@ function TopicButton({ topic, title }) {
       expand="full"
       size="normal"
       routerLink={"/move/module-subscriber/" + topic}
+      lines="none"
     >
       <IonThumbnail slot="start">
         <IonImg src={getTopicThumbnail(topic)}></IonImg>

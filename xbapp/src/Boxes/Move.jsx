@@ -6,7 +6,7 @@ import "./Move.scss";
 import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
-import Disclaimer from "./components/Disclaimer";
+
 import UserProfile from "../UserProfile/UserProfile";
 
 const MovePage = (props) => {
@@ -44,14 +44,13 @@ const MovePage = (props) => {
           match={props.match}
           controllers={props.controllers}
         />
-        <Disclaimer checkbox={false} />
       </>
     );
   }
 
   return (
     <IonPage>
-      <XBHeader title="Your Progress"></XBHeader>
+      <XBHeader title="Progress"></XBHeader>
       <IonContent>{content}</IonContent>
     </IonPage>
   );

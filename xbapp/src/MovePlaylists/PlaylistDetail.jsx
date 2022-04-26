@@ -198,7 +198,7 @@ function PlaylistDetail({ teams, modules, userProfile, controllers, match }) {
 
   const moduleDescription = (
     <>
-      <IonGrid>
+      <IonGrid className="ion-no-padding">
         {/* Playlist description */}
         <IonItem lines="none" className="ion-text-header">
           {/* <IonRow>

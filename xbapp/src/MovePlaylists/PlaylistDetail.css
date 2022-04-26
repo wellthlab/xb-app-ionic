@@ -1,7 +1,7 @@
 .playlist-description {
     --padding-bottom: 10px;
-    --padding-start: 10px;
-    --inner-padding-end: 10px;
+    --padding-start: 25px;
+    --inner-padding-end: 25px;
 }
 
 .playlist-progress {

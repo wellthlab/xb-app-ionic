@@ -12,6 +12,7 @@ import {
   IonIcon,
   IonItemGroup,
   IonText,
+  IonCard,
 } from "@ionic/react";
 import {
   warningOutline,
@@ -107,7 +108,7 @@ function PlaylistPicker(props) {
 
     return (
       <>
-        <IonItem>
+        <IonItem lines="none">
           <IonGrid>
             <IonRow>
               <IonCol
@@ -178,8 +179,15 @@ function PlaylistPicker(props) {
         <XBHeader title="Playlists"></XBHeader>
         <IonContent>
           {/* List of plans the user is subscribed to */}
-          <IonItem lines="none">
-            <IonGrid>
+          <IonItem
+            lines="full"
+            style={{
+              "--padding-start": "10px",
+              "--padding-inner-end": "10px",
+              "--padding-bottom": "10px",
+            }}
+          >
+            <IonGrid className="ion-no-padding">
               <IonRow>
                 <IonCol>
                   <IonText>
@@ -187,7 +195,6 @@ function PlaylistPicker(props) {
                   </IonText>
                 </IonCol>
               </IonRow>
-
               <IonRow>
                 <IonCol>
                   {activePlaylists.length > 0 ? (
@@ -209,49 +216,68 @@ function PlaylistPicker(props) {
             </IonGrid>
           </IonItem>
           {/* Movement Snacks, because they are different */}
-          <IonItem lines="none">
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <IonText>
-                    <h3> Movement Snacks</h3>
-                  </IonText>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <IonGrid>
-                    <IonRow>
-                      <IonCol>
-                        <TopicButton topic="snack" title="Together or Alone" />
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonItem>
+          <IonCard>
+            <IonItem
+              lines="none"
+              style={{
+                "--padding-start": "10px",
+                "--padding-inner-end": "10px",
+              }}
+            >
+              <IonGrid>
+                <IonRow>
+                  <IonCol>
+                    <IonText>
+                      <h3> Movement Snacks</h3>
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <IonGrid>
+                      <IonRow>
+                        <IonCol>
+                          <TopicButton
+                            topic="snack"
+                            title="Together or Alone"
+                          />
+                        </IonCol>
+                      </IonRow>
+                    </IonGrid>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonItem>
+          </IonCard>
           {/* Where other plans can be picked */}
-          <IonItem lines="none">
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <IonText>
-                    <h3>Other Playlists</h3>
-                  </IonText>
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol>
-                  <ModuleSubscriptionButtons
-                    userProfile={userProfile}
-                    modules={availableModules}
-                    team={team}
-                  />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonItem>
+          <IonCard>
+            <IonItem
+              lines="none"
+              style={{
+                "--padding-start": "10px",
+                "--padding-inner-end": "10px",
+              }}
+            >
+              <IonGrid>
+                <IonRow>
+                  <IonCol>
+                    <IonText>
+                      <h3>Other Playlists</h3>
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    <ModuleSubscriptionButtons
+                      userProfile={userProfile}
+                      modules={availableModules}
+                      team={team}
+                    />
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonItem>
+          </IonCard>
         </IonContent>
       </IonPage>
     </>
