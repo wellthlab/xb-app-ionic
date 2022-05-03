@@ -19,16 +19,152 @@ import {
   START_CREATE_TEAM,
   CLEAR_CREATE_TEAM,
   ABORT_CREATE_TEAM,
+  START_LEAVE_TEAM,
+  CLEAR_LEAVE_TEAM,
+  ABORT_LEAVE_TEAM,
+
 } from "./slices/Teams";
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
 
 import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
 
+import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
+
+import { CLEAR_USER, SET_USER } from "./slices/Users";
+
+
 /**
  * These controller functions will be returned by getControllers
  * - they'll be wrapped so that client, store and controllers are provided
  */
+
+ async function SET_USER_PROFILE(client, store, controllers) {
+
+  store.dispatch(CLEAR_USER());
+
+  let userProfile = null;
+  try {
+    userProfile = await client.getUserProfile();
+  } catch (error) {
+    return console.error(error);
+  }
+
+  store.dispatch(SET_USER({ userProfile }));
+  console.log("SET_USER", userProfile);
+}
+
+async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
+  const state = store.getState();
+  const fetching = state.userProfile.fetching;
+  const loaded = state.userProfile.loaded;
+  if (!fetching && !loaded) {
+    console.log("Refresh of user profile is required (fetching loading)", fetching, loaded);
+    return await controllers.SET_USER_PROFILE();
+  } else {
+    console.log("Refresh of user profile is not required (fetching loading)", fetching, loaded);
+  }
+}
+
+ async function UPDATE_USER_PROFILE(client, store, controllers, profile) {
+
+  console.log("CREATE_USER_PROFILE", profile);
+  let res = await client.createUserProfile(profile);
+
+  if (res.success === false) {
+    return false;
+  }
+
+  controllers.SET_USER_PROFILE();
+  return true;
+}
+
+async function LOAD_MODULES(client, store) {
+
+  store.dispatch(CLEAR_MODULES());
+
+  let modules = null;
+  try {
+    modules = await client.getModules();
+  }
+  catch (error) {
+    return console.error(error);
+  }
+
+  store.dispatch(GET_MODULES({ modules }));
+  console.log("SET_MODULES", modules);
+}
+
+async function LOAD_MODULES_IF_REQD(client, store, controllers) {
+  const state = store.getState();
+  const f = state.modules.fetching;
+  const l = state.modules.loaded;
+  if (!f && !l) {
+    console.log("Refresh of modules is required", f, l);
+    return await controllers.LOAD_MODULES();
+  } else {
+    console.log("Refresh or modules is not required", f, l);
+  }
+}
+
+
+async function UPDATE_USER_MODULE(client, store, controllers, user, module, subscribe) {
+  const userModules = user.modules || {};
+  const modules = { ...userModules };
+
+  if (subscribe) {
+    modules[module._id] = {
+      id: module._id,
+      name: module.name,
+      topic: module.topic,
+      stage: 0,
+      active: true
+    }
+  } else {
+    modules[module._id] = {
+      ...userModules[module._id],
+      active: false
+    }
+  }
+
+  const newUser = {
+    ...user,
+    modules: modules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
+}
+
+
+/**
+ * Subscribe a user to their path's module and unsubscribe from the others
+ */
+
+async function SET_MODULE_FOR_PATH(client, store, controllers, newPath, oldPath) {
+  const allModules = store.getState().modules.modules;
+  const userProfile = store.getState().userProfile.userProfile;
+
+  // Unsubscribe the user from their old path module if they were subscribed
+  if (oldPath !== newPath) {
+    const oldPathModuleTopic = oldPath + "-path"
+    const oldPathModule = allModules.find(m => m.topic === oldPathModuleTopic);
+    if (!oldPathModule) {
+      console.error("No module found for path", oldPath, "with tag", oldPathModule);
+    } else {
+      await controllers.UPDATE_USER_MODULE(userProfile, oldPathModule, false);
+    }
+  }
+
+  // Subscribe the user to their new path module
+  const pathModuleTopic = newPath + "-path"
+  const pathModule = allModules.find(m => m.topic === pathModuleTopic);
+  if (!pathModule) {
+    return console.error("No module found for path", newPath, "with tag", pathModuleTopic);
+  }
+
+  await controllers.UPDATE_USER_MODULE(userProfile, pathModule, true);
+}
 
 async function LOAD_TEAMS(client, store) {
 
@@ -80,6 +216,20 @@ async function JOIN_TEAM(client, store, controllers, code) {
   }
 }
 
+async function LEAVE_TEAM(client, store, controllers, code) {
+  store.dispatch(START_LEAVE_TEAM());
+  var res = await client.leaveTeam(code);
+
+  if (res.success === false) {
+    store.dispatch(ABORT_LEAVE_TEAM(res.message));
+    return false;
+  } else {
+    store.dispatch(CLEAR_LEAVE_TEAM());
+    controllers.LOAD_TEAMS();
+    return true;
+  }
+}
+
 async function CREATE_TEAM(client, store, controllers, name, desc, expid, startDate, parentTeam) {
 
   // Start date defaults to today
@@ -99,8 +249,15 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid, startD
   }
 }
 
+async function PROGRESS_ALONG_MODULE(client, store, controllers, moduleId) {
+  const ret = await client.progressUserModule(moduleId);
+  await controllers.SET_USER_PROFILE();
+}
+
 async function ADD_RESPONSE(client, store, controllers, expid, value) {
-  value.submitted = new Date().toISOString();
+  if(!value.submitted) {
+    value.submitted = new Date().toISOString();
+  }
   client.addResponse(expid, value);
 
   await controllers.LOAD_TEAMS(); // Refresh team info, since that includes responses
@@ -255,6 +412,27 @@ async function GET_FEED(client, store, controllers) {
   store.dispatch(SET_FEED(feeds));
 }
 
+async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
+  const state = store.getState();
+
+  const user = {...state.userProfile.userProfile};
+  const module = { ...user.modules[moduleId]};
+  if(!module.edtMoves) {
+    module.edtMoves = {};
+  }
+  module.edtMoves = {...module.edtMoves, [key]: movements};
+
+  const modules = {...user.modules, [moduleId]: module};
+  const newUser = {
+    ...user,
+    modules: modules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
+}
+
+
 function getControllers(store, client) {
   var out = { client: client, store: store };
 
@@ -267,6 +445,16 @@ function getControllers(store, client) {
     CREATE_TEAM,
     ADD_RESPONSE,
     GET_FEED,
+    LOAD_MODULES,
+    LOAD_MODULES_IF_REQD,
+    SET_USER_PROFILE,
+    SET_USER_PROFILE_IF_REQD,
+    UPDATE_USER_PROFILE,
+    PROGRESS_ALONG_MODULE,
+    SET_MODULE_FOR_PATH,
+    UPDATE_USER_MODULE,
+    LEAVE_TEAM,
+    SET_CHOSEN_MOVEMENTS
   };
 
   for (var n of Object.keys(controllers)) {

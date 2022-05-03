@@ -1,37 +1,19 @@
-import React, { Component, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import {
-  IonCard,
-  IonButton,
   IonList,
   IonItem,
   IonItemGroup,
-  IonItemDivider,
-  IonListHeader,
-  IonLabel,
   IonIcon,
+  IonLabel,
+  IonText,
 } from "@ionic/react";
 
 import {
-  heart,
-  arrowForward,
-  caretForward,
-  timer,
-  caretBackCircle,
-  caretForwardCircle,
-  checkmarkCircleOutline,
-  closeCircleOutline,
-  add,
-  addCircle,
-  listOutline,
   checkboxOutline,
   squareOutline,
   arrowForwardOutline,
+  happyOutline,
 } from "ionicons/icons";
-
-// See todo, below;
-// import GenericModal from "./GenericModal";
-// import { quizes, getQuiz } from "./GenericModal";
 
 //css
 import "./DailyActions.css";
@@ -59,11 +41,17 @@ const DailyActions = ({ group, today, tabs }) => {
   }
 
   if (typeof entry == "undefined") {
-    return <>Can't find entry for day {activeDay}</>;
+    return (
+      <>
+        <div className="center-message">
+          Can't find an entry for day {activeDay}
+        </div>
+      </>
+    );
   }
 
-  const nextDayExists = dayList.includes(activeDay + 1);
-  const prevDayExists = dayList.includes(activeDay - 1);
+  // const nextDayExists = dayList.includes(activeDay + 1);
+  // const prevDayExists = dayList.includes(activeDay - 1);
 
   var icon_done = checkboxOutline;
   var icon_missing = squareOutline;
@@ -72,14 +60,10 @@ const DailyActions = ({ group, today, tabs }) => {
    * Daily task list and buttons
    */
 
-  var required = group.experiment.tasks[activeDay].required;
-  var optional = group.experiment.tasks[activeDay].optional;
+  let required = group.experiment.tasks[activeDay].required;
+  let optional = group.experiment.tasks[activeDay].optional;
 
-  var tasks = required.map((type) => {
-    if (type.timed) {
-      return;
-    }
-
+  var requiredActions = required.map((type) => {
     var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
@@ -93,16 +77,11 @@ const DailyActions = ({ group, today, tabs }) => {
       >
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
         {type.desc}
-        {/* <span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
       </IonItem>
     );
   });
 
-  var otheractions = optional.map((type) => {
-    if (type.timed) {
-      return;
-    }
-
+  var optionalActions = optional.map((type) => {
     var done = typeof entry.responseTypes[type.intype] !== "undefined";
     return (
       <IonItem
@@ -115,63 +94,77 @@ const DailyActions = ({ group, today, tabs }) => {
       >
         <IonIcon slot="start" icon={done ? icon_done : icon_missing} />
         {type.desc}
-        {/* span slot="end">{type.verb} NOW <IonIcon icon={arrowForward} /></span> */}
       </IonItem>
     );
   });
 
-  var responses = entry.responses;
+  const requiredActionsFiltered = requiredActions.filter((el) => el !== null);
+  const optionalActionsFiltered = optionalActions.filter((el) => el !== null);
 
-  var daytabs;
-  if (typeof tabs == "undefined" || tabs == true) {
-    daytabs = (
-      <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
-        <span className="text">
-          <h3>{"Day " + activeDay + " : " + entry.date}</h3>
-        </span>
-        <span className="navbuttons">
-          {
-            <IonButton
-              disabled={!prevDayExists}
-              onClick={() => {
-                setActiveDay(activeDay - 1);
-              }}
-            >
-              <IonIcon icon={caretBackCircle} />
-            </IonButton>
-          }
-          {
-            <IonButton
-              disabled={!nextDayExists}
-              onClick={() => {
-                setActiveDay(activeDay + 1);
-              }}
-            >
-              <IonIcon icon={caretForwardCircle} />
-            </IonButton>
-          }
-        </span>
-      </div>
-    );
-  } else {
-    daytabs = <></>;
-  }
+  // With new progression model, going back in time is not required.
+  // var daytabs;
+  // if (typeof tabs == "undefined" || tabs === true) {
+  //   daytabs = (
+  //     <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
+  //       <span className="text">
+  //         <h3>{"Day " + activeDay + " : " + entry.date}</h3>
+  //       </span>
+  //       <span className="navbuttons">
+  //         {
+  //           <IonButton
+  //             disabled={!prevDayExists}
+  //             onClick={() => {
+  //               setActiveDay(activeDay - 1);
+  //             }}
+  //           >
+  //             <IonIcon icon={caretBackCircle} />
+  //           </IonButton>
+  //         }
+  //         {
+  //           <IonButton
+  //             disabled={!nextDayExists}
+  //             onClick={() => {
+  //               setActiveDay(activeDay + 1);
+  //             }}
+  //           >
+  //             <IonIcon icon={caretForwardCircle} />
+  //           </IonButton>
+  //         }
+  //       </span>
+  //     </div>
+  //   );
+  // } else {
+  //   daytabs = <></>;
+  // }
 
   return (
     <div className="dailyActions">
       <IonList lines="full" className="journalTasks">
         <IonItemGroup>
-          {required.length != 0 ? (
-            tasks
+          {requiredActionsFiltered.length > 0 ? (
+            requiredActionsFiltered
+          ) : optionalActionsFiltered.length > 0 ? (
+            "" // only display no task msg when there are no optional tasks either
           ) : (
-            <IonLabel>No tasks need your attention</IonLabel>
+            <IonItem lines="none">
+              <IonIcon icon={happyOutline} slot="start" />
+              <IonLabel>
+                <IonText className="ion-text-wrap">
+                  Nothing needs your attention
+                </IonText>
+              </IonLabel>
+            </IonItem>
           )}
         </IonItemGroup>
       </IonList>
 
-      <IonList lines="full" className="journalTasks">
-        <IonItemGroup>{otheractions}</IonItemGroup>
-      </IonList>
+      {optionalActionsFiltered.length > 0 ? (
+        <IonList lines="full" className="journalTasks">
+          <IonItemGroup>{optionalActionsFiltered}</IonItemGroup>
+        </IonList>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

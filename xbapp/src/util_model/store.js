@@ -7,6 +7,8 @@ import Account from "./slices/Account";
 import Teams from "./slices/Teams";
 import Experiments from "./slices/Experiments";
 import Feed from "./slices/Feed";
+import Modules from "./slices/Modules";
+import UserProfile from "./slices/Users";
 
 // See: https://redux-toolkit.js.org/api/configureStore
 var store = configureStore({
@@ -15,6 +17,8 @@ var store = configureStore({
     teams: Teams,
     experiments: Experiments,
     feed: Feed,
+    modules: Modules,
+    userProfile: UserProfile,
   }),
 
   // Disable warnings about passing nonserializable values into actions

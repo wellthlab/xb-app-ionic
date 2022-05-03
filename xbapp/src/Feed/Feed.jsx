@@ -1,5 +1,5 @@
 import React from "react";
-import { IonContent, IonPage } from "@ionic/react";
+import { IonContent, IonPage, IonSpinner } from "@ionic/react";
 import XBHeader from "../util/XBHeader";
 import ContentFeed from "./components/ContentFeed";
 
@@ -18,17 +18,17 @@ const Feed = (props) => {
   const feed = props.feed;
 
   if (feed.fetching) {
-    content = <ion-spinner name="crescent" class="center-spin" />;
+    content = <IonSpinner name="crescent" className="center-spin" />;
   } else if (feed.feed.length < 1) {
     props.controllers.GET_FEED();
-    content = <ion-spinner name="crescent" class="center-spin" />;
+    content = <IonSpinner name="crescent" className="center-spin" />;
   } else {
     content = <ContentFeed feed={props.feed.feed} />;
   }
 
   return (
     <IonPage>
-      <XBHeader title="News &amp; Updates"></XBHeader>
+      <XBHeader title="Reference"></XBHeader>
       <IonContent fullscreen>
         {localStorage.getItem("countActive") != null ? (
           <div style={{ textAlign: "center" }}>

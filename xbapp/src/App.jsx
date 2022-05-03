@@ -1,33 +1,19 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { Component, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import {
   IonApp,
   IonRouterOutlet,
-  IonMenu,
-  IonToolbar,
-  IonHeader,
-  IonContent,
-  IonList,
-  IonItem,
-  IonItemDivider,
   IonTabs,
   IonTabBar,
   IonTabButton,
   IonIcon,
   IonLabel,
-  IonBadge,
-  IonAlert,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  cubeOutline,
-  menu,
-  newspaperOutline,
   settingsOutline,
-  fastFoodOutline,
-  bicycleOutline,
   trophyOutline,
   playOutline,
   barbellOutline,
@@ -40,7 +26,8 @@ import { connect } from "react-redux";
 // Pages
 import Account from "./Account/Account";
 import Feed from "./Feed/Feed";
-import Leaderboard from "./Leaderboard/Leaderboard";
+// import Leaderboard from "./Leaderboard/Leaderboard";
+import Teams from "./Teams/Teams";
 import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
 import MoveTutorial from "./Info/MoveTutorial";
@@ -55,10 +42,8 @@ import ResetPassword from "./Account/ResetPassword";
 
 import OptionTabs from "./Account/Settings";
 import Notifications from "./Account/Notifications";
-import Experiments from "./DEPRECATED/DEPRECATEDExperiments";
 
 import GroupCharts from "./Boxes/Charts";
-import Day from "./DEPRECATED/DEPRECATEDDay";
 
 import JoinTeam from "./StartJourney/JoinTeam.jsx";
 import CreateTeam from "./StartJourney/CreateTeam";
@@ -67,7 +52,7 @@ import EatPage from "./Boxes/Eat";
 import MovePage from "./Boxes/Move";
 import AddResponse from "./Boxes/AddResponse";
 
-import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
+// import BlockPlanner from "./MovementPuzzlePicker/BlockPlanner";
 import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
 
 import Balance from "./UserInput/Balance";
@@ -81,8 +66,14 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import RecordMovement from "./RecordMovement/RecordMovement";
-import MovementTimer from "./RecordMovement/MovementTimer";
+import MovementPage from "./MovePlaylists/Move";
+import TaskPlaylist from "./MovePlaylists/PlaylistPicker";
+import UserProfile from "./UserProfile/UserProfile";
+import ModuleSubscription from "./MovePlaylists/PlaylistSubscriber";
+import PlaylistPlayer from "./MovePlaylists/PlaylistPlayer";
+import HistoricPlaylistEntry from "./MovePlaylists/PlaylistPreviousDay";
+import ChangeTeam from "./StartJourney/ChangeTeam";
+import PlaylistDetail from "./MovePlaylists/PlaylistDetail";
 
 import getXBClient from "./util_model/client";
 
@@ -105,7 +96,7 @@ import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
 
 /* Other CSS from other libs */
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
 
 /* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
@@ -119,13 +110,14 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
-import XBHeader from "./util/XBHeader";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
 
 const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
   let content = null;
+
+  // setupIonicReact();
 
   useEffect(() => {
     if (
@@ -145,23 +137,16 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
     content = (
       <>
         <IonTabs>
-          <IonRouterOutlet id="appContent">
+          <IonRouterOutlet id="appContent" animated={true}>
             <Switch>
               <Route path="/tutorial" component={Tutorial} exact={true} />
               <Route
                 path="/"
-                render={() => <Redirect to="/box/move" />}
+                render={() => <Redirect to="/move" />}
                 exact={true}
               />
-              {/*<Route path="/group/:id/journal" component={Day} exact={true} />*/}
-              {/*<Route path="/group/:id/:page" component={Group} exact={true} />*/}
-              {/*<Route path="/group/:id/" component={Group} exact={true} />*/}
               <Route path="/feed" component={Feed} exact={true} />
-              <Route
-                path="/leaderboard"
-                component={Leaderboard}
-                exact={true}
-              />
+              <Route path="/teams" component={Teams} exact={true} />
               <Route
                 path="/notifications"
                 component={Notifications}
@@ -187,7 +172,7 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
                 component={GroupCharts}
                 exact={true}
               />
-              /** * TODO: Pass box type in the URL on these; linked from the
+              /** TODO: Pass box type in the URL on these; linked from the
               relevant box page */
               <Route
                 path="/start/join/:expid"
@@ -246,14 +231,40 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <Route path="/poms" component={POMS} exact={true} />
               <Route path="/scheduler" component={Scheduler} exact={true} />
               {/** Record movement and timer for Strength 22 */}
+              <Route path="/move" component={MovementPage} exact={true} />
               <Route
-                path="/add-movement"
-                component={RecordMovement}
+                path="/move/task-playlist"
+                component={TaskPlaylist}
                 exact={true}
               />
               <Route
-                path="/timer/:req/:id/:day/:type/:task/:index"
-                component={MovementTimer}
+                path="/move/task-detail/:teamId/:moduleId/:progress"
+                component={PlaylistDetail}
+                exact={true}
+              />
+              <Route
+                path="/move/timer/:teamId/:moduleId/:playlistIdx/:progress"
+                component={PlaylistPlayer}
+                exact={true}
+              />
+              <Route
+                path={"/move/module-subscriber/:topic"}
+                component={ModuleSubscription}
+                exact={true}
+              />
+              <Route
+                path="/settings/user-profile"
+                component={UserProfile}
+                exact={true}
+              />
+              <Route
+                path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
+                component={HistoricPlaylistEntry}
+                exact={true}
+              />
+              <Route
+                path={"/settings/change-team"}
+                component={ChangeTeam}
                 exact={true}
               />
             </Switch>
@@ -265,12 +276,12 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
               <IonLabel>{"Progress"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Teams"} href={"/leaderboard"}>
+            <IonTabButton tab={"Teams"} href={"/teams"}>
               <IonIcon icon={trophyOutline} />
               <IonLabel>{"Teams"}</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab={"Move"} href={"/add-movement"}>
+            <IonTabButton tab={"Move"} href={"/move"}>
               <IonIcon icon={playOutline} />
               <IonLabel>{"Move"}</IonLabel>
             </IonTabButton>

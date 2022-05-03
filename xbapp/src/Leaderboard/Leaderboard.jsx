@@ -87,10 +87,12 @@ const Leaderboard = function ({ controllers }) {
   let content;
 
   if (loading) {
-    content = <IonSpinner name="crescent" />;
-  } else if (fetchErrored) {
-    content = "Sorry, something went wrong";
-  } else {
+    content = <IonSpinner name="crescent" className="center-spin"/>
+  }
+  else if (fetchErrored) {
+    content = 'Sorry, something went wrong';
+  }
+  else {
     content = (
       <>
         <div className="week-picker">

@@ -6,7 +6,9 @@ import {
   IonRow,
   IonCol,
   IonGrid,
+  IonIcon,
 } from "@ionic/react";
+import { refreshOutline, playOutline, pauseOutline } from "ionicons/icons";
 import "./CountDown.scss";
 import { connect } from "react-redux";
 
@@ -76,7 +78,6 @@ function CountDown(props) {
   React.useMemo(() => {
     //whenever the timer is triggered (when the user presses on image)
     if (props.timerOn) toggle();
-
   }, [props.timerOn]);
 
   function toggle() {
@@ -183,9 +184,8 @@ function CountDown(props) {
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-
   return (
-    <IonItem className="contain">
+    <IonItem className="contain" lines="none">
       <IonGrid>
         <IonRow>
           {props.editable ? (
@@ -224,45 +224,50 @@ function CountDown(props) {
               </div>
             </IonCol>
           )}
-          </IonRow>
+        </IonRow>
         <IonRow>
           <IonCol>
-            {props.isExerciseTimer ?
-              (localStorage.getItem("CountDownStartedAt") != null ? <IonButton onClick={toggle} style={{ float: "right" }}>
-                {isActive ? "Pause" : "Start"}
-              </IonButton> : <></>)
-              :
+            {props.isExerciseTimer ? (
+              localStorage.getItem("CountDownStartedAt") != null ? (
+                <IonButton onClick={toggle} style={{ float: "right" }}>
+                  <IonIcon icon={isActive ? pauseOutline : playOutline} />
+                </IonButton>
+              ) : (
+                <></>
+              )
+            ) : (
               <IonButton onClick={toggle} style={{ float: "right" }}>
-                {isActive ? "Pause" : "Start"}
-              </IonButton>}
-
+                <IonIcon icon={isActive ? pauseOutline : playOutline} />
+              </IonButton>
+            )}
           </IonCol>
           <IonCol>
-            {props.isExerciseTimer ?
-              (!isActive && localStorage.getItem("CountDownStartedAt") != null ? (
+            {props.isExerciseTimer ? (
+              !isActive &&
+              localStorage.getItem("CountDownStartedAt") != null ? (
                 <IonButton
                   style={{
                     display: "inline-block",
                   }}
                   onClick={reset}
                 >
-                  Reset
+                  <IonIcon icon={refreshOutline} />
                 </IonButton>
               ) : (
                 ""
-              )) :
-              (!isActive ? (
-                <IonButton
-                  style={{
-                    display: "inline-block",
-                  }}
-                  onClick={reset}
-                >
-                  Reset
-                </IonButton>
-              ) : (
-                ""
-              ))}
+              )
+            ) : !isActive ? (
+              <IonButton
+                style={{
+                  display: "inline-block",
+                }}
+                onClick={reset}
+              >
+                <IonIcon icon={refreshOutline} />
+              </IonButton>
+            ) : (
+              ""
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>

@@ -1,79 +1,74 @@
-import React, { Component, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import WithXBSlice from "../util/WithXBSlice";
 import {
-  IonCa,
-  IonRouterOutlet,
-  IonMenu,
-  IonToolbar,
-  IonHeader,
   IonContent,
   IonList,
   IonItem,
-  IonItemDivider,
   IonCardHeader,
   IonCardContent,
   IonCard,
   IonCardTitle,
-  IonLabel,
-  IonBadge,
-  IonAlert,
   IonSpinner,
+  IonPage,
 } from "@ionic/react";
-import XBHeader from "../util/XBHeader";
-
-import MovementPicker from "../MovementPuzzlePicker/MovementPicker";
-//css
-import "./Settings.scss";
-
-import { addControllersProp } from "../util_model/controllers";
 import { connect } from "react-redux";
 
+import { addControllersProp } from "../util_model/controllers";
+
+import "./Settings.scss";
 import PIS from "../Account/components/PIS";
+import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
 
-const autoBindReact = require("auto-bind/react");
-
 const OptionTabs = (props) => {
-    props.controllers.LOAD_TEAMS_IF_REQD();
+  props.controllers.LOAD_TEAMS_IF_REQD();
 
-    const [showModal, setShowModal] = useState(false);
-    function toggleModal() {
-      setShowModal(!showModal);
-    }
+  const [showModal, setShowModal] = useState(false);
+  function toggleModal() {
+    setShowModal(!showModal);
+  }
 
-    const [showPISModal, setShowPISModal] = useState(false);
-    function togglePISModal() {
-      setShowPISModal(!showPISModal);
-    }
+  const [showPISModal, setShowPISModal] = useState(false);
+  function togglePISModal() {
+    setShowPISModal(!showPISModal);
+  }
 
-
-    if (!props.teams.teams.bybox) {
-      return <IonSpinner name="crescent" class="center-spin" />;
-    }
-
-      var pis = <PIS />;
-
+  if (!props.teams.teams.bybox) {
     return (
-      <>
-        <XBHeader title="Info"></XBHeader>
-        <IonContent id="settings" fullscreen>
+      <IonPage>
+        <XBHeader title="Settings" />
+        <IonContent>
+          <IonSpinner class="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
+    );
+  }
 
+  var pis = <PIS />;
+
+  return (
+    <>
+      <IonPage>
+        <XBHeader title="Settings"></XBHeader>
+        <IonContent id="settings" fullscreen>
           <GenericModal
             showModal={showModal}
-            toggleModal={toggleModal}
+            toggleModal={() => {
+              toggleModal();
+            }}
             title={"Privacy Notice"}
-            message={privacy_notice}
+            body={privacy_notice}
           />
 
           <GenericModal
             showModal={showPISModal}
-            toggleModal={togglePISModal}
+            toggleModal={() => {
+              togglePISModal();
+            }}
             title={"Participant Information Sheet"}
-            message={pis}
+            body={pis}
           />
-
 
           <IonCard>
             <IonCardHeader style={{ textAlign: "left" }}>
@@ -81,30 +76,39 @@ const OptionTabs = (props) => {
             </IonCardHeader>
             <IonCardContent>
               <IonList>
-                <IonItem onClick={toggleModal}>Privacy Notice</IonItem>
-                <IonItem onClick={togglePISModal}>Participant Information</IonItem>
+                <IonItem button onClick={toggleModal}>
+                  Privacy Notice
+                </IonItem>
+                <IonItem button onClick={togglePISModal}>
+                  Participant Information
+                </IonItem>
               </IonList>
             </IonCardContent>
           </IonCard>
-
-          <IonItemDivider></IonItemDivider>
           <IonCard>
             <IonCardHeader style={{ textAlign: "left" }}>
               <IonCardTitle>Settings</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
               <IonList>
+                <IonItem routerLink="/settings/user-profile">
+                  Update Profile
+                </IonItem>
+                <IonItem routerLink={"/settings/change-team"}>
+                  Change Team
+                </IonItem>
                 <IonItem routerLink="/account">Log Out</IonItem>
                 {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
               </IonList>
             </IonCardContent>
           </IonCard>
-          <IonItemDivider></IonItemDivider>
+          {/* <IonItemDivider></IonItemDivider> */}
           <br></br>
         </IonContent>
-      </>
-    );
-}
+      </IonPage>
+    </>
+  );
+};
 
 export default connect(
   (state, ownProps) => {
@@ -128,7 +132,7 @@ export default connect(
 );
 
 var privacy_notice = (
-  <div id="privacyNotice">
+  <div id="privacyNotice" className="ion-text-justify">
     <b>What happens if there is a problem?</b>
     <br></br>
     If you have a concern about any aspect of this study, you should speak to

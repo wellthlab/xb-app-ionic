@@ -35,6 +35,12 @@ function dayify(responses, start, minday, maxday) {
   for (var r of responses) {
     var day = r.day;
 
+    // Some responses don't have a day key, so we need to skip them
+    // because they will be incorrect
+    if (isNaN(day)) {
+      continue;
+    }
+
     minday = Math.min(minday, day);
     maxday = Math.max(maxday, day);
 
@@ -80,11 +86,13 @@ function dayify(responses, start, minday, maxday) {
   for (var day of entries) {
     var mins = 0;
     day.responseTypes = {};
+    day.completedModules = {};
 
     //console.log("Generate summary for", day);
     for (var res of day.responses) {
       // Make a list of answered question types
       day.responseTypes[res.type] = true;
+      day.completedModules[res.moduleId] = true;
 
       // Add minutes up
       if (res.type == "minutes") {
@@ -163,6 +171,9 @@ const TeamSlice = createSlice({
           new Date(team.experiment.start)
         );
 
+        // TODO: force day to be 1 for debug reasons
+        // team.experiment.day = 1;
+
         // Week number
         var week = Math.floor((team.experiment.day - 1) / 7) + 1;
         var dayOfWeek =
@@ -170,7 +181,7 @@ const TeamSlice = createSlice({
         ? "7"
         : (team.experiment.day - (week - 1) * 7).toString();
         team.experiment.week = week;
-        team.experiment.dayOfWeek = dayOfWeek;
+        team.experiment.dayOfWeek = parseInt(dayOfWeek, 10);
 
         // Current experiment phase info
         var stage = dayStage(team.experiment.day, team.experiment.info.stages);
@@ -242,18 +253,14 @@ const TeamSlice = createSlice({
           case 'strength22':
             console.log("This is a strength in work 22 experiment");
             Strength22.decorateTeam(team);
-            console.log("Team has been decorated", team);
+            console.log("Team has been decorated with tasks", team.experiment.tasks);
+            break;
 
           default:
             console.warn("Experiment is not a known type");
             break;
-
         }
-
-
-
       }
-
 
       /**
       * BY-BOX VIEW
@@ -422,6 +429,19 @@ const TeamSlice = createSlice({
       state.join_err = action.payload;
     },
 
+    START_LEAVE_TEAM(state, action) {
+      state.leaving = true;
+      state.leave_err = false;
+    },
+    CLEAR_LEAVE_TEAM(state, action) {
+      state.leaving = false;
+      state.leave_err = false;
+    },
+    ABORT_LEAVE_TEAM(state, action) {
+      state.leaving = false;
+      state.leave_err = action.payload;
+    },
+
     START_CREATE_TEAM(state, action) {
       state.creating = true;
       state.create_err = false;
@@ -448,6 +468,9 @@ export const {
   START_CREATE_TEAM,
   CLEAR_CREATE_TEAM,
   ABORT_CREATE_TEAM,
+  START_LEAVE_TEAM,
+  CLEAR_LEAVE_TEAM,
+  ABORT_LEAVE_TEAM,
 } = TeamSlice.actions;
 
 export default TeamSlice.reducer;

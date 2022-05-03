@@ -18,7 +18,6 @@ import getXBClient from "../util_model/client";
 import { addControllersProp } from "../util_model/controllers";
 
 import "./ForgotPassword.scss";
-import { useState } from "react";
 
 const autoBindReact = require("auto-bind/react");
 

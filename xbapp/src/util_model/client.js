@@ -9,7 +9,6 @@ import "react-app-polyfill/stable";
 import * as Realm from "realm-web";
 
 import { ObjectId } from "bson";
-import { isValid } from "date-fns";
 
 var crypto = require("crypto");
 
@@ -141,6 +140,25 @@ function XBClient() {
     const res = await self.realm.currentUser.functions.sortTeams(monday);
     self.tidy(res);
     return res;
+  }
+
+  /**
+   * Get all modules
+   */
+
+  let _modules = undefined;
+  self.getModules = async function () {
+    if (_modules !== undefined) {
+      return _modules;
+    }
+
+    let db = getDb();
+    let collection = db.collection("modules");
+    let modules = await collection.find({})
+
+    self.tidy(modules);
+
+    return modules;
   }
 
   /**
@@ -276,6 +294,34 @@ function XBClient() {
   };
 
   /**
+   * Remove the current user from their team
+   */
+  self.leaveTeam = async function (code) {
+    const db = getDb();
+    const collection = db.collection("teams");
+    const team = await collection.findOne({ code: {$eq: code} });
+
+    if (!team) {
+      return { success: false, message: "Team not found" };
+    }
+
+    const user = self.realm.currentUser;
+    const newUsers = team.users.filter((u) => u !== user.id);
+
+    try {
+      const updateResult = await collection.updateOne(
+        { code: {$eq: code} },
+        { $set: { users: newUsers } }
+      );
+    } catch (e) {
+      console.log(e);
+      return { success: false, message: "Couldn't update the team" }
+    }
+
+    return { success: true };
+  }
+
+  /**
    * Add a response for the given team
    */
   self.addResponse = async function (teamid, response) {
@@ -318,6 +364,30 @@ function XBClient() {
   };
 
   /**
+   * Get the number of minutes exercised by the team members for the given
+   * day
+   */
+  self.getTeamMinutes = async function (team, day) {
+    const allTeamData = await self.realm.currentUser.functions.getTeamData(new ObjectId(team._id));
+    const allResponses = allTeamData[0].allresponses;
+    const teamMinutes = [];
+
+    for (const userId of team.users) {
+      // Get the user's responses for the given day
+      const userResponses = allResponses.filter(r => r.user === userId)[0].responses;
+      const todaysResponses = userResponses.filter(r => r.day === day);
+      // Add the minutes to the total
+      let userMinutes = 0;
+      for(const r of todaysResponses) {
+        userMinutes += r.minutes || 0;
+      }
+      teamMinutes.push(userMinutes);
+    }
+
+    return teamMinutes;
+  }
+
+  /**
    * Get details of an experiment
    */
   self.getExperiments = async function (exid) {
@@ -329,6 +399,165 @@ function XBClient() {
 
     return self.tidy(exps);
   };
+
+  /**
+   * Get a user profile
+   */
+
+
+  self.getUserProfile = async function (id = null) {
+
+    // if(_userProfile !== undefined) {
+    //   return _userProfile;
+    // }
+
+    const db = getDb();
+    const collection = db.collection("usersDetails");
+
+    if (id == null) {
+      id = self.realm.currentUser.id;
+    }
+
+    const user = await collection.findOne({
+        _userid: {$eq: id}
+      }
+    );
+
+    if (user) {
+      return self.tidy(user);
+    }
+
+    return null;
+  }
+
+  /**
+     * Create a user profile
+     */
+  self.createUserProfile = async function (userProfile) {
+    const db = getDb();
+    const collection = db.collection("usersDetails");
+
+    const newUserProfile = {
+      _userid: self.realm.currentUser.id,
+      ...userProfile,
+    };
+
+    delete newUserProfile._id;
+
+    try {
+      const updateOneResult = await collection.updateOne({
+        _userid: {$eq: self.realm.currentUser.id}
+      }, newUserProfile, {upsert: true});
+    } catch (e) {
+      console.error("Error updating user", e);
+      return {
+        success: false,
+        message: "Sorry, we couldn't update your user profile"
+      }
+    }
+
+    return { success: true }
+  }
+
+  /**
+   * Progress a user along their module
+   */
+
+  self.progressUserModule = async function (moduleId) {
+    const db = getDb();
+    const moduleCollection = db.collection("modules");
+    const userCollection = db.collection("usersDetails");
+
+    const user = await this.getUserProfile(self.realm.currentUser.id);
+
+    if (user === null) {
+      console.error("Unable to find user to progress them along a module")
+      return {
+        success: false,
+        message: "user profile doesn't exist"
+      }
+    }
+
+    const moduleObjectId = new ObjectId(moduleId);
+    const module = await moduleCollection.findOne({
+      _id: { $eq: moduleObjectId }
+    });
+
+    if(module === null) {
+      console.error("Trying to update a module which doesn't exist");
+      return {
+        success: false,
+        message: "module doesn't exist"
+      }
+    }
+
+    const numPlaylists = module.playlists.length;
+    const stage = user.modules[moduleId].stage;
+    const newStage  = stage >= numPlaylists - 1 ? stage : stage + 1;
+    const updated = {
+      ...user.modules
+    }
+
+    updated[moduleId].stage = newStage;
+
+    try {
+      await userCollection.updateOne({
+        _userid: {$eq: self.realm.currentUser.id}
+      }, {
+        $set: {
+          modules: updated
+        }
+      });
+      console.log("Progressed user in module", module.name, "from", stage, "to stage", newStage);
+    } catch (e) {
+      console.error("Error updating user", e);
+      return {
+        success: false,
+        message: "Sorry, we couldn't update your progress"
+      }
+    }
+  }
+
+  /**
+   * Get the userProfile for all the users in a team
+   */
+
+   self.getTeamUserProfiles = async function (teamCode) {
+    const db = getDb();
+    const collection = db.collection("teams");
+    const team = await collection.findOne({ code: {$eq: teamCode} });
+
+    const users = [];
+    for (const id of team.users) {
+      let user = await self.getUserProfile(id);
+      if(user === null) {  // this happens when someone joins a team, but closes the app before creating their profile
+        user = { prefName: "Unknown" };
+      }
+
+      users.push(user);
+    }
+
+    // self.tidy(users);
+
+    return users;
+  }
+
+  /**
+   * Get the edt moves for a given module, as this is stored in the user profile
+   */
+  self.getChosenMovements = async function (moduleId) {
+    const user = await self.getUserProfile(self.realm.currentUser.id);
+
+    // debugger;
+
+    let moves = user.modules[moduleId].edtMoves || [];
+
+    // debugger;
+
+    console.log("Moves for user", moves);
+
+    return moves;
+  }
 
   /**
    * Tidy up a result so it's safe to pass into redux with warnings about non-serializabilty

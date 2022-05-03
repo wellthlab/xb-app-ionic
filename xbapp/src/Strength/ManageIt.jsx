@@ -8,7 +8,9 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
+  IonIcon,
 } from "@ionic/react";
+import { checkmarkOutline, closeOutline } from "ionicons/icons";
 
 import Video from "./Video";
 
@@ -20,34 +22,34 @@ function ManageItQuestion({ attempt, onSubmit }) {
     <>
       <IonRow>
         <IonCol class="ion-text-start">
-          <IonItem>Attempt {attempt}</IonItem>
+          <IonItem lines="none">Attempt {attempt}</IonItem>
         </IonCol>
         <IonCol class="ion-text-end">
           <IonButton
             disabled={yesDisabled}
             onClick={() => {
               setNoDisabled(true);
-              onSubmit({
-                assType: "manageit",
-                attempts: attempt,
-                response: "yes",
-              });
+              // onSubmit({
+              //   assType: "manageit",
+              //   attempts: attempt,
+              //   response: "yes",
+              // });
             }}
           >
-            Yes
+            <IonIcon icon={checkmarkOutline} />
           </IonButton>
           <IonButton
             disabled={noDisabled}
             onClick={() => {
               setYesDisabled(true);
-              onSubmit({
-                assType: "manageit",
-                attempts: attempt,
-                response: "no",
-              });
+              // onSubmit({
+              //   assType: "manageit",
+              //   attempts: attempt,
+              //   response: "no",
+              // });
             }}
           >
-            No
+            <IonIcon icon={closeOutline} />
           </IonButton>
         </IonCol>
       </IonRow>

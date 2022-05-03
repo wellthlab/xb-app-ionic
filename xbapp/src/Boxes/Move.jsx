@@ -1,66 +1,57 @@
-import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonItem,
-  IonInput,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonSpinner,
-} from "@ionic/react";
-import XBHeader from "../util/XBHeader";
-import Enroller from "./components/Enroller";
-import GroupInfo from "./components/GroupInfo";
-import "./Move.scss";
+import { IonContent, IonPage, IonSpinner } from "@ionic/react";
 import { connect } from "react-redux";
 import { addControllersProp } from "../util_model/controllers";
 
-import Disclaimer from "./components/Disclaimer";
+import "./Move.scss";
+import XBHeader from "../util/XBHeader";
+import Enroller from "./components/Enroller";
+import GroupInfo from "./components/GroupInfo";
+
+import UserProfile from "../UserProfile/UserProfile";
 
 const MovePage = (props) => {
-  React.useEffect(() => {
-    props.controllers.LOAD_TEAMS();
-  }, [!!props.teams]);
-
-  if (!props.teams.teams.bybox) {
-    return <IonSpinner class="center-spin" name="crescent" />;
-  }
-
-  // Ask the user to enrol in a move experiment; or show current experiment info
-  if (!props.teams.teams.bybox["move"]) {
-    var content = <Enroller boxtype="move" />;
-  } else {
-    var content = (
-      <>
-        <GroupInfo
-          group={props.teams.teams.bybox["move"][0]}
-          match={props.match}
-        ></GroupInfo>
-        <Disclaimer checkbox={false} />
-      </>
+  props.controllers.LOAD_TEAMS_IF_REQD();
+  props.controllers.LOAD_MODULES_IF_REQD();
+  props.controllers.SET_USER_PROFILE_IF_REQD();
+  if (
+    !props.teams.loaded ||
+    !props.modules.loaded ||
+    !props.userProfile.loaded
+  ) {
+    return (
+      <IonPage>
+        <XBHeader title="Move" />
+        <IonContent>
+          <IonSpinner class="center-spin" name="crescent" />
+        </IonContent>
+      </IonPage>
     );
   }
 
-  // let task = "testTask";
-  // let group = props.teams.teams.bybox["move"][0];
-  // let tempButton = (
-  //   <>
-  //     <IonItem routerLink={"/journal/" + group._id + "/" + task}>
-  //       <IonButton>Test button to journal</IonButton>
-  //     </IonItem>
-  //   </>
-  // );
+  // Ask the user to enrol in a move experiment, set up their profile or show
+  // current experiment info
+  let content = null;
+  if (!props.teams.teams.bybox["move"]) {
+    content = <Enroller boxtype="move" />;
+  } else if (!props.userProfile.userProfile) {
+    content = <UserProfile pageType="move" />;
+  } else {
+    content = (
+      <>
+        <GroupInfo
+          group={props.teams.teams.bybox["move"][0]}
+          modules={props.modules.modules}
+          match={props.match}
+          controllers={props.controllers}
+        />
+      </>
+    );
+  }
 
   return (
     <IonPage>
       <XBHeader title="Progress"></XBHeader>
       <IonContent>{content}</IonContent>
-      {/* {tempButton} */}
     </IonPage>
   );
 };
@@ -70,6 +61,8 @@ export default connect(
     return {
       teams: state.teams,
       experiments: state.experiments,
+      userProfile: state.userProfile,
+      modules: state.modules,
     };
   },
   {

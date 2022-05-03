@@ -13,6 +13,8 @@ import {
   IonCardTitle,
   IonCardContent,
   IonCardSubtitle,
+  IonSpinner,
+  IonPage,
 } from "@ionic/react";
 import {
   addCircleOutline,
@@ -35,20 +37,58 @@ import XBHeader from "../util/XBHeader";
  * the number of minutes that it took
  */
 function MovementTimer(props) {
-  let [manualEntry, setManualEntry] = useState(false);
+  const [manualEntry, setManualEntry] = useState(false);
+  const [group, setGroup] = useState(false);
+  const [currentTask, setCurrentTask] = useState(false);
+  const [minutes, setMinutes] = useState(false);
+  const [exResponse, setExResponse] = useState({});
 
   let gid = props.match.params.id;
   let day = props.match.params.day;
   let type = props.match.params.type;
-  let tasktype = props.match.params.task;
+  let taskType = props.match.params.task;
   let optionalOrRequired = props.match.params.req;
-  let taskindex = props.match.params.index;
+  let taskIdx = props.match.params.index;
+  let section = props.match.params.section;
 
-  const [group, setGroup] = useState(false);
-  const [currentTask, setCurrentTask] = useState(false);
+  // Save the response, plus the minutes from the timer, day number, and type
+  async function save() {
+    var res = {};
+    // Add data from the task's proto response, if there is one
+    for (var k of Object.keys(currentTask.protoResponse ?? {})) {
+      res[k] = currentTask.protoResponse[k];
+    }
+    // Add data from the widgets
+    for (var k of Object.keys(exResponse)) {
+      res[k] = exResponse[k];
+    }
+    res.requiredTask = optionalOrRequired === "required";
+    res.type = type;
+    res.intype = taskType;
+    res.minutes = minutes;
+    res.day = day;
+    await props.controllers.ADD_RESPONSE(gid, res);
+    console.log("Saved response", res);
+  }
 
-  const [minutes, setMinutes] = useState(false);
-  const [exResponse, setExResponse] = useState({});
+  // Merge the prevous response into the new one
+  // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
+  var updateResponse = (res) => {
+    var updated = {};
+    for (var k of Object.keys(exResponse)) {
+      updated[k] = exResponse[k];
+    }
+    for (var k of Object.keys(res)) {
+      updated[k] = res[k];
+    }
+    console.log("New response", res, updated);
+    // If the response contains a minutes key - i.e is setting the number of minutes for the movement
+    // then update our internal minute state
+    if (Object.keys(res).includes("minutes")) {
+      setMinutes(res.minutes);
+    }
+    setExResponse(updated);
+  };
 
   // Load team data if required; mostly useful during development
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -61,97 +101,53 @@ function MovementTimer(props) {
         setGroup(g);
       }
     }
-
-    return <>Group not found</>;
+    return <IonSpinner name="crescent" className="center-spin" />;
   }
 
-  // TODO: Looking up tasks like this won't scale; we should create a slice to store the current timer state
-  // and push all the relevant state - including the current task - into that
+  // TODO: Looking up tasks like this won't scale; we should create a slice to
+  // store the current timer state and push all the relevant state - including
+  // the current task - into that
   if (currentTask === false) {
     // Find the task if not found already
     if (optionalOrRequired === "required") {
-      setCurrentTask(group.experiment.tasks[day].required[taskindex]);
+      setCurrentTask(group.experiment.tasks[day].required[section][taskIdx]);
     } else {
-      setCurrentTask(group.experiment.tasks[day].optional[taskindex]);
+      setCurrentTask(group.experiment.tasks[day].optional[taskIdx]);
     }
-    return <></>;
   }
-
-  console.log("Current timer task", currentTask);
-
-  if (typeof currentTask == "undefined") {
-    return <>ERROR; task is not defined</>;
+  if (typeof currentTask == "undefined" || currentTask === false) {
+    return (
+      <>
+        <div className="center-message">
+          <h3>The current task has not been defined</h3>
+        </div>
+      </>
+    );
   }
 
   let totalMinutes = group.s22plan.target;
 
-  // Save the response, plus the minutes from the timer, day number, and type
-  async function save() {
-    var res = {};
-
-    // Add data from the task's proto response, if there is one
-    for (var k of Object.keys(currentTask.protoResponse ?? {})) {
-      res[k] = currentTask.protoResponse[k];
-    }
-
-    // Add data from the widgets
-    for (var k of Object.keys(exResponse)) {
-      res[k] = exResponse[k];
-    }
-
-    res.requiredTask = optionalOrRequired === "required";
-    res.type = type;
-    res.intype = tasktype;
-    res.minutes = minutes;
-    res.day = day;
-    await props.controllers.ADD_RESPONSE(gid, res);
-    console.log("Saved response", res);
-  }
-
-  var updateResponse = (res) => {
-    // Merge the prevous response into the new one
-    // We do this rather than overwriting, because sometimes inputFactory combines multiple widgets together and want to save the combined data
-    var updated = {};
-
-    for (var k of Object.keys(exResponse)) {
-      updated[k] = exResponse[k];
-    }
-
-    for (var k of Object.keys(res)) {
-      updated[k] = res[k];
-    }
-
-    console.log("New response", res, updated);
-
-    // If the response contains a minutes key - i.e is setting the number of minutes for the movement
-    // then update our internal minute state
-    if (Object.keys(res).includes("minutes")) {
-      setMinutes(res.minutes);
-    }
-
-    setExResponse(updated);
-  };
-
   const content = inputFactory(
-    tasktype,
+    taskType,
     group,
     day,
     updateResponse,
     currentTask
   );
 
-  var extra;
+  var taskExtraContent;
   if (content !== false) {
-    extra = content.input;
+    taskExtraContent = content.input;
   } else {
-    extra = "";
+    taskExtraContent = "";
   }
 
   var ready = minutes > 0;
 
   // Prepare a timer, if required
   var timer = "";
-  if (tasktype !== "s22edtset" && tasktype !== "s22questions") {
+
+  if (currentTask.timed) {
     timer = (
       <IonCard>
         <IonCardHeader>
@@ -256,25 +252,25 @@ function MovementTimer(props) {
 
   return (
     <>
-      <XBHeader title="Record Movement" />
-      <IonContent style={{ "--padding-bottom": "40px" }}>
-        {/* Exercise and for how long header -- press for details */}
-        <IonItem
-          detailIcon={informationCircleOutline}
-          detail={true}
-          color={"secondary"}
-        >
-          <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
-        </IonItem>
-
-        {/* Additional content, like the move picker or a video */}
-        {extra}
-
-        {/* Timer and buttons for manual entry of minutes */}
-        {/* The timer is NOT SHOWN when we're doing an EDT super set thing,
-        as we are going to be using the old countdown timer there. */}
-        {timer}
-      </IonContent>
+      <IonPage>
+        <XBHeader title="Record Your Movement" />
+        <IonContent>
+          {/* Exercise and for how long header -- press for details */}
+          <IonItem
+            detailIcon={informationCircleOutline}
+            detail={true}
+            color={"secondary"}
+          >
+            <IonLabel>{currentTask.desc.toUpperCase()}</IonLabel>
+          </IonItem>
+          {/* Additional content, like the move picker or a video */}
+          {taskExtraContent}
+          {/* Timer and buttons for manual entry of minutes */}
+          {/* The timer is NOT SHOWN when we're doing tasks with timed === false
+           */}
+          {timer}
+        </IonContent>
+      </IonPage>
     </>
   );
 }
@@ -284,8 +280,6 @@ export default connect(
     return {
       account: state.account,
       teams: state.teams,
-      experiments: state.experiments,
-      boxes: state.boxes,
     };
   },
   {

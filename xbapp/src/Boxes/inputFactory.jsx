@@ -46,9 +46,12 @@ import Timer from "../Instruments/StatelessTimer";
 import EDTSet from "../Strength/EDTTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
+import TaskInstructions from "../Strength/TaskInstructions";
+import ModuleSubscriptionButtons from "../MovePlaylists/components/TopicSubscriptionButtons";
+import quizFactory from "../Quiz/quizFactory";
 
 /**
- * Create input widgets based on task type
+ * Create input widgets based on task type}
  * type: The type of task to generate widgets for
  * group: The group ID that the task belongs to
  * daynumber: The day number of the experiment within the group
@@ -63,21 +66,25 @@ import ContextualQuestions from "../Strength/Questions";
  */
 export default function responseFactory(
   type,
-  group,
-  dayNumber,
+  team,
+  stageNumber,
+  userProfile,
   onSubmit,
-  taskObj
+  task = undefined
 ) {
   // time key is used to re-create rather than re-use elements on subsequent uses
   var input, typedesc;
   var time = Date.now();
-  var groupID = group._id;
-  let week = group.experiment.week;
-  let day = group.experiment.day;
+  var teamId = team._id;
+  let week = team.experiment.week;
+  let day = team.experiment.day;
 
-  // info is an optional param; it's other fields that the type might need
-  if (typeof taskObj == "undefined") {
-    taskObj = {};
+  // task is an optional param; it's the task object and contains other fields that the type might need
+  if (typeof task == "undefined") {
+    task = {
+      input: "",
+      desc: "",
+    };
   }
 
   switch (type) {
@@ -105,7 +112,7 @@ export default function responseFactory(
       typedesc = "Strength";
       input = (
         <StrengthWizard
-          countdownID={dayNumber + "-" + groupID}
+          countdownID={stageNumber + "-" + teamId}
           week={week}
           onSubmit={onSubmit}
         />
@@ -125,7 +132,7 @@ export default function responseFactory(
           onSubmit={onSubmit}
           explorer={true}
           week={week}
-          day={dayNumber}
+          day={stageNumber}
         />
       );
       break;
@@ -142,7 +149,7 @@ export default function responseFactory(
 
     case "scheduler":
       var planner = [];
-      if (week === 0 && dayNumber === 1) {
+      if (week === 0 && stageNumber === 1) {
         planner = [
           { day: "Tuesday", isChecked: false },
           { day: "Wednesday", isChecked: false },
@@ -187,7 +194,7 @@ export default function responseFactory(
       break;
 
     case "quiz":
-      input = <Quiz onSubmit={onSubmit} week={week} />;
+      input = <Quiz onSubmit={onSubmit} task={task} />;
       typedesc = "Quiz";
       break;
 
@@ -207,31 +214,33 @@ export default function responseFactory(
       break;
 
     case "s22plan":
-      input = <Planner onSubmit={onSubmit} group={group} />;
+      input = <Planner onSubmit={onSubmit} group={team} />;
       typedesc = "Weekly Plan";
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={taskObj.video} />;
+      input = <Video onSubmit={onSubmit} video={task.video} />;
       typedesc = "Video Move";
       break;
 
     case "s22assessedvideo":
       input = (
         <>
-          <Video onSubmit={onSubmit} video={taskObj.video} />
+          <Video onSubmit={onSubmit} video={task.video} />
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>Time your {taskObj.move}</IonCardTitle>
+              <IonCardTitle>Time your {task.move}</IonCardTitle>
               <IonCardSubtitle>
                 Timing your move will let you measure your progress
               </IonCardSubtitle>
             </IonCardHeader>
-            <Timer
-              onPause={(mins) => {
-                onSubmit({ assTimeSecs: mins * 60 });
-              }}
-            />
+            <IonCardContent>
+              <Timer
+                onPause={(mins) => {
+                  onSubmit({ assTimeSecs: mins * 60 });
+                }}
+              />
+            </IonCardContent>
           </IonCard>
         </>
       );
@@ -239,27 +248,27 @@ export default function responseFactory(
       break;
 
     case "s22weblink":
-      input = (
-        <WebLink onSubmit={onSubmit} link={taskObj.link} info={taskObj} />
-      );
+      input = <WebLink onSubmit={onSubmit} link={task.link} info={task} />;
       typedesc = "Web Link";
       break;
 
     case "s22other":
-      input = <OtherMove onSubmit={onSubmit} />;
+      input = <OtherMove onSubmit={onSubmit} task={task} />;
       typedesc = "Other Movement";
       break;
 
     case "s22manage":
-      input = <ManageItTask task={taskObj} onSubmit={onSubmit} />;
+      input = <ManageItTask task={task} onSubmit={onSubmit} />;
       typedesc = "Manage It";
       break;
 
     case "s22edtset":
       input = (
         <EDTSet
-          task={taskObj}
-          groupId={groupID}
+          task={task}
+          team={team}
+          userProfile={userProfile}
+          groupId={teamId}
           day={day}
           week={week}
           onSubmit={onSubmit}
@@ -274,19 +283,34 @@ export default function responseFactory(
       break;
 
     case "s22instructions":
-      input = (
-        <IonCard>
-          <IonCardContent>{taskObj.text}</IonCardContent>
-        </IonCard>
-      );
+      input = <TaskInstructions task={task} />;
       typedesc = "Instructions";
       break;
+
+    case "s22subscribe":
+      input = <ModuleSubscriptionButtons />;
+      typedesc = "Subscribe";
+      break;
+
+    case "s22quiz":
+      const quizInput = [];
+      for (let i in task.quiz) {
+        const subQ = task.quiz[i];
+        quizInput.push(quizFactory(subQ.tag, subQ.type, subQ, onSubmit));
+      }
+      input = <>{quizInput}</>;
+      typedesc = "Quiz";
+      break;
+
     default:
-      input = <p>Unknown Response Type</p>;
+      input = (
+        <p>
+          Unknown response type of {task.intype} for task {task.desc}{" "}
+        </p>
+      );
       typedesc = "";
       break;
   }
-
   return {
     input: input,
     desc: typedesc,

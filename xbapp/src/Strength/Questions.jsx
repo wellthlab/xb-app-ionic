@@ -88,7 +88,7 @@ function QuestionChoice({
 function ContextualQuestions({ onSubmit }) {
   let [atHomeOrWork, setAtHomeOrWork] = useState(undefined);
   let [somewhereElse, setSomewhereElse] = useState(undefined);
-  let [location, setLocation] = useState(undefined);
+  // let [location, setLocation] = useState(undefined);
   let [whoWith, setWhoWith] = useState(undefined);
   let [timeOfDay, setTimeOfDay] = useState(undefined);
   let [indoorsOrOutdoors, setIndoorsOrOutdoors] = useState(undefined);
@@ -100,8 +100,10 @@ function ContextualQuestions({ onSubmit }) {
         <IonCardHeader>
           <IonCardTitle>How did you move today?</IonCardTitle>
           <IonCardSubtitle>
-            These <IonText color={"tertiary"}>optional</IonText> questions will
-            help us understand how you are choosing to move
+            <IonText className="ion-text-wrap">
+              These questions will help us understand how you are choosing to
+              move
+            </IonText>
           </IonCardSubtitle>
         </IonCardHeader>
 
@@ -142,14 +144,14 @@ function ContextualQuestions({ onSubmit }) {
               resLabel={"indoorsOrOutdoors"}
               onSubmit={onSubmit}
             />
-            <QuestionText
+            {/* <QuestionText
               question="Where are you, e.g. office?"
               type="text"
               value={location}
               setValue={setLocation}
               resLabel={"location"}
               onSubmit={onSubmit}
-            />
+            /> */}
             <QuestionChoice
               question={"What time of day is it?"}
               choices={["Morning", "Midday", "Afternoon", "Evening"]}
