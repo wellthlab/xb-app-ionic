@@ -7,7 +7,7 @@ import MovementInfoCard from "./MovementInfoCard";
 import SetCounter from "./SetCounter";
 
 import { moves, getMove } from "../DEPRECATED/components/OLDMovementPicker";
-import "./components/MovementTimer.scss";
+import "./components/edt/EdtTimer.scss";
 
 /**
  * Show exercise, with tips to find the right level

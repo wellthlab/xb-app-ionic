@@ -9,18 +9,23 @@ import {
   IonSelectOption,
   IonSelect,
   IonCard,
-  IonCardContent,
   IonGrid,
   IonRow,
   IonCol,
   IonSpinner,
   IonPage,
+  IonIcon,
+  IonCardSubtitle,
+  IonCardHeader,
+  IonCardTitle,
+  IonList,
 } from "@ionic/react";
 
 import { addControllersProp } from "../util_model/controllers";
 
 import XBHeader from "../util/XBHeader";
 import { useHistory } from "react-router";
+import { saveOutline } from "ionicons/icons";
 
 const facultyMap = {
   "Health, Safety & Risk": [],
@@ -70,6 +75,7 @@ const facultyMap = {
     "Ocean and Earth Science",
     "Psychology",
   ],
+  Other: [],
 };
 
 const departmentMap = [
@@ -104,6 +110,8 @@ const departmentMap = [
   "Geography and Environmental Sciences",
   "Ocean and Earth Science",
   "Psychology",
+  "Professional Services",
+  "Other",
 ].sort();
 
 const facultyList = Object.keys(facultyMap).sort();
@@ -115,6 +123,7 @@ const facultyList = Object.keys(facultyMap).sort();
 function UserProfile(props) {
   let history = useHistory();
   let profileObj = {};
+  const [pObj, setPObj] = useState(profileObj);
 
   /**
    * Component for free text input
@@ -134,16 +143,15 @@ function UserProfile(props) {
     }
 
     return (
-      <>
-        <IonRow>
-          <IonCol>
-            <IonItem>
-              <IonLabel position="floating">{inputLabel}</IonLabel>
-              <IonInput value={value} onIonChange={(e) => handleChange(e)} />
-            </IonItem>
-          </IonCol>
-        </IonRow>
-      </>
+      <IonItem>
+        <IonLabel position="floating">{inputLabel}</IonLabel>
+        <IonInput
+          // style={{ "--placeholder-opacity": "0.35" }}
+          // placeholder={inputLabel}
+          value={value}
+          onIonChange={(e) => handleChange(e)}
+        />
+      </IonItem>
     );
   }
 
@@ -173,24 +181,20 @@ function UserProfile(props) {
     });
 
     return (
-      <>
-        <IonRow>
-          <IonCol>
-            <IonItem>
-              <IonLabel position="floating">{inputLabel}</IonLabel>
-              <IonSelect
-                multiple={false}
-                value={value}
-                onIonChange={(e) => {
-                  handleChange(e);
-                }}
-              >
-                {selections}
-              </IonSelect>
-            </IonItem>
-          </IonCol>
-        </IonRow>
-      </>
+      <IonItem>
+        <IonLabel position="floating">{inputLabel}</IonLabel>
+        <IonSelect
+          // placeholder={inputLabel}
+          interface="action-sheet"
+          multiple={false}
+          value={value}
+          onIonChange={(e) => {
+            handleChange(e);
+          }}
+        >
+          {selections}
+        </IonSelect>
+      </IonItem>
     );
   }
 
@@ -199,7 +203,6 @@ function UserProfile(props) {
   }
 
   async function saveProfile() {
-    console.log("Saving profile: ", profileObj);
     await props.controllers.UPDATE_USER_PROFILE(profileObj);
     history.goBack();
   }
@@ -222,75 +225,97 @@ function UserProfile(props) {
    */
 
   const inputCard = (
-    <>
-      <IonCard>
-        <IonCardContent>
-          <IonGrid>
-            {/* Preferred name */}
-            <TextField
-              inputLabel={"Your preferred name"}
-              profileObjKey={"prefName"}
-              updateProfileObj={updateProfile}
-            />
-            {/* Unit or faculty */}
-            <ChoiceField
-              inputLabel={"Unit or Faculty"}
-              choices={facultyList}
-              profileObjKey={"unit"}
-              updateProfileObj={updateProfile}
-            />
-            {/* School or department */}
-            <ChoiceField
-              inputLabel={"School or Department"}
-              choices={departmentMap}
-              profileObjKey={"department"}
-              updateProfileObj={updateProfile}
-            />
-            {/* Campus */}
-            <ChoiceField
-              inputLabel={"Campus"}
-              choices={[
-                "Avenue",
-                "Boldrewood",
-                "Highfield",
-                "Waterfront",
-                "Winchester",
-              ]}
-              profileObjKey={"campus"}
-              updateProfileObj={updateProfile}
-            />
-            {/* Office/building */}
-            <TextField
-              inputLabel={"Office or Building"}
-              profileObjKey={"office"}
-              updateProfileObj={updateProfile}
-            />
-            {/* Career stage */}
-            <ChoiceField
-              inputLabel={"Career stage"}
-              choices={[3, 4, 5, 6, 7]}
-              profileObjKey={"careerStage"}
-              updateProfileObj={updateProfile}
-            />
-            {/* Submit button */}
-            <IonRow>
-              <IonCol>
-                <IonButton
-                  routerLink={"/settings"}
-                  expand={"full"}
-                  onClick={saveProfile}
-                >
-                  Save Profile
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCardContent>
-      </IonCard>
-    </>
+    <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>Set Your User Profile</IonCardTitle>
+        <IonCardSubtitle>Set as many of these as you want to</IonCardSubtitle>
+      </IonCardHeader>
+      <IonList>
+        {/* Preferred name */}
+        <TextField
+          inputLabel={"Your preferred name"}
+          profileObjKey={"prefName"}
+          updateProfileObj={updateProfile}
+        />
+        {/* Unit or faculty */}
+        <ChoiceField
+          inputLabel={"Unit or Faculty"}
+          choices={facultyList}
+          profileObjKey={"unit"}
+          updateProfileObj={updateProfile}
+        />
+        {/*{pObj["unit"] === "Other" ? (*/}
+        {/*  <TextField*/}
+        {/*    inputLabel={"Please specify your unit or faculty"}*/}
+        {/*    profileObjKey={"unit"}*/}
+        {/*    updateProfileObj={updateProfile}*/}
+        {/*  />*/}
+        {/*) : (*/}
+        {/*  ""*/}
+        {/*)}*/}
+        {/* School or department */}
+        <ChoiceField
+          inputLabel={"School or Department"}
+          choices={departmentMap}
+          profileObjKey={"department"}
+          updateProfileObj={updateProfile}
+        />
+        {/*{profileObj["unit"] === "Other" ? (*/}
+        {/*  <TextField*/}
+        {/*    inputLabel={"Please specify your school or department"}*/}
+        {/*    profileObjKey={"department"}*/}
+        {/*    updateProfileObj={updateProfile}*/}
+        {/*  />*/}
+        {/*) : (*/}
+        {/*  ""*/}
+        {/*)}*/}
+        {/* Campus */}
+        <ChoiceField
+          inputLabel={"Campus"}
+          choices={[
+            "1 Guildhall Square",
+            "Avenue",
+            "Boldrewood",
+            "Highfield",
+            "Waterfront",
+            "Winchester",
+          ].sort()}
+          profileObjKey={"campus"}
+          updateProfileObj={updateProfile}
+        />
+        {/* Office/building */}
+        {/* TODO: fix related issue somehow https://github.com/ionic-team/ionic-framework/issues/21658 */}
+        <TextField
+          inputLabel={"Office or Building"}
+          profileObjKey={"office"}
+          updateProfileObj={updateProfile}
+        />
+        {/* Career stage */}
+        <ChoiceField
+          inputLabel={"Career stage"}
+          choices={[3, 4, 5, 6, 7]}
+          profileObjKey={"careerStage"}
+          updateProfileObj={updateProfile}
+        />
+        {/* Submit button */}
+        <IonRow>
+          <IonCol>
+            <br />
+            <IonButton
+              routerLink={"/settings"}
+              expand={"block"}
+              onClick={saveProfile}
+            >
+              <IonIcon slot="start" icon={saveOutline} />
+              Save
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonList>
+    </IonCard>
   );
 
-  let content = null;
+  let content;
   if (props.pageType === "move" || props.pageType === "settings") {
     content = inputCard;
   } else {

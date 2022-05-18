@@ -18,29 +18,28 @@ import {
   IonText,
 } from "@ionic/react";
 import "./DetailedTile.scss";
-import { useEffect } from "react";
-import { BlockIndexContext } from "../context/BlockIndexContext";
 import SelectExerciseButton from "./SelectExerciseButton";
 import { close } from "ionicons/icons";
 
 function DetailedTile(props) {
-  console.log("CHECKER", props.isExplorer);
   const movement = props.movement || {};
+
   if (Object.keys(movement).length === 0) {
     return <p>Empty</p>;
   }
   const name = movement.name || "Exercise";
   const progressionLevel = movement.progressionLevel || 1;
   const description = movement.description || "New description";
+
   return (
     <div id="detailed-tile" className="centering" style={{ minWidth: "250px" }}>
       <IonCard style={props.style}>
-        <IonCardHeader style={{paddingTop: "0px", paddingBottom: "0px"}}>
-          <IonToolbar>
+        <IonCardHeader style={{ paddingTop: "0px", paddingBottom: "0px" }}>
+          <IonToolbar color="transparent">
             <IonButtons slot="end">
               <IonButton
                 onClick={() => {
-                  props.updateExercise(false, {});
+                  props.updateDetailOnClick(false, {});
                 }}
               >
                 <IonIcon icon={close}></IonIcon>
@@ -56,15 +55,28 @@ function DetailedTile(props) {
               {description}
             </IonCardContent>
           </IonText>
-          <figure id="promo" style={{marginTop: "0px", marginBottom: "0px"}}>
-            <img src={"assets/moves/" + movement.images[0]} className="A" />
-            <img src={"assets/moves/" + movement.images[1]} className="B" />
+          <figure id="promo" style={{ marginTop: "0px", marginBottom: "0px" }}>
+            <img
+              src={"assets/moves/" + movement.images[0]}
+              className="A"
+              alt={"Move A"}
+            />
+            <img
+              src={"assets/moves/" + movement.images[1]}
+              className="B"
+              alt={"Move B"}
+            />
           </figure>
           {props.isExplorer ? (
             <></>
           ) : (
             <div className="tile-button-container">
-              <SelectExerciseButton movement={movement}></SelectExerciseButton>
+              <SelectExerciseButton
+                setContent={props.setContent}
+                typeOfExercise={props.typeOfExercise}
+                updateExercise={props.updateExercise}
+                movement={movement}
+              ></SelectExerciseButton>
             </div>
           )}
         </IonCardContent>

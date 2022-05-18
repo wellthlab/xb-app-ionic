@@ -19,15 +19,17 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonSearchbar,
+  // IonSearchbar,
   IonSpinner,
-  IonChip,
+  IonButton,
+  // IonChip,
 } from "@ionic/react";
 import {
   peopleOutline,
   todayOutline,
   barChart,
   arrowForwardOutline,
+  statsChartOutline,
 } from "ionicons/icons";
 
 import { addControllersProp } from "../../util_model/controllers";
@@ -37,27 +39,26 @@ import Instructions from "./Instructions";
 import DailyJournal from "../../Journal/DailyJournal";
 import DailyActions from "./DailyActions";
 import GenericModal from "../../Info/components/GenericModal";
-import ActivityProgressBreakdownBar from "../../MovePlaylists/components/ActivityProgressBreakdownBar";
+import ActivityProgressBreakdownBar from "./ActivityProgressBreakdownBar";
 import Disclaimer from "./Disclaimer";
+import XBInfo from "../../util/XBInfo";
+import Visualisation from "../../Teams/Visualisation";
 
 const GroupInfo = ({ group, modules, controllers, match }) => {
-  // const [showAlert, setShowAlert] = useState(false);
   const [memberProfiles, setMemberProfiles] = useState([]);
   const [memberMinutes, setMemberMinutes] = useState([]);
   const [showMemberModal, setShowModal] = useState(false);
+  const [showTeamsModal, setShowsTeamModal] = useState(false);
   const [view, setView] = useState(
     match.params.page ? match.params.page : "info"
   );
-  // const [showMenu, setShowMenu] = useState(false);
   const [loadingTeamMembers, setLoadingTeamMembers] = useState(false);
-  // const history = useHistory();
-
-  // function toggleAlert() {
-  //   setShowAlert(!showAlert);
-  // }
 
   function toggleMemberModal() {
     setShowModal(!showMemberModal);
+  }
+  function toggleTeamsModal() {
+    setShowsTeamModal(!showTeamsModal);
   }
 
   async function fetchTeamUserInfo() {
@@ -98,6 +99,8 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
 
     const numberOfMembers =
       group.users.length > 1 ? group.users.length + " members" : "1 member";
+
+    // debugger;
 
     const memberNames = memberProfiles.map((profile, index) => {
       return (
@@ -157,8 +160,9 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
         .responses) {
         if (response.minutes && response.minutes > 1e-10) {
           // the > 1e-10 is for tasks like quizzes which have minutes 1e-10
-          totalMinutes += parseFloat(response.minutes);
           const module = modules.find((m) => m._id === response.moduleId);
+          if (!module) continue;
+          totalMinutes += parseFloat(response.minutes);
           colorBarData.push({
             moduleId: response.moduleId,
             value: response.minutes,
@@ -203,43 +207,31 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
     content = (
       <>
         {/* DISPLAY EXPERIMENT TITLE */}
-        <IonItem
-          lines="full"
-          style={{ "--padding-start": "10px", "--padding-inner-end": "10px" }}
-        >
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <h2 slot="start">{group.experiment.title}</h2>
-              </IonCol>
-            </IonRow>
-            {/* DISPLAY WEEK INSTRUCTIONS */}
+        <XBInfo
+          title={<strong>{group.experiment.info.title}</strong>}
+          desc={
+            <Instructions html={group.experiment.current_stage.instructions} />
+          }
+          // We no longer have a sense of "time", so no need to display the progress bar
+          // opt={
+          //   <IonGrid>
+          //     {/* DISPLAY DAY NUMBER AND PROGRESS BAR */}
+          //     <IonItem lines="none">
+          //       <IonIcon icon={todayOutline} slot="start" /> {dayDescription}
+          //     </IonItem>
+          //     <IonProgressBar
+          //       value={
+          //         day > group.experiment.info.duration
+          //           ? 1
+          //           : day / group.experiment.info.duration
+          //       }
+          //     />
+          //   </IonGrid>
+          // }
+        />
 
-            <IonRow>
-              <IonCol>
-                <Instructions
-                  html={group.experiment.current_stage.instructions}
-                />
-              </IonCol>
-            </IonRow>
-            {/* DISPLAY DAY NUMBER AND PROGRESS BAR */}
-            <IonItem lines="none">
-              <IonIcon icon={todayOutline} slot="start" /> {dayDescription}
-            </IonItem>
-            <IonProgressBar
-              value={
-                day > group.experiment.info.duration
-                  ? 1
-                  : day / group.experiment.info.duration
-              }
-            />
-          </IonGrid>
-        </IonItem>
-        {/* <IonGrid> */}
         {/* DISPLAY TEAM NAME AND DETAILS */}
         <IonCard>
-          {/* <IonRow>
-            <IonCol> */}
           <IonList>
             <IonRow>
               <IonCol>
@@ -269,75 +261,86 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
                   <GenericModal
                     showModal={showMemberModal}
                     toggleModal={toggleMemberModal}
-                    title="Your Team Members"
-                    body={modalMemberList}
+                    title="Members"
+                    message={modalMemberList}
                   />
                 </IonItem>
               </IonCol>
               <IonCol>
                 <IonItem lines="none" style={{ fontSize: "14px" }}>
                   <IonLabel>Team Code:</IonLabel>
-                  <IonInput readonly={true} value={group.code}></IonInput>
+                  {/* IonInput used as a hacky way for people to be able to
+                   highlight the team code to copy */}
+                  <IonInput readonly={true} value={group.code} />
                 </IonItem>
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol>
-                <IonItem lines="none">
-                  <IonGrid>
-                    <div
-                      style={{
-                        "padding-top": "10px",
-                        "padding-bottom": "0px",
-                      }}
-                    >
-                      <IonRow>
-                        <IonCol className="ion-text-center">
-                          {/* <IonItem> */}
-                          <IonRow
-                            style={{
-                              "--padding-top": "100px",
-                              fontSize: "1.1em",
-                            }}
-                          >
-                            <IonCol>
-                              <IonText>
-                                {minuteBreakDown.totalMinutes > 0 ? (
-                                  <>
-                                    You've moved for{" "}
-                                    <strong>
-                                      {minuteBreakDown.totalMinutes} minutes
-                                    </strong>{" "}
-                                    today!
-                                  </>
-                                ) : (
-                                  <>You haven't done any movement today!</>
-                                )}
-                              </IonText>
-                            </IonCol>
-                          </IonRow>
-                          <IonRow>
-                            <IonCol>
-                              <ActivityProgressBreakdownBar
-                                visualParts={minuteBreakDown.colorBarData}
-                              />
-                            </IonCol>
-                          </IonRow>
-                        </IonCol>
-                      </IonRow>
-                    </div>
+                <IonItem style={{ "--padding-start": "5px" }} lines="none">
+                  <IonGrid
+                    style={{
+                      "padding-top": "10px",
+                      "padding-bottom": "0px",
+                    }}
+                  >
+                    {/* <div> */}
+                    <IonRow>
+                      <IonCol className="ion-text-center">
+                        <IonRow>
+                          <IonCol>
+                            <IonText>
+                              {minuteBreakDown.totalMinutes > 0 ? (
+                                <>
+                                  You've moved for{" "}
+                                  <strong>
+                                    {Math.round(minuteBreakDown.totalMinutes)}{" "}
+                                    minutes
+                                  </strong>{" "}
+                                  today!
+                                </>
+                              ) : (
+                                <>You haven't done any movement today!</>
+                              )}
+                            </IonText>
+                          </IonCol>
+                        </IonRow>
+                        <IonRow>
+                          <IonCol>
+                            <ActivityProgressBreakdownBar
+                              visualParts={minuteBreakDown.colorBarData}
+                            />
+                          </IonCol>
+                        </IonRow>
+                      </IonCol>
+                    </IonRow>
                   </IonGrid>
                 </IonItem>
               </IonCol>
             </IonRow>
+            <IonRow>
+              <IonCol className="ion-text-center">
+                <IonButton
+                  size="regular"
+                  expand="block"
+                  // routerLink={"/box/move/teams"}
+                  onClick={toggleTeamsModal}
+                >
+                  <IonIcon slot="start" icon={statsChartOutline} />
+                  <IonLabel>Other Teams</IonLabel>
+                </IonButton>
+                <GenericModal
+                  showModal={showTeamsModal}
+                  toggleModal={toggleTeamsModal}
+                  title="Other Teams"
+                  message={<Visualisation />}
+                />
+              </IonCol>
+            </IonRow>
           </IonList>
-          {/* </IonCol>
-          </IonRow> */}
         </IonCard>
         {/* DISPLAY NOTIFICATION AND ACTION CENTER */}
-
-        {/* <IonRow>
-            <IonCol> */}
+        {/* TODO: notifications need to be plugged into this */}
         <IonCard>
           <IonItem lines="none">
             <IonGrid>
@@ -354,15 +357,11 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
             </IonGrid>
           </IonItem>
         </IonCard>
-        {/* </IonCol>
-          </IonRow> */}
         {/* Exercise disclaimer, has its own IonGrid but looks neater embedded
           in this grid as well */}
         <IonCard>
           <Disclaimer checkbox={false} />
         </IonCard>
-
-        {/* </IonGrid> */}
       </>
     );
   } else if (view === "tasks") {

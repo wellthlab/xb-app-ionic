@@ -22,10 +22,10 @@ function GenericModal({
   hideMinimize,
   titleBarColour,
   title,
-  body,
+  message,
 }) {
   return (
-    <IonModal isOpen={showModal} swipeToClose={false}>
+    <IonModal isOpen={showModal} swipeToClose={true}>
       <IonHeader>
         <IonToolbar
           className="toolbar"
@@ -50,7 +50,7 @@ function GenericModal({
           <IonTitle style={{ mixBlendMode: "difference" }}>{title}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>{body}</IonContent>
+      <IonContent>{message}</IonContent>
     </IonModal>
   );
 }

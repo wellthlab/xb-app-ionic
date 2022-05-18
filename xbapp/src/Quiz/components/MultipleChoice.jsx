@@ -31,7 +31,7 @@ function MultipleChoice({ tag, statement, choices, onSubmit }) {
   });
 
   return (
-    <IonItem>
+    <IonItem lines="none">
       <IonGrid>
         <IonRow>
           <IonCol>
@@ -41,6 +41,7 @@ function MultipleChoice({ tag, statement, choices, onSubmit }) {
         <IonRow>
           <IonCol>
             <IonRadioGroup
+              mode="md"
               allowEmptySelection={true}
               value={value}
               onIonChange={(e) => {

@@ -20,7 +20,7 @@ import { addControllersProp } from "../util_model/controllers";
 
 import "./Login.scss";
 
-// const autoBindReact = require("auto-bind/react");
+const autoBindReact = require("auto-bind/react");
 
 const Login = (props) => {
   var account = props.account;
@@ -48,7 +48,6 @@ const Login = (props) => {
                 placeholder="Email"
                 type="email"
                 onIonChange={(e) => {
-                  console.log("Set email", e);
                   setEmail(e.detail.value);
                 }}
               ></IonInput>
@@ -91,8 +90,6 @@ const Login = (props) => {
           props.ACCEPT_LOGIN({ email: email, password: password });
         })
         .catch((err) => {
-          console.log("Login rejected", err);
-          console.log(err.message);
           props.REJECT_LOGIN(err.message);
         });
     }

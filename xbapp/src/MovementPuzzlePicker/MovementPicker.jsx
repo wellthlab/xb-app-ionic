@@ -1,32 +1,28 @@
-import React from "react";
-import Moves from "../Strength/moves.json";
+import React, { useState } from "react";
 import {
-  IonContent,
   IonSlides,
   IonCard,
   IonCardContent,
   IonIcon,
   IonText,
-  IonBackButton,
-  IonHeader,
-  IonButtons,
-  IonTitle,
+  IonButton,
 } from "@ionic/react";
-import { BlockIndexContext } from "./context/BlockIndexContext";
+import {
+  caretUp,
+  caretDown,
+  caretForward,
+  caretBack,
+  arrowBackOutline,
+} from "ionicons/icons";
 
 import "./MovementPicker.scss";
-import { useState } from "react";
-import { useEffect } from "react";
+import { BlockIndexContext } from "./context/BlockIndexContext";
+import Moves from "../Strength/moves.json";
 import MovementSlide from "./components/MovementSlide";
 import DetailedMovementSlide from "./components/DetailedMovementSlide";
-import { caretUp, caretDown, caretForward, caretBack } from "ionicons/icons";
-import XBHeader from "../util/XBHeader";
-import { useLocation, useHistory } from "react-router";
 
 const MovementPicker = (props) => {
-  const location = useLocation();
-  const history = useHistory();
-  var isExplorer = location.pathname.includes("explore");
+  var isExplorer = props.explorer;
   const typeOfExercise = props.typeOfExercise;
 
   // Used for the page heading
@@ -122,21 +118,21 @@ const MovementPicker = (props) => {
     rowOptions[row].options.initialSlide = index;
     setRowSlideOpts(rowOptions);
 
-    // Update all slide positions to display the slide at current index
-    const slides = document.getElementsByClassName(
-      "swiper-container-horizontal"
-    );
-    for (let i = 0; i < slides.length; ++i) {
-      // Skips the slide that has been swiped
-      if (i === activeColumnIndex) {
-        continue;
-      }
-      const slide = slides[i].swiper;
-      slide.slideTo(index, 400, 0);
-    }
+    // // Update all slide positions to display the slide at current index
+    // const slides = document.getElementsByClassName(
+    //   "swiper-container-horizontal"
+    // );
+    // for (let i = 0; i < slides.length; ++i) {
+    //   // Skips the slide that has been swiped
+    //   if (i === activeColumnIndex) {
+    //     continue;
+    //   }
+    //   const slide = slides[i].swiper;
+    //   slide.slideTo(index, 400, 0);
+    // }
   }
 
-  async function updateExercise(_showDetailedTile, _exercise) {
+  async function updateDetailOnClick(_showDetailedTile, _exercise) {
     setShowDetailedTile(_showDetailedTile);
     setMovement(_exercise);
   }
@@ -174,16 +170,11 @@ const MovementPicker = (props) => {
     );
   } else if (!showDetailedTile) {
     screen = (
-      // <div id="movement-picker" style={{ padding: "0px" }}>
-      <>
-        <div id="tile-gui">
-          <IonIcon icon={caretUp} id="up" className="caret-row"></IonIcon>
-          <IonIcon
-            icon={caretBack}
-            id="left"
-            className="caret-column"
-          ></IonIcon>
-          <div id="slides">
+      <div id="movement-picker" className="movement-picker">
+        <div id="tile-gui" className="tile-gui">
+          <IonIcon icon={caretUp} id="up" className="caret-row" />
+          <IonIcon icon={caretBack} id="left" className="caret-column" />
+          <div id="slides" className="slides">
             <IonSlides
               options={columnSlideOpts.options}
               onIonSlideDidChange={(event) => {
@@ -197,81 +188,85 @@ const MovementPicker = (props) => {
               }}
             >
               <MovementSlide
+                explorer={props.explorer}
                 horizonalSlideSwiped={horizonalSlideSwiped}
                 row="top"
                 // Considering passing rowSlideOpts[row].options instead
                 options={rowSlideOpts}
                 movements={passedMovements.upperBody}
-                updateExercise={updateExercise}
+                updateDetailOnClick={updateDetailOnClick}
+                updateExercise={props.updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
-                updateExercises={props.updateExercises}
               />
               <MovementSlide
+                explorer={props.explorer}
                 horizonalSlideSwiped={horizonalSlideSwiped}
                 row="middle"
                 options={rowSlideOpts}
                 movements={passedMovements.fullBody}
-                updateExercise={updateExercise}
+                updateDetailOnClick={updateDetailOnClick}
+                updateExercise={props.updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
-                updateExercises={props.updateExercises}
               />
               <MovementSlide
+                explorer={props.explorer}
                 horizonalSlideSwiped={horizonalSlideSwiped}
                 row="bottom"
                 options={rowSlideOpts}
                 movements={passedMovements.lowerBody}
-                updateExercise={updateExercise}
+                updateDetailOnClick={updateDetailOnClick}
+                updateExercise={props.updateExercise}
                 isExplorer={isExplorer}
                 setContent={props.setContent}
                 typeOfExercise={typeOfExercise}
-                updateExercises={props.updateExercises}
               />
             </IonSlides>
           </div>
-          <IonIcon
-            icon={caretForward}
-            id="right"
-            className="caret-column"
-          ></IonIcon>
-          <IonIcon icon={caretDown} id="down" className="caret-row"></IonIcon>
+          <IonIcon icon={caretForward} id="right" className="caret-column" />
+          <IonIcon icon={caretDown} id="down" className="caret-row" />
         </div>
-        {/* </div> */}
-      </>
+      </div>
     );
   } else {
     screen = (
       <div id="movement-picker" style={{ padding: "0px" }}>
         <DetailedMovementSlide
+          setContent={props.setContent}
+          typeOfExercise={props.typeOfExercise}
           movement={movement}
-          updateExercise={updateExercise}
+          updateDetailOnClick={updateDetailOnClick}
+          updateExercise={props.updateExercise}
           isExplorer={isExplorer}
-        ></DetailedMovementSlide>
+        />
       </div>
     );
   }
 
   return (
     <>
-      {/* <XBHeader title={"Movement Picker"} /> */}
+      {props.explorer ? (
+        <div style={{ textAlign: "center", "--padding-top": "10px" }}>
+          <IonText className="ion-text-header">
+            Click on a move for more detail
+          </IonText>
+        </div>
+      ) : (
+        ""
+      )}
 
-      {/* <IonContent> */}
-      {/* <IonHeader title="Block Planner">
-        <IonButtons>
-          <IonBackButton defaultHref="/"></IonBackButton>
-          <IonTitle className="header-title" id="movement-type" color="dark">
-            {rowHeadings[rowIndex]}
-          </IonTitle>
-        </IonButtons>
-      </IonHeader> */}
       <BlockIndexContext.Provider value={blockIndex}>
         {screen}
       </BlockIndexContext.Provider>
 
-      {/* </IonContent> */}
+      <IonCard color="transparent">
+        <IonButton expand="block" onClick={() => props.setContent(undefined)}>
+          <IonIcon icon={arrowBackOutline} />
+        </IonButton>
+      </IonCard>
     </>
   );
 };

@@ -10,8 +10,7 @@
       desc: a type description string
  * }
  */
-import { connect } from "react-redux";
-import React, { useState, useEffect } from "react";
+
 import {
   IonCard,
   IonCardHeader,
@@ -25,7 +24,6 @@ import Questionnaire from "../UserInput/Questionnaire";
 import QuestionnaireEvening from "../UserInput/QuestionnaireEvening";
 import QuestionnaireEndWeek from "../UserInput/QuestionnaireEndWeek";
 import StrengthWizard from "../Strength/StrengthWizard";
-// import StrengthExercisePicker from "../DEPRECATED/StrengthExercisePicker";
 import Assessment from "../Strength/Assessment";
 import Note from "../UserInput/Note";
 import WorkAssessment from "../UserInput/WorkAssessment";
@@ -43,12 +41,14 @@ import Video from "../Strength/Video";
 import WebLink from "../Strength/WebLink";
 import OtherMove from "../Strength/OtherMove";
 import Timer from "../Instruments/StatelessTimer";
-import EDTSet from "../Strength/EDTTask";
+import EDTSet from "../Strength/EdtTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
-import TaskInstructions from "../Strength/TaskInstructions";
-import ModuleSubscriptionButtons from "../MovePlaylists/components/TopicSubscriptionButtons";
+import Text from "../Strength/Text";
+import TopicButtons from "../Playlists/components/module/TopicButtons";
 import quizFactory from "../Quiz/quizFactory";
+import Image from "../Strength/Image";
+import Journal from "../Strength/Journal";
 
 /**
  * Create input widgets based on task type}
@@ -68,6 +68,7 @@ export default function responseFactory(
   type,
   team,
   stageNumber,
+  taskNumber,
   userProfile,
   onSubmit,
   task = undefined
@@ -219,19 +220,23 @@ export default function responseFactory(
       break;
 
     case "s22video":
-      input = <Video onSubmit={onSubmit} video={task.video} />;
+      input = (
+        <Video videoKey={taskNumber} onSubmit={onSubmit} video={task.video} />
+      );
       typedesc = "Video Move";
       break;
 
     case "s22assessedvideo":
       input = (
         <>
-          <Video onSubmit={onSubmit} video={task.video} />
+          <Video videoKey={taskNumber} onSubmit={onSubmit} video={task.video} />
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>Time your {task.move}</IonCardTitle>
+              <IonCardTitle>
+                Time your {task.move ? task.move : "move"}
+              </IonCardTitle>
               <IonCardSubtitle>
-                Timing your move will let you measure your progress
+                Timing will let you measure your progress
               </IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
@@ -283,12 +288,12 @@ export default function responseFactory(
       break;
 
     case "s22instructions":
-      input = <TaskInstructions task={task} />;
+      input = <Text task={task} />;
       typedesc = "Instructions";
       break;
 
     case "s22subscribe":
-      input = <ModuleSubscriptionButtons />;
+      input = <TopicButtons />;
       typedesc = "Subscribe";
       break;
 
@@ -298,8 +303,22 @@ export default function responseFactory(
         const subQ = task.quiz[i];
         quizInput.push(quizFactory(subQ.tag, subQ.type, subQ, onSubmit));
       }
-      input = <>{quizInput}</>;
+      input = (
+        <>
+          <IonCard> {quizInput}</IonCard>
+        </>
+      );
       typedesc = "Quiz";
+      break;
+
+    case "s22timedimage":
+      input = <Image imgSrc={"./assets/" + task.image} />;
+      typedesc = "Image";
+      break;
+
+    case "s22journal":
+      input = <Journal message={task.prompt} onSubmit={onSubmit} />;
+      typedesc = "Journal";
       break;
 
     default:

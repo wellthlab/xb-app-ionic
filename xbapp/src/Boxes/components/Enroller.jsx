@@ -12,6 +12,7 @@ import {
   IonCol,
   IonRow,
   IonText,
+  IonCard,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Enroller.scss";
@@ -74,7 +75,11 @@ const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
     <Disclaimer checkbox={true} onToggle={setDisclaimed} />
   );
 
-  return <>{content}</>;
+  return (
+    <>
+      <IonCard>{content}</IonCard>
+    </>
+  );
 };
 
 export default connect(

@@ -29,11 +29,9 @@ function ManageItQuestion({ attempt, onSubmit }) {
             disabled={yesDisabled}
             onClick={() => {
               setNoDisabled(true);
-              // onSubmit({
-              //   assType: "manageit",
-              //   attempts: attempt,
-              //   response: "yes",
-              // });
+              let response = {};
+              response["attempt-" + attempt] = "yes";
+              onSubmit(response);
             }}
           >
             <IonIcon icon={checkmarkOutline} />
@@ -42,11 +40,9 @@ function ManageItQuestion({ attempt, onSubmit }) {
             disabled={noDisabled}
             onClick={() => {
               setYesDisabled(true);
-              // onSubmit({
-              //   assType: "manageit",
-              //   attempts: attempt,
-              //   response: "no",
-              // });
+              let response = {};
+              response["attempt-" + attempt] = "no";
+              onSubmit(response);
             }}
           >
             <IonIcon icon={closeOutline} />

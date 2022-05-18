@@ -58,7 +58,7 @@ const OptionTabs = (props) => {
               toggleModal();
             }}
             title={"Privacy Notice"}
-            body={privacy_notice}
+            message={privacy_notice}
           />
 
           <GenericModal
@@ -67,7 +67,7 @@ const OptionTabs = (props) => {
               togglePISModal();
             }}
             title={"Participant Information Sheet"}
-            body={pis}
+            message={pis}
           />
 
           <IonCard>

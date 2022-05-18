@@ -2,7 +2,6 @@ import React from "react";
 import { IonSlides, IonSlide } from "@ionic/react";
 
 import Tile from "./Tile";
-import { convertCompilerOptionsFromJson } from "typescript";
 
 const MovementSlide = (props) => {
   return (
@@ -21,11 +20,11 @@ const MovementSlide = (props) => {
           <IonSlide key={index}>
             <Tile
               movement={exercise}
+              updateDetailOnClick={props.updateDetailOnClick}
               updateExercise={props.updateExercise}
-              isExplorer={props.isExplorer}
+              isExplorer={props.explorer}
               setContent={props.setContent}
               typeOfExercise={props.typeOfExercise}
-              updateExercises={props.updateExercises}
             />
           </IonSlide>
         ))}

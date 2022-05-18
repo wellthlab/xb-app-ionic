@@ -25,7 +25,10 @@ const DetailedMovementSlide = (props) => {
           margin: 0,
         }}
         movement={props.movement}
+        updateDetailOnClick={props.updateDetailOnClick}
+        typeOfExercise={props.typeOfExercise}
         updateExercise={props.updateExercise}
+        setContent={props.setContent}
         isExplorer={props.isExplorer}
       ></DetailedTile>
     </IonSlide>
@@ -42,9 +45,12 @@ const DetailedMovementSlide = (props) => {
               margin: 0,
             }}
             movement={movement}
+            updateDetailOnClick={props.updateDetailOnClick}
+            typeOfExercise={props.typeOfExercise}
             updateExercise={props.updateExercise}
+            setContent={props.setContent}
             isExplorer={props.isExplorer}
-          ></DetailedTile>
+          />
         </IonSlide>
       );
     }
@@ -52,7 +58,13 @@ const DetailedMovementSlide = (props) => {
 
   let message = "";
   if (props.movement.alternative.length !== 0) {
-    message = <IonText>Swipe down for alternative movements</IonText>;
+    message = (
+      <div className="ion-text-center">
+        <IonText className="ion-text-big">
+          Swipe down for alternative movements
+        </IonText>
+      </div>
+    );
   }
 
   function getMovementFromId(id) {

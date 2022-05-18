@@ -2,11 +2,10 @@ import { useState } from "react";
 import {
   IonCard,
   IonInput,
-  IonList,
   IonRow,
   IonCardTitle,
   IonItem,
-  IonCardContent,
+  IonGrid,
   IonLabel,
   IonCol,
   IonCardSubtitle,
@@ -20,25 +19,21 @@ import {
 function QuestionText({ question, type, value, setValue, resLabel, onSubmit }) {
   var response = {};
   return (
-    <>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonLabel position="floating">{question}</IonLabel>
-            <IonInput
-              value={value}
-              type={type}
-              onIonChange={(e) => {
-                response[resLabel] = e.detail.value;
-                response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
-                setValue(e.detail.value);
-                onSubmit(response);
-              }}
-            ></IonInput>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </>
+    <IonItem>
+      <IonLabel position="floating">
+        <IonText className="ion-text-wrap">{question}</IonText>
+      </IonLabel>
+      <IonInput
+        value={value}
+        type={type}
+        onIonChange={(e) => {
+          response[resLabel] = e.detail.value;
+          response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
+          setValue(e.detail.value);
+          onSubmit(response);
+        }}
+      />
+    </IonItem>
   );
 }
 
@@ -57,27 +52,24 @@ function QuestionChoice({
   });
 
   return (
-    <>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonLabel position="floating">{question}</IonLabel>
-            <IonSelect
-              multiple={false}
-              value={value}
-              onIonChange={(e) => {
-                response[resLabel] = e.detail.value;
-                response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
-                setValue(e.detail.value);
-                onSubmit(response);
-              }}
-            >
-              {selections}
-            </IonSelect>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </>
+    <IonItem>
+      <IonLabel position="floating">
+        <IonText className="ion-text-wrap">{question}</IonText>
+      </IonLabel>
+      <IonSelect
+        interface="action-sheet"
+        multiple={false}
+        value={value}
+        onIonChange={(e) => {
+          response[resLabel] = e.detail.value;
+          response["minutes"] = 1e-10; // add minutes for show activity to come up, can't be zero ;_;
+          setValue(e.detail.value);
+          onSubmit(response);
+        }}
+      >
+        {selections}
+      </IonSelect>
+    </IonItem>
   );
 }
 
@@ -95,56 +87,51 @@ function ContextualQuestions({ onSubmit }) {
   let [workDay, setWorkDay] = useState(undefined);
 
   return (
-    <>
-      <IonCard>
-        <IonCardHeader>
-          <IonCardTitle>How did you move today?</IonCardTitle>
-          <IonCardSubtitle>
-            <IonText className="ion-text-wrap">
-              These questions will help us understand how you are choosing to
-              move
-            </IonText>
-          </IonCardSubtitle>
-        </IonCardHeader>
-
-        <IonCardContent>
-          <IonList>
-            <QuestionChoice
-              question={"Is today a work day?"}
-              choices={["Yes", "No"]}
-              value={workDay}
-              setValue={setWorkDay}
-              resLabel={"workDay"}
-              onSubmit={onSubmit}
-            />
-            <QuestionChoice
-              question={"Are you at home, work, or somewhere else?"}
-              choices={["Home", "Work", "Somewhere else"]}
-              value={atHomeOrWork}
-              setValue={setAtHomeOrWork}
-              resLabel={"atHomeOrWork"}
-              onSubmit={onSubmit}
-            />
-            {atHomeOrWork === "Somewhere else" ? (
-              <QuestionText
-                question={"Where is somewhere else?"}
-                value={somewhereElse}
-                setValue={setSomewhereElse}
-                resLabel={"somewhereElse"}
-                onSubmit={onSubmit}
-              />
-            ) : (
-              ""
-            )}
-            <QuestionChoice
-              question={"Indoors or outdoors?"}
-              choices={["Indoors", "Outdoors"]}
-              value={indoorsOrOutdoors}
-              setValue={setIndoorsOrOutdoors}
-              resLabel={"indoorsOrOutdoors"}
-              onSubmit={onSubmit}
-            />
-            {/* <QuestionText
+    <IonCard>
+      <IonCardHeader>
+        <IonCardTitle>How did you move?</IonCardTitle>
+        <IonCardSubtitle>
+          <IonText className="ion-text-wrap">
+            These questions will help us understand how you are choosing to move
+          </IonText>
+        </IonCardSubtitle>
+      </IonCardHeader>{" "}
+      <QuestionChoice
+        question={"Is today a work day?"}
+        choices={["Yes", "No"]}
+        value={workDay}
+        setValue={setWorkDay}
+        resLabel={"workDay"}
+        onSubmit={onSubmit}
+      />
+      <QuestionChoice
+        question={"Home, work, or somewhere else?"}
+        choices={["Home", "Work", "Somewhere else"]}
+        value={atHomeOrWork}
+        setValue={setAtHomeOrWork}
+        resLabel={"atHomeOrWork"}
+        onSubmit={onSubmit}
+      />
+      {atHomeOrWork === "Somewhere else" ? (
+        <QuestionText
+          question={"Where is somewhere else?"}
+          value={somewhereElse}
+          setValue={setSomewhereElse}
+          resLabel={"somewhereElse"}
+          onSubmit={onSubmit}
+        />
+      ) : (
+        ""
+      )}
+      <QuestionChoice
+        question={"Indoors or outdoors?"}
+        choices={["Indoors", "Outdoors"]}
+        value={indoorsOrOutdoors}
+        setValue={setIndoorsOrOutdoors}
+        resLabel={"indoorsOrOutdoors"}
+        onSubmit={onSubmit}
+      />
+      {/* <QuestionText
               question="Where are you, e.g. office?"
               type="text"
               value={location}
@@ -152,26 +139,24 @@ function ContextualQuestions({ onSubmit }) {
               resLabel={"location"}
               onSubmit={onSubmit}
             /> */}
-            <QuestionChoice
-              question={"What time of day is it?"}
-              choices={["Morning", "Midday", "Afternoon", "Evening"]}
-              value={timeOfDay}
-              setValue={setTimeOfDay}
-              resLabel={"timeOfDay"}
-              onSubmit={onSubmit}
-            />
-            <QuestionChoice
-              question="Moving alone, or with others?"
-              choices={["Alone", "With others"]}
-              value={whoWith}
-              setValue={setWhoWith}
-              resLabel={"whoWith"}
-              onSubmit={onSubmit}
-            />
-          </IonList>
-        </IonCardContent>
-      </IonCard>
-    </>
+      <QuestionChoice
+        question={"What time of day is it?"}
+        choices={["Morning", "Midday", "Afternoon", "Evening"]}
+        value={timeOfDay}
+        setValue={setTimeOfDay}
+        resLabel={"timeOfDay"}
+        onSubmit={onSubmit}
+      />
+      <QuestionChoice
+        question="Moving alone, or with others?"
+        choices={["Alone", "With others"]}
+        value={whoWith}
+        setValue={setWhoWith}
+        resLabel={"whoWith"}
+        onSubmit={onSubmit}
+      />
+      <br />
+    </IonCard>
   );
 }
 

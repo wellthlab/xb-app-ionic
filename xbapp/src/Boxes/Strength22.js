@@ -46,12 +46,12 @@ const decorateTeam = (team) => {
     var planweek = Math.floor(plan.day / 7);
     if(planweek === expWeek) { // week is calculated above, from the experiment day
       team.s22plan = team.lastEntryByType.s22plan;
-      console.log("Found a current s22 plan");
+      // console.log("Found a current s22 plan");
     } else {
-      console.log("s22 plan is out of date", "Current week: ", expWeek, "Plan week:", planweek);
+      // console.log("s22 plan is out of date", "Current week: ", expWeek, "Plan week:", planweek);
     }
   } else {
-    console.log("No s22 plan has ever been saved");
+    // console.log("No s22 plan has ever been saved");
   }
 
   // No plan? Require the planning task to be completed

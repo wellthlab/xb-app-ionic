@@ -138,7 +138,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
         Please note that by registering and creating an account, you declare you
         consent to the{" "}
         <a
-          href="javascript:void(0)"
+          // href="javascript:void(0)"
           onClick={() => {
             toggleModal();
           }}

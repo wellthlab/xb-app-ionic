@@ -20,7 +20,7 @@ const MovePage = (props) => {
   ) {
     return (
       <IonPage>
-        <XBHeader title="Move" />
+        <XBHeader title="Team" />
         <IonContent>
           <IonSpinner class="center-spin" name="crescent" />
         </IonContent>
@@ -50,7 +50,7 @@ const MovePage = (props) => {
 
   return (
     <IonPage>
-      <XBHeader title="Progress"></XBHeader>
+      <XBHeader title="Team"></XBHeader>
       <IonContent>{content}</IonContent>
     </IonPage>
   );

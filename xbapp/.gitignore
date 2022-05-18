@@ -9,9 +9,11 @@
 /coverage
 
 # production
-/build
-/ios
-/android
+build/
+ios/
+android/
+hosted_site/
+.gradle/
 
 # misc
 .DS_Store

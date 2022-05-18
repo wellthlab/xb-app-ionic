@@ -1,0 +1,23 @@
+.dayHasActivity{
+    border: 2px solid rgba(228, 231, 36, 0.7) !important;
+ }
+
+.calendarStyle {
+    display: flex;
+    justify-content: center;
+    background: var(--ion-item-background);
+    --rdp-accent-color: var(--ion-color-primary);
+}
+
+:root {
+    --rdp-cell-size: 40px;
+    --rdp-accent-color: var(--ion-color-primary);
+    --rdp-background-color: var(--ion-background-color);
+    /* Switch to dark colors for dark themes */
+    --rdp-accent-color-dark: var(--ion-color-primary);
+    --rdp-background-color-dark: var(--ion-background-color);
+    /* Outline border for focused elements */
+    --rdp-outline: 2px solid var(--rdp-accent-color);
+    /* Outline border for focused and selected elements */
+    --rdp-outline-selected: 2px solid rgba(0, 0, 0, 0.75);
+  }

@@ -15,13 +15,14 @@ function quizFactory(tag, type, info, onSubmit) {
   let input = null;
 
   switch (type) {
-    // These next THREE types will return a pre-made questionnaire
-    case "endWeek":
+    // These next TWO types will return a pre-made questionnaire
+    case "end-week":
       input = <QuestionnaireEndWeek onSubmit={onSubmit} />;
       break;
     case "evening":
       input = <QuestionnaireEvening onSubmit={onSubmit} />;
       break;
+    // The follow types can be used to build a custom questionnaire
     case "test":
       input = (
         <KnowledgeQuiz
@@ -34,7 +35,6 @@ function quizFactory(tag, type, info, onSubmit) {
         />
       );
       break;
-    // The follow types can be used to build a custom questionnaire
     case "agree-slider":
       input = (
         <AgreeSlider

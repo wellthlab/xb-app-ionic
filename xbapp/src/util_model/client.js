@@ -161,6 +161,15 @@ function XBClient() {
     return modules;
   }
 
+  self.getLibraryData = async function() {
+    const db = getDb();
+    const collection = db.collection("library");
+    const data = await collection.find({});
+    self.tidy(data);
+
+    return data;
+  }
+
   /**
    * Get all groups for the current user
    */
@@ -215,7 +224,7 @@ function XBClient() {
       g.responses.own = res ? res : { responses: [] };
     }
 
-    console.log("User teams", groups);
+    // console.log("User teams", groups);
 
     return groups;
   };
@@ -224,11 +233,11 @@ function XBClient() {
    * Get all responses for a team
    */
   self.getTeamResponses = async function (teamid) {
-    var info = await self.realm.users[0].functions.getTeamData(teamid);
+    // var info = await self.realm.users[0].functions.getTeamData(teamid);
 
-    console.log("Fetched team responses", info, teamid);
+    // console.log("Fetched team responses", info, teamid);
 
-    return self.tidy(info[0].allresponses);
+    // return self.tidy(info[0].allresponses);
   };
 
   // Helper function for generating a team ID
@@ -334,8 +343,6 @@ function XBClient() {
     const update = { $push: { responses: response } };
     const options = { upsert: true };
 
-    console.log("Attempt to save response", response);
-
     try {
       var result = await collection.updateOne(query, update, options);
       const { matchedCount, modifiedCount, upsertedId } = result;
@@ -353,12 +360,8 @@ function XBClient() {
   self.getOwnResponses = async function () {
     var db = getDb();
     var collection = db.collection("responses");
-
     var responses = await collection.find({ user: self.realm.currentUser.id });
-
     self.tidy(responses);
-
-    console.log("Own responses", responses);
 
     return responses;
   };
@@ -374,14 +377,23 @@ function XBClient() {
 
     for (const userId of team.users) {
       // Get the user's responses for the given day
-      const userResponses = allResponses.filter(r => r.user === userId)[0].responses;
-      const todaysResponses = userResponses.filter(r => r.day === day);
-      // Add the minutes to the total
-      let userMinutes = 0;
-      for(const r of todaysResponses) {
-        userMinutes += r.minutes || 0;
+
+      const userResponses = allResponses.filter(r => r.user === userId)
+
+      // allResponses.filter returns an array. If it's empty then there are no
+      // responses to look at for this user
+      if(userResponses.length > 0) {
+        const todaysResponses = userResponses[0].responses.filter(r => r.day === day);
+        // Add the minutes to the total
+        let userMinutes = 0;
+        for(const r of todaysResponses) {
+          userMinutes += parseInt(r.minutes, 10) || 0;
+        }
+        teamMinutes.push(userMinutes);
       }
-      teamMinutes.push(userMinutes);
+      else {
+        teamMinutes.push(0);
+      }
     }
 
     return teamMinutes;
@@ -405,16 +417,12 @@ function XBClient() {
    */
 
 
-  self.getUserProfile = async function (id = null) {
-
-    // if(_userProfile !== undefined) {
-    //   return _userProfile;
-    // }
+  self.getUserProfile = async function (id) {
 
     const db = getDb();
     const collection = db.collection("usersDetails");
 
-    if (id == null) {
+    if (!id) {
       id = self.realm.currentUser.id;
     }
 
@@ -439,6 +447,7 @@ function XBClient() {
 
     const newUserProfile = {
       _userid: self.realm.currentUser.id,
+      modules: {},
       ...userProfile,
     };
 
@@ -456,7 +465,7 @@ function XBClient() {
       }
     }
 
-    return { success: true }
+    return { success: true, message: "User profile updated", userProfile: newUserProfile };
   }
 
   /**
@@ -478,7 +487,13 @@ function XBClient() {
       }
     }
 
-    const moduleObjectId = new ObjectId(moduleId);
+    let moduleObjectId;
+    try {
+      moduleObjectId = new ObjectId(moduleId);
+    } catch (e) {
+      console.warn("problem when converting moduleId", e);
+      moduleObjectId = moduleId;
+    }
     const module = await moduleCollection.findOne({
       _id: { $eq: moduleObjectId }
     });
@@ -493,7 +508,7 @@ function XBClient() {
 
     const numPlaylists = module.playlists.length;
     const stage = user.modules[moduleId].stage;
-    const newStage  = stage >= numPlaylists - 1 ? stage : stage + 1;
+    const newStage  = stage >= numPlaylists ? stage : stage + 1;
     const updated = {
       ...user.modules
     }
@@ -508,7 +523,6 @@ function XBClient() {
           modules: updated
         }
       });
-      console.log("Progressed user in module", module.name, "from", stage, "to stage", newStage);
     } catch (e) {
       console.error("Error updating user", e);
       return {
@@ -529,7 +543,9 @@ function XBClient() {
 
     const users = [];
     for (const id of team.users) {
+
       let user = await self.getUserProfile(id);
+
       if(user === null) {  // this happens when someone joins a team, but closes the app before creating their profile
         user = { prefName: "Unknown" };
       }
@@ -537,26 +553,7 @@ function XBClient() {
       users.push(user);
     }
 
-    // self.tidy(users);
-
     return users;
-  }
-
-  /**
-   * Get the edt moves for a given module, as this is stored in the user profile
-   */
-  self.getChosenMovements = async function (moduleId) {
-    const user = await self.getUserProfile(self.realm.currentUser.id);
-
-    // debugger;
-
-    let moves = user.modules[moduleId].edtMoves || [];
-
-    // debugger;
-
-    console.log("Moves for user", moves);
-
-    return moves;
   }
 
   /**

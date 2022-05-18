@@ -24,7 +24,7 @@ function Slider({ tag, statement, min, max, onSubmit }) {
 
   return (
     <>
-      <IonItem>
+      <IonItem lines="none">
         <IonGrid>
           <IonRow>
             <IonCol>

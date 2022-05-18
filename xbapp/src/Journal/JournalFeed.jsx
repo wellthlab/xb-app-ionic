@@ -9,8 +9,9 @@ import {
   IonCardSubtitle,
   IonList,
   IonItem,
+  IonText,
   IonIcon,
-  IonLabel
+  IonLabel,
 } from "@ionic/react";
 import { connect } from "react-redux";
 
@@ -28,15 +29,16 @@ const JournalFeed = ({ responses }) => {
 
     var time = r.submitted.substring(11, 16);
 
-    switch (r.type) {
+    switch (r.intype) {
+      case "s22journal":
       case "note":
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>{time} &nbsp; NOTE</IonCardSubtitle>
+              <IonCardSubtitle>{time}</IonCardSubtitle>
             </IonCardHeader>
-            <IonCardContent>
-              <p>{r.note}</p>
+            <IonCardContent className="ion-text-justify">
+              <IonText>{r.note}</IonText>
             </IonCardContent>
           </>
         );
@@ -73,188 +75,250 @@ const JournalFeed = ({ responses }) => {
             <IonCardContent>
               <IonList>
                 <IonItem>Rated DOMS: {r.doms}</IonItem>
-                <IonItem>Did this exercise {r.workQ}, whilst being in the next location: {r.workQ2}.</IonItem>
-                {r.sets == null ? <> 
-                {/* it means it's aerobic day */}
-                  <IonItem>{r.aerobic}</IonItem>
-                
-                </> : Object.keys(r.sets).map((type, i) => {
-                  var block, mtype;
-                  [mtype, block] = type.split(/-/);
+                <IonItem>
+                  Did this exercise {r.workQ}, whilst being in the next
+                  location: {r.workQ2}.
+                </IonItem>
+                {r.sets == null ? (
+                  <>
+                    {/* it means it's aerobic day */}
+                    <IonItem>{r.aerobic}</IonItem>
+                  </>
+                ) : (
+                  Object.keys(r.sets).map((type, i) => {
+                    var block, mtype;
+                    [mtype, block] = type.split(/-/);
 
-                  if (mtype.includes("+")) {
-                    // there are 2 moves put together
-                    var arrMoves = mtype.split("+");
+                    if (mtype.includes("+")) {
+                      // there are 2 moves put together
+                      var arrMoves = mtype.split("+");
 
-                    var nameOfBothExercises = "";
-                    for (var i = 0; i < 2; i++) {
-                      var move = getMove(arrMoves[i]);
+                      var nameOfBothExercises = "";
+                      for (var i = 0; i < 2; i++) {
+                        var move = getMove(arrMoves[i]);
+                        if (move == false) {
+                          move = {
+                            name: "Unknown move",
+                          };
+                        }
+                        var mname = move.name;
+                        nameOfBothExercises += mname + " and ";
+                        var number = r.sets[type];
+                      }
+                      nameOfBothExercises = nameOfBothExercises.slice(0, -5);
+                      return (
+                        <IonItem key={i}>
+                          <span>
+                            {"Tried out "}
+                            {nameOfBothExercises}{" "}
+                            <strong>
+                              {"× " +
+                                Math.floor(number / 5) +
+                                " sets and " +
+                                (number % 5) +
+                                " reps"}
+                            </strong>
+                          </span>
+                        </IonItem>
+                      );
+                    } else {
+                      var move = getMove(mtype);
                       if (move == false) {
                         move = {
                           name: "Unknown move",
                         };
                       }
                       var mname = move.name;
-                      nameOfBothExercises += mname + " and ";
                       var number = r.sets[type];
+                      return (
+                        <IonItem key={i}>
+                          <span>
+                            {"Tried out "} {mname}{" "}
+                            <strong>
+                              {"× " +
+                                Math.floor(number / 5) +
+                                " sets and " +
+                                (number % 5) +
+                                " reps"}
+                            </strong>
+                          </span>
+                        </IonItem>
+                      );
                     }
-                    nameOfBothExercises = nameOfBothExercises.slice(0, -5);
-                    return (
-                      <IonItem key={i}>
-                        <span>
-                          {"Tried out "}
-                          {nameOfBothExercises}{" "}
-                          <strong>
-                            {"× " +
-                              Math.floor(number / 5) +
-                              " sets and " +
-                              (number % 5) +
-                              " reps"}
-                          </strong>
-                        </span>
+                  })
+                )}
+                {"balance" in r ? (
+                  "EOHS" in r.balance ? (
+                    <>
+                      <h3>
+                        <strong>Balance Assessment Results</strong>
+                      </h3>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Open Head Still</strong>
+                        </p>
                       </IonItem>
-                    );
-                  } else {
-                    var move = getMove(mtype);
-                    if (move == false) {
-                      move = {
-                        name: "Unknown move",
-                      };
-                    }
-                    var mname = move.name;
-                    var number = r.sets[type];
-                    return (
-                      <IonItem key={i}>
-                        <span>
-                          {"Tried out "} {mname}{" "}
-                          <strong>
-                            {"× " + Math.floor(number / 5) +
-                              " sets and " +
-                              (number % 5) +
-                              " reps"}
-                          </strong>
-                        </span>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.EOHS.completed}
+                        </IonLabel>
                       </IonItem>
-                    );
-                  }
-                })}
-                {"balance" in r ? ("EOHS" in r.balance ? <>
-                  <h3><strong>Balance Assessment Results</strong></h3>
-                  <IonItem>
-                    <p><strong>Eyes Open Head Still</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.EOHS.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.EOHS.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.EOHS.time}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <p><strong>Eyes Closed Head Still</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.ECHS.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.ECHS.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.ECHS.time}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <p><strong>Eyes Open Head Rotation</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.EOHR.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.EOHR.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.EOHR.time}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <p><strong>Eyes Closed Head Rotation</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.ECHR.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.ECHR.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.ECHR.time}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <p><strong>Eyes Open Head Nod</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.EOHN.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.EOHN.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.EOHN.time}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <p><strong>Eyes Closed Head Nod</strong></p>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Capability: {r.balance.ECHN.completed}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Comfort: {r.balance.ECHN.comfort}</IonLabel>
-                  </IonItem>
-                  <IonItem>
-                    <IonLabel>Time: {r.balance.ECHN.time}</IonLabel>
-                  </IonItem>
-                </> : <>
-                <h3><strong>Balance Practice Results</strong></h3>
-                    <IonItem>
-                      <p><strong>Head Rotation</strong></p>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Eyes: {r.balance.rotation.eye}</IonLabel>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.rotation.reps / 5)} sets and {r.balance.rotation.reps % 5} reps</IonLabel>
-                    </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.EOHS.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.EOHS.time}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Closed Head Still</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.ECHS.completed}
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.ECHS.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.ECHS.time}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Open Head Rotation</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.EOHR.completed}
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.EOHR.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.EOHR.time}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Closed Head Rotation</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.ECHR.completed}
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.ECHR.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.ECHR.time}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Open Head Nod</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.EOHN.completed}
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.EOHN.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.EOHN.time}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Eyes Closed Head Nod</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Capability: {r.balance.ECHN.completed}
+                        </IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Comfort: {r.balance.ECHN.comfort}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Time: {r.balance.ECHN.time}</IonLabel>
+                      </IonItem>
+                    </>
+                  ) : (
+                    <>
+                      <h3>
+                        <strong>Balance Practice Results</strong>
+                      </h3>
+                      <IonItem>
+                        <p>
+                          <strong>Head Rotation</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Eyes: {r.balance.rotation.eye}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Sets/Reps: {Math.trunc(r.balance.rotation.reps / 5)}{" "}
+                          sets and {r.balance.rotation.reps % 5} reps
+                        </IonLabel>
+                      </IonItem>
 
-                    <IonItem>
-                      <p><strong>Head Nod</strong></p>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Eyes: {r.balance.nod.eye}</IonLabel>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.nod.reps / 5)} sets and {r.balance.nod.reps % 5} reps</IonLabel>
-                    </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Head Nod</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Eyes: {r.balance.nod.eye}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Sets/Reps: {Math.trunc(r.balance.nod.reps / 5)} sets
+                          and {r.balance.nod.reps % 5} reps
+                        </IonLabel>
+                      </IonItem>
 
-                    <IonItem>
-                      <p><strong>Head Diagonal Nod (1)</strong></p>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Eyes: {r.balance.diag_left.eye}</IonLabel>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.diag_left.reps / 5)} sets and {r.balance.diag_left.reps % 5} reps</IonLabel>
-                    </IonItem>
+                      <IonItem>
+                        <p>
+                          <strong>Head Diagonal Nod (1)</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Eyes: {r.balance.diag_left.eye}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Sets/Reps: {Math.trunc(r.balance.diag_left.reps / 5)}{" "}
+                          sets and {r.balance.diag_left.reps % 5} reps
+                        </IonLabel>
+                      </IonItem>
 
-                    <IonItem>
-                      <p><strong>Head diagonal Nod (2)</strong></p>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Eyes: {r.balance.diag_right.eye}</IonLabel>
-                    </IonItem>
-                    <IonItem>
-                      <IonLabel>Sets/Reps: {Math.trunc(r.balance.diag_right.reps / 5)} sets and {r.balance.diag_right.reps % 5} reps</IonLabel>
-                    </IonItem>
-
-                </>) : <></>}
+                      <IonItem>
+                        <p>
+                          <strong>Head diagonal Nod (2)</strong>
+                        </p>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>Eyes: {r.balance.diag_right.eye}</IonLabel>
+                      </IonItem>
+                      <IonItem>
+                        <IonLabel>
+                          Sets/Reps: {Math.trunc(r.balance.diag_right.reps / 5)}{" "}
+                          sets and {r.balance.diag_right.reps % 5} reps
+                        </IonLabel>
+                      </IonItem>
+                    </>
+                  )
+                ) : (
+                  <></>
+                )}
               </IonList>
               <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
                 <span>
@@ -320,12 +384,12 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; WORK ASSESSMENT
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; WORK ASSESSMENT</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
-              {r.explanation.split(";").map((explanation, i) => <p key={i}>{explanation}</p>)}
+              {r.explanation.split(";").map((explanation, i) => (
+                <p key={i}>{explanation}</p>
+              ))}
             </IonCardContent>
           </>
         );
@@ -335,13 +399,9 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; SCHEDULING
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; SCHEDULING</IonCardSubtitle>
             </IonCardHeader>
-            <IonCardContent>
-              {r.scheduling}
-            </IonCardContent>
+            <IonCardContent>{r.scheduling}</IonCardContent>
           </>
         );
         break;
@@ -350,9 +410,7 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; POMS
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; POMS</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <IonItem key="poms">
@@ -385,9 +443,7 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; The Plank
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; The Plank</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <IonItem key="plank">
@@ -404,9 +460,7 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; Heart Rate
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; Heart Rate</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <p style={{ fontWeight: "bold", fontSize: "1.2em" }}>
@@ -417,7 +471,6 @@ const JournalFeed = ({ responses }) => {
                 </span>
                 <IonIcon icon={arrowForward} /> <span>{r.heartrate}</span>
               </p>
-
             </IonCardContent>
           </>
         );
@@ -427,9 +480,7 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; Wall Sit
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; Wall Sit</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <IonItem key="wall">
@@ -446,14 +497,13 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>
-                {time} &nbsp; This week's quiz!
-              </IonCardSubtitle>
+              <IonCardSubtitle>{time} &nbsp; This week's quiz!</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <IonItem>
                 <span>
-                  You answered <strong>{r.isRightAnswer}</strong> to this week's quiz: {r.question}{" "}{r.answer}.{" "}{r.explanation}
+                  You answered <strong>{r.isRightAnswer}</strong> to this week's
+                  quiz: {r.question} {r.answer}. {r.explanation}
                 </span>
               </IonItem>
             </IonCardContent>
@@ -472,7 +522,9 @@ const JournalFeed = ({ responses }) => {
             <IonCardContent>
               <IonItem>
                 <span>
-                  You have read about pushes and pulls and are now ready to proceed to next week, where you will be using this knowledge further!
+                  You have read about pushes and pulls and are now ready to
+                  proceed to next week, where you will be using this knowledge
+                  further!
                 </span>
               </IonItem>
             </IonCardContent>
@@ -529,7 +581,9 @@ const JournalFeed = ({ responses }) => {
         content = (
           <>
             <IonCardHeader>
-              <IonCardSubtitle>{time} &nbsp; DAILY EVENING REVIEW</IonCardSubtitle>
+              <IonCardSubtitle>
+                {time} &nbsp; DAILY EVENING REVIEW
+              </IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>
               <IonList>
@@ -538,7 +592,6 @@ const JournalFeed = ({ responses }) => {
                   <br></br>
                   Rating {r.felt} on a scale from 0 (not at all) to 10 (a lot).
                 </IonItem>
-
               </IonList>
             </IonCardContent>
           </>
@@ -553,30 +606,195 @@ const JournalFeed = ({ responses }) => {
             </IonCardHeader>
             <IonCardContent>
               <IonList>
-                <IonItem>
-                  {r.benefit}
-                </IonItem>
-                <IonItem>
-                  {r.easier}
-                </IonItem>
-                <IonItem>
-                  {r.scheduling}
-                </IonItem>
-                <IonItem>
-                  {r.building}
-                </IonItem>
-                <IonItem>
-                  {r.busy}
-                </IonItem>
-
+                <IonItem>{r.benefit}</IonItem>
+                <IonItem>{r.easier}</IonItem>
+                <IonItem>{r.scheduling}</IonItem>
+                <IonItem>{r.building}</IonItem>
+                <IonItem>{r.busy}</IonItem>
               </IonList>
             </IonCardContent>
           </>
         );
         break;
 
+      // Stuff added for Strength22
+
+      case "s22other":
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Your own thing</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              For {r.minutes} minutes, you did some {r.movement}
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22video":
+      case "s22assessedvideo":
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Video</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              You watched a video and recorded some movement
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22weblink":
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Weblink</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>You visited {r.link} on the web</IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22edtset":
+        const moveA = r.exercises[0].name;
+        const moveB = r.exercises[1].name;
+        const technique = r.exercises[0].technique;
+        const type = r.exercises[0].type;
+        const reps = r.reps;
+        const sets = r.sets;
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>
+                {time} &nbsp; {technique[0].toUpperCase() + technique.slice(1)}{" "}
+                {type} EDT set
+              </IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              You did {sets} sets and {reps} reps of {moveA}s and {moveB}s in{" "}
+              {r.minutes} minutes!
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22questions":
+        const atHome = r.atHomeOrWork;
+        const indoors = r.indoorsOrOutdoors;
+        const timeOfDay = r.timeOfDay;
+        const whoWith = r.whoWith;
+        // const workDay = r.workDay;
+
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>
+                {time} &nbsp; Movement questions
+              </IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              {atHome && indoors && timeOfDay && whoWith ? (
+                <>
+                  {" "}
+                  {timeOfDay === "Midday"
+                    ? "At midday"
+                    : "In the " + timeOfDay.toLowerCase()}
+                  , you did some movement {indoors.toLowerCase()} at{" "}
+                  {atHome.toLowerCase()}{" "}
+                  {whoWith === "Alone" ? "by yourself" : "with others"}.
+                </>
+              ) : (
+                "You told us a bit about how you moved"
+              )}
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22quiz":
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Quiz</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>You answered some quiz questions</IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22manage":
+        const attempts = [r["attempt-1"], r["attempt-2"], r["attempt-3"]];
+        const successes = attempts.filter((e) => e === "yes").length;
+
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Video</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              You watched a video and tried some movement
+              {successes > 0 ? (
+                <>
+                  {successes === 1 ? (
+                    <>, which you successfully did once</>
+                  ) : (
+                    <>, which you successfully did {successes} times</>
+                  )}
+                </>
+              ) : (
+                ""
+              )}
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "s22instructions":
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Movement task</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+              You followed along with some movement instructions
+            </IonCardContent>
+          </>
+        );
+        break;
+
+      case "previous-day":
+        let subContent;
+        if (r.playlistName) {
+          subContent = (
+            <>
+              You entered {r.minutes} movement minutes for the {r.playlistName}{" "}
+              playlist in the {r.moduleName} module
+            </>
+          );
+        } else {
+          subContent = (
+            <>You entered some movement minutes for a playlist you did past</>
+          );
+        }
+
+        content = (
+          <>
+            <IonCardHeader>
+              <IonCardSubtitle>{time} &nbsp; Manual movement</IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>{subContent}</IonCardContent>
+          </>
+        );
+        break;
+
       default:
-        content = <>Unknown response type: {r.type}</>;
+        content = (
+          <>
+            <IonCardContent>Unknown task type {r.intype}</IonCardContent>
+          </>
+        );
     }
 
     return content;
@@ -596,16 +814,28 @@ const JournalFeed = ({ responses }) => {
 
   return (
     <div className="journalfeed">
-      {sresponses.map((item, i) => {
-        // console.log(item);
-        var content;
-
-        var content = renderItem(item);
-
-        return (
-          <IonCard key={item.type + "-" + item.submitted}>{content}</IonCard>
-        );
-      })}
+      {sresponses.length ? (
+        <>
+          {sresponses.map((item, i) => {
+            const content = renderItem(item);
+            return (
+              <IonCard key={item.intype + "-" + item.submitted}>
+                {content}
+              </IonCard>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          <IonCard>
+            <IonCardContent>
+              <IonText className="ion-text-center">
+                <h1>There is nothing to show</h1>
+              </IonText>
+            </IonCardContent>
+          </IonCard>
+        </>
+      )}
     </div>
   );
 };
