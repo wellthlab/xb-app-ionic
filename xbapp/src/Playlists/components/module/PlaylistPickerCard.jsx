@@ -1,5 +1,5 @@
 import { IonCard, IonItem, IonItemGroup, IonLabel } from "@ionic/react";
-import PlaylistPickingDescription from "./PlaylistDescription";
+import PlaylistPickingDescription from "./PlaylistPickerCardContent";
 
 /**
  *

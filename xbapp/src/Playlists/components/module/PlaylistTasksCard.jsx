@@ -19,8 +19,7 @@ import {
   refreshOutline,
   arrowBackOutline,
 } from "ionicons/icons";
-import getTaskIcon from "../player/taskIcons";
-import { preparePlaylist } from "../util";
+import { preparePlaylist, getTaskIcon } from "../util";
 
 /**
  *
@@ -33,7 +32,7 @@ import { preparePlaylist } from "../util";
  * @returns {JSX.Element}
  * @constructor
  */
-function PlaylistTaskCard({
+function PlaylistTasksCard({
   module,
   teamId,
   isPlaying,
@@ -289,4 +288,4 @@ function PlaylistTaskCard({
   );
 }
 
-export default PlaylistTaskCard;
+export default PlaylistTasksCard;

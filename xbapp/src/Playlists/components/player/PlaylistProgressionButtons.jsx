@@ -26,7 +26,7 @@ import {
  * @param moduleId
  * @param playlistIdx
  */
-function ProgressionButtons({
+function PlaylistProgressionButtons({
   numTasks,
   currentTaskIdx,
   goToNextTask,
@@ -71,4 +71,4 @@ function ProgressionButtons({
   );
 }
 
-export default ProgressionButtons;
+export default PlaylistProgressionButtons;

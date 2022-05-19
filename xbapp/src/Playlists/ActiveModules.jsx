@@ -11,29 +11,32 @@ import {
   IonIcon,
   IonSpinner,
 } from "@ionic/react";
-import XBHeader from "../util/XBHeader";
 import { checkboxOutline, playOutline, refreshOutline } from "ionicons/icons";
 import { connect } from "react-redux";
+
 import { addControllersProp } from "../util_model/controllers";
 import { getActiveModules } from "./components/util";
+import XBHeader from "../util/XBHeader";
 import XBInfo from "../util/XBInfo";
 
 /**
+ * Present a list of active playlists for a user, which can be pressed to
+ * continue where they left off. This component is meant to act as a shortcut
+ * to getting to the playlists people have been working on.
  *
- * @param props
+ * @param teams
+ * @param userProfile
+ * @param modules
+ * @param controllers
+ *
  * @returns {JSX.Element}
- * @constructor
  */
-function PlaylistActive(props) {
-  props.controllers.LOAD_TEAMS_IF_REQD();
-  props.controllers.SET_USER_PROFILE_IF_REQD();
-  props.controllers.LOAD_MODULES_IF_REQD();
+function ActiveModules({ teams, userProfile, modules, controllers }) {
+  controllers.LOAD_TEAMS_IF_REQD();
+  controllers.SET_USER_PROFILE_IF_REQD();
+  controllers.LOAD_MODULES_IF_REQD();
 
-  if (
-    !props.teams.loaded ||
-    !props.userProfile.loaded ||
-    !props.modules.loaded
-  ) {
+  if (!teams.loaded || !userProfile.loaded || !modules.loaded) {
     return (
       <IonPage>
         <XBHeader title="Your Playlists" />
@@ -44,39 +47,52 @@ function PlaylistActive(props) {
     );
   }
 
-  const team = props.teams.teams.bybox["move"][0];
+  const team = teams.teams.bybox["move"][0];
   const expDay = team.experiment.day;
-  const userProfile = props.userProfile.userProfile;
-  const availableModules = props.modules.modules;
+  const expDayIdx = expDay === 0 ? 0 : expDay - 1;
 
-  const userModules = userProfile.modules || {};
+  const profile = userProfile.userProfile;
+  const availableModules = modules.modules;
+  const userModules = profile.modules || {};
+
   const activeModules = getActiveModules(userModules);
 
-  let activePlaylists = activeModules.map((userModuleObj) => {
-    const module = availableModules.find((m) => m._id === userModuleObj.id);
-    const moduleColour = module.info.colour;
-    const currentPlaylist =
-      userModuleObj.stage >= module.playlists.length
+  let activePlaylists = activeModules.map((userModule) => {
+    if (userModule.active === false) {
+      return null;
+    }
+
+    const completedModuleMessage = "Completed, feel free to replay!";
+    const module = availableModules.find((m) => m._id === userModule.id);
+    const colour = module.info.colour;
+
+    const userProgression =
+      userModule.stage >= module.playlists.length
         ? module.playlists.length - 1
-        : userModuleObj.stage;
+        : userModule.stage;
 
-    const completedMsg = "Completed, feel free to replay!";
-    const playlistMinutes =
-      userModuleObj.stage >= module.playlists.length
-        ? completedMsg
-        : parseInt(module.playlists[currentPlaylist].minutes, 10) || 0;
+    const currentPlaylistMinutes =
+      userModule.stage >= module.playlists.length
+        ? completedModuleMessage
+        : parseInt(module.playlists[userProgression].minutes, 10) || 0;
 
-    const expDayIdx = expDay === 0 ? 0 : expDay - 1;
-    const moduleDoneToday =
-      userModuleObj.id in team.entries[expDayIdx].completedModules;
-    const doneIcon =
-      playlistMinutes === completedMsg ? refreshOutline : checkboxOutline;
+    const playedModuleToday =
+      userModule.id in team.entries[expDayIdx].completedModules;
+
+    // A module is considered played when the user has played it today, or when
+    // they have completed all playlists. In the latter case, display a replay
+    // icon to indicate it can be replayed if they want.
+    const playedModuleIcon =
+      currentPlaylistMinutes === completedModuleMessage
+        ? refreshOutline
+        : checkboxOutline;
 
     return (
       <IonCard>
         <IonItem
           lines="none"
-          style={{ "--ion-item-background": moduleColour }}
+          style={{ "--ion-item-background": colour }}
+          key={module._id}
         />
         <IonGrid>
           <IonRow>
@@ -92,7 +108,7 @@ function PlaylistActive(props) {
                   "/" +
                   module._id +
                   "/" +
-                  currentPlaylist
+                  userProgression
                 }
                 onClick={() => {
                   // store the active-playlist, so we can go back to the last
@@ -100,7 +116,7 @@ function PlaylistActive(props) {
                   // in the detailed view.
                   // not ideal, but avoids reloading the state (with the redux
                   // store) or polluting router history by updating the URL
-                  localStorage.setItem("active-playlist", currentPlaylist);
+                  localStorage.setItem("active-playlist", userProgression);
                 }}
               >
                 <IonLabel>
@@ -109,19 +125,20 @@ function PlaylistActive(props) {
                   </IonRow>
                   <IonRow>
                     <IonText color={"medium"}>
-                      Playlist {currentPlaylist + 1} of{" "}
+                      Playlist {userProgression + 1} of{" "}
                       {module.playlists.length}
                     </IonText>
                   </IonRow>
                   <IonRow>
                     <IonText color={"medium"}>
-                      {playlistMinutes} minutes
+                      {currentPlaylistMinutes} minutes
                     </IonText>
                   </IonRow>
                 </IonLabel>
                 <IonLabel slot="end">
-                  {moduleDoneToday || playlistMinutes === completedMsg ? (
-                    <IonIcon size="large" icon={doneIcon} />
+                  {playedModuleToday ||
+                  currentPlaylistMinutes === completedModuleMessage ? (
+                    <IonIcon size="large" icon={playedModuleIcon} />
                   ) : (
                     <IonIcon size="large" icon={playOutline} />
                   )}
@@ -136,13 +153,13 @@ function PlaylistActive(props) {
 
   return (
     <IonPage>
-      <XBHeader title={"Your Playlists"} />
+      <XBHeader title={"Move"} />
       <IonContent>
         <XBInfo
           title={"CONTINUE PLAYING"}
           desc={
-            "Here are all of the playlists that you have started playing. You can continue where you left off, " +
-            "by clicking on the playlist you want to continue."
+            "These are the playlists that you have started. Continue where " +
+            "you left off, by clicking the one you want to continue playing."
           }
         />
         {activePlaylists}
@@ -162,4 +179,4 @@ export default connect(
   {
     pure: false,
   }
-)(addControllersProp(PlaylistActive));
+)(addControllersProp(ActiveModules));

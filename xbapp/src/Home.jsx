@@ -1,16 +1,12 @@
-import {
-  IonContent,
-  IonPage,
-  IonSpinner,
-} from "@ionic/react";
+import { IonContent, IonPage, IonSpinner } from "@ionic/react";
 import { connect } from "react-redux";
 
 import { addControllersProp } from "./util_model/controllers";
 
 import XBHeader from "./util/XBHeader";
-import UserProfile from "./UserProfile/UserProfile";
+import UserProfile from "./UserProfile/SetUserProfile";
 import Enroller from "./Boxes/components/Enroller";
-import PlaylistHome from "./Playlists/PlaylistHome";
+import ModuleHome from "./Playlists/ModuleHome";
 
 /**
  * Home page
@@ -54,7 +50,7 @@ function Home(props) {
     content = <UserProfile pageType="move" />;
   } else {
     content = (
-      <PlaylistHome
+      <ModuleHome
         userProfile={props.userProfile}
         teams={props.teams}
         modules={props.modules}

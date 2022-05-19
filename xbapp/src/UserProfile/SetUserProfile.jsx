@@ -1,15 +1,8 @@
-import { useState } from "react";
 import { connect } from "react-redux";
 import {
   IonButton,
   IonContent,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonSelectOption,
-  IonSelect,
   IonCard,
-  IonGrid,
   IonRow,
   IonCol,
   IonSpinner,
@@ -20,12 +13,13 @@ import {
   IonCardTitle,
   IonList,
 } from "@ionic/react";
+import { saveOutline } from "ionicons/icons";
+import { useHistory } from "react-router";
 
 import { addControllersProp } from "../util_model/controllers";
-
 import XBHeader from "../util/XBHeader";
-import { useHistory } from "react-router";
-import { saveOutline } from "ionicons/icons";
+import TextInputField from "./components/TextField";
+import ChoiceInputField from "./components/ChoiceField";
 
 const facultyMap = {
   "Health, Safety & Risk": [],
@@ -87,7 +81,7 @@ const departmentMap = [
   "Modern Languages and Linguistics",
   "Music",
   "Philosophy",
-  "Chemisty",
+  "Chemistry",
   "Electronics and Computer Science",
   "Engineering",
   "FEPS Enterprise/nC2",
@@ -120,83 +114,9 @@ const facultyList = Object.keys(facultyMap).sort();
  * Create a user profile
  *
  */
-function UserProfile(props) {
+function SetUserProfile(props) {
   let history = useHistory();
   let profileObj = {};
-  const [pObj, setPObj] = useState(profileObj);
-
-  /**
-   * Component for free text input
-   *
-   * @param {string} label - label for input
-   * @param {string} profileObjKey - unique identifier for input
-   * @param {function} updateProfileObj - function to update profile object
-   */
-  function TextField({ inputLabel, profileObjKey, updateProfileObj }) {
-    const [value, setValue] = useState(
-      profileObj[profileObjKey] ? profileObj[profileObjKey] : ""
-    );
-
-    function handleChange(e) {
-      updateProfileObj(profileObjKey, e.detail.value);
-      setValue(e.detail.value);
-    }
-
-    return (
-      <IonItem>
-        <IonLabel position="floating">{inputLabel}</IonLabel>
-        <IonInput
-          // style={{ "--placeholder-opacity": "0.35" }}
-          // placeholder={inputLabel}
-          value={value}
-          onIonChange={(e) => handleChange(e)}
-        />
-      </IonItem>
-    );
-  }
-
-  /**
-   * Component for multiple choice input
-   *
-   * @param {string} label - label for input
-   * @param {array} choices - the choices to be presented
-   * @param {string} profileObjKey - unique identifier for input
-   * @param {function} updateProfileObj - function to update profile object
-   */
-  function ChoiceField({
-    inputLabel,
-    choices,
-    profileObjKey,
-    updateProfileObj,
-  }) {
-    const [value, setValue] = useState(profileObj[profileObjKey]);
-
-    function handleChange(e) {
-      setValue(e.detail.value);
-      updateProfileObj(profileObjKey, e.detail.value);
-    }
-
-    const selections = choices.map((choice) => {
-      return <IonSelectOption value={choice}>{choice}</IonSelectOption>;
-    });
-
-    return (
-      <IonItem>
-        <IonLabel position="floating">{inputLabel}</IonLabel>
-        <IonSelect
-          // placeholder={inputLabel}
-          interface="action-sheet"
-          multiple={false}
-          value={value}
-          onIonChange={(e) => {
-            handleChange(e);
-          }}
-        >
-          {selections}
-        </IonSelect>
-      </IonItem>
-    );
-  }
 
   function updateProfile(newKey, value) {
     profileObj[newKey] = value;
@@ -224,6 +144,8 @@ function UserProfile(props) {
    * - Career stage - list
    */
 
+  console.log("profileObj", profileObj);
+
   const inputCard = (
     <IonCard>
       <IonCardHeader>
@@ -232,13 +154,15 @@ function UserProfile(props) {
       </IonCardHeader>
       <IonList>
         {/* Preferred name */}
-        <TextField
+        <TextInputField
+          input={profileObj["prefName"]}
           inputLabel={"Your preferred name"}
           profileObjKey={"prefName"}
           updateProfileObj={updateProfile}
         />
         {/* Unit or faculty */}
-        <ChoiceField
+        <ChoiceInputField
+          input={profileObj["unit"]}
           inputLabel={"Unit or Faculty"}
           choices={facultyList}
           profileObjKey={"unit"}
@@ -254,7 +178,8 @@ function UserProfile(props) {
         {/*  ""*/}
         {/*)}*/}
         {/* School or department */}
-        <ChoiceField
+        <ChoiceInputField
+          input={profileObj["department"]}
           inputLabel={"School or Department"}
           choices={departmentMap}
           profileObjKey={"department"}
@@ -270,7 +195,8 @@ function UserProfile(props) {
         {/*  ""*/}
         {/*)}*/}
         {/* Campus */}
-        <ChoiceField
+        <ChoiceInputField
+          input={profileObj["campus"]}
           inputLabel={"Campus"}
           choices={[
             "1 Guildhall Square",
@@ -285,13 +211,15 @@ function UserProfile(props) {
         />
         {/* Office/building */}
         {/* TODO: fix related issue somehow https://github.com/ionic-team/ionic-framework/issues/21658 */}
-        <TextField
+        <TextInputField
+          input={profileObj["office"]}
           inputLabel={"Office or Building"}
           profileObjKey={"office"}
           updateProfileObj={updateProfile}
         />
         {/* Career stage */}
-        <ChoiceField
+        <ChoiceInputField
+          input={profileObj["careerStage"]}
           inputLabel={"Career stage"}
           choices={[3, 4, 5, 6, 7]}
           profileObjKey={"careerStage"}
@@ -315,17 +243,17 @@ function UserProfile(props) {
     </IonCard>
   );
 
+  // Sometimes this wants to be just a component, rather than an entire page.
+  // For example, in Home.jsx it is just a component.
   let content;
   if (props.pageType === "move" || props.pageType === "settings") {
     content = inputCard;
   } else {
     content = (
-      <>
-        <IonPage>
-          <XBHeader title="User Profile" />
-          <IonContent>{inputCard}</IonContent>
-        </IonPage>
-      </>
+      <IonPage>
+        <XBHeader title="User Profile" />
+        <IonContent>{inputCard}</IonContent>
+      </IonPage>
     );
   }
 
@@ -341,4 +269,4 @@ export default connect(
   {
     pure: false,
   }
-)(addControllersProp(UserProfile));
+)(addControllersProp(SetUserProfile));

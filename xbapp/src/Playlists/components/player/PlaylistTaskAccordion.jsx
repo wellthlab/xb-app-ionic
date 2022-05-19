@@ -7,7 +7,7 @@ import {
   IonLabel,
   IonRow,
 } from "@ionic/react";
-import getTaskIcon from "./taskIcons";
+import { getTaskIcon } from "../util";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -22,7 +22,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
  * @returns {JSX.Element}
  * @constructor
  */
-function TaskAccordion({ tasks, currentTaskIdx, setCurrentTask }) {
+function PlaylistTaskAccordion({ tasks, currentTaskIdx, setCurrentTask }) {
   const taskItems = tasks.map((task, index) => {
     return (
       <IonRow className="ion-no-padding">
@@ -74,4 +74,4 @@ function TaskAccordion({ tasks, currentTaskIdx, setCurrentTask }) {
   );
 }
 
-export default TaskAccordion;
+export default PlaylistTaskAccordion;

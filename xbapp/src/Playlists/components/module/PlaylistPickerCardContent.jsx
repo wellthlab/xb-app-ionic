@@ -23,7 +23,7 @@ import parse from "html-react-parser";
  * @param userModules - the user's modules from their user profile
  * @param updatedModules - function to update the user's modules
  */
-function PlaylistDescription({
+function PlaylistPickerCardContent({
   team,
   topic,
   module,
@@ -135,5 +135,4 @@ function PlaylistDescription({
   );
 }
 
-export default PlaylistDescription;
-//
+export default PlaylistPickerCardContent;

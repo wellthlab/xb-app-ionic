@@ -85,18 +85,12 @@ async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
  async function UPDATE_USER_PROFILE(client, store, controllers, profile) {
 
   const res = await client.createUserProfile(profile);
-
   if (res.success === false) {
     return false;
   }
 
   const userProfile = res.userProfile;
   await store.dispatch(SET_USER({ userProfile }));
-
-  // const state = store.getState();
-  // const newUser = state.userProfile.userProfile;
-  // console.log("UPDATE_USER_PROFILE newUser", newUser);
-  // debugger;
 
   return true;
 }
@@ -157,7 +151,6 @@ async function UPDATE_USER_MODULE(client, store, controllers, user, module, subs
   }
 
   await controllers.UPDATE_USER_PROFILE(newUser);
-  await controllers.SET_USER_PROFILE();
 }
 
 
@@ -447,6 +440,26 @@ async function GET_FEED(client, store, controllers) {
   store.dispatch(SET_FEED(feeds));
 }
 
+async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
+  const state = store.getState();
+
+  const user = {...state.userProfile.userProfile};
+  const module = { ...user.modules[moduleId]};
+  if(!module.edtMoves) {
+    module.edtMoves = {};
+  }
+  module.edtMoves = {...module.edtMoves, [key]: movements};
+
+  const modules = {...user.modules, [moduleId]: module};
+  const newUser = {
+    ...user,
+    modules: modules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUser);
+  await controllers.SET_USER_PROFILE();
+}
+
 function getControllers(store, client) {
   var out = { client: client, store: store };
 
@@ -470,7 +483,8 @@ function getControllers(store, client) {
     UPDATE_USER_MODULE,
     LEAVE_TEAM,
     GET_LIBRARY,
-    GET_LIBRARY_IF_REQD
+    GET_LIBRARY_IF_REQD,
+    SET_CHOSEN_MOVEMENTS
   };
 
   for (var n of Object.keys(controllers)) {

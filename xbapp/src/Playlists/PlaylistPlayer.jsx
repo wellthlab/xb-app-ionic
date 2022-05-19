@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   IonItem,
   IonContent,
@@ -7,20 +7,20 @@ import {
   IonText,
   useIonToast,
 } from "@ionic/react";
+import { happyOutline } from "ionicons/icons";
 import { connect } from "react-redux";
 
-import "./css/PlaylistPlayer.css";
-
 import { addControllersProp } from "../util_model/controllers";
-import { preparePlaylist, translateMoveTypes } from "./components/util";
-import inputFactory from "../Boxes/inputFactory";
+import { preparePlaylist, prepareTask } from "./components/util";
 import XBHeader from "../util/XBHeader";
-import PlaylistInfo from "./components/player/PlaylistInfo";
-import ProgressionButtons from "./components/player/ProgressionButtons";
-import TaskTimer from "./components/player/TaskTimer";
-import InstructionsAccordion from "./components/player/InstructionAccordion";
 import XBInfo from "../util/XBInfo";
-import { happyOutline } from "ionicons/icons";
+import inputFactory from "../Boxes/inputFactory";
+import TaskTimer from "./components/player/TaskTimer";
+import PlaylistInfo from "./components/player/PlaylistInfo";
+import PlaylistProgressionButtons from "./components/player/PlaylistProgressionButtons";
+import InstructionsAccordion from "./components/player/InstructionAccordion";
+
+import "./css/PlaylistPlayer.css";
 
 /**
  * The main UI element for displaying playlist information, task specific UI
@@ -32,16 +32,23 @@ import { happyOutline } from "ionicons/icons";
  * @param props.match.params.moduleId
  * @param props.match.params.playlistIdx
  * @param props.match.params.progress
+ * @param props.match.params.startingTask
+ * @param props.match.params.mode
  */
 function PlaylistPlayer(props) {
-  const [currentTaskIdx, setCurrentTaskIdx] = useState(
-    parseInt(props.match.params.startingTask, 10)
-  );
   const [externalResponse, setExternalResponse] = useState({});
   const [minutes, setMinutes] = useState(0);
   const [manualTimeEntry, setManualEntry] = useState(false);
-  const [showSavedToast, dismissSavedToast] = useIonToast();
+  const [showSavedToast] = useIonToast();
   const [finishedAlert] = useIonToast();
+  const [currentTaskIdx, setCurrentTaskIdx] = useState(
+    parseInt(props.match.params.startingTask, 10)
+  );
+
+  const readyToSave = minutes > 0;
+  const playlistPlayingIdx = parseInt(props.match.params.playlistIdx, 10);
+  const playlistUserProgressIdx = parseInt(props.match.params.progress, 10);
+  const isExplore = props.match.params.mode === "explore";
 
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
@@ -58,9 +65,6 @@ function PlaylistPlayer(props) {
   const userProfile = props.userProfile.userProfile;
   const team = props.teams.teams.bybox["move"][0];
   const moduleId = props.match.params.moduleId;
-  const playlistPlayingIdx = parseInt(props.match.params.playlistIdx, 10);
-  const playlistUserProgressIdx = parseInt(props.match.params.progress, 10);
-  const isExplore = props.match.params.mode === "explore";
 
   // This may not scale very well if we have a lot of modules in the future
   const module = props.modules.modules.find((m) => m._id === moduleId);
@@ -72,44 +76,9 @@ function PlaylistPlayer(props) {
     );
   }
 
+  // Get the tasks for the playlist and prepare the current task
   const tasks = preparePlaylist(module.playlists[playlistPlayingIdx].tasks);
-
-  // Get the task, and add some useful data as well to be passed around
-  const currentTask = { ...tasks[currentTaskIdx] };
-
-  // We need more useful data for the EDT set... this is a mess lol
-  if (currentTask.intype === "s22edtset") {
-    currentTask.instructions =
-      "Try to fit in as many sets in the 7-minute limit. When ready, TAP on " +
-      "the move you want to start with. TAP the OTHER move when you have " +
-      "completed 5 REPS to add a SET. When the time runs out, add any " +
-      "outstanding reps.";
-    const edtTasks = tasks.filter((task) => task.intype === "s22edtset");
-
-    // determine which EDT block this is, by counting how many EDT sets before
-    // this one
-    const tasksBeforeThisOne = tasks.slice(0, currentTaskIdx);
-    currentTask.edtBlock = tasksBeforeThisOne.filter(
-      (e) => e.intype === "s22edtset"
-    ).length;
-
-    // Add all the moveTypes for all the EDT tasks, used for movement picking
-    const moveTypes = [];
-    edtTasks.forEach((task, index, arr) => {
-      moveTypes.push(translateMoveTypes(task.edtMoves));
-    });
-
-    currentTask.moveTypes = moveTypes;
-  }
-
-  // Add these as fields to the task as well, so we can save and pass info
-  // about the module
-  currentTask.moduleId = moduleId;
-  currentTask.module = module;
-  currentTask.type =
-    currentTask.type || `task-${currentTaskIdx}-${currentTask.intype}`;
-
-  const readyToSave = minutes > 0;
+  const currentTask = prepareTask(tasks, currentTaskIdx, module);
 
   // Progress the user to the next playlist using the controller
   async function progressToNextPlaylist() {
@@ -152,7 +121,7 @@ function PlaylistPlayer(props) {
 
     if (currentTaskIdx === tasks.length - 1) {
       await finishedAlert({
-        header: "Well done, you completed a playlist!",
+        header: "Well done, you completed the playlist!",
         position: "top",
         color: "success",
         duration: 3000,
@@ -165,7 +134,7 @@ function PlaylistPlayer(props) {
         message: "Your minutes have been saved",
         position: "top",
         duration: 2500,
-        buttons: [{ text: "OK", handler: dismissSavedToast }],
+        buttons: ["OK"],
       });
     }
     // Only progress along playlists IF the user is on their latest playlist.
@@ -221,7 +190,7 @@ function PlaylistPlayer(props) {
   // The UI to display for the specific task being played is returned from the
   // input factory
   // TODO: we need to pass if this isExplore as well, as some tasks will
-  //       have timers as well
+  //       have extra timers as well which we dont want to show
   const taskContent = inputFactory(
     currentTask.intype,
     team,
@@ -292,7 +261,7 @@ function PlaylistPlayer(props) {
           color="transparent"
           style={{ "--padding-start": "0px", "--inner-padding-end": "0px" }}
         >
-          <ProgressionButtons
+          <PlaylistProgressionButtons
             numTasks={tasks.length}
             currentTaskIdx={currentTaskIdx}
             goToNextTask={nextTaskInPlaylist}

@@ -6,10 +6,16 @@ import {
   IonText,
   IonLabel,
   IonCol,
-  IonRow,
 } from "@ionic/react";
 
-function PlaylistList({ module, toggleListView }) {
+/**
+ *
+ * @param module
+ * @param toggleListView
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function PlaylistWeekOverview({ module, toggleListView }) {
   const playlists = module.playlists;
   const isSnack = module.topic.includes("snack/");
   const playlistItems = playlists.map((playlist, index) => {
@@ -71,4 +77,4 @@ function PlaylistList({ module, toggleListView }) {
   );
 }
 
-export default PlaylistList;
+export default PlaylistWeekOverview;

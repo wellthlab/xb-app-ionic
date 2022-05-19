@@ -8,12 +8,15 @@ import {
 } from "@ionic/react";
 
 /**
+ * Component to display a title and description/instructions/information in
+ * an Ion Item. Tends to be used at the top of the page.
+ * TODO: put styling in css
  *
  * @param title
  * @param desc
  * @param opt
+ *
  * @returns {JSX.Element}
- * @constructor
  */
 function XBInfo({ title, desc, opt }) {
   return (

@@ -1,6 +1,6 @@
 import { IonGrid, IonRow, IonCol } from "@ionic/react";
 
-import Button from "./Button";
+import TopicButton from "./TopicButton";
 
 /**
  * Main page/logic for subscribing to modules
@@ -10,12 +10,12 @@ import Button from "./Button";
  * @params userProfile - the user's profile
  * @params controllers - controller functions
  */
-function TopicButtons(props) {
+function MovementModuleTopicButton() {
   return (
     <IonGrid>
       <IonRow>
         <IonCol>
-          <Button topic="strength" title="Strength Training" />
+          <TopicButton topic="strength" title="Strength Training" />
         </IonCol>
       </IonRow>
       {/* <IonRow>
@@ -32,4 +32,4 @@ function TopicButtons(props) {
   );
 }
 
-export default TopicButtons;
+export default MovementModuleTopicButton;

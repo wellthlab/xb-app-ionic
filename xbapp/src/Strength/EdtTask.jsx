@@ -39,9 +39,10 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
     setShowMovePicker(!showMovePicker);
   }
 
-  const stage = parseInt(userProfile.modules[task.moduleId].stage, 10) + 1 || 1;
+  const currentPlaylistIdx =
+    parseInt(userProfile.modules[task.moduleId].stage, 10) + 1 || 1;
   const isSnack = task.module.topic.includes("snack/");
-  const playlistWeek = isSnack ? 1 : Math.round(stage % 5);
+  const playlistWeek = isSnack ? 1 : Math.floor(currentPlaylistIdx / 5) + 1;
   const key = `blocks-week-${playlistWeek}`;
 
   // Set up the exercisesChosen variable, where it will either be taken from
@@ -97,41 +98,45 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
     }
   }
 
-  // This is a bit of a complicated if block.
-  // * First, check if showMovePicker is true and display the movement picker
-  // * Next check to see if the movements are NOT loade\d, and display a loading
-  //   spinner if they aren't. Otherwise, make sure there the correct number of
-  //   movements set.
-  // * Finally, if everything is fine then the EDT set UI will be displayed.
-  // TODO: change to guard closure
-
-  let content;
-  if (showMovePicker) {
-    content = (
-      <TaskMovementPicker
-        moduleId={task.moduleId}
-        week={team.experiment.week}
-        userProfile={userProfile}
-        moveTypes={task.moveTypes}
-        toggleView={toggleShowMovePicker}
-        exercises={exercisesChosen}
-        updateExercise={updateExercisesChosen}
-        saveExercises={saveMovesToProfile}
-        explorer={false}
-      />
-    );
-  } else if (!task.moveTypes[task.edtBlock]) {
-    // sometimes we forget to give this edt block some moves in the module database
-    content = (
+  // sometimes we forget to set a block in the task
+  if (!task.moveTypes[task.edtBlock]) {
+    return (
       <IonCard>
         <IonText className="ion-text-center">
           <h1>No moves have been specified in the task</h1>
         </IonText>
       </IonCard>
     );
-  } else if (!allExercisesPicked) {
-    // this is basically just a card to say you need to select moves
-    content = (
+  }
+
+  // This is a bit of a complicated if block.
+  // * First, check if showMovePicker is true and display the movement picker
+  // * Next check to see if the movements are NOT loade\d, and display a loading
+  //   spinner if they aren't. Otherwise, make sure there the correct number of
+  //   movements set.
+  // * Finally, if everything is fine then the EDT set UI will be displayed.
+
+  if (showMovePicker) {
+    return (
+      <>
+        <TaskMovementPicker
+          moduleId={task.moduleId}
+          week={team.experiment.week}
+          userProfile={userProfile}
+          moveTypes={task.moveTypes}
+          toggleView={toggleShowMovePicker}
+          exercises={exercisesChosen}
+          updateExercise={updateExercisesChosen}
+          saveExercises={() => {}} // TODO: fix saving moves
+          // saveExercises={saveMovesToProfile}
+          explorer={false}
+        />
+      </>
+    );
+  }
+
+  if (!allExercisesPicked) {
+    return (
       <IonCard>
         <IonCardContent>
           <IonGrid>
@@ -154,27 +159,22 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
         </IonCardContent>
       </IonCard>
     );
-  } else {
-    // if there are no problems, then we can display the edt UI
-    const block = exercisesChosen[task.edtBlock];
-    const moveA = block[task.moveTypes[task.edtBlock][0].replaceAll(" ", "+")];
-    const moveB = block[task.moveTypes[task.edtBlock][1].replaceAll(" ", "+")];
-    const length = task.length || 7;
-    content = (
-      <>
-        <TimerEDT
-          isSnack={isSnack}
-          changeMoves={toggleShowMovePicker}
-          exercises={[moveA, moveB]}
-          onSubmit={onSubmit}
-          mins={length} // this is always 7 minutes for an EDT set
-          secs={0}
-        />
-      </>
-    );
   }
 
-  return <>{content}</>;
+  const block = exercisesChosen[task.edtBlock];
+  const moveA = block[task.moveTypes[task.edtBlock][0].replaceAll(" ", "+")];
+  const moveB = block[task.moveTypes[task.edtBlock][1].replaceAll(" ", "+")];
+  const length = task.length || 7;
+  return (
+    <TimerEDT
+      isSnack={isSnack}
+      changeMoves={toggleShowMovePicker}
+      exercises={[moveA, moveB]}
+      onSubmit={onSubmit}
+      mins={length}
+      secs={0}
+    />
+  );
 }
 
 export default addControllersProp(EdtTask);

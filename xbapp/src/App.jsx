@@ -64,12 +64,12 @@ import Scheduler from "./UserInput/Scheduler";
 import Quiz from "./UserInput/Quiz";
 import PushPull from "./UserInput/PushPull";
 
-import UserProfile from "./UserProfile/UserProfile";
-import ModuleSubscription from "./Playlists/PlaylistPicker";
+import UserProfile from "./UserProfile/SetUserProfile";
+import ModuleSubscription from "./Playlists/ModulePicker";
 import PlaylistPlayer from "./Playlists/PlaylistPlayer";
 import HistoricPlaylistEntry from "./Playlists/PlaylistPreviousDay";
 import ChangeTeam from "./StartJourney/ChangeTeam";
-import PlaylistDetail from "./Playlists/PlaylistDetail";
+import PlaylistDetail from "./Playlists/ModuleDetail";
 import JournalMainPage from "./Journal/Journal22";
 import Library from "./Library/Library";
 import AddNote from "./Journal/AddNote";
@@ -115,7 +115,7 @@ import "./util_theme/App.css";
 import PlaylistLibrary from "./Library/PlaylistLibrary";
 import Home from "./Home";
 import GlossaryLibrary from "./Library/GlossaryLibrary";
-import PlaylistActive from "./Playlists/PlaylistActive";
+import PlaylistActive from "./Playlists/ActiveModules";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const

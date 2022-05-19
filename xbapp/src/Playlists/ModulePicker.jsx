@@ -6,7 +6,7 @@ import "./css/PlaylistSubscriber.css";
 
 import XBHeader from "../util/XBHeader";
 import XBInfo from "../util/XBInfo";
-import PlaylistPickingCard from "./components/module/PlaylistPickerCard";
+import ModulesToPickList from "./components/module/PlaylistPickerCard";
 import { updateUserProfileModules } from "./components/util";
 
 /**
@@ -15,7 +15,7 @@ import { updateUserProfileModules } from "./components/util";
  * @returns {JSX.Element}
  * @constructor
  */
-function PlaylistPicker(props) {
+function ModulePicker(props) {
   props.controllers.LOAD_TEAMS_IF_REQD();
   props.controllers.LOAD_MODULES_IF_REQD();
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -127,7 +127,7 @@ function PlaylistPicker(props) {
             </IonText>
           }
         />
-        <PlaylistPickingCard
+        <ModulesToPickList
           modulesForTopic={modulesForTopic}
           team={team}
           usersModules={usersModules}
@@ -144,4 +144,4 @@ export default connect((state, ownProps) => {
     userProfile: state.userProfile,
     modules: state.modules,
   };
-}, {})(addControllersProp(PlaylistPicker));
+}, {})(addControllersProp(ModulePicker));

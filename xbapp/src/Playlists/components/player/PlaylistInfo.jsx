@@ -8,7 +8,7 @@ import {
 } from "@ionic/react";
 
 import "../../css/PlaylistPlayer.css";
-import TaskAccordion from "./TaskAccordion";
+import PlaylistTaskAccordion from "./PlaylistTaskAccordion";
 
 /**
  * Displays some useful information about the current playlist, and allows the
@@ -55,7 +55,7 @@ function PlaylistInfo({
           {tasks ? (
             <IonRow>
               <IonCol>
-                <TaskAccordion
+                <PlaylistTaskAccordion
                   tasks={tasks}
                   currentTaskIdx={currentTaskIdx}
                   setCurrentTask={setCurrentTask}

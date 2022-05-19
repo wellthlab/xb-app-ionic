@@ -1,18 +1,15 @@
-import XBInfo from "../../../util/XBInfo";
-import parse from "html-react-parser";
 import {
-  IonButton,
   IonCol,
   IonGrid,
-  IonIcon,
   IonItem,
   IonLabel,
   IonProgressBar,
   IonRow,
   IonText,
 } from "@ionic/react";
-import { addCircleOutline } from "ionicons/icons";
-import { useLocation, useHistory } from "react-router";
+import parse from "html-react-parser";
+
+import XBInfo from "../../../util/XBInfo";
 
 /**
  *
@@ -24,7 +21,7 @@ import { useLocation, useHistory } from "react-router";
  * @returns {JSX.Element}
  * @constructor
  */
-function DetailModuleDescription({
+function ModuleDetailDescription({
   isPlaying,
   module,
   userProgressIdx,
@@ -46,6 +43,8 @@ function DetailModuleDescription({
           </div>
         }
       />
+      {/* Only show progression if there is > 1 playlist and not in explore mode
+       */}
       {isPlaying && numPlaylists > 1 ? (
         <IonItem lines="none" className="playlist-progress">
           <IonGrid>
@@ -83,4 +82,4 @@ function DetailModuleDescription({
   );
 }
 
-export default DetailModuleDescription;
+export default ModuleDetailDescription;

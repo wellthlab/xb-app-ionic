@@ -7,7 +7,7 @@ import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
 
-import UserProfile from "../UserProfile/UserProfile";
+import UserProfile from "../UserProfile/SetUserProfile";
 
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -30,27 +30,25 @@ const MovePage = (props) => {
 
   // Ask the user to enrol in a move experiment, set up their profile or show
   // current experiment info
-  let content = null;
+  let content;
   if (!props.teams.teams.bybox["move"]) {
     content = <Enroller boxtype="move" />;
   } else if (!props.userProfile.userProfile) {
     content = <UserProfile pageType="move" />;
   } else {
     content = (
-      <>
-        <GroupInfo
-          group={props.teams.teams.bybox["move"][0]}
-          modules={props.modules.modules}
-          match={props.match}
-          controllers={props.controllers}
-        />
-      </>
+      <GroupInfo
+        group={props.teams.teams.bybox["move"][0]}
+        modules={props.modules.modules}
+        match={props.match}
+        controllers={props.controllers}
+      />
     );
   }
 
   return (
     <IonPage>
-      <XBHeader title="Team"></XBHeader>
+      <XBHeader title="Team" />
       <IonContent>{content}</IonContent>
     </IonPage>
   );

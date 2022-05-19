@@ -45,7 +45,7 @@ import EDTSet from "../Strength/EdtTask";
 import ManageItTask from "../Strength/ManageIt";
 import ContextualQuestions from "../Strength/Questions";
 import Text from "../Strength/Text";
-import TopicButtons from "../Playlists/components/module/TopicButtons";
+import MovementModuleTopicButton from "../Playlists/components/module/MovementModuleTopicButton";
 import quizFactory from "../Quiz/quizFactory";
 import Image from "../Strength/Image";
 import Journal from "../Strength/Journal";
@@ -293,7 +293,7 @@ export default function responseFactory(
       break;
 
     case "s22subscribe":
-      input = <TopicButtons />;
+      input = <MovementModuleTopicButton />;
       typedesc = "Subscribe";
       break;
 
