@@ -239,11 +239,13 @@ const PIS = () => {
       disclosed to anyone else without your consent unless the University of
       Southampton is required by law to disclose it.
       <br />
+      <br />
       Data protection law requires us to have a valid legal reason (‘lawful
       basis’) to process and use your Personal data. The lawful basis for
       processing personal information in this research study is for the
       performance of a task carried out in the public interest. Personal data
       collected for research will not be used for any other purpose.
+      <br />
       <br />
       For the purposes of data protection law, the University of Southampton is
       the ‘Data Controller’ for this study, which means that we are responsible
@@ -251,6 +253,7 @@ const PIS = () => {
       of Southampton will keep identifiable information about you for 1 year
       after the study has finished after which time any link between you and
       your information will be removed.
+      <br />
       <br />
       To safeguard your rights, we will use the minimum personal data necessary
       to achieve our research study objectives. Your data protection rights –
@@ -278,6 +281,8 @@ const PIS = () => {
       <br />
       Thank you for taking the time to read the information sheet and
       considering taking part in the research.
+      <br />
+      <br />
     </div>
   );
 };

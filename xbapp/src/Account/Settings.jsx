@@ -20,6 +20,7 @@ import "./Settings.scss";
 import PIS from "../Account/components/PIS";
 import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
+import Enroller from "../Boxes/components/Enroller";
 
 const OptionTabs = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -34,23 +35,34 @@ const OptionTabs = (props) => {
     setShowPISModal(!showPISModal);
   }
 
-  if (!props.teams.teams.bybox) {
+  if (!props.teams.loaded) {
     return (
       <IonPage>
         <XBHeader title="Settings" />
         <IonContent>
-          <IonSpinner class="center-spin" name="crescent" />
+          <IonSpinner name="crescent" />
         </IonContent>
       </IonPage>
     );
   }
 
-  var pis = <PIS />;
+  if (!props.teams.teams.bybox["move"]) {
+    return (
+      <IonPage>
+        <XBHeader title="Settings" />
+        <IonContent>
+          <Enroller boxtype="move" />
+        </IonContent>
+      </IonPage>
+    );
+  }
+
+  const pis = <PIS />;
 
   return (
     <>
       <IonPage>
-        <XBHeader title="Settings"></XBHeader>
+        <XBHeader title="Settings" />
         <IonContent id="settings" fullscreen>
           <GenericModal
             showModal={showModal}

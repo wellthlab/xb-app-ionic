@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import {
@@ -10,6 +10,9 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
+  IonPage,
+  IonContent,
+  IonSpinner,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import {
@@ -116,11 +119,21 @@ import PlaylistLibrary from "./Library/PlaylistLibrary";
 import Home from "./Home";
 import GlossaryLibrary from "./Library/GlossaryLibrary";
 import PlaylistActive from "./Playlists/ActiveModules";
+import { addControllersProp } from "./util_model/controllers";
+import XBHeader from "./util/XBHeader";
+import Enroller from "./Boxes/components/Enroller";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
 
-const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
+const App = ({
+  account,
+  controllers,
+  teams,
+  userProfile,
+  START_LOGIN,
+  ACCEPT_LOGIN,
+}) => {
   let content;
 
   useEffect(() => {
@@ -137,17 +150,29 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
     }
   });
 
+  const [doneEverything, setDoneEverything] = useState(false);
+
   if (account.loggedin) {
-    content = (
-      <IonTabs>
+    controllers.LOAD_TEAMS_IF_REQD();
+    controllers.SET_USER_PROFILE_IF_REQD();
+
+    if (!teams.loaded || !userProfile.loaded) {
+      content = <IonSpinner className="center-spin" name="crescent" />;
+    } else {
+      // AAAAA get me out of here
+      const routerOutlet = (
         <IonRouterOutlet animated={true}>
           <Switch>
             <Route path="/tutorial" component={Tutorial} exact={true} />
-            <Route
-              path="/"
-              render={() => <Redirect to="/move" />}
-              exact={true}
-            />
+            {!teams.teams.bybox["move"] ? (
+              <Route path="/" component={Login} exact={true} />
+            ) : (
+              <Route
+                path="/"
+                render={() => <Redirect to="/move" />}
+                exact={true}
+              />
+            )}
             <Route path="/feed" component={Feed} exact={true} />
             <Route path="/box/move/teams" component={Teams} exact={true} />
             <Route
@@ -316,31 +341,49 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
             />
           </Switch>
         </IonRouterOutlet>
-
-        <IonTabBar slot="bottom">
-          <IonTabButton tab={"Team"} href={"/box/move"}>
-            <IonIcon icon={barbellOutline} />
-            <IonLabel>Team</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab={"Journal"} href={"/journal/null/activity"}>
-            <IonIcon icon={journalOutline} />
-            <IonLabel>Journal</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Move" href="/move">
-            <IonIcon icon={bodyOutline} />
-            <IonLabel>Move</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="Library" href="/library">
-            <IonIcon icon={libraryOutline} />
-            <IonLabel>Library</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab={"Settings"} href={"/settings"}>
-            <IonIcon icon={settingsOutline} />
-            <IonLabel>Settings</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    );
+      );
+      if (!teams.teams.bybox["move"] && !doneEverything) {
+        content = (
+          <div>
+            {routerOutlet}
+            <Enroller
+              boxtype="move"
+              setDoneEverything={() => {
+                setDoneEverything(true);
+              }}
+            />
+          </div>
+        );
+      } else {
+        content = (
+          <IonTabs>
+            {routerOutlet}
+            <IonTabBar slot="bottom">
+              <IonTabButton tab={"Team"} href={"/box/move"}>
+                <IonIcon icon={barbellOutline} />
+                <IonLabel>Team</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab={"Journal"} href={"/journal/null/activity"}>
+                <IonIcon icon={journalOutline} />
+                <IonLabel>Journal</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="Move" href="/move">
+                <IonIcon icon={bodyOutline} />
+                <IonLabel>Move</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="Library" href="/library">
+                <IonIcon icon={libraryOutline} />
+                <IonLabel>Library</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab={"Settings"} href={"/settings"}>
+                <IonIcon icon={settingsOutline} />
+                <IonLabel>Settings</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        );
+      }
+    }
   } else {
     content = (
       <IonRouterOutlet>
@@ -369,7 +412,11 @@ const App = ({ account, START_LOGIN, ACCEPT_LOGIN }) => {
 
 export default connect(
   (state, ownProps) => {
-    return { account: state.account };
+    return {
+      account: state.account,
+      teams: state.teams,
+      userProfile: state.userProfile,
+    };
   },
   {
     // Actions to include as props
@@ -377,4 +424,4 @@ export default connect(
     ACCEPT_LOGIN,
     pure: false,
   }
-)(App);
+)(addControllersProp(App));

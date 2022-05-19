@@ -18,26 +18,68 @@ import React, { useState } from "react";
 import "./Enroller.scss";
 
 import Disclaimer from "./Disclaimer";
+import Consent from "./Consent";
+import SetUserProfile from "../../UserProfile/SetUserProfile";
 
 import { connect } from "react-redux";
 
-const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
+/**
+ *
+ * @param boxtype
+ * @param expid
+ * @param seenDisclaimer
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const Enroller = ({
+  boxtype,
+  setDoneEverything,
+  setProfile = false,
+  seenConsent = false,
+  seenDisclaimer = false,
+}) => {
   const [disclaimed, setDisclaimed] = useState(seenDisclaimer);
+  const [consented, setConsented] = useState(seenConsent);
+  const [setUpProfile, setSetUpProfile] = useState(setProfile);
 
   // Look up experiment ID based on box type
-  // TODO: Eventually we'll want to look these up?
+  let expid;
   switch (boxtype) {
     case "move":
-      var expid = "6202d10ccc5d2aa4b830856d"; // Strength in work Feb 2022
+      expid = "6202d10ccc5d2aa4b830856d";
       break;
     case "eat":
     default:
-      var expid = "";
+      expid = "";
       break;
   }
 
-  const content = disclaimed ? (
-    <>
+  if (!consented) {
+    return (
+      <IonCard>
+        <Consent setConsented={setConsented} />
+      </IonCard>
+    );
+  }
+
+  if (!disclaimed) {
+    return (
+      <IonCard>
+        <Disclaimer checkbox={true} onToggle={setDisclaimed} />
+      </IonCard>
+    );
+  }
+
+  if (!setUpProfile) {
+    return (
+      <IonCard>
+        <SetUserProfile pageType="move" setSetUpProfile={setSetUpProfile} />
+      </IonCard>
+    );
+  }
+
+  return (
+    <IonCard>
       <IonItem lines="none" color="transparent" className="ion-text-justify">
         <IonGrid>
           <IonRow>
@@ -53,7 +95,13 @@ const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
             <IonCol>
               <div className="centering">
                 <br />
-                <IonButton routerLink={"/start/join/" + expid} size="regular">
+                <IonButton
+                  routerLink={"/start/join/" + expid}
+                  onClick={() => {
+                    if (setDoneEverything) setDoneEverything();
+                  }}
+                  size="regular"
+                >
                   Join a Team
                 </IonButton>
               </div>
@@ -62,7 +110,13 @@ const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
           <IonRow>
             <IonCol>
               <div className="centering">
-                <IonButton routerLink={"/start/create/" + expid} size="regular">
+                <IonButton
+                  routerLink={"/start/create/" + expid}
+                  onClick={() => {
+                    if (setDoneEverything) setDoneEverything();
+                  }}
+                  size="regular"
+                >
                   Start a Team
                 </IonButton>
               </div>
@@ -70,15 +124,7 @@ const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
           </IonRow>
         </IonGrid>
       </IonItem>
-    </>
-  ) : (
-    <Disclaimer checkbox={true} onToggle={setDisclaimed} />
-  );
-
-  return (
-    <>
-      <IonCard>{content}</IonCard>
-    </>
+    </IonCard>
   );
 };
 

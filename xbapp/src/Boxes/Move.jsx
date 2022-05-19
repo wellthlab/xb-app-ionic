@@ -28,28 +28,21 @@ const MovePage = (props) => {
     );
   }
 
-  // Ask the user to enrol in a move experiment, set up their profile or show
-  // current experiment info
-  let content;
-  if (!props.teams.teams.bybox["move"]) {
-    content = <Enroller boxtype="move" />;
-  } else if (!props.userProfile.userProfile) {
-    content = <UserProfile pageType="move" />;
-  } else {
-    content = (
-      <GroupInfo
-        group={props.teams.teams.bybox["move"][0]}
-        modules={props.modules.modules}
-        match={props.match}
-        controllers={props.controllers}
-      />
-    );
-  }
-
   return (
     <IonPage>
       <XBHeader title="Team" />
-      <IonContent>{content}</IonContent>
+      <IonContent>
+        {props.teams.teams.bybox["move"] ? (
+          <GroupInfo
+            group={props.teams.teams.bybox["move"][0]}
+            modules={props.modules.modules}
+            match={props.match}
+            controllers={props.controllers}
+          />
+        ) : (
+          <Enroller boxtype="move" />
+        )}
+      </IonContent>
     </IonPage>
   );
 };

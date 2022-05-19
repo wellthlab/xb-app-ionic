@@ -42,26 +42,20 @@ function Home(props) {
     );
   }
 
-  let content;
-
-  if (!props.teams.teams.bybox["move"]) {
-    content = <Enroller boxtype="move" />;
-  } else if (!props.userProfile.userProfile) {
-    content = <UserProfile pageType="move" />;
-  } else {
-    content = (
-      <ModuleHome
-        userProfile={props.userProfile}
-        teams={props.teams}
-        modules={props.modules}
-      />
-    );
-  }
-
   return (
     <IonPage>
       <XBHeader title="Move" />
-      <IonContent>{content}</IonContent>
+      <IonContent>
+        {props.teams.teams.bybox["move"] ? (
+          <ModuleHome
+            userProfile={props.userProfile}
+            teams={props.teams}
+            modules={props.modules}
+          />
+        ) : (
+          <Enroller boxtype="move" />
+        )}
+      </IonContent>
     </IonPage>
   );
 }

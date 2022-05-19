@@ -10,6 +10,7 @@ import CalendarView from "./components/CalendarView";
 import MinuteSummary from "./components/MinuteSummary";
 import TabFeed from "./components/TabFeed";
 import AddNoteButton from "./components/AddNoteButton";
+import Enroller from "../Boxes/components/Enroller";
 
 /**
  * Journal entries for people to reflect on their movement
@@ -76,7 +77,7 @@ function JournalMainPage(props) {
   // Load times and reload activity for user
   props.controllers.LOAD_TEAMS_IF_REQD();
   useEffect(() => {
-    if (props.teams.loaded) {
+    if (props.teams.loaded && props.teams.teams.bybox["move"]) {
       getActivityDaysForPerson(props.teams.teams.bybox["move"][0]);
     }
   }, [props.teams]);
@@ -84,6 +85,17 @@ function JournalMainPage(props) {
   // Return a spinner icon if the content is loading
   if (loadingContent || !props.teams.loaded) {
     return <IonSpinner className="center-spin" name="crescent" />;
+  }
+
+  if (!props.teams.teams.bybox["move"]) {
+    return (
+      <IonPage>
+        <XBHeader title="Journal" />
+        <IonContent>
+          <Enroller boxtype="move" />
+        </IonContent>
+      </IonPage>
+    );
   }
 
   // Most of these variables are needed for the CalendarView

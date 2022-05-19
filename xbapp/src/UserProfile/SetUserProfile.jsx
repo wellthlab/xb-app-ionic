@@ -115,7 +115,6 @@ const facultyList = Object.keys(facultyMap).sort();
  *
  */
 function SetUserProfile(props) {
-  let history = useHistory();
   let profileObj = {};
 
   function updateProfile(newKey, value) {
@@ -124,7 +123,11 @@ function SetUserProfile(props) {
 
   async function saveProfile() {
     await props.controllers.UPDATE_USER_PROFILE(profileObj);
-    history.goBack();
+    if (props.setSetUpProfile) {
+      console.log("We're in the right place?");
+      props.setSetUpProfile(true);
+    }
+    // history.goBack();
   }
 
   props.controllers.SET_USER_PROFILE_IF_REQD();
@@ -143,8 +146,6 @@ function SetUserProfile(props) {
    * - Office/building - free text
    * - Career stage - list
    */
-
-  console.log("profileObj", profileObj);
 
   const inputCard = (
     <IonCard>
@@ -230,7 +231,7 @@ function SetUserProfile(props) {
           <IonCol>
             <br />
             <IonButton
-              routerLink={"/settings"}
+              // routerLink={"/settings"}
               expand={"block"}
               onClick={saveProfile}
             >

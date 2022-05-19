@@ -30,9 +30,7 @@ const Login = (props) => {
 
   if (account.loggedin) {
     return (
-      <IonContent>
-        <p>You are logged in as {account.name}</p>
-      </IonContent>
+      <IonContent>{/*<p>You are logged in as {account.name}</p>*/}</IonContent>
     );
   } else {
     var form;
@@ -50,7 +48,7 @@ const Login = (props) => {
                 onIonChange={(e) => {
                   setEmail(e.detail.value);
                 }}
-              ></IonInput>
+              />
             </IonItem>
             <IonItem>
               <IonInput
@@ -59,7 +57,7 @@ const Login = (props) => {
                 onIonChange={(e) => {
                   setPassword(e.detail.value);
                 }}
-              ></IonInput>
+              />
             </IonItem>
           </IonCard>
           <div className="centering">
