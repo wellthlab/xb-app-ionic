@@ -108,7 +108,7 @@ const ExperimentInGroup = (props) => {
             onIonChange={(e) => {
               setNumber(e.detail.value);
             }}
-          ></IonInput>
+          />
         </div>
         {err}
         <div className="centering">{btn}</div>
@@ -116,10 +116,22 @@ const ExperimentInGroup = (props) => {
     );
   }
 
+  const headerDisplayStyle = props.teams.teams.bybox["move"] ? "" : "none";
+  const divPaddingStyle = props.teams.teams.bybox["move"]
+    ? ""
+    : "env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)";
+
   return (
     <IonPage>
-      <XBHeader title="Join a Team"></XBHeader>
-      <IonContent style={{ paddingTop: "30px" }}>{content}</IonContent>
+      <XBHeader
+        title="Join a Team"
+        style={{
+          display: headerDisplayStyle,
+        }}
+      />
+      <IonContent style={{ paddingTop: "30px" }}>
+        <div style={{ padding: divPaddingStyle }}>{content}</div>
+      </IonContent>
     </IonPage>
   );
 };

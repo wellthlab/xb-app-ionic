@@ -28,33 +28,18 @@ function Home(props) {
     !props.feed.loaded ||
     !props.library.loaded
   ) {
-    return (
-      <IonPage>
-        <XBHeader title="Move" />
-        <IonContent>
-          <div className="ion-text-center">
-            <br />
-            <img src="assets/strength_logo.png" alt="XB Logo" />
-          </div>
-          <IonSpinner className="center-spin" name="crescent" />
-        </IonContent>
-      </IonPage>
-    );
+    return <IonSpinner className="center-spin" name="crescent" />;
   }
 
   return (
     <IonPage>
       <XBHeader title="Move" />
       <IonContent>
-        {props.teams.teams.bybox["move"] ? (
-          <ModuleHome
-            userProfile={props.userProfile}
-            teams={props.teams}
-            modules={props.modules}
-          />
-        ) : (
-          <Enroller boxtype="move" />
-        )}
+        <ModuleHome
+          userProfile={props.userProfile}
+          teams={props.teams}
+          modules={props.modules}
+        />
       </IonContent>
     </IonPage>
   );

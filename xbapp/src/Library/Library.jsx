@@ -82,51 +82,45 @@ function Library(props) {
     <IonPage>
       <XBHeader title="Library" />
       <IonContent>
-        {props.teams.teams.bybox["move"] ? (
-          <div>
-            <XBInfo
-              title="KNOWLEDGE IS POWER"
-              desc="The library contains a comprehensive list of terms, concepts and
+        <XBInfo
+          title="KNOWLEDGE IS POWER"
+          desc="The library contains a comprehensive list of terms, concepts and
           strength movements that you will encounter during the movement
           playlists. Use this page to refresh your memory, learn something
-          new, or catch up with the latest news in the feed blow!"
-            />
-            {/* Tutorials, videos, etc. */}
-            <IonCard>
-              <IonGrid>
-                <IonRow>
-                  <IonCol>
-                    <LibraryItem title="Glossary" link="glossary" />
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <LibraryItem title="Neuromobility" link="neuro" />
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <LibraryItem title="Playlists" link="playlists" />
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <LibraryItem title="Strength & Balance" link="explorer" />
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    <LibraryItem title="Tutorials" link="tutorials" />
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonCard>
-            {/* Feed */}
-            <Feed />
-          </div>
-        ) : (
-          <Enroller boxtype={"move"} />
-        )}
+          new, or catch up with the latest news in the feed below!"
+        />
+        {/* Tutorials, videos, etc. */}
+        <IonCard>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <LibraryItem title="Glossary" link="glossary" />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <LibraryItem title="Neuromobility" link="neuro" />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <LibraryItem title="Playlists" link="playlists" />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <LibraryItem title="Strength & Balance" link="explorer" />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <LibraryItem title="Tutorials" link="tutorials" />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCard>
+        {/* Feed */}
+        <Feed />
       </IonContent>
     </IonPage>
   );

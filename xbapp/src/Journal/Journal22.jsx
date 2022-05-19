@@ -87,17 +87,6 @@ function JournalMainPage(props) {
     return <IonSpinner className="center-spin" name="crescent" />;
   }
 
-  if (!props.teams.teams.bybox["move"]) {
-    return (
-      <IonPage>
-        <XBHeader title="Journal" />
-        <IonContent>
-          <Enroller boxtype="move" />
-        </IonContent>
-      </IonPage>
-    );
-  }
-
   // Most of these variables are needed for the CalendarView
   const team = props.teams.teams.bybox["move"][0];
   const experimentStart = new Date(

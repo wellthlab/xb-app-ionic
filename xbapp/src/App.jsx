@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useEffect } from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Switch } from "react-router";
 import {
   IonApp,
@@ -27,66 +27,16 @@ import {
 import { connect } from "react-redux";
 
 // Pages
-import Account from "./Account/Account";
-import Feed from "./Feed/Feed";
-import Teams from "./Teams/Teams";
-import About from "./Info/About";
 import Tutorial from "./Info/Tutorial.jsx";
-import MoveTutorial from "./Info/MoveTutorial";
-import Timeline from "./Info/Timeline";
-import HeartRateChartPage from "./Info/HeartRateChartPage";
-import ProtocolChartPage from "./Info/ProtocolChartPage";
 
 import Register from "./Account/Register.jsx";
 import Login from "./Account/Login.jsx";
 import ForgotPassword from "./Account/ForgotPassword";
 import ResetPassword from "./Account/ResetPassword";
 
-import OptionTabs from "./Account/Settings";
-import Notifications from "./Account/Notifications";
-
-import GroupCharts from "./Boxes/Charts";
-
-import JoinTeam from "./StartJourney/JoinTeam.jsx";
-import CreateTeam from "./StartJourney/CreateTeam";
-
-import EatPage from "./Boxes/Eat";
-import MovePage from "./Boxes/Move";
-import AddResponse from "./Boxes/AddResponse";
-
-import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
-
-import Balance from "./UserInput/Balance";
-import VAS from "./UserInput/VAS";
-import WorkAssessment from "./UserInput/WorkAssessment";
-import HeartRateTask from "./UserInput/HeartRateTask";
-import Plank from "./UserInput/Plank";
-import WallSit from "./UserInput/WallSit";
-import POMS from "./UserInput/POMS";
-import Scheduler from "./UserInput/Scheduler";
-import Quiz from "./UserInput/Quiz";
-import PushPull from "./UserInput/PushPull";
-
-import UserProfile from "./UserProfile/SetUserProfile";
-import ModuleSubscription from "./Playlists/ModulePicker";
-import PlaylistPlayer from "./Playlists/PlaylistPlayer";
-import HistoricPlaylistEntry from "./Playlists/PlaylistPreviousDay";
-import ChangeTeam from "./StartJourney/ChangeTeam";
-import PlaylistDetail from "./Playlists/ModuleDetail";
-import JournalMainPage from "./Journal/Journal22";
-import Library from "./Library/Library";
-import AddNote from "./Journal/AddNote";
-import MoveLibrary from "./Library/MoveLibrary";
-import NeuroLibrary from "./Library/NeuroLibrary";
-import TutorialLibrary from "./Library/TutorialLibrary";
-
 import getXBClient from "./util_model/client";
 
-import {
-  START_LOGIN,
-  ACCEPT_LOGIN,
-  REJECT_LOGIN,
-} from "./util_model/slices/Account";
+import { START_LOGIN, ACCEPT_LOGIN } from "./util_model/slices/Account";
 
 /*************************************************************
  * CSS
@@ -115,13 +65,13 @@ import "@ionic/react/css/display.css";
 import "./util_theme/variables.css";
 
 import "./util_theme/App.css";
-import PlaylistLibrary from "./Library/PlaylistLibrary";
-import Home from "./Home";
-import GlossaryLibrary from "./Library/GlossaryLibrary";
-import PlaylistActive from "./Playlists/ActiveModules";
+
 import { addControllersProp } from "./util_model/controllers";
-import XBHeader from "./util/XBHeader";
 import Enroller from "./Boxes/components/Enroller";
+
+// import MainAppRouter from "./MainAppRouter";
+
+import { getAppOutlet } from "./MainAppRouter";
 
 // autoBind, because life's TOO SHORT
 const autoBindReact = require("auto-bind/react"); // Needs to go after import, because it's a const
@@ -135,6 +85,7 @@ const App = ({
   ACCEPT_LOGIN,
 }) => {
   let content;
+  const [completedEnrollment, setCompletedEnrollment] = useState(false);
 
   useEffect(() => {
     if (
@@ -150,215 +101,46 @@ const App = ({
     }
   });
 
-  const [doneEverything, setDoneEverything] = useState(false);
-
   if (account.loggedin) {
+    // Load team and user profile, as these are needed for enrollment
     controllers.LOAD_TEAMS_IF_REQD();
     controllers.SET_USER_PROFILE_IF_REQD();
 
-    if (!teams.loaded || !userProfile.loaded) {
-      content = <IonSpinner className="center-spin" name="crescent" />;
-    } else {
-      // AAAAA get me out of here
-      const routerOutlet = (
-        <IonRouterOutlet animated={true}>
-          <Switch>
-            <Route path="/tutorial" component={Tutorial} exact={true} />
-            {!teams.teams.bybox["move"] ? (
-              <Route path="/" component={Login} exact={true} />
-            ) : (
-              <Route
-                path="/"
-                render={() => <Redirect to="/move" />}
-                exact={true}
-              />
-            )}
-            <Route path="/feed" component={Feed} exact={true} />
-            <Route path="/box/move/teams" component={Teams} exact={true} />
-            <Route
-              path="/notifications"
-              component={Notifications}
-              exact={true}
-            />
-            <Route path="/settings" component={OptionTabs} exact={true} />
-            <Route path="/box/eat" component={EatPage} exact={true} />
-            <Route path="/box/move" component={MovePage} exact={true} />
-            <Route
-              path="/box/move/:type/movement-picker/:exercise"
-              component={MovementPicker}
-              exact={true}
-            />
-            /** * Data entry / tasks */
-            <Route
-              path="/box/move/:id/:day/add/:type"
-              component={AddResponse}
-              exact={true}
-            />
-            /** * Charts */
-            <Route
-              path="/box/move/:id/charts"
-              component={GroupCharts}
-              exact={true}
-            />
-            /** TODO: Pass box type in the URL on these; linked from the
-            relevant box page */
-            <Route
-              path="/start/join/:expid"
-              component={JoinTeam}
-              exact={true}
-            />
-            // Create a new team
-            <Route
-              path="/start/create/:expid"
-              component={CreateTeam}
-              exact={true}
-            />
-            <Route
-              path="/register"
-              render={() => <Redirect to="/box/move" />}
-              exact={true}
-            />
-            <Route path="/account" component={Account} exact={true} />
-            <Route
-              path="/forgot-password"
-              component={ForgotPassword}
-              exact={true}
-            />
-            // Info page
-            <Route path="/timeline" component={Timeline} exact={true} />
-            <Route path="/movetutorial" component={MoveTutorial} exact={true} />
-            <Route path="/about" component={About} exact={true} />
-            <Route
-              path="/heartratechart"
-              component={HeartRateChartPage}
-              exact={true}
-            />
-            <Route
-              path="/protocolchart"
-              component={ProtocolChartPage}
-              exact={true}
-            />
-            {/**for testing purposes */}
-            <Route path="/balance" component={Balance} exact={true} />
-            <Route path="/vas" component={VAS} exact={true} />
-            //tasks
-            <Route path="/heartrate" component={HeartRateTask} exact={true} />
-            <Route
-              path="/work-assessment"
-              component={WorkAssessment}
-              exact={true}
-            />
-            <Route path="/quiz" component={Quiz} exact={true} />
-            <Route path="/pushpull" component={PushPull} exact={true} />
-            <Route path="/plank" component={Plank} exact={true} />
-            <Route path="/wallsit" component={WallSit} exact={true} />
-            <Route path="/poms" component={POMS} exact={true} />
-            <Route path="/scheduler" component={Scheduler} exact={true} />
-            {/* STUFF FOR STRENGTH 22 */}
-            <Route path="/move" component={Home} exact={true} />
-            {/* playing variants */}
-            <Route
-              path="/move/task-detail/:mode/:teamId/:moduleId/:progress"
-              component={PlaylistDetail}
-              exact={true}
-            />
-            <Route
-              path="/move/active-playlists"
-              component={PlaylistActive}
-              exact={true}
-            />
-            <Route
-              path="/move/timer/:mode/:teamId/:moduleId/:playlistIdx/:progress/:startingTask"
-              component={PlaylistPlayer}
-              exact={true}
-            />
-            {/* library/explore variants */}
-            <Route
-              path="/library/playlists/player/:mode/:teamId/:moduleId/:playlistIdx/:progress/:startingTask"
-              component={PlaylistPlayer}
-              exact={true}
-            />
-            <Route
-              path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
-              component={PlaylistDetail}
-              exact={true}
-            />
-            <Route
-              path={"/move/module-subscriber/:topic"}
-              component={ModuleSubscription}
-              exact={true}
-            />
-            <Route
-              path="/settings/user-profile"
-              component={UserProfile}
-              exact={true}
-            />
-            <Route
-              path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
-              component={HistoricPlaylistEntry}
-              exact={true}
-            />
-            <Route
-              path={"/settings/change-team"}
-              component={ChangeTeam}
-              exact={true}
-            />
-            <Route
-              path={"/journal/:isoDate/:feed"}
-              component={JournalMainPage}
-              exact={true}
-            />
-            <Route
-              path={"/journal/note/:teamId/:day/:isoDate/:feed"}
-              component={AddNote}
-              exact={true}
-            />
-            <Route path={"/library"} component={Library} exact={true} />
-            <Route
-              path={"/library/glossary"}
-              component={GlossaryLibrary}
-              exact={true}
-            />
-            <Route
-              path={"/library/explorer"}
-              component={MoveLibrary}
-              exact={true}
-            />
-            <Route
-              path={"/library/neuro"}
-              component={NeuroLibrary}
-              exact={true}
-            />
-            <Route
-              path={"/library/tutorials"}
-              component={TutorialLibrary}
-              exact={true}
-            />
-            <Route
-              path={"/library/playlists"}
-              component={PlaylistLibrary}
-              exact={true}
-            />
-          </Switch>
-        </IonRouterOutlet>
-      );
-      if (!teams.teams.bybox["move"] && !doneEverything) {
+    if (teams.loaded && userProfile.loaded) {
+      const mainAppRouterOutlet = getAppOutlet(!!teams.teams.bybox["move"]);
+
+      // Render enrollment if not completed -- this happens if the user does
+      // not have a team set (as this is the last step in enrollment). The
+      // completedEnrollment variable is simply to force a state reloaded
+      if (!completedEnrollment && !teams.teams.bybox["move"]) {
         content = (
-          <div>
-            {routerOutlet}
-            <Enroller
-              boxtype="move"
-              setDoneEverything={() => {
-                setDoneEverything(true);
-              }}
-            />
-          </div>
+          <IonPage>
+            <IonContent>
+              <div
+                style={{
+                  padding:
+                    "env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)",
+                }}
+              >
+                {mainAppRouterOutlet}
+                <Enroller
+                  boxtype="move"
+                  setDoneEverything={() => {
+                    setCompletedEnrollment(true);
+                  }}
+                />
+              </div>
+            </IonContent>
+          </IonPage>
         );
       } else {
+        // Render app tabs
+        const tabBarDisplayStyle = teams.teams.bybox["move"] ? "" : "none";
+
         content = (
           <IonTabs>
-            {routerOutlet}
-            <IonTabBar slot="bottom">
+            {mainAppRouterOutlet}
+            <IonTabBar style={{ display: tabBarDisplayStyle }} slot="bottom">
               <IonTabButton tab={"Team"} href={"/box/move"}>
                 <IonIcon icon={barbellOutline} />
                 <IonLabel>Team</IonLabel>
@@ -383,6 +165,8 @@ const App = ({
           </IonTabs>
         );
       }
+    } else {
+      content = <IonSpinner className={"center-spin"} name={"crescent"} />;
     }
   } else {
     content = (

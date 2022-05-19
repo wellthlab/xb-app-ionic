@@ -46,19 +46,6 @@ const OptionTabs = (props) => {
     );
   }
 
-  if (!props.teams.teams.bybox["move"]) {
-    return (
-      <IonPage>
-        <XBHeader title="Settings" />
-        <IonContent>
-          <Enroller boxtype="move" />
-        </IonContent>
-      </IonPage>
-    );
-  }
-
-  const pis = <PIS />;
-
   return (
     <>
       <IonPage>
@@ -78,8 +65,8 @@ const OptionTabs = (props) => {
             toggleModal={() => {
               togglePISModal();
             }}
-            title={"Participant Information Sheet"}
-            message={pis}
+            title={"Participant Information"}
+            message={<PIS />}
           />
 
           <IonCard>

@@ -21,17 +21,17 @@ function Consent(props) {
       <GenericModal
         showModal={showModal}
         toggleModal={toggleModal}
-        title="Participant Information Sheet"
+        title="Participant Information"
         message={<PIS />}
       />
       <IonRow>
         <IonCol>
           <IonItem lines="none" className={"ion-text-justify"}>
-            <IonText style={{ fontSize: "1.1em" }}>
+            <IonText style={{ fontSize: "1.05em" }}>
               Before deciding to take part in this research study, you should
               read the{" "}
               <u>
-                <a onClick={toggleModal}>participant information sheet</a>
+                <a onClick={toggleModal}>participant information</a>
               </u>
               .
             </IonText>

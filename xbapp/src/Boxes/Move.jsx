@@ -32,16 +32,12 @@ const MovePage = (props) => {
     <IonPage>
       <XBHeader title="Team" />
       <IonContent>
-        {props.teams.teams.bybox["move"] ? (
-          <GroupInfo
-            group={props.teams.teams.bybox["move"][0]}
-            modules={props.modules.modules}
-            match={props.match}
-            controllers={props.controllers}
-          />
-        ) : (
-          <Enroller boxtype="move" />
-        )}
+        <GroupInfo
+          group={props.teams.teams.bybox["move"][0]}
+          modules={props.modules.modules}
+          match={props.match}
+          controllers={props.controllers}
+        />
       </IonContent>
     </IonPage>
   );
