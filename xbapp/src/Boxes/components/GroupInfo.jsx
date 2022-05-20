@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
 import {
   IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonItemGroup,
-  IonItemDivider,
   IonGrid,
   IonRow,
   IonCol,
   IonInput,
-  IonProgressBar,
   IonText,
   IonCard,
   IonCardHeader,
@@ -26,10 +22,9 @@ import {
 } from "@ionic/react";
 import {
   peopleOutline,
-  todayOutline,
-  barChart,
   arrowForwardOutline,
   statsChartOutline,
+  fingerPrintOutline,
 } from "ionicons/icons";
 
 import { addControllersProp } from "../../util_model/controllers";
@@ -204,33 +199,30 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
   //TODO: group.experiment.info.duration to retrieve the automatic duration of the studies
   content = (
     <>
+      <GenericModal
+        showModal={showMemberModal}
+        toggleModal={toggleMemberModal}
+        title="Members"
+        message={modalMemberList}
+      />
+      <GenericModal
+        showModal={showTeamsModal}
+        toggleModal={toggleTeamsModal}
+        title="Other Teams"
+        message={<Visualisation />}
+      />
+
       {/* DISPLAY EXPERIMENT TITLE */}
       <XBInfo
         title={<strong>{group.experiment.info.title}</strong>}
         desc={
           <Instructions html={group.experiment.current_stage.instructions} />
         }
-        // We no longer have a sense of "time", so no need to display the progress bar
-        // opt={
-        //   <IonGrid>
-        //     {/* DISPLAY DAY NUMBER AND PROGRESS BAR */}
-        //     <IonItem lines="none">
-        //       <IonIcon icon={todayOutline} slot="start" /> {dayDescription}
-        //     </IonItem>
-        //     <IonProgressBar
-        //       value={
-        //         day > group.experiment.info.duration
-        //           ? 1
-        //           : day / group.experiment.info.duration
-        //       }
-        //     />
-        //   </IonGrid>
-        // }
       />
 
       {/* DISPLAY TEAM NAME AND DETAILS */}
       <IonCard>
-        <IonList>
+        <IonGrid>
           <IonRow>
             <IonCol>
               <IonItem lines="none" className="ion-text-center">
@@ -240,11 +232,11 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
               </IonItem>
             </IonCol>
           </IonRow>
+
           <IonRow>
             <IonCol>
               <IonItem
                 lines="none"
-                style={{ fontSize: "14px" }}
                 button
                 onClick={() => {
                   toggleMemberModal();
@@ -254,23 +246,22 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
               >
                 <IonIcon icon={peopleOutline} slot="start" />
                 <IonLabel>{numberOfMembers}</IonLabel>
-                <GenericModal
-                  showModal={showMemberModal}
-                  toggleModal={toggleMemberModal}
-                  title="Members"
-                  message={modalMemberList}
-                />
               </IonItem>
             </IonCol>
+          </IonRow>
+
+          <IonRow>
             <IonCol>
-              <IonItem lines="none" style={{ fontSize: "14px" }}>
-                <IonLabel>Team Code:</IonLabel>
+              <IonItem lines="none">
+                <IonIcon slot={"start"} icon={fingerPrintOutline} />
+                <IonLabel>Team Code: </IonLabel>
                 {/* IonInput used as a hacky way for people to be able to
                    highlight the team code to copy */}
                 <IonInput readonly={true} value={group.code} />
               </IonItem>
             </IonCol>
           </IonRow>
+
           <IonRow>
             <IonCol>
               <IonItem style={{ "--padding-start": "5px" }} lines="none">
@@ -280,7 +271,6 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
                     "padding-bottom": "0px",
                   }}
                 >
-                  {/* <div> */}
                   <IonRow>
                     <IonCol className="ion-text-center">
                       <IonRow>
@@ -319,21 +309,14 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
               <IonButton
                 size="regular"
                 expand="block"
-                // routerLink={"/box/move/teams"}
                 onClick={toggleTeamsModal}
               >
                 <IonIcon slot="start" icon={statsChartOutline} />
                 <IonLabel>Other Teams</IonLabel>
               </IonButton>
-              <GenericModal
-                showModal={showTeamsModal}
-                toggleModal={toggleTeamsModal}
-                title="Other Teams"
-                message={<Visualisation />}
-              />
             </IonCol>
           </IonRow>
-        </IonList>
+        </IonGrid>
       </IonCard>
       {/* DISPLAY NOTIFICATION AND ACTION CENTER */}
       {/* TODO: notifications need to be plugged into this */}

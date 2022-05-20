@@ -124,7 +124,6 @@ function SetUserProfile(props) {
   async function saveProfile() {
     await props.controllers.UPDATE_USER_PROFILE(profileObj);
     if (props.setSetUpProfile) {
-      console.log("We're in the right place?");
       props.setSetUpProfile(true);
     }
     // history.goBack();

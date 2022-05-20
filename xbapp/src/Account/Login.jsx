@@ -36,7 +36,11 @@ const Login = (props) => {
     var form;
 
     if (account.fetching) {
-      form = <IonSpinner name="crescent" />;
+      form = (
+        <div className={"ion-text-center"}>
+          <IonSpinner name="crescent" />
+        </div>
+      );
     } else {
       form = (
         <>
@@ -54,6 +58,7 @@ const Login = (props) => {
               <IonInput
                 placeholder="Password"
                 type="password"
+                autocomplete={"on"}
                 onIonChange={(e) => {
                   setPassword(e.detail.value);
                 }}

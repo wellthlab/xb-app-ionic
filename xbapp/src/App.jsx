@@ -110,8 +110,9 @@ const App = ({
       const mainAppRouterOutlet = getAppOutlet(!!teams.teams.bybox["move"]);
 
       // Render enrollment if not completed -- this happens if the user does
-      // not have a team set (as this is the last step in enrollment). The
-      // completedEnrollment variable is simply to force a state reloaded
+      // not have a team set (as this is the last step in enrollment), or a
+      // user profile. The completedEnrollment variable is simply to force a
+      // state reloaded
       if (!completedEnrollment && !teams.teams.bybox["move"]) {
         content = (
           <IonPage>

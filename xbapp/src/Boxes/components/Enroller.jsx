@@ -23,6 +23,7 @@ import SetUserProfile from "../../UserProfile/SetUserProfile";
 
 import { connect } from "react-redux";
 import CreateJoinTeamCard from "../../StartJourney/components/CreateJoinTeamCard";
+import { getCurrentExperimentId } from "../../util/util";
 
 /**
  *
@@ -44,16 +45,7 @@ const Enroller = ({
   const [setUpProfile, setSetUpProfile] = useState(setProfile);
 
   // Look up experiment ID based on box type
-  let expid;
-  switch (boxtype) {
-    case "move":
-      expid = "6202d10ccc5d2aa4b830856d";
-      break;
-    case "eat":
-    default:
-      expid = "";
-      break;
-  }
+  const expid = getCurrentExperimentId(boxtype);
 
   if (!consented) {
     return (

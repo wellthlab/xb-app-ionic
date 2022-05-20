@@ -97,6 +97,7 @@ const ExperimentInGroup = (props) => {
         </p>
         <div className="centering">
           <IonInput
+            value={number}
             type="text"
             style={{
               fontSize: "1.4em",
@@ -106,7 +107,7 @@ const ExperimentInGroup = (props) => {
             placeholder="Enter your Team Code"
             maxlength={6}
             onIonChange={(e) => {
-              setNumber(e.detail.value);
+              setNumber(e.detail.value.toUpperCase());
             }}
           />
         </div>
