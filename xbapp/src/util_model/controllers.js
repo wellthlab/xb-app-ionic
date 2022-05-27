@@ -48,26 +48,20 @@ async function GET_LIBRARY_IF_REQD(client, store, controllers) {
   const fetching = state.library.fetching;
   const loaded = state.library.loaded;
   if (!fetching && !loaded) {
-    // console.log("Refresh of library is required (fetching loading)", fetching, loaded);
-    return await controllers.GET_LIBRARY();
-  } else {
-    // console.log("Refresh of library is not required (fetching loading)", fetching, loaded);
+    await controllers.GET_LIBRARY();
   }
 }
 
-
  async function SET_USER_PROFILE(client, store, controllers) {
-
-  // store.dispatch(CLEAR_USER());
-
-  let userProfile = null;
+  let userProfileFromOnline = null;
   try {
-    userProfile = await client.getUserProfile();
+    userProfileFromOnline = await client.getUserProfile();
   } catch (error) {
-    return console.error(error);
+    console.error("Couldn't get user profile from MongoDB", error);
+    return;
   }
 
-  await store.dispatch(SET_USER({ userProfile }));
+  await store.dispatch(SET_USER({ userProfile: userProfileFromOnline }));
 }
 
 async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
@@ -75,21 +69,18 @@ async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
   const fetching = state.userProfile.fetching;
   const loaded = state.userProfile.loaded;
   if (!fetching && !loaded) {
-    // console.log("Refresh of user profile is required (fetching loading)", fetching, loaded);
-    return await controllers.SET_USER_PROFILE();
-  } else {
-    // console.log("Refresh of user profile is not required (fetching loading)", fetching, loaded);
+    await controllers.SET_USER_PROFILE();
   }
 }
 
  async function UPDATE_USER_PROFILE(client, store, controllers, profile) {
-
-  const res = await client.createUserProfile(profile);
-  if (res.success === false) {
+  const result = await client.updateUserProfile(profile);
+  if (!result.success) {
+    console.error("Failed to update user profile", result);
     return false;
   }
 
-  const userProfile = res.userProfile;
+  const userProfile = result.userProfile;
   await store.dispatch(SET_USER({ userProfile }));
 
   return true;
@@ -109,6 +100,7 @@ async function LOAD_MODULES(client, store) {
 
   // Do not include any modules with empty playlists
   modules = modules.filter(m => m.playlists.length > 0);
+  modules = modules.filter(m => m.active);
 
   store.dispatch(SET_MODULES({ modules }));
 }
@@ -118,10 +110,7 @@ async function LOAD_MODULES_IF_REQD(client, store, controllers) {
   const f = state.modules.fetching;
   const l = state.modules.loaded;
   if (!f && !l) {
-    // console.log("Refresh of modules is required", f, l);
-    return await controllers.LOAD_MODULES();
-  } else {
-    // console.log("Refresh or modules is not required", f, l);
+    await controllers.LOAD_MODULES();
   }
 }
 
@@ -200,7 +189,6 @@ async function LOAD_TEAMS(client, store) {
   }
 
   store.dispatch(SET_TEAMS({ teams }));
-  // console.log('SET_TEAMS', teams, teams.bybox);
 }
 
 /**
@@ -212,10 +200,7 @@ function LOAD_TEAMS_IF_REQD(client, store, controllers) {
   var f = state.teams.fetching;
   var l = state.teams.loaded;
   if (!f && !l) {
-    // console.log("Refresh is required", f, l);
     return controllers.LOAD_TEAMS();
-  } else {
-    // console.log("Refresh is not required", f, l);
   }
 }
 
@@ -313,9 +298,7 @@ async function GET_FEED_IF_REQD(client, store, controllers) {
   var f = state.feed.fetching;
   var l = state.feed.loaded;
   if (!f && !l) {
-    return await controllers.GET_FEED();
-  } else {
-    // return false
+    await controllers.GET_FEED();
   }
 }
 
@@ -343,7 +326,8 @@ async function GET_FEED(client, store, controllers) {
 
   // Get team responses
   // TODO: Team info is disabled for now (pre RSG involvement)
-  // TODO: something in the following lines removes bybox from state.teams.teams
+  //       Something in the following lines removes bybox from state.teams.teams
+
   // await LOAD_TEAMS_IF_REQD(client, store, controllers);
   // const state = store.getState();
   // const teams = state.teams.teams;
@@ -442,28 +426,25 @@ async function GET_FEED(client, store, controllers) {
 
 async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
   const state = store.getState();
-
-  const user = {...state.userProfile.userProfile};
-  const module = { ...user.modules[moduleId]};
-  if(!module.edtMoves) {
-    module.edtMoves = {};
-  }
-  module.edtMoves = {...module.edtMoves, [key]: movements};
-
-  const modules = {...user.modules, [moduleId]: module};
-  const newUser = {
-    ...user,
-    modules: modules
+  const userProfile = {...state.userProfile.userProfile};
+  const userModules = { ...userProfile.modules[moduleId]};
+  if (!userModules.edtMoves) {
+    userModules.edtMoves = {};
   }
 
-  await controllers.UPDATE_USER_PROFILE(newUser);
-  await controllers.SET_USER_PROFILE();
+  userModules.edtMoves = {...userModules.edtMoves, [key]: movements};
+  const newUserModules = {...userProfile.modules, [moduleId]: userModules};
+  const newUserProfile = {
+    ...userProfile,
+    modules: newUserModules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUserProfile);
 }
 
 function getControllers(store, client) {
-  var out = { client: client, store: store };
-
-  var controllers = {
+  let out = { client: client, store: store };
+  let controllers = {
     LOAD_TEAMS,
     LOAD_TEAMS_IF_REQD,
     GET_TEAM_RESPONSES,
@@ -487,8 +468,8 @@ function getControllers(store, client) {
     SET_CHOSEN_MOVEMENTS
   };
 
-  for (var n of Object.keys(controllers)) {
-    var f = controllers[n];
+  for (let n of Object.keys(controllers)) {
+    let f = controllers[n];
     out[n] = (function (f, n) {
       return function (...args) {
         // Trap f and n in a closure so they don't change
@@ -502,12 +483,12 @@ function getControllers(store, client) {
 }
 
 /**
- * A Higher Order Component that provides a controllers prop contianing
- * the controllers from the curent context
+ * A Higher Order Component that provides a controllers prop containing
+ * the controllers from the current context
  */
 function addControllersProp(Component) {
   return function (props) {
-    var controllers = useContext(ControllerContext);
+    let controllers = useContext(ControllerContext);
     return <Component controllers={controllers} {...props} />;
   };
 }

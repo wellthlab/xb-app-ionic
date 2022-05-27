@@ -86,9 +86,10 @@ function createEmptyMovementsChosen(task) {
 // check the movesForPlaylist object has the correct moves in it
 function checkMovesCorrect(task, movesForPlaylist) {
     for (const eachBlockIndex in task.moveTypes) {
-        const eachBlock = task.moveTypes[eachBlockIndex];
-        for (const move in eachBlock) {
-            if (!movesForPlaylist[eachBlockIndex].hasOwnProperty(move)) {
+        const movementTypes = task.moveTypes[eachBlockIndex];
+        for (const type of movementTypes) {
+            const check = type.split(" ").join("+");
+            if (!movesForPlaylist[eachBlockIndex].hasOwnProperty(check)) {
                 return createEmptyMovementsChosen(task);
             }
         }
@@ -115,7 +116,6 @@ function checkIfAllExercisesChosen(task, exercisesChosen, setExercisesChosen) {
 
     for (const block of exercisesChosen) {
         for (const exercise of Object.values(block)) {
-            // TODO: in this loop we should check if the exercise type is valid
             if (exercise.name !== "Select a Move") {
                 numChosen += 1;
             }

@@ -52,15 +52,16 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
 
   if (isSnack) {
     movesForPlaylist = getDefaultMoves(task);
-  } else if (userProfile.modules[task.moduleId].edtMoves) {
-    movesForPlaylist =
-      userProfile.modules[task.moduleId].edtMoves[key] ||
-      createEmptyMovementsChosen(task);
-
-    movesForPlaylist = checkMovesCorrect(task, movesForPlaylist);
   } else {
-    movesForPlaylist = createEmptyMovementsChosen(task);
+    if (userProfile.modules[task.moduleId]) {
+      movesForPlaylist = userProfile.modules[task.moduleId].edtMoves[key];
+    } else {
+      movesForPlaylist = createEmptyMovementsChosen(task);
+    }
   }
+
+  // if the moves are somehow incorrect, then they are reset to "Select a Move"
+  movesForPlaylist = checkMovesCorrect(task, movesForPlaylist);
 
   const [exercisesChosen, setExercisesChosen] = useState(movesForPlaylist);
   const allExercisesPicked = checkIfAllExercisesChosen(
@@ -84,16 +85,15 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
 
   // save chosen movements to the userProfile
   async function saveMovesToProfile() {
-    try {
-      await controllers.SET_CHOSEN_MOVEMENTS(
-        key,
-        task.moduleId,
-        exercisesChosen
-      );
-    } catch (error) {
+    const result = await controllers.SET_CHOSEN_MOVEMENTS(
+      key,
+      task.moduleId,
+      exercisesChosen
+    );
+
+    if (!result) {
       console.error(
-        "Something bad happened when trying to save the movements",
-        error
+        "Haven't been able to save chosen movements to userProfile"
       );
     }
   }
@@ -118,20 +118,17 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
 
   if (showMovePicker) {
     return (
-      <>
-        <TaskMovementPicker
-          moduleId={task.moduleId}
-          week={team.experiment.week}
-          userProfile={userProfile}
-          moveTypes={task.moveTypes}
-          toggleView={toggleShowMovePicker}
-          exercises={exercisesChosen}
-          updateExercise={updateExercisesChosen}
-          saveExercises={() => {}} // TODO: fix saving moves
-          // saveExercises={saveMovesToProfile}
-          explorer={false}
-        />
-      </>
+      <TaskMovementPicker
+        moduleId={task.moduleId}
+        week={team.experiment.week}
+        userProfile={userProfile}
+        moveTypes={task.moveTypes}
+        toggleView={toggleShowMovePicker}
+        exercises={exercisesChosen}
+        updateExercise={updateExercisesChosen}
+        saveExercises={saveMovesToProfile}
+        explorer={false}
+      />
     );
   }
 
@@ -165,6 +162,7 @@ function EdtTask({ task, team, userProfile, onSubmit, controllers }) {
   const moveA = block[task.moveTypes[task.edtBlock][0].replaceAll(" ", "+")];
   const moveB = block[task.moveTypes[task.edtBlock][1].replaceAll(" ", "+")];
   const length = task.length || 7;
+
   return (
     <TimerEDT
       isSnack={isSnack}

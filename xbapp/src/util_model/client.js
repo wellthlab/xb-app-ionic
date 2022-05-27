@@ -10,11 +10,11 @@ import * as Realm from "realm-web";
 
 import { ObjectId } from "bson";
 
-var crypto = require("crypto");
+const crypto = require("crypto");
 
 function sha512(str) {
-  var hash = crypto.createHash("sha512");
-  var data = hash.update(str, "utf-8");
+  const hash = crypto.createHash("sha512");
+  const data = hash.update(str, "utf-8");
   return data.digest("hex");
 }
 
@@ -61,11 +61,6 @@ function XBClient() {
     if (!self.realm.currentUser.accessToken) {
       throw "Cannot use DB until autenticated with realm";
     }
-
-    //console.log("services", self.realm.services);
-    //console.log("currentUser", self.realm.currentUser);
-    //console.log("currentUser.mongoclient", self.realm.currentUser.mongoClient);
-
     // In non-web mode
     var svc;
     if (self.realm.currentUser.mongoClient) {
@@ -441,24 +436,23 @@ function XBClient() {
   /**
      * Create a user profile
      */
-  self.createUserProfile = async function (userProfile) {
+  self.updateUserProfile = async function (userProfile) {
     const db = getDb();
     const collection = db.collection("usersDetails");
-
     const newUserProfile = {
       _userid: self.realm.currentUser.id,
-      modules: {},
+      modules: {},  // added so that modules is always created, especially on profile creation
       ...userProfile,
     };
 
-    delete newUserProfile._id;
+    delete newUserProfile._id;  // delete ._id because realm complained
 
     try {
-      const updateOneResult = await collection.updateOne({
+      await collection.updateOne({
         _userid: {$eq: self.realm.currentUser.id}
       }, newUserProfile, {upsert: true});
     } catch (e) {
-      console.error("Error updating user", e);
+      console.error("Haven't been able to update user profile", e);
       return {
         success: false,
         message: "Sorry, we couldn't update your user profile"
@@ -472,14 +466,13 @@ function XBClient() {
    * Progress a user along their module
    */
 
-  self.progressUserModule = async function (moduleId) {
+  self.progressUserAlongModule = async function (moduleId) {
     const db = getDb();
     const moduleCollection = db.collection("modules");
     const userCollection = db.collection("usersDetails");
+    const userProfile = await this.getUserProfile(self.realm.currentUser.id);
 
-    const user = await this.getUserProfile(self.realm.currentUser.id);
-
-    if (user === null) {
+    if (!userProfile) {
       console.error("Unable to find user to progress them along a module")
       return {
         success: false,
@@ -494,12 +487,12 @@ function XBClient() {
       console.warn("problem when converting moduleId", e);
       moduleObjectId = moduleId;
     }
+
     const module = await moduleCollection.findOne({
       _id: { $eq: moduleObjectId }
     });
 
-    if(module === null) {
-      console.error("Trying to update a module which doesn't exist");
+    if (!module) {
       return {
         success: false,
         message: "module doesn't exist"
@@ -507,10 +500,10 @@ function XBClient() {
     }
 
     const numPlaylists = module.playlists.length;
-    const stage = user.modules[moduleId].stage;
+    const stage = userProfile.modules[moduleId].stage;
     const newStage  = stage >= numPlaylists ? stage : stage + 1;
     const updated = {
-      ...user.modules
+      ...userProfile.modules
     }
 
     updated[moduleId].stage = newStage;
@@ -563,10 +556,6 @@ function XBClient() {
   self.tidy = function (result, depth) {
     if (typeof depth == "undefined") {
       depth = 0;
-    }
-
-    if (depth == 0) {
-      //console.log("Tidy", result);
     }
 
     if (Array.isArray(result)) {
