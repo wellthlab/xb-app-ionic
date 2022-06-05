@@ -4,6 +4,7 @@ import React from "react";
 import { IonSpinner, IonButton, IonIcon } from "@ionic/react";
 import { chevronForwardOutline, chevronBackOutline } from "ionicons/icons";
 import { ResponsiveCirclePacking } from "@nivo/circle-packing";
+import { animated } from "@react-spring/web";
 
 import { addControllersProp } from "../util_model/controllers";
 import dateFromTs from "../util_lib/dateFromTS";
@@ -20,6 +21,34 @@ const getCurrentMonday = function () {
 };
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const LabelComponent = function ({ node, label, style }) {
+  return (
+    <animated.text
+      key={node.id}
+      x={style.x}
+      y={style.y}
+      textAnchor="middle"
+      dominantBaseline="central"
+      style={{
+        fill: "white",
+        opacity: style.opacity,
+        pointerEvents: "none",
+        fontSize: 20,
+      }}
+    >
+      {label.split(":")[1]}
+    </animated.text>
+  );
+};
+
+const TooltipComponent = function ({ id, value, color }) {
+  return (
+    <div style={{ color, backgroundColor: "white" }}>
+      {id.split(":")[1]} - Minutes: {Math.round(value)}
+    </div>
+  );
+};
 
 const Visualisation = function (props) {
   const [zoomedNode, setZoomedNode] = React.useState();
@@ -69,6 +98,7 @@ const Visualisation = function (props) {
       newMonday.setDate(currentMonday.getDate() + direction * 7);
 
       setSelectedDay(0);
+      setZoomedNode(null);
       setCurrentMonday(newMonday);
       fetchTeamsForWeek(newMonday);
     };
@@ -77,6 +107,7 @@ const Visualisation = function (props) {
   const createHandleDayChange = function (i) {
     return () => {
       setSelectedDay(i);
+      setZoomedNode(null);
     };
   };
 
@@ -89,28 +120,27 @@ const Visualisation = function (props) {
   } else {
     const dayData = data[selectedDay];
 
-    if (!dayData.data.completion) {
-      content = "Sorry, there's nothing to show for the selected date";
-    } else {
-      content = (
-        <ResponsiveCirclePacking
-          data={dayData.data}
-          id="name"
-          value="completion"
-          valueFormat={(value) => `${value}%`}
-          margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
-          colors={{ scheme: "spectral" }}
-          childColor={{ from: "color", modifiers: [["brighter", 0.4]] }}
-          padding={8}
-          zoomedId={zoomedNode ? zoomedNode.id : null}
-          onClick={handleZoom}
-          labelsFilter={(label) =>
-            label.node.depth === (zoomedNode ? zoomedNode.depth : 0)
-          }
-          enableLabels
-        />
-      );
-    }
+    console.log(dayData);
+
+    content = (
+      <ResponsiveCirclePacking
+        data={dayData.data}
+        value="details.minutes"
+        valueFormat={(value) => `${value} minute(s)`}
+        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        colors={{ scheme: "spectral" }}
+        childColor={{ from: "color", modifiers: [["brighter", 0.4]] }}
+        padding={8}
+        zoomedId={zoomedNode ? zoomedNode.id : null}
+        onClick={handleZoom}
+        labelsFilter={(label) =>
+          label.node.depth === (zoomedNode ? zoomedNode.depth : 0)
+        }
+        labelComponent={LabelComponent}
+        tooltip={TooltipComponent}
+        enableLabels
+      />
+    );
   }
 
   return (
