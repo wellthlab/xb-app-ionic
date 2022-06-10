@@ -7,7 +7,7 @@ import Visualisation from "./Visualisation";
 const Teams = function () {
   return (
     <IonPage>
-      <XBHeader title="Teams Leaderboard" />
+      <XBHeader title="Teams" />
       <IonContent>
         <Visualisation />
       </IonContent>

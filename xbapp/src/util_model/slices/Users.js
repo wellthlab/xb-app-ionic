@@ -16,8 +16,7 @@ const UserProfileSlice = createSlice({
             state.loaded = false;
         },
         SET_USER(state, action) {
-            const userProfile = action.payload.userProfile;
-            state.userProfile = userProfile;
+            state.userProfile = action.payload.userProfile;;
             state.fetching = false;
             state.loaded = true;
         }

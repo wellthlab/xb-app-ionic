@@ -62,7 +62,7 @@ function dayify(responses, start, minday, maxday) {
 
   // Then generate each daily entry
   for (var i = minday; i <= maxday; i++) {
-    var date = dateFormat(addDays(startDate, i - 1), "ddd d mmm");
+    var date = dateFormat(addDays(startDate, i - 1), "ddd d mmm yyyy");
 
     if (typeof entriesByDay[i] == "undefined") {
       // TODO: Missing should be per-question
@@ -82,9 +82,10 @@ function dayify(responses, start, minday, maxday) {
   });
 
   // Add daily summaries
-  // TODO: This needs to go somewhere else longer-term so that the store isn't so coupled to particular experiments
-  for (var day of entries) {
-    var mins = 0;
+  // TODO: This needs to go somewhere else longer-term so that the store isn't
+  //  coupled to particular experiments
+  for (let day of entries) {
+    let mins = 0;
     day.responseTypes = {};
     day.completedModules = {};
 
@@ -92,10 +93,12 @@ function dayify(responses, start, minday, maxday) {
     for (var res of day.responses) {
       // Make a list of answered question types
       day.responseTypes[res.type] = true;
-      day.completedModules[res.moduleId] = true;
+      if(res.tickModuleDone) {
+        day.completedModules[res.moduleId] = true;
+      }
 
       // Add minutes up
-      if (res.type == "minutes") {
+      if (res.type === "minutes") {
         mins = mins + 1 * res.minutes;
       }
     }
@@ -146,8 +149,8 @@ const TeamSlice = createSlice({
   initialState,
   reducers: {
     CLEAR_TEAMS(state, action) {
-      state.fetching = true;
       state.teams = [];
+      state.fetching = true;
       state.loaded = false;
     },
     // Add an experiment to the list
@@ -246,14 +249,14 @@ const TeamSlice = createSlice({
         switch(team.experiment.type) {
 
           case 'strength21':
-            console.log("SEEING", team.experiment.day, team.experiment.start);
+            // console.log("SEEING", team.experiment.day, team.experiment.start);
             Strength21.decorateTeam(team);
             break;
 
           case 'strength22':
-            console.log("This is a strength in work 22 experiment");
+            // console.log("This is a strength in work 22 experiment");
             Strength22.decorateTeam(team);
-            console.log("Team has been decorated with tasks", team.experiment.tasks);
+            // console.log("Team has been decorated with tasks", team.experiment.tasks);
             break;
 
           default:

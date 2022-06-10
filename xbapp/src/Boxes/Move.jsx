@@ -7,7 +7,7 @@ import XBHeader from "../util/XBHeader";
 import Enroller from "./components/Enroller";
 import GroupInfo from "./components/GroupInfo";
 
-import UserProfile from "../UserProfile/UserProfile";
+import UserProfile from "../UserProfile/SetUserProfile";
 
 const MovePage = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -20,7 +20,7 @@ const MovePage = (props) => {
   ) {
     return (
       <IonPage>
-        <XBHeader title="Move" />
+        <XBHeader title="Team" />
         <IonContent>
           <IonSpinner class="center-spin" name="crescent" />
         </IonContent>
@@ -28,30 +28,17 @@ const MovePage = (props) => {
     );
   }
 
-  // Ask the user to enrol in a move experiment, set up their profile or show
-  // current experiment info
-  let content = null;
-  if (!props.teams.teams.bybox["move"]) {
-    content = <Enroller boxtype="move" />;
-  } else if (!props.userProfile.userProfile) {
-    content = <UserProfile pageType="move" />;
-  } else {
-    content = (
-      <>
+  return (
+    <IonPage>
+      <XBHeader title="Team" />
+      <IonContent>
         <GroupInfo
           group={props.teams.teams.bybox["move"][0]}
           modules={props.modules.modules}
           match={props.match}
           controllers={props.controllers}
         />
-      </>
-    );
-  }
-
-  return (
-    <IonPage>
-      <XBHeader title="Progress"></XBHeader>
-      <IonContent>{content}</IonContent>
+      </IonContent>
     </IonPage>
   );
 };

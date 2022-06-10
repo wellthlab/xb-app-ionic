@@ -1,10 +1,18 @@
 import { IonSpinner, IonContent, IonPage } from "@ionic/react";
 import { connect } from "react-redux";
 
-import Enroller from "../Boxes/components/Enroller";
 import XBHeader from "../util/XBHeader";
 import { addControllersProp } from "../util_model/controllers";
+import CreateJoinTeamCard from "./components/CreateJoinTeamCard";
+import { getCurrentExperimentId } from "../util/util";
 
+/**
+ *
+ * @param teams
+ * @param controllers
+ * @returns {JSX.Element}
+ * @constructor
+ */
 function ChangeTeam({ teams, controllers }) {
   controllers.LOAD_TEAMS_IF_REQD();
 
@@ -12,12 +20,14 @@ function ChangeTeam({ teams, controllers }) {
     return <IonSpinner class="center-spin" name="crescent" />;
   }
 
+  const expid = getCurrentExperimentId("move");
+
   return (
     <>
       <IonPage>
         <XBHeader title="Change Team" />
         <IonContent>
-          <Enroller boxtype="move" seenDisclaimer={true} />
+          <CreateJoinTeamCard expid={expid} />
         </IonContent>
       </IonPage>
     </>

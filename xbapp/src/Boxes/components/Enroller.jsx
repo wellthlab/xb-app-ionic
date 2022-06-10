@@ -12,69 +12,68 @@ import {
   IonCol,
   IonRow,
   IonText,
+  IonCard,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./Enroller.scss";
 
 import Disclaimer from "./Disclaimer";
+import Consent from "./Consent";
+import SetUserProfile from "../../UserProfile/SetUserProfile";
 
 import { connect } from "react-redux";
+import CreateJoinTeamCard from "../../StartJourney/components/CreateJoinTeamCard";
+import { getCurrentExperimentId } from "../../util/util";
 
-const Enroller = ({ boxtype, expid, seenDisclaimer = false }) => {
+/**
+ *
+ * @param boxtype
+ * @param expid
+ * @param seenDisclaimer
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const Enroller = ({
+  boxtype,
+  setDoneEverything,
+  setProfile = false,
+  seenConsent = false,
+  seenDisclaimer = false,
+}) => {
   const [disclaimed, setDisclaimed] = useState(seenDisclaimer);
+  const [consented, setConsented] = useState(seenConsent);
+  const [setUpProfile, setSetUpProfile] = useState(setProfile);
 
   // Look up experiment ID based on box type
-  // TODO: Eventually we'll want to look these up?
-  switch (boxtype) {
-    case "move":
-      var expid = "6202d10ccc5d2aa4b830856d"; // Strength in work Feb 2022
-      break;
-    case "eat":
-    default:
-      var expid = "";
-      break;
+  const expid = getCurrentExperimentId(boxtype);
+
+  if (!consented) {
+    return (
+      <IonCard>
+        <Consent setConsented={setConsented} />
+      </IonCard>
+    );
   }
 
-  const content = disclaimed ? (
-    <>
-      <IonItem lines="none" color="transparent" className="ion-text-justify">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonText className="ion-text-center ion-text-justify">
-                To get started you can either start a new team, or join somebody
-                else's. If you start a new team, you can keep it just for you,
-                or invite other people to join you.
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <div className="centering">
-                <br />
-                <IonButton routerLink={"/start/join/" + expid} size="regular">
-                  Join a Team
-                </IonButton>
-              </div>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <div className="centering">
-                <IonButton routerLink={"/start/create/" + expid} size="regular">
-                  Start a Team
-                </IonButton>
-              </div>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonItem>
-    </>
-  ) : (
-    <Disclaimer checkbox={true} onToggle={setDisclaimed} />
-  );
+  if (!disclaimed) {
+    return (
+      <IonCard>
+        <Disclaimer checkbox={true} onToggle={setDisclaimed} />
+      </IonCard>
+    );
+  }
 
-  return <>{content}</>;
+  if (!setUpProfile) {
+    return (
+      <IonCard>
+        <SetUserProfile pageType="move" setSetUpProfile={setSetUpProfile} />
+      </IonCard>
+    );
+  }
+
+  return (
+    <CreateJoinTeamCard expid={expid} setDoneEverything={setDoneEverything} />
+  );
 };
 
 export default connect(

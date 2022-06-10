@@ -26,12 +26,10 @@ import {
 } from "./slices/Teams";
 
 import { CLEAR_EXPERIMENTS, SET_EXPERIMENTS } from "./slices/Experiments";
-
 import { CLEAR_FEED, SET_FEED } from "./slices/Feed";
-
-import { CLEAR_MODULES, GET_MODULES } from "./slices/Modules";
-
+import { CLEAR_MODULES, SET_MODULES } from "./slices/Modules";
 import { CLEAR_USER, SET_USER } from "./slices/Users";
+import { CLEAR_LIBRARY, SET_LIBRARY } from "./slices/Library";
 
 
 /**
@@ -39,19 +37,31 @@ import { CLEAR_USER, SET_USER } from "./slices/Users";
  * - they'll be wrapped so that client, store and controllers are provided
  */
 
+async function GET_LIBRARY (client, store, controllers) {
+  await store.dispatch(CLEAR_LIBRARY())
+  const library = await client.getLibraryData()
+  await store.dispatch(SET_LIBRARY({ library }));
+}
+
+async function GET_LIBRARY_IF_REQD(client, store, controllers) {
+  const state = store.getState();
+  const fetching = state.library.fetching;
+  const loaded = state.library.loaded;
+  if (!fetching && !loaded) {
+    await controllers.GET_LIBRARY();
+  }
+}
+
  async function SET_USER_PROFILE(client, store, controllers) {
-
-  store.dispatch(CLEAR_USER());
-
-  let userProfile = null;
+  let userProfileFromOnline = null;
   try {
-    userProfile = await client.getUserProfile();
+    userProfileFromOnline = await client.getUserProfile();
   } catch (error) {
-    return console.error(error);
+    console.error("Couldn't get user profile from MongoDB", error);
+    return;
   }
 
-  store.dispatch(SET_USER({ userProfile }));
-  console.log("SET_USER", userProfile);
+  await store.dispatch(SET_USER({ userProfile: userProfileFromOnline }));
 }
 
 async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
@@ -59,23 +69,20 @@ async function SET_USER_PROFILE_IF_REQD(client, store, controllers) {
   const fetching = state.userProfile.fetching;
   const loaded = state.userProfile.loaded;
   if (!fetching && !loaded) {
-    console.log("Refresh of user profile is required (fetching loading)", fetching, loaded);
-    return await controllers.SET_USER_PROFILE();
-  } else {
-    console.log("Refresh of user profile is not required (fetching loading)", fetching, loaded);
+    await controllers.SET_USER_PROFILE();
   }
 }
 
  async function UPDATE_USER_PROFILE(client, store, controllers, profile) {
-
-  console.log("CREATE_USER_PROFILE", profile);
-  let res = await client.createUserProfile(profile);
-
-  if (res.success === false) {
+  const result = await client.updateUserProfile(profile);
+  if (!result.success) {
+    console.error("Failed to update user profile", result);
     return false;
   }
 
-  controllers.SET_USER_PROFILE();
+  const userProfile = result.userProfile;
+  await store.dispatch(SET_USER({ userProfile }));
+
   return true;
 }
 
@@ -91,8 +98,11 @@ async function LOAD_MODULES(client, store) {
     return console.error(error);
   }
 
-  store.dispatch(GET_MODULES({ modules }));
-  console.log("SET_MODULES", modules);
+  // Do not include any modules with empty playlists
+  modules = modules.filter(m => m.playlists.length > 0);
+  modules = modules.filter(m => m.active);
+
+  store.dispatch(SET_MODULES({ modules }));
 }
 
 async function LOAD_MODULES_IF_REQD(client, store, controllers) {
@@ -100,10 +110,7 @@ async function LOAD_MODULES_IF_REQD(client, store, controllers) {
   const f = state.modules.fetching;
   const l = state.modules.loaded;
   if (!f && !l) {
-    console.log("Refresh of modules is required", f, l);
-    return await controllers.LOAD_MODULES();
-  } else {
-    console.log("Refresh or modules is not required", f, l);
+    await controllers.LOAD_MODULES();
   }
 }
 
@@ -133,7 +140,6 @@ async function UPDATE_USER_MODULE(client, store, controllers, user, module, subs
   }
 
   await controllers.UPDATE_USER_PROFILE(newUser);
-  await controllers.SET_USER_PROFILE();
 }
 
 
@@ -169,8 +175,8 @@ async function SET_MODULE_FOR_PATH(client, store, controllers, newPath, oldPath)
 async function LOAD_TEAMS(client, store) {
 
   // Clear the current teams and set the fetching flag
-
-  store.dispatch(CLEAR_TEAMS());
+  // TODO: do we need this...?
+  // store.dispatch(CLEAR_TEAMS());
 
   // Get the teams and pop them into the store
 
@@ -183,7 +189,6 @@ async function LOAD_TEAMS(client, store) {
   }
 
   store.dispatch(SET_TEAMS({ teams }));
-  console.log('SET_TEAMS', teams, teams.bybox);
 }
 
 /**
@@ -195,10 +200,7 @@ function LOAD_TEAMS_IF_REQD(client, store, controllers) {
   var f = state.teams.fetching;
   var l = state.teams.loaded;
   if (!f && !l) {
-    console.log("Refresh is required", f, l);
     return controllers.LOAD_TEAMS();
-  } else {
-    console.log("Refresh is not required", f, l);
   }
 }
 
@@ -250,7 +252,7 @@ async function CREATE_TEAM(client, store, controllers, name, desc, expid, startD
 }
 
 async function PROGRESS_ALONG_MODULE(client, store, controllers, moduleId) {
-  const ret = await client.progressUserModule(moduleId);
+  await client.progressUserModule(moduleId);
   await controllers.SET_USER_PROFILE();
 }
 
@@ -258,8 +260,7 @@ async function ADD_RESPONSE(client, store, controllers, expid, value) {
   if(!value.submitted) {
     value.submitted = new Date().toISOString();
   }
-  client.addResponse(expid, value);
-
+  await client.addResponse(expid, value);
   await controllers.LOAD_TEAMS(); // Refresh team info, since that includes responses
 }
 
@@ -292,12 +293,26 @@ async function GET_TEAM_RESPONSES(client, store, controllers, teamid) {
 let Parser = require("rss-parser");
 let parser = new Parser();
 
+async function GET_FEED_IF_REQD(client, store, controllers) {
+  var state = store.getState();
+  var f = state.feed.fetching;
+  var l = state.feed.loaded;
+  if (!f && !l) {
+    await controllers.GET_FEED();
+  }
+}
+
 async function GET_FEED(client, store, controllers) {
   store.dispatch(CLEAR_FEED());
 
-  const feed = await parser.parseURL(
-    "https://svm00146.ecs.soton.ac.uk/xb/feed.rss"
-  );
+  let feed;
+  try {
+    feed = await parser.parseURL(
+      "https://svm00146.ecs.soton.ac.uk/xb/feed.rss"
+    );
+  } catch (e) {
+    return store.dispatch(SET_FEED(false));
+  }
 
   var n = 0;
   var time = Date.now();
@@ -307,136 +322,129 @@ async function GET_FEED(client, store, controllers) {
     item.date = item.date ? Date.parse(item.date).getTime() : time;
   });
 
-  // Get team responses
-
-  await LOAD_TEAMS_IF_REQD(client, store, controllers);
-
-  const state = store.getState();
-
-  const teams = state.teams.teams;
-  const promises = teams.map((team) => GET_TEAM_RESPONSES(client, store, controllers, team._id));
-  await Promise.all(promises);
-
-  // Team info is disabled for now
-  const enhancedTeams = []; // store.getState().teams.teams;
-
-  // Process feed
-
   const feeds = [...feed.items];
 
-  for (const team of enhancedTeams) {
+  // Get team responses
+  // TODO: Team info is disabled for now (pre RSG involvement)
+  //       Something in the following lines removes bybox from state.teams.teams
 
-    // Ignore single-membered team
+  // await LOAD_TEAMS_IF_REQD(client, store, controllers);
+  // const state = store.getState();
+  // const teams = state.teams.teams;
+  // const promises = teams.map((team) => GET_TEAM_RESPONSES(client, store, controllers, team._id));
+  // await Promise.all(promises);
 
-    if (team.users.length < 2) {
-      continue;
-    }
+  // Process feed
+  // const enhancedTeams = teams;
+  // for (const team of enhancedTeams) {
 
-    const teamResponses = team.responses.all;
+  //   // Ignore single-membered team
 
-    if (!teamResponses) {
-      continue;
-    }
+  //   if (team.users.length < 2) {
+  //     continue;
+  //   }
 
-    const updates = {};
+  //   const teamResponses = team.responses.all;
 
-    for (const memberResponses of teamResponses) {
-      for (const response of memberResponses.responses) {
-        if (response.type !== 'strength' && response.type !== 'questionnaire' && response.type !== 'questionnaire-evening') {
-          continue;
-        }
+  //   if (!teamResponses) {
+  //     continue;
+  //   }
 
-        const date = new Date(response.submitted);
-        date.setHours(0, 0, 0, 0);                    // Round to the nearest date
+  //   const updates = {};
 
-        const timestamp = date.getTime();
+  //   for (const memberResponses of teamResponses) {
+  //     for (const response of memberResponses.responses) {
+  //       if (response.type !== 'strength' && response.type !== 'questionnaire' && response.type !== 'questionnaire-evening') {
+  //         continue;
+  //       }
 
-        let entry = updates[timestamp];
+  //       const date = new Date(response.submitted);
+  //       date.setHours(0, 0, 0, 0);                    // Round to the nearest date
 
-        if (!entry) {
-          entry = {
-            exercised: { set: new Set(), hasOwn: false },
-            answered: { set: new Set(), hasOwn: false },
-          };
+  //       const timestamp = date.getTime();
 
-          updates[timestamp] = entry;
-        }
+  //       let entry = updates[timestamp];
 
-        let type;
+  //       if (!entry) {
+  //         entry = {
+  //           exercised: { set: new Set(), hasOwn: false },
+  //           answered: { set: new Set(), hasOwn: false },
+  //         };
 
-        if (response.type === 'strength') {
-          type = entry.exercised;
-        }
+  //         updates[timestamp] = entry;
+  //       }
 
-        if (response.type === 'questionnaire' || response.type === 'questionnaire-evening') {
-          type = entry.answered;
-        }
+  //       let type;
 
-        type.hasOwn = team.responses.own ? team.responses.own.user === memberResponses.user : false;
-        type.set.add(memberResponses.user);
-      }
-    }
+  //       if (response.type === 'strength') {
+  //         type = entry.exercised;
+  //       }
 
-    // Sort updates chronologically
+  //       if (response.type === 'questionnaire' || response.type === 'questionnaire-evening') {
+  //         type = entry.answered;
+  //       }
 
-    const entries = Object.entries(updates).sort((entry1, entry2) => entry1[0] - entry2[0]);
+  //       type.hasOwn = team.responses.own ? team.responses.own.user === memberResponses.user : false;
+  //       type.set.add(memberResponses.user);
+  //     }
+  //   }
 
-    for (const [timestamp, entry] of entries) {
+  //   // Sort updates chronologically
 
-      const baseFeed = {
-        type: 'team_update',
-        team: team.name,
-        date: Number(timestamp),
-      };
+  //   const entries = Object.entries(updates).sort((entry1, entry2) => entry1[0] - entry2[0]);
 
-      feeds.unshift({
-        ...baseFeed,
-        update: {
-          count: entry.exercised.set.size,
-          hasOwn: entry.exercised.hasOwn,
-          display: 'strength exercises',
-        },
-      });
+  //   for (const [timestamp, entry] of entries) {
 
-      feeds.unshift({
-        ...baseFeed,
-        update: {
-          count: entry.answered.set.size,
-          hasOwn: entry.answered.hasOwn,
-          display: 'questionnaire',
-        },
-      });
-    }
-  }
+  //     const baseFeed = {
+  //       type: 'team_update',
+  //       team: team.name,
+  //       date: Number(timestamp),
+  //     };
+
+  //     feeds.unshift({
+  //       ...baseFeed,
+  //       update: {
+  //         count: entry.exercised.set.size,
+  //         hasOwn: entry.exercised.hasOwn,
+  //         display: 'strength exercises',
+  //       },
+  //     });
+
+  //     feeds.unshift({
+  //       ...baseFeed,
+  //       update: {
+  //         count: entry.answered.set.size,
+  //         hasOwn: entry.answered.hasOwn,
+  //         display: 'questionnaire',
+  //       },
+  //     });
+  //   }
+  // }
 
   store.dispatch(SET_FEED(feeds));
 }
 
 async function SET_CHOSEN_MOVEMENTS(client, store, controllers, key, moduleId, movements) {
   const state = store.getState();
-
-  const user = {...state.userProfile.userProfile};
-  const module = { ...user.modules[moduleId]};
-  if(!module.edtMoves) {
-    module.edtMoves = {};
-  }
-  module.edtMoves = {...module.edtMoves, [key]: movements};
-
-  const modules = {...user.modules, [moduleId]: module};
-  const newUser = {
-    ...user,
-    modules: modules
+  const userProfile = {...state.userProfile.userProfile};
+  const userModules = { ...userProfile.modules[moduleId]};
+  if (!userModules.edtMoves) {
+    userModules.edtMoves = {};
   }
 
-  await controllers.UPDATE_USER_PROFILE(newUser);
-  await controllers.SET_USER_PROFILE();
+  userModules.edtMoves = {...userModules.edtMoves, [key]: movements};
+  const newUserModules = {...userProfile.modules, [moduleId]: userModules};
+  const newUserProfile = {
+    ...userProfile,
+    modules: newUserModules
+  }
+
+  await controllers.UPDATE_USER_PROFILE(newUserProfile);
 }
 
-
 function getControllers(store, client) {
-  var out = { client: client, store: store };
-
-  var controllers = {
+  let out = { client: client, store: store };
+  let controllers = {
     LOAD_TEAMS,
     LOAD_TEAMS_IF_REQD,
     GET_TEAM_RESPONSES,
@@ -445,6 +453,7 @@ function getControllers(store, client) {
     CREATE_TEAM,
     ADD_RESPONSE,
     GET_FEED,
+    GET_FEED_IF_REQD,
     LOAD_MODULES,
     LOAD_MODULES_IF_REQD,
     SET_USER_PROFILE,
@@ -454,15 +463,17 @@ function getControllers(store, client) {
     SET_MODULE_FOR_PATH,
     UPDATE_USER_MODULE,
     LEAVE_TEAM,
+    GET_LIBRARY,
+    GET_LIBRARY_IF_REQD,
     SET_CHOSEN_MOVEMENTS
   };
 
-  for (var n of Object.keys(controllers)) {
-    var f = controllers[n];
+  for (let n of Object.keys(controllers)) {
+    let f = controllers[n];
     out[n] = (function (f, n) {
       return function (...args) {
         // Trap f and n in a closure so they don't change
-        console.log("Call controller", n, f, args);
+        // console.log("Call controller", n, f, args);
         return f(client, store, out, ...args);
       };
     })(f, n);
@@ -472,12 +483,12 @@ function getControllers(store, client) {
 }
 
 /**
- * A Higher Order Component that provides a controllers prop contianing
- * the controllers from the curent context
+ * A Higher Order Component that provides a controllers prop containing
+ * the controllers from the current context
  */
 function addControllersProp(Component) {
   return function (props) {
-    var controllers = useContext(ControllerContext);
+    let controllers = useContext(ControllerContext);
     return <Component controllers={controllers} {...props} />;
   };
 }

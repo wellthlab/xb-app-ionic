@@ -15,7 +15,7 @@ const ModuleSlice = createSlice({
             state.modules = [];
             state.loaded = false;
         },
-        GET_MODULES(state, action) {
+        SET_MODULES(state, action) {
             const modules = action.payload.modules;
             state.modules = modules;
             state.fetching = false;
@@ -26,7 +26,7 @@ const ModuleSlice = createSlice({
 
 export const {
     CLEAR_MODULES,
-    GET_MODULES,
+    SET_MODULES,
 } = ModuleSlice.actions;
 
 export default ModuleSlice.reducer;

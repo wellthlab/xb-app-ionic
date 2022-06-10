@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import {
   IonItem,
   IonRow,
@@ -6,8 +5,6 @@ import {
   IonCol,
   IonCard,
   IonText,
-  IonLabel,
-  IonInput,
   IonCardContent,
   IonTextarea,
 } from "@ionic/react";
@@ -21,20 +18,14 @@ const OtherMove = ({ task, onSubmit }) => {
   return (
     <IonCard>
       <IonCardContent>
-        <IonItem>
+        <IonItem style={{ "--padding-start": "0px" }}>
           <IonGrid>
             <IonRow>
               <IonCol>
                 <IonText>
-                  <div class="ion-text-justify">
-                    {task.instructions ? (
-                      <>{task.instructions}</>
-                    ) : (
-                      <>
-                        Any activity that raises your heart rate above normal
-                        counts as movement! How are you moving?
-                      </>
-                    )}
+                  <div className="ion-text-justify">
+                    Any activity that raises your heart rate above normal counts
+                    as movement! How are you moving?
                   </div>
                 </IonText>
               </IonCol>

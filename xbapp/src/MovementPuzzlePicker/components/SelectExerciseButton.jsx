@@ -8,7 +8,7 @@ const SelectExerciseButton = (props) => {
   const typeOfExercise = props.typeOfExercise;
 
   function selectExercise(blockIndex) {
-    props.updateExercises(props.movement, typeOfExercise, blockIndex);
+    props.updateExercise(props.movement, typeOfExercise, blockIndex);
     props.setContent(undefined); // this stops the movement picker from being displayed
   }
 

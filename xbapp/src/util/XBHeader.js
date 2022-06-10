@@ -8,9 +8,11 @@ import {
 import React from "react";
 
 const XBHeader = (props) => {
+
+
   return (
     <IonHeader>
-      <IonToolbar style={{"--background": props.colour}}>
+      <IonToolbar style={{...props.style, "--background": props.colour}}>
         <IonButtons slot="start">
           <IonBackButton defaultHref="/" />
         </IonButtons>

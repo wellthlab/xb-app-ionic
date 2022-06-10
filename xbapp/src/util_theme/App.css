@@ -29,13 +29,24 @@ button[ion-fab] {
 }
 
 #tab-button-Move {
-  background: #56ad1c;
-  color: #111;
-  font-weight: bold;
+  /* background: #56ad1c; */
+  /* background: var(--ion-color-success); */
+  /* color: #111; */
+  /* color: var(--ion-text-color); */
+  /* font-weight: bold; */
 }
 
 [has-header]{
   margin-top: 50px;
+}
+
+.vcs {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .center-message{

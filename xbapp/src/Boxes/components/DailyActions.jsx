@@ -60,6 +60,7 @@ const DailyActions = ({ group, today, tabs }) => {
    * Daily task list and buttons
    */
 
+  // TODO: this needs to be hooked up to notifications somehow
   let required = group.experiment.tasks[activeDay].required;
   let optional = group.experiment.tasks[activeDay].optional;
 
@@ -101,42 +102,6 @@ const DailyActions = ({ group, today, tabs }) => {
   const requiredActionsFiltered = requiredActions.filter((el) => el !== null);
   const optionalActionsFiltered = optionalActions.filter((el) => el !== null);
 
-  // With new progression model, going back in time is not required.
-  // var daytabs;
-  // if (typeof tabs == "undefined" || tabs === true) {
-  //   daytabs = (
-  //     <div className="headerDay" style={{ display: "block", overflow: "auto" }}>
-  //       <span className="text">
-  //         <h3>{"Day " + activeDay + " : " + entry.date}</h3>
-  //       </span>
-  //       <span className="navbuttons">
-  //         {
-  //           <IonButton
-  //             disabled={!prevDayExists}
-  //             onClick={() => {
-  //               setActiveDay(activeDay - 1);
-  //             }}
-  //           >
-  //             <IonIcon icon={caretBackCircle} />
-  //           </IonButton>
-  //         }
-  //         {
-  //           <IonButton
-  //             disabled={!nextDayExists}
-  //             onClick={() => {
-  //               setActiveDay(activeDay + 1);
-  //             }}
-  //           >
-  //             <IonIcon icon={caretForwardCircle} />
-  //           </IonButton>
-  //         }
-  //       </span>
-  //     </div>
-  //   );
-  // } else {
-  //   daytabs = <></>;
-  // }
-
   return (
     <div className="dailyActions">
       <IonList lines="full" className="journalTasks">
@@ -144,7 +109,7 @@ const DailyActions = ({ group, today, tabs }) => {
           {requiredActionsFiltered.length > 0 ? (
             requiredActionsFiltered
           ) : optionalActionsFiltered.length > 0 ? (
-            "" // only display no task msg when there are no optional tasks either
+            "" // only display "no task" message when there are no mandatory or optional tasks
           ) : (
             <IonItem lines="none">
               <IonIcon icon={happyOutline} slot="start" />

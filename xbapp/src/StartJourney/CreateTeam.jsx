@@ -114,7 +114,7 @@ const CreateTeam = (props) => {
             onIonChange={(e) => {
               setName(e.detail.value);
             }}
-          ></IonInput>
+          />
         </div>
         {err}
         <div className="centering">{btn}</div>
@@ -122,10 +122,17 @@ const CreateTeam = (props) => {
     );
   }
 
+  const headerDisplayStyle = props.teams.teams.bybox["move"] ? "" : "none";
+  const divPaddingStyle = props.teams.teams.bybox["move"]
+    ? ""
+    : "env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)";
+
   return (
     <IonPage className="creator">
-      <XBHeader title="Create a Team"></XBHeader>
-      <IonContent style={{ paddingTop: "30px" }}>{content}</IonContent>
+      <XBHeader title="Create a Team" style={{ display: headerDisplayStyle }} />
+      <IonContent>
+        <div style={{ padding: divPaddingStyle }}>{content}</div>
+      </IonContent>
     </IonPage>
   );
 };

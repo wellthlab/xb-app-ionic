@@ -4,16 +4,16 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonItem,
   IonCardContent,
   IonButton,
-  IonToggle,
 } from "@ionic/react";
+import { uniqBy } from "lodash";
 
 import "./Block.css";
 
 import Moves from "../../Strength/moves.json";
 import MovementPicker from "../MovementPicker";
+import { codeSlashOutline } from "ionicons/icons";
 
 var getMove = function (id) {
   var idToUse = id;
@@ -57,41 +57,54 @@ function alternativeIsGood(id, weekNo) {
 }
 
 function filterMovesByTechnique(exercise, movesForWeek) {
-  let filteredMoves;
+  let filteredMovesTechnique = [];
+  let filteredMovesArea = [];
 
   if (exercise.includes("bilateral")) {
-    filteredMoves = movesForWeek.filter((obj) => {
+    filteredMovesTechnique = movesForWeek.filter((obj) => {
       return obj.technique === "bilateral";
     });
   } else if (exercise.includes("isolateral")) {
-    filteredMoves = movesForWeek.filter((obj) => {
+    filteredMovesTechnique = movesForWeek.filter((obj) => {
       return obj.technique === "isolateral";
     });
   } else if (exercise.includes("balance")) {
-    if (exercise.includes("assessment")) {
-      //is balance assessment
-      filteredMoves = movesForWeek.filter((obj) => {
-        return obj.type === "assessment";
-      });
-    } else {
-      //is balance practice
-      filteredMoves = movesForWeek.filter((obj) => {
-        return obj.type === "practice";
-      });
-    }
+    return (filteredMovesTechnique = movesForWeek.filter((obj) => {
+      return obj.technique === "balance";
+    }));
+    // console.log("balance", filteredMovesTechnique);
+    // if (exercise.includes("assessment")) {
+    //   //is balance assessment
+    //   filteredMovesTechnique = movesForWeek.filter((obj) => {
+    //     return obj.type === "assessment";
+    //   });
+    // } else {
+    //   //is balance practice
+    //   filteredMovesTechnique = movesForWeek.filter((obj) => {
+    //     return obj.type === "practice";
+    //   });
+    // }
+  }
+
+  if (filteredMovesTechnique.length === 0) {
+    filteredMovesTechnique = movesForWeek;
   }
 
   if (exercise.includes("pull")) {
-    filteredMoves = filteredMoves.filter((obj) => {
+    filteredMovesArea = filteredMovesTechnique.filter((obj) => {
       return obj.type === "pull";
     });
   } else if (exercise.includes("push")) {
-    filteredMoves = filteredMoves.filter((obj) => {
+    filteredMovesArea = filteredMovesTechnique.filter((obj) => {
       return obj.type === "push";
+    });
+  } else if (exercise.includes("full")) {
+    filteredMovesArea = filteredMovesTechnique.filter((obj) => {
+      return obj.type === "full";
     });
   }
 
-  return filteredMoves;
+  return filteredMovesArea;
 }
 
 function filterMovesByArea(exercise, filteredMoves) {
@@ -189,8 +202,6 @@ function filterMovesByArea(exercise, filteredMoves) {
 the types are: pull, push, lower push, lower pull, balance, upper push, upper pull, unilateral lower push, unilateral lower pull, iso push, iso pull
 */
 const Block = (props) => {
-  //console.log("BLOCK ", props.blockIndex, props.typeOfBlock, props.exerciseChosen);
-  // const [blockType, setBlockType] = React.useState(props.typeOfBlock);
   const blockType = props.typeOfBlock;
   const blockIndex = props.blockIndex;
   const moveSelected = props.exerciseChosen; // would be {push: "no move", pull: "nomove"}
@@ -199,26 +210,26 @@ const Block = (props) => {
   let filteredMoves;
 
   const content = blockType.map((exercise, index) => {
+    const thisExercise = exercise.split(" ").join("+");
     const movements = {};
 
-    exercise = exercise.split(" ").join("+");
-
-    let movesAvailable = Moves.moves.filter((obj) => {
-      return obj.weekToAppear > 0 && obj.weekToAppear <= weekNum;
-    });
-
-    movesAvailable = Moves.moves;
+    // TODO: need to limit moves by week, or something
+    // let movesAvailable = Moves.moves.filter((obj) => {
+    //   return obj.weekToAppear > 0 && obj.weekToAppear <= weekNum;
+    // });
+    let movesAvailable = Moves.moves;
 
     if (props.explorer) {
       movesAvailable = Moves.moves;
     }
 
-    filteredMoves = filterMovesByTechnique(exercise, movesAvailable);
-    filteredMoves = filterMovesByArea(exercise, filteredMoves);
+    filteredMoves = filterMovesByTechnique(thisExercise, movesAvailable);
+    filteredMoves = filterMovesByArea(thisExercise, filteredMoves);
+    let { upperBody, fullBody, lowerBody } = filteredMoves;
 
-    let upperBody = filteredMoves.upperBody;
-    let fullBody = filteredMoves.fullBody;
-    let lowerBody = filteredMoves.lowerBody;
+    // let upperBody = filteredMoves.upperBody;
+    // let fullBody = filteredMoves.fullBody;
+    // let lowerBody = filteredMoves.lowerBody;
 
     if (!props.explorer) {
       lowerBody = removeAlternativesWhichDontfit(lowerBody, weekNum);
@@ -233,6 +244,11 @@ const Block = (props) => {
     // TODO: some things don't have unique keys
     const buttonKey = index + 2 * blockIndex;
 
+    // safety measure
+    if (!exercise.includes("+")) {
+      exercise = exercise.replaceAll(" ", "+");
+    }
+
     return (
       <>
         <IonButton
@@ -241,6 +257,7 @@ const Block = (props) => {
           onClick={() => {
             const content = (
               <MovementPicker
+                explorer={props.explorer}
                 typeOfExercise={exercise}
                 movements={movements}
                 blockIndex={blockIndex}
@@ -251,7 +268,7 @@ const Block = (props) => {
                   bottomRow: movements.lowerBody.length,
                 }}
                 setContent={props.setContent}
-                updateExercises={props.updateExercises}
+                updateExercise={props.updateExercise}
               />
             );
 
@@ -259,7 +276,7 @@ const Block = (props) => {
           }}
         >
           {props.explorer ? (
-            <p>Explore {exercise}</p>
+            <p>Explore {exercise.replaceAll("+", " ")}</p>
           ) : (
             <div className="block-button-container">
               <div className="container-left">
@@ -279,7 +296,7 @@ const Block = (props) => {
 
   return (
     <IonCard>
-      <IonCardHeader className="block-header">
+      <IonCardHeader>
         <IonCardTitle>
           Block {props.explorer ? "Explorer" : blockIndex + 1}
         </IonCardTitle>

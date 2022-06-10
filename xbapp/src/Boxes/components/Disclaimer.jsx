@@ -21,14 +21,14 @@ const Disclaimer = ({ checkbox, onToggle }) => {
   const [checked, setChecked] = useState(false);
 
   function change(e) {
-    console.log("Changed", e);
     var checked = e.currentTarget.checked;
     setChecked(checked);
     onToggle(checked);
   }
 
+  let check = "";
   if (checkbox) {
-    var check = (
+    check = (
       <IonRow>
         <IonCol>
           <IonItem lines="none">
@@ -54,7 +54,7 @@ const Disclaimer = ({ checkbox, onToggle }) => {
         <IonCol>
           <IonItem lines="none">
             <IonIcon icon={warning} slot="start" />
-            <div class="ion-text-justify">
+            <div className="ion-text-justify">
               <p>
                 Exercise is safe and beneficial for most people, but some people
                 should check with their doctor before changing their physical

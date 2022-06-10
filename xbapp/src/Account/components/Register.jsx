@@ -35,8 +35,6 @@ const Register = ({ ACCEPT_LOGIN }) => {
   var err = "";
   var btn = "";
 
-  console.log("Register state", state1);
-
   if (state1.pw.length < 8) {
     err = <>Enter a password of at least 8 characters</>;
   } else if (state1.pw !== state1.pw2) {
@@ -138,7 +136,7 @@ const Register = ({ ACCEPT_LOGIN }) => {
         Please note that by registering and creating an account, you declare you
         consent to the{" "}
         <a
-          href="javascript:void(0)"
+          // href="javascript:void(0)"
           onClick={() => {
             toggleModal();
           }}

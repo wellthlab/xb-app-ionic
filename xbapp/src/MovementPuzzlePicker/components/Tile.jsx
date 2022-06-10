@@ -21,6 +21,7 @@ function Tile(props) {
   const completedCount = getTimesCompleted(movement);
   const alternativeExists = movement.alternative.length !== 0;
   let border;
+  // TODO: better way to display this?
   if (alternativeExists) {
     border = "gold 2px solid";
   } else {
@@ -66,22 +67,23 @@ function Tile(props) {
             color="light"
             className="bg-transparent tile-item"
             lines="none"
-            color="none"
           >
             <div
               className="card-container"
               onClick={(event) => {
-                props.updateExercise(true, movement);
+                props.updateDetailOnClick(true, movement);
               }}
             >
               <figure id="tile-image" className="tile-image">
                 <img
                   src={"assets/moves/" + movement.images[0]}
                   className="A slide-img"
+                  alt={"Move A"}
                 />
                 <img
                   src={"assets/moves/" + movement.images[1]}
                   className="B slide-img"
+                  alt={"Move B"}
                 />
               </figure>
               <div className="tile-description-container">
@@ -103,7 +105,7 @@ function Tile(props) {
                   movement={movement}
                   setContent={props.setContent}
                   typeOfExercise={props.typeOfExercise}
-                  updateExercises={props.updateExercises}
+                  updateExercise={props.updateExercise}
                 ></SelectExerciseButton>
               </div>
             )}

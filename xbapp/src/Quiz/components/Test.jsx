@@ -10,7 +10,6 @@ import {
   IonGrid,
   IonCol,
   IonRow,
-  IonButton,
 } from "@ionic/react";
 import { CheckmarkSharp, CloseSharp } from "react-ionicons";
 
@@ -22,7 +21,7 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
 
   const choiceItems = choices.map((choice, index) => {
     return (
-      <IonItem>
+      <IonItem lines="none">
         <IonLabel>
           <IonText>{choice}</IonText>
         </IonLabel>
@@ -71,7 +70,7 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
         run={confettiOn}
       />
 
-      <IonItem>
+      <IonItem lines="none">
         <IonGrid>
           <IonRow>
             <IonCol>
@@ -83,6 +82,7 @@ function KnowledgeQuiz({ statement, choices, correct, explanation, onSubmit }) {
           <IonRow>
             <IonCol>
               <IonRadioGroup
+                mode="md"
                 allowEmptySelection={true}
                 value={value}
                 onIonChange={handleChange}

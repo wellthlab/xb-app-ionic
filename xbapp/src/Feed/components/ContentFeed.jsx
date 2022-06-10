@@ -1,19 +1,16 @@
 import React from "react";
-import { IonCard } from "@ionic/react";
+import { IonCard, IonItemDivider } from "@ionic/react";
 
 import OverdueEntry from "./OverdueEntry";
 import TeamUpdate from "./TeamUpdate";
 import News from "./News";
 
 const ContentFeed = (props) => {
-
   return (
     <>
       {Object.keys(props.feed).map((key) => {
-
         const item = props.feed[key];
         const content = renderItem(item);
-
         return <IonCard key={item.id}>{content}</IonCard>;
       })}
     </>
@@ -21,9 +18,6 @@ const ContentFeed = (props) => {
 };
 
 const renderItem = (item) => {
-
-  console.log("Render content", item);
-
   let content;
   switch (item.type) {
     case "overdue_entry":
@@ -42,4 +36,4 @@ const renderItem = (item) => {
   return content;
 };
 
-export default ContentFeed; 
+export default ContentFeed;

@@ -1,14 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  feed: [
-    /*{
-            type: 'team_update', // Required
-            id: '23823752365675213', // required, must be unique
-            content: "Brenda Q logged 15 box squats" // Example - individual types can have their own fields
-        }*/
-  ],
+  feed: [],
   fetching: false,
+  loaded: false,
 };
 
 /**
@@ -22,12 +17,13 @@ const Slice = createSlice({
     CLEAR_FEED(state, actions) {
       state.fetching = true;
       state.feed = [];
+      state.loaded = false;
     },
     // Replace the contents of the feed with the payload
     SET_FEED(state, action) {
       state.fetching = false;
-      const feed = action.payload;
-      state.feed = feed;
+      state.feed = action.payload;
+      state.loaded = true;
     },
     // Add an array of items to the feed
     ADD_FEED(state, action) {

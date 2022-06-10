@@ -20,7 +20,7 @@ import { addControllersProp } from "../util_model/controllers";
 
 import "./Login.scss";
 
-// const autoBindReact = require("auto-bind/react");
+const autoBindReact = require("auto-bind/react");
 
 const Login = (props) => {
   var account = props.account;
@@ -30,15 +30,17 @@ const Login = (props) => {
 
   if (account.loggedin) {
     return (
-      <IonContent>
-        <p>You are logged in as {account.name}</p>
-      </IonContent>
+      <IonContent>{/*<p>You are logged in as {account.name}</p>*/}</IonContent>
     );
   } else {
     var form;
 
     if (account.fetching) {
-      form = <IonSpinner name="crescent" />;
+      form = (
+        <div className={"ion-text-center"}>
+          <IonSpinner name="crescent" />
+        </div>
+      );
     } else {
       form = (
         <>
@@ -48,19 +50,19 @@ const Login = (props) => {
                 placeholder="Email"
                 type="email"
                 onIonChange={(e) => {
-                  console.log("Set email", e);
                   setEmail(e.detail.value);
                 }}
-              ></IonInput>
+              />
             </IonItem>
             <IonItem>
               <IonInput
                 placeholder="Password"
                 type="password"
+                autocomplete={"on"}
                 onIonChange={(e) => {
                   setPassword(e.detail.value);
                 }}
-              ></IonInput>
+              />
             </IonItem>
           </IonCard>
           <div className="centering">
@@ -91,8 +93,6 @@ const Login = (props) => {
           props.ACCEPT_LOGIN({ email: email, password: password });
         })
         .catch((err) => {
-          console.log("Login rejected", err);
-          console.log(err.message);
           props.REJECT_LOGIN(err.message);
         });
     }

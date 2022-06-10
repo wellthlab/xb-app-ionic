@@ -20,19 +20,20 @@ function FreeText({ tag, statement, onSubmit }) {
   }
 
   return (
-    <IonItem>
+    <IonItem lines="none">
       <IonGrid>
         <IonRow>
           <IonCol>
-            <IonText style={{ fontSize: "1.2em" }}>{statement}</IonText>
+            <IonText className="ion-text-big">{statement}</IonText>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
             <IonTextarea
               value={text}
-              placeholder={"Enter your response here"}
+              placeholder={"Enter your response here..."}
               autoGrow={true}
+              autoCapitalize={true}
               rows={1}
               onIonChange={(e) => handleChange(e)}
             />
