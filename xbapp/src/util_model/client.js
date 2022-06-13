@@ -135,7 +135,12 @@ function XBClient() {
     const res = await self.realm.currentUser.functions.sortTeams(monday);
     self.tidy(res);
     return res;
-  }
+  };
+
+  self.deleteAccount = function () {
+
+    return self.realm.currentUser.functions.deleteAccount();
+  };
 
   /**
    * Get all modules

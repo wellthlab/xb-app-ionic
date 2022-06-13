@@ -18,6 +18,7 @@ import { addControllersProp } from "../util_model/controllers";
 
 import "./Settings.scss";
 import PIS from "../Account/components/PIS";
+import DeleteDisclaimer from "./components/DeleteDisclaimer";
 import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
 
@@ -33,6 +34,15 @@ const OptionTabs = (props) => {
   function togglePISModal() {
     setShowPISModal(!showPISModal);
   }
+
+  const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
+  const toggleDisclaimerModal = function () {
+    setShowDisclaimerModal(!showDisclaimerModal);
+  };
+
+  const handleDeleteAccount = function () {
+    props.controllers.client.deleteAccount();
+  };
 
   if (!props.teams.loaded) {
     return (
@@ -79,6 +89,9 @@ const OptionTabs = (props) => {
                 Change Team
               </IonItem>
               <IonItem routerLink="/account">Log Out</IonItem>
+              <IonItem button color="danger" onClick={toggleDisclaimerModal}>
+                Delete personal information
+              </IonItem>
               {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             </IonList>
           </IonCardContent>
@@ -100,6 +113,17 @@ const OptionTabs = (props) => {
         }}
         title={"Participant Information"}
         message={<PIS />}
+      />
+      <GenericModal
+        showModal={showDisclaimerModal}
+        toggleModal={toggleDisclaimerModal}
+        title="Disclaimer"
+        message={
+          <DeleteDisclaimer
+            onReject={toggleDisclaimerModal}
+            onProceed={handleDeleteAccount}
+          />
+        }
       />
     </IonPage>
   );
