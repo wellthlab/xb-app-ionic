@@ -18,8 +18,11 @@ import { addControllersProp } from "../util_model/controllers";
 
 import "./Settings.scss";
 import PIS from "../Account/components/PIS";
+import DeleteDisclaimer from "./components/DeleteDisclaimer";
 import XBHeader from "../util/XBHeader";
 import GenericModal from "../Info/components/GenericModal";
+
+import { LOG_OUT } from "../util_model/slices/Account";
 
 const OptionTabs = (props) => {
   props.controllers.LOAD_TEAMS_IF_REQD();
@@ -33,6 +36,30 @@ const OptionTabs = (props) => {
   function togglePISModal() {
     setShowPISModal(!showPISModal);
   }
+
+  const [showDisclaimerModal, setShowDisclaimerModal] = useState(false);
+  const toggleDisclaimerModal = function () {
+    setShowDisclaimerModal(!showDisclaimerModal);
+  };
+
+  const [errored, setErrored] = useState(false);
+
+  const handleDeleteAccount = async function () {
+    setErrored(false);
+
+    try {
+      await props.controllers.client.deleteAccount();
+    } catch (error) {
+      console.error(error);
+      setErrored(true);
+      setShowDisclaimerModal(false);
+      return;
+    }
+
+    props.LOG_OUT({});
+    localStorage.clear();
+    props.history.push("/");
+  };
 
   if (!props.teams.loaded) {
     return (
@@ -49,6 +76,11 @@ const OptionTabs = (props) => {
     <IonPage>
       <XBHeader title="Settings" />
       <IonContent id="settings" fullscreen>
+        {errored && (
+          <strong>
+            Sorry, we cannot remove your personal details at the moment
+          </strong>
+        )}
         {/*About*/}
         <IonCard>
           <IonCardHeader style={{ textAlign: "left" }}>
@@ -79,6 +111,9 @@ const OptionTabs = (props) => {
                 Change Team
               </IonItem>
               <IonItem routerLink="/account">Log Out</IonItem>
+              <IonItem button color="danger" onClick={toggleDisclaimerModal}>
+                Delete personal information
+              </IonItem>
               {/* <IonItem routerLink="/notifications">Notifications</IonItem> */}
             </IonList>
           </IonCardContent>
@@ -101,6 +136,17 @@ const OptionTabs = (props) => {
         title={"Participant Information"}
         message={<PIS />}
       />
+      <GenericModal
+        showModal={showDisclaimerModal}
+        toggleModal={toggleDisclaimerModal}
+        title="Disclaimer"
+        message={
+          <DeleteDisclaimer
+            onReject={toggleDisclaimerModal}
+            onProceed={handleDeleteAccount}
+          />
+        }
+      />
     </IonPage>
   );
 };
@@ -114,7 +160,7 @@ export default connect(
     };
   },
   {
-    // Actions to include as props
+    LOG_OUT,
   }
 )(
   addControllersProp(
