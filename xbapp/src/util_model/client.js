@@ -165,7 +165,9 @@ function XBClient() {
 
     await db.collection("usersDetails").deleteMany({ _userid: id });
 
-    await self.realm.currentUser.functions.sendWithdrawNotificationEmail(profile ? profile.prefName : null);
+    await self.realm.currentUser.functions.sendWithdrawNotificationEmail(
+      profile ? profile.prefName : null
+    );
 
     // Delete user
 
