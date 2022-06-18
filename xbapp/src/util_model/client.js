@@ -165,17 +165,11 @@ function XBClient() {
 
     await db.collection("usersDetails").deleteMany({ _userid: id });
 
+    await self.realm.currentUser.functions.sendWithdrawNotificationEmail(profile ? profile.prefName : null);
+
     // Delete user
 
     await self.realm.deleteUser(self.realm.currentUser);
-
-    sendEmail({
-      to: "dal1g21@soton.ac.uk", // Change to your recipient
-      subject: "A user has withdrawn from the research",
-      text: `A user of name ${
-        profile ? profile.prefName : "NULL"
-      } and id ${id} has decided to withdraw from the research. Please contact the appropriate departments to remove their data`,
-    });
 
     return { success: true };
   };

@@ -56,7 +56,7 @@ const OptionTabs = (props) => {
       return;
     }
 
-    props.LOGOUT({});
+    props.LOG_OUT({});
     localStorage.clear();
     props.history.push("/");
   };
