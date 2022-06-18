@@ -11,6 +11,7 @@ import * as Realm from "realm-web";
 import { ObjectId } from "bson";
 
 const crypto = require("crypto");
+const sendEmail = require("@sendgrid/mail");
 
 function sha512(str) {
   const hash = crypto.createHash("sha512");
@@ -19,8 +20,7 @@ function sha512(str) {
 }
 
 function isValidEmail(email) {
-  const regex =
-    /((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))/g;
+  const regex = /((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))/g;
   return regex.test(email);
 }
 
@@ -131,15 +131,53 @@ function XBClient() {
   };
 
   self.sortTeams = async function (monday) {
-
     const res = await self.realm.currentUser.functions.sortTeams(monday);
     self.tidy(res);
     return res;
   };
 
-  self.deleteAccount = function () {
+  self.deleteAccount = async function () {
+    const db = getDb();
 
-    return self.realm.currentUser.functions.deleteAccount();
+    const profile = await self.getUserProfile();
+    const id = self.realm.currentUser.id;
+
+    // Delete responses associated with this user
+
+    await db.collection("responses").deleteMany({ user: id });
+
+    // Delete user from teams, making the second joined member the owner
+
+    await db.collection("teams").updateMany(
+      {
+        users: {
+          $elemMatch: { $eq: id },
+        },
+      },
+      {
+        $pull: {
+          users: id,
+        },
+      }
+    );
+
+    // Delete user details
+
+    await db.collection("usersDetails").deleteMany({ _userid: id });
+
+    // Delete user
+
+    await self.realm.deleteUser(self.realm.currentUser);
+
+    sendEmail({
+      to: "dal1g21@soton.ac.uk", // Change to your recipient
+      subject: "A user has withdrawn from the research",
+      text: `A user of name ${
+        profile ? profile.prefName : "NULL"
+      } and id ${id} has decided to withdraw from the research. Please contact the appropriate departments to remove their data`,
+    });
+
+    return { success: true };
   };
 
   /**
@@ -154,21 +192,21 @@ function XBClient() {
 
     let db = getDb();
     let collection = db.collection("modules");
-    let modules = await collection.find({})
+    let modules = await collection.find({});
 
     self.tidy(modules);
 
     return modules;
-  }
+  };
 
-  self.getLibraryData = async function() {
+  self.getLibraryData = async function () {
     const db = getDb();
     const collection = db.collection("library");
     const data = await collection.find({});
     self.tidy(data);
 
     return data;
-  }
+  };
 
   /**
    * Get all groups for the current user
@@ -234,9 +272,7 @@ function XBClient() {
    */
   self.getTeamResponses = async function (teamid) {
     // var info = await self.realm.users[0].functions.getTeamData(teamid);
-
     // console.log("Fetched team responses", info, teamid);
-
     // return self.tidy(info[0].allresponses);
   };
 
@@ -261,7 +297,7 @@ function XBClient() {
     var code = genID(6);
 
     // Parent team defaults to none
-    if (typeof parentTeam == 'undefined')
+    if (typeof parentTeam == "undefined")
       //parentTeam = ""; needs to be a hexadecimal value for ObjectId conversion
       parentTeam = parentTeam;
 
@@ -274,7 +310,7 @@ function XBClient() {
         start: start,
       },
       users: [self.realm.currentUser.id],
-      parentTeam: string2ID(parentTeam)
+      parentTeam: string2ID(parentTeam),
     };
 
     try {
@@ -298,7 +334,7 @@ function XBClient() {
       return await self.realm.users[0].functions.joinTeam(code.toUpperCase());
     } catch (e) {
       console.log(e);
-      return { success: false, message: "An unexpected error occured" }
+      return { success: false, message: "An unexpected error occured" };
     }
   };
 
@@ -308,7 +344,7 @@ function XBClient() {
   self.leaveTeam = async function (code) {
     const db = getDb();
     const collection = db.collection("teams");
-    const team = await collection.findOne({ code: {$eq: code} });
+    const team = await collection.findOne({ code: { $eq: code } });
 
     if (!team) {
       return { success: false, message: "Team not found" };
@@ -319,16 +355,16 @@ function XBClient() {
 
     try {
       const updateResult = await collection.updateOne(
-        { code: {$eq: code} },
+        { code: { $eq: code } },
         { $set: { users: newUsers } }
       );
     } catch (e) {
       console.log(e);
-      return { success: false, message: "Couldn't update the team" }
+      return { success: false, message: "Couldn't update the team" };
     }
 
     return { success: true };
-  }
+  };
 
   /**
    * Add a response for the given team
@@ -371,33 +407,36 @@ function XBClient() {
    * day
    */
   self.getTeamMinutes = async function (team, day) {
-    const allTeamData = await self.realm.currentUser.functions.getTeamData(new ObjectId(team._id));
+    const allTeamData = await self.realm.currentUser.functions.getTeamData(
+      new ObjectId(team._id)
+    );
     const allResponses = allTeamData[0].allresponses;
     const teamMinutes = [];
 
     for (const userId of team.users) {
       // Get the user's responses for the given day
 
-      const userResponses = allResponses.filter(r => r.user === userId)
+      const userResponses = allResponses.filter((r) => r.user === userId);
 
       // allResponses.filter returns an array. If it's empty then there are no
       // responses to look at for this user
-      if(userResponses.length > 0) {
-        const todaysResponses = userResponses[0].responses.filter(r => r.day === day);
+      if (userResponses.length > 0) {
+        const todaysResponses = userResponses[0].responses.filter(
+          (r) => r.day === day
+        );
         // Add the minutes to the total
         let userMinutes = 0;
-        for(const r of todaysResponses) {
+        for (const r of todaysResponses) {
           userMinutes += parseInt(r.minutes, 10) || 0;
         }
         teamMinutes.push(userMinutes);
-      }
-      else {
+      } else {
         teamMinutes.push(0);
       }
     }
 
     return teamMinutes;
-  }
+  };
 
   /**
    * Get details of an experiment
@@ -416,9 +455,7 @@ function XBClient() {
    * Get a user profile
    */
 
-
   self.getUserProfile = async function (id) {
-
     const db = getDb();
     const collection = db.collection("usersDetails");
 
@@ -427,45 +464,52 @@ function XBClient() {
     }
 
     const user = await collection.findOne({
-        _userid: {$eq: id}
-      }
-    );
+      _userid: { $eq: id },
+    });
 
     if (user) {
       return self.tidy(user);
     }
 
     return null;
-  }
+  };
 
   /**
-     * Create a user profile
-     */
+   * Create a user profile
+   */
   self.updateUserProfile = async function (userProfile) {
     const db = getDb();
     const collection = db.collection("usersDetails");
     const newUserProfile = {
       _userid: self.realm.currentUser.id,
-      modules: {},  // added so that modules is always created, especially on profile creation
+      modules: {}, // added so that modules is always created, especially on profile creation
       ...userProfile,
     };
 
-    delete newUserProfile._id;  // delete ._id because realm complained
+    delete newUserProfile._id; // delete ._id because realm complained
 
     try {
-      await collection.updateOne({
-        _userid: {$eq: self.realm.currentUser.id}
-      }, newUserProfile, {upsert: true});
+      await collection.updateOne(
+        {
+          _userid: { $eq: self.realm.currentUser.id },
+        },
+        newUserProfile,
+        { upsert: true }
+      );
     } catch (e) {
       console.error("Haven't been able to update user profile", e);
       return {
         success: false,
-        message: "Sorry, we couldn't update your user profile"
-      }
+        message: "Sorry, we couldn't update your user profile",
+      };
     }
 
-    return { success: true, message: "User profile updated", userProfile: newUserProfile };
-  }
+    return {
+      success: true,
+      message: "User profile updated",
+      userProfile: newUserProfile,
+    };
+  };
 
   /**
    * Progress a user along their module
@@ -478,11 +522,11 @@ function XBClient() {
     const userProfile = await this.getUserProfile(self.realm.currentUser.id);
 
     if (!userProfile) {
-      console.error("Unable to find user to progress them along a module")
+      console.error("Unable to find user to progress them along a module");
       return {
         success: false,
-        message: "user profile doesn't exist"
-      }
+        message: "user profile doesn't exist",
+      };
     }
 
     let moduleObjectId;
@@ -494,57 +538,60 @@ function XBClient() {
     }
 
     const module = await moduleCollection.findOne({
-      _id: { $eq: moduleObjectId }
+      _id: { $eq: moduleObjectId },
     });
 
     if (!module) {
       return {
         success: false,
-        message: "module doesn't exist"
-      }
+        message: "module doesn't exist",
+      };
     }
 
     const numPlaylists = module.playlists.length;
     const stage = userProfile.modules[moduleId].stage;
-    const newStage  = stage >= numPlaylists ? stage : stage + 1;
+    const newStage = stage >= numPlaylists ? stage : stage + 1;
     const updated = {
-      ...userProfile.modules
-    }
+      ...userProfile.modules,
+    };
 
     updated[moduleId].stage = newStage;
 
     try {
-      await userCollection.updateOne({
-        _userid: {$eq: self.realm.currentUser.id}
-      }, {
-        $set: {
-          modules: updated
+      await userCollection.updateOne(
+        {
+          _userid: { $eq: self.realm.currentUser.id },
+        },
+        {
+          $set: {
+            modules: updated,
+          },
         }
-      });
+      );
     } catch (e) {
       console.error("Error updating user", e);
       return {
         success: false,
-        message: "Sorry, we couldn't update your progress"
-      }
+        message: "Sorry, we couldn't update your progress",
+      };
     }
-  }
+  };
 
   /**
    * Get the userProfile for all the users in a team
    */
 
-   self.getTeamUserProfiles = async function (teamCode) {
+  self.getTeamUserProfiles = async function (teamCode) {
     const db = getDb();
     const collection = db.collection("teams");
-    const team = await collection.findOne({ code: {$eq: teamCode} });
+    const team = await collection.findOne({ code: { $eq: teamCode } });
 
     const users = [];
     for (const id of team.users) {
-
       let user = await self.getUserProfile(id);
 
-      if(user === null) {  // this happens when someone joins a team, but closes the app before creating their profile
+      if (user === null) {
+        // this happens when someone joins a team, but closes the app before creating their profile
         user = { prefName: "Unknown" };
       }
 
@@ -552,7 +599,7 @@ function XBClient() {
     }
 
     return users;
-  }
+  };
 
   /**
    * Tidy up a result so it's safe to pass into redux with warnings about non-serializabilty
