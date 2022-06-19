@@ -2,6 +2,7 @@ import { IonGrid, IonRow, IonCol } from "@ionic/react";
 import { DayPicker } from "react-day-picker";
 
 import "react-day-picker/dist/style.css";
+import "./CalendarView.css";
 /**
  * Display a interactive calendar to select a date, with days with movement
  * highlighted.
@@ -12,7 +13,7 @@ import "react-day-picker/dist/style.css";
  * @param monthLimit - the last month to show on the calendar
  * @param experimentStart - the start date of the experiment
  * @param dateTomorrow - the date of tomorrow
- * @param daysWhenActivityHappened - an array of dates with movement used to highlight movement days
+ * @param activity - an array of dates with movement used to highlight movement days
  */
 function CalendarView({
   dateSelected,
@@ -21,8 +22,21 @@ function CalendarView({
   monthLimit,
   experimentStart,
   dateTomorrow,
-  daysWhenActivityHappened,
+  activity,
 }) {
+  const daysWithActivity = [];
+  const daysWithJournal = [];
+
+  for (const entry of activity) {
+    if (entry.hasActivity) {
+      daysWithActivity.push(entry.date);
+    }
+
+    if (entry.hasJournal) {
+      daysWithJournal.push(entry.date);
+    }
+  }
+
   return (
     <IonGrid className="ion-no-padding">
       <IonRow>
@@ -32,12 +46,18 @@ function CalendarView({
             selected={dateSelected}
             onSelect={handleDateChange}
             weekStartsOn={1}
-            modifiers={{ activity: daysWhenActivityHappened }}
+            modifiers={{
+              hasActivity: daysWithActivity,
+              hasJournal: daysWithJournal,
+            }}
             modifiersStyles={{
-              activity: {
-                border: "2px solid currentColor",
+              hasActivity: {
+                border: "2px solid white",
                 fontWeight: "bold",
               },
+            }}
+            modifiersClassNames={{
+              hasJournal: "day-has-journal",
             }}
             fromMonth={monthStart}
             toDate={monthLimit}

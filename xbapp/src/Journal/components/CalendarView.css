@@ -1,0 +1,17 @@
+.day-has-journal::before {
+  background: none;
+  border: 2px solid orange;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  pointer-events: none;
+}
+
+.day-has-journal {
+  position: relative;
+}
