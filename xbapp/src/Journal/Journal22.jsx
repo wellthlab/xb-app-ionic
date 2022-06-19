@@ -48,6 +48,7 @@ function JournalMainPage(props) {
       const dateObj = new Date(Date.parse(entry.date));
 
       let minutes = 0;
+      let hasJournal = false;
       const responses = [];
 
       // go through each response, and record minutes and any activity which
@@ -56,6 +57,11 @@ function JournalMainPage(props) {
         if (response.minutes > 1e-10) {
           minutes += parseInt(response.minutes, 10);
         }
+
+        if (response.intype === "note" || response.intype === "s22journal") {
+          hasJournal = true;
+        }
+
         responses.push(response);
       }
 
@@ -66,6 +72,8 @@ function JournalMainPage(props) {
           className: "dayHasActivity",
           responses: responses,
           minutes: minutes,
+          hasActivity: minutes > 0,
+          hasJournal,
         });
       }
     }
@@ -109,15 +117,8 @@ function JournalMainPage(props) {
   );
 
   // To display the activity feeds we do the following:
-  // - get a list of dates where movement happened (for highlighting on the calendar)
   // - get a list of the activity responses and notes for the selected date
   // - set the responseToShow depending on the tab chosen, or if there is no activity
-
-  // activity only happened with movement, so filter out any days zero minutes.
-  // this is used to highlight days where movement happened on the calendar
-  const daysWhenActivityHappened = activityForUser
-    .filter((response) => response.minutes > 0) // remove days with no minutes
-    .map((response) => response.date); // get the date for each day with minutes
 
   // create an array of activities(responses) and notes for the selected date
   const tasksForDate = activityForUser.find(
@@ -155,7 +156,7 @@ function JournalMainPage(props) {
           monthLimit={monthLimit}
           experimentStart={experimentStart}
           dateTomorrow={dateTomorrow}
-          daysWhenActivityHappened={daysWhenActivityHappened}
+          activity={activityForUser}
         />
         {/* Summary of day */}
         <MinuteSummary tasksForDate={tasksForDate} />
