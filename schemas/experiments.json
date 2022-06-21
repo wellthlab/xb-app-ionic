@@ -1,0 +1,157 @@
+{
+  "title": "experiment",
+  "properties": {
+    "_id": {
+      "bsonType": "string"
+    },
+    "active": {
+      "bsonType": "bool"
+    },
+    "fullName": {
+      "bsonType": "string"
+    },
+    "info": {
+      "bsonType": "object",
+      "properties": {
+        "colour": {
+          "bsonType": "string"
+        },
+        "desc": {
+          "bsonType": "string"
+        },
+        "difficultyLevel": {
+          "bsonType": "string"
+        },
+        "name": {
+          "bsonType": "string"
+        },
+        "tags": {
+          "bsonType": "array",
+          "items": {
+            "bsonType": "string"
+          }
+        },
+        "topic": {
+          "bsonType": "string"
+        }
+      }
+    },
+    "name": {
+      "bsonType": "string"
+    },
+    "playlists": {
+      "bsonType": "array",
+      "items": {
+        "bsonType": "object",
+        "properties": {
+          
+          "constraints": {
+            "bsonType": "array",
+            "items": {
+              "constraint" : {
+                "bsonType": "object",
+                "properties": {
+                  "type": "string",
+                  "time": "string",
+                  "delay": "string",
+                  "task-to-complete": "string"
+                }
+              }
+            }
+          },
+          
+          "desc": {
+            "bsonType": "string"
+          },
+          "minutes": {
+            "bsonType": "string"
+          },
+          "playlistNumber": {
+            "bsonType": "string"
+          },
+          "tasks": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "object",
+              "properties": {
+                "_notes": {
+                  "bsonType": "string"
+                },
+                "desc": {
+                  "bsonType": "string"
+                },
+                "id": {
+                  "bsonType": "string"
+                },
+                "instructions": {
+                  "bsonType": "string"
+                },
+                "intype": {
+                  "bsonType": "string"
+                },
+                "length": {
+                  "bsonType": "string"
+                },
+                "playlistNumber": {
+                  "bsonType": "string"
+                },
+                "timed": {
+                  "bsonType": "bool"
+                },
+                "verb": {
+                  "bsonType": "string"
+                },
+                "video": {
+                  "bsonType": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "playlistsTmp": {
+      "bsonType": "array",
+      "items": {
+        "bsonType": "object",
+        "properties": {
+          "desc": {
+            "bsonType": "string"
+          },
+          "minutes": {
+            "bsonType": "string"
+          },
+          "playlistNumber": {
+            "bsonType": "string"
+          },
+          "tasks": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "object",
+              "properties": {
+                "desc": {
+                  "bsonType": "string"
+                },
+                "id": {
+                  "bsonType": "string"
+                },
+                "image": {
+                  "bsonType": "string"
+                },
+                "intype": {
+                  "bsonType": "string"
+                },
+                "verb": {
+                  "bsonType": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "topic": {
+      "bsonType": "string"
+    }
+  }
+}
