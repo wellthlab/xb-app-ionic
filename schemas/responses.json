@@ -1,0 +1,667 @@
+{
+  "title": "response",
+  "properties": {
+    "_id": {
+      "bsonType": "objectId"
+    },
+    "responses": {
+      "bsonType": "array",
+      "items": {
+        "bsonType": "object",
+        "properties": {
+          "aerobic": {
+            "bsonType": "string"
+          },
+          "alarm": {
+            "bsonType": "string"
+          },
+          "answer": {
+            "bsonType": "string"
+          },
+          "assTimeSecs": {
+            "bsonType": "int"
+          },
+          "assType": {
+            "bsonType": "string"
+          },
+          "atHome": {
+            "bsonType": "string"
+          },
+          "atHomeOrWork": {
+            "bsonType": "string"
+          },
+          "attempt": {
+            "bsonType": "int"
+          },
+          "attempts": {
+            "bsonType": "int"
+          },
+          "day": {
+            "bsonType": "string"
+          },
+          "doms": {
+            "bsonType": "string"
+          },
+          "exercises": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "object",
+              "properties": {
+                "alternative": {
+                  "bsonType": "array",
+                  "items": {
+                    "bsonType": "string"
+                  }
+                },
+                "area": {
+                  "bsonType": "string"
+                },
+                "bilateral+lower+pull": {
+                  "bsonType": "object",
+                  "properties": {
+                    "area": {
+                      "bsonType": "string"
+                    },
+                    "blockToApperIn": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "int"
+                      }
+                    },
+                    "category": {
+                      "bsonType": "string"
+                    },
+                    "description": {
+                      "bsonType": "string"
+                    },
+                    "difficulty": {
+                      "bsonType": "string"
+                    },
+                    "id": {
+                      "bsonType": "string"
+                    },
+                    "images": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "string"
+                      }
+                    },
+                    "name": {
+                      "bsonType": "string"
+                    },
+                    "progressionLevel": {
+                      "bsonType": "int"
+                    },
+                    "technique": {
+                      "bsonType": "string"
+                    },
+                    "type": {
+                      "bsonType": "string"
+                    },
+                    "warning": {
+                      "bsonType": "string"
+                    },
+                    "weekToApper": {
+                      "bsonType": "int"
+                    }
+                  }
+                },
+                "bilateral+upper+pull": {
+                  "bsonType": "object",
+                  "properties": {
+                    "alternative": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "string"
+                      }
+                    },
+                    "area": {
+                      "bsonType": "string"
+                    },
+                    "blockToApperIn": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "int"
+                      }
+                    },
+                    "category": {
+                      "bsonType": "string"
+                    },
+                    "description": {
+                      "bsonType": "string"
+                    },
+                    "difficulty": {
+                      "bsonType": "string"
+                    },
+                    "id": {
+                      "bsonType": "string"
+                    },
+                    "images": {
+                      "bsonType": "array",
+                      "items": {
+                        "bsonType": "string"
+                      }
+                    },
+                    "name": {
+                      "bsonType": "string"
+                    },
+                    "progressionLevel": {
+                      "bsonType": "int"
+                    },
+                    "technique": {
+                      "bsonType": "string"
+                    },
+                    "type": {
+                      "bsonType": "string"
+                    },
+                    "warning": {
+                      "bsonType": "string"
+                    },
+                    "weekToApper": {
+                      "bsonType": "int"
+                    }
+                  }
+                },
+                "blockToApperIn": {
+                  "bsonType": "array",
+                  "items": {
+                    "bsonType": "int"
+                  }
+                },
+                "category": {
+                  "bsonType": "string"
+                },
+                "description": {
+                  "bsonType": "string"
+                },
+                "difficulty": {
+                  "bsonType": "string"
+                },
+                "id": {
+                  "bsonType": "string"
+                },
+                "images": {
+                  "bsonType": "array",
+                  "items": {
+                    "bsonType": "string"
+                  }
+                },
+                "name": {
+                  "bsonType": "string"
+                },
+                "progressionLevel": {
+                  "bsonType": "int"
+                },
+                "technique": {
+                  "bsonType": "string"
+                },
+                "type": {
+                  "bsonType": "string"
+                },
+                "warning": {
+                  "bsonType": "string"
+                },
+                "weekToApper": {
+                  "bsonType": "int"
+                }
+              }
+            }
+          },
+          "exertionValue": {
+            "bsonType": "string"
+          },
+          "explanation": {
+            "bsonType": "string"
+          },
+          "felt": {
+            "bsonType": "int"
+          },
+          "heartrate": {
+            "bsonType": "int"
+          },
+          "how-feeling": {
+            "bsonType": "int"
+          },
+          "indoorsOrOutdoors": {
+            "bsonType": "string"
+          },
+          "intype": {
+            "bsonType": "string"
+          },
+          "isRightAnswer": {
+            "bsonType": "string"
+          },
+          "link": {
+            "bsonType": "string"
+          },
+          "location": {
+            "bsonType": "string"
+          },
+          "manageit": {
+            "bsonType": "string"
+          },
+          "minutes": {
+            "bsonType": "int"
+          },
+          "moduleId": {
+            "bsonType": "string"
+          },
+          "mood": {
+            "bsonType": "int"
+          },
+          "movement": {
+            "bsonType": "string"
+          },
+          "note": {
+            "bsonType": "string"
+          },
+          "path": {
+            "bsonType": "string"
+          },
+          "plan": {
+            "bsonType": "object",
+            "properties": {
+              "effectiveWeek": {
+                "bsonType": "int"
+              },
+              "target": {
+                "bsonType": "int"
+              }
+            }
+          },
+          "plank": {
+            "bsonType": "int"
+          },
+          "plankTime": {
+            "bsonType": "int"
+          },
+          "playlist": {
+            "bsonType": "int"
+          },
+          "poms": {
+            "bsonType": "object",
+            "properties": {
+              "Anger": {
+                "bsonType": "string"
+              },
+              "Confusion": {
+                "bsonType": "string"
+              },
+              "Depression": {
+                "bsonType": "string"
+              },
+              "Fatigue": {
+                "bsonType": "string"
+              },
+              "Tension": {
+                "bsonType": "string"
+              },
+              "Total Mood Disturbance": {
+                "bsonType": "string"
+              },
+              "Vigour": {
+                "bsonType": "string"
+              }
+            }
+          },
+          "preHeartrate": {
+            "bsonType": "int"
+          },
+          "question": {
+            "bsonType": "string"
+          },
+          "reps": {
+            "bsonType": "int"
+          },
+          "requiredTask": {
+            "bsonType": "bool"
+          },
+          "response": {
+            "bsonType": "string"
+          },
+          "scheduling": {
+            "bsonType": "string"
+          },
+          "sets": {
+            "bsonType": "object",
+            "properties": {
+              "angledbridge": {
+                "bsonType": "int"
+              },
+              "angledbridge-1": {
+                "bsonType": "int"
+              },
+              "boxpistolsquat": {
+                "bsonType": "int"
+              },
+              "boxpistolsquat+singlelegpike-2": {
+                "bsonType": "int"
+              },
+              "boxpistolsquat-1": {
+                "bsonType": "int"
+              },
+              "boxpistolsquat-2": {
+                "bsonType": "int"
+              },
+              "boxsquat": {
+                "bsonType": "string"
+              },
+              "boxsquat+gluteraise-2": {
+                "bsonType": "int"
+              },
+              "boxsquat+hollowbody-1": {
+                "bsonType": "int"
+              },
+              "boxsquat+shortbridge-1": {
+                "bsonType": "int"
+              },
+              "boxsquat+shortbridge-2": {
+                "bsonType": "int"
+              },
+              "boxsquat+superman-1": {
+                "bsonType": "int"
+              },
+              "boxsquat+verticalpull-1": {
+                "bsonType": "int"
+              },
+              "boxsquat-1": {
+                "bsonType": "int"
+              },
+              "bulgariansplitsquat": {
+                "bsonType": "string"
+              },
+              "bulgariansplitsquat+bulgariansplitsquat-1": {
+                "bsonType": "int"
+              },
+              "bulgariansplitsquat-1": {
+                "bsonType": "int"
+              },
+              "bulgariansplitsquat-2": {
+                "bsonType": "int"
+              },
+              "bulgariansplitsquat-undefined": {
+                "bsonType": "int"
+              },
+              "cobrapushup": {
+                "bsonType": "string"
+              },
+              "cobrapushup+facepull-1": {
+                "bsonType": "int"
+              },
+              "cobrapushup+shortbridge-1": {
+                "bsonType": "int"
+              },
+              "cobrapushup+tethereddoorpull-1": {
+                "bsonType": "int"
+              },
+              "cobrapushup+verticalpull-1": {
+                "bsonType": "int"
+              },
+              "cobrapushup+wallrdlprep-1": {
+                "bsonType": "int"
+              },
+              "cobrapushup-1": {
+                "bsonType": "int"
+              },
+              "elevatedpushup": {
+                "bsonType": "string"
+              },
+              "elevatedpushup+swimmer-1": {
+                "bsonType": "int"
+              },
+              "elevatedpushup+verticalpull-1": {
+                "bsonType": "int"
+              },
+              "elevatedpushup+verticalpull-3": {
+                "bsonType": "int"
+              },
+              "elevatedpushup-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+assistedpullup-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+facepull-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+horizontalpull-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+pronatedaustralianpull-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+pronateddoorhangpull-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+suppinatedaustralianpull-1": {
+                "bsonType": "int"
+              },
+              "flatpushup+swimmer-1": {
+                "bsonType": "int"
+              },
+              "fullsquat": {
+                "bsonType": "string"
+              },
+              "fullsquat+fullbridge-2": {
+                "bsonType": "int"
+              },
+              "fullsquat+swimmer-1": {
+                "bsonType": "int"
+              },
+              "fullsquat-1": {
+                "bsonType": "int"
+              },
+              "gluteraise": {
+                "bsonType": "string"
+              },
+              "gluteraise+shortbridge-2": {
+                "bsonType": "int"
+              },
+              "gluteraise+wallrdlprep-2": {
+                "bsonType": "int"
+              },
+              "gluteraise-1": {
+                "bsonType": "int"
+              },
+              "hindupushup+shortbridge-1": {
+                "bsonType": "int"
+              },
+              "hindupushup+verticalpull-1": {
+                "bsonType": "int"
+              },
+              "horizontalpull": {
+                "bsonType": "int"
+              },
+              "horizontalpull-1": {
+                "bsonType": "int"
+              },
+              "horsestance+singlelegromaniandeadlift-3": {
+                "bsonType": "int"
+              },
+              "lsit-2": {
+                "bsonType": "int"
+              },
+              "lsit-3": {
+                "bsonType": "int"
+              },
+              "onearmdoorpull-1": {
+                "bsonType": "int"
+              },
+              "onearmpull-3": {
+                "bsonType": "int"
+              },
+              "pikehold+swimmer-1": {
+                "bsonType": "int"
+              },
+              "pronatedaustralianpull": {
+                "bsonType": "int"
+              },
+              "pronatedaustralianpull-1": {
+                "bsonType": "int"
+              },
+              "pronatedaustralianpull-2": {
+                "bsonType": "int"
+              },
+              "pushup": {
+                "bsonType": "string"
+              },
+              "pushup-1": {
+                "bsonType": "int"
+              },
+              "shallowpushup+singlelegromaniandeadlift-4": {
+                "bsonType": "int"
+              },
+              "shortbridge": {
+                "bsonType": "string"
+              },
+              "shortbridge+swimmer-3": {
+                "bsonType": "int"
+              },
+              "shortbridge-1": {
+                "bsonType": "int"
+              },
+              "shortbridge-2": {
+                "bsonType": "int"
+              },
+              "shortbridge-3": {
+                "bsonType": "int"
+              },
+              "singlelegpike-2": {
+                "bsonType": "int"
+              },
+              "singlelegpikelift-4": {
+                "bsonType": "int"
+              },
+              "singlelegromaniandeadlift": {
+                "bsonType": "string"
+              },
+              "singlelegromaniandeadlift-1": {
+                "bsonType": "int"
+              },
+              "stepup+boxpistolsquat-1": {
+                "bsonType": "int"
+              },
+              "stepup+onearmdoorpull-1": {
+                "bsonType": "int"
+              },
+              "stepup+onearmdoorpull-2": {
+                "bsonType": "int"
+              },
+              "stepup-1": {
+                "bsonType": "int"
+              },
+              "supportedsquat+gluteraise-2": {
+                "bsonType": "int"
+              },
+              "supportedsquat+tablebridge-1": {
+                "bsonType": "int"
+              },
+              "supportedsquat+verticalpull-2": {
+                "bsonType": "int"
+              },
+              "supportedsquat+verticalpull-4": {
+                "bsonType": "int"
+              },
+              "swimmer+hollowbody-4": {
+                "bsonType": "int"
+              },
+              "swimmer-1": {
+                "bsonType": "int"
+              },
+              "swimmer-3": {
+                "bsonType": "int"
+              },
+              "tethereddoorpull-2": {
+                "bsonType": "int"
+              },
+              "undefined": {
+                "bsonType": "string"
+              },
+              "verticalpull": {
+                "bsonType": "string"
+              },
+              "verticalpull+gluteraise-1": {
+                "bsonType": "int"
+              },
+              "verticalpull-1": {
+                "bsonType": "int"
+              },
+              "verticalpull-undefined": {
+                "bsonType": "int"
+              },
+              "wallpushup+supportedsquat-2": {
+                "bsonType": "int"
+              },
+              "wallpushup+verticalpull-1": {
+                "bsonType": "int"
+              },
+              "wallpushup+verticalpull-5": {
+                "bsonType": "int"
+              },
+              "wallpushup+wallrdlprep-1": {
+                "bsonType": "int"
+              },
+              "wallpushup+wallrdlprep-3": {
+                "bsonType": "int"
+              },
+              "wallrdlprep-2": {
+                "bsonType": "int"
+              }
+            }
+          },
+          "somewhereElse": {
+            "bsonType": "string"
+          },
+          "submitted": {
+            "bsonType": "string"
+          },
+          "sunlight": {
+            "bsonType": "string"
+          },
+          "taskIndex": {
+            "bsonType": "string"
+          },
+          "tickModuleDone": {
+            "bsonType": "bool"
+          },
+          "time": {
+            "bsonType": "string"
+          },
+          "timeOfDay": {
+            "bsonType": "string"
+          },
+          "type": {
+            "bsonType": "string"
+          },
+          "video": {
+            "bsonType": "string"
+          },
+          "wallTime": {
+            "bsonType": "int"
+          },
+          "whoWith": {
+            "bsonType": "string"
+          },
+          "workDay": {
+            "bsonType": "string"
+          },
+          "workQ": {
+            "bsonType": "string"
+          },
+          "workQ2": {
+            "bsonType": "string"
+          }
+        }
+      }
+    },
+    "taskId": {
+      "bsonType": "string"
+    },
+    "team": {
+      "bsonType": "objectId"
+    },
+    "user": {
+      "bsonType": "string"
+    }
+  }
+}
