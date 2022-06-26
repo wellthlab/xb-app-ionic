@@ -11,6 +11,7 @@ import JoinTeam from "./StartJourney/JoinTeam";
 import CreateTeam from "./StartJourney/CreateTeam";
 import Account from "./Account/Account";
 import ForgotPassword from "./Account/ForgotPassword";
+import XBModule from "./XBModule";
 
 import Home from "./Home";
 import PlaylistDetail from "./Playlists/ModuleDetail";
@@ -93,6 +94,7 @@ function getAppOutlet(teamsLoaded) {
           component={PlaylistPlayer}
           exact={true}
         />
+        <Route path="/move/:id" component={XBModule} exact />
         <Route
           path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
           component={PlaylistDetail}
