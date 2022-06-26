@@ -94,11 +94,6 @@ function getAppOutlet(teamsLoaded) {
           exact={true}
         />
         <Route
-          path="/library/playlists/player/:mode/:teamId/:moduleId/:playlistIdx/:progress/:startingTask"
-          component={PlaylistPlayer}
-          exact={true}
-        />
-        <Route
           path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
           component={PlaylistDetail}
           exact={true}
