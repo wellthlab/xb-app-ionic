@@ -1,21 +1,11 @@
 import React from "react";
 
-import {
-  IonCard,
-  IonCol,
-  IonGrid,
-  IonItem,
-  IonLabel,
-  IonProgressBar,
-  IonRow,
-  IonText,
-} from "@ionic/react";
+import { IonProgressBar } from "@ionic/react";
 
 import XBInfo from "../util/XBInfo";
 
 const ModuleDetail = function ({ xbModule, currentPlaylist }) {
   const playlistCount = xbModule.playlists.length;
-
   const completed = currentPlaylist + 1 === playlistCount;
 
   const progressBar =

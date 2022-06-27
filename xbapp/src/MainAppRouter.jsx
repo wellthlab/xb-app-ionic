@@ -94,7 +94,7 @@ function getAppOutlet(teamsLoaded) {
           component={PlaylistPlayer}
           exact={true}
         />
-        <Route path="/move/:id" component={XBModule} exact />
+        <Route path="/move/module/:id" component={XBModule} exact />
         <Route
           path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
           component={PlaylistDetail}
