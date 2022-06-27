@@ -45,8 +45,7 @@ const PlaylistTask = function ({ currentPlaylistIdx, playlistIdx, tasks }) {
         <IonItem
           key={taskIdx}
           lines="none"
-          href={`${url}/${playlistIdx}/${taskIdx}`}
-          button
+          routerLink={`${url}/${playlistIdx}/${taskIdx}`}
           detail
           disabled={currentPlaylistIdx < playlistIdx}
         >
