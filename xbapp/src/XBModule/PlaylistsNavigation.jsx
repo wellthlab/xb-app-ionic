@@ -1,16 +1,16 @@
 import React from "react";
 import {
   IonCard,
-  IonItem,
   IonGrid,
-  IonRow,
-  IonCol,
   IonButton,
   IonIcon,
-  IonLabel,
-  IonText,
+  IonCardTitle,
+  IonCardHeader,
+  IonRow,
 } from "@ionic/react";
 import { chevronBackOutline, chevronForwardOutline } from "ionicons/icons";
+
+import PlaylistTasks from "./PlaylistTasks";
 
 const PlaylistsNavigation = function ({ playlists, currentPlaylist }) {
   const playlistCount = playlists.length;
@@ -32,54 +32,49 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylist }) {
 
   return (
     <IonCard>
-      <IonItem lines="none" className="playlist-navigate-button-item">
+      <IonCardHeader>
+        {/* 
+            Navigation buttons
+            In an item to make use of the slot property
+        */}
         <IonGrid>
-          {/* Navigation buttons */}
+          <IonRow className="ion-justify-content-between ion-align-items-center">
+            {/* Previous button */}
 
-          <IonRow>
-            <IonCol>
-              {/* In an item to make use of the slot property */}
-              <IonItem lines="none" className="button-padding">
-                {/* Previous button */}
+            {!shouldRenderNavigation ? null : (
+              <IonButton
+                size="regular"
+                onClick={createPlaylistIdxHandler(-1)}
+                disabled={!playlistIdx}
+              >
+                <IonIcon icon={chevronBackOutline} />
+              </IonButton>
+            )}
 
-                {!shouldRenderNavigation ? null : (
-                  <IonButton
-                    slot="start"
-                    size="regular"
-                    onClick={createPlaylistIdxHandler(-1)}
-                    disabled={!playlistIdx}
-                  >
-                    <IonIcon icon={chevronBackOutline} />
-                  </IonButton>
-                )}
+            {/* Current playlist name */}
 
-                {/* Current playlist name */}
+            <IonCardTitle className="ion-text-center">
+              {playlist.name}
+            </IonCardTitle>
 
-                <IonLabel className="ion-text-center ion-text-wrap">
-                  <IonText className="ion-text-big ion-text-wrap">
-                    <div>
-                      <strong>{playlist.name}</strong>
-                    </div>
-                  </IonText>
-                </IonLabel>
+            {/* Next button */}
 
-                {/* Next button */}
-
-                {!shouldRenderNavigation ? null : (
-                  <IonButton
-                    slot="end"
-                    size="regular"
-                    onClick={createPlaylistIdxHandler(1)}
-                    disabled={playlistIdx === playlistCount - 1}
-                  >
-                    <IonIcon icon={chevronForwardOutline} />
-                  </IonButton>
-                )}
-              </IonItem>
-            </IonCol>
+            {!shouldRenderNavigation ? null : (
+              <IonButton
+                size="regular"
+                onClick={createPlaylistIdxHandler(1)}
+                disabled={playlistIdx === playlistCount - 1}
+              >
+                <IonIcon icon={chevronForwardOutline} />
+              </IonButton>
+            )}
           </IonRow>
         </IonGrid>
-      </IonItem>
+
+        {/* Tasks */}
+
+        <PlaylistTasks tasks={playlist.tasks} />
+      </IonCardHeader>
     </IonCard>
   );
 };

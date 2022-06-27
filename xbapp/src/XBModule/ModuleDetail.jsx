@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  IonCard,
   IonCol,
   IonGrid,
   IonItem,
@@ -17,51 +18,29 @@ const ModuleDetail = function ({ xbModule, currentPlaylist }) {
 
   const completed = currentPlaylist + 1 === playlistCount;
 
-  return (
-    <div>
-      <XBInfo
-        title={<strong>{xbModule.name.toUpperCase()}</strong>}
-        desc={
-          xbModule.desc ? (
-            <div
-              dangerouslySetInnerHTML={{
-                __html: xbModule.desc, // Should be sanitised already by server
-              }}
-            />
+  const progressBar =
+    playlistCount <= 1 ? null : (
+      <React.Fragment>
+        <div className="ion-margin-top ion-margin-bottom ion-text-center">
+          {!completed ? (
+            `You are on playlist ${currentPlaylist + 1} of ${playlistCount}`
           ) : (
-            "No description available."
-          )
-        }
-      />
+            <React.Fragment>
+              You have <strong>completed</strong> this playlist! Feel free to go
+              back and replay!
+            </React.Fragment>
+          )}
+        </div>
+        <IonProgressBar value={(currentPlaylist + 1) / playlistCount} />
+      </React.Fragment>
+    );
 
-      {playlistCount <= 1 ? null : (
-        <IonItem lines="none" className="playlist-progress">
-          <IonGrid>
-            <IonRow>
-              <IonCol>
-                <IonLabel className="ion-text-center">
-                  <IonText className="ion-text-big">
-                    {!completed ? (
-                      `You are on playlist ${
-                        currentPlaylist + 1
-                      } of ${playlistCount}`
-                    ) : (
-                      <React.Fragment>
-                        You have <strong>completed</strong> this playlist! Feel
-                        free to go back and replay!
-                      </React.Fragment>
-                    )}
-                  </IonText>
-                </IonLabel>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonProgressBar value={(currentPlaylist + 1) / playlistCount} />
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-      )}
-    </div>
+  return (
+    <XBInfo
+      title={xbModule.name.toUpperCase()}
+      desc={xbModule.desc || "No description avaiable"}
+      extra={progressBar}
+    />
   );
 };
 
