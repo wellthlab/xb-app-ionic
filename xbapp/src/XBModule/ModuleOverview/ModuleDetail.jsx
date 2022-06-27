@@ -2,18 +2,18 @@ import React from "react";
 
 import { IonProgressBar } from "@ionic/react";
 
-import XBInfo from "../util/XBInfo";
+import XBInfo from "../../util/XBInfo";
 
-const ModuleDetail = function ({ xbModule, currentPlaylist }) {
+const ModuleDetail = function ({ xbModule, currentPlaylistIdx }) {
   const playlistCount = xbModule.playlists.length;
-  const completed = currentPlaylist + 1 === playlistCount;
+  const completed = currentPlaylistIdx + 1 === playlistCount;
 
   const progressBar =
     playlistCount <= 1 ? null : (
       <React.Fragment>
         <div className="ion-margin-top ion-margin-bottom ion-text-center">
           {!completed ? (
-            `You are on playlist ${currentPlaylist + 1} of ${playlistCount}`
+            `You are on playlist ${currentPlaylistIdx + 1} of ${playlistCount}`
           ) : (
             <React.Fragment>
               You have <strong>completed</strong> this playlist! Feel free to go
@@ -21,7 +21,7 @@ const ModuleDetail = function ({ xbModule, currentPlaylist }) {
             </React.Fragment>
           )}
         </div>
-        <IonProgressBar value={(currentPlaylist + 1) / playlistCount} />
+        <IonProgressBar value={(currentPlaylistIdx + 1) / playlistCount} />
       </React.Fragment>
     );
 

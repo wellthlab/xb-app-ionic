@@ -19,11 +19,11 @@ import {
 
 import PlaylistTasks from "./PlaylistTasks";
 
-const PlaylistsNavigation = function ({ playlists, currentPlaylist }) {
+const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   const playlistCount = playlists.length;
   const shouldRenderNavigation = playlistCount > 1;
 
-  const [playlistIdx, setPlaylistIdx] = React.useState(currentPlaylist);
+  const [playlistIdx, setPlaylistIdx] = React.useState(currentPlaylistIdx);
   const createPlaylistIdxHandler = function (direction) {
     return () => {
       const newIdx = playlistIdx + direction;
@@ -80,7 +80,11 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylist }) {
 
         {/* Tasks */}
 
-        <PlaylistTasks tasks={playlist.tasks} />
+        <PlaylistTasks
+          currentPlaylistIdx={currentPlaylistIdx}
+          playlistIdx={playlistIdx}
+          tasks={playlist.tasks}
+        />
 
         <div className="ion-text-center ion-margin-top ion-margin-bottom">
           <IonText color="dark">
@@ -98,14 +102,17 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylist }) {
               <IonButton
                 expand="block"
                 color="success"
-                disabled={currentPlaylist !== playlistIdx}
+                disabled={currentPlaylistIdx !== playlistIdx}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton expand="block">
+              <IonButton
+                expand="block"
+                disabled={currentPlaylistIdx !== playlistIdx}
+              >
                 <IonIcon icon={calendarOutline} slot="start" />
                 Past
               </IonButton>

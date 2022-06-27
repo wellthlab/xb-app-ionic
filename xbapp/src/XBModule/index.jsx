@@ -1,15 +1,16 @@
 import React from "react";
-import { IonPage, IonSpinner, IonContent } from "@ionic/react";
-import { useParams, Redirect } from "react-router-dom";
+import { IonPage, IonSpinner, IonRouterOutlet } from "@ionic/react";
+import { useParams, useRouteMatch, Redirect, Route } from "react-router-dom";
 
-import ModuleDetail from "./ModuleDetail";
-import PlaylistsNavigation from "./PlaylistsNavigation";
+import ModuleOverview from "./ModuleOverview";
+import Task from "./Task";
 import * as Summer22Controller from "../controllers/summer22";
-import XBHeader from "../util/XBHeader";
 import useAsync from "../util/useAsync";
 
 const XBModule = function () {
   const { id } = useParams();
+  const { path } = useRouteMatch();
+
   const {
     l,
     e,
@@ -28,47 +29,48 @@ const XBModule = function () {
     );
   }, [id]);
 
-  let content;
-
   if (l) {
     return <IonSpinner className="center-spin" name="crescent" />;
   }
 
   if (e) {
-    content = <div>Errored whilst loading module</div>;
-  } else {
-    // Module not found
-
-    if (!xbModule) {
-      return <Redirect to="/move" />;
-    }
-
-    // User not subscribed
-
-    const progress = userSubscriptions.subscriptions[xbModule._id.valueOf()];
-
-    if (!progress) {
-      return <Redirect to={`/move/module-subscriber/${xbModule.topic}`} />;
-    }
-
-    content = (
-      <React.Fragment>
-        <XBHeader title={xbModule.name} colour={xbModule.colour} />
-        <IonContent>
-          <ModuleDetail
-            xbModule={xbModule}
-            currentPlaylist={progress.currentPlaylist}
-          />
-          <PlaylistsNavigation
-            playlists={xbModule.playlists}
-            currentPlaylist={progress.currentPlaylist}
-          />
-        </IonContent>
-      </React.Fragment>
-    );
+    return <div>Errored whilst loading module</div>;
   }
 
-  return <IonPage>{content}</IonPage>;
+  // Module not found
+
+  if (!xbModule) {
+    return <Redirect to="/move" />;
+  }
+
+  // User not subscribed
+
+  const subscription = userSubscriptions.subscriptions[xbModule._id.valueOf()];
+
+  if (!subscription) {
+    return <Redirect to={`/move/module-subscriber/${xbModule.topic}`} />;
+  }
+
+  return (
+    <IonPage>
+      <IonRouterOutlet>
+        <Route
+          path={path}
+          render={() => (
+            <ModuleOverview
+              xbModule={xbModule}
+              currentPlaylist={subscription.currentPlaylist}
+            />
+          )}
+          exact
+        />
+        <Route
+          path={`${path}/:playlistIdx/:taskIdx`}
+          component={() => <Task playlists={xbModule.playlists} />}
+        />
+      </IonRouterOutlet>
+    </IonPage>
+  );
 };
 
 export default XBModule;

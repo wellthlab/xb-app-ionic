@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouteMatch } from "react-router";
 import { IonItem, IonList, IonLabel, IonIcon } from "@ionic/react";
 import {
   barbellOutline,
@@ -35,11 +36,20 @@ function getTaskIcon(verb) {
   }
 }
 
-const PlaylistTask = function ({ tasks }) {
+const PlaylistTask = function ({ currentPlaylistIdx, playlistIdx, tasks }) {
+  const { url } = useRouteMatch();
+
   return (
     <IonList>
-      {tasks.map((task, taskIndex) => (
-        <IonItem key={taskIndex} lines="none" button detail>
+      {tasks.map((task, taskIdx) => (
+        <IonItem
+          key={taskIdx}
+          lines="none"
+          href={`${url}/${playlistIdx}/${taskIdx}`}
+          button
+          detail
+          disabled={currentPlaylistIdx !== playlistIdx}
+        >
           <IonIcon slot="start" icon={getTaskIcon(task.verb)} />
           <IonLabel>{task.name}</IonLabel>
         </IonItem>
