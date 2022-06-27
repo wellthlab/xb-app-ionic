@@ -102,7 +102,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
               <IonButton
                 expand="block"
                 color="success"
-                disabled={currentPlaylistIdx !== playlistIdx}
+                disabled={currentPlaylistIdx < playlistIdx}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play
@@ -111,7 +111,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             <IonCol>
               <IonButton
                 expand="block"
-                disabled={currentPlaylistIdx !== playlistIdx}
+                disabled={currentPlaylistIdx < playlistIdx}
               >
                 <IonIcon icon={calendarOutline} slot="start" />
                 Past

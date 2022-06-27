@@ -48,7 +48,7 @@ const PlaylistTask = function ({ currentPlaylistIdx, playlistIdx, tasks }) {
           href={`${url}/${playlistIdx}/${taskIdx}`}
           button
           detail
-          disabled={currentPlaylistIdx !== playlistIdx}
+          disabled={currentPlaylistIdx < playlistIdx}
         >
           <IonIcon slot="start" icon={getTaskIcon(task.verb)} />
           <IonLabel>{task.name}</IonLabel>
