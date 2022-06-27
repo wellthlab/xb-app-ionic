@@ -3,6 +3,7 @@ import { IonPage, IonSpinner, IonContent } from "@ionic/react";
 import { useParams, Redirect } from "react-router-dom";
 
 import ModuleDetail from "./ModuleDetail";
+import PlaylistsNavigation from "./PlaylistsNavigation";
 import * as Summer22Controller from "../controllers/summer22";
 import XBHeader from "../util/XBHeader";
 import useAsync from "../util/useAsync";
@@ -12,7 +13,7 @@ const XBModule = function () {
   const {
     l,
     e,
-    result: [userProfile, xbModule],
+    result: [userSubscriptions, xbModule],
     act,
   } = useAsync({ initialResult: [null, null] });
 
@@ -44,7 +45,7 @@ const XBModule = function () {
 
     // User not subscribed
 
-    const progress = userProfile.subscriptions[xbModule._id.valueOf()];
+    const progress = userSubscriptions.subscriptions[xbModule._id.valueOf()];
 
     if (!progress) {
       return <Redirect to={`/move/module-subscriber/${xbModule.topic}`} />;
@@ -56,6 +57,10 @@ const XBModule = function () {
         <IonContent>
           <ModuleDetail
             xbModule={xbModule}
+            currentPlaylist={progress.currentPlaylist}
+          />
+          <PlaylistsNavigation
+            playlists={xbModule.playlists}
             currentPlaylist={progress.currentPlaylist}
           />
         </IonContent>
