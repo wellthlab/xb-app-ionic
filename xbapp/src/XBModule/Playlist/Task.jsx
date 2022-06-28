@@ -2,6 +2,7 @@ import React from "react";
 import { IonCard, IonCardContent, IonText } from "@ionic/react";
 
 import Video from "./Video";
+import Timer from "./Timer";
 
 const Task = function ({ task }) {
   let content;
@@ -16,14 +17,17 @@ const Task = function ({ task }) {
   }
 
   return (
-    <IonCard>
-      <IonCardContent>
-        <IonText color="dark">
-          {content && <div>{content}</div>}
-          {desc && <span dangerouslySetInnerHTML={{ __html: desc }} />}
-        </IonText>
-      </IonCardContent>
-    </IonCard>
+    <React.Fragment>
+      <IonCard>
+        <IonCardContent>
+          <IonText color="dark">
+            {content && <div>{content}</div>}
+            {desc && <span dangerouslySetInnerHTML={{ __html: desc }} />}
+          </IonText>
+        </IonCardContent>
+      </IonCard>
+      {task.timed && <Timer />}
+    </React.Fragment>
   );
 };
 
