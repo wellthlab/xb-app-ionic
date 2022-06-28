@@ -9,15 +9,30 @@ import {
   IonCardSubtitle,
   IonAccordion,
   IonAccordionGroup,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react";
 
 import TaskListItem from "../components/TaskListItem";
 import TaskList from "../components/TaskList";
+import NavigationButton from "../components/NavigationButton";
+import Task from "./Task";
 
-const Task = function ({ playlists }) {
+const Playlist = function ({ playlists }) {
   const { playlistIdx, taskIdx } = useParams();
   const playlist = playlists[playlistIdx];
   const task = playlist.tasks[taskIdx];
+
+  const accordionRef = React.useRef();
+
+  const handleItemClick = function () {
+    if (!accordionRef.current) {
+      return;
+    }
+
+    accordionRef.current.value = undefined;
+  };
 
   return (
     <IonPage>
@@ -29,7 +44,7 @@ const Task = function ({ playlists }) {
               Playlist {playlistIdx + 1} of {playlists.length}
             </IonCardSubtitle>
             <IonCardSubtitle>{playlist.minutes} minutes</IonCardSubtitle>
-            <IonAccordionGroup>
+            <IonAccordionGroup ref={accordionRef}>
               <IonAccordion className="ion-margin-top">
                 <TaskListItem
                   slot="header"
@@ -40,15 +55,30 @@ const Task = function ({ playlists }) {
                 <TaskList
                   tasks={playlist.tasks}
                   playlistIdx={playlistIdx}
+                  onItemClick={handleItemClick}
                   slot="content"
                 />
               </IonAccordion>
             </IonAccordionGroup>
           </IonCardHeader>
         </IonCard>
+
+        {/* Task content */}
+        <Task task={task} />
+
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <NavigationButton dir={-1} expand="block" />
+            </IonCol>
+            <IonCol>
+              <NavigationButton dir={1} expand="block" />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Task;
+export default Playlist;

@@ -10,14 +10,10 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import {
-  chevronBackOutline,
-  chevronForwardOutline,
-  playOutline,
-  calendarOutline,
-} from "ionicons/icons";
+import { playOutline, calendarOutline } from "ionicons/icons";
 
 import TaskList from "../components/TaskList";
+import NavigationButton from "../components/NavigationButton";
 
 const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   const playlistCount = playlists.length;
@@ -50,13 +46,11 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             {/* Previous button */}
 
             {!shouldRenderNavigation ? null : (
-              <IonButton
-                size="regular"
+              <NavigationButton
+                dir={-1}
                 onClick={createPlaylistIdxHandler(-1)}
                 disabled={!playlistIdx}
-              >
-                <IonIcon icon={chevronBackOutline} />
-              </IonButton>
+              />
             )}
 
             {/* Current playlist name */}
@@ -68,13 +62,11 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             {/* Next button */}
 
             {!shouldRenderNavigation ? null : (
-              <IonButton
-                size="regular"
+              <NavigationButton
+                dir={1}
                 onClick={createPlaylistIdxHandler(1)}
                 disabled={playlistIdx === playlistCount - 1}
-              >
-                <IonIcon icon={chevronForwardOutline} />
-              </IonButton>
+              />
             )}
           </IonRow>
         </IonGrid>

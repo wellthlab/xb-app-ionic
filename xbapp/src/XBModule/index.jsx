@@ -3,7 +3,7 @@ import { IonPage, IonSpinner, IonRouterOutlet, IonContent } from "@ionic/react";
 import { useParams, useRouteMatch, Redirect, Route } from "react-router-dom";
 
 import ModuleOverview from "./ModuleOverview";
-import Task from "./Task";
+import Playlist from "./Playlist";
 import * as Summer22Controller from "../controllers/summer22";
 import XBHeader from "../util/XBHeader";
 import useAsync from "../util/useAsync";
@@ -71,7 +71,7 @@ const XBModule = function () {
           />
           <Route
             path={`${path}/:playlistIdx/:taskIdx`}
-            render={() => <Task playlists={xbModule.playlists} />}
+            render={() => <Playlist playlists={xbModule.playlists} />}
           />
         </IonRouterOutlet>
       </IonContent>

@@ -4,7 +4,13 @@ import { useParams } from "react-router-dom";
 
 import TaskListItem from "./TaskListItem";
 
-const TaskList = function ({ disableAllItems, playlistIdx, tasks, ...props }) {
+const TaskList = function ({
+  disableAllItems,
+  playlistIdx,
+  tasks,
+  onItemClick,
+  ...props
+}) {
   const { id } = useParams();
 
   return (
@@ -16,6 +22,7 @@ const TaskList = function ({ disableAllItems, playlistIdx, tasks, ...props }) {
           name={task.name}
           routerLink={`/move/modules/${id}/${playlistIdx}/${taskIdx}`}
           disabled={disableAllItems}
+          onClick={onItemClick}
           detail
         />
       ))}

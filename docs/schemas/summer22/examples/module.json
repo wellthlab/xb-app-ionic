@@ -2,9 +2,7 @@
   "_id": {
     "$oid": "62b8d57dba27603a69fb1873"
   },
-  "experiment_id": {
-    "$oid": "6202d10ccc5d2aa4b830856d"
-  },
+  "experiment_id": "62b8e14bba27603a69fb1875",
 
   "name": "Starting Strength",
   "topic": "strength",
@@ -84,6 +82,67 @@
           "type": "OTHER",
           "name": "Easy 30 - of any continuous movement",
           "desc": "Take time out for a walk, run, bike, row, swim - any continuous motion activity.\nGoal: breath in and out through your nose - if you need to breath through your mouth you're working too hard for this level.\n \n",
+          "timed": true
+        }
+      ]
+    },
+    {
+      "name": "Starting Strength Continues",
+      "minutes": 35,
+      "tasks": [
+        {
+          "verb": "MOVE",
+          "type": "VIDEO",
+          "name": "FOLLOW Neuromovement: Ankle Tilts",
+          "desc": "Go ahead and play this first to see what the movements are and then follow along - \nAs you learn these you can break them out and do them anytime, anywhere. ",
+          "video": "ZQdoCjOpFtQ",
+          "timed": true
+        },
+        {
+          "verb": "MOVE",
+          "type": "EDT",
+          "edtMoves": ["push"],
+          "name": "Upper and Lower Push",
+          "desc": "You can find the descriptions and overviews of EDT sets from Strength, Day 1.\n\nThis is a Bilateral PUSH day\nlower body push + upper body push\n5 + 5\nrepeat for time (7 minutes)"
+        }
+      ]
+    },
+    {
+      "name": "Exploring Endurance 2",
+      "minutes": 35,
+      "tasks": [
+        {
+          "verb": "LEARN",
+          "type": "INSTRUCTIONS",
+          "name": "Exploring Endurance 2",
+          "desc": "Today, we put together the neuromobility work we've learned so far, do some endurance work, then wrap up with the neuromobility.",
+          "video": "0Y8La2b8XiA"
+        },
+        {
+          "verb": "MOVE",
+          "type": "VIDEO",
+          "name": "Neuromobility FEET: toe pulls",
+          "video": "0Y8La2b8XiA",
+          "timed": true
+        },
+        {
+          "verb": "MOVE",
+          "type": "INSTRUCTIONS",
+          "name": "Endurance - Practice Level",
+          "desc": "Here is where you head out for some ENDURANCE work - moving continuously but no harder than you can go, breathing in and out through your nose. \nGo for time - "
+        },
+        {
+          "verb": "MOVE",
+          "type": "VIDEO",
+          "name": "NeuroMob Toe Pulls",
+          "video": "0Y8La2b8XiA",
+          "timed": true
+        },
+        {
+          "verb": "MOVE",
+          "type": "VIDEO",
+          "name": "NeruoMob Ankle Tilts",
+          "video": "ZQdoCjOpFtQ",
           "timed": true
         }
       ]
