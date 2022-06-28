@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouteMatch } from "react-router-dom";
 import {
   IonCard,
   IonGrid,
@@ -9,27 +10,24 @@ import {
   IonCardHeader,
   IonRow,
   IonText,
+  IonList,
 } from "@ionic/react";
 import { playOutline, calendarOutline } from "ionicons/icons";
 
-import TaskList from "../components/TaskList";
+import TaskListItem from "../components/TaskListItem";
 import NavigationButton from "../components/NavigationButton";
+import useIdxBelt from "../hooks/useIdxBelt";
 
 const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
+  const { url } = useRouteMatch();
+
   const playlistCount = playlists.length;
   const shouldRenderNavigation = playlistCount > 1;
 
-  const [playlistIdx, setPlaylistIdx] = React.useState(currentPlaylistIdx);
-  const createPlaylistIdxHandler = function (direction) {
-    return () => {
-      const newIdx = playlistIdx + direction;
-      if (newIdx < 0 || newIdx >= playlistCount) {
-        return;
-      }
-
-      setPlaylistIdx(newIdx);
-    };
-  };
+  const { idx: playlistIdx, prev, next } = useIdxBelt(
+    playlistCount - 1,
+    currentPlaylistIdx
+  );
 
   const playlist = playlists[playlistIdx];
   const allowAccessTasks = currentPlaylistIdx >= playlistIdx;
@@ -48,7 +46,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             {!shouldRenderNavigation ? null : (
               <NavigationButton
                 dir={-1}
-                onClick={createPlaylistIdxHandler(-1)}
+                onClick={prev}
                 disabled={!playlistIdx}
               />
             )}
@@ -64,7 +62,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             {!shouldRenderNavigation ? null : (
               <NavigationButton
                 dir={1}
-                onClick={createPlaylistIdxHandler(1)}
+                onClick={next}
                 disabled={playlistIdx === playlistCount - 1}
               />
             )}
@@ -73,11 +71,18 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
 
         {/* Tasks */}
 
-        <TaskList
-          disableAllItems={!allowAccessTasks}
-          playlistIdx={playlistIdx}
-          tasks={playlist.tasks}
-        />
+        <IonList>
+          {playlist.tasks.map((task, taskIdx) => (
+            <TaskListItem
+              key={taskIdx}
+              verb={task.verb}
+              name={task.name}
+              routerLink={`${url}/${playlistIdx}/${taskIdx}`}
+              disabled={!allowAccessTasks}
+              detail
+            />
+          ))}
+        </IonList>
 
         <div className="ion-text-center ion-margin-top ion-margin-bottom">
           <IonText color="dark">
@@ -96,6 +101,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
                 expand="block"
                 color="success"
                 disabled={!allowAccessTasks}
+                routerLink={`${url}/${playlistIdx}`}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play

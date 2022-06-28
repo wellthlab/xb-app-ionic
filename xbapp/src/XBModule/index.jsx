@@ -70,7 +70,7 @@ const XBModule = function () {
             exact
           />
           <Route
-            path={`${path}/:playlistIdx/:taskIdx`}
+            path={`${path}/:playlistIdx/:taskIdx?`}
             render={() => <Playlist playlists={xbModule.playlists} />}
           />
         </IonRouterOutlet>

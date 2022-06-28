@@ -12,27 +12,42 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonList,
 } from "@ionic/react";
 
 import TaskListItem from "../components/TaskListItem";
-import TaskList from "../components/TaskList";
 import NavigationButton from "../components/NavigationButton";
+import useIdxBelt from "../hooks/useIdxBelt";
 import Task from "./Task";
 
 const Playlist = function ({ playlists }) {
-  const { playlistIdx, taskIdx } = useParams();
+  const { playlistIdx: rawPlaylistIdx, taskIdx: rawTaskIdx = 0 } = useParams();
+
+  const playlistIdx = parseInt(rawPlaylistIdx, 10);
+  const defaultTaskIdx = parseInt(rawTaskIdx, 10);
   const playlist = playlists[playlistIdx];
-  const task = playlist.tasks[taskIdx];
+  const taskCount = playlist.tasks.length;
+  const {
+    idx: currentTaskIdx,
+    set: setCurrentTaskIdx,
+    prev,
+    next,
+  } = useIdxBelt(taskCount - 1, defaultTaskIdx);
 
   const accordionRef = React.useRef();
+  const createItemClickHandler = function (idx) {
+    return () => {
+      setCurrentTaskIdx(idx);
 
-  const handleItemClick = function () {
-    if (!accordionRef.current) {
-      return;
-    }
+      if (!accordionRef.current) {
+        return;
+      }
 
-    accordionRef.current.value = undefined;
+      accordionRef.current.value = undefined;
+    };
   };
+
+  const task = playlist.tasks[currentTaskIdx];
 
   return (
     <IonPage>
@@ -52,12 +67,18 @@ const Playlist = function ({ playlists }) {
                   name={task.name}
                   verb={task.verb}
                 />
-                <TaskList
-                  tasks={playlist.tasks}
-                  playlistIdx={playlistIdx}
-                  onItemClick={handleItemClick}
-                  slot="content"
-                />
+                <IonList slot="content">
+                  {playlist.tasks.map((task, taskIdx) => (
+                    <TaskListItem
+                      key={taskIdx}
+                      verb={task.verb}
+                      name={task.name}
+                      onClick={createItemClickHandler(taskIdx)}
+                      button
+                      detail
+                    />
+                  ))}
+                </IonList>
               </IonAccordion>
             </IonAccordionGroup>
           </IonCardHeader>
@@ -69,10 +90,20 @@ const Playlist = function ({ playlists }) {
         <IonGrid>
           <IonRow>
             <IonCol>
-              <NavigationButton dir={-1} expand="block" />
+              <NavigationButton
+                dir={-1}
+                expand="block"
+                onClick={prev}
+                disabled={!currentTaskIdx}
+              />
             </IonCol>
             <IonCol>
-              <NavigationButton dir={1} expand="block" />
+              <NavigationButton
+                dir={1}
+                expand="block"
+                onClick={next}
+                disabled={currentTaskIdx === taskCount - 1}
+              />
             </IonCol>
           </IonRow>
         </IonGrid>
