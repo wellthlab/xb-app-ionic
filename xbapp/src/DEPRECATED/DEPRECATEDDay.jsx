@@ -4,7 +4,6 @@ import XBHeader from "../util/XBHeader";
 
 import { connect } from "react-redux";
 import MinutesChart from "../Boxes/components/minutesChart";
-import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import {
@@ -33,7 +32,6 @@ import DailyJournal from "../Journal/DailyJournal";
 
 const Day = ({ match, teams, controllers, account }) => {
   const [showAlert, setShowAlert] = useState(false);
-  const history = useHistory();
   function toggleAlert() {
     setShowAlert(!showAlert);
   }

@@ -9,11 +9,10 @@ import {
 import XBHeader from "../util/XBHeader";
 
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { addControllersProp } from "../util_model/controllers";
 
-import inputFactory from './inputFactory';
+import inputFactory from "./inputFactory";
 
 const autoBindReact = require("auto-bind/react");
 
@@ -21,8 +20,6 @@ const AddResponse = (props) => {
   var gid = props.match.params.id; // Group ID comes from route
   var daynumber = props.match.params.day; // So does day number
   var type = props.match.params.type;
-
-  //const history = useHistory();
 
   const [saved, setSaved] = useState(false);
   const [group, setGroup] = useState(false);
@@ -86,15 +83,13 @@ const AddResponse = (props) => {
   } else if (saved == "saving") {
     content = <></>;
   } else {
-
-    const {input, desc} = inputFactory(type, group, daynumber, save);
+    const { input, desc } = inputFactory(type, group, daynumber, save);
 
     var exp = group.experiment.info;
     var entries = group.user_responses;
 
     content = input;
   }
-
 
   return (
     <IonPage>

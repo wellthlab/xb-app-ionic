@@ -17,7 +17,7 @@ import {
   calendarOutline,
 } from "ionicons/icons";
 
-import PlaylistTasks from "./PlaylistTasks";
+import TaskList from "../components/TaskList";
 
 const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   const playlistCount = playlists.length;
@@ -36,6 +36,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   };
 
   const playlist = playlists[playlistIdx];
+  const allowAccessTasks = currentPlaylistIdx >= playlistIdx;
 
   return (
     <IonCard>
@@ -80,8 +81,8 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
 
         {/* Tasks */}
 
-        <PlaylistTasks
-          currentPlaylistIdx={currentPlaylistIdx}
+        <TaskList
+          disableAllItems={!allowAccessTasks}
           playlistIdx={playlistIdx}
           tasks={playlist.tasks}
         />
@@ -102,17 +103,14 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
               <IonButton
                 expand="block"
                 color="success"
-                disabled={currentPlaylistIdx < playlistIdx}
+                disabled={!allowAccessTasks}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play
               </IonButton>
             </IonCol>
             <IonCol>
-              <IonButton
-                expand="block"
-                disabled={currentPlaylistIdx < playlistIdx}
-              >
+              <IonButton expand="block" disabled={!allowAccessTasks}>
                 <IonIcon icon={calendarOutline} slot="start" />
                 Past
               </IonButton>

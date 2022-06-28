@@ -2,7 +2,7 @@ import { Switch } from "react-router";
 import { Redirect, Route } from "react-router-dom";
 import Login from "./Account/Login";
 import Feed from "./Feed/Feed";
-import Notifications from "./Account/Notifications";
+// import Notifications from "./Account/Notifications";
 import OptionTabs from "./Account/Settings";
 import MovePage from "./Boxes/Move";
 import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
@@ -47,7 +47,7 @@ function getAppOutlet(teamsLoaded) {
           <Route path="/" component={Login} exact={true} />
         )}
         <Route path="/feed" component={Feed} exact={true} />
-        <Route path="/notifications" component={Notifications} exact={true} />
+        {/*<Route path="/notifications" component={Notifications} exact={true} />*/}
         <Route path="/settings" component={OptionTabs} exact={true} />
         <Route path="/box/move" component={MovePage} exact={true} />
         <Route

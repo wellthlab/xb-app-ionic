@@ -18,8 +18,6 @@ import { connect } from "react-redux";
 
 import Timer, { resetTimer } from "../Instruments/Timer";
 
-import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
-
 import "./StrengthWizard.css";
 
 /**

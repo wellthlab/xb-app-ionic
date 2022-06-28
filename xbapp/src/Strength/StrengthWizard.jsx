@@ -33,8 +33,6 @@ import VAS from "../UserInput/VAS";
 import TagsInput from "../UserInput/TagsInput";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
-import { useStorageItem } from "@capacitor-community/react-hooks/storage"; // Persistent storage
-
 import "./StrengthWizard.css";
 import { compassOutline } from "ionicons/icons";
 

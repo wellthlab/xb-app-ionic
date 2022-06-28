@@ -1,6 +1,5 @@
 import React from "react";
-import { useRouteMatch } from "react-router";
-import { IonItem, IonList, IonLabel, IonIcon } from "@ionic/react";
+import { IonItem, IonIcon, IonLabel } from "@ionic/react";
 import {
   barbellOutline,
   newspaperOutline,
@@ -36,25 +35,13 @@ function getTaskIcon(verb) {
   }
 }
 
-const PlaylistTask = function ({ currentPlaylistIdx, playlistIdx, tasks }) {
-  const { url } = useRouteMatch();
-
+const TaskListItem = function ({ verb, name, ...props }) {
   return (
-    <IonList>
-      {tasks.map((task, taskIdx) => (
-        <IonItem
-          key={taskIdx}
-          lines="none"
-          routerLink={`${url}/${playlistIdx}/${taskIdx}`}
-          detail
-          disabled={currentPlaylistIdx < playlistIdx}
-        >
-          <IonIcon slot="start" icon={getTaskIcon(task.verb)} />
-          <IonLabel>{task.name}</IonLabel>
-        </IonItem>
-      ))}
-    </IonList>
+    <IonItem lines="none" {...props}>
+      <IonIcon slot="start" icon={getTaskIcon(verb)} />
+      <IonLabel>{name}</IonLabel>
+    </IonItem>
   );
 };
 
-export default PlaylistTask;
+export default TaskListItem;

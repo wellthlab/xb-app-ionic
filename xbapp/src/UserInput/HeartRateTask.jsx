@@ -9,13 +9,10 @@ import {
 } from "@ionic/react";
 import React, { Component } from "react";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import HeartRate from "../Strength/HeartRate";
-
 
 const HeartRateTask = (props) => {
   useEffect(() => {}, []);
-  const history = useHistory();
 
   const [heart, setHeart] = React.useState(null);
   //expecting week to be passed as prop
@@ -23,24 +20,22 @@ const HeartRateTask = (props) => {
 
   return (
     <>
-   <HeartRate
-          onChange={(rate) => {
-            setHeart(rate);
-          }}
-        />
-    <IonButton
-          onClick={function () {
-            var res = {};
-            res.heartrate = heart;
-            res.type = "heartrate";
-            props.onSubmit(res);
-          }}
-        >
-          Submit
-        </IonButton>
-
-  </>
-
+      <HeartRate
+        onChange={(rate) => {
+          setHeart(rate);
+        }}
+      />
+      <IonButton
+        onClick={function () {
+          var res = {};
+          res.heartrate = heart;
+          res.type = "heartrate";
+          props.onSubmit(res);
+        }}
+      >
+        Submit
+      </IonButton>
+    </>
   );
 };
 

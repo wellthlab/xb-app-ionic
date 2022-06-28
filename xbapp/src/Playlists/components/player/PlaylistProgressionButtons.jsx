@@ -1,4 +1,3 @@
-import { useHistory } from "react-router";
 import {
   IonButton,
   IonCol,
