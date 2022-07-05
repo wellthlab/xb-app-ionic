@@ -29,8 +29,9 @@ const ModuleDetail = function ({ xbModule, currentPlaylistIdx }) {
     <XBInfo
       title={xbModule.name.toUpperCase()}
       desc={xbModule.desc || "No description avaiable"}
-      extra={progressBar}
-    />
+    >
+      {progressBar}
+    </XBInfo>
   );
 };
 

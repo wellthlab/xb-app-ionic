@@ -22,7 +22,6 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   const { url } = useRouteMatch();
 
   const playlistCount = playlists.length;
-  const shouldRenderNavigation = playlistCount > 1;
 
   const { idx: playlistIdx, prev, next } = useIdxBelt(
     playlistCount - 1,
@@ -35,21 +34,13 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   return (
     <IonCard>
       <IonCardHeader>
-        {/* 
-            Navigation buttons
-            In an item to make use of the slot property
-        */}
+        {/* Navigation buttons */}
+
         <IonGrid>
           <IonRow className="ion-justify-content-between ion-align-items-center">
             {/* Previous button */}
 
-            {!shouldRenderNavigation ? null : (
-              <NavigationButton
-                dir={-1}
-                onClick={prev}
-                disabled={!playlistIdx}
-              />
-            )}
+            <NavigationButton dir={-1} onClick={prev} disabled={!playlistIdx} />
 
             {/* Current playlist name */}
 
@@ -59,13 +50,11 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
 
             {/* Next button */}
 
-            {!shouldRenderNavigation ? null : (
-              <NavigationButton
-                dir={1}
-                onClick={next}
-                disabled={playlistIdx === playlistCount - 1}
-              />
-            )}
+            <NavigationButton
+              dir={1}
+              onClick={next}
+              disabled={playlistIdx === playlistCount - 1}
+            />
           </IonRow>
         </IonGrid>
 

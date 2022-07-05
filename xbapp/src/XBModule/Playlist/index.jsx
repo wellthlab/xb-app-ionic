@@ -1,112 +1,92 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import {
-  IonPage,
-  IonContent,
-  IonCardTitle,
-  IonCardHeader,
-  IonCard,
-  IonCardSubtitle,
-  IonAccordion,
-  IonAccordionGroup,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonList,
-} from "@ionic/react";
+import { IonPage, IonContent, IonSpinner } from "@ionic/react";
 
-import TaskListItem from "../components/TaskListItem";
-import NavigationButton from "../components/NavigationButton";
-import useIdxBelt from "../hooks/useIdxBelt";
+import PlaylistInfo from "./PlaylistInfo";
 import Task from "./Task";
+import useIdxBelt from "../hooks/useIdxBelt";
+import useAsync from "../../util/useAsync";
+import * as Summer22Controller from "../../controllers/summer22";
 
 const Playlist = function ({ playlists }) {
-  const { playlistIdx: rawPlaylistIdx, taskIdx: rawTaskIdx = 0 } = useParams();
+  const {
+    id: moduleId,
+    playlistIdx: rawPlaylistIdx,
+    taskIdx: rawTaskIdx = 0,
+  } = useParams();
 
   const playlistIdx = parseInt(rawPlaylistIdx, 10);
   const defaultTaskIdx = parseInt(rawTaskIdx, 10);
   const playlist = playlists[playlistIdx];
   const taskCount = playlist.tasks.length;
-  const {
-    idx: currentTaskIdx,
-    set: setCurrentTaskIdx,
-    prev,
-    next,
-  } = useIdxBelt(taskCount - 1, defaultTaskIdx);
+  const { idx: currentTaskIdx, set: setTaskIdx, prev, next } = useIdxBelt(
+    taskCount - 1,
+    defaultTaskIdx
+  );
 
-  const accordionRef = React.useRef();
-  const createItemClickHandler = function (idx) {
-    return () => {
-      setCurrentTaskIdx(idx);
+  const { l, e, act, result: responses, setResult: setResponses } = useAsync();
 
-      if (!accordionRef.current) {
-        return;
-      }
+  React.useEffect(() => {
+    act(Summer22Controller.getResponses({ moduleId, playlistId: playlistIdx }));
+  }, [moduleId, playlistIdx]);
 
-      accordionRef.current.value = undefined;
-    };
+  const handleTaskChange = function (dir, payload) {
+    const newResponses = [...responses];
+    let currentResponse = newResponses[currentTaskIdx];
+    if (!currentResponse) {
+      currentResponse = {
+        moduleId,
+        playlistId: playlistIdx,
+        taskId: currentTaskIdx,
+        ...payload,
+      };
+
+      Summer22Controller.insertResponse(currentResponse);
+    } else {
+      currentResponse = { ...currentResponse, ...payload };
+      Summer22Controller.updateResponse(currentResponse);
+    }
+
+    newResponses[currentTaskIdx] = currentResponse;
+    setResponses(newResponses);
+
+    if (dir === -1) {
+      prev();
+    } else {
+      next();
+    }
   };
+
+  if (l) {
+    return <IonSpinner className="center-spin" name="crescent" />;
+  }
+
+  if (e) {
+    return <div>Errored whilst loading responses</div>;
+  }
 
   const task = playlist.tasks[currentTaskIdx];
 
   return (
     <IonPage>
       <IonContent>
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>{task.name}</IonCardTitle>
-            <IonCardSubtitle>
-              Playlist {playlistIdx + 1} of {playlists.length}
-            </IonCardSubtitle>
-            <IonCardSubtitle>{playlist.minutes} minutes</IonCardSubtitle>
-            <IonAccordionGroup ref={accordionRef}>
-              <IonAccordion className="ion-margin-top">
-                <TaskListItem
-                  slot="header"
-                  color="primary"
-                  name={task.name}
-                  verb={task.verb}
-                />
-                <IonList slot="content">
-                  {playlist.tasks.map((task, taskIdx) => (
-                    <TaskListItem
-                      key={taskIdx}
-                      verb={task.verb}
-                      name={task.name}
-                      onClick={createItemClickHandler(taskIdx)}
-                      button
-                      detail
-                    />
-                  ))}
-                </IonList>
-              </IonAccordion>
-            </IonAccordionGroup>
-          </IonCardHeader>
-        </IonCard>
-
-        {/* Task content */}
-        <Task task={task} />
-
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <NavigationButton
-                dir={-1}
-                expand="block"
-                onClick={prev}
-                disabled={!currentTaskIdx}
-              />
-            </IonCol>
-            <IonCol>
-              <NavigationButton
-                dir={1}
-                expand="block"
-                onClick={next}
-                disabled={currentTaskIdx === taskCount - 1}
-              />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <PlaylistInfo
+          task={task}
+          playlistCount={playlists.length}
+          onItemClick={setTaskIdx}
+          playlist={playlist}
+          playlistIdx={playlistIdx}
+        />
+        <Task
+          task={task}
+          response={responses[currentTaskIdx]}
+          onTaskChange={handleTaskChange}
+          isFirst={!currentTaskIdx}
+          isLast={currentTaskIdx === taskCount - 1}
+          moduleId={moduleId}
+          playlistId={playlistIdx}
+          key={currentTaskIdx}
+        />
       </IonContent>
     </IonPage>
   );

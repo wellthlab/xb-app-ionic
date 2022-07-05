@@ -7,7 +7,7 @@ import {
   IonText,
 } from "@ionic/react";
 
-const XBInfo = function ({ title, desc, extra }) {
+const XBInfo = function ({ title, desc, children }) {
   return (
     <IonCard>
       {!title ? null : (
@@ -22,7 +22,7 @@ const XBInfo = function ({ title, desc, extra }) {
             <span dangerouslySetInnerHTML={{ __html: desc }} />
           </IonText>
 
-          {extra}
+          {children}
         </IonCardContent>
       )}
     </IonCard>

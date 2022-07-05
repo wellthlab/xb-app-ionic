@@ -1,6 +1,9 @@
 import React from "react";
 
-const useAsync = function ({ initialResult = null, initialLoading = true }) {
+const useAsync = function ({
+  initialResult = null,
+  initialLoading = true,
+} = {}) {
   const [state, setState] = React.useState({
     l: initialLoading,
     e: false,
@@ -23,8 +26,13 @@ const useAsync = function ({ initialResult = null, initialLoading = true }) {
     setState({ result, l: false, e: false });
   };
 
+  const setResult = function (newResult) {
+    setState({ l: state.l, e: state.e, result: newResult });
+  };
+
   return {
     ...state,
+    setResult,
     act,
   };
 };

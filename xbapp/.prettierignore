@@ -2,7 +2,6 @@
 build
 coverage
 # Ignore all files:
-*.js
 *.html
 *.json
 *.css

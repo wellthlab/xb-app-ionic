@@ -22,3 +22,45 @@ export const getSubscriptions = function () {
     user_id: REALM.currentUser.id,
   });
 };
+
+export const getResponses = function ({ moduleId, playlistId }) {
+  return DB.collection("responses").find({
+    user_id: REALM.currentUser.id,
+    module_id: moduleId,
+    playlist_id: playlistId,
+  });
+};
+
+export const insertResponse = function ({
+  moduleId,
+  playlistId,
+  taskId,
+  ...payload
+}) {
+  return DB.collection("responses").insertOne({
+    user_id: REALM.currentUser.id,
+    module_id: moduleId,
+    playlist_id: playlistId,
+    task_id: taskId,
+    ...payload,
+  });
+};
+
+export const updateResponse = function ({
+  moduleId,
+  playlistId,
+  taskId,
+  ...payload
+}) {
+  if (Object.keys(payload).length) {
+    return DB.collection("responses").updateOne(
+      {
+        user_id: REALM.currentUser.id,
+        module_id: moduleId,
+        playlist_id: playlistId,
+        task_id: taskId,
+      },
+      { $set: payload }
+    );
+  }
+};
