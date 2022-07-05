@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import { IonPage, IonContent } from "@ionic/react";
 
 import PlaylistInfo from "./PlaylistInfo";
@@ -51,6 +51,10 @@ const Playlist = function ({ playlists, onResponseUpdate, responses }) {
   };
 
   const task = playlist.tasks[currentTaskIdx];
+
+  if (task.status === "locked") {
+    return <Redirect to={`/move/modules/${moduleId}`} />;
+  }
 
   return (
     <IonPage>

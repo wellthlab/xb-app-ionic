@@ -10,9 +10,10 @@ import {
   trailSignOutline,
   journalOutline,
   informationCircleOutline,
-  eyeOutline,
   checkmarkOutline,
+  lockClosedOutline,
 } from "ionicons/icons";
+import dateFormat from "dateformat";
 
 function getTaskIcon(verb) {
   switch (verb) {
@@ -37,21 +38,33 @@ function getTaskIcon(verb) {
   }
 }
 
-const TaskListItem = function ({ verb, status, name, ...props }) {
+const TaskListItem = function ({
+  verb,
+  status,
+  name,
+  disabled,
+  constraint,
+  ...props
+}) {
   return (
-    <IonItem lines="none" {...props}>
+    <IonItem lines="none" disabled={status === "locked" || disabled} {...props}>
       <IonIcon
         slot="start"
         color={status === "completed" ? "success" : undefined}
         icon={
           status === "incomplete"
             ? getTaskIcon(verb)
-            : status === "seen"
-            ? eyeOutline
+            : status === "locked"
+            ? lockClosedOutline
             : checkmarkOutline
         }
       />
       <IonLabel>{name}</IonLabel>
+      {!constraint ? null : (
+        <IonLabel slot="end">
+          {dateFormat(constraint.ms, "UTC:HH:MM:ss")}
+        </IonLabel>
+      )}
     </IonItem>
   );
 };

@@ -33,22 +33,44 @@ export const getModule = async function (id) {
     responsesByTask[response.task_id] = response;
   }
 
-  // Calculate completion (NEEDS REFACTOR)
+  // Calculate status (NEEDS REFACTOR)
 
   for (let i = 0; i < xbModule.playlists.length; i++) {
+    let locked = false;
     for (let j = 0; j < xbModule.playlists[i].tasks.length; j++) {
       const task = xbModule.playlists[i].tasks[j];
-      const responsesByTask = responsesByPlaylist[i];
-      const responseForTask = responsesByTask ? responsesByTask[j] : null;
-      if (!responseForTask) {
-        task.status = "incomplete";
-      } else {
-        if (responseForTask.minutes !== undefined) {
-          task.status = responseForTask.minutes > 0 ? "completed" : "seen";
-        } else {
-          task.status = "completed";
-        }
+
+      if (locked) {
+        task.status = "locked";
+        continue;
       }
+
+      if (task.constraint) {
+        // Ignore DELAYED constraint type if on the first task - Likely to be an error
+
+        if (task.constraint.type === "DELAYED" && j === 0) {
+          continue;
+        }
+
+        locked = true;
+
+        const prevResponse = responsesByPlaylist[i]
+          ? responsesByPlaylist[i][j - 1]
+          : null;
+
+        task.constraint.previousTimestamp = prevResponse
+          ? prevResponse._id.getTimestamp()
+          : null;
+
+        task.status = "locked";
+        continue;
+      }
+
+      const response = responsesByPlaylist[i]
+        ? responsesByPlaylist[i][j]
+        : null;
+
+      task.status = response ? "completed" : "incomplete";
     }
   }
 

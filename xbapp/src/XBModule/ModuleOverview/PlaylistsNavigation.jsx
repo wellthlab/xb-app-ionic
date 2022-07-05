@@ -76,6 +76,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
               verb={task.verb}
               status={task.status}
               name={task.name}
+              constraint={task.constraint}
               routerLink={`${url}/${playlistIdx}/${taskIdx}`}
               disabled={!allowAccessTasks}
               detail
