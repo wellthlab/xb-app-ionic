@@ -16,8 +16,9 @@ const XBModule = function () {
     l,
     e,
     result: [userSubscriptions, xbModule],
+    setResult,
     act,
-  } = useAsync({ initialResult: [null, null] });
+  } = useAsync({ initialResult: [null, null, null] });
 
   React.useEffect(() => {
     // Temporarily fetch user profiles for prototyping
@@ -29,6 +30,50 @@ const XBModule = function () {
       ])
     );
   }, [id]);
+
+  const handleResponseUpdate = function (playlistIdx, taskIdx, newResponse) {
+    const newResponses = [...xbModule.responses];
+    const newResponsesByTask = newResponses[playlistIdx]
+      ? [...newResponses[playlistIdx]]
+      : [];
+    newResponsesByTask[taskIdx] = newResponse;
+    newResponses[playlistIdx] = newResponsesByTask;
+
+    // Calculate completion (NEEDS REFACTOR TO REUSE CODE FROM Summer22Controller)
+
+    const newPlaylists = [...xbModule.playlists];
+
+    for (let i = 0; i < newPlaylists.length; i++) {
+      const newTasks = [...newPlaylists[i].tasks];
+      newPlaylists[i].tasks = newTasks;
+      for (let j = 0; j < newTasks.length; j++) {
+        const task = { ...newTasks[j] };
+        newTasks[j] = task;
+        const responsesByTask = newResponses[i];
+        const responseForTask = responsesByTask ? responsesByTask[j] : null;
+
+        if (!responseForTask) {
+          task.status = "incomplete";
+          continue;
+        }
+
+        if (responseForTask.minutes !== undefined) {
+          task.status = responseForTask.minutes > 0 ? "completed" : "seen";
+          continue;
+        }
+
+        task.status = "completed";
+      }
+    }
+
+    const newXbModule = {
+      ...xbModule,
+      responses: newResponses,
+      playlists: newPlaylists,
+    };
+
+    setResult([userSubscriptions, newXbModule]);
+  };
 
   if (l) {
     return <IonSpinner className="center-spin" name="crescent" />;
@@ -71,7 +116,13 @@ const XBModule = function () {
           />
           <Route
             path={`${path}/:playlistIdx/:taskIdx?`}
-            render={() => <Playlist playlists={xbModule.playlists} />}
+            render={() => (
+              <Playlist
+                playlists={xbModule.playlists}
+                responses={xbModule.responses}
+                onResponseUpdate={handleResponseUpdate}
+              />
+            )}
           />
         </IonRouterOutlet>
       </IonContent>

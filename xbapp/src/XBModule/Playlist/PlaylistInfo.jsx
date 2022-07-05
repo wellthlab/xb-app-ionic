@@ -46,6 +46,7 @@ const PlaylistInfo = function ({
               color="primary"
               name={task.name}
               verb={task.verb}
+              status={task.status}
             />
             <IonList slot="content">
               {playlist.tasks.map((task, taskIdx) => (
@@ -53,6 +54,7 @@ const PlaylistInfo = function ({
                   key={taskIdx}
                   verb={task.verb}
                   name={task.name}
+                  status={task.status}
                   onClick={createItemClickHandler(taskIdx)}
                   button
                   detail

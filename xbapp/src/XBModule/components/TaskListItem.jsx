@@ -10,6 +10,8 @@ import {
   trailSignOutline,
   journalOutline,
   informationCircleOutline,
+  eyeOutline,
+  checkmarkOutline,
 } from "ionicons/icons";
 
 function getTaskIcon(verb) {
@@ -35,10 +37,20 @@ function getTaskIcon(verb) {
   }
 }
 
-const TaskListItem = function ({ verb, name, ...props }) {
+const TaskListItem = function ({ verb, status, name, ...props }) {
   return (
     <IonItem lines="none" {...props}>
-      <IonIcon slot="start" icon={getTaskIcon(verb)} />
+      <IonIcon
+        slot="start"
+        color={status === "completed" ? "success" : undefined}
+        icon={
+          status === "incomplete"
+            ? getTaskIcon(verb)
+            : status === "seen"
+            ? eyeOutline
+            : checkmarkOutline
+        }
+      />
       <IonLabel>{name}</IonLabel>
     </IonItem>
   );

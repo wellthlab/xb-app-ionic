@@ -1,14 +1,13 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { IonPage, IonContent, IonSpinner } from "@ionic/react";
+import { IonPage, IonContent } from "@ionic/react";
 
 import PlaylistInfo from "./PlaylistInfo";
 import Task from "./Task";
 import useIdxBelt from "../hooks/useIdxBelt";
-import useAsync from "../../util/useAsync";
 import * as Summer22Controller from "../../controllers/summer22";
 
-const Playlist = function ({ playlists }) {
+const Playlist = function ({ playlists, onResponseUpdate, responses }) {
   const {
     id: moduleId,
     playlistIdx: rawPlaylistIdx,
@@ -24,15 +23,10 @@ const Playlist = function ({ playlists }) {
     defaultTaskIdx
   );
 
-  const { l, e, act, result: responses, setResult: setResponses } = useAsync();
-
-  React.useEffect(() => {
-    act(Summer22Controller.getResponses({ moduleId, playlistId: playlistIdx }));
-  }, [moduleId, playlistIdx]);
-
   const handleTaskChange = function (dir, payload) {
-    const newResponses = [...responses];
-    let currentResponse = newResponses[currentTaskIdx];
+    let currentResponse = responses[playlistIdx]
+      ? responses[playlistIdx][currentTaskIdx]
+      : null;
     if (!currentResponse) {
       currentResponse = {
         moduleId,
@@ -47,8 +41,7 @@ const Playlist = function ({ playlists }) {
       Summer22Controller.updateResponse(currentResponse);
     }
 
-    newResponses[currentTaskIdx] = currentResponse;
-    setResponses(newResponses);
+    onResponseUpdate(playlistIdx, currentTaskIdx, currentResponse);
 
     if (dir === -1) {
       prev();
@@ -56,14 +49,6 @@ const Playlist = function ({ playlists }) {
       next();
     }
   };
-
-  if (l) {
-    return <IonSpinner className="center-spin" name="crescent" />;
-  }
-
-  if (e) {
-    return <div>Errored whilst loading responses</div>;
-  }
 
   const task = playlist.tasks[currentTaskIdx];
 
@@ -79,7 +64,11 @@ const Playlist = function ({ playlists }) {
         />
         <Task
           task={task}
-          response={responses[currentTaskIdx]}
+          response={
+            responses[playlistIdx]
+              ? responses[playlistIdx][currentTaskIdx]
+              : null
+          }
           onTaskChange={handleTaskChange}
           isFirst={!currentTaskIdx}
           isLast={currentTaskIdx === taskCount - 1}

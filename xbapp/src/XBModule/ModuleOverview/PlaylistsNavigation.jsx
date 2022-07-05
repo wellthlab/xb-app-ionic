@@ -31,6 +31,15 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
   const playlist = playlists[playlistIdx];
   const allowAccessTasks = currentPlaylistIdx >= playlistIdx;
 
+  let nextIncompleteTask;
+
+  for (let i = 0; i < playlist.tasks.length; i++) {
+    if (playlist.tasks[i].status === "incomplete") {
+      nextIncompleteTask = i;
+      break;
+    }
+  }
+
   return (
     <IonCard>
       <IonCardHeader>
@@ -65,6 +74,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
             <TaskListItem
               key={taskIdx}
               verb={task.verb}
+              status={task.status}
               name={task.name}
               routerLink={`${url}/${playlistIdx}/${taskIdx}`}
               disabled={!allowAccessTasks}
@@ -90,7 +100,7 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
                 expand="block"
                 color="success"
                 disabled={!allowAccessTasks}
-                routerLink={`${url}/${playlistIdx}`}
+                routerLink={`${url}/${playlistIdx}/${nextIncompleteTask}`}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play
