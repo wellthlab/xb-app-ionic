@@ -100,7 +100,9 @@ const PlaylistsNavigation = function ({ playlists, currentPlaylistIdx }) {
                 expand="block"
                 color="success"
                 disabled={!allowAccessTasks}
-                routerLink={`${url}/${playlistIdx}/${nextIncompleteTask}`}
+                routerLink={`${url}/${playlistIdx}${
+                  nextIncompleteTask ? `/${nextIncompleteTask}` : ""
+                }`}
               >
                 <IonIcon icon={playOutline} slot="start" />
                 Play
