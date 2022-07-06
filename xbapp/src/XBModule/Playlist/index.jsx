@@ -23,7 +23,7 @@ const Playlist = function ({ playlists, onResponseUpdate, responses }) {
     defaultTaskIdx
   );
 
-  const handleTaskChange = function (dir, payload) {
+  const handleTaskChange = async function (dir, payload) {
     let currentResponse = responses[playlistIdx]
       ? responses[playlistIdx][currentTaskIdx]
       : null;
@@ -35,7 +35,10 @@ const Playlist = function ({ playlists, onResponseUpdate, responses }) {
         ...payload,
       };
 
-      Summer22Controller.insertResponse(currentResponse);
+      const { insertedId } = await Summer22Controller.insertResponse(
+        currentResponse
+      );
+      currentResponse._id = insertedId;
     } else {
       currentResponse = { ...currentResponse, ...payload };
       Summer22Controller.updateResponse(currentResponse);

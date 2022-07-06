@@ -40,37 +40,51 @@ export const getModule = async function (id) {
     for (let j = 0; j < xbModule.playlists[i].tasks.length; j++) {
       const task = xbModule.playlists[i].tasks[j];
 
+      const response = responsesByPlaylist[i]
+        ? responsesByPlaylist[i][j]
+        : null;
+
+      if (response) {
+        task.status = "completed";
+        continue;
+      }
+
       if (locked) {
         task.status = "locked";
         continue;
       }
 
+      task.status = "incomplete";
+
       if (task.constraint) {
-        // Ignore DELAYED constraint type if on the first task - Likely to be an error
+        if (task.constraint.type === "DELAY") {
+          // Ignore DELAY constraint type if on the first task - Likely to be an error
 
-        if (task.constraint.type === "DELAYED" && j === 0) {
-          continue;
+          if (j === 0) {
+            continue;
+          }
+
+          const prevResponse = responsesByPlaylist[i]
+            ? responsesByPlaylist[i][j - 1]
+            : null;
+
+          const previousTimestamp = prevResponse
+            ? prevResponse._id.getTimestamp().getTime()
+            : null;
+
+          if (
+            !previousTimestamp ||
+            Date.now() < previousTimestamp + task.constraint.ms
+          ) {
+            task.constraint.previousTimestamp = previousTimestamp;
+            task.status = "locked";
+            locked = true;
+            continue;
+          }
+
+          delete task.constraint;
         }
-
-        locked = true;
-
-        const prevResponse = responsesByPlaylist[i]
-          ? responsesByPlaylist[i][j - 1]
-          : null;
-
-        task.constraint.previousTimestamp = prevResponse
-          ? prevResponse._id.getTimestamp()
-          : null;
-
-        task.status = "locked";
-        continue;
       }
-
-      const response = responsesByPlaylist[i]
-        ? responsesByPlaylist[i][j]
-        : null;
-
-      task.status = response ? "completed" : "incomplete";
     }
   }
 

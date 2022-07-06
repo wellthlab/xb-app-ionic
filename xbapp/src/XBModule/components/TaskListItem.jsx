@@ -62,7 +62,8 @@ const TaskListItem = function ({
       <IonLabel>{name}</IonLabel>
       {!constraint ? null : (
         <IonLabel slot="end">
-          {dateFormat(constraint.ms, "UTC:HH:MM:ss")}
+          {dateFormat(constraint.ms, "UTC:HH:MM:ss")}{" "}
+          {constraint.previousTimestamp ? "Can start" : null}
         </IonLabel>
       )}
     </IonItem>

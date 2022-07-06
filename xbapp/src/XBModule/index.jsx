@@ -46,23 +46,62 @@ const XBModule = function () {
     for (let i = 0; i < newPlaylists.length; i++) {
       const newTasks = [...newPlaylists[i].tasks];
       newPlaylists[i].tasks = newTasks;
+
+      let locked = false;
       for (let j = 0; j < newTasks.length; j++) {
         const task = { ...newTasks[j] };
         newTasks[j] = task;
-        const responsesByTask = newResponses[i];
-        const responseForTask = responsesByTask ? responsesByTask[j] : null;
 
-        if (!responseForTask) {
-          task.status = "incomplete";
+        const response = newResponses[i] ? newResponses[i][j] : null;
+
+        if (response) {
+          task.status = "completed";
           continue;
         }
 
-        if (responseForTask.minutes !== undefined) {
-          task.status = responseForTask.minutes > 0 ? "completed" : "seen";
+        if (locked) {
+          task.status = "locked";
           continue;
         }
 
-        task.status = "completed";
+        task.status = "incomplete";
+
+        if (task.constraint) {
+          if (task.constraint.type === "DELAY") {
+            // Ignore DELAY constraint type if on the first task - Likely to be an error
+
+            if (j === 0) {
+              continue;
+            }
+
+            const prevResponse = newResponses[i]
+              ? newResponses[i][j - 1]
+              : null;
+
+            const previousTimestamp = prevResponse
+              ? prevResponse._id.getTimestamp().getTime()
+              : null;
+
+            console.log(
+              prevResponse,
+              previousTimestamp,
+              Date.now(),
+              previousTimestamp + task.constraint.ms
+            );
+
+            if (
+              !previousTimestamp ||
+              Date.now() < previousTimestamp + task.constraint.ms
+            ) {
+              task.constraint.previousTimestamp = previousTimestamp;
+              task.status = "locked";
+              locked = true;
+              continue;
+            }
+
+            delete task.constraint;
+          }
+        }
       }
     }
 
