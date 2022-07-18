@@ -45,6 +45,7 @@
     "react-circular-progressbar": "^2.0.4",
     "react-confetti": "^6.0.1",
     "react-countdown-circle-timer": "^2.5.1",
+    "react-countdown-hook": "^1.1.1",
     "react-css-blur": "^1.1.1",
     "react-day-picker": "^8.0.4",
     "react-dnd": "^14.0.4",

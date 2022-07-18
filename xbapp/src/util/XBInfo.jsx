@@ -16,15 +16,15 @@ const XBInfo = function ({ title, desc, children }) {
         </IonCardHeader>
       )}
 
-      {!desc ? null : (
-        <IonCardContent>
+      <IonCardContent>
+        {!desc ? null : (
           <IonText color="dark">
             <span dangerouslySetInnerHTML={{ __html: desc }} />
           </IonText>
+        )}
 
-          {children}
-        </IonCardContent>
-      )}
+        {children}
+      </IonCardContent>
     </IonCard>
   );
 };

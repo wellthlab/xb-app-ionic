@@ -1,149 +1,301 @@
 {
-  "_id": {
-    "$oid": "62b8d57dba27603a69fb1873"
-  },
-  "experiment_id": "62b8e14bba27603a69fb1875",
-
-  "name": "Starting Strength",
-  "topic": "strength",
-  "desc": "The focus is on building a foundation for your movement. You will mix and match strength and endurance, varying from 10 minutes a day to 35 minutes per day over a period of about 3 weeks.",
-  "difficulty": "beginner",
+  "name": "FOOD for FIVE",
+  "topic": "experiment",
+  "desc": null,
+  "difficulty": null,
   "colour": "#2196f3",
-
   "playlists": [
     {
-      "name": "First Day",
-      "minutes": 10,
+      "name": "What does not quite FULL feel like?",
+      "duration": {
+        "magnitude": 1,
+        "unit": "week"
+      },
       "tasks": [
         {
-          "verb": "LEARN",
+          "type": "INPUT",
+          "icon": "MEASURE",
+          "name": "Baseline measurements",
+          "desc": null,
+          "inputs": [
+            {
+              "label": "Resting heart rate",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "type": "SELF_ASSESSMENT",
+          "icon": "ADVICE",
+          "name": "Hunger Hack",
+          "desc": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water."
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection for Day 1",
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What does \"almost full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "type": "select",
+              "options": ["Stopped", "Kept going"]
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "label": "When did you start to feel hungry again?",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection for Day 2",
+          "constraint": {
+            "type": "TIMESTAMP",
+            "ts": 1658138098354
+          },
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What does \"almost full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "type": "select",
+              "options": ["Stopped", "Kept going"]
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "label": "When did you start to feel hungry again?",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "SELF_ASSESSMENT",
+          "icon": "ADVICE",
+          "name": "Try to Stop Eating Before Full",
+          "constraint": {
+            "type": "TIMESTAMP",
+            "ts": 1658138098354
+          },
+          "desc": "Try to STOP eating for at least five minutes at largest meal of the day when feeling “80%” or “almost” full"
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection for Day 3",
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What does \"almost full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "type": "select",
+              "options": ["Stopped", "Kept going"]
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "label": "When did you start to feel hungry again?",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection for Day 4",
+          "constraint": {
+            "type": "TIMESTAMP",
+            "ts": 1658138098354
+          },
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What does \"almost full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "type": "select",
+              "options": ["Stopped", "Kept going"]
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "label": "When did you start to feel hungry again?",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection for Day 5",
+          "constraint": {
+            "type": "TIMESTAMP",
+            "ts": 1658138098354
+          },
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What does \"almost full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "type": "select",
+              "options": ["Stopped", "Kept going"]
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "label": "When did you start to feel hungry again?",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "End of Week Summary",
+          "desc": null,
+          "inputs": [
+            {
+              "label": "What are the signs of \"almost full\"?",
+              "type": "text"
+            },
+            {
+              "label": "How does it feel to stop eating at \"almost full\"?",
+              "type": "text"
+            },
+            {
+              "label": "How might you change the amount of food on your plate to maintain \"almost full\" for another week?",
+              "type": "text"
+            },
+            {
+              "label": "Would you like to try this practice for another week?",
+              "type": "select",
+              "options": ["Yes", "No"]
+            },
+            {
+              "label": "Did you try the \"have something small 20 minutes before the meal\"? If so, did you feel satisfied / less hungry sooner during your meal? Did you feel less hungry for longer after your meal?",
+              "type": "text"
+            }
+          ]
+        },
+        {
           "type": "INSTRUCTIONS",
-          "name": "About First Week",
-          "desc": "Welcome to a Beginning Strength Week - you can redo this playlist as many times as you wish - or using it in a progression - using it through 7 days and then move to the next Beginning Strength Week 2. If you find this session too easy for you this week, you are also welcome to move to other weeks. We'll also be adding new playlists to let you explore as well and try out other practices and progressions.\n\nFor now - starting on this day we'll overview what the coming week looks like:\n \nDay 1 is learning strength moves and a bit of practice\nDay 2 is learning mobility + and doing some endurance work (like walking)\nDay 3 is a strength day using what you learned monday and adding some new mobility work \nDay 4 a minute more of mobility and then some endurance  \nDay 5 another minute of mobility and doing the same strength moves from day 1 and day 3.\n\nStrength will help your bones, tissues and muscles get stronger.\nNeuroMoblitiy helps your brain learn more about these joints you may not be moving through their full ranges of motion - but when you do the brain really wakes up.\nEndurance is building up the heart and lungs.\nPutting it all together you help your gut, hormones and everything else inside too."
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "Find Your Lower Body Push",
-          "desc": "This is about a one minute video to show you how to find a LOWER BODY PUSH that you can do - by finding any lower body push move (usually called \"squats\" but not always) and then choosing to limit \nrange of motion\nspeed \nload\n\none of those - to make it a sufficient challenge for you ",
-          "video": "BUnxylgbNNw",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "FIND Your Upper Body Push",
-          "desc": "This section helps you find an upper body, bodyweight only push that you can use to build whole body strength, but especially the upper body (from hips up -so including the mid section/6 pack area).\n\n",
-          "video": "Ezg6pGr3Su8",
-          "timed": true
-        },
-        {
-          "verb": "LEARN",
-          "type": "INSTRUCTIONS",
-          "name": "Upper and Lower Push -Bilaterals",
-          "desc": "This video demonstrates an EDT set putting together your Upper Body and Lower Body pushes. \n\nAn EDT set is a type of \"super set\" - two moves - 5 repetitions of each move - done back to back with as little pause between the set - for time.\n\nThe rule of thumb is:\n\n- find the level of each of your two moves that you can do for 10 reps (that's your 10 rep intensity)\n- in the EDT set do FIVE of the first move (eg, squat) \n- pause -THAT's ONE SET\n- do five reps of the second move (eg push up)\npause - that's your SECOND SET\nrepeat this cycle til the 7 minute timer goes off.\n\nCount your sets and reps - and each time you do this EDT cycle, try to increase by a rep. \nThat's the ESCALATING part - the DENSITY part is squeezing more reps into the same time."
-        },
-        {
-          "verb": "WATCH",
-          "type": "VIDEO",
-          "name": "How to do EDT",
-          "video": "PWyhF5_WazY",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "EDT",
-          "name": "Try an EDT Set!",
-          "edtMoves": ["upper push", "lower push"],
-          "duration": 2
+          "icon": "ADVICE",
+          "name": "PREP for Week 2",
+          "desc": "Gather greens and reds for Week 2. Greens are veggies, reds are proteins.\nThe aim for the coming week is to re-think carb-oriented meals to be green and red for one week and to eat carbs only after the green/red components."
         }
       ]
     },
     {
-      "name": "Explore Endurance",
-      "minutes": 35,
+      "name": "Greens First, Then Reds",
+      "duration": {
+        "magnitude": 1,
+        "unit": "week"
+      },
       "tasks": [
         {
-          "verb": "LEARN",
           "type": "INSTRUCTIONS",
-          "name": "NeuroMobility - Building Awareness of Self Locomotion",
-          "desc": "To help with both ENDURANCE and raw strength, neuromobility helps our brains learn where each joint is in space, relative to other joints, and how quickly that joint is moving. \n\nIn this series we're adapting a movement series developed by Eric Cobb of ZhealthEducation, called \"R-phase.\" The series moves through each joint in the body from toes to head to fingers, by taking these joints through their range of motion"
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "Neuromobility: Toe Pulls",
-          "desc": "Watch first - then follow along - repeat if you wish \n\nYou can do these movements throughout the day. Great to do first thing in the morning and before bed, too. \n\n- it's focusing on the foot via TOE LEVERAGE - three movements here: \n- middle toe pull\n- outside toe pull\n- inside toe pull\n\nKeep a tall spine, relaxed shoulders - and explore where your foot needs to be to give you the nicest stretch \n1) top of your foot by the ankle\n2) under the outer ankle\n3) under the inner ankle (you may wish to put something soft under your big toe.\n\nAgain these moves are based on Eric Cobb's R-Phase Mobility, ZHealth.",
-          "video": "0Y8La2b8XiA",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "OTHER",
-          "name": "Easy 30 - of any continuous movement",
-          "desc": "Take time out for a walk, run, bike, row, swim - any continuous motion activity.\nGoal: breath in and out through your nose - if you need to breath through your mouth you're working too hard for this level.\n \n",
-          "timed": true
-        }
-      ]
-    },
-    {
-      "name": "Starting Strength Continues",
-      "minutes": 35,
-      "tasks": [
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "FOLLOW Neuromovement: Ankle Tilts",
-          "desc": "Go ahead and play this first to see what the movements are and then follow along - \nAs you learn these you can break them out and do them anytime, anywhere. ",
-          "video": "ZQdoCjOpFtQ",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "EDT",
-          "edtMoves": ["push"],
-          "name": "Upper and Lower Push",
-          "desc": "You can find the descriptions and overviews of EDT sets from Strength, Day 1.\n\nThis is a Bilateral PUSH day\nlower body push + upper body push\n5 + 5\nrepeat for time (7 minutes)"
-        }
-      ]
-    },
-    {
-      "name": "Exploring Endurance 2",
-      "minutes": 35,
-      "tasks": [
-        {
-          "verb": "LEARN",
-          "type": "INSTRUCTIONS",
-          "name": "Exploring Endurance 2",
-          "desc": "Today, we put together the neuromobility work we've learned so far, do some endurance work, then wrap up with the neuromobility.",
-          "video": "0Y8La2b8XiA"
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "Neuromobility FEET: toe pulls",
-          "video": "0Y8La2b8XiA",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "INSTRUCTIONS",
-          "name": "Endurance - Practice Level",
-          "desc": "Here is where you head out for some ENDURANCE work - moving continuously but no harder than you can go, breathing in and out through your nose. \nGo for time - "
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "NeuroMob Toe Pulls",
-          "video": "0Y8La2b8XiA",
-          "timed": true
-        },
-        {
-          "verb": "MOVE",
-          "type": "VIDEO",
-          "name": "NeruoMob Ankle Tilts",
-          "video": "ZQdoCjOpFtQ",
-          "timed": true
+          "icon": "ADVICE",
+          "name": "PREP for Week 2",
+          "desc": "Gather greens and reds for Week 2. Greens are veggies, reds are proteins.\nThe aim for the coming week is to re-think carb-oriented meals to be green and red for one week and to eat carbs only after the green/red components."
         }
       ]
     }

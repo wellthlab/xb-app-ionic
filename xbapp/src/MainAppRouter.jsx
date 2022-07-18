@@ -11,15 +11,10 @@ import JoinTeam from "./StartJourney/JoinTeam";
 import CreateTeam from "./StartJourney/CreateTeam";
 import Account from "./Account/Account";
 import ForgotPassword from "./Account/ForgotPassword";
-import XBModule from "./XBModule";
+import { ModulesPicker, Module } from "./move";
 
-import Home from "./Home";
 import PlaylistDetail from "./Playlists/ModuleDetail";
-import PlaylistActive from "./Playlists/ActiveModules";
-import PlaylistPlayer from "./Playlists/PlaylistPlayer";
-import ModuleSubscription from "./Playlists/ModulePicker";
 import UserProfile from "./UserProfile/SetUserProfile";
-import HistoricPlaylistEntry from "./Playlists/PlaylistPreviousDay";
 import ChangeTeam from "./StartJourney/ChangeTeam";
 import JournalMainPage from "./Journal/Journal22";
 import AddNote from "./Journal/AddNote";
@@ -78,7 +73,9 @@ function getAppOutlet(teamsLoaded) {
           component={ForgotPassword}
           exact={true}
         />
-        <Route path="/move" component={Home} exact={true} />
+        <Route path="/move" component={ModulesPicker} exact />
+        <Route path="/move/:moduleId" component={Module} />
+        {/*<Route path="/move" component={Home} exact={true} />
         <Route
           path="/move/task-detail/:mode/:teamId/:moduleId/:progress"
           component={PlaylistDetail}
@@ -94,10 +91,9 @@ function getAppOutlet(teamsLoaded) {
           component={PlaylistPlayer}
           exact={true}
         />
-        <Route path="/move/modules/:id" component={XBModule} />
-        <Route
-          path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
-          component={PlaylistDetail}
+                <Route
+          path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
+          component={HistoricPlaylistEntry}
           exact={true}
         />
         <Route
@@ -105,14 +101,15 @@ function getAppOutlet(teamsLoaded) {
           component={ModuleSubscription}
           exact={true}
         />
+        */}
         <Route
-          path="/settings/user-profile"
-          component={UserProfile}
+          path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
+          component={PlaylistDetail}
           exact={true}
         />
         <Route
-          path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
-          component={HistoricPlaylistEntry}
+          path="/settings/user-profile"
+          component={UserProfile}
           exact={true}
         />
         <Route

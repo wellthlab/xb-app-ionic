@@ -1,6 +1,6 @@
 import React from "react";
 
-const useIdxBelt = function (maxIdx, initialIdx) {
+const useCarousel = function (maxIdx, initialIdx) {
   const [currentIdx, setCurrentIdx] = React.useState(initialIdx);
 
   const createChangeIdxHandler = function (dir) {
@@ -14,12 +14,12 @@ const useIdxBelt = function (maxIdx, initialIdx) {
     };
   };
 
-  return {
-    idx: currentIdx,
-    set: setCurrentIdx,
-    prev: createChangeIdxHandler(-1),
-    next: createChangeIdxHandler(1),
-  };
+  return [
+    currentIdx,
+    createChangeIdxHandler(-1),
+    createChangeIdxHandler(1),
+    setCurrentIdx,
+  ];
 };
 
-export default useIdxBelt;
+export default useCarousel;
