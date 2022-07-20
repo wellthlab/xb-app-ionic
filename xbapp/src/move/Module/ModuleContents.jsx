@@ -1,16 +1,15 @@
 import React from "react";
-import { useRouteMatch, useParams, Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useRouteMatch, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   IonPage,
   IonContent,
   IonCard,
-  IonGrid,
-  IonCol,
   IonButton,
   IonIcon,
   IonCardTitle,
   IonCardHeader,
+  IonCardContent,
   IonRow,
   IonText,
   IonList,
@@ -18,43 +17,32 @@ import {
 import { playOutline } from "ionicons/icons";
 
 import ModuleOverview from "./components/ModuleOverview";
-import TaskListItem from "../components/TaskListItem";
+import TaskListItem from "./components/TaskListItem";
 import NavigationButton from "../components/NavigationButton";
 import useCarousel from "../hooks/useCarousel";
-import {
-  selectModuleById,
-  selectTaskStatuses,
-  selectCurrentPlaylistId,
-} from "../slice";
+import { selectPlaylists } from "../slice";
 
 const ModuleContents = function () {
   const { url } = useRouteMatch();
 
-  const { moduleId, enrollmentId } = useParams();
+  const { moduleId, enrollmentIndex } = useParams();
 
-  const { playlists } = useSelector((state) =>
-    selectModuleById(state, moduleId)
+  const playlists = useSelector((state) =>
+    selectPlaylists(state, moduleId, enrollmentIndex)
   );
 
-  const currentPlaylistId = useSelector((state) =>
-    selectCurrentPlaylistId(state, moduleId, enrollmentId)
-  );
+  console.log(playlists);
 
   const playlistCount = playlists.length;
-  const [playlistId, prev, next] = useCarousel(
-    playlistCount - 1,
-    currentPlaylistId
-  );
-  const playlist = playlists[playlistId];
+  const [playlistIndex, prev, next] = useCarousel(playlistCount - 1, 0);
+  const playlist = playlists[playlistIndex];
 
-  const taskStatuses = useSelector((state) =>
-    selectTaskStatuses(state, moduleId, playlistId, enrollmentId)
-  );
+  let nextPlayableTaskIndex;
 
-  // Invalid enrollmentId
-
-  if (currentPlaylistId === undefined) {
-    return <Redirect to={`/move/${moduleId}`} />;
+  for (let i = 0; i < playlist.tasks.length; i++) {
+    if (playlist.tasks[i].status !== "LOCKED") {
+      nextPlayableTaskIndex = i;
+    }
   }
 
   return (
@@ -63,38 +51,34 @@ const ModuleContents = function () {
         <ModuleOverview />
         <IonCard>
           <IonCardHeader>
-            <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <NavigationButton
-                    dir={-1}
-                    onClick={prev}
-                    expand="block"
-                    disabled={!playlistId}
-                  />
-                </IonCol>
-                <IonCol>
-                  <NavigationButton
-                    dir={1}
-                    onClick={next}
-                    expand="block"
-                    disabled={playlistId === playlistCount - 1}
-                  />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-            <IonCardTitle>{playlist.name}</IonCardTitle>
+            <IonRow className="ion-justify-content-between ion-align-items-center">
+              <NavigationButton
+                dir={-1}
+                onClick={prev}
+                disabled={!playlistIndex}
+              />
 
-            {/* Tasks */}
+              <IonCardTitle>{playlist.name}</IonCardTitle>
 
+              <NavigationButton
+                dir={1}
+                onClick={next}
+                disabled={playlistIndex === playlistCount - 1}
+              />
+            </IonRow>
+          </IonCardHeader>
+
+          {/* Tasks */}
+          <IonCardContent>
             <IonList>
-              {playlist.tasks.map((task, taskId) => (
+              {playlist.tasks.map((task, taskIndex) => (
                 <TaskListItem
-                  key={taskId}
+                  key={task.id}
                   icon={task.icon}
                   name={task.name}
-                  status={taskStatuses[taskId].status}
-                  routerLink={`${url}/${playlistId}/${taskId}`}
+                  status={task.status}
+                  remainingTime={task.remainingTime}
+                  routerLink={`${url}/${playlistIndex}/${taskIndex}`}
                   detail
                 />
               ))}
@@ -114,12 +98,13 @@ const ModuleContents = function () {
             <IonButton
               expand="block"
               color="primary"
-              routerLink={`${url}/${playlistId}`}
+              routerLink={`${url}/${playlistIndex}/${nextPlayableTaskIndex}`}
+              disabled={nextPlayableTaskIndex === undefined}
             >
               <IonIcon icon={playOutline} slot="start" />
               Play
             </IonButton>
-          </IonCardHeader>
+          </IonCardContent>
         </IonCard>
       </IonContent>
     </IonPage>

@@ -1,301 +1,81 @@
 {
-  "name": "FOOD for FIVE",
-  "topic": "experiment",
+  "name": "Food for Five",
+  "topic": "Diet",
   "desc": null,
-  "difficulty": null,
+  "difficulty": "Beginner",
   "colour": "#2196f3",
   "playlists": [
     {
-      "name": "What does not quite FULL feel like?",
-      "duration": {
-        "magnitude": 1,
-        "unit": "week"
-      },
-      "tasks": [
+      "duration": { "magnitude": 1, "unit": "day" },
+      "name": "Day 1",
+      "tasks": [0]
+    },
+    {
+      "duration": { "magnitude": 1, "unit": "day" },
+      "name": "Day 2",
+      "tasks": [1, 2]
+    }
+  ],
+  "tasks": [
+    {
+      "type": "INPUT",
+      "icon": "MEASURE",
+      "name": "Week 1 Baseline Measurements",
+      "inputs": [
         {
-          "type": "INPUT",
-          "icon": "MEASURE",
-          "name": "Baseline measurements",
-          "desc": null,
-          "inputs": [
-            {
-              "label": "Resting heart rate",
-              "type": "number"
-            }
-          ]
-        },
-        {
-          "type": "SELF_ASSESSMENT",
-          "icon": "ADVICE",
-          "name": "Hunger Hack",
-          "desc": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water."
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "Reflection for Day 1",
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What does \"almost full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "What does \"full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "Did you stop at \"almost full\" or keep going?",
-              "type": "select",
-              "options": ["Stopped", "Kept going"]
-            },
-            {
-              "label": "Did you eat past \"full\"? A little? A lot? ",
-              "type": "select",
-              "options": ["Stopped", "Kept going a little", "A lot"]
-            },
-            {
-              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-              "type": "text"
-            },
-            {
-              "label": "When did you start to feel hungry again?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "Reflection for Day 2",
-          "constraint": {
-            "type": "TIMESTAMP",
-            "ts": 1658138098354
-          },
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What does \"almost full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "What does \"full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "Did you stop at \"almost full\" or keep going?",
-              "type": "select",
-              "options": ["Stopped", "Kept going"]
-            },
-            {
-              "label": "Did you eat past \"full\"? A little? A lot? ",
-              "type": "select",
-              "options": ["Stopped", "Kept going a little", "A lot"]
-            },
-            {
-              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-              "type": "text"
-            },
-            {
-              "label": "When did you start to feel hungry again?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "SELF_ASSESSMENT",
-          "icon": "ADVICE",
-          "name": "Try to Stop Eating Before Full",
-          "constraint": {
-            "type": "TIMESTAMP",
-            "ts": 1658138098354
-          },
-          "desc": "Try to STOP eating for at least five minutes at largest meal of the day when feeling “80%” or “almost” full"
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "Reflection for Day 3",
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What does \"almost full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "What does \"full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "Did you stop at \"almost full\" or keep going?",
-              "type": "select",
-              "options": ["Stopped", "Kept going"]
-            },
-            {
-              "label": "Did you eat past \"full\"? A little? A lot? ",
-              "type": "select",
-              "options": ["Stopped", "Kept going a little", "A lot"]
-            },
-            {
-              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-              "type": "text"
-            },
-            {
-              "label": "When did you start to feel hungry again?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "Reflection for Day 4",
-          "constraint": {
-            "type": "TIMESTAMP",
-            "ts": 1658138098354
-          },
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What does \"almost full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "What does \"full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "Did you stop at \"almost full\" or keep going?",
-              "type": "select",
-              "options": ["Stopped", "Kept going"]
-            },
-            {
-              "label": "Did you eat past \"full\"? A little? A lot? ",
-              "type": "select",
-              "options": ["Stopped", "Kept going a little", "A lot"]
-            },
-            {
-              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-              "type": "text"
-            },
-            {
-              "label": "When did you start to feel hungry again?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "Reflection for Day 5",
-          "constraint": {
-            "type": "TIMESTAMP",
-            "ts": 1658138098354
-          },
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What does \"almost full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "What does \"full\" feel like?",
-              "type": "text"
-            },
-            {
-              "label": "Did you stop at \"almost full\" or keep going?",
-              "type": "select",
-              "options": ["Stopped", "Kept going"]
-            },
-            {
-              "label": "Did you eat past \"full\"? A little? A lot? ",
-              "type": "select",
-              "options": ["Stopped", "Kept going a little", "A lot"]
-            },
-            {
-              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-              "type": "text"
-            },
-            {
-              "label": "When did you start to feel hungry again?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "INPUT",
-          "icon": "QUESTIONNAIRE",
-          "name": "End of Week Summary",
-          "desc": null,
-          "inputs": [
-            {
-              "label": "What are the signs of \"almost full\"?",
-              "type": "text"
-            },
-            {
-              "label": "How does it feel to stop eating at \"almost full\"?",
-              "type": "text"
-            },
-            {
-              "label": "How might you change the amount of food on your plate to maintain \"almost full\" for another week?",
-              "type": "text"
-            },
-            {
-              "label": "Would you like to try this practice for another week?",
-              "type": "select",
-              "options": ["Yes", "No"]
-            },
-            {
-              "label": "Did you try the \"have something small 20 minutes before the meal\"? If so, did you feel satisfied / less hungry sooner during your meal? Did you feel less hungry for longer after your meal?",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "type": "INSTRUCTIONS",
-          "icon": "ADVICE",
-          "name": "PREP for Week 2",
-          "desc": "Gather greens and reds for Week 2. Greens are veggies, reds are proteins.\nThe aim for the coming week is to re-think carb-oriented meals to be green and red for one week and to eat carbs only after the green/red components."
+          "type": "number",
+          "label": "Resting heart rate (bpm):"
         }
       ]
     },
     {
-      "name": "Greens First, Then Reds",
-      "duration": {
-        "magnitude": 1,
-        "unit": "week"
-      },
-      "tasks": [
+      "type": "SELF_ASSESSMENT",
+      "icon": "ADVICE",
+      "name": "Hunger Hack",
+      "desc": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water.",
+      "constraint": {
+        "type": "DELAY",
+        "ms": 86400000
+      }
+    },
+    {
+      "type": "INPUT",
+      "icon": "QUESTIONNAIRE",
+      "name": "Reflection",
+      "inputs": [
         {
-          "type": "INSTRUCTIONS",
-          "icon": "ADVICE",
-          "name": "PREP for Week 2",
-          "desc": "Gather greens and reds for Week 2. Greens are veggies, reds are proteins.\nThe aim for the coming week is to re-think carb-oriented meals to be green and red for one week and to eat carbs only after the green/red components."
+          "type": "text",
+          "label": "What does \"almost full\" feel like?",
+          "optional": true
+        },
+        {
+          "label": "What does \"full\" feel like?",
+          "type": "text"
+        },
+        {
+          "label": "Did you stop at \"almost full\" or keep going?",
+          "options": ["Stopped", "Kept going"],
+          "type": "select"
+        },
+        {
+          "label": "Did you eat past \"full\"? A little? A lot? ",
+          "type": "select",
+          "options": ["Stopped", "Kept going a little", "A lot"]
+        },
+        {
+          "options": ["Yes", "No"],
+          "type": "select",
+          "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
+        },
+        {
+          "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+          "type": "text"
+        },
+        {
+          "type": "slider",
+          "range": [5, 60],
+          "step": 5,
+          "label": "When did you start to feel hungry again?"
         }
       ]
     }

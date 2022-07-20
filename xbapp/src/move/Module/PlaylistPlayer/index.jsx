@@ -1,93 +1,76 @@
 import React from "react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { IonPage, IonContent } from "@ionic/react";
+import { IonPage, IonContent, useIonToast } from "@ionic/react";
 
 import PlaylistInfo from "./PlaylistInfo";
 import Task from "./Task";
 import useCarousel from "../../hooks/useCarousel";
-import {
-  selectModuleById,
-  selectTaskStatuses,
-  updateResponse,
-} from "../../slice";
+import { selectPlaylists, saveResponse } from "../../slice";
 
 const PlaylistPlayer = function () {
   const {
     moduleId,
-    enrollmentId,
-    playlistId: rawPlaylistId,
-    startTaskId: rawStartTaskId,
+    enrollmentIndex,
+    playlistIndex,
+    taskIndex: defaultTaskIndex,
   } = useParams();
 
-  const playlistId = parseInt(rawPlaylistId, 10);
-  const startTaskId = parseInt(rawStartTaskId, 10);
+  const history = useHistory();
 
-  const { playlists } = useSelector((state) =>
-    selectModuleById(state, moduleId)
+  const playlist = useSelector(
+    (state) => selectPlaylists(state, moduleId, enrollmentIndex)[playlistIndex]
   );
 
-  const playlist = playlists[playlistId];
-
-  const taskStatuses = useSelector((state) =>
-    selectTaskStatuses(state, moduleId, playlistId, enrollmentId)
-  );
-
-  console.log({ taskStatuses });
-
-  let defaultStartTaskId = startTaskId;
-  if (!defaultStartTaskId && taskStatuses) {
-    for (let i = 0; i < taskStatuses.length; i++) {
-      if (taskStatuses[i].status === "INCOMPLETE") {
-        defaultStartTaskId = i;
-      }
-    }
-  }
-
-  const [taskId, prev, next, setTaskId] = useCarousel(
+  const [taskIndex, prev, next, setTaskIndex] = useCarousel(
     playlist ? playlist.tasks.length - 1 : 0,
-    defaultStartTaskId
+    parseInt(defaultTaskIndex, 10)
   );
 
   const [disableNavigation, setDisableNavigation] = React.useState(false);
   const dispatch = useDispatch();
+  const [present] = useIonToast();
   const handleTaskChange = async function (dir, values) {
     setDisableNavigation(true);
-    await dispatch(
-      updateResponse({ payload: values, enrollmentId, playlistId, taskId })
-    );
 
-    setDisableNavigation(false);
+    try {
+      await dispatch(
+        saveResponse({ payload: values, taskIndex, enrollmentIndex, moduleId })
+      );
+    } catch (error) {
+      console.log(error);
+      present({
+        message:
+          "Sorry, cannot save your response at this time. Please try again",
+        duration: 2000,
+      });
+    } finally {
+      setDisableNavigation(false);
+    }
 
     if (dir === -1) {
       prev();
     } else {
+      if (taskIndex === playlist.tasks.length - 1) {
+        history.push(`/move/${moduleId}/${enrollmentIndex}`);
+        return;
+      }
+
       next();
     }
   };
 
-  // This check guarantees correct playlistId
-
-  if (!taskStatuses) {
-    return <Redirect to={`/move/${moduleId}`} />;
-  }
-
-  const task = playlist.tasks[startTaskId];
-
-  if (!task) {
-    return <Redirect to={`/move/${moduleId}/${enrollmentId}`} />;
-  }
-
-  if (taskStatuses[taskId].status === "LOCKED") {
-    return <Redirect to={`/move/${moduleId}/${enrollmentId}`} />;
-  }
-
   return (
     <IonPage>
       <IonContent>
-        <PlaylistInfo taskId={taskId} onTaskChange={setTaskId} />
+        <PlaylistInfo taskIndex={taskIndex} onTaskChange={setTaskIndex} />
         {/* Add key to force update task to refresh state */}
-        <Task taskId={taskId} key={taskId} onTaskChange={handleTaskChange} disableNavigation={disableNavigation} />
+        <Task
+          taskIndex={taskIndex}
+          key={playlist.tasks[taskIndex].id}
+          onTaskChange={handleTaskChange}
+          disableNavigation={disableNavigation}
+        />
       </IonContent>
     </IonPage>
   );

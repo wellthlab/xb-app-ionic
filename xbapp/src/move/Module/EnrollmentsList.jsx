@@ -22,7 +22,7 @@ import { addOutline } from "ionicons/icons";
 import dateFormat from "dateformat";
 
 import ModuleOverview from "./components/ModuleOverview";
-import { selectEnrollmentsForModule, enrollToModule } from "../slice";
+import { selectEnrollments, enrollToModule } from "../slice";
 import * as RealmController from "../../controllers/realm";
 
 const EnrollmentsList = function () {
@@ -30,7 +30,7 @@ const EnrollmentsList = function () {
   const { moduleId } = useParams();
 
   const enrollments = useSelector((state) =>
-    selectEnrollmentsForModule(state, moduleId)
+    selectEnrollments(state, moduleId)
   );
 
   const [status, setStatus] = React.useState("idle");
@@ -41,7 +41,6 @@ const EnrollmentsList = function () {
     try {
       await dispatch(enrollToModule(moduleId));
     } catch (error) {
-      console.log(error);
       setStatus("rejected");
       present({
         duration: 2000,
@@ -49,6 +48,8 @@ const EnrollmentsList = function () {
           "Cannot re-enroll you to this module at the moment. Please try again",
         color: "danger",
       });
+
+      console.log(error);
       return;
     }
 
@@ -69,8 +70,12 @@ const EnrollmentsList = function () {
           </IonCardHeader>
           <IonCardContent>
             <IonList>
-              {enrollments.map(({ id }) => (
-                <IonItem key={id} lines="none" routerLink={`${url}/${id}`}>
+              {enrollments.map(({ id }, enrollmentIndex) => (
+                <IonItem
+                  key={id}
+                  lines="none"
+                  routerLink={`${url}/${enrollmentIndex}`}
+                >
                   <IonThumbnail slot="start">
                     <img
                       src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}

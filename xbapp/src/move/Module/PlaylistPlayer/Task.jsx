@@ -16,16 +16,12 @@ import {
 } from "@ionic/react";
 
 import NavigationButton from "../../components/NavigationButton";
-import { selectModuleById } from "../../slice";
+import { selectPlaylists, selectResponse } from "../../slice";
 
-const SelfAssessmentTaskContent = function ({ checked, onChange }) {
+const SelfAssessmentTaskContent = function ({ checked, onIonChange }) {
   return (
     <IonItem lines="none">
-      <IonCheckbox
-        slot="start"
-        checked={checked}
-        onChange={(e) => onChange(e.details.checked)}
-      />
+      <IonCheckbox slot="start" checked={checked} onIonChange={onIonChange} />
       <IonLabel>I have done/read the instructions for this task</IonLabel>
     </IonItem>
   );
@@ -46,15 +42,18 @@ const createInitialValues = function (task) {
   }
 };
 
-const Task = function ({ taskId, response, onTaskChange, disableNavigation }) {
-  const { moduleId, playlistId } = useParams();
+const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
+  const { moduleId, playlistIndex, enrollmentIndex } = useParams();
 
-  const { playlists } = useSelector((state) =>
-    selectModuleById(state, moduleId)
+  const playlist = useSelector(
+    (state) => selectPlaylists(state, moduleId, enrollmentIndex)[playlistIndex]
   );
 
-  const tasks = playlists[playlistId].tasks;
-  const task = tasks[taskId];
+  const response = useSelector((state) =>
+    selectResponse(state, moduleId, enrollmentIndex, taskIndex)
+  );
+
+  const task = playlist.tasks[taskIndex];
 
   console.log(task);
 
@@ -62,9 +61,9 @@ const Task = function ({ taskId, response, onTaskChange, disableNavigation }) {
     response && response.payload ? response.payload : createInitialValues(task)
   );
 
-  const createChangeHandler = function (name) {
-    return (value) => {
-      setValues({ ...values, [name]: value });
+  const createChangeHandler = function (name, handler) {
+    return (e) => {
+      setValues({ ...values, [name]: handler(e) });
     };
   };
 
@@ -85,15 +84,26 @@ const Task = function ({ taskId, response, onTaskChange, disableNavigation }) {
           {task.type !== "SELF_ASSESSMENT" ? null : (
             <SelfAssessmentTaskContent
               checked={values.checked}
-              onChange={createChangeHandler("checked")}
+              onIonChange={createChangeHandler(
+                "checked",
+                (e) => e.detail.checked
+              )}
             />
           )}
           {task.type !== "INPUT"
             ? null
-            : task.inputs.map(({ label }) => (
+            : task.inputs.map(({ label, optional }) => (
                 <IonItem key={label}>
-                  <IonLabel position="floating">{label}</IonLabel>
-                  <IonInput value={values[label]}></IonInput>
+                  <IonLabel position="floating">
+                    {label} {!optional ? "*" : null}
+                  </IonLabel>
+                  <IonInput
+                    value={values[label]}
+                    onIonChange={createChangeHandler(
+                      label,
+                      (e) => e.detail.value
+                    )}
+                  />
                 </IonItem>
               ))}
         </IonCardContent>
@@ -105,7 +115,7 @@ const Task = function ({ taskId, response, onTaskChange, disableNavigation }) {
               dir={-1}
               expand="block"
               onClick={createTaskChangeHandler(-1)}
-              disabled={disableNavigation || !taskId}
+              disabled={disableNavigation || !taskIndex}
             />
           </IonCol>
           <IonCol>
@@ -113,7 +123,7 @@ const Task = function ({ taskId, response, onTaskChange, disableNavigation }) {
               dir={1}
               expand="block"
               onClick={createTaskChangeHandler(1)}
-              disabled={disableNavigation || taskId === tasks.length - 1}
+              disabled={disableNavigation}
             />
           </IonCol>
         </IonRow>

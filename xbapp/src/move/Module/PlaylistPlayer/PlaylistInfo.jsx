@@ -11,28 +11,24 @@ import {
   IonList,
 } from "@ionic/react";
 
-import TaskListItem from "../../components/TaskListItem";
-import { selectModuleById, selectTaskStatuses } from "../../slice";
+import TaskListItem from "../components/TaskListItem";
+import { selectPlaylists } from "../../slice";
 
-const PlaylistInfo = function ({ taskId, onTaskChange }) {
-  const { moduleId, playlistId, enrollmentId } = useParams();
+const PlaylistInfo = function ({ taskIndex, onTaskChange }) {
+  const { moduleId, playlistIndex, enrollmentIndex } = useParams();
 
-  const { playlists } = useSelector((state) =>
-    selectModuleById(state, moduleId)
-  );
-
-  const taskStatuses = useSelector((state) =>
-    selectTaskStatuses(state, moduleId, playlistId, enrollmentId)
+  const playlists = useSelector((state) =>
+    selectPlaylists(state, moduleId, enrollmentIndex)
   );
 
   const playlistCount = playlists.length;
-  const playlist = playlists[playlistId];
-  const task = playlist.tasks[taskId];
+  const playlist = playlists[playlistIndex];
+  const task = playlist.tasks[taskIndex];
 
   const accordionRef = React.useRef();
-  const createItemClickHandler = function (id) {
+  const createItemClickHandler = function (index) {
     return () => {
-      onTaskChange(id);
+      onTaskChange(index);
 
       if (!accordionRef.current) {
         return;
@@ -47,7 +43,7 @@ const PlaylistInfo = function ({ taskId, onTaskChange }) {
       <IonCardHeader>
         <IonCardTitle>{task.name}</IonCardTitle>
         <IonCardSubtitle>
-          Playlist {parseInt(playlistId, 10) + 1} of {playlistCount}
+          Playlist {parseInt(playlistIndex, 10) + 1} of {playlistCount}
         </IonCardSubtitle>
         <IonCardSubtitle>
           {playlist.duration.magnitude} {playlist.duration.unit}
@@ -59,16 +55,17 @@ const PlaylistInfo = function ({ taskId, onTaskChange }) {
               color="primary"
               name={task.name}
               icon={task.icon}
-              status={taskStatuses[taskId].status}
+              status={task.status}
             />
             <IonList slot="content">
-              {playlist.tasks.map((task, currentTaskId) => (
+              {playlist.tasks.map((task, currentTaskIndex) => (
                 <TaskListItem
-                  key={currentTaskId}
+                  key={currentTaskIndex}
                   icon={task.icon}
                   name={task.name}
-                  status={taskStatuses[currentTaskId].status}
-                  onClick={createItemClickHandler(currentTaskId)}
+                  status={task.status}
+                  remainingTime={task.remainingTime}
+                  onClick={createItemClickHandler(currentTaskIndex)}
                   button
                   detail
                 />

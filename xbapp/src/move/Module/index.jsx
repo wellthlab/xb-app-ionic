@@ -5,6 +5,8 @@ import { IonRouterOutlet, IonPage, IonContent, IonSpinner } from "@ionic/react";
 
 import EnrollmentsList from "./EnrollmentsList";
 import ModuleContents from "./ModuleContents";
+import EnrollmentIndexGuard from "./EnrollmentIndexGuard";
+import PlaylistAndTaskIndexGuard from "./PlaylistAndTaskIndexGuard";
 import PlaylistPlayer from "./PlaylistPlayer";
 import {
   selectModuleById,
@@ -18,8 +20,6 @@ const Module = function () {
   const { path } = useRouteMatch();
   const { moduleId } = useParams();
 
-  const xbModule = useSelector((state) => selectModuleById(state, moduleId));
-
   // Fetch modules if not fetched
 
   const modulesStatus = useSelector(selectModulesStatus);
@@ -31,8 +31,10 @@ const Module = function () {
 
   // Enroll
 
+  const xbModule = useSelector((state) => selectModuleById(state, moduleId));
   const [enrollmentStatus, setEnrollmentStatus] = React.useState("idle");
   const dispatch = useDispatch();
+
   React.useEffect(() => {
     const automaticallyEnroll = async function () {
       // Either not loaded, or not found
@@ -41,7 +43,7 @@ const Module = function () {
         return;
       }
 
-      // Loaded
+      // Already enrolled
 
       if (xbModule.enrollments.length) {
         setEnrollmentStatus("fulfilled");
@@ -63,44 +65,59 @@ const Module = function () {
     automaticallyEnroll();
   }, [moduleId, xbModule]);
 
+  // TODO: Error pages, redirect to 404
+
   if (modulesStatus === "fulfilled" && !xbModule) {
     return <Redirect to="/move" />;
   }
 
-  return (
-    <IonPage>
-      {modulesStatus === "pending" || modulesStatus === "idle" ? (
-        <IonSpinner name="crescent" />
-      ) : modulesStatus === "rejected" ? (
-        "Sorry, cannot retrieve active modules at the moment. Please try again"
-      ) : (
-        <React.Fragment>
-          <XBHeader title={xbModule.name} colour={xbModule.colour} />
+  let content;
 
-          {enrollmentStatus === "pending" || enrollmentStatus === "idle" ? (
-            <IonSpinner name="crescent" />
-          ) : enrollmentStatus === "rejected" ? (
-            "Sorry, cannot enroll you to this module at the moment. Please try again"
-          ) : (
-            <IonContent>
-              <IonRouterOutlet>
-                <Route path={path} render={() => <EnrollmentsList />} exact />
-                <Route
-                  path={`${path}/:enrollmentId`}
-                  render={() => <ModuleContents />}
-                  exact
-                />
-                <Route
-                  path={`${path}/:enrollmentId/:playlistId/:startTaskId?`}
-                  render={() => <PlaylistPlayer />}
-                />
-              </IonRouterOutlet>
-            </IonContent>
-          )}
-        </React.Fragment>
-      )}
-    </IonPage>
-  );
+  if (modulesStatus === "pending" || modulesStatus === "idle") {
+    content = <IonSpinner name="crescent" />;
+  } else if (modulesStatus === "rejected") {
+    content =
+      "Sorry, cannot retrieve active modules at the moment. Please try again";
+  } else {
+    content = (
+      <React.Fragment>
+        <XBHeader title={xbModule.name} colour={xbModule.colour} />
+
+        {enrollmentStatus === "pending" || enrollmentStatus === "idle" ? (
+          <IonSpinner name="crescent" />
+        ) : enrollmentStatus === "rejected" ? (
+          "Sorry, cannot enroll you to this module at the moment. Please try again"
+        ) : (
+          <IonContent>
+            <IonRouterOutlet>
+              <Route path={path} render={() => <EnrollmentsList />} exact />
+              <Route
+                path={`${path}/:enrollmentIndex`}
+                render={() => (
+                  <EnrollmentIndexGuard>
+                    <ModuleContents />
+                  </EnrollmentIndexGuard>
+                )}
+                exact
+              />
+              <Route
+                path={`${path}/:enrollmentIndex/:playlistIndex/:taskIndex`}
+                render={() => (
+                  <EnrollmentIndexGuard>
+                    <PlaylistAndTaskIndexGuard>
+                      <PlaylistPlayer />
+                    </PlaylistAndTaskIndexGuard>
+                  </EnrollmentIndexGuard>
+                )}
+              />
+            </IonRouterOutlet>
+          </IonContent>
+        )}
+      </React.Fragment>
+    );
+  }
+
+  return <IonPage>{content}</IonPage>;
 };
 
 export default Module;

@@ -82,17 +82,30 @@ export const idToCreationTs = function (id) {
   return Realm.BSON.ObjectId(id).getTimestamp();
 };
 
-export const updateResponse = wrap(
-  async (payload, enrollmentId, playlistId, taskId) => {
-    await DB.collection("enrollments").updateOne(
-      {
-        _id: Realm.BSON.ObjectId(enrollmentId),
-      },
-      {
-        $set: {
-          [`responses.${playlistId}.${taskId}`]: { payload, completedAt: null },
-        },
-      }
-    );
+export const saveResponse = wrap(async (payload, enrollmentId, taskIndex) => {
+  const enrollment = await DB.collection("enrollments").findOne({
+    _id: Realm.BSON.ObjectID(enrollmentId),
+  });
+
+  const newResponse = {
+    payload,
+    createdAt: enrollment.responses[taskIndex]?.createdAt,
+  };
+
+  if (!newResponse.createdAt) {
+    newResponse.createdAt = Date.now();
   }
-);
+
+  await DB.collection("enrollments").updateOne(
+    {
+      _id: Realm.BSON.ObjectId(enrollmentId),
+    },
+    {
+      $set: {
+        [`responses.${taskIndex}`]: newResponse,
+      },
+    }
+  );
+
+  return newResponse;
+});

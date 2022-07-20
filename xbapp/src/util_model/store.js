@@ -9,7 +9,7 @@ import Modules from "./slices/Modules";
 import UserProfile from "./slices/Users";
 import Library from "./slices/Library";
 
-import { modulesReducer, enrollmentsReducer } from "../move";
+import { modulesReducer } from "../move";
 
 var store = configureStore({
   reducer: {
@@ -23,7 +23,6 @@ var store = configureStore({
 
     $s22: combineReducers({
       modules: modulesReducer,
-      enrollments: enrollmentsReducer,
     }),
   },
 

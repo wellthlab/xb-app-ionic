@@ -1,9 +1,11 @@
 import {
   createSlice,
   createAsyncThunk,
+  createAction,
   createSelector,
 } from "@reduxjs/toolkit";
 
+import * as Realm from "realm-web";
 import * as RealmController from "../controllers/realm";
 
 // Actions
@@ -19,19 +21,27 @@ export const enrollToModule = createAsyncThunk(
   }
 );
 
-export const updateResponse = createAsyncThunk(
+export const saveResponse = createAsyncThunk(
   "$s22/enrollments/respond",
-  async ({ payload, enrollmentId, playlistId, taskId }) => {
-    await RealmController.updateResponse(
-      payload,
-      enrollmentId,
-      playlistId,
-      taskId
+  async ({ payload, enrollmentIndex, taskIndex, moduleId }, { getState }) => {
+    const state = getState();
+    const enrollmentId = selectEnrollmentIdFromIndex(
+      state,
+      moduleId,
+      enrollmentIndex
     );
 
-    return { enrollmentId, playlistId, taskId, payload };
+    const response = await RealmController.saveResponse(
+      payload,
+      enrollmentId,
+      taskIndex
+    );
+
+    return { enrollmentIndex, moduleId, taskIndex, response };
   }
 );
+
+export const triggerLockRecomputation = createAction("$s22/modules/recompute");
 
 // Selectors
 
@@ -43,8 +53,31 @@ export const selectModulesStatus = function (state) {
   return state.$s22.modules.status;
 };
 
-export const selectModuleById = function (state, id) {
-  return selectAllModules(state)[id];
+export const selectModuleById = function (state, moduleId) {
+  return selectAllModules(state)[moduleId];
+};
+
+export const selectEnrollments = function (state, moduleId) {
+  return selectAllModules(state)[moduleId]?.enrollments;
+};
+
+export const selectEnrollmentIdFromIndex = function (
+  state,
+  moduleId,
+  enrollmentIndex
+) {
+  return selectEnrollments(state, moduleId)?.[enrollmentIndex]?.id;
+};
+
+export const selectResponse = function (
+  state,
+  moduleId,
+  enrollmentIndex,
+  taskIndex
+) {
+  return selectEnrollments(state, moduleId)?.[enrollmentIndex]?.responses[
+    taskIndex
+  ];
 };
 
 export const selectModuleIdsByTopic = createSelector(
@@ -95,103 +128,54 @@ export const selectModuleIdsByTopic = createSelector(
   }
 );
 
-const selectAllEnrollments = function (state) {
-  return state.$s22.enrollments;
-};
-
-export const selectEnrollmentsForModule = createSelector(
-  (state, moduleId) => {
-    const xbModule = selectModuleById(state, moduleId);
-    return xbModule ? xbModule.enrollments : [];
-  },
-  selectAllEnrollments,
-  (moduleEnrollments, enrollments) => {
-    return moduleEnrollments.map((enrollmentId) => enrollments[enrollmentId]);
-  }
-);
-
-const selectModulePlaylists = function (state, moduleId) {
-  const xbModule = selectModuleById(state, moduleId);
-  if (xbModule) {
-    return xbModule.playlists;
-  }
-};
-
-const selectEnrollmentResponses = function (state, enrollmentId) {
-  const enrollment = selectAllEnrollments(state)[enrollmentId];
-  if (enrollment) {
-    return enrollment.responses;
-  }
-};
-
-export const selectCurrentPlaylistId = createSelector(
-  selectModulePlaylists,
-  (state, _0, enrollmentId) => selectEnrollmentResponses(state, enrollmentId),
-  (playlists, allResponses) => {
-    if (!playlists || !allResponses) {
-      return;
-    }
-
-    let currentPlaylistId = -1;
-    for (let i = 0; i < allResponses.length; i++) {
-      let broken = false;
-      for (const response of allResponses[i]) {
-        if (!response || !response.completedAt) {
-          broken = true;
-          break;
-        }
-      }
-
-      if (!broken) {
-        currentPlaylistId = i;
-      }
-    }
-
-    return currentPlaylistId === playlists.length - 1
-      ? currentPlaylistId
-      : currentPlaylistId + 1;
-  }
-);
-
-export const selectTaskStatuses = createSelector(
-  (state, moduleId, playlistId) => {
-    const playlists = selectModulePlaylists(state, moduleId);
-    if (playlists) {
-      return playlists[playlistId];
-    }
-  },
-  (state, _0, playlistId, enrollmentId) => {
-    const responses = selectEnrollmentResponses(state, enrollmentId);
-    if (responses) {
-      return responses[playlistId] || [];
-    }
-  },
-  (playlist, responses) => {
-    console.log(responses);
-    if (!playlist || !responses) {
+export const selectPlaylists = createSelector(
+  (state, moduleId) => selectModuleById(state, moduleId)?.tasks,
+  (state, moduleId) => selectModuleById(state, moduleId)?.playlists,
+  (state, moduleId, enrollmentIndex) =>
+    selectEnrollments(state, moduleId)[enrollmentIndex]?.responses,
+  (state, moduleId) => selectModuleById(state, moduleId)?._trigger,
+  (tasks, playlists, responses) => {
+    if (!tasks || !playlists || !responses) {
       return;
     }
 
     const statuses = [];
-    let lastCompletedTimestamp = null;
+
+    let earliestCreatedAt = null;
     let locked = false;
 
-    for (let i = 0; i < playlist.tasks.length; i++) {
-      const task = playlist.tasks[i];
-      const correspondingResponse = responses[i];
+    for (let i = 0; i < tasks.length; i++) {
+      const response = responses[i];
+      const task = tasks[i];
 
-      if (correspondingResponse) {
-        if (correspondingResponse.completedAt) {
+      if (response) {
+        if (!earliestCreatedAt || response.createdAt < earliestCreatedAt) {
+          earliestCreatedAt = response.createdAt;
+        }
+
+        if (!response.payload) {
           statuses.push({ status: "COMPLETED" });
-
-          if (
-            !lastCompletedTimestamp ||
-            correspondingResponse.completedAt > lastCompletedTimestamp
-          ) {
-            lastCompletedTimestamp = correspondingResponse.completedAt;
-          }
-
           continue;
+        }
+
+        if (task.type === "SELF_ASSESSMENT" && response.payload.checked) {
+          statuses.push({ status: "COMPLETED" });
+          continue;
+        }
+
+        if (task.type === "INPUT") {
+          const nonOptionalInputCount = task.inputs.filter(
+            (input) => !input.optional
+          ).length;
+
+          const nonFalsyInputValueCount = Object.values(
+            response.payload
+          ).filter((input) => !!input).length;
+
+          if (nonFalsyInputValueCount === nonOptionalInputCount) {
+            statuses.push({ status: "COMPLETED" });
+            continue;
+          }
         }
 
         statuses.push({ status: "EDITING" });
@@ -209,39 +193,52 @@ export const selectTaskStatuses = createSelector(
       }
 
       if (task.constraint.type === "DELAY") {
-        if (!lastCompletedTimestamp) {
+        if (!earliestCreatedAt) {
           statuses.push({ status: "LOCKED" });
           locked = true;
           continue;
         }
 
-        if (Date.now() - lastCompletedTimestamp < task.constraint.ms) {
+        const lockedUntil = earliestCreatedAt + task.constraint.ms;
+
+        if (Date.now() < lockedUntil) {
           statuses.push({
             status: "LOCKED",
-            until: lastCompletedTimestamp + task.constraint.ms,
+            remainingTime: lockedUntil - Date.now(),
           });
           locked = true;
           continue;
         }
       }
 
-      if (
-        task.constraint.type === "TIMESTAMP" &&
-        Date.now() < task.constraint.ts
-      ) {
-        statuses.push({
-          status: "LOCKED",
-          until: task.constraint.ts,
-        });
-
-        locked = true;
-        continue;
+      if (task.constraint.type === "TIMESTAMP") {
+        if (Date.now() < task.constraint.ts) {
+          statuses.push({
+            status: "LOCKED",
+            remainingTime: task.constraint.ts - Date.now(),
+          });
+          locked = true;
+          continue;
+        }
       }
 
       statuses.push({ status: "INCOMPLETE" });
+      earliestCreatedAt = null;
+      locked = false;
     }
 
-    return statuses;
+    const result = [];
+    for (const playlist of playlists) {
+      result.push({
+        ...playlist,
+        tasks: playlist.tasks.map((index) => ({
+          ...tasks[index],
+          ...statuses[index],
+        })),
+      });
+    }
+
+    return result;
   }
 );
 
@@ -265,7 +262,14 @@ const modulesSlice = createSlice({
             colour: item.colour,
             desc: item.desc,
             difficulty: item.difficulty,
-            enrollments: item.enrollments.map((enrollment) => enrollment.id),
+            enrollments: item.enrollments.map((enrollment) => ({
+              id: enrollment.id,
+              responses: enrollment.responses.map((response) => ({
+                payload: response.payload,
+                createdAt: response.createdAt,
+                completed: response.completed,
+              })),
+            })),
 
             playlists: item.playlists.map((playlist) => ({
               name: playlist.name,
@@ -273,15 +277,22 @@ const modulesSlice = createSlice({
                 magnitude: playlist.duration.magnitude,
                 unit: playlist.duration.unit,
               },
-              tasks: playlist.tasks.map((task) => ({
-                type: task.type,
-                icon: task.icon,
-                name: task.name,
-                desc: task.desc,
-                inputs: task.inputs,
-                constraint: task.constraint,
-              })),
+              tasks: playlist.tasks,
             })),
+
+            tasks: item.tasks.map((task) => ({
+              id: new Realm.BSON.ObjectId(
+                Realm.BSON.ObjectId.generate()
+              ).toString(),
+              type: task.type,
+              icon: task.icon,
+              name: task.name,
+              desc: task.desc,
+              inputs: task.inputs,
+              constraint: task.constraint,
+            })),
+
+            _trigger: 0,
           };
         }
       })
@@ -290,9 +301,37 @@ const modulesSlice = createSlice({
           return;
         }
 
-        state.items[action.payload.moduleId].enrollments.push(
-          action.payload.id
-        );
+        state.items[action.payload.moduleId].enrollments.push({
+          id: action.payload.id,
+          responses: action.payload.responses.map((response) => ({
+            payload: response.payload,
+            createdAt: response.createdAt,
+            completed: response.completed,
+          })),
+        });
+      })
+      .addCase(saveResponse.fulfilled, (state, action) => {
+        if (state.status !== "fulfilled") {
+          return;
+        }
+
+        const {
+          moduleId,
+          enrollmentIndex,
+          taskIndex,
+          response,
+        } = action.payload;
+
+        state.items[moduleId].enrollments[enrollmentIndex].responses[
+          taskIndex
+        ] = response;
+      })
+      .addCase(triggerLockRecomputation, (state, action) => {
+        if (state.status !== "fulfilled") {
+          return;
+        }
+
+        state.items[action.payload]._trigger++;
       })
       .addCase(loadModules.pending, (state) => {
         state.status = "pending";
@@ -306,55 +345,3 @@ const modulesSlice = createSlice({
 });
 
 export const modulesReducer = modulesSlice.reducer;
-
-const enrollmentsSlice = createSlice({
-  name: "enrollments",
-  initialState: {},
-
-  extraReducers: (builder) => {
-    builder
-      .addCase(enrollToModule.fulfilled, (state, action) => {
-        if (!action.payload) {
-          return;
-        }
-
-        state[action.payload.id] = {
-          id: action.payload.id,
-          responses: action.payload.responses.map((playlistResponses) =>
-            playlistResponses.map((response) => ({
-              type: response.type,
-            }))
-          ),
-        };
-      })
-      .addCase(loadModules.fulfilled, (state, action) => {
-        for (const item of action.payload) {
-          for (const enrollment of item.enrollments) {
-            state[enrollment.id] = {
-              id: enrollment.id,
-              responses: enrollment.responses.map((playlistResponses) =>
-                playlistResponses
-                  ? playlistResponses.map((response) => ({
-                      type: response.type,
-                    }))
-                  : null
-              ),
-            };
-          }
-        }
-      })
-      .addCase(updateResponse.fulfilled, (state, action) => {
-        const responsesForEnrollment =
-          state[action.payload.enrollmentId].responses;
-        const playlistId = action.payload.playlistId;
-        let responses = responsesForEnrollment[playlistId];
-        if (!responses) {
-          responses = responsesForEnrollment[playlistId] = [];
-        }
-
-        responses[action.payload.taskId] = action.payload.payload;
-      });
-  },
-});
-
-export const enrollmentsReducer = enrollmentsSlice.reducer;
