@@ -61,7 +61,7 @@ const OptionTabs = (props) => {
     setShowDisclaimerModal(false);
     props.LOG_OUT({});
     localStorage.clear();
-    history.push("/");
+    window.location.href = "/";
   };
 
   if (!props.teams.loaded) {

@@ -61,7 +61,9 @@ const CreateTeam = (props) => {
             You've created a new team! Let's get <strong>started</strong>.
           </p>
           <p className="centering">
-            <IonButton routerLink="/box/move">Let's Go!</IonButton>
+            <IonButton onClick={() => (window.location.href = "/box/move")}>
+              Let's Go!
+            </IonButton>
           </p>
         </div>
       </>
