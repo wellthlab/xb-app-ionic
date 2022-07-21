@@ -60,11 +60,11 @@ const PlaylistInfo = function ({ taskIndex, onTaskChange }) {
             <IonList slot="content">
               {playlist.tasks.map((task, currentTaskIndex) => (
                 <TaskListItem
-                  key={currentTaskIndex}
+                  key={task.id}
                   icon={task.icon}
                   name={task.name}
                   status={task.status}
-                  remainingTime={task.remainingTime}
+                  lockedUntil={task.until}
                   onClick={createItemClickHandler(currentTaskIndex)}
                   button
                   detail

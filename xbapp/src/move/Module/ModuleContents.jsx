@@ -18,9 +18,9 @@ import { playOutline } from "ionicons/icons";
 
 import ModuleOverview from "./components/ModuleOverview";
 import TaskListItem from "./components/TaskListItem";
-import NavigationButton from "../components/NavigationButton";
-import useCarousel from "../hooks/useCarousel";
-import { selectPlaylists } from "../slice";
+import NavigationButton from "./components/NavigationButton";
+import useCarousel from "./hooks/useCarousel";
+import { selectPlaylists, selectTaskStatuses } from "../slice";
 
 const ModuleContents = function () {
   const { url } = useRouteMatch();
@@ -31,16 +31,20 @@ const ModuleContents = function () {
     selectPlaylists(state, moduleId, enrollmentIndex)
   );
 
-  console.log(playlists);
-
   const playlistCount = playlists.length;
   const [playlistIndex, prev, next] = useCarousel(playlistCount - 1, 0);
   const playlist = playlists[playlistIndex];
 
+  const taskStatuses = useSelector((state) =>
+    selectTaskStatuses(state, moduleId)
+  );
+
+  console.log(taskStatuses);
+
   let nextPlayableTaskIndex;
 
   for (let i = 0; i < playlist.tasks.length; i++) {
-    if (playlist.tasks[i].status !== "LOCKED") {
+    if (taskStatuses[playlistIndex][i].status !== "LOCKED") {
       nextPlayableTaskIndex = i;
     }
   }
@@ -76,8 +80,8 @@ const ModuleContents = function () {
                   key={task.id}
                   icon={task.icon}
                   name={task.name}
-                  status={task.status}
-                  remainingTime={task.remainingTime}
+                  status={taskStatuses[playlistIndex][taskIndex].status}
+                  lockedUntil={taskStatuses[playlistIndex][taskIndex].until}
                   routerLink={`${url}/${playlistIndex}/${taskIndex}`}
                   detail
                 />

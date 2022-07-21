@@ -6,7 +6,6 @@ import {
   IonCardTitle,
   IonCardHeader,
   IonCardContent,
-  IonCheckbox,
   IonItem,
   IonLabel,
   IonGrid,
@@ -15,17 +14,11 @@ import {
   IonInput,
 } from "@ionic/react";
 
+import Video from "./Video";
+import SelfAssessmentInput from "./SelfAssessmentInput";
+import HeartRateInput from "./HeartRateInput";
 import NavigationButton from "../../components/NavigationButton";
-import { selectPlaylists, selectResponse } from "../../slice";
-
-const SelfAssessmentTaskContent = function ({ checked, onIonChange }) {
-  return (
-    <IonItem lines="none">
-      <IonCheckbox slot="start" checked={checked} onIonChange={onIonChange} />
-      <IonLabel>I have done/read the instructions for this task</IonLabel>
-    </IonItem>
-  );
-};
+import { selectPlaylists, selectResponse } from "../../../slice";
 
 const createInitialValues = function (task) {
   if (task.type === "INPUT") {
@@ -43,14 +36,13 @@ const createInitialValues = function (task) {
 };
 
 const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
-  const { moduleId, playlistIndex, enrollmentIndex } = useParams();
+  const { moduleId, playlistIndex } = useParams();
 
-  const playlist = useSelector(
-    (state) => selectPlaylists(state, moduleId, enrollmentIndex)[playlistIndex]
-  );
+  const playlists = useSelector((state) => selectPlaylists(state, moduleId));
+  const playlist = playlists[playlistIndex];
 
   const response = useSelector((state) =>
-    selectResponse(state, moduleId, enrollmentIndex, taskIndex)
+    selectResponse(state, moduleId, playlistIndex, taskIndex)
   );
 
   const task = playlist.tasks[taskIndex];
@@ -63,7 +55,7 @@ const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
 
   const createChangeHandler = function (name, handler) {
     return (e) => {
-      setValues({ ...values, [name]: handler(e) });
+      setValues({ ...values, [name]: handler ? handler(e) : e });
     };
   };
 
@@ -79,33 +71,39 @@ const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
         <IonCardHeader>
           <IonCardTitle>{task.name}</IonCardTitle>
         </IonCardHeader>
+        {task.video ? <Video src={task.video} /> : null}
         <IonCardContent>
           {task.desc ? <p>{task.desc}</p> : null}
           {task.type !== "SELF_ASSESSMENT" ? null : (
-            <SelfAssessmentTaskContent
-              checked={values.checked}
-              onIonChange={createChangeHandler(
-                "checked",
-                (e) => e.detail.checked
-              )}
+            <SelfAssessmentInput
+              value={values.checked}
+              onIonChange={createChangeHandler("checked")}
             />
           )}
           {task.type !== "INPUT"
             ? null
-            : task.inputs.map(({ label, optional }) => (
-                <IonItem key={label}>
-                  <IonLabel position="floating">
-                    {label} {!optional ? "*" : null}
-                  </IonLabel>
-                  <IonInput
+            : task.inputs.map(({ label, optional, type }) =>
+                type === "heartrate" ? (
+                  <HeartRateInput
+                    key={label}
                     value={values[label]}
-                    onIonChange={createChangeHandler(
-                      label,
-                      (e) => e.detail.value
-                    )}
+                    onIonChange={createChangeHandler(label)}
                   />
-                </IonItem>
-              ))}
+                ) : (
+                  <IonItem key={label}>
+                    <IonLabel position="floating">
+                      {label} {!optional ? "*" : null}
+                    </IonLabel>
+                    <IonInput
+                      value={values[label]}
+                      onIonChange={createChangeHandler(
+                        label,
+                        (e) => e.detail.value
+                      )}
+                    />
+                  </IonItem>
+                )
+              )}
         </IonCardContent>
       </IonCard>
       <IonGrid>

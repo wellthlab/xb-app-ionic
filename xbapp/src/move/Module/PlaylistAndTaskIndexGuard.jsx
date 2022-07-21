@@ -2,19 +2,20 @@ import React from "react";
 import { useParams, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { selectPlaylists } from "../slice";
+import { selectPlaylists, selectTaskStatuses } from "../slice";
 
 const PlaylistAndTaskIndexGuard = function ({ children }) {
-  const { moduleId, enrollmentIndex, playlistIndex, taskIndex } = useParams();
+  const { moduleId, playlistIndex, taskIndex } = useParams();
 
-  const playlists = useSelector((state) =>
-    selectPlaylists(state, moduleId, enrollmentIndex)
+  const playlists = useSelector((state) => selectPlaylists(state, moduleId));
+  const taskStatuses = useSelector((state) =>
+    selectTaskStatuses(state, moduleId)
   );
 
   const task = playlists[playlistIndex]?.tasks[taskIndex];
 
-  if (!task || task.status === "LOCKED") {
-    return <Redirect to={`/move/${moduleId}/${enrollmentIndex}`} />;
+  if (!task || taskStatuses[playlistIndex][taskIndex].status === "LOCKED") {
+    return <Redirect to={`/move/${moduleId}`} />;
   }
 
   return children;

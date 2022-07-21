@@ -1,7 +1,6 @@
 import * as Realm from "realm-web";
 
 const REALM = Realm.getApp("xbframework-yvulh");
-const DB = REALM.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
 
 const clean = function (result) {
   if (Array.isArray(result)) {
@@ -23,89 +22,94 @@ const clean = function (result) {
 };
 
 const wrap = function (method) {
+  const db = REALM.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
   return async (...args) => {
-    return clean(await method(...args));
+    return clean(await method(db, ...args));
   };
 };
 
-export const getModules = wrap(async () => {
-  const modules = await DB.collection("modules").find();
-  const enrollments = await DB.collection("enrollments").find({
+export const idToTs = function (id) {
+  return new Realm.BSON.ObjectId(id).getTimestamp().getTime();
+};
+
+export const getModules = wrap(async (db) => {
+  const modules = await db.collection("modules").find();
+  const enrollments = await db.collection("enrollments").find({
     userId: REALM.currentUser.id,
   });
 
-  const enrollmentsByModule = {};
-  for (const enrollment of enrollments) {
-    let enrollmentsForModule = enrollmentsByModule[enrollment.moduleId];
-    if (!enrollmentsForModule) {
-      enrollmentsForModule = enrollmentsByModule[enrollment.moduleId] = [];
+  const responses = await db.collection("responses").find({
+    userId: REALM.currentUser.id,
+  });
+
+  const enrolledIds = new Set(enrollments.map(({ moduleId }) => moduleId));
+
+  const responsesByModuleId = {};
+  for (const response of responses) {
+    let responsesForModule = responsesByModuleId[response.moduleId];
+    if (!responsesForModule) {
+      responsesForModule = responsesByModuleId[response.moduleId] = [];
     }
 
-    enrollmentsForModule.push(enrollment);
+    responsesForModule.push(response);
   }
 
   return modules.map((item) => {
-    const enrollmentsForModule = enrollmentsByModule[item._id];
-    if (enrollmentsForModule) {
-      item.enrollments = enrollmentsForModule;
-    } else {
-      item.enrollments = [];
+    if (enrolledIds.has(item._id.toString())) {
+      item.enrolled = true;
     }
 
+    item.responses = responsesByModuleId[item._id] || [];
     return item;
   });
 });
 
-export const enrollToModule = wrap(async (moduleId) => {
-  const xbModule = await DB.collection("modules").findOne({
+export const enrollToModule = wrap(async (db, moduleId) => {
+  const xbModule = await db.collection("modules").findOne({
     _id: Realm.BSON.ObjectId(moduleId),
   });
 
   if (!xbModule) {
-    throw new Error("Module not found");
+    throw new ModuleNotFoundError("Module not found");
   }
 
-  const document = { moduleId, responses: [] };
-
-  const { insertedId } = await DB.collection("enrollments").insertOne({
+  const enrollment = await db.collection("enrollments").findOne({
+    moduleId,
     userId: REALM.currentUser.id,
-    ...document,
   });
 
-  return {
-    _id: insertedId,
-    ...document,
-  };
-});
-
-export const idToCreationTs = function (id) {
-  return Realm.BSON.ObjectId(id).getTimestamp();
-};
-
-export const saveResponse = wrap(async (payload, enrollmentId, taskIndex) => {
-  const enrollment = await DB.collection("enrollments").findOne({
-    _id: Realm.BSON.ObjectID(enrollmentId),
-  });
-
-  const newResponse = {
-    payload,
-    createdAt: enrollment.responses[taskIndex]?.createdAt,
-  };
-
-  if (!newResponse.createdAt) {
-    newResponse.createdAt = Date.now();
+  if (enrollment) {
+    return;
   }
 
-  await DB.collection("enrollments").updateOne(
-    {
-      _id: Realm.BSON.ObjectId(enrollmentId),
-    },
-    {
-      $set: {
-        [`responses.${taskIndex}`]: newResponse,
-      },
-    }
-  );
-
-  return newResponse;
+  return db.collection("enrollments").insertOne({
+    moduleId,
+    userId: REALM.currentUser.id,
+  });
 });
+
+export class ModuleNotFoundError extends Error {}
+
+export const getResponses = wrap(async (db, moduleId) => {
+  return db.collection("responses").find({
+    moduleId,
+    userId: REALM.currentUser.id,
+  });
+});
+
+export const saveResponse = wrap(
+  async (db, payload, moduleId, playlistIndex, taskIndex) => {
+    const { upsertedId } = await db.collection("responses").updateOne(
+      {
+        userId: REALM.currentUser.id,
+        moduleId,
+        playlistIndex: parseInt(playlistIndex, 10),
+        taskIndex: parseInt(taskIndex, 10),
+      },
+      { $set: { payload } },
+      { upsert: true }
+    );
+
+    return { _id: upsertedId, payload, moduleId, playlistIndex, taskIndex };
+  }
+);

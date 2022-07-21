@@ -1,7 +1,6 @@
 import {
   createSlice,
   createAsyncThunk,
-  createAction,
   createSelector,
 } from "@reduxjs/toolkit";
 
@@ -16,32 +15,32 @@ export const loadModules = createAsyncThunk("$s22/modules/load", async () => {
 
 export const enrollToModule = createAsyncThunk(
   "$s22/modules/enroll",
-  (moduleId) => {
-    return RealmController.enrollToModule(moduleId);
+  async (moduleId) => {
+    const result = await RealmController.enrollToModule(moduleId);
+    if (result) {
+      return moduleId;
+    }
+  }
+);
+
+export const getResponses = createAsyncThunk(
+  "$s22/responses/load",
+  async (moduleId) => {
+    return RealmController.getResponses(moduleId);
   }
 );
 
 export const saveResponse = createAsyncThunk(
-  "$s22/enrollments/respond",
-  async ({ payload, enrollmentIndex, taskIndex, moduleId }, { getState }) => {
-    const state = getState();
-    const enrollmentId = selectEnrollmentIdFromIndex(
-      state,
-      moduleId,
-      enrollmentIndex
-    );
-
-    const response = await RealmController.saveResponse(
+  "$s22/responses/save",
+  async ({ payload, moduleId, taskIndex, playlistIndex }) => {
+    return RealmController.saveResponse(
       payload,
-      enrollmentId,
+      moduleId,
+      playlistIndex,
       taskIndex
     );
-
-    return { enrollmentIndex, moduleId, taskIndex, response };
   }
 );
-
-export const triggerLockRecomputation = createAction("$s22/modules/recompute");
 
 // Selectors
 
@@ -57,47 +56,26 @@ export const selectModuleById = function (state, moduleId) {
   return selectAllModules(state)[moduleId];
 };
 
-export const selectEnrollments = function (state, moduleId) {
-  return selectAllModules(state)[moduleId]?.enrollments;
-};
-
-export const selectEnrollmentIdFromIndex = function (
-  state,
-  moduleId,
-  enrollmentIndex
-) {
-  return selectEnrollments(state, moduleId)?.[enrollmentIndex]?.id;
-};
-
-export const selectResponse = function (
-  state,
-  moduleId,
-  enrollmentIndex,
-  taskIndex
-) {
-  return selectEnrollments(state, moduleId)?.[enrollmentIndex]?.responses[
-    taskIndex
-  ];
+export const selectPlaylists = function (state, moduleId) {
+  return selectModuleById(state, moduleId)?.playlists;
 };
 
 export const selectModuleIdsByTopic = createSelector(
   selectAllModules,
-  (items) => {
+  (state) => state.$s22.enrollments,
+  (items, enrollments) => {
     const modules = Object.values(items);
 
     if (!modules.length) {
       return;
     }
 
-    // Special categories
-
-    const enrolled = [];
+    const enrolledIds = new Set(enrollments);
     const snacks = [];
     const nonSpecials = [];
 
     for (const item of modules) {
-      if (item.enrollments.length) {
-        enrolled.push(item.id);
+      if (enrolledIds.has(item.id)) {
         continue;
       }
 
@@ -121,121 +99,125 @@ export const selectModuleIdsByTopic = createSelector(
     }
 
     return [
-      ["Enrolled", enrolled],
+      ["Enrolled", enrollments],
       ["Snacks", snacks],
       ...Object.entries(modulesByTopic),
     ];
   }
 );
 
-export const selectPlaylists = createSelector(
-  (state, moduleId) => selectModuleById(state, moduleId)?.tasks,
-  (state, moduleId) => selectModuleById(state, moduleId)?.playlists,
-  (state, moduleId, enrollmentIndex) =>
-    selectEnrollments(state, moduleId)[enrollmentIndex]?.responses,
-  (state, moduleId) => selectModuleById(state, moduleId)?._trigger,
-  (tasks, playlists, responses) => {
-    if (!tasks || !playlists || !responses) {
+const selectResponses = function (state, moduleId) {
+  return state.$s22.responses[moduleId];
+};
+
+export const selectResponse = function (
+  state,
+  moduleId,
+  playlistIndex,
+  taskIndex
+) {
+  return selectResponses(state, moduleId)?.[playlistIndex]?.[taskIndex];
+};
+
+export const selectTaskStatuses = createSelector(
+  selectPlaylists,
+  selectResponses,
+  (state, moduleId) => state.$s22._lockInvalidators[moduleId], // Invalidator
+  (playlists, responses) => {
+    if (!playlists || !responses) {
       return;
     }
 
-    const statuses = [];
+    const result = playlists.map(() => []);
 
     let earliestCreatedAt = null;
     let locked = false;
 
-    for (let i = 0; i < tasks.length; i++) {
-      const response = responses[i];
-      const task = tasks[i];
+    for (let i = 0; i < playlists.length; i++) {
+      const statuses = result[i];
+      for (let j = 0; j < playlists[i].tasks.length; j++) {
+        const task = playlists[i].tasks[j];
+        const response = responses[i]?.[j];
 
-      if (response) {
-        if (!earliestCreatedAt || response.createdAt < earliestCreatedAt) {
-          earliestCreatedAt = response.createdAt;
-        }
+        if (response) {
+          const createdTs = RealmController.idToTs(response.id);
+          if (!earliestCreatedAt || createdTs < earliestCreatedAt) {
+            earliestCreatedAt = createdTs;
+          }
 
-        if (!response.payload) {
-          statuses.push({ status: "COMPLETED" });
-          continue;
-        }
-
-        if (task.type === "SELF_ASSESSMENT" && response.payload.checked) {
-          statuses.push({ status: "COMPLETED" });
-          continue;
-        }
-
-        if (task.type === "INPUT") {
-          const nonOptionalInputCount = task.inputs.filter(
-            (input) => !input.optional
-          ).length;
-
-          const nonFalsyInputValueCount = Object.values(
-            response.payload
-          ).filter((input) => !!input).length;
-
-          if (nonFalsyInputValueCount === nonOptionalInputCount) {
+          if (!response.payload) {
             statuses.push({ status: "COMPLETED" });
+            continue;
+          }
+
+          if (task.type === "SELF_ASSESSMENT" && response.payload.checked) {
+            statuses.push({ status: "COMPLETED" });
+            continue;
+          }
+
+          if (task.type === "INPUT") {
+            const nonOptionalInputCount = task.inputs.filter(
+              (input) => !input.optional
+            ).length;
+
+            const nonFalsyInputValueCount = Object.values(
+              response.payload
+            ).filter((input) => !!input).length;
+
+            if (nonFalsyInputValueCount === nonOptionalInputCount) {
+              statuses.push({ status: "COMPLETED" });
+              continue;
+            }
+          }
+
+          statuses.push({ status: "EDITING" });
+          continue;
+        }
+
+        if (locked) {
+          statuses.push({ status: "LOCKED" });
+          continue;
+        }
+
+        if (!task.constraint) {
+          statuses.push({ status: "INCOMPLETE" });
+          continue;
+        }
+
+        if (task.constraint.type === "DELAY") {
+          if (!earliestCreatedAt) {
+            statuses.push({ status: "LOCKED" });
+            locked = true;
+            continue;
+          }
+
+          const lockedUntil = earliestCreatedAt + task.constraint.ms;
+
+          if (Date.now() < lockedUntil) {
+            statuses.push({
+              status: "LOCKED",
+              until: lockedUntil,
+            });
+            locked = true;
             continue;
           }
         }
 
-        statuses.push({ status: "EDITING" });
-        continue;
-      }
+        if (task.constraint.type === "TIMESTAMP") {
+          if (Date.now() < task.constraint.ts) {
+            statuses.push({
+              status: "LOCKED",
+              until: task.constraint.ts,
+            });
+            locked = true;
+            continue;
+          }
+        }
 
-      if (locked) {
-        statuses.push({ status: "LOCKED" });
-        continue;
-      }
-
-      if (!task.constraint) {
         statuses.push({ status: "INCOMPLETE" });
-        continue;
+        earliestCreatedAt = null;
+        locked = false;
       }
-
-      if (task.constraint.type === "DELAY") {
-        if (!earliestCreatedAt) {
-          statuses.push({ status: "LOCKED" });
-          locked = true;
-          continue;
-        }
-
-        const lockedUntil = earliestCreatedAt + task.constraint.ms;
-
-        if (Date.now() < lockedUntil) {
-          statuses.push({
-            status: "LOCKED",
-            remainingTime: lockedUntil - Date.now(),
-          });
-          locked = true;
-          continue;
-        }
-      }
-
-      if (task.constraint.type === "TIMESTAMP") {
-        if (Date.now() < task.constraint.ts) {
-          statuses.push({
-            status: "LOCKED",
-            remainingTime: task.constraint.ts - Date.now(),
-          });
-          locked = true;
-          continue;
-        }
-      }
-
-      statuses.push({ status: "INCOMPLETE" });
-      earliestCreatedAt = null;
-      locked = false;
-    }
-
-    const result = [];
-    for (const playlist of playlists) {
-      result.push({
-        ...playlist,
-        tasks: playlist.tasks.map((index) => ({
-          ...tasks[index],
-          ...statuses[index],
-        })),
-      });
     }
 
     return result;
@@ -262,14 +244,6 @@ const modulesSlice = createSlice({
             colour: item.colour,
             desc: item.desc,
             difficulty: item.difficulty,
-            enrollments: item.enrollments.map((enrollment) => ({
-              id: enrollment.id,
-              responses: enrollment.responses.map((response) => ({
-                payload: response.payload,
-                createdAt: response.createdAt,
-                completed: response.completed,
-              })),
-            })),
 
             playlists: item.playlists.map((playlist) => ({
               name: playlist.name,
@@ -277,61 +251,19 @@ const modulesSlice = createSlice({
                 magnitude: playlist.duration.magnitude,
                 unit: playlist.duration.unit,
               },
-              tasks: playlist.tasks,
+              tasks: playlist.tasks.map((task) => ({
+                id: new Realm.BSON.ObjectId().toString(),
+                type: task.type,
+                icon: task.icon,
+                name: task.name,
+                desc: task.desc,
+                inputs: task.inputs,
+                constraint: task.constraint,
+                video: task.video,
+              })),
             })),
-
-            tasks: item.tasks.map((task) => ({
-              id: new Realm.BSON.ObjectId(
-                Realm.BSON.ObjectId.generate()
-              ).toString(),
-              type: task.type,
-              icon: task.icon,
-              name: task.name,
-              desc: task.desc,
-              inputs: task.inputs,
-              constraint: task.constraint,
-            })),
-
-            _trigger: 0,
           };
         }
-      })
-      .addCase(enrollToModule.fulfilled, (state, action) => {
-        if (state.status !== "fulfilled" || !action.payload) {
-          return;
-        }
-
-        state.items[action.payload.moduleId].enrollments.push({
-          id: action.payload.id,
-          responses: action.payload.responses.map((response) => ({
-            payload: response.payload,
-            createdAt: response.createdAt,
-            completed: response.completed,
-          })),
-        });
-      })
-      .addCase(saveResponse.fulfilled, (state, action) => {
-        if (state.status !== "fulfilled") {
-          return;
-        }
-
-        const {
-          moduleId,
-          enrollmentIndex,
-          taskIndex,
-          response,
-        } = action.payload;
-
-        state.items[moduleId].enrollments[enrollmentIndex].responses[
-          taskIndex
-        ] = response;
-      })
-      .addCase(triggerLockRecomputation, (state, action) => {
-        if (state.status !== "fulfilled") {
-          return;
-        }
-
-        state.items[action.payload]._trigger++;
       })
       .addCase(loadModules.pending, (state) => {
         state.status = "pending";
@@ -345,3 +277,107 @@ const modulesSlice = createSlice({
 });
 
 export const modulesReducer = modulesSlice.reducer;
+
+const enrollmentsSlice = createSlice({
+  name: "enrollments",
+  initialState: [],
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadModules.fulfilled, (state, action) => {
+        for (const item of action.payload) {
+          if (item.enrolled) {
+            state.push(item.id);
+          }
+        }
+      })
+      .addCase(enrollToModule.fulfilled, (state, action) => {
+        if (!action.payload) {
+          return;
+        }
+
+        state.push(action.payload);
+      });
+  },
+});
+
+export const enrollmentsReducer = enrollmentsSlice.reducer;
+
+const responsesSlice = createSlice({
+  name: "responses",
+  initialState: {},
+
+  extraReducers: (builder) => {
+    const insertResponses = function (state, responses) {
+      for (const {
+        id,
+        moduleId,
+        playlistIndex,
+        taskIndex,
+        payload,
+      } of responses) {
+        let item = state[moduleId];
+        if (!item) {
+          item = state[moduleId] = [];
+        }
+
+        if (!item[playlistIndex]) {
+          item[playlistIndex] = [];
+        }
+
+        item[playlistIndex][taskIndex] = {
+          id: item[playlistIndex][taskIndex]?.id || id,
+          payload,
+        };
+      }
+    };
+
+    builder
+      .addCase(loadModules.fulfilled, (state, action) => {
+        for (const item of action.payload) {
+          if (item.enrolled) {
+            state[item.id] = [];
+          }
+
+          insertResponses(state, item.responses);
+        }
+      })
+      .addCase(enrollToModule.fulfilled, (state, action) => {
+        if (!action.payload) {
+          return;
+        }
+
+        state[action.payload] = [];
+      })
+      .addCase(getResponses.fulfilled, (state, action) =>
+        insertResponses(state, action.payload)
+      )
+      .addCase(saveResponse.fulfilled, (state, action) =>
+        insertResponses(state, [action.payload])
+      );
+  },
+});
+
+export const responsesReducer = responsesSlice.reducer;
+
+const lockInvalidatorsSlice = createSlice({
+  name: "_lockInvalidators",
+  initialState: {},
+
+  reducers: {
+    invalidateLocks: (state, action) => {
+      state[action.payload]++;
+    },
+  },
+
+  extraReducers: (builder) => {
+    builder.addCase(loadModules.fulfilled, (state, action) => {
+      for (const item of action.payload) {
+        state[item.id] = 0;
+      }
+    });
+  },
+});
+
+export const { invalidateLocks } = lockInvalidatorsSlice.actions;
+export const lockInvalidatorsReducer = lockInvalidatorsSlice.reducer;

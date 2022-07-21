@@ -3,9 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams, Redirect, useRouteMatch, Route } from "react-router-dom";
 import { IonRouterOutlet, IonPage, IonContent, IonSpinner } from "@ionic/react";
 
-import EnrollmentsList from "./EnrollmentsList";
 import ModuleContents from "./ModuleContents";
-import EnrollmentIndexGuard from "./EnrollmentIndexGuard";
 import PlaylistAndTaskIndexGuard from "./PlaylistAndTaskIndexGuard";
 import PlaylistPlayer from "./PlaylistPlayer";
 import {
@@ -14,11 +12,14 @@ import {
   selectModulesStatus,
   enrollToModule,
 } from "../slice";
+import * as RealmController from "../../controllers/realm";
 import XBHeader from "../../util/XBHeader";
 
 const Module = function () {
   const { path } = useRouteMatch();
   const { moduleId } = useParams();
+
+  const dispatch = useDispatch();
 
   // Fetch modules if not fetched
 
@@ -31,29 +32,19 @@ const Module = function () {
 
   // Enroll
 
-  const xbModule = useSelector((state) => selectModuleById(state, moduleId));
   const [enrollmentStatus, setEnrollmentStatus] = React.useState("idle");
-  const dispatch = useDispatch();
-
   React.useEffect(() => {
     const automaticallyEnroll = async function () {
-      // Either not loaded, or not found
-
-      if (!xbModule) {
-        return;
-      }
-
-      // Already enrolled
-
-      if (xbModule.enrollments.length) {
-        setEnrollmentStatus("fulfilled");
-        return;
-      }
-
       setEnrollmentStatus("pending");
       try {
         await dispatch(enrollToModule(moduleId)).unwrap();
       } catch (error) {
+        // Module not found, handled below
+
+        if (error instanceof RealmController.ModuleNotFoundError) {
+          return;
+        }
+
         setEnrollmentStatus("rejected");
         console.log(error);
         return;
@@ -63,10 +54,11 @@ const Module = function () {
     };
 
     automaticallyEnroll();
-  }, [moduleId, xbModule]);
+  }, [moduleId]);
 
   // TODO: Error pages, redirect to 404
 
+  const xbModule = useSelector((state) => selectModuleById(state, moduleId));
   if (modulesStatus === "fulfilled" && !xbModule) {
     return <Redirect to="/move" />;
   }
@@ -90,25 +82,15 @@ const Module = function () {
         ) : (
           <IonContent>
             <IonRouterOutlet>
-              <Route path={path} render={() => <EnrollmentsList />} exact />
+              <Route path={path} render={() => <ModuleContents />} exact />
               <Route
-                path={`${path}/:enrollmentIndex`}
+                path={`${path}/:playlistIndex/:taskIndex`}
                 render={() => (
-                  <EnrollmentIndexGuard>
-                    <ModuleContents />
-                  </EnrollmentIndexGuard>
+                  <PlaylistAndTaskIndexGuard>
+                    <PlaylistPlayer />
+                  </PlaylistAndTaskIndexGuard>
                 )}
                 exact
-              />
-              <Route
-                path={`${path}/:enrollmentIndex/:playlistIndex/:taskIndex`}
-                render={() => (
-                  <EnrollmentIndexGuard>
-                    <PlaylistAndTaskIndexGuard>
-                      <PlaylistPlayer />
-                    </PlaylistAndTaskIndexGuard>
-                  </EnrollmentIndexGuard>
-                )}
               />
             </IonRouterOutlet>
           </IonContent>

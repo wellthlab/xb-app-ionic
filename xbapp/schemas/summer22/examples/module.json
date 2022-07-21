@@ -8,74 +8,74 @@
     {
       "duration": { "magnitude": 1, "unit": "day" },
       "name": "Day 1",
-      "tasks": [0]
-    },
-    {
-      "duration": { "magnitude": 1, "unit": "day" },
-      "name": "Day 2",
-      "tasks": [1, 2]
-    }
-  ],
-  "tasks": [
-    {
-      "type": "INPUT",
-      "icon": "MEASURE",
-      "name": "Week 1 Baseline Measurements",
-      "inputs": [
+      "tasks": [
         {
-          "type": "number",
-          "label": "Resting heart rate (bpm):"
+          "type": "INPUT",
+          "icon": "MEASURE",
+          "name": "Week 1 Baseline Measurements",
+          "inputs": [
+            {
+              "type": "number",
+              "label": "Resting heart rate (bpm):"
+            }
+          ]
         }
       ]
     },
     {
-      "type": "SELF_ASSESSMENT",
-      "icon": "ADVICE",
-      "name": "Hunger Hack",
-      "desc": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water.",
-      "constraint": {
-        "type": "DELAY",
-        "ms": 86400000
-      }
-    },
-    {
-      "type": "INPUT",
-      "icon": "QUESTIONNAIRE",
-      "name": "Reflection",
-      "inputs": [
+      "duration": { "magnitude": 1, "unit": "day" },
+      "name": "Day 2",
+      "tasks": [
         {
-          "type": "text",
-          "label": "What does \"almost full\" feel like?",
-          "optional": true
+          "type": "SELF_ASSESSMENT",
+          "icon": "ADVICE",
+          "name": "Hunger Hack",
+          "desc": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water.",
+          "constraint": {
+            "type": "DELAY",
+            "ms": 86400000
+          }
         },
         {
-          "label": "What does \"full\" feel like?",
-          "type": "text"
-        },
-        {
-          "label": "Did you stop at \"almost full\" or keep going?",
-          "options": ["Stopped", "Kept going"],
-          "type": "select"
-        },
-        {
-          "label": "Did you eat past \"full\"? A little? A lot? ",
-          "type": "select",
-          "options": ["Stopped", "Kept going a little", "A lot"]
-        },
-        {
-          "options": ["Yes", "No"],
-          "type": "select",
-          "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
-        },
-        {
-          "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-          "type": "text"
-        },
-        {
-          "type": "slider",
-          "range": [5, 60],
-          "step": 5,
-          "label": "When did you start to feel hungry again?"
+          "type": "INPUT",
+          "icon": "QUESTIONNAIRE",
+          "name": "Reflection",
+          "inputs": [
+            {
+              "type": "text",
+              "label": "What does \"almost full\" feel like?",
+              "optional": true
+            },
+            {
+              "label": "What does \"full\" feel like?",
+              "type": "text"
+            },
+            {
+              "label": "Did you stop at \"almost full\" or keep going?",
+              "options": ["Stopped", "Kept going"],
+              "type": "select"
+            },
+            {
+              "label": "Did you eat past \"full\"? A little? A lot? ",
+              "type": "select",
+              "options": ["Stopped", "Kept going a little", "A lot"]
+            },
+            {
+              "options": ["Yes", "No"],
+              "type": "select",
+              "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
+            },
+            {
+              "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+              "type": "text"
+            },
+            {
+              "type": "slider",
+              "range": [5, 60],
+              "step": 5,
+              "label": "When did you start to feel hungry again?"
+            }
+          ]
         }
       ]
     }

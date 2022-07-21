@@ -9,9 +9,10 @@ import {
   lockClosedOutline,
   pencilOutline,
   scaleOutline,
+  flaskOutline,
 } from "ionicons/icons";
 
-import { triggerLockRecomputation } from "../../slice";
+import { invalidateLocks } from "../../slice";
 
 function getTaskIcon(status, icon) {
   if (status === "COMPLETED") {
@@ -35,15 +36,19 @@ function getTaskIcon(status, icon) {
   if (icon === "MEASURE") {
     return scaleOutline;
   }
+
+  if (icon === "EXPERIMENT") {
+    return flaskOutline;
+  }
 }
 
-const conversions = {
-  hours: 60 * 60,
-  minutes: 60,
-  seconds: 1,
-};
-
 const msToDHMS = function (ms) {
+  const conversions = {
+    hours: 60 * 60,
+    minutes: 60,
+    seconds: 1,
+  };
+
   const result = {};
 
   let delta = ms / 1000;
@@ -67,57 +72,46 @@ const TaskListItem = function ({
   name,
   status,
   disabled,
-  remainingTime,
+  lockedUntil,
   ...props
 }) {
   const { moduleId } = useParams();
 
-  const [localRemainingTime, setLocalRemainingTime] = React.useState(
-    remainingTime
+  const [remainingTime, setRemainingTime] = React.useState(
+    lockedUntil ? lockedUntil - Date.now() : null
   );
-
-  const callbackRef = React.useRef();
-  const intervalIdRef = React.useRef();
 
   const dispatch = useDispatch();
 
+  // Set interval whenever lockedUntil prop changes
+
   React.useEffect(() => {
-    if (!localRemainingTime) {
+    // If there isn't a ts to lock until, or it's already in the past, do nothing
+
+    if (!lockedUntil || lockedUntil - Date.now() <= 0) {
       return;
     }
 
-    callbackRef.current = () => {
-      const newTime = localRemainingTime - 1000;
-      if (newTime <= 0) {
-        dispatch(triggerLockRecomputation(moduleId));
+    const intervalId = setInterval(() => {
+      const newRemainingTime = lockedUntil - Date.now();
+      if (newRemainingTime <= 0) {
+        dispatch(invalidateLocks(moduleId));
         console.log("Countdown reaches 0, clearing interval");
-        clearInterval(intervalIdRef.current);
+        clearInterval(intervalId);
       }
 
-      setLocalRemainingTime(newTime);
-    };
-  }, [localRemainingTime]);
-
-  React.useEffect(() => {
-    if (!remainingTime || remainingTime <= 0) {
-      return;
-    }
-
-    setLocalRemainingTime(remainingTime);
-
-    const intervalId = (intervalIdRef.current = setInterval(() => {
-      callbackRef.current?.();
-    }, 1000));
+      setRemainingTime(newRemainingTime);
+    }, 1000);
 
     return () => {
-      console.log("remainingTime changes, clearing interval");
+      console.log("lockedUntil changes, clearing interval");
       clearInterval(intervalId);
     };
-  }, [remainingTime]);
+  }, [lockedUntil]);
 
   let formattedTime = null;
-  if (localRemainingTime && localRemainingTime > 0) {
-    const converted = msToDHMS(localRemainingTime);
+  if (remainingTime && remainingTime > 0) {
+    const converted = msToDHMS(remainingTime);
     formattedTime =
       converted.hours + ":" + converted.minutes + ":" + converted.seconds;
   }
@@ -129,9 +123,7 @@ const TaskListItem = function ({
         color={status === "COMPLETED" ? "success" : undefined}
         icon={getTaskIcon(status, icon)}
       />
-      <IonLabel>
-        {name} {formattedTime}
-      </IonLabel>
+      <IonLabel>{formattedTime || name}</IonLabel>
     </IonItem>
   );
 };
