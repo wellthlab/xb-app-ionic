@@ -52,7 +52,9 @@ const ExperimentInGroup = (props) => {
           <IonText color="success">Great, you've joined a new team!</IonText>
         </div>
         <div className="centering">
-          <IonButton routerLink="/box/move">Go to your Team</IonButton>
+          <IonButton onClick={() => (window.location.href = "/box/move")}>
+            Go to your Team
+          </IonButton>
         </div>
       </>
     );

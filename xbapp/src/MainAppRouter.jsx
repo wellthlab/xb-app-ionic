@@ -62,11 +62,11 @@ function getAppOutlet(teamsLoaded) {
           component={CreateTeam}
           exact={true}
         />
-        <Route
+        {/*<Route
           path="/register"
           render={() => <Redirect to="/box/move" />}
           exact={true}
-        />
+        />*/}
         <Route path="/account" component={Account} exact={true} />
         <Route
           path="/forgot-password"

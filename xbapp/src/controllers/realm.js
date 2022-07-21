@@ -22,8 +22,8 @@ const clean = function (result) {
 };
 
 const wrap = function (method) {
-  const db = REALM.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
   return async (...args) => {
+    const db = REALM.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
     return clean(await method(db, ...args));
   };
 };
