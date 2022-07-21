@@ -58,6 +58,7 @@ const OptionTabs = (props) => {
       return;
     }
 
+    setShowDisclaimerModal(false);
     props.LOG_OUT({});
     localStorage.clear();
     history.push("/");

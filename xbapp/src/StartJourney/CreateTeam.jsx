@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { IonContent, IonPage, IonInput, IonButton } from "@ionic/react";
+import {
+  IonContent,
+  IonPage,
+  IonInput,
+  IonButton,
+  IonIcon,
+} from "@ionic/react";
+import { checkmarkCircleOutline } from "ionicons/icons";
 import XBHeader from "../util/XBHeader";
 
 import { addControllersProp } from "../util_model/controllers";
@@ -48,7 +55,7 @@ const CreateTeam = (props) => {
       <>
         <div className="done">
           <h1>
-            <ion-icon name="checkmark-circle-outline"></ion-icon> Great!
+            <IonIcon icon={checkmarkCircleOutline} /> Great!
           </h1>
           <p className="centering">
             You've created a new team! Let's get <strong>started</strong>.
