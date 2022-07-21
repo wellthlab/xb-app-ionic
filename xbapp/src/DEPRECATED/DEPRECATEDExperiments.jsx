@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router";
 import {
   IonContent,
   IonPage,
@@ -64,10 +63,8 @@ export default connect(
   }
 )(
   addControllersProp(
-    withRouter(
-      WithXBSlice(ExpList, "teams", (props) => {
-        props.controllers.LOAD_TEAMS_IF_REQD();
-      })
-    )
+    WithXBSlice(ExpList, "teams", (props) => {
+      props.controllers.LOAD_TEAMS_IF_REQD();
+    })
   )
 );

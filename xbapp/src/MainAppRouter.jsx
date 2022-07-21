@@ -2,7 +2,7 @@ import { Switch } from "react-router";
 import { Redirect, Route } from "react-router-dom";
 import Login from "./Account/Login";
 import Feed from "./Feed/Feed";
-import Notifications from "./Account/Notifications";
+// import Notifications from "./Account/Notifications";
 import OptionTabs from "./Account/Settings";
 import MovePage from "./Boxes/Move";
 import MovementPicker from "./MovementPuzzlePicker/MovementPicker";
@@ -11,14 +11,10 @@ import JoinTeam from "./StartJourney/JoinTeam";
 import CreateTeam from "./StartJourney/CreateTeam";
 import Account from "./Account/Account";
 import ForgotPassword from "./Account/ForgotPassword";
+import { ModulesPicker, Module } from "./move";
 
-import Home from "./Home";
 import PlaylistDetail from "./Playlists/ModuleDetail";
-import PlaylistActive from "./Playlists/ActiveModules";
-import PlaylistPlayer from "./Playlists/PlaylistPlayer";
-import ModuleSubscription from "./Playlists/ModulePicker";
 import UserProfile from "./UserProfile/SetUserProfile";
-import HistoricPlaylistEntry from "./Playlists/PlaylistPreviousDay";
 import ChangeTeam from "./StartJourney/ChangeTeam";
 import JournalMainPage from "./Journal/Journal22";
 import AddNote from "./Journal/AddNote";
@@ -46,7 +42,7 @@ function getAppOutlet(teamsLoaded) {
           <Route path="/" component={Login} exact={true} />
         )}
         <Route path="/feed" component={Feed} exact={true} />
-        <Route path="/notifications" component={Notifications} exact={true} />
+        {/*<Route path="/notifications" component={Notifications} exact={true} />*/}
         <Route path="/settings" component={OptionTabs} exact={true} />
         <Route path="/box/move" component={MovePage} exact={true} />
         <Route
@@ -77,7 +73,9 @@ function getAppOutlet(teamsLoaded) {
           component={ForgotPassword}
           exact={true}
         />
-        <Route path="/move" component={Home} exact={true} />
+        <Route path="/move" component={ModulesPicker} exact />
+        <Route path="/move/:moduleId" component={Module} />
+        {/*<Route path="/move" component={Home} exact={true} />
         <Route
           path="/move/task-detail/:mode/:teamId/:moduleId/:progress"
           component={PlaylistDetail}
@@ -93,14 +91,9 @@ function getAppOutlet(teamsLoaded) {
           component={PlaylistPlayer}
           exact={true}
         />
-        <Route
-          path="/library/playlists/player/:mode/:teamId/:moduleId/:playlistIdx/:progress/:startingTask"
-          component={PlaylistPlayer}
-          exact={true}
-        />
-        <Route
-          path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
-          component={PlaylistDetail}
+                <Route
+          path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
+          component={HistoricPlaylistEntry}
           exact={true}
         />
         <Route
@@ -108,14 +101,15 @@ function getAppOutlet(teamsLoaded) {
           component={ModuleSubscription}
           exact={true}
         />
+        */}
         <Route
-          path="/settings/user-profile"
-          component={UserProfile}
+          path="/library/playlists/detail/:mode/:teamId/:moduleId/:progress"
+          component={PlaylistDetail}
           exact={true}
         />
         <Route
-          path="/move/task-player-historic/:teamId/:moduleId/:playlistIdx/:progress"
-          component={HistoricPlaylistEntry}
+          path="/settings/user-profile"
+          component={UserProfile}
           exact={true}
         />
         <Route

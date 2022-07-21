@@ -213,12 +213,9 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
       />
 
       {/* DISPLAY EXPERIMENT TITLE */}
-      <XBInfo
-        title={<strong>{group.experiment.info.title}</strong>}
-        desc={
-          <Instructions html={group.experiment.current_stage.instructions} />
-        }
-      />
+      <XBInfo title={<strong>{group.experiment.info.title}</strong>}>
+        <Instructions html={group.experiment.current_stage.instructions} />
+      </XBInfo>
 
       {/* DISPLAY TEAM NAME AND DETAILS */}
       <IonCard>
@@ -262,7 +259,7 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
             </IonCol>
           </IonRow>
 
-          <IonRow>
+          {/*<IonRow>
             <IonCol>
               <IonItem style={{ "--padding-start": "5px" }} lines="none">
                 <IonGrid
@@ -303,7 +300,7 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
                 </IonGrid>
               </IonItem>
             </IonCol>
-          </IonRow>
+                            </IonRow>*/}
           <IonRow>
             <IonCol className="ion-text-center">
               <IonButton
@@ -320,7 +317,7 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
       </IonCard>
       {/* DISPLAY NOTIFICATION AND ACTION CENTER */}
       {/* TODO: notifications need to be plugged into this */}
-      <IonCard>
+      {/*<IonCard>
         <IonItem lines="none">
           <IonGrid>
             <IonRow>
@@ -335,7 +332,7 @@ const GroupInfo = ({ group, modules, controllers, match }) => {
             </IonRow>
           </IonGrid>
         </IonItem>
-      </IonCard>
+                          </IonCard>*/}
       {/* Exercise disclaimer, has its own IonGrid but looks neater embedded
           in this grid as well */}
       <IonCard>

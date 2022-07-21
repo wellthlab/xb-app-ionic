@@ -20,7 +20,7 @@ import {
   barbellOutline,
   journalOutline,
   libraryOutline,
-  bodyOutline,
+  playOutline,
 } from "ionicons/icons";
 
 // Redux stuff
@@ -146,18 +146,22 @@ const App = ({
                 <IonIcon icon={barbellOutline} />
                 <IonLabel>Team</IonLabel>
               </IonTabButton>
-              <IonTabButton tab={"Journal"} href={"/journal/null/activity"}>
+              {/*<IonTabButton tab={"Journal"} href={"/journal/null/activity"}>
                 <IonIcon icon={journalOutline} />
                 <IonLabel>Journal</IonLabel>
+        </IonTabButton>*/}
+              <IonTabButton
+                tab="Move"
+                href="/move"
+                style={{ "--color-selected": "green" }}
+              >
+                <IonIcon icon={playOutline} />
+                <IonLabel>Go</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="Move" href="/move">
-                <IonIcon icon={bodyOutline} />
-                <IonLabel>Move</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="Library" href="/library">
+              {/*<IonTabButton tab="Library" href="/library">
                 <IonIcon icon={libraryOutline} />
                 <IonLabel>Library</IonLabel>
-              </IonTabButton>
+      </IonTabButton>*/}
               <IonTabButton tab={"Settings"} href={"/settings"}>
                 <IonIcon icon={settingsOutline} />
                 <IonLabel>Settings</IonLabel>

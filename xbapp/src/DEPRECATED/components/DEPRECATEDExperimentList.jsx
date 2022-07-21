@@ -18,12 +18,6 @@ import {
 } from "@ionic/react";
 import { peopleOutline, alertOutline, todayOutline, add } from "ionicons/icons";
 import { Link } from "react-router-dom";
-import {
-  Plugins,
-  PushNotification,
-  PushNotificationToken,
-  PushNotificationActionPerformed,
-} from "@capacitor/core";
 
 // const { PushNotifications } = Plugins;
 // const INITIAL_STATE = {

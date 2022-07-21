@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router";
+import { useHistory } from "react-router-dom";
 import WithXBSlice from "../util/WithXBSlice";
 import {
   IonContent,
@@ -25,6 +25,8 @@ import GenericModal from "../Info/components/GenericModal";
 import { LOG_OUT } from "../util_model/slices/Account";
 
 const OptionTabs = (props) => {
+  const history = useHistory();
+
   props.controllers.LOAD_TEAMS_IF_REQD();
 
   const [showModal, setShowModal] = useState(false);
@@ -56,9 +58,10 @@ const OptionTabs = (props) => {
       return;
     }
 
+    setShowDisclaimerModal(false);
     props.LOG_OUT({});
     localStorage.clear();
-    props.history.push("/");
+    history.push("/");
   };
 
   if (!props.teams.loaded) {
@@ -164,11 +167,9 @@ export default connect(
   }
 )(
   addControllersProp(
-    withRouter(
-      WithXBSlice(OptionTabs, "teams", (props) => {
-        props.controllers.LOAD_TEAMS_IF_REQD();
-      })
-    )
+    WithXBSlice(OptionTabs, "teams", (props) => {
+      props.controllers.LOAD_TEAMS_IF_REQD();
+    })
   )
 );
 

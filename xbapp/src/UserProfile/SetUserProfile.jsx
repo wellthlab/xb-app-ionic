@@ -14,7 +14,6 @@ import {
   IonList,
 } from "@ionic/react";
 import { saveOutline } from "ionicons/icons";
-import { useHistory } from "react-router";
 
 import { addControllersProp } from "../util_model/controllers";
 import XBHeader from "../util/XBHeader";
