@@ -146,6 +146,10 @@ const App = ({
                 <IonIcon icon={barbellOutline} />
                 <IonLabel>Team</IonLabel>
               </IonTabButton>
+              {/*<IonTabButton tab={"Journal"} href={"/journal/null/activity"}>
+                <IonIcon icon={journalOutline} />
+                <IonLabel>Journal</IonLabel>
+        </IonTabButton>*/}
               <IonTabButton
                 tab="Move"
                 href="/move"
@@ -154,6 +158,10 @@ const App = ({
                 <IonIcon icon={playOutline} />
                 <IonLabel>Go</IonLabel>
               </IonTabButton>
+              {/*<IonTabButton tab="Library" href="/library">
+                <IonIcon icon={libraryOutline} />
+                <IonLabel>Library</IonLabel>
+      </IonTabButton>*/}
               <IonTabButton tab={"Settings"} href={"/settings"}>
                 <IonIcon icon={settingsOutline} />
                 <IonLabel>Settings</IonLabel>
