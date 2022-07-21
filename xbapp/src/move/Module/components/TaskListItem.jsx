@@ -10,6 +10,7 @@ import {
   pencilOutline,
   scaleOutline,
   flaskOutline,
+  cameraOutline,
 } from "ionicons/icons";
 
 import { invalidateLocks } from "../../slice";
@@ -30,15 +31,21 @@ function getTaskIcon(status, icon) {
   if (icon === "ADVICE") {
     return schoolOutline;
   }
+
   if (icon === "QUESTIONNAIRE") {
     return journalOutline;
   }
+
   if (icon === "MEASURE") {
     return scaleOutline;
   }
 
   if (icon === "EXPERIMENT") {
     return flaskOutline;
+  }
+
+  if (icon === "CAMERA") {
+    return cameraOutline;
   }
 }
 

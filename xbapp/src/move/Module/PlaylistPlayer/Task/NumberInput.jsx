@@ -1,23 +1,17 @@
 import React from "react";
-import { IonInput } from "@ionic/react";
 
-const NumberInput = function ({ value, onChange, placeholder }) {
+import TextInput from "./components/TextInput";
+
+const NumberInput = function ({ value, onIonChange, ...others }) {
   const handleChange = function (e) {
     const newValue = e.detail.value;
 
-    if (/^[0-9]*$/.test(newValue) && onChange) {
-      onChange(parseInt(newValue, 10));
+    if (/^[0-9]*$/.test(newValue) && onIonChange) {
+      onIonChange(parseInt(newValue, 10));
     }
   };
 
-  return (
-    <IonInput
-      placeholder={placeholder}
-      type="number"
-      value={value}
-      onIonChange={handleChange}
-    />
-  );
+  return <TextInput value={value} onIonChange={handleChange} {...others} />;
 };
 
 export default NumberInput;

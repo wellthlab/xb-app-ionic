@@ -1,15 +1,16 @@
 import React from "react";
-import { IonInput, IonTitle, IonIcon } from "@ionic/react";
+import { IonTitle, IonIcon } from "@ionic/react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { heartOutline } from "ionicons/icons";
 
+import TextInput from "../components/TextInput";
 import "./HeartRate.scss";
 
-const HeartRateTask = ({ value, onChange }) => {
-  const updateBeats = function (e) {
+const HeartRateTask = ({ value, onIonChange, ...others }) => {
+  const handleChange = function (e) {
     var beats = e.detail.value;
-    if (onChange) {
-      onChange(beats * 3);
+    if (onIonChange) {
+      onIonChange(beats * 3);
     }
   };
 
@@ -53,14 +54,7 @@ const HeartRateTask = ({ value, onChange }) => {
           </CountdownCircleTimer>
         </div>
 
-        <p>How many beats did you count?</p>
-        <IonInput
-          type="number"
-          placeholder="Beats"
-          value={value / 3}
-          onIonChange={updateBeats}
-          countdownID="heartrate"
-        />
+        <TextInput value={value / 3} onIonChange={handleChange} {...others} />
       </div>
     </>
   );

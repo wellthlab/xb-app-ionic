@@ -6,19 +6,28 @@ import {
   IonCardTitle,
   IonCardHeader,
   IonCardContent,
-  IonItem,
-  IonLabel,
   IonGrid,
   IonRow,
   IonCol,
-  IonInput,
 } from "@ionic/react";
 
 import Video from "./Video";
 import SelfAssessmentInput from "./SelfAssessmentInput";
 import HeartRateInput from "./HeartRateInput";
+import NumberInput from "./NumberInput";
+import SelectInput from "./SelectInput";
+import SliderInput from "./SliderInput";
+import TextInput from "./components/TextInput";
 import NavigationButton from "../../components/NavigationButton";
 import { selectPlaylists, selectResponse } from "../../../slice";
+
+const inputsMap = {
+  heartrate: HeartRateInput,
+  text: TextInput,
+  number: NumberInput,
+  select: SelectInput,
+  slider: SliderInput,
+};
 
 const createInitialValues = function (task) {
   if (task.type === "INPUT") {
@@ -82,27 +91,22 @@ const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
           )}
           {task.type !== "INPUT"
             ? null
-            : task.inputs.map(({ label, optional, type }) =>
-                type === "heartrate" ? (
-                  <HeartRateInput
-                    key={label}
-                    value={values[label]}
-                    onIonChange={createChangeHandler(label)}
-                  />
-                ) : (
-                  <IonItem key={label}>
-                    <IonLabel position="floating">
-                      {label} {!optional ? "*" : null}
-                    </IonLabel>
-                    <IonInput
+            : task.inputs.map(
+                ({ label, optional, type, options, range, step }) => {
+                  const Input = inputsMap[type];
+                  return (
+                    <Input
+                      key={label}
+                      label={label}
+                      optional={optional}
                       value={values[label]}
-                      onIonChange={createChangeHandler(
-                        label,
-                        (e) => e.detail.value
-                      )}
+                      options={options}
+                      range={range}
+                      step={step}
+                      onIonChange={createChangeHandler(label)}
                     />
-                  </IonItem>
-                )
+                  );
+                }
               )}
         </IonCardContent>
       </IonCard>
