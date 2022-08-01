@@ -43,9 +43,9 @@ A collection of tasks. By default, there is no specific order in which tasks nee
 
 A set of constraints that need to be met before a task can be viewed. At the moment, a task can only have a single constraint of the below types, however, future iterations might allow multiple unique constraints. Constraint types are:
 
-- `TIMESTAMP`: Requires a specific point in time to be reached until a task can be viewed. For example, we want to require users to measure their heartbeats on the very first day of the relaunch, which is the 25th of July 2022.
+- `TIMESTAMP`: Requires a specific point in time to be reached before a task can be viewed. For example, we want to require users to measure their heartbeats on the very first day of the relaunch, which is the 25th of July 2022.
 
-- `DELAY`: Requires a minimum amount of time to elapse until a task can be viewed. For example, we want users to try a new exercise 2 hours after measuring their heartbeats. The delay calculation starts as soon as a user view a task that is not locked.
+- `DELAY`: Requires a minimum amount of time to elapse before a task can be viewed. For example, we want users to try a new exercise 2 hours after measuring their heartbeats. The delay calculation starts as soon as a user view a task that is not locked.
 
 ### Task status
 
