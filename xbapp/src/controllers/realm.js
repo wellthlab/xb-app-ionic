@@ -1,6 +1,6 @@
 import * as Realm from "realm-web";
 
-const REALM = Realm.getApp("xbframework-yvulh");
+import getXBClient from "../util_model/client";
 
 const clean = function (result) {
   if (Array.isArray(result)) {
@@ -23,8 +23,9 @@ const clean = function (result) {
 
 const wrap = function (method) {
   return async (...args) => {
-    const db = REALM.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
-    return clean(await method(db, ...args));
+    const app = getXBClient().realm;
+    const db = app.currentUser.mongoClient("mongodb-atlas").db("SUMMER22");
+    return clean(await method(db, app, ...args));
   };
 };
 
@@ -32,14 +33,14 @@ export const idToTs = function (id) {
   return new Realm.BSON.ObjectId(id).getTimestamp().getTime();
 };
 
-export const getModules = wrap(async (db) => {
+export const getModules = wrap(async (db, app) => {
   const modules = await db.collection("modules").find();
   const enrollments = await db.collection("enrollments").find({
-    userId: REALM.currentUser.id,
+    userId: app.currentUser.id,
   });
 
   const responses = await db.collection("responses").find({
-    userId: REALM.currentUser.id,
+    userId: app.currentUser.id,
   });
 
   const enrolledIds = new Set(enrollments.map(({ moduleId }) => moduleId));
@@ -64,7 +65,7 @@ export const getModules = wrap(async (db) => {
   });
 });
 
-export const enrollToModule = wrap(async (db, moduleId) => {
+export const enrollToModule = wrap(async (db, app, moduleId) => {
   const xbModule = await db.collection("modules").findOne({
     _id: Realm.BSON.ObjectId(moduleId),
   });
@@ -75,7 +76,7 @@ export const enrollToModule = wrap(async (db, moduleId) => {
 
   const enrollment = await db.collection("enrollments").findOne({
     moduleId,
-    userId: REALM.currentUser.id,
+    userId: app.currentUser.id,
   });
 
   if (enrollment) {
@@ -84,24 +85,24 @@ export const enrollToModule = wrap(async (db, moduleId) => {
 
   return db.collection("enrollments").insertOne({
     moduleId,
-    userId: REALM.currentUser.id,
+    userId: app.currentUser.id,
   });
 });
 
 export class ModuleNotFoundError extends Error {}
 
-export const getResponses = wrap(async (db, moduleId) => {
+export const getResponses = wrap(async (db, app, moduleId) => {
   return db.collection("responses").find({
     moduleId,
-    userId: REALM.currentUser.id,
+    userId: app.currentUser.id,
   });
 });
 
 export const saveResponse = wrap(
-  async (db, payload, moduleId, playlistIndex, taskIndex) => {
+  async (db, app, payload, moduleId, playlistIndex, taskIndex) => {
     const { upsertedId } = await db.collection("responses").updateOne(
       {
-        userId: REALM.currentUser.id,
+        userId: app.currentUser.id,
         moduleId,
         playlistIndex: parseInt(playlistIndex, 10),
         taskIndex: parseInt(taskIndex, 10),
