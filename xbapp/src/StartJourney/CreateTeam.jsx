@@ -30,7 +30,7 @@ const CreateTeam = (props) => {
     // Start date defaults to today
     //var startDate = new Date().toISOString().substring(0, 10);
     // Start date defaults to 1st of nov
-    var startDate = "2022-02-14";
+    var startDate = new Date();
     props.controllers.CREATE_TEAM(name, desc, expid, startDate);
   }
 
