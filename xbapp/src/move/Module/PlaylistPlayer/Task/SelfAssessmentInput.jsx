@@ -11,7 +11,9 @@ const SelfAssessmentInput = function ({ value, onIonChange }) {
   return (
     <IonItem lines="none">
       <IonCheckbox slot="start" checked={value} onIonChange={handleChange} />
-      <IonLabel>I have done/read the instructions for this task</IonLabel>
+      <IonLabel className="ion-text-wrap">
+        I have done/read the instructions for this task
+      </IonLabel>
     </IonItem>
   );
 };

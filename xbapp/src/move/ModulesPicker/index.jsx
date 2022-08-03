@@ -8,7 +8,7 @@ import XBHeader from "../../util/XBHeader";
 const ModulesPicker = function () {
   return (
     <IonPage>
-      <XBHeader title="Move" />
+      <XBHeader title="Go" />
       <IonContent>
         <ExperimentInfo />
         <ModulesList />
