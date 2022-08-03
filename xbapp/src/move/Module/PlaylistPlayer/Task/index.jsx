@@ -14,9 +14,9 @@ import {
 import Video from "./Video";
 import SelfAssessmentInput from "./SelfAssessmentInput";
 import HeartRateInput from "./HeartRateInput";
-import NumberInput from "./NumberInput";
 import SelectInput from "./SelectInput";
 import SliderInput from "./SliderInput";
+import NumberInput from "./components/NumberInput";
 import TextInput from "./components/TextInput";
 import NavigationButton from "../../components/NavigationButton";
 import { selectPlaylists, selectResponse } from "../../../slice";
