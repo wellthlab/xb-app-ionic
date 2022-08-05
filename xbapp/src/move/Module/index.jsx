@@ -66,7 +66,7 @@ const Module = function () {
   let content;
 
   if (modulesStatus === "pending" || modulesStatus === "idle") {
-    content = <IonSpinner name="crescent" />;
+    content = <IonSpinner className="center-spin" name="crescent" />;
   } else if (modulesStatus === "rejected") {
     content =
       "Sorry, cannot retrieve active modules at the moment. Please try again";
@@ -76,7 +76,7 @@ const Module = function () {
         <XBHeader title={xbModule.name} colour={xbModule.colour} />
 
         {enrollmentStatus === "pending" || enrollmentStatus === "idle" ? (
-          <IonSpinner name="crescent" />
+          <IonSpinner className="center-spin" name="crescent" />
         ) : enrollmentStatus === "rejected" ? (
           "Sorry, cannot enroll you to this module at the moment. Please try again"
         ) : (

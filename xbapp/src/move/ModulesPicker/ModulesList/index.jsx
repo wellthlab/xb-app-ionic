@@ -32,7 +32,7 @@ const ModulesList = function () {
   }, []);
 
   if (status === "pending" || status === "idle") {
-    return <IonSpinner name="crescent" />;
+    return <IonSpinner className="center-spin" name="crescent" />;
   }
 
   if (status === "rejected") {
