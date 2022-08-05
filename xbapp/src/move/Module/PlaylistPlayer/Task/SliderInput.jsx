@@ -16,10 +16,12 @@ const SliderInput = function ({
   };
 
   return (
-    <IonItem>
-      <IonLabel className="ion-text-wrap" position="stacked">
-        {label} {!optional ? "*" : null}
-      </IonLabel>
+    <div>
+      <IonItem lines="none" style={{ overflow: "visible" }}>
+        <IonLabel className="ion-text-wrap" position="stacked">
+          {label} {!optional ? "*" : null}
+        </IonLabel>
+      </IonItem>
       <IonRange
         max={max}
         min={min}
@@ -27,7 +29,7 @@ const SliderInput = function ({
         onIonChange={handleChange}
         step={step}
       />
-    </IonItem>
+    </div>
   );
 };
 
