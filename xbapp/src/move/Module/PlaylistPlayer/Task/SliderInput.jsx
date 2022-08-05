@@ -6,7 +6,7 @@ const SliderInput = function ({
   value,
   optional,
   onIonChange,
-  range: [max, min],
+  range: [min, max],
   step,
 }) {
   const handleChange = function (e) {
@@ -28,7 +28,12 @@ const SliderInput = function ({
         value={value}
         onIonChange={handleChange}
         step={step}
-      />
+        ticks
+        snaps
+      >
+        <IonLabel slot="start">{min}</IonLabel>
+        <IonLabel slot="end">{max}</IonLabel>
+      </IonRange>
     </div>
   );
 };
