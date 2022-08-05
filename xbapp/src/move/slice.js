@@ -184,6 +184,8 @@ export const selectTaskStatuses = createSelector(
           continue;
         }
 
+        earliestCreatedAt = null;
+
         if (task.constraint.type === "DELAY") {
           if (!earliestCreatedAt) {
             statuses.push({ status: "LOCKED" });
@@ -215,7 +217,6 @@ export const selectTaskStatuses = createSelector(
         }
 
         statuses.push({ status: "INCOMPLETE" });
-        earliestCreatedAt = null;
         locked = false;
       }
     }
