@@ -17,7 +17,7 @@ const SliderInput = function ({
 
   return (
     <IonItem>
-      <IonLabel position="floating">
+      <IonLabel className="ion-text-wrap" position="stacked">
         {label} {!optional ? "*" : null}
       </IonLabel>
       <IonRange
