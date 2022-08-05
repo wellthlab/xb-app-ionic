@@ -17,16 +17,19 @@ const HeartRateTask = ({ value, onIonChange, ...others }) => {
         Find your pulse by firmly gripping your wrist like in the diagram below.
         Count your heartbeats for 20 seconds.
       </p>
-      <img
-        style={{
-          display: "block",
-          maxWidth: "230px",
-          maxHeight: "95px",
-          width: "auto",
-          height: "auto",
-        }}
-        src="assets/heartrate.png"
-      />
+
+      <div id="heartratePage">
+        <img
+          style={{
+            display: "block",
+            maxWidth: "230px",
+            maxHeight: "95px",
+            width: "auto",
+            height: "auto",
+          }}
+          src="assets/heartrate.png"
+        />
+      </div>
 
       <div className="timer">
         <CountdownCircleTimer
