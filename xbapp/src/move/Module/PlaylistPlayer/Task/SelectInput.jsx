@@ -19,7 +19,11 @@ const SelectInput = function ({
       <IonLabel className="ion-text-wrap" position="stacked">
         {label} {!optional ? "*" : null}
       </IonLabel>
-      <IonSelect interface="popover" value={value} onIonChange={handleChange}>
+      <IonSelect
+        interface="action-sheet"
+        value={value}
+        onIonChange={handleChange}
+      >
         {options.map((option) => (
           <IonSelectOption key={option} value={option}>
             {option}
