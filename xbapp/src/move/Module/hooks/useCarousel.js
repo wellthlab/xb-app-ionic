@@ -14,6 +14,10 @@ const useCarousel = function (maxIdx, initialIdx) {
     };
   };
 
+  React.useEffect(() => {
+    setCurrentIdx(initialIdx);
+  }, [initialIdx]);
+
   return [
     currentIdx,
     createChangeIdxHandler(-1),
