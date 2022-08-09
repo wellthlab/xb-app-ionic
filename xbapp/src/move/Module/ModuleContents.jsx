@@ -41,14 +41,6 @@ const ModuleContents = function () {
 
   console.log(taskStatuses);
 
-  let nextPlayableTaskIndex;
-
-  for (let i = 0; i < playlist.tasks.length; i++) {
-    if (taskStatuses[playlistIndex][i].status !== "LOCKED") {
-      nextPlayableTaskIndex = i;
-    }
-  }
-
   return (
     <IonPage>
       <IonContent>
@@ -102,8 +94,8 @@ const ModuleContents = function () {
             <IonButton
               expand="block"
               color="primary"
-              routerLink={`${url}/${playlistIndex}/${nextPlayableTaskIndex}`}
-              disabled={nextPlayableTaskIndex === undefined}
+              routerLink={`${url}/${playlistIndex}/0`}
+              disabled={taskStatuses[playlistIndex][0].status === "LOCKED"}
             >
               <IonIcon icon={playOutline} slot="start" />
               Play
