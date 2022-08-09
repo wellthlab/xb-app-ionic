@@ -107,6 +107,7 @@ interface IPlaylist {
 
 interface ISelfAssessmentTask extends IGenericTask {
   type: "SELF_ASSESSMENT";
+  label?: string;
 }
 
 interface IInstructionalTask extends IGenericTask {
@@ -204,6 +205,7 @@ All task types extend the following keys:
 Self assessment task schema has the extra keys:
 
 - `type`: Must be `SELF_ASSESSMENT`.
+- `label`: Optional checkbox label for users to tick. Defaults to `I have done/read the instructions for this task`
 
 Instructional task schema has the extra keys:
 

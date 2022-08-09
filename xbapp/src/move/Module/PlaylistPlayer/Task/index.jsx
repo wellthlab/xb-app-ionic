@@ -86,6 +86,7 @@ const Task = function ({ taskIndex, onTaskChange, disableNavigation }) {
           {task.type !== "SELF_ASSESSMENT" ? null : (
             <SelfAssessmentInput
               value={values.checked}
+              label={task.label}
               onIonChange={createChangeHandler("checked")}
             />
           )}
