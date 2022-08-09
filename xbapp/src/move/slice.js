@@ -141,7 +141,11 @@ export const selectTaskStatuses = createSelector(
 
         if (response) {
           const createdTs = RealmController.idToTs(response.id);
-          if (!earliestCreatedAt || createdTs < earliestCreatedAt) {
+          if (
+            task.constraint ||
+            !earliestCreatedAt ||
+            createdTs < earliestCreatedAt
+          ) {
             earliestCreatedAt = createdTs;
           }
 
@@ -184,8 +188,6 @@ export const selectTaskStatuses = createSelector(
           continue;
         }
 
-        earliestCreatedAt = null;
-
         if (task.constraint.type === "DELAY") {
           if (!earliestCreatedAt) {
             statuses.push({ status: "LOCKED" });
@@ -216,6 +218,7 @@ export const selectTaskStatuses = createSelector(
           }
         }
 
+        earliestCreatedAt = null;
         statuses.push({ status: "INCOMPLETE" });
         locked = false;
       }
