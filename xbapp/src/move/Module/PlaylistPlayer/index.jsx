@@ -16,7 +16,7 @@ const PlaylistPlayer = function () {
   const playlist = playlists[playlistIndex];
 
   const [taskIndex, prev, next, setTaskIndex] = useCarousel(
-    playlist ? playlist.tasks.length - 1 : 0,
+    playlist.tasks.length - 1,
     parseInt(startTaskIndex, 10)
   );
 
@@ -46,7 +46,7 @@ const PlaylistPlayer = function () {
       prev();
     } else {
       if (taskIndex === playlist.tasks.length - 1) {
-        history.push(`/move/${moduleId}`);
+        history.go(-1);
         return;
       }
 
