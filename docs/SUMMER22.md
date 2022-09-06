@@ -332,6 +332,7 @@ interface IBox {
     type: string;
     duration: number;
     title: string;
+    modules: ObjectId[];
     stages: {
         [key: number]: {
             title: string;
@@ -347,6 +348,7 @@ where:
 -   `type`: The type/short name for the box.
 -   `duration`: The number of days the box should run for.
 -   `title`: The title of the box.
+-   `modules`: The list of module IDs related to this box.
 -   `stages`: An object where each key represents the day relative to a team's creation date when the stage should start, and each value is an object with detail about the stage where:
     -   `title`: The stage title.
     -   `instructions`: The stage instructions.
