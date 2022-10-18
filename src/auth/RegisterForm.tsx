@@ -4,9 +4,9 @@ import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
 import SharedAuthScreen from './SharedAuthScreen';
-import { registerUser } from '../slices/account';
-import { Form, useForm } from '../ui/form';
-import { useDispatch } from '../store';
+import { registerUser } from '../common/slices/account';
+import { Form, useForm } from '../common/ui/form';
+import { useDispatch } from '../common/store';
 
 const schema = Yup.object().shape({
     email: Yup.string().required('Email is missing').email('Please input an email address'),

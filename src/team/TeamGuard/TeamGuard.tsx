@@ -2,9 +2,9 @@ import React from 'react';
 import { IonHeader, IonModal, IonContent, IonToolbar, IonTitle, IonButtons } from '@ionic/react';
 import { Typography, Button, Stack, TextField, Container } from '@mui/joy';
 
-import { Centre, Page } from '../../ui/layout';
-import { selectTeam } from '../../slices/team';
-import { useSelector } from '../../store';
+import { Centre, Page } from '../../common/ui/layout';
+import { selectTeam } from '../../common/slices/team';
+import { useSelector } from '../../common/store';
 
 interface ITeamGuardProps {
     children: React.ReactNode;

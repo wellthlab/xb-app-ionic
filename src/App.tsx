@@ -6,8 +6,8 @@ import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ioni
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
 
-import store, { useSelector, useDispatch } from './store';
-import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './slices/account';
+import store, { useSelector, useDispatch } from './common/store';
+import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './common/slices/account';
 import { LoadingPage } from './misc';
 import { LoginForm, RegisterForm } from './auth';
 import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';

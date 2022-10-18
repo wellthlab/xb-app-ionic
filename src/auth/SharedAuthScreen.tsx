@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/joy';
 
-import { Page, PageTitle } from '../ui/layout';
+import { Page, PageTitle } from '../common/ui/layout';
 
 interface ISharedAuthScreenProps {
     children: React.ReactNode;

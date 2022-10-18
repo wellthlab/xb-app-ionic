@@ -2,11 +2,11 @@ import React from 'react';
 import { Stack, Typography, useColorScheme } from '@mui/joy';
 import { IconContext, Info, CaretRight, Moon, User, SignOut, TrashSimple } from 'phosphor-react';
 
-import { List, ListItem } from '../ui/list';
-import { Page, PageTitle } from '../ui/layout';
-import { Select } from '../ui/form';
-import { selectDepartment, selectFullName, logOutUser } from '../slices/account';
-import { useSelector, useDispatch } from '../store';
+import { List, ListItem } from '../common/ui/list';
+import { Page, PageTitle } from '../common/ui/layout';
+import { Select } from '../common/ui/form';
+import { selectDepartment, selectFullName, logOutUser } from '../common/slices/account';
+import { useSelector, useDispatch } from '../common/store';
 
 const SettingsList = function () {
     const fullName = useSelector(selectFullName);

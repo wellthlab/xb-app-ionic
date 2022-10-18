@@ -1,10 +1,10 @@
 import React from 'react';
 import { Typography, Button, Stack } from '@mui/joy';
 
-import { Page, PageTitle } from '../ui/layout';
-import { selectFullName } from '../slices/account';
-import { selectTeam } from '../slices/team';
-import { useSelector } from '../store';
+import { Page, PageTitle } from '../common/ui/layout';
+import { selectFullName } from '../common/slices/account';
+import { selectTeam } from '../common/slices/team';
+import { useSelector } from '../common/store';
 
 const TeamInsights = function () {
     const fullName = useSelector(selectFullName);

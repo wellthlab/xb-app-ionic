@@ -2,11 +2,11 @@ import React from 'react';
 import { Alert, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Form, useForm, Select } from '../ui/form';
-import { Page, PageTitle } from '../ui/layout';
-import Account from '../models/Account';
-import { completeProfile } from '../slices/account';
-import { useDispatch } from '../store';
+import { Form, useForm, Select } from '../common/ui/form';
+import { Page, PageTitle } from '../common/ui/layout';
+import Account from '../common/models/Account';
+import { completeProfile } from '../common/slices/account';
+import { useDispatch } from '../common/store';
 
 const schema = Yup.object().shape({
     firstName: Yup.string().required('Your first name is missing'),
