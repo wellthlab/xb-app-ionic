@@ -3,5 +3,6 @@
     --ion-tab-bar-background: var(--joy-palette-background-body);
     --ion-tab-bar-border-color: var(--joy-palette-neutral-outlinedBorder);
     --ion-tab-bar-color-selected: var(--joy-palette-primary-plainColor);
-    --ion-toolbar-background: var(--joy-palette-background-level1);
+    --ion-toolbar-background: var(--joy-palette-background-body);
+    --ion-toolbar-border-color: var(--joy-palette-neutral-outlinedBorder);
 }

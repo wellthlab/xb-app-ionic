@@ -1,25 +1,24 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { CssVarsProvider } from '@mui/joy';
+import { CssVarsProvider, CircularProgress } from '@mui/joy';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
 
 import store, { useSelector, useDispatch } from './common/store';
 import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './common/slices/account';
-import { LoadingPage } from './misc';
+import { Page, Centre } from './common/ui/layout';
 import { LoginForm, RegisterForm } from './auth';
 import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
 import { TeamInsights, TeamGuard } from './team';
-import { SettingsList } from './settings';
+import { SettingsList, EditProfileForm, StudyInformation as SettingsStudyInformation } from './settings';
 
 const Redirects = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(setIsEnrolled);
 
     const [hydrating, setHydrating] = React.useState(true);
-
     const dispatch = useDispatch();
     React.useEffect(() => {
         // Hyrdate account only if authenticated
@@ -86,7 +85,11 @@ const App = function () {
                                 </Route>
 
                                 <Route path="/loading">
-                                    <LoadingPage />
+                                    <Page>
+                                        <Centre>
+                                            <CircularProgress />
+                                        </Centre>
+                                    </Page>
                                 </Route>
 
                                 <Route path="/main">
@@ -116,6 +119,14 @@ const App = function () {
 
                                             <Route path="/main/settings" exact>
                                                 <SettingsList />
+                                            </Route>
+
+                                            <Route path="/main/settings/about" exact>
+                                                <SettingsStudyInformation />
+                                            </Route>
+
+                                            <Route path="/main/settings/profile" exact>
+                                                <EditProfileForm />
                                             </Route>
                                         </IonRouterOutlet>
 

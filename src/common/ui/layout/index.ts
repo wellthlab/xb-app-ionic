@@ -6,3 +6,6 @@ export * from './PageTitle';
 
 export { default as Centre } from './Centre';
 export * from './Centre';
+
+export { default as Modal } from './Modal';
+export * from './Modal';

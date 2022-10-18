@@ -1,8 +1,7 @@
 import React from 'react';
-import { IonHeader, IonModal, IonContent, IonToolbar, IonTitle, IonButtons } from '@ionic/react';
-import { Typography, Button, Stack, TextField, Container } from '@mui/joy';
+import { Typography, Button, Stack, TextField } from '@mui/joy';
 
-import { Centre, Page } from '../../common/ui/layout';
+import { Centre, Page, Modal } from '../../common/ui/layout';
 import { selectTeam } from '../../common/slices/team';
 import { useSelector } from '../../common/store';
 
@@ -39,23 +38,9 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
                         </Stack>
                     </Centre>
 
-                    <IonModal isOpen={modalOpen} presentingElement={presentingElement}>
-                        <IonHeader>
-                            <IonToolbar>
-                                <IonTitle>
-                                    <Typography>Join a team</Typography>
-                                </IonTitle>
-                                <IonButtons slot="end">
-                                    <Button variant="plain">Next</Button>
-                                </IonButtons>
-                            </IonToolbar>
-                        </IonHeader>
-                        <IonContent>
-                            <Container sx={{ py: 4 }}>
-                                <TextField label="Invite code" placeholder="AB12345" />
-                            </Container>
-                        </IonContent>
-                    </IonModal>
+                    <Modal title="Join a team" isOpen={modalOpen} presentingElement={presentingElement}>
+                        <TextField label="Invite code" placeholder="AB12345" />
+                    </Modal>
                 </React.Fragment>
             )}
         </Page>

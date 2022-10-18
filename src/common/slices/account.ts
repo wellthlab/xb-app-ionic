@@ -24,8 +24,8 @@ export const hydrateAccount = createAsyncThunk('account/hydrated', async () => {
     };
 });
 
-export const completeProfile = createAsyncThunk('account/completed', (response: Omit<IProfile, 'id' | 'email'>) => {
-    return Account.completeProfile(response);
+export const updateUserProfile = createAsyncThunk('account/updated', (response: Omit<IProfile, 'id' | 'email'>) => {
+    return Account.updateProfile(response);
 });
 
 interface IAccountState {
@@ -62,7 +62,7 @@ export default createSlice({
                     state.profile = action.payload.profile;
                 }
             })
-            .addCase(completeProfile.fulfilled, (state, action) => {
+            .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.profile = action.payload;
             })
             .addCase(hydrateAccount.rejected, (state) => {

@@ -106,17 +106,20 @@ class Account extends BaseModel {
         };
     }
 
-    static async completeProfile(response: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
+    static async updateProfile(response: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
         const db = this.getDb();
 
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
-        await db.collection<IProfileDocument>('profiles').insertOne({
-            ...response,
-            email,
-            _id: this.oid(id),
-        });
+        await db.collection<IProfileDocument>('profiles').updateOne(
+            { _id: this.oid(id) },
+            {
+                ...response,
+                email,
+            },
+            { upsert: true },
+        );
 
         return {
             id,

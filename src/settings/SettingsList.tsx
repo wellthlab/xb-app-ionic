@@ -33,7 +33,7 @@ const SettingsList = function () {
             <IconContext.Provider value={{ size: 20 }}>
                 <Stack spacing={2}>
                     <List>
-                        <ListItem href="/settings/profile" startDecorator={<User />} endDecorator={<CaretRight />}>
+                        <ListItem href="/main/settings/profile" startDecorator={<User />} endDecorator={<CaretRight />}>
                             {fullName}
                             <Typography level="body3" noWrap>
                                 {department}
@@ -42,7 +42,7 @@ const SettingsList = function () {
                     </List>
 
                     <List>
-                        <ListItem href="/settings/about" startDecorator={<Info />} endDecorator={<CaretRight />}>
+                        <ListItem href="/main/settings/about" startDecorator={<Info />} endDecorator={<CaretRight />}>
                             About
                         </ListItem>
                         <ListItem
