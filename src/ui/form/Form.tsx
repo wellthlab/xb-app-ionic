@@ -22,21 +22,25 @@ const Form = function ({ onSubmit, children, footer, submitLabel, submitButtonCo
         try {
             await onSubmit();
         } catch (error) {
-            setPending(false);
             console.error(error);
 
+            let message;
             if (error instanceof Error) {
-                return setErrorMessage(error.message || DEFAULT_ERROR_MESSAGE);
+                message = error.message;
             }
 
             if (typeof error === 'string') {
-                return setErrorMessage(error || DEFAULT_ERROR_MESSAGE);
+                message = error;
             }
 
-            return setErrorMessage(DEFAULT_ERROR_MESSAGE);
-        }
+            if (!message) {
+                message = DEFAULT_ERROR_MESSAGE;
+            }
 
-        setPending(false);
+            setErrorMessage(message);
+        } finally {
+            setPending(false);
+        }
     };
 
     return (

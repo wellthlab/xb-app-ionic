@@ -4,8 +4,8 @@ import { TextField, Alert, Link, Stack } from '@mui/joy';
 import * as Yup from 'yup';
 
 import SharedAuthScreen from './SharedAuthScreen';
-import { authenticateUser } from '../state/account';
-import { Form, useForm } from '../common/form';
+import { authenticateUser } from '../slices/account';
+import { Form, useForm } from '../ui/form';
 import { useDispatch } from '../store';
 
 const schema = Yup.object().shape({
@@ -43,10 +43,10 @@ const LoginForm = function () {
                 submitLabel="Login"
                 footer={
                     <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-                        <Link component={RouterLink} fontSize="sm" to="/auth/register">
+                        <Link component={RouterLink} level="body2" to="/auth/register">
                             Not yet a user? Register
                         </Link>
-                        <Link component={RouterLink} fontSize="sm" to="/auth/forgot-password">
+                        <Link component={RouterLink} level="body2" to="/auth/forgot-password">
                             Forgotten password?
                         </Link>
                     </Stack>

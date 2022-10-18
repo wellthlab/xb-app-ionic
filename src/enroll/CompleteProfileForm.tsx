@@ -2,10 +2,10 @@ import React from 'react';
 import { Alert, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Form, useForm, Select } from '../common/form';
-import { Page, PageTitle } from '../common/page';
+import { Form, useForm, Select } from '../ui/form';
+import { Page, PageTitle } from '../ui/layout';
 import Account from '../models/Account';
-import { completeProfile } from '../state/account';
+import { completeProfile } from '../slices/account';
 import { useDispatch } from '../store';
 
 const schema = Yup.object().shape({

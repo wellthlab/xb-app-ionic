@@ -1,7 +1,7 @@
 :root {
     --ion-background-color: var(--joy-palette-background-body);
-    --ion-overlay-background-color: var(--joy-palette-background-body);
     --ion-tab-bar-background: var(--joy-palette-background-body);
     --ion-tab-bar-border-color: var(--joy-palette-neutral-outlinedBorder);
     --ion-tab-bar-color-selected: var(--joy-palette-primary-plainColor);
+    --ion-toolbar-background: var(--joy-palette-background-level1);
 }

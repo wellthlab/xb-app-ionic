@@ -7,6 +7,10 @@ export const authenticateUser = createAsyncThunk('account/authenticated', (crede
     return Account.authenticate(credentials);
 });
 
+export const logOutUser = createAsyncThunk('account/loggedOut', () => {
+    return Account.logOut();
+});
+
 export const registerUser = createAsyncThunk('account/registered', async (credentials: ICredentials) => {
     await Account.create(credentials);
     return Account.authenticate(credentials);
@@ -35,6 +39,8 @@ interface ISelectorState {
 
 export const selectIsAuthenticated = (state: ISelectorState) => state.account.authenticated;
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
+export const selectProfile = (state: ISelectorState) => state.account.profile;
+export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -58,6 +64,16 @@ export default createSlice({
             })
             .addCase(completeProfile.fulfilled, (state, action) => {
                 state.profile = action.payload;
+            })
+            .addCase(hydrateAccount.rejected, (state) => {
+                // Failed to hydrate for whatever reason, we set authenticated to false
+
+                state.authenticated = false;
+                delete state.profile;
+            })
+            .addCase(logOutUser.fulfilled, (state) => {
+                state.authenticated = false;
+                delete state.profile;
             });
     },
 }).reducer;

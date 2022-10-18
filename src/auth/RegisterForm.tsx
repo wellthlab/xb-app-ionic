@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
 import SharedAuthScreen from './SharedAuthScreen';
-import { registerUser } from '../state/account';
-import { Form, useForm } from '../common/form';
+import { registerUser } from '../slices/account';
+import { Form, useForm } from '../ui/form';
 import { useDispatch } from '../store';
 
 const schema = Yup.object().shape({
@@ -38,7 +38,7 @@ const RegisterForm = function () {
     });
 
     const history = useHistory();
-    const handleLoginLinkClick = function () {
+    const handleClickLoginLink = function () {
         history.goBack();
     };
 
@@ -48,7 +48,7 @@ const RegisterForm = function () {
                 onSubmit={handleSubmit}
                 submitLabel="Register"
                 footer={
-                    <Link component="button" fontSize="sm" onClick={handleLoginLinkClick}>
+                    <Link component="button" level="body2" onClick={handleClickLoginLink}>
                         Already had an account? Login
                     </Link>
                 }

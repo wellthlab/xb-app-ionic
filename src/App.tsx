@@ -1,23 +1,20 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, useLocation } from 'react-router-dom';
 import { CssVarsProvider } from '@mui/joy';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, Moon, ForkKnife, PersonSimpleRun } from 'phosphor-react';
+import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
 
 import store, { useSelector, useDispatch } from './store';
-import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './state/account';
-import Loading from './common/Loading';
+import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './slices/account';
+import { LoadingPage } from './misc';
 import { LoginForm, RegisterForm } from './auth';
 import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
 import { TeamInsights, TeamGuard } from './team';
+import { SettingsList } from './settings';
 
-interface IInnerAppProps {
-    children: React.ReactNode;
-}
-
-const AppWrapper = function ({ children }: IInnerAppProps) {
+const Redirects = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(setIsEnrolled);
 
@@ -25,41 +22,38 @@ const AppWrapper = function ({ children }: IInnerAppProps) {
 
     const dispatch = useDispatch();
     React.useEffect(() => {
+        // Hyrdate account only if authenticated
+
         if (!isAuthenticated) {
             return;
         }
 
         const hydrate = async function () {
-            console.log('HYDRATING APP...');
+            console.log('HYDRATING ACCOUNT...');
             setHydrating(true);
 
             await dispatch(hydrateAccount());
 
-            console.log('APP HYDRATED');
+            console.log('ACCOUNT HYDRATED');
             setHydrating(false);
         };
 
         hydrate();
     }, [isAuthenticated]);
 
-    let content;
-
     if (!isAuthenticated) {
-        content = <Redirect to="/auth" />;
-    } else if (hydrating) {
-        content = <Loading />;
-    } else if (!isEnrolled) {
-        content = <Redirect to="/enroll" />;
-    } else {
-        content = <Redirect to="/main/team" />;
+        return <Redirect to="/auth" />;
     }
 
-    return (
-        <React.Fragment>
-            {content}
-            {children}
-        </React.Fragment>
-    );
+    if (hydrating) {
+        return <Redirect to="/loading" />;
+    }
+
+    if (!isEnrolled) {
+        return <Redirect to="/enroll" />;
+    }
+
+    return <Redirect to="/main" />;
 };
 
 const App = function () {
@@ -67,65 +61,81 @@ const App = function () {
         <IonApp>
             <Provider store={store}>
                 <CssVarsProvider defaultMode="system">
-                    <IconContext.Provider value={{ weight: 'light', size: 28 }}>
+                    <IconContext.Provider value={{ weight: 'light', size: 24 }}>
                         <IonReactRouter>
-                            <AppWrapper>
-                                <IonRouterOutlet>
-                                    <Route path="/auth" component={LoginForm} exact />
-                                    <Route path="/auth/register" component={RegisterForm} exact />
+                            <Redirects />
+                            <IonRouterOutlet>
+                                <Route path="/auth" exact>
+                                    <LoginForm />
+                                </Route>
 
-                                    <Route path="/enroll" component={StudyInformation} exact />
-                                    <Route path="/enroll/consent" component={EnrollConsentForm} exact />
-                                    <Route path="/enroll/profile" component={CompleteProfileForm} exact />
+                                <Route path="/auth/register" exact>
+                                    <RegisterForm />
+                                </Route>
 
-                                    <Route
-                                        path="/main"
-                                        component={() => (
-                                            <IonTabs>
-                                                <IonRouterOutlet>
-                                                    <Route
-                                                        path="/main/team"
-                                                        component={() => (
-                                                            <TeamGuard>
-                                                                <TeamInsights />
-                                                            </TeamGuard>
-                                                        )}
-                                                        exact
-                                                    />
+                                <Route path="/enroll" exact>
+                                    <StudyInformation />
+                                </Route>
 
-                                                    <Route
-                                                        path="/main/eat"
-                                                        component={() => (
-                                                            <TeamGuard>
-                                                                <TeamInsights />
-                                                            </TeamGuard>
-                                                        )}
-                                                        exact
-                                                    />
-                                                </IonRouterOutlet>
+                                <Route path="/enroll/consent" exact>
+                                    <EnrollConsentForm />
+                                </Route>
 
-                                                <IonTabBar slot="bottom">
-                                                    <IonTabButton tab="team" href="/main/team">
-                                                        <Users />
-                                                    </IonTabButton>
-                                                    <IonTabButton tab="eat" href="/main/eat">
-                                                        <ForkKnife />
-                                                    </IonTabButton>
-                                                    <IonTabButton tab="move" href="/main/move">
-                                                        <PersonSimpleRun />
-                                                    </IonTabButton>
-                                                    <IonTabButton tab="sleep" href="/main/sleep">
-                                                        <Moon />
-                                                    </IonTabButton>
-                                                    <IonTabButton tab="settings" href="/main/settings">
-                                                        <Gear />
-                                                    </IonTabButton>
-                                                </IonTabBar>
-                                            </IonTabs>
-                                        )}
-                                    />
-                                </IonRouterOutlet>
-                            </AppWrapper>
+                                <Route path="/enroll/profile" exact>
+                                    <CompleteProfileForm />
+                                </Route>
+
+                                <Route path="/loading">
+                                    <LoadingPage />
+                                </Route>
+
+                                <Route path="/main">
+                                    <IonTabs>
+                                        <IonRouterOutlet>
+                                            <Route path="/main" exact>
+                                                <Redirect to="/main/team" />
+                                            </Route>
+
+                                            <Route path="/main/team" exact>
+                                                <TeamGuard>
+                                                    <TeamInsights />
+                                                </TeamGuard>
+                                            </Route>
+
+                                            <Route path="/main/eat" exact>
+                                                <TeamGuard>
+                                                    <TeamInsights />
+                                                </TeamGuard>
+                                            </Route>
+
+                                            <Route path="/main/move" exact>
+                                                <TeamGuard>
+                                                    <TeamInsights />
+                                                </TeamGuard>
+                                            </Route>
+
+                                            <Route path="/main/settings" exact>
+                                                <SettingsList />
+                                            </Route>
+                                        </IonRouterOutlet>
+
+                                        <IonTabBar slot="bottom">
+                                            <IonTabButton tab="team" href="/main/team">
+                                                <Users />
+                                            </IonTabButton>
+                                            <IonTabButton tab="eat" href="/main/eat">
+                                                <ForkKnife />
+                                            </IonTabButton>
+                                            <IonTabButton tab="move" href="/main/move">
+                                                <PersonSimpleRun />
+                                            </IonTabButton>
+                                            <IonTabButton tab="settings" href="/main/settings">
+                                                <Gear />
+                                            </IonTabButton>
+                                        </IonTabBar>
+                                    </IonTabs>
+                                </Route>
+                            </IonRouterOutlet>
                         </IonReactRouter>
                     </IconContext.Provider>
                 </CssVarsProvider>

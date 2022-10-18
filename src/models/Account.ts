@@ -72,6 +72,14 @@ class Account extends BaseModel {
         return this.client.logIn(Credentials.emailPassword(credentials.email, credentials.password));
     }
 
+    static logOut() {
+        if (!this.client.currentUser) {
+            return;
+        }
+
+        return this.client.currentUser.logOut();
+    }
+
     static async create(credentials: ICredentials) {
         if (this.client.currentUser) {
             return;

@@ -8,7 +8,10 @@ const Page = React.forwardRef(({ sx, ...others }: IPageProps, ref) => {
     return (
         <IonPage ref={ref}>
             <IonContent>
-                <Container sx={{ py: 4, minHeight: '100%', ...sx }} {...others} />
+                <Container
+                    sx={{ py: 4, minHeight: '100%', display: 'flex', flexDirection: 'column', ...sx }}
+                    {...others}
+                />
             </IonContent>
         </IonPage>
     );

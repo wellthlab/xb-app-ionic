@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 
 import studyInformationMarkdown from './STUDY_INFORMATION.md';
 
-import { Page, PageTitle } from '../common/page';
+import { Page, PageTitle } from '../ui/layout';
 
 const StudyInformation = function () {
     return (

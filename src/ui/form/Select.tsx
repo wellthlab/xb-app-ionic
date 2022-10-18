@@ -70,7 +70,7 @@ const Select = function ({ label, helperText, error, options, value, onChange, o
                     ))}
                 </Box>
 
-                <Box component={CaretDown} sx={{ color: `${color}.outlinedColor` }} size={24} />
+                <Box component={CaretDown} sx={{ color: `${color}.outlinedColor` }} />
             </Box>
 
             {helperText ? <FormHelperText>{helperText}</FormHelperText> : null}

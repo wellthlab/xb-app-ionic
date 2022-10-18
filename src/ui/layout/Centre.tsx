@@ -12,6 +12,7 @@ const Centre = function ({ children, sx }: ICentreProps) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flex: 1,
                 ...sx,
             }}
         >
