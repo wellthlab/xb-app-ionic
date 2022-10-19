@@ -23,7 +23,7 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
         try {
             await onAction!();
         } catch (error) {
-            // setPending(false);
+            setPending(false);
             console.log('Error in modal', error);
             return setErrorMessage(getErrorMessage(error, DEFAULT_ERROR_MESSAGE));
         }
