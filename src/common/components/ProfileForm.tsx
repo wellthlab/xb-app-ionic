@@ -35,7 +35,7 @@ const ProfileForm = function ({ defaultValues, info }: IProfileFormProps) {
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit((data) => {
-        return dispatch(updateUserProfile(data));
+        return dispatch(updateUserProfile(data)).unwrap();
     });
 
     return (

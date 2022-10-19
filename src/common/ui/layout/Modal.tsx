@@ -1,29 +1,63 @@
 import React from 'react';
-import { IonContent, IonTitle, IonHeader, IonModal, IonButtons, IonToolbar } from '@ionic/react';
-import { Button, Typography, Container } from '@mui/joy';
+import { IonContent, IonModal } from '@ionic/react';
+import { Alert, Button, Container } from '@mui/joy';
+
+import Header from './Header';
+import getErrorMessage from '../../utils/getErrorMessage';
 
 export interface IModalProps extends React.ComponentProps<typeof IonModal> {
-    dismissLabel?: string;
+    headerTitle: string;
+    onDismiss: () => void;
+    actionButtonLabel?: string;
+    onAction?: () => void;
 }
 
-const Modal = function ({ title, dismissLabel, children, ...others }: IModalProps) {
-    return (
-        <IonModal {...others}>
-            <IonContent>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle>
-                            <Typography>{title}</Typography>
-                        </IonTitle>
-                        <IonButtons>
-                            <Button variant="plain">{dismissLabel || 'Close'}</Button>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
+const DEFAULT_ERROR_MESSAGE = 'Sorry, something went wrong';
 
-                <IonContent>
-                    <Container>{children}</Container>
-                </IonContent>
+const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, onAction, ...others }: IModalProps) {
+    const [pending, setPending] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    const handleAction = async function () {
+        setPending(true);
+
+        try {
+            await onAction!();
+        } catch (error) {
+            // setPending(false);
+            console.log('Error in modal', error);
+            return setErrorMessage(getErrorMessage(error, DEFAULT_ERROR_MESSAGE));
+        }
+
+        onDismiss();
+    };
+
+    return (
+        <IonModal canDismiss onDidDismiss={onDismiss} {...others}>
+            <Header
+                title={headerTitle}
+                rightButton={
+                    onAction && (
+                        <Button variant="plain" disabled={pending} onClick={handleAction}>
+                            {actionButtonLabel || 'Next'}
+                        </Button>
+                    )
+                }
+                leftButton={
+                    <Button variant="plain" onClick={onDismiss}>
+                        Close
+                    </Button>
+                }
+            />
+
+            <IonContent>
+                <Container sx={{ py: 4 }}>
+                    {errorMessage && (
+                        <Alert color="danger" sx={{ mb: 2 }}>
+                            {errorMessage}
+                        </Alert>
+                    )}
+                    {children}
+                </Container>
             </IonContent>
         </IonModal>
     );

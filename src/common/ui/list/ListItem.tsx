@@ -31,9 +31,9 @@ const ListItem = function ({
 }: IListItemProps) {
     const inner = (
         <React.Fragment>
-            {startDecorator ? <ListItemDecorator>{startDecorator}</ListItemDecorator> : null}
+            {startDecorator && <ListItemDecorator>{startDecorator}</ListItemDecorator>}
             <ListItemContent>{children}</ListItemContent>
-            {endDecorator ? <ListItemDecorator>{endDecorator}</ListItemDecorator> : null}
+            {endDecorator && <ListItemDecorator>{endDecorator}</ListItemDecorator>}
         </React.Fragment>
     );
 

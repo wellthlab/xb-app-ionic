@@ -11,7 +11,7 @@ const Checkbox = function ({ color, error, helperText, ...others }: ICheckboxPro
     return (
         <FormControl color={error ? 'danger' : color}>
             <JoyCheckbox {...others} />
-            {helperText ? <FormHelperText>{helperText}</FormHelperText> : null}
+            {helperText && <FormHelperText>{helperText}</FormHelperText>}
         </FormControl>
     );
 };

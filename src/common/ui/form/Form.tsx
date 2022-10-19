@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Alert, Stack, ButtonProps } from '@mui/joy';
 
+import getErrorMessage from '../../utils/getErrorMessage';
+
 export interface IFormProps {
     children: React.ReactNode;
     onSubmit: () => void;
@@ -23,21 +25,7 @@ const Form = function ({ onSubmit, children, footer, submitLabel, submitButtonCo
             await onSubmit();
         } catch (error) {
             console.error(error);
-
-            let message;
-            if (error instanceof Error) {
-                message = error.message;
-            }
-
-            if (typeof error === 'string') {
-                message = error;
-            }
-
-            if (!message) {
-                message = DEFAULT_ERROR_MESSAGE;
-            }
-
-            setErrorMessage(message);
+            setErrorMessage(getErrorMessage(error, DEFAULT_ERROR_MESSAGE));
         } finally {
             setPending(false);
         }

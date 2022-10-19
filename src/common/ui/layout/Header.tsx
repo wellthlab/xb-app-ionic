@@ -1,14 +1,15 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import { IonHeader, IonTitle, IonToolbar, IonButtons } from '@ionic/react';
 import { Typography, Button } from '@mui/joy';
 
 export interface IHeaderProps {
     title?: string;
-    dismissButton?: React.ReactNode;
+    leftButton?: React.ReactNode;
+    rightButton?: React.ReactNode;
 }
 
-const Header = function ({ title, dismissButton }: IHeaderProps) {
+const Header = function ({ title, leftButton, rightButton }: IHeaderProps) {
     const history = useHistory();
 
     const handleGoBack = function () {
@@ -18,14 +19,17 @@ const Header = function ({ title, dismissButton }: IHeaderProps) {
     return (
         <IonHeader>
             <IonToolbar>
-                {dismissButton || (
-                    <Button variant="plain" onClick={handleGoBack}>
-                        Back
-                    </Button>
-                )}
+                <IonButtons slot="start">
+                    {leftButton || (
+                        <Button variant="plain" onClick={handleGoBack}>
+                            Back
+                        </Button>
+                    )}
+                </IonButtons>
                 <IonTitle>
                     <Typography>{title}</Typography>
                 </IonTitle>
+                {rightButton ? <IonButtons slot="end">{rightButton}</IonButtons> : null}
             </IonToolbar>
         </IonHeader>
     );
