@@ -26,18 +26,18 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
     };
 
     return (
-        <Page ref={setPresentingElement} sx={{ display: 'flex', flexDirection: 'column' }}>
+        <React.Fragment>
             {team ? (
                 children
             ) : (
-                <React.Fragment>
+                <Page ref={setPresentingElement}>
                     <Centre>
                         <Stack spacing={2}>
                             <Typography level="h6" component="p">
                                 You are currently not in a team
                             </Typography>
                             <Button onClick={createModalHandler(setJoinModalOpen, true)}>Join</Button>
-                            <Typography level="body3" textAlign="center">
+                            <Typography level="body2" textAlign="center">
                                 Or
                             </Typography>
                             <Button variant="outlined" onClick={createModalHandler(setCreateModalOpen, true)}>
@@ -45,7 +45,7 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
                             </Button>
                         </Stack>
                     </Centre>
-                </React.Fragment>
+                </Page>
             )}
 
             <CreateTeamModal
@@ -59,7 +59,7 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
                 presentingElement={presentingElement}
                 onDismiss={createModalHandler(setJoinModalOpen, false)}
             />
-        </Page>
+        </React.Fragment>
     );
 };
 

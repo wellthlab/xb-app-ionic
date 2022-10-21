@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IonHeader, IonTitle, IonToolbar, IonButtons } from '@ionic/react';
 import { Typography, Button } from '@mui/joy';
 
-export interface IHeaderProps {
+interface IHeaderProps {
     title?: string;
     leftButton?: React.ReactNode;
     rightButton?: React.ReactNode;
@@ -29,7 +29,7 @@ const Header = function ({ title, leftButton, rightButton }: IHeaderProps) {
                 <IonTitle>
                     <Typography>{title}</Typography>
                 </IonTitle>
-                {rightButton ? <IonButtons slot="end">{rightButton}</IonButtons> : null}
+                {rightButton && <IonButtons slot="end">{rightButton}</IonButtons>}
             </IonToolbar>
         </IonHeader>
     );

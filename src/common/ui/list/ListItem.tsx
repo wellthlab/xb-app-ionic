@@ -8,6 +8,7 @@ import {
     ListItemProps,
     ListItemContent,
 } from '@mui/joy';
+import { CaretRight } from 'phosphor-react';
 
 export interface IListItemProps extends Omit<ListItemProps, 'onClick'> {
     href?: string;
@@ -33,7 +34,7 @@ const ListItem = function ({
         <React.Fragment>
             {startDecorator && <ListItemDecorator>{startDecorator}</ListItemDecorator>}
             <ListItemContent>{children}</ListItemContent>
-            {endDecorator && <ListItemDecorator>{endDecorator}</ListItemDecorator>}
+            {(href || endDecorator) && <ListItemDecorator>{href ? <CaretRight /> : endDecorator}</ListItemDecorator>}
         </React.Fragment>
     );
 

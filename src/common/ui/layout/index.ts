@@ -9,3 +9,6 @@ export * from './Centre';
 
 export { default as Modal } from './Modal';
 export * from './Modal';
+
+export { default as SectionTitle } from './SectionTitle';
+export * from './SectionTitle';

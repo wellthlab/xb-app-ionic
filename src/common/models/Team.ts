@@ -1,17 +1,22 @@
-import { BaseModel, ObjectId } from './utils';
 import { nanoid } from 'nanoid';
+
+import { BaseModel, ObjectId } from './utils';
+import { IProfile, IProfileDocument } from './Account';
 
 export interface ITeam {
     id: string;
     name: string;
     invite: string;
     members: string[];
+    desc?: string;
 }
 
-interface ITeamDocument extends Omit<ITeam, 'id' | 'members'> {
+export interface ITeamDocument extends Omit<ITeam, 'id' | 'members'> {
     _id: ObjectId;
     members: ObjectId[];
 }
+
+export interface ITeamMemberProfile extends Omit<IProfile, 'email' | 'office' | 'campus'> {}
 
 class Team extends BaseModel {
     static async getCurrentTeam(): Promise<ITeam | null> {
@@ -34,18 +39,22 @@ class Team extends BaseModel {
         };
     }
 
-    static async create(name: string): Promise<ITeam> {
+    static async create(payload: Pick<ITeam, 'desc' | 'name'>): Promise<ITeam> {
         const db = this.getDb();
 
         const invite = nanoid(6);
 
-        const result = await db
-            .collection<ITeamDocument>('teams')
-            .insertOne({ name, invite, members: [this.oid(this.client.currentUser!.id)] });
+        const result = await db.collection<ITeamDocument>('teams').insertOne({
+            name: payload.name,
+            desc: payload.desc,
+            invite,
+            members: [this.oid(this.client.currentUser!.id)],
+        });
 
         return {
             id: result.insertedId.toString(),
-            name,
+            name: payload.name,
+            desc: payload.desc,
             invite,
             members: [this.client.currentUser!.id],
         };
@@ -69,6 +78,24 @@ class Team extends BaseModel {
             invite: result.invite,
             members: [...result.members.map((memberId) => memberId.toString()), this.client.currentUser!.id],
         };
+    }
+
+    static async getMemberProfiles(ids: string[]): Promise<ITeamMemberProfile[]> {
+        const db = this.getDb();
+
+        const oids = ids.map(this.oid);
+
+        const result = await db.collection<IProfileDocument>('profiles').find({
+            _id: { $in: oids },
+        });
+
+        return result.map((item) => {
+            const { _id, ...others } = item;
+            return {
+                id: _id.toString(),
+                ...others,
+            };
+        });
     }
 }
 

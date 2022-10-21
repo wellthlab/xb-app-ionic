@@ -3,11 +3,11 @@ import { List as JoyList, ListDivider, ListProps } from '@mui/joy';
 
 export interface IListProps extends ListProps {}
 
-const List = function ({ sx, children, ...others }: IListProps) {
+const List = function ({ children, ...others }: IListProps) {
     const childrenCount = React.Children.count(children);
 
     return (
-        <JoyList sx={{ borderRadius: 'sm', ...sx }} variant="soft" {...others}>
+        <JoyList {...others}>
             {React.Children.map(children, (child, i) => {
                 if (i === childrenCount - 1) {
                     return child;

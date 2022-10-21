@@ -16,4 +16,8 @@ export class BaseModel {
     }
 }
 
+export const idToTs = function (id: string) {
+    return new Realm.BSON.ObjectId(id).getTimestamp().getTime();
+};
+
 export type ObjectId = Realm.BSON.ObjectId;

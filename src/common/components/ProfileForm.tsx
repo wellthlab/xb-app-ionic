@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, TextField } from '@mui/joy';
+import { TextField, Typography } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Form, useForm, Select } from '../ui/form';
@@ -23,11 +23,9 @@ export interface IProfileFormProps {
         campus?: string;
         office?: string;
     };
-
-    info: string;
 }
 
-const ProfileForm = function ({ defaultValues, info }: IProfileFormProps) {
+const ProfileForm = function ({ defaultValues }: IProfileFormProps) {
     const { getInputProps, createHandleSubmit } = useForm(
         { firstName: '', lastName: '', department: '', campus: '', office: '', ...defaultValues },
         schema,
@@ -40,7 +38,6 @@ const ProfileForm = function ({ defaultValues, info }: IProfileFormProps) {
 
     return (
         <React.Fragment>
-            <Alert sx={{ mb: 2 }}>{info}</Alert>
             <Form submitLabel="Let's roll!" onSubmit={handleSubmit}>
                 <TextField label="First name" {...getInputProps('firstName')} />
                 <TextField label="Last name" {...getInputProps('lastName')} />

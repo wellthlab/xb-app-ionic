@@ -50,7 +50,7 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
             />
 
             <IonContent>
-                <Container sx={{ py: 4 }}>
+                <Container>
                     {errorMessage && (
                         <Alert color="danger" sx={{ mb: 2 }}>
                             {errorMessage}

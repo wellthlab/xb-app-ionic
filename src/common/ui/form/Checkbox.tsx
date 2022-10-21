@@ -7,9 +7,9 @@ export interface ICheckboxProps extends CheckboxProps {
     helperText?: string;
 }
 
-const Checkbox = function ({ color, error, helperText, ...others }: ICheckboxProps) {
+const Checkbox = function ({ error, helperText, ...others }: ICheckboxProps) {
     return (
-        <FormControl color={error ? 'danger' : color}>
+        <FormControl error={error}>
             <JoyCheckbox {...others} />
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
         </FormControl>

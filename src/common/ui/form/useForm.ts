@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 interface IBaseInputProps {
     helperText?: string;
     error: boolean;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     onFocus: () => void;
     onBlur: () => void;
 }

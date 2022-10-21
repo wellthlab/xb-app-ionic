@@ -7,7 +7,7 @@ const CompleteProfileForm = function () {
     return (
         <Page>
             <PageTitle>Your profile</PageTitle>
-            <ProfileForm info="We just need a bit of your personal information to get started" />
+            <ProfileForm />
         </Page>
     );
 };

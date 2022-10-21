@@ -1,11 +1,12 @@
 import React from 'react';
 import { Stack, Typography, useColorScheme } from '@mui/joy';
-import { IconContext, Info, CaretRight, Moon, User, SignOut, TrashSimple } from 'phosphor-react';
+import { IconContext, Info, Palette, User, SignOut, TrashSimple } from 'phosphor-react';
 
 import { List, ListItem } from '../common/ui/list';
 import { Page, PageTitle } from '../common/ui/layout';
 import { Select } from '../common/ui/form';
-import { selectDepartment, selectFullName, logOutUser } from '../common/slices/account';
+import { logOut } from '../common/slices/globalActions';
+import { selectDepartment, selectFullName } from '../common/slices/account';
 import { useSelector, useDispatch } from '../common/store';
 
 const SettingsList = function () {
@@ -23,7 +24,7 @@ const SettingsList = function () {
 
     const dispatch = useDispatch();
     const handleLogOut = function () {
-        dispatch(logOutUser());
+        dispatch(logOut());
     };
 
     return (
@@ -33,7 +34,7 @@ const SettingsList = function () {
             <IconContext.Provider value={{ size: 20 }}>
                 <Stack spacing={2}>
                     <List>
-                        <ListItem href="/main/settings/profile" startDecorator={<User />} endDecorator={<CaretRight />}>
+                        <ListItem href="/main/settings/profile" startDecorator={<User />}>
                             {fullName}
                             <Typography level="body3" noWrap>
                                 {department}
@@ -42,11 +43,11 @@ const SettingsList = function () {
                     </List>
 
                     <List>
-                        <ListItem href="/main/settings/about" startDecorator={<Info />} endDecorator={<CaretRight />}>
+                        <ListItem href="/main/settings/about" startDecorator={<Info />}>
                             About
                         </ListItem>
                         <ListItem
-                            startDecorator={<Moon />}
+                            startDecorator={<Palette />}
                             endDecorator={
                                 <Select
                                     value={mode || ''}
@@ -55,7 +56,7 @@ const SettingsList = function () {
                                 />
                             }
                         >
-                            Dark mode
+                            App theme
                         </ListItem>
                         <ListItem button startDecorator={<SignOut />} onClick={handleLogOut}>
                             Log out

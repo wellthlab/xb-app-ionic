@@ -6,11 +6,11 @@ import { selectProfile } from '../common/slices/account';
 import { useSelector } from '../common/store';
 
 const EditProfileForm = function () {
-    const profile = useSelector(selectProfile);
+    const { id, ...profile } = useSelector(selectProfile)!;
 
     return (
         <Page headerTitle="Your profile">
-            <ProfileForm defaultValues={profile} info="Edit your profile below" />
+            <ProfileForm defaultValues={profile} />
         </Page>
     );
 };

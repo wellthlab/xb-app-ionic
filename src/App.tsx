@@ -1,18 +1,49 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { CssVarsProvider, CircularProgress } from '@mui/joy';
+import { CssVarsProvider, CircularProgress, extendTheme } from '@mui/joy';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
 
 import store, { useSelector, useDispatch } from './common/store';
-import { selectIsAuthenticated, setIsEnrolled, hydrateAccount } from './common/slices/account';
+import { boot } from './common/slices/globalActions';
+import { selectIsAuthenticated, setIsEnrolled } from './common/slices/account';
 import { Page, Centre } from './common/ui/layout';
 import { LoginForm, RegisterForm } from './auth';
 import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
 import { TeamInsights, TeamGuard } from './team';
 import { SettingsList, EditProfileForm, StudyInformation as SettingsStudyInformation } from './settings';
+import { ModulesList, TasksList, Task } from './box';
+
+const theme = extendTheme({
+    components: {
+        JoyList: {
+            defaultProps: { variant: 'soft' },
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    borderRadius: theme.vars.radius.sm,
+                    flex: 0,
+                }),
+            },
+        },
+
+        JoyCard: {
+            defaultProps: { variant: 'outlined' },
+        },
+
+        JoyContainer: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    minHeight: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    padding: theme.spacing(4, 2),
+                }),
+            },
+        },
+    },
+});
 
 const Redirects = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -21,19 +52,19 @@ const Redirects = function () {
     const [hydrating, setHydrating] = React.useState(true);
     const dispatch = useDispatch();
     React.useEffect(() => {
-        // Hyrdate account only if authenticated
+        // Call boot only if authenticated
 
         if (!isAuthenticated) {
             return;
         }
 
         const hydrate = async function () {
-            console.log('HYDRATING ACCOUNT...');
+            console.log('BOOTING...');
             setHydrating(true);
 
-            await dispatch(hydrateAccount());
+            await dispatch(boot());
 
-            console.log('ACCOUNT HYDRATED');
+            console.log('BOOTED');
             setHydrating(false);
         };
 
@@ -59,7 +90,7 @@ const App = function () {
     return (
         <IonApp>
             <Provider store={store}>
-                <CssVarsProvider defaultMode="system">
+                <CssVarsProvider theme={theme} defaultMode="system">
                     <IconContext.Provider value={{ weight: 'light', size: 24 }}>
                         <IonReactRouter>
                             <Redirects />
@@ -105,15 +136,21 @@ const App = function () {
                                                 </TeamGuard>
                                             </Route>
 
-                                            <Route path="/main/eat" exact>
+                                            <Route path="/main/box/:type" exact>
                                                 <TeamGuard>
-                                                    <TeamInsights />
+                                                    <ModulesList />
                                                 </TeamGuard>
                                             </Route>
 
-                                            <Route path="/main/move" exact>
+                                            <Route path="/main/box/:type/:moduleId" exact>
                                                 <TeamGuard>
-                                                    <TeamInsights />
+                                                    <TasksList />
+                                                </TeamGuard>
+                                            </Route>
+
+                                            <Route path="/main/box/:type/:moduleId/:playlistId/:taskId" exact>
+                                                <TeamGuard>
+                                                    <Task />
                                                 </TeamGuard>
                                             </Route>
 
@@ -134,10 +171,10 @@ const App = function () {
                                             <IonTabButton tab="team" href="/main/team">
                                                 <Users />
                                             </IonTabButton>
-                                            <IonTabButton tab="eat" href="/main/eat">
+                                            <IonTabButton tab="eat" href="/main/box/eat">
                                                 <ForkKnife />
                                             </IonTabButton>
-                                            <IonTabButton tab="move" href="/main/move">
+                                            <IonTabButton tab="move" href="/main/box/move">
                                                 <PersonSimpleRun />
                                             </IonTabButton>
                                             <IonTabButton tab="settings" href="/main/settings">

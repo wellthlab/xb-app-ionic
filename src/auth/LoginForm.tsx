@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TextField, Alert, Link, Stack } from '@mui/joy';
+import { TextField, Alert, Link, Box } from '@mui/joy';
 import * as Yup from 'yup';
 
 import SharedAuthScreen from './SharedAuthScreen';
@@ -42,14 +42,14 @@ const LoginForm = function () {
                 onSubmit={handleSubmit}
                 submitLabel="Login"
                 footer={
-                    <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Link component={RouterLink} level="body2" to="/auth/register">
                             Not yet a user? Register
                         </Link>
                         <Link component={RouterLink} level="body2" to="/auth/forgot-password">
                             Forgotten password?
                         </Link>
-                    </Stack>
+                    </Box>
                 }
             >
                 <TextField label="Email" {...getInputProps('email')} />

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { hydrateAccount, logOutUser } from './account';
+import { boot, logOut } from './globalActions';
 import Team, { ITeam } from '../models/Team';
 
-export const createTeam = createAsyncThunk('team/created', (name: string) => {
-    return Team.create(name);
+export const createTeam = createAsyncThunk('team/created', (payload: Pick<ITeam, 'name' | 'desc'>) => {
+    return Team.create(payload);
 });
 
 export const joinTeam = createAsyncThunk('team/joined', (invite: string) => {
@@ -26,13 +26,9 @@ export default createSlice({
 
     extraReducers: (builder) => {
         builder
-            .addCase(hydrateAccount.fulfilled, (_, action) => {
-                if (action.payload.team) {
-                    return action.payload.team;
-                }
-            })
+            .addCase(boot.fulfilled, (_, action) => action.payload.team)
+            .addCase(logOut.fulfilled, () => null)
             .addCase(createTeam.fulfilled, (_, action) => action.payload)
-            .addCase(joinTeam.fulfilled, (_, action) => action.payload)
-            .addCase(logOutUser.fulfilled, () => null);
+            .addCase(joinTeam.fulfilled, (_, action) => action.payload);
     },
 }).reducer;

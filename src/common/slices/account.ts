@@ -1,14 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { boot, logOut } from './globalActions';
 import Account, { ICredentials, IProfile } from '../models/Account';
-import Team from '../models/Team';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
-});
-
-export const logOutUser = createAsyncThunk('account/loggedOut', () => {
-    return Account.logOut();
 });
 
 export const registerUser = createAsyncThunk('account/registered', async (credentials: ICredentials) => {
@@ -16,16 +12,8 @@ export const registerUser = createAsyncThunk('account/registered', async (creden
     return Account.authenticate(credentials);
 });
 
-export const hydrateAccount = createAsyncThunk('account/hydrated', async () => {
-    const result = await Promise.all([Account.getProfile(), Team.getCurrentTeam()]);
-    return {
-        profile: result[0],
-        team: result[1],
-    };
-});
-
-export const updateUserProfile = createAsyncThunk('account/updated', (response: Omit<IProfile, 'id' | 'email'>) => {
-    return Account.updateProfile(response);
+export const updateUserProfile = createAsyncThunk('account/updated', (payload: Omit<IProfile, 'id' | 'email'>) => {
+    return Account.updateProfile(payload);
 });
 
 interface IAccountState {
@@ -40,6 +28,7 @@ interface ISelectorState {
 export const selectIsAuthenticated = (state: ISelectorState) => state.account.authenticated;
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
 export const selectProfile = (state: ISelectorState) => state.account.profile;
+export const selectUserId = (state: ISelectorState) => state.account.profile?.id;
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
@@ -57,7 +46,7 @@ export default createSlice({
             .addCase(registerUser.fulfilled, (state) => {
                 state.authenticated = true;
             })
-            .addCase(hydrateAccount.fulfilled, (state, action) => {
+            .addCase(boot.fulfilled, (state, action) => {
                 if (action.payload.profile) {
                     state.profile = action.payload.profile;
                 }
@@ -65,13 +54,13 @@ export default createSlice({
             .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.profile = action.payload;
             })
-            .addCase(hydrateAccount.rejected, (state) => {
-                // Failed to hydrate for whatever reason, we set authenticated to false
+            .addCase(boot.rejected, (state) => {
+                // Failed to boot for whatever reason, we set authenticated to false
 
                 state.authenticated = false;
                 delete state.profile;
             })
-            .addCase(logOutUser.fulfilled, (state) => {
+            .addCase(logOut.fulfilled, (state) => {
                 state.authenticated = false;
                 delete state.profile;
             });

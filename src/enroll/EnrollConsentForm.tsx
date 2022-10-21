@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Typography, Link } from '@mui/joy';
+import { Alert, Link } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Page, PageTitle } from '../common/ui/layout';
@@ -41,14 +41,16 @@ const EnrollConsentForm = function () {
                     {...getCheckboxProps('c3')}
                 />
 
-                <Typography>
-                    Exercise is safe and beneficial for most people, but some people should check with their doctor
-                    before changing their physical activity patterns. Use the{' '}
-                    <Link href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">
-                        PAR Questionnaire
-                    </Link>{' '}
-                    and/or consult your GP before engaging in physical activity.
-                </Typography>
+                <Alert color="warning">
+                    <div>
+                        Exercise is safe and beneficial for most people, but some people should check with their doctor
+                        before changing their physical activity patterns. Use the{' '}
+                        <Link href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">
+                            PAR Questionnaire
+                        </Link>{' '}
+                        and/or consult your GP before engaging in physical activity.
+                    </div>
+                </Alert>
 
                 <Checkbox
                     label="I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part"

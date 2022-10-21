@@ -19,7 +19,7 @@ const Select = function ({ label, helperText, error, options, value, onChange, o
 
     return (
         <FormControl error={error}>
-            {label ? <FormLabel>{label}</FormLabel> : null}
+            {label && <FormLabel>{label}</FormLabel>}
 
             <Box
                 sx={{

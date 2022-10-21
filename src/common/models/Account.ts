@@ -17,7 +17,7 @@ export interface IProfile {
     office: string;
 }
 
-interface IProfileDocument extends Omit<IProfile, 'id'> {
+export interface IProfileDocument extends Omit<IProfile, 'id'> {
     _id: ObjectId;
 }
 
@@ -106,7 +106,7 @@ class Account extends BaseModel {
         };
     }
 
-    static async updateProfile(response: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
         const db = this.getDb();
 
         const email = this.client.currentUser!.profile.email!;
@@ -115,7 +115,7 @@ class Account extends BaseModel {
         await db.collection<IProfileDocument>('profiles').updateOne(
             { _id: this.oid(id) },
             {
-                ...response,
+                ...payload,
                 email,
             },
             { upsert: true },
@@ -124,7 +124,7 @@ class Account extends BaseModel {
         return {
             id,
             email,
-            ...response,
+            ...payload,
         };
     }
 }
