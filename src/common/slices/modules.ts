@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
+import { selectModules } from './account';
 import { IModule, ITask, IPlaylist } from '../models/Box';
 
 interface IEnhancedTask extends ITask {
@@ -24,11 +25,30 @@ interface ISelectorState {
     modules: IModulesState;
 }
 
-export const selectModulesByBox = (state: ISelectorState, box: string) =>
-    (state.modules.byBox[box] || []).map((id) => state.modules.items[id]);
+export const selectModuleById = (state: ISelectorState, id: string): IEnhancedModule | undefined =>
+    state.modules.items[id];
 
-export const selectModuleById = (state: ISelectorState, moduleId: string): IEnhancedModule | undefined =>
-    state.modules.items[moduleId];
+const selectModuleIds = (state: ISelectorState, box: string) => state.modules.byBox[box];
+
+export const selectModulesByBox = createSelector(selectModuleIds, selectModules, (moduleIds, subscribedModuleIds) => {
+    if (!moduleIds) {
+        return;
+    }
+
+    const subscribeds = [];
+    const remaining = [];
+
+    for (const moduleId of moduleIds) {
+        if (subscribedModuleIds.includes(moduleId)) {
+            subscribeds.push(moduleId);
+            continue;
+        }
+
+        remaining.push(moduleId);
+    }
+
+    return [subscribeds, remaining] as const;
+});
 
 export const selectTask = (
     state: ISelectorState,

@@ -1,11 +1,11 @@
 import React from 'react';
-import { TextField, Typography } from '@mui/joy';
+import { TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Form, useForm, Select } from '../ui/form';
 import Account from '../models/Account';
-import { updateUserProfile } from '../slices/account';
-import { useDispatch } from '../store';
+import { selectProfile, updateUserProfile } from '../slices/account';
+import { useDispatch, useSelector } from '../store';
 
 const schema = Yup.object().shape({
     firstName: Yup.string().required('Your first name is missing'),
@@ -15,19 +15,11 @@ const schema = Yup.object().shape({
     office: Yup.string(),
 });
 
-export interface IProfileFormProps {
-    defaultValues?: {
-        firstName?: string;
-        lastName?: string;
-        department?: string;
-        campus?: string;
-        office?: string;
-    };
-}
+const ProfileForm = function () {
+    const profile = useSelector(selectProfile);
 
-const ProfileForm = function ({ defaultValues }: IProfileFormProps) {
     const { getInputProps, createHandleSubmit } = useForm(
-        { firstName: '', lastName: '', department: '', campus: '', office: '', ...defaultValues },
+        { firstName: '', lastName: '', department: '', campus: '', office: '', ...profile },
         schema,
     );
 

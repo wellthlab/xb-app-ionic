@@ -1,0 +1,706 @@
+{
+    "_id": { "$oid": "62d939bfa88be9fe2e944a04" },
+    "name": "Food for Five",
+    "topic": "Diet",
+    "desc": "Exploring the effects of the way we eat on our health. ",
+    "difficulty": "Beginner",
+    "colour": "#2196f3",
+    "playlists": [
+        {
+            "tasks": [
+                {
+                    "name": "Week 1 Intro: What does not quite FULL feel like?",
+                    "icon": "EXPERIMENT",
+                    "desc": "Welcome to the Food for Five experiment!\n\nDuring the first week of this experiment, we will be exploring the notion of feeling \"almost full\".",
+                    "inputs": [{ "type": "checkbox", "label": "OK, got it" }]
+                },
+                {
+                    "desc": "To kick off the experiment, we’d like to gather some initial measurements. Firstly, your resting heart rate and then a measurement of your waistline (check the video for instructions).",
+                    "name": "Baseline Measurements",
+                    "video": "4MajPk-vp8M",
+                    "icon": "MEASURE",
+                    "inputs": [
+                        { "type": "heartrate", "label": "Beats in 20 seconds:", "optional": false },
+                        { "optional": false, "type": "number", "label": "Waistline (cm):" }
+                    ]
+                },
+                {
+                    "name": "Take a Photo",
+                    "icon": "CAMERA",
+                    "desc": "Taking a photograph of how you look now can help you to judge changes in your body composition. Take a photo if you like, and keep it for your own reference.",
+                    "inputs": [{ "type": "checkbox", "label": "OK, got it" }]
+                },
+                {
+                    "timed": false,
+                    "icon": "ADVICE",
+                    "desc": "TIP: To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water.",
+                    "label": "OK, got it",
+                    "type": "SELF_ASSESSMENT",
+                    "name": "Hunger Hack",
+                    "duration": { "$numberInt": "0" }
+                },
+                {
+                    "inputs": [
+                        { "label": "What does \"almost full\" feel like?", "type": "text", "optional": false },
+                        { "optional": false, "type": "text", "label": "What does \"full\" feel like?" },
+                        {
+                            "type": "select",
+                            "label": "Did you stop at \"almost full\" or keep going?",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going"]
+                        },
+                        {
+                            "options": ["Stopped", "Kept going a little", "A lot"],
+                            "label": "Did you eat past \"full\"? A little? A lot? ",
+                            "type": "select",
+                            "optional": false
+                        },
+                        {
+                            "options": ["Yes", "No"],
+                            "type": "select",
+                            "optional": false,
+                            "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
+                        },
+                        {
+                            "type": "text",
+                            "optional": false,
+                            "label": "How do you feel? Hungry? Stuffed? Comfortable?"
+                        },
+                        {
+                            "optional": false,
+                            "label": "Roughly how long does it take for you to feel hungry again after a meal?",
+                            "step": { "$numberInt": "5" },
+                            "type": "text"
+                        }
+                    ],
+                    "desc": "These questions will help you to reflect on the day. Complete them in the evening.",
+                    "name": "Reflection",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "type": "INPUT"
+                }
+            ],
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 1"
+        },
+        {
+            "name": "Day 2",
+            "tasks": [
+                {
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "ms": { "$numberDouble": "43200000.0" }, "type": "DELAY" },
+                    "name": "Reflection",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        { "type": "text", "label": "What does \"almost full\" feel like?", "optional": false },
+                        { "label": "What does \"full\" feel like?", "type": "text", "optional": false },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going"],
+                            "label": "Did you stop at \"almost full\" or keep going?"
+                        },
+                        {
+                            "label": "Did you eat past \"full\"? A little? A lot? ",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going for a bit", "A lot"]
+                        },
+                        {
+                            "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+                            "options": ["Yes", "No"],
+                            "type": "select",
+                            "optional": false
+                        },
+                        {
+                            "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                            "type": "text",
+                            "optional": false
+                        },
+                        {
+                            "optional": false,
+                            "step": { "$numberInt": "5" },
+                            "type": "slider",
+                            "label": "When did you start to feel hungry again?",
+                            "range": [{ "$numberInt": "5" }, { "$numberInt": "60" }]
+                        }
+                    ]
+                }
+            ],
+            "duration": { "magnitude": { "$numberInt": "1" }, "unit": "day" }
+        },
+        {
+            "tasks": [
+                {
+                    "duration": { "$numberInt": "0" },
+                    "icon": "ADVICE",
+                    "timed": false,
+                    "desc": "Try to STOP eating for at least five minutes at largest meal of the day when feeling “80%” or “almost” full",
+                    "type": "SELF_ASSESSMENT",
+                    "name": "Try to Stop Eating Before Full",
+                    "constraint": { "ms": { "$numberDouble": "43200000.0" }, "type": "DELAY" }
+                },
+                {
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        { "optional": false, "label": "What does \"almost full\" feel like?", "type": "text" },
+                        { "label": "What does \"full\" feel like?", "optional": false, "type": "text" },
+                        {
+                            "optional": false,
+                            "options": ["Stopped", "Kept going"],
+                            "type": "select",
+                            "label": "Did you stop at \"almost full\" or keep going?"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going a little", "A lot"],
+                            "label": "Did you eat past \"full\"? A little? A lot? "
+                        },
+                        {
+                            "options": ["Yes", "No"],
+                            "type": "select",
+                            "optional": false,
+                            "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
+                        },
+                        {
+                            "type": "text",
+                            "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                            "optional": false
+                        },
+                        {
+                            "range": [{ "$numberInt": "5" }, { "$numberInt": "60" }],
+                            "label": "When did you start to feel hungry again?",
+                            "type": "slider",
+                            "optional": false,
+                            "step": { "$numberInt": "5" }
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "name": "Reflection",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false
+                }
+            ],
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 3"
+        },
+        {
+            "duration": { "magnitude": { "$numberInt": "1" }, "unit": "day" },
+            "name": "Day 4",
+            "tasks": [
+                {
+                    "type": "INPUT",
+                    "constraint": { "ms": { "$numberDouble": "43200000.0" }, "type": "DELAY" },
+                    "name": "Reflection",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        { "type": "text", "label": "What does \"almost full\" feel like?", "optional": false },
+                        { "label": "What does \"full\" feel like?", "optional": false, "type": "text" },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going"],
+                            "label": "Did you stop at \"almost full\" or keep going?"
+                        },
+                        {
+                            "options": ["Stopped", "Kept going a little", "A lot"],
+                            "type": "select",
+                            "optional": false,
+                            "label": "Did you eat past \"full\"? A little? A lot? "
+                        },
+                        {
+                            "optional": false,
+                            "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?",
+                            "options": ["Yes", "No"],
+                            "type": "select"
+                        },
+                        {
+                            "optional": false,
+                            "type": "text",
+                            "label": "How do you feel? Hungry? Stuffed? Comfortable?"
+                        },
+                        {
+                            "type": "slider",
+                            "optional": false,
+                            "label": "When did you start to feel hungry again?",
+                            "range": [{ "$numberInt": "5" }, { "$numberInt": "60" }],
+                            "step": { "$numberInt": "5" }
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task."
+                }
+            ]
+        },
+        {
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 5",
+            "tasks": [
+                {
+                    "name": "Reflection",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        { "optional": false, "type": "text", "label": "What does \"almost full\" feel like?" },
+                        { "optional": false, "label": "What does \"full\" feel like?", "type": "text" },
+                        {
+                            "optional": false,
+                            "options": ["Stopped", "Kept going"],
+                            "type": "select",
+                            "label": "Did you stop at \"almost full\" or keep going?"
+                        },
+                        {
+                            "label": "Did you eat past \"full\"? A little? A lot? ",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Stopped", "Kept going a little", "A lot"]
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Yes", "No"],
+                            "label": "Would you resize your portions to make it easier to hit “almost full” for your next main meal?"
+                        },
+                        {
+                            "optional": false,
+                            "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                            "type": "text"
+                        },
+                        {
+                            "label": "When did you start to feel hungry again?",
+                            "range": [{ "$numberInt": "5" }, { "$numberInt": "60" }],
+                            "step": { "$numberInt": "5" },
+                            "type": "slider",
+                            "optional": false
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "type": "DELAY", "ms": { "$numberDouble": "43200000.0" } }
+                },
+                {
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "type": "INPUT",
+                    "inputs": [
+                        { "optional": false, "type": "text", "label": "What are the signs of \"almost full\"?" },
+                        {
+                            "type": "text",
+                            "optional": false,
+                            "label": "How does it feel to stop eating at \"almost full\"?"
+                        },
+                        {
+                            "optional": false,
+                            "type": "text",
+                            "label": "How might you change the amount of food on your plate to maintain \"almost full\" for another week?"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["Yes", "No"],
+                            "label": "Would you like to try this practice for another week?"
+                        },
+                        {
+                            "label": "Did you try the \"have something small 20 minutes before the meal\"? If so, did you feel satisfied / less hungry sooner during your meal? Did you feel less hungry for longer after your meal?",
+                            "optional": false,
+                            "type": "text"
+                        }
+                    ],
+                    "desc": "Please answer this end-of-week summary questionnaire. \n\nThank you for completing the first week! See you on Monday for Week 2.",
+                    "name": "End of Week 1 Summary"
+                },
+                {
+                    "timed": false,
+                    "icon": "ADVICE",
+                    "desc": "Gather greens and reds for Week 2. Greens are veggies, reds are proteins.\n\nThe aim for the coming week is to re-think carb-oriented meals to be green and red for one week and to eat carbs only after the green/red components.",
+                    "type": "INSTRUCTIONS",
+                    "name": "PREP for Week 2",
+                    "duration": { "$numberInt": "0" }
+                }
+            ]
+        },
+        {
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 6",
+            "tasks": [
+                {
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "GO",
+                    "type": "SELF_ASSESSMENT",
+                    "desc": "Welcome to week 2 of Food for Five! The aim of this week is to explore the ORDER in which we eat food.\n\nThe general idea is that eating greens (veg) before reds (protein sources) before other foods might provide benefits.",
+                    "name": "Week 2 Intro: Greens first, then Reds",
+                    "constraint": { "type": "TIMESTAMP", "ts": { "$numberDouble": "1.6593083400000E+12" } }
+                },
+                {
+                    "inputs": [
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": [
+                                "I don't eat breakfast",
+                                "White foods (processed foods or starchier foods: bread, pasta, rice, potatoes)",
+                                "Greens (fruits, veggies)",
+                                "Reds (protein, eggs, meat, nuts)"
+                            ],
+                            "label": "What does your typical breakfast mostly consist of?"
+                        },
+                        {
+                            "label": "What does your typical lunch mostly consist of?",
+                            "type": "select",
+                            "optional": false,
+                            "options": [
+                                "I don't eat lunch",
+                                "White foods (processed foods or starchier foods: bread, pasta, rice, potatoes)",
+                                "Greens (fruits, veggies)",
+                                "Reds (protein, eggs, meat, nuts)"
+                            ]
+                        },
+                        {
+                            "optional": false,
+                            "options": [
+                                "I don't eat dinner",
+                                "White foods (processed foods or starchier foods: bread, pasta, rice, potatoes)",
+                                "Greens (fruits, veggies)",
+                                "Reds (protein, eggs, meat, nuts)"
+                            ],
+                            "type": "select",
+                            "label": "What does your typical dinner mostly consist of?"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": [
+                                "I don't eat snacks",
+                                "White foods (processed foods or starchier foods: bread, pasta, rice, potatoes)",
+                                "Greens (fruits, veggies)",
+                                "Reds (protein, eggs, meat, nuts)"
+                            ],
+                            "label": "What does your typical snack mostly consist of?"
+                        }
+                    ],
+                    "name": "Baseline Questionnaire",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "desc": "To begin with, please answer some baseline questions about your meal habits.",
+                    "type": "INPUT"
+                },
+                {
+                    "name": "Green/Red Strategy",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "ADVICE",
+                    "desc": "Have a think about what your green/red strategy will be for each time you eat this week (It's okay to eat the same things for 5-7 days).",
+                    "type": "SELF_ASSESSMENT"
+                },
+                {
+                    "icon": "ADVICE",
+                    "desc": "If you eat breakfast, what green/red options are available? Some to consider:\n\nEggs (red), spinach (green), veggies, nuts, avocado, tofu scramble, etc. Vegan protein shakes (for example, pea protein) with greens like a frozen spinach ball, coconut oil and ground (roasted) flax seeds can be perfect! Frozen spinach is a great resource.\n\nWhat are some salads or cold versions of greens/reds that you can take to work or have working from home?\n\nIf cooking for your family, are they joining you? If not, how could you prepare your meal and a version of yours for them?",
+                    "type": "SELF_ASSESSMENT",
+                    "name": "Meal Inspiration",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false
+                },
+                {
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        {
+                            "label": "How did you eat breakfast today?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false
+                        },
+                        {
+                            "label": "How did you eat lunch today?",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "label": "How did you eat dinner today?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "label": "Did you eat an AM snack today? If so, how did you eat it?"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "label": "Did you eat a PM snack today? If so, how did you eat it?"
+                        },
+                        {
+                            "label": "If you ate any other times, how did you do those?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "name": "Reflection for Day 6"
+                }
+            ]
+        },
+        {
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 7",
+            "tasks": [
+                {
+                    "name": "Reflection for Day 7",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        {
+                            "label": "How did you eat breakfast today?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false
+                        },
+                        {
+                            "type": "select",
+                            "label": "How did you eat lunch today?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "label": "How did you eat dinner today?"
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "label": "Did you eat an AM snack today? If so, how did you eat it?"
+                        },
+                        {
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false,
+                            "label": "Did you eat a PM snack today? If so, how did you eat it?"
+                        },
+                        {
+                            "type": "select",
+                            "label": "If you ate any other times, how did you do those?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "type": "DELAY", "ms": { "$numberDouble": "43200000.0" } }
+                }
+            ]
+        },
+        {
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 8",
+            "tasks": [
+                {
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        {
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false,
+                            "label": "How did you eat breakfast today?"
+                        },
+                        {
+                            "label": "How did you eat lunch today?",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "label": "How did you eat dinner today?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select"
+                        },
+                        {
+                            "type": "select",
+                            "label": "Did you eat an AM snack today? If so, how did you eat it?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "label": "Did you eat a PM snack today? If so, how did you eat it?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "label": "If you ate any other times, how did you do those?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "optional": false
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "type": "DELAY", "ms": { "$numberDouble": "43200000.0" } },
+                    "name": "Reflection for Day 8",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false
+                }
+            ]
+        },
+        {
+            "tasks": [
+                {
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        {
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "label": "How did you eat breakfast today?",
+                            "type": "select",
+                            "optional": false
+                        },
+                        {
+                            "type": "select",
+                            "optional": false,
+                            "label": "How did you eat lunch today?",
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "label": "How did you eat dinner today?",
+                            "optional": false
+                        },
+                        {
+                            "label": "Did you eat an AM snack today? If so, how did you eat it?",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "label": "Did you eat a PM snack today? If so, how did you eat it?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select"
+                        },
+                        {
+                            "label": "If you ate any other times, how did you do those?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select"
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "type": "DELAY", "ms": { "$numberDouble": "43200000.0" } },
+                    "name": "Reflection for Day 9",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false
+                }
+            ],
+            "duration": { "magnitude": { "$numberInt": "1" }, "unit": "day" },
+            "name": "Day 9"
+        },
+        {
+            "tasks": [
+                {
+                    "icon": "QUESTIONNAIRE",
+                    "inputs": [
+                        {
+                            "label": "How did you eat breakfast today?",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        },
+                        {
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "label": "How did you eat lunch today?"
+                        },
+                        {
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "label": "How did you eat dinner today?"
+                        },
+                        {
+                            "label": "Did you eat an AM snack today? If so, how did you eat it?",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select"
+                        },
+                        {
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."],
+                            "type": "select",
+                            "label": "Did you eat a PM snack today? If so, how did you eat it?"
+                        },
+                        {
+                            "label": "If you ate any other times, how did you do those?",
+                            "type": "select",
+                            "optional": false,
+                            "options": ["I didn't.", "Greens first, then reds.", "Reds first, then greens.", "Other."]
+                        }
+                    ],
+                    "desc": "End-of-day questionnaire about the task.",
+                    "type": "INPUT",
+                    "constraint": { "type": "DELAY", "ms": { "$numberDouble": "43200000.0" } },
+                    "name": "Reflection for Day 10",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "optional": false,
+                            "options": [
+                                "Much less than usual.",
+                                "Slightly less than normal.",
+                                "About the same.",
+                                "Slighlty increased.",
+                                "Much higher than usual."
+                            ],
+                            "type": "select",
+                            "label": "How is you energy at the end of this week?"
+                        },
+                        { "optional": false, "type": "text", "label": "What was challenging about this week?" },
+                        { "label": "What did you find easy?", "optional": false, "type": "text" },
+                        {
+                            "options": ["Yes", "No"],
+                            "type": "select",
+                            "optional": false,
+                            "label": "Would you like to practice this again next week?"
+                        }
+                    ],
+                    "desc": "Please answer this end-of-week summary questionnaire. \n\nThank you for completing the second week! We hope you've enjoyed and learned something new to practice.",
+                    "type": "INPUT",
+                    "name": "End of Week 2 Summary",
+                    "duration": { "$numberInt": "0" },
+                    "timed": false,
+                    "icon": "QUESTIONNAIRE"
+                }
+            ],
+            "duration": { "unit": "day", "magnitude": { "$numberInt": "1" } },
+            "name": "Day 10"
+        }
+    ],
+    "box": "eat"
+}

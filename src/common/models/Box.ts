@@ -19,7 +19,7 @@ export interface IBoxDocument extends IBox {
 export interface IModule {
     id: string;
     name: string;
-    topic?: string;
+    tags: string[];
     desc?: string;
     box: string;
     difficulty: string;
@@ -37,19 +37,20 @@ export interface ITask {
     desc?: string;
     icon?: string;
     video?: string;
-    inputs?: (ITextInput | INumberInput | ISelectInput | ISliderInput | IHeartrateInput)[];
+    inputs?: (ITextInput | INumberInput | ISelectInput | IHeartrateInput | ICheckboxInput)[];
 }
 
 interface IGenericInput {
     optional?: boolean;
     label: string;
+    help?: string;
 }
 
 interface ITextInput extends IGenericInput {
     type: 'text';
 }
 
-interface ICheckbox extends IGenericInput {
+interface ICheckboxInput extends IGenericInput {
     type: 'checkbox';
 }
 
@@ -60,12 +61,6 @@ interface INumberInput extends IGenericInput {
 interface ISelectInput extends IGenericInput {
     type: 'select';
     options: string[];
-}
-
-interface ISliderInput extends IGenericInput {
-    type: 'slider';
-    step?: number;
-    range: [number, number];
 }
 
 interface IHeartrateInput extends IGenericInput {

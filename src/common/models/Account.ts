@@ -8,7 +8,6 @@ export interface ICredentials {
 }
 
 export interface IProfile {
-    id: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -17,8 +16,15 @@ export interface IProfile {
     office: string;
 }
 
-export interface IProfileDocument extends Omit<IProfile, 'id'> {
+export interface IAccount {
+    id: string;
+    profile: IProfile;
+    modules: string[];
+}
+
+export interface IAccountDocument extends Omit<IAccount, 'id' | 'modules'> {
     _id: ObjectId;
+    modules: ObjectId[];
 }
 
 class Account extends BaseModel {
@@ -60,8 +66,8 @@ class Account extends BaseModel {
 
     static CAMPUS = ['1 Guildhall Square', 'Avenue', 'Boldrewood', 'Highfield', 'Waterfront', 'Winchester'] as const;
 
-    static get isAuthenticated() {
-        return !!this.client.currentUser;
+    static get persistedId() {
+        return this.client.currentUser?.id;
     }
 
     static authenticate(credentials: ICredentials) {
@@ -88,9 +94,19 @@ class Account extends BaseModel {
         return this.client.emailPasswordAuth.registerUser(credentials.email, credentials.password);
     }
 
-    static async getProfile(): Promise<IProfile | null> {
+    static transformDocument(document: IAccountDocument): IAccount {
+        const { _id, modules, ...others } = document;
+
+        return {
+            ...others,
+            id: _id.toString(),
+            modules: modules.map((moduleId) => moduleId.toString()),
+        };
+    }
+
+    static async getDetails(): Promise<IAccount | null> {
         const db = this.getDb();
-        const result = await db.collection<IProfileDocument>('profiles').findOne({
+        const result = await db.collection<IAccountDocument>('accounts').findOne({
             _id: this.oid(this.client.currentUser!.id),
         });
 
@@ -98,12 +114,7 @@ class Account extends BaseModel {
             return null;
         }
 
-        const { _id, ...others } = result;
-
-        return {
-            ...others,
-            id: _id.toString(),
-        };
+        return this.transformDocument(result);
     }
 
     static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
@@ -112,20 +123,30 @@ class Account extends BaseModel {
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
-        await db.collection<IProfileDocument>('profiles').updateOne(
+        await db.collection<IAccountDocument>('accounts').updateOne(
             { _id: this.oid(id) },
             {
-                ...payload,
-                email,
+                $set: { profile: { ...payload, email } },
+                $setOnInsert: { modules: [] },
             },
             { upsert: true },
         );
 
         return {
-            id,
             email,
             ...payload,
         };
+    }
+
+    static subscribeToModule(moduleId: string) {
+        const db = this.getDb();
+
+        return db.collection<IAccountDocument>('accounts').updateOne(
+            {
+                _id: this.oid(this.client.currentUser!.id),
+            },
+            { $push: { modules: this.oid(moduleId) } },
+        );
     }
 }
 

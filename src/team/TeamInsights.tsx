@@ -4,10 +4,8 @@ import { Users, Fingerprint } from 'phosphor-react';
 
 import { Page, PageTitle, Modal, Centre, SectionTitle } from '../common/ui/layout';
 import { selectFullName, selectUserId } from '../common/slices/account';
-import Team, { ITeamMemberProfile } from '../common/models/Team';
 import { selectTeam } from '../common/slices/team';
 import { useSelector } from '../common/store';
-import getErrorMessage from '../common/utils/getErrorMessage';
 
 const TeamInsights = function () {
     const fullName = useSelector(selectFullName);
@@ -19,20 +17,6 @@ const TeamInsights = function () {
     const createModalHandler = function (value: boolean) {
         return () => setLeaderboardOpen(value);
     };
-
-    const [memberProfiles, setMemberProfiles] = React.useState<ITeamMemberProfile[]>([]);
-    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-    React.useEffect(() => {
-        const getProfiles = async function () {
-            try {
-                setMemberProfiles(await Team.getMemberProfiles(team.members));
-            } catch (error) {
-                setErrorMessage(getErrorMessage(error, 'Cannot retrieve members at this timne.'));
-            }
-        };
-
-        getProfiles();
-    }, []);
 
     return (
         <Page ref={setPresentingElement}>
@@ -68,24 +52,22 @@ const TeamInsights = function () {
 
             <SectionTitle>Members</SectionTitle>
 
-            {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
-
             <Stack spacing={1}>
-                {memberProfiles.map((profile) => (
-                    <Card key={profile.id}>
+                {team.members.map(({ id, profile }) => (
+                    <Card key={id}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography>
                                 {profile.firstName} {profile.lastName}
                             </Typography>
 
                             <Stack direction="row" spacing={1}>
-                                {profile.id === userId ? (
+                                {id === userId ? (
                                     <Chip color="info" size="sm">
                                         You
                                     </Chip>
                                 ) : null}
 
-                                {profile.id === team.members[0] ? (
+                                {id === team.members[0].id ? (
                                     <Chip color="success" size="sm">
                                         Owner
                                     </Chip>

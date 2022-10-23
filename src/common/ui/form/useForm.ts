@@ -87,9 +87,8 @@ const useForm = function <T extends Record<string, string | boolean>>(
 
         createHandleSubmit: (handleSubmit) => {
             return async () => {
-                let validated;
                 try {
-                    validated = schema.validateSync(values, { abortEarly: false });
+                    schema.validateSync(values, { abortEarly: false });
                 } catch (error) {
                     if (error instanceof Yup.ValidationError) {
                         setErrors(processErrors(error.inner));
@@ -100,7 +99,7 @@ const useForm = function <T extends Record<string, string | boolean>>(
                 }
 
                 setErrors({});
-                await handleSubmit(validated);
+                await handleSubmit(values);
             };
         },
     };
