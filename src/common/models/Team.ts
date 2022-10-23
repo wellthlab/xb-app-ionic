@@ -68,7 +68,11 @@ class Team extends BaseModel {
 
         const result = await db
             .collection<ITeamDocument>('teams')
-            .findOneAndUpdate({ invite }, { $push: { members: this.oid(this.client.currentUser!.id) } });
+            .findOneAndUpdate(
+                { invite },
+                { $push: { members: this.oid(this.client.currentUser!.id) } },
+                { returnNewDocument: true },
+            );
 
         if (!result) {
             throw new Error('Sorry, the invite code did not correspond to any team');
@@ -84,6 +88,13 @@ class Team extends BaseModel {
         };
     }
 
+    static leave() {
+        const db = this.getDb();
+
+        const id = this.oid(this.client.currentUser!.id);
+        return db.collection<ITeamDocument>('teams').updateOne({ members: id }, { $pull: { members: id } });
+    }
+
     private static async _getMembers(ids: ObjectId[]): Promise<IAccount[]> {
         const db = this.getDb();
 
@@ -91,7 +102,20 @@ class Team extends BaseModel {
             _id: { $in: ids },
         });
 
-        return result.map(Account.transformDocument);
+        const transformedDocuments = result.map(Account.transformDocument);
+
+        // Sort ids to follow the member ids
+        // This is because we want to display the members in the order they joined
+        // Also, the first member is the owner, so another reason why we want the original order
+
+        const stringifiedIds = ids.map((id) => id.toString());
+
+        const ret = [];
+        for (const document of transformedDocuments) {
+            ret[stringifiedIds.indexOf(document.id)] = document;
+        }
+
+        return ret;
     }
 }
 

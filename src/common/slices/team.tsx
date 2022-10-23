@@ -11,6 +11,10 @@ export const joinTeam = createAsyncThunk('team/joined', (invite: string) => {
     return Team.join(invite);
 });
 
+export const leaveTeam = createAsyncThunk('team/left', () => {
+    return Team.leave();
+});
+
 type TeamState = ITeam | null;
 
 interface ISelectorState {
@@ -18,6 +22,7 @@ interface ISelectorState {
 }
 
 export const selectTeam = (state: ISelectorState) => state.team;
+export const selectTeamMembers = (state: ISelectorState) => state.team?.members;
 
 export default createSlice({
     name: 'team',
@@ -28,6 +33,7 @@ export default createSlice({
         builder
             .addCase(boot.fulfilled, (_, action) => action.payload.team)
             .addCase(logOut.fulfilled, () => null)
+            .addCase(leaveTeam.fulfilled, () => null)
             .addCase(createTeam.fulfilled, (_, action) => action.payload)
             .addCase(joinTeam.fulfilled, (_, action) => action.payload);
     },

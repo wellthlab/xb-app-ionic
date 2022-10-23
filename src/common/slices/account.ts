@@ -22,7 +22,7 @@ export const updateUserProfile = createAsyncThunk(
 export const subscribeToModule = createAsyncThunk<string | undefined, string, { state: ISelectorState }>(
     'account/modules/subscribed',
     async (moduleId, { getState }) => {
-        const modules = selectModules(getState());
+        const modules = selectSubscribedModules(getState());
 
         if (modules.includes(moduleId)) {
             return;
@@ -46,7 +46,7 @@ interface ISelectorState {
 export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.id;
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
 export const selectProfile = (state: ISelectorState) => state.account.profile;
-export const selectModules = (state: ISelectorState) => state.account.modules;
+export const selectSubscribedModules = (state: ISelectorState) => state.account.modules;
 export const selectUserId = (state: ISelectorState) => state.account.id;
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>

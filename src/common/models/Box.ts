@@ -96,6 +96,8 @@ class Box extends BaseModel {
             };
         });
     }
+
+    static async submitModuleResponse(payload: Record<string, string | number>) {}
 }
 
 export default Box;

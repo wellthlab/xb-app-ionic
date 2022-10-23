@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
+import HeartrateInput from './HeartrateInput';
 import { ITask } from '../../common/models/Box';
 import { Checkbox, Form, Select, useForm } from '../../common/ui/form';
 
@@ -74,10 +75,6 @@ const TaskForm = function ({ inputs }: ITaskFormProps) {
                     helperText: input.help,
                 };
 
-                if (input.type === 'text' || input.type === 'number') {
-                    return <TextField type={input.type} {...commonProps} {...(getInputProps(input.label) as any)} />;
-                }
-
                 if (input.type === 'select') {
                     return <Select options={input.options} {...commonProps} {...(getInputProps(input.label) as any)} />;
                 }
@@ -86,7 +83,11 @@ const TaskForm = function ({ inputs }: ITaskFormProps) {
                     return <Checkbox {...commonProps} {...(getCheckboxProps(input.label) as any)} />;
                 }
 
-                return <div>HeartRate</div>;
+                if (input.type === 'heartrate') {
+                    return <HeartrateInput {...commonProps} {...(getInputProps(input.label) as any)} />;
+                }
+
+                return <TextField type={input.type} {...commonProps} {...(getInputProps(input.label) as any)} />;
             })}
         </Form>
     );

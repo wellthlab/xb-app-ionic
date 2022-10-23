@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { CssVarsProvider, CircularProgress, extendTheme } from '@mui/joy';
+import { CssVarsProvider, CircularProgress, extendTheme, useColorScheme } from '@mui/joy';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
@@ -45,7 +45,7 @@ const theme = extendTheme({
     },
 });
 
-const Redirects = function () {
+const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(setIsEnrolled);
 
@@ -86,14 +86,37 @@ const Redirects = function () {
     return <Redirect to="/main" />;
 };
 
+const IonicThemeController = function () {
+    const { systemMode, mode } = useColorScheme();
+
+    React.useEffect(() => {
+        const toggleBodyClassName = function (suppliedMode: string | undefined) {
+            if (suppliedMode === 'dark') {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        };
+
+        if (mode !== 'system') {
+            return toggleBodyClassName(mode);
+        }
+
+        toggleBodyClassName(systemMode);
+    }, [systemMode, mode]);
+
+    return null;
+};
+
 const App = function () {
     return (
         <IonApp>
             <Provider store={store}>
-                <CssVarsProvider theme={theme} defaultMode="system">
-                    <IconContext.Provider value={{ weight: 'light', size: 24 }}>
-                        <IonReactRouter>
-                            <Redirects />
+                <IonReactRouter>
+                    <CssVarsProvider theme={theme} defaultMode="system">
+                        <IconContext.Provider value={{ weight: 'light', size: 24 }}>
+                            <IonicThemeController />
+                            <AppFlowController />
                             <IonRouterOutlet>
                                 <Route path="/auth" exact>
                                     <LoginForm />
@@ -184,9 +207,9 @@ const App = function () {
                                     </IonTabs>
                                 </Route>
                             </IonRouterOutlet>
-                        </IonReactRouter>
-                    </IconContext.Provider>
-                </CssVarsProvider>
+                        </IconContext.Provider>
+                    </CssVarsProvider>
+                </IonReactRouter>
             </Provider>
         </IonApp>
     );

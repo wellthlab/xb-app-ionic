@@ -2,11 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Stack, Typography, Box } from '@mui/joy';
 
+import ModulesListItem from './ModulesListItem';
 import { Page, PageTitle, SectionTitle } from '../../common/ui/layout';
 import { selectModulesByBox } from '../../common/slices/modules';
 import { selectBox, selectStage } from '../../common/slices/boxes';
 import { useSelector } from '../../common/store';
-import ModulesListItem from './ModulesListItem';
 
 const renderModulesList = function (name: string, items: string[]) {
     if (!items.length) {

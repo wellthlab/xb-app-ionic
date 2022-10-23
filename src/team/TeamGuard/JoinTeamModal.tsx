@@ -27,7 +27,7 @@ const JoinTeamModal = function (props: IJoinTeamModal) {
                 An invite code is a unique 6-digit code assigned to each team. Ask the owner, or any member of the team
                 you want to join to continue.
             </Alert>
-            <TextField label="Invite code" placeholder="AB123456" {...getInputProps('invite')} />
+            <TextField label="Invite code" placeholder="AB1234" {...getInputProps('invite')} />
         </Modal>
     );
 };

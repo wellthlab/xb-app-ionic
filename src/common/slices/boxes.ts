@@ -5,13 +5,13 @@ import { IBox } from '../models/Box';
 import { selectTeam } from './team';
 import { idToTs } from '../models/utils';
 
-interface IBoxesState extends Record<string, IBox> {}
+interface IBoxesState extends Partial<Record<string, IBox>> {}
 
 interface ISelectorState {
     boxes: IBoxesState;
 }
 
-export const selectBox = (state: ISelectorState, type: string): IBox | undefined => state.boxes[type];
+export const selectBox = (state: ISelectorState, type: string) => state.boxes[type];
 
 export const selectStage = createSelector(selectTeam, selectBox, (team, box) => {
     if (!team || !box) {

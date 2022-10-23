@@ -55,10 +55,15 @@ const useForm = function <T extends Record<string, string | boolean>>(
 
             onBlur: () => {
                 try {
-                    schema.validateSyncAt(name as string, { [name]: values[name] });
+                    schema.validateSync(values, { abortEarly: false });
                 } catch (error) {
                     if (error instanceof Yup.ValidationError) {
-                        setErrors({ ...errors, [name]: error.message });
+                        for (const subError of error.inner) {
+                            if (subError.path === name) {
+                                return setErrors({ ...errors, [name]: subError.message });
+                            }
+                        }
+
                         return;
                     }
                 }

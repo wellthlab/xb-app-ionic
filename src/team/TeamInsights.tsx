@@ -1,11 +1,12 @@
 import React from 'react';
-import { Card, Button, Typography, Stack, Alert, Chip, Box } from '@mui/joy';
+import { IonAlert } from '@ionic/react';
+import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
 import { Users, Fingerprint } from 'phosphor-react';
 
 import { Page, PageTitle, Modal, Centre, SectionTitle } from '../common/ui/layout';
 import { selectFullName, selectUserId } from '../common/slices/account';
-import { selectTeam } from '../common/slices/team';
-import { useSelector } from '../common/store';
+import { leaveTeam, selectTeam } from '../common/slices/team';
+import { useSelector, useDispatch } from '../common/store';
 
 const TeamInsights = function () {
     const fullName = useSelector(selectFullName);
@@ -16,6 +17,20 @@ const TeamInsights = function () {
     const [leaderboardOpen, setLeaderboardOpen] = React.useState(false);
     const createModalHandler = function (value: boolean) {
         return () => setLeaderboardOpen(value);
+    };
+
+    const [alertOpen, setAlertOpen] = React.useState(false);
+    const handleOpenAlert = function () {
+        setAlertOpen(true);
+    };
+
+    const dispatch = useDispatch();
+    const handleDismissAlert: React.ComponentProps<typeof IonAlert>['onDidDismiss'] = function (e) {
+        if (e.detail.role === 'confirm') {
+            dispatch(leaveTeam());
+        }
+
+        setAlertOpen(false);
     };
 
     return (
@@ -43,7 +58,7 @@ const TeamInsights = function () {
                         <Button fullWidth onClick={createModalHandler(true)}>
                             Leaderboard
                         </Button>
-                        <Button variant="outlined" color="danger" fullWidth>
+                        <Button variant="outlined" color="danger" onClick={handleOpenAlert} fullWidth>
                             Leave team
                         </Button>
                     </Stack>
@@ -78,6 +93,23 @@ const TeamInsights = function () {
                     </Card>
                 ))}
             </Stack>
+
+            <IonAlert
+                isOpen={alertOpen}
+                onDidDismiss={handleDismissAlert}
+                header="Hang on there..."
+                message="Are you sure you want to leave this team?"
+                buttons={[
+                    {
+                        text: 'Cancel',
+                        role: 'cancel',
+                    },
+                    {
+                        text: 'Confirm',
+                        role: 'confirm',
+                    },
+                ]}
+            />
 
             <Modal
                 headerTitle="Teams leaderboard"
