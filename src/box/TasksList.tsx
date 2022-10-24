@@ -12,6 +12,7 @@ import {
     Flask,
     PencilLine,
     Check,
+    Barbell,
 } from 'phosphor-react';
 
 import { Page, PageTitle } from '../common/ui/layout';
@@ -49,6 +50,10 @@ const getTaskIcon = function (icon: string | undefined, draft: boolean | undefin
 
     if (icon === 'EXPERIMENT') {
         return <Flask />;
+    }
+
+    if (icon === 'MOVE') {
+        return <Barbell />;
     }
 };
 

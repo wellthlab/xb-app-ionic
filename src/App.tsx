@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { CssVarsProvider, CircularProgress, extendTheme, useColorScheme } from '@mui/joy';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, ForkKnife, PersonSimpleRun } from 'phosphor-react';
+import { IconContext, Users, Gear, ForkKnife, Barbell } from 'phosphor-react';
 
 import store, { useSelector, useDispatch } from './common/store';
 import { boot } from './common/slices/globalActions';
@@ -198,7 +198,7 @@ const App = function () {
                                                 <ForkKnife />
                                             </IonTabButton>
                                             <IonTabButton tab="move" href="/main/box/move">
-                                                <PersonSimpleRun />
+                                                <Barbell />
                                             </IonTabButton>
                                             <IonTabButton tab="settings" href="/main/settings">
                                                 <Gear />
