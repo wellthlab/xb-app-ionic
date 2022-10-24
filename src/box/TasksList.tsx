@@ -1,12 +1,14 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button, IconButton, Stack, Typography } from '@mui/joy';
+import { Button, IconButton, Stack, Typography, Alert } from '@mui/joy';
 import { Play, CaretLeft, CaretRight, GraduationCap, NotePencil, Ruler, Camera, Flask } from 'phosphor-react';
 
 import { Page, PageTitle } from '../common/ui/layout';
 import { selectModuleById } from '../common/slices/modules';
 import { useSelector } from '../common/store';
 import { List, ListItem } from '../common/ui/list';
+import Box, { IResponse } from '../common/models/Box';
+import getErrorMessage from '../common/utils/getErrorMessage';
 
 const getTaskIcon = function (icon?: string) {
     if (icon === 'ADVICE') {
@@ -36,12 +38,26 @@ const TasksList = function () {
     const module = useSelector((state) => selectModuleById(state, moduleId))!;
 
     const [playlistId, setPlaylistId] = React.useState(0);
-
     const createDirectionHandler = function (dir: 1 | -1) {
         return () => setPlaylistId(playlistId + dir);
     };
 
     const playlist = module.playlists[playlistId];
+
+    const [responses, setResponses] = React.useState<IResponse[]>([]);
+    const [errorMessage, setErrorMessage] = React.useState<string>();
+
+    React.useEffect(() => {
+        const getResponses = async function () {
+            try {
+                setResponses(await Box.getPlaylistResponses(moduleId, playlistId));
+            } catch (error) {
+                setErrorMessage(getErrorMessage(error, 'Sorry, cannot retrieve your response at the moment'));
+            }
+        };
+
+        getResponses();
+    }, []);
 
     return (
         <Page headerTitle={module.name}>
@@ -71,6 +87,8 @@ const TasksList = function () {
                         <CaretRight />
                     </IconButton>
                 </Stack>
+
+                {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
 
                 <List>
                     {playlist.tasks.map((task) => (

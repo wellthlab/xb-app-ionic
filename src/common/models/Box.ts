@@ -71,6 +71,22 @@ export interface IModuleDocument extends Omit<IModule, 'id'> {
     _id: ObjectId;
 }
 
+export interface IResponse {
+    id: string;
+    userId: string;
+    moduleId: string;
+    playlistId: number;
+    taskId: number;
+    draft: boolean;
+    payload: Record<string, string | number | boolean | null>;
+}
+
+interface IResponseDocument extends Omit<IResponse, 'id' | 'userId' | 'moduleId'> {
+    _id: ObjectId;
+    userId: ObjectId;
+    moduleId: ObjectId;
+}
+
 class Box extends BaseModel {
     static async getBoxes(): Promise<IBox[]> {
         const db = this.getDb();
@@ -97,7 +113,43 @@ class Box extends BaseModel {
         });
     }
 
-    static async submitModuleResponse(payload: Record<string, string | number>) {}
+    static submitTaskResponse(
+        moduleId: string,
+        playlistId: number,
+        taskId: number,
+        payload: IResponse['payload'],
+        draft: boolean,
+    ) {
+        const db = this.getDb();
+
+        return db
+            .collection<IResponseDocument>('responses')
+            .updateOne(
+                { userId: this.oid(this.client.currentUser!.id), moduleId: this.oid(moduleId), taskId, playlistId },
+                { $set: { draft, payload } },
+                { upsert: true },
+            );
+    }
+
+    static async getPlaylistResponses(moduleId: string, playlistId: number): Promise<IResponse[]> {
+        const db = this.getDb();
+
+        const result = await db.collection<IResponseDocument>('responses').find({
+            userId: this.oid(this.client.currentUser!.id),
+            moduleId: this.oid(moduleId),
+            playlistId,
+        });
+
+        return result.map((item) => ({
+            id: item._id.toString(),
+            userId: item.userId.toString(),
+            moduleId: item.moduleId.toString(),
+            playlistId: item.playlistId,
+            taskId: item.taskId,
+            payload: item.payload,
+            draft: item.draft,
+        });
+    }
 }
 
 export default Box;

@@ -3,22 +3,27 @@ import { TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import HeartrateInput from './HeartrateInput';
-import { ITask } from '../../common/models/Box';
+import { ITask, IResponse } from '../../common/models/Box';
 import { Checkbox, Form, Select, useForm } from '../../common/ui/form';
 
 type Inputs = NonNullable<ITask['inputs']>;
 
 interface ITaskFormProps {
     inputs: Inputs;
+    onSubmit: (data: IResponse['payload'], draft?: boolean) => void;
 }
 
 const generateInitialValues = function (inputs: Inputs) {
-    const values: Record<string, string | boolean> = {};
+    const values: Record<string, string | boolean | null> = {};
     for (const input of inputs) {
-        let initialValue: string | boolean = '';
+        let initialValue: string | boolean | null = '';
 
         if (input.type === 'checkbox') {
             initialValue = false;
+        }
+
+        if (input.type === 'number') {
+            initialValue = null;
         }
 
         values[input.label] = initialValue;
@@ -57,16 +62,24 @@ const generateSchema = function (inputs: Inputs) {
     return Yup.object().shape(keys);
 };
 
-const TaskForm = function ({ inputs }: ITaskFormProps) {
+const TaskForm = function ({ inputs, onSubmit }: ITaskFormProps) {
     const schema = React.useMemo(() => generateSchema(inputs), [inputs]);
     const initial = generateInitialValues(inputs);
 
     const { createHandleSubmit, getInputProps, getCheckboxProps } = useForm(initial, schema);
 
-    const handleSubmit = createHandleSubmit(() => {});
+    const wrapHandleSubmit = function (options: { draft: boolean; skipValidation: boolean }) {
+        return createHandleSubmit((data) => onSubmit(data, options.draft), {
+            skipValidation: options.skipValidation,
+        });
+    };
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form
+            onSubmit={wrapHandleSubmit({ draft: false, skipValidation: false })}
+            extraButtonLabel="Save draft"
+            onExtraButtonClick={wrapHandleSubmit({ draft: true, skipValidation: true })}
+        >
             {inputs.map((input) => {
                 const commonProps = {
                     label: input.label,

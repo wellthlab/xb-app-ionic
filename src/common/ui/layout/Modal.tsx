@@ -12,11 +12,9 @@ export interface IModalProps extends React.ComponentProps<typeof IonModal> {
     onAction?: () => void;
 }
 
-const DEFAULT_ERROR_MESSAGE = 'Sorry, something went wrong';
-
 const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, onAction, ...others }: IModalProps) {
     const [pending, setPending] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = React.useState<string>();
     const handleAction = async function () {
         setPending(true);
 
@@ -25,7 +23,7 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
         } catch (error) {
             setPending(false);
             console.log('Error in modal', error);
-            return setErrorMessage(getErrorMessage(error, DEFAULT_ERROR_MESSAGE));
+            return setErrorMessage(getErrorMessage(error, 'Sorry, something went wrong'));
         }
 
         onDismiss();

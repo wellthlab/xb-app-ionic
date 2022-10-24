@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Stack } from '@mui/joy';
+import { Typography, Stack, Alert } from '@mui/joy';
 
 import TaskForm from './TaskForm';
 import { Page } from '../../common/ui/layout';
 import { selectTask } from '../../common/slices/modules';
 import { useSelector } from '../../common/store';
+import Box, { IResponse } from '../../common/models/Box';
 
 const Task = function () {
     const { moduleId, playlistId: rawPlaylistId, taskId: rawTaskId } = useParams<{
@@ -19,6 +20,10 @@ const Task = function () {
     const taskId = parseInt(rawTaskId, 10);
 
     const task = useSelector((state) => selectTask(state, moduleId, playlistId, taskId))!;
+
+    const handleSubmit = function (data: IResponse['payload'], draft?: boolean) {
+        return Box.submitTaskResponse(moduleId, playlistId, taskId, data, draft || false);
+    };
 
     return (
         <Page headerTitle={task.name}>
@@ -37,7 +42,9 @@ const Task = function () {
                     />
                 )}
 
-                {task.inputs && <TaskForm inputs={task.inputs} />}
+                {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
+
+                {task.inputs && <TaskForm response={response} inputs={task.inputs} onSubmit={handleSubmit} />}
             </Stack>
         </Page>
     );
