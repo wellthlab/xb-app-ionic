@@ -1,4 +1,4 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import { selectSubscribedModules, selectUserId } from './account';
@@ -6,7 +6,7 @@ import { selectTeamMembers } from './team';
 import { IModule, ITask, IPlaylist } from '../models/Box';
 
 interface IEnhancedTask extends ITask {
-    id: string;
+    id: number;
 }
 
 interface IEnhancedPlaylist extends IPlaylist {
@@ -86,12 +86,15 @@ export const selectModuleSubcriberInitials = createSelector(
     },
 );
 
+export const selectPlaylistTasks = (state: ISelectorState, moduleId: string, playlistId: number) =>
+    state.modules.items[moduleId]?.playlists[playlistId]?.tasks;
+
 export const selectTask = (
     state: ISelectorState,
     moduleId: string,
     playlistId: number,
     taskId: number,
-): IEnhancedTask | undefined => state.modules.items[moduleId]?.playlists[playlistId]?.tasks[taskId];
+): IEnhancedTask | undefined => selectPlaylistTasks(state, moduleId, playlistId)?.[taskId];
 
 export default createSlice({
     name: 'modules',
@@ -108,7 +111,7 @@ export default createSlice({
                     for (let i = 0; i < module.playlists.length; i++) {
                         const playlist = module.playlists[i];
                         for (let j = 0; j < playlist.tasks.length; j++) {
-                            state.items[module.id]!.playlists[i].tasks[j].id = j.toString();
+                            state.items[module.id]!.playlists[i].tasks[j].id = j;
                         }
                     }
 

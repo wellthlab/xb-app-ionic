@@ -10,20 +10,23 @@ type Inputs = NonNullable<ITask['inputs']>;
 
 interface ITaskFormProps {
     inputs: Inputs;
-    onSubmit: (data: IResponse['payload'], draft?: boolean) => void;
+    response?: IResponse;
+    onSubmit: (data: IResponse['payload'], draft: boolean) => void;
 }
 
-const generateInitialValues = function (inputs: Inputs) {
-    const values: Record<string, string | boolean | null> = {};
+const generateInitialValues = function (inputs: Inputs, response: IResponse | undefined) {
+    const values: Record<string, string | boolean> = {};
     for (const input of inputs) {
-        let initialValue: string | boolean | null = '';
+        if (response) {
+            const value = response.payload[input.label];
+            values[input.label] = typeof value === 'number' ? value.toString() : value;
+            continue;
+        }
+
+        let initialValue: string | boolean = '';
 
         if (input.type === 'checkbox') {
             initialValue = false;
-        }
-
-        if (input.type === 'number') {
-            initialValue = null;
         }
 
         values[input.label] = initialValue;
@@ -62,9 +65,9 @@ const generateSchema = function (inputs: Inputs) {
     return Yup.object().shape(keys);
 };
 
-const TaskForm = function ({ inputs, onSubmit }: ITaskFormProps) {
+const TaskForm = function ({ inputs, onSubmit, response }: ITaskFormProps) {
     const schema = React.useMemo(() => generateSchema(inputs), [inputs]);
-    const initial = generateInitialValues(inputs);
+    const initial = generateInitialValues(inputs, response);
 
     const { createHandleSubmit, getInputProps, getCheckboxProps } = useForm(initial, schema);
 

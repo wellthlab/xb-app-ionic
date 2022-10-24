@@ -73,18 +73,16 @@ export interface IModuleDocument extends Omit<IModule, 'id'> {
 
 export interface IResponse {
     id: string;
-    userId: string;
-    moduleId: string;
-    playlistId: number;
-    taskId: number;
     draft: boolean;
-    payload: Record<string, string | number | boolean | null>;
+    payload: Record<string, string | number | boolean>;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id' | 'userId' | 'moduleId'> {
+interface IResponseDocument extends Omit<IResponse, 'id'> {
     _id: ObjectId;
     userId: ObjectId;
     moduleId: ObjectId;
+    playlistId: number;
+    taskId: number;
 }
 
 class Box extends BaseModel {
@@ -113,25 +111,31 @@ class Box extends BaseModel {
         });
     }
 
-    static submitTaskResponse(
+    static async submitTaskResponse(
         moduleId: string,
         playlistId: number,
         taskId: number,
         payload: IResponse['payload'],
         draft: boolean,
-    ) {
+    ): Promise<IResponse> {
         const db = this.getDb();
 
-        return db
+        const result = (await db
             .collection<IResponseDocument>('responses')
-            .updateOne(
+            .findOneAndUpdate(
                 { userId: this.oid(this.client.currentUser!.id), moduleId: this.oid(moduleId), taskId, playlistId },
                 { $set: { draft, payload } },
-                { upsert: true },
-            );
+                { upsert: true, returnNewDocument: true },
+            ))!;
+
+        return {
+            id: result._id.toString(),
+            payload: result.payload,
+            draft: result.draft,
+        };
     }
 
-    static async getPlaylistResponses(moduleId: string, playlistId: number): Promise<IResponse[]> {
+    static async getPlaylistResponses(moduleId: string, playlistId: number): Promise<(IResponse | undefined)[]> {
         const db = this.getDb();
 
         const result = await db.collection<IResponseDocument>('responses').find({
@@ -140,15 +144,17 @@ class Box extends BaseModel {
             playlistId,
         });
 
-        return result.map((item) => ({
-            id: item._id.toString(),
-            userId: item.userId.toString(),
-            moduleId: item.moduleId.toString(),
-            playlistId: item.playlistId,
-            taskId: item.taskId,
-            payload: item.payload,
-            draft: item.draft,
-        });
+        const ret: (IResponse | undefined)[] = [];
+
+        for (const item of result) {
+            ret[item.taskId] = {
+                id: item._id.toString(),
+                payload: item.payload,
+                draft: item.draft,
+            };
+        }
+
+        return ret;
     }
 }
 

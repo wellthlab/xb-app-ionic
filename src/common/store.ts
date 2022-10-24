@@ -5,6 +5,7 @@ import accountReducer from './slices/account';
 import teamReducer from './slices/team';
 import modulesReducer from './slices/modules';
 import boxesReducer from './slices/boxes';
+import responsesReducer from './slices/responses';
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         team: teamReducer,
         modules: modulesReducer,
         boxes: boxesReducer,
+        responses: responsesReducer,
     },
 
     middleware: (getDefaultMiddleware) =>

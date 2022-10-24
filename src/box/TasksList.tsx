@@ -1,16 +1,36 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Button, IconButton, Stack, Typography, Alert } from '@mui/joy';
-import { Play, CaretLeft, CaretRight, GraduationCap, NotePencil, Ruler, Camera, Flask } from 'phosphor-react';
+import { Button, IconButton, Stack, Typography, Alert, Box } from '@mui/joy';
+import {
+    Play,
+    CaretLeft,
+    CaretRight,
+    GraduationCap,
+    NotePencil,
+    Ruler,
+    Camera,
+    Flask,
+    PencilLine,
+    Check,
+} from 'phosphor-react';
 
 import { Page, PageTitle } from '../common/ui/layout';
 import { selectModuleById } from '../common/slices/modules';
-import { useSelector } from '../common/store';
+import { useSelector, useDispatch } from '../common/store';
 import { List, ListItem } from '../common/ui/list';
-import Box, { IResponse } from '../common/models/Box';
 import getErrorMessage from '../common/utils/getErrorMessage';
+import { getPlaylistResponses, selectTaskDraftState } from '../common/slices/responses';
 
-const getTaskIcon = function (icon?: string) {
+const getTaskIcon = function (icon: string | undefined, draft: boolean | undefined) {
+    // draft could be undefined, which should be handled differently
+    if (draft === false) {
+        return <Box component={Check} color="success.outlinedColor" />;
+    }
+
+    if (draft) {
+        return <PencilLine />;
+    }
+
     if (icon === 'ADVICE') {
         return <GraduationCap />;
     }
@@ -44,13 +64,12 @@ const TasksList = function () {
 
     const playlist = module.playlists[playlistId];
 
-    const [responses, setResponses] = React.useState<IResponse[]>([]);
     const [errorMessage, setErrorMessage] = React.useState<string>();
-
+    const dispatch = useDispatch();
     React.useEffect(() => {
         const getResponses = async function () {
             try {
-                setResponses(await Box.getPlaylistResponses(moduleId, playlistId));
+                dispatch(getPlaylistResponses({ moduleId, playlistId }));
             } catch (error) {
                 setErrorMessage(getErrorMessage(error, 'Sorry, cannot retrieve your response at the moment'));
             }
@@ -58,6 +77,8 @@ const TasksList = function () {
 
         getResponses();
     }, []);
+
+    const draftStates = useSelector((state) => selectTaskDraftState(state, moduleId, playlistId));
 
     return (
         <Page headerTitle={module.name}>
@@ -95,7 +116,7 @@ const TasksList = function () {
                         <ListItem
                             key={task.id}
                             href={`/main/box/${type}/${moduleId}/${playlistId}/${task.id}`}
-                            startDecorator={getTaskIcon(task.icon)}
+                            startDecorator={getTaskIcon(task.icon, draftStates && draftStates[task.id])}
                         >
                             {task.name}
                         </ListItem>

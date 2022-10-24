@@ -1,12 +1,13 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Typography, Stack, Alert } from '@mui/joy';
+import { useHistory, useParams } from 'react-router-dom';
+import { Typography, Stack } from '@mui/joy';
 
 import TaskForm from './TaskForm';
 import { Page } from '../../common/ui/layout';
 import { selectTask } from '../../common/slices/modules';
-import { useSelector } from '../../common/store';
-import Box, { IResponse } from '../../common/models/Box';
+import { useSelector, useDispatch } from '../../common/store';
+import { IResponse } from '../../common/models/Box';
+import { selectPlaylistResponses, submitTaskResponse } from '../../common/slices/responses';
 
 const Task = function () {
     const { moduleId, playlistId: rawPlaylistId, taskId: rawTaskId } = useParams<{
@@ -20,9 +21,13 @@ const Task = function () {
     const taskId = parseInt(rawTaskId, 10);
 
     const task = useSelector((state) => selectTask(state, moduleId, playlistId, taskId))!;
+    const responses = useSelector((state) => selectPlaylistResponses(state, moduleId, playlistId));
 
-    const handleSubmit = function (data: IResponse['payload'], draft?: boolean) {
-        return Box.submitTaskResponse(moduleId, playlistId, taskId, data, draft || false);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const handleSubmit = async function (payload: IResponse['payload'], draft: boolean) {
+        await dispatch(submitTaskResponse({ moduleId, playlistId, taskId, draft, payload }));
+        history.goBack();
     };
 
     return (
@@ -42,9 +47,9 @@ const Task = function () {
                     />
                 )}
 
-                {errorMessage && <Alert color="danger">{errorMessage}</Alert>}
-
-                {task.inputs && <TaskForm response={response} inputs={task.inputs} onSubmit={handleSubmit} />}
+                {task.inputs && (
+                    <TaskForm response={responses && responses[taskId]} inputs={task.inputs} onSubmit={handleSubmit} />
+                )}
             </Stack>
         </Page>
     );
