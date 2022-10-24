@@ -1,4 +1,4 @@
-import { createSelector, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import { selectSubscribedModules, selectUserId } from './account';

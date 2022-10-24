@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 
 import { logOut } from './globalActions';
 import Box, { IResponse } from '../models/Box';
-import { selectPlaylistTasks } from './modules';
 
 interface IResponsesState extends Partial<Record<string, (IResponse | undefined)[][]>> {}
 
