@@ -1,8 +1,9 @@
 import React from 'react';
 import { IonContent, IonModal } from '@ionic/react';
-import { Alert, Button, Container } from '@mui/joy';
+import { Alert, Container } from '@mui/joy';
 
 import Header from './Header';
+import HeaderButton from './HeaderButton';
 import getErrorMessage from '../../utils/getErrorMessage';
 
 export interface IModalProps extends React.ComponentProps<typeof IonModal> {
@@ -35,16 +36,12 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
                 title={headerTitle}
                 rightButton={
                     onAction && (
-                        <Button variant="plain" disabled={pending} onClick={handleAction}>
+                        <HeaderButton disabled={pending} onClick={handleAction}>
                             {actionButtonLabel || 'Next'}
-                        </Button>
+                        </HeaderButton>
                     )
                 }
-                leftButton={
-                    <Button variant="plain" onClick={onDismiss}>
-                        Close
-                    </Button>
-                }
+                leftButton={<HeaderButton onClick={onDismiss}>Close</HeaderButton>}
             />
 
             <IonContent>

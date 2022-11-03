@@ -23,7 +23,13 @@ const CreateTeamModal = function (props: ICreateTeamModal) {
     });
 
     return (
-        <Modal headerTitle="Create a team" onAction={handleSubmit} {...props}>
+        <Modal
+            headerTitle="Create a team"
+            initialBreakpoint={0.75}
+            breakpoints={[0, 0.75]}
+            onAction={handleSubmit}
+            {...props}
+        >
             <Alert sx={{ mb: 3 }}>
                 Once this team is created, you can start inviting people by giving them the invite code.
             </Alert>

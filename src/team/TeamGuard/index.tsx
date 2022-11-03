@@ -14,8 +14,6 @@ interface ITeamGuardProps {
 const TeamGuard = function ({ children }: ITeamGuardProps) {
     const team = useSelector(selectTeam);
 
-    const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
-
     const [joinModalOpen, setJoinModalOpen] = React.useState(false);
     const [createModalOpen, setCreateModalOpen] = React.useState(false);
 
@@ -30,7 +28,7 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
             {team ? (
                 children
             ) : (
-                <Page ref={setPresentingElement}>
+                <Page>
                     <Centre>
                         <Stack spacing={2}>
                             <Typography level="h6" component="p">
@@ -48,17 +46,8 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
                 </Page>
             )}
 
-            <CreateTeamModal
-                isOpen={createModalOpen}
-                presentingElement={presentingElement}
-                onDismiss={createModalHandler(setCreateModalOpen, false)}
-            />
-
-            <JoinTeamModal
-                isOpen={joinModalOpen}
-                presentingElement={presentingElement}
-                onDismiss={createModalHandler(setJoinModalOpen, false)}
-            />
+            <CreateTeamModal isOpen={createModalOpen} onDismiss={createModalHandler(setCreateModalOpen, false)} />
+            <JoinTeamModal isOpen={joinModalOpen} onDismiss={createModalHandler(setJoinModalOpen, false)} />
         </React.Fragment>
     );
 };

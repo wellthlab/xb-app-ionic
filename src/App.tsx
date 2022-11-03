@@ -14,7 +14,7 @@ import { LoginForm, RegisterForm } from './auth';
 import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
 import { TeamInsights, TeamGuard } from './team';
 import { SettingsList, EditProfileForm, StudyInformation as SettingsStudyInformation } from './settings';
-import { ModulesList, TasksList, Task } from './box';
+import { ModulesList, TasksList } from './box';
 
 const theme = extendTheme({
     components: {
@@ -168,12 +168,6 @@ const App = function () {
                                             <Route path="/main/box/:type/:moduleId" exact>
                                                 <TeamGuard>
                                                     <TasksList />
-                                                </TeamGuard>
-                                            </Route>
-
-                                            <Route path="/main/box/:type/:moduleId/:playlistId/:taskId" exact>
-                                                <TeamGuard>
-                                                    <Task />
                                                 </TeamGuard>
                                             </Route>
 

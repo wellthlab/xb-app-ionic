@@ -12,8 +12,8 @@ export interface IProfile {
     lastName: string;
     email: string;
     department: string;
-    campus: string;
-    office: string;
+    campus?: string;
+    office?: string;
 }
 
 export interface IAccount {

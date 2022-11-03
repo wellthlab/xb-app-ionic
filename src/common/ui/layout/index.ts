@@ -12,3 +12,6 @@ export * from './Modal';
 
 export { default as SectionTitle } from './SectionTitle';
 export * from './SectionTitle';
+
+export { default as HeaderButton } from './HeaderButton';
+export * from './HeaderButton';

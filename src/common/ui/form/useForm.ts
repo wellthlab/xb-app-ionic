@@ -13,16 +13,19 @@ type GetInputProps<T> = <TKey extends keyof T>(
 
 type GetCheckboxProps<T> = <TKey extends keyof T>(name: TKey) => IBaseInputProps & { checked: T[TKey] };
 
-type CreateHandleSubmit<T> = (handleSubmit: (data: T) => void, options?: { skipValidation?: boolean }) => () => void;
+type CreateHandleSubmit<TS extends Yup.ObjectSchema<any>> = (
+    handleSubmit: (data: Yup.Asserts<TS>) => void,
+) => () => void;
 
 type Errors<T> = {
     [K in keyof T]?: string;
 };
 
-interface IUseFormReturns<T> {
+interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
+    values: T;
     getInputProps: GetInputProps<T>;
     getCheckboxProps: GetCheckboxProps<T>;
-    createHandleSubmit: CreateHandleSubmit<T>;
+    createHandleSubmit: CreateHandleSubmit<TS>;
 }
 
 const processErrors = function (errors: Yup.ValidationError[]) {
@@ -34,10 +37,10 @@ const processErrors = function (errors: Yup.ValidationError[]) {
     return result;
 };
 
-const useForm = function <T extends Record<string, string | boolean | null>>(
+const useForm = function <T extends Record<string, string | boolean | null>, TS extends Yup.ObjectSchema<any>>(
     initial: T,
-    schema: Yup.ObjectSchema<any>,
-): IUseFormReturns<T> {
+    schema: TS,
+): IUseFormReturns<T, TS> {
     const [values, setValues] = React.useState(initial);
     const [errors, setErrors] = React.useState<Errors<T>>({});
 
@@ -56,6 +59,8 @@ const useForm = function <T extends Record<string, string | boolean | null>>(
     };
 
     return {
+        values,
+
         getInputProps: (name) => {
             return {
                 value: values[name],
@@ -91,23 +96,22 @@ const useForm = function <T extends Record<string, string | boolean | null>>(
             ...getBaseInputProps(name),
         }),
 
-        createHandleSubmit: (handleSubmit, options) => {
+        createHandleSubmit: (handleSubmit) => {
             return async () => {
-                if (!options?.skipValidation) {
-                    try {
-                        schema.validateSync(values, { abortEarly: false });
-                    } catch (error) {
-                        if (error instanceof Yup.ValidationError) {
-                            setErrors(processErrors(error.inner));
-                            throw new Error('Oops, please check your form again');
-                        }
-
-                        return;
+                let finalValues;
+                try {
+                    finalValues = schema.validateSync(values, { abortEarly: false });
+                } catch (error) {
+                    if (error instanceof Yup.ValidationError) {
+                        setErrors(processErrors(error.inner));
+                        throw new Error('Oops, please check your form again');
                     }
+
+                    return;
                 }
 
                 setErrors({});
-                await handleSubmit(values);
+                await handleSubmit(finalValues);
             };
         },
     };

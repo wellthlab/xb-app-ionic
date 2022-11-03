@@ -37,7 +37,7 @@ export interface ITask {
     desc?: string;
     icon?: string;
     video?: string;
-    inputs?: (ITextInput | INumberInput | ISelectInput | IHeartrateInput | ICheckboxInput)[];
+    inputs: (ITextInput | INumberInput | ISelectInput | IHeartrateInput | ICheckboxInput)[];
 }
 
 interface IGenericInput {

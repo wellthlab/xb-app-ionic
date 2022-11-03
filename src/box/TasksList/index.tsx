@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, IconButton, Stack, Typography, Alert, Box } from '@mui/joy';
 import {
     Play,
@@ -15,12 +15,13 @@ import {
     Barbell,
 } from 'phosphor-react';
 
-import { Page, PageTitle } from '../common/ui/layout';
-import { selectModuleById } from '../common/slices/modules';
-import { useSelector, useDispatch } from '../common/store';
-import { List, ListItem } from '../common/ui/list';
-import getErrorMessage from '../common/utils/getErrorMessage';
-import { getPlaylistResponses, selectTaskDraftState } from '../common/slices/responses';
+import TaskModal from './TaskModal';
+import { Page, PageTitle } from '../../common/ui/layout';
+import { selectModuleById } from '../../common/slices/modules';
+import { useSelector, useDispatch } from '../../common/store';
+import { List, ListItem } from '../../common/ui/list';
+import getErrorMessage from '../../common/utils/getErrorMessage';
+import { getPlaylistResponses, selectPlaylistResponses } from '../../common/slices/responses';
 
 const getTaskIcon = function (icon: string | undefined, draft: boolean | undefined) {
     // draft could be undefined, which should be handled differently
@@ -58,13 +59,27 @@ const getTaskIcon = function (icon: string | undefined, draft: boolean | undefin
 };
 
 const TasksList = function () {
-    const { type, moduleId } = useParams<{ type: string; moduleId: string }>();
+    const { moduleId } = useParams<{ moduleId: string }>();
 
     const module = useSelector((state) => selectModuleById(state, moduleId))!;
 
     const [playlistId, setPlaylistId] = React.useState(0);
     const createDirectionHandler = function (dir: 1 | -1) {
         return () => setPlaylistId(playlistId + dir);
+    };
+
+    const [taskOpen, setTaskOpen] = React.useState(false);
+
+    const [taskId, setTaskId] = React.useState(0);
+    const createTaskItemHandler = function (taskId: number) {
+        return () => {
+            setTaskId(taskId);
+            setTaskOpen(true);
+        };
+    };
+
+    const handleDismissTask = function () {
+        setTaskOpen(false);
     };
 
     const playlist = module.playlists[playlistId];
@@ -83,10 +98,12 @@ const TasksList = function () {
         getResponses();
     }, []);
 
-    const draftStates = useSelector((state) => selectTaskDraftState(state, moduleId, playlistId));
+    const responses = useSelector((state) => selectPlaylistResponses(state, moduleId, playlistId));
+
+    const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
 
     return (
-        <Page headerTitle={module.name}>
+        <Page headerTitle={module.name} ref={setPresentingElement}>
             <PageTitle>{playlist.name}</PageTitle>
             <Stack spacing={2}>
                 <Typography level="body2">
@@ -97,12 +114,7 @@ const TasksList = function () {
                     <IconButton color="neutral" disabled={playlistId === 0} onClick={createDirectionHandler(-1)}>
                         <CaretLeft />
                     </IconButton>
-                    <Button
-                        component={Link}
-                        to={`/main/box/${type}/${moduleId}/${playlistId}/0`}
-                        startDecorator={<Play />}
-                        fullWidth
-                    >
+                    <Button startDecorator={<Play />} fullWidth>
                         Start
                     </Button>
                     <IconButton
@@ -120,13 +132,22 @@ const TasksList = function () {
                     {playlist.tasks.map((task) => (
                         <ListItem
                             key={task.id}
-                            href={`/main/box/${type}/${moduleId}/${playlistId}/${task.id}`}
-                            startDecorator={getTaskIcon(task.icon, draftStates && draftStates[task.id])}
+                            startDecorator={getTaskIcon(task.icon, responses && responses[task.id]?.draft)}
+                            onClick={createTaskItemHandler(task.id)}
+                            button
                         >
                             {task.name}
                         </ListItem>
                     ))}
                 </List>
+
+                <TaskModal
+                    presentingElement={presentingElement}
+                    isOpen={taskOpen}
+                    playlistId={playlistId}
+                    taskId={taskId}
+                    onDismiss={handleDismissTask}
+                />
             </Stack>
         </Page>
     );

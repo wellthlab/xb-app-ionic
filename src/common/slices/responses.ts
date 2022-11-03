@@ -41,13 +41,8 @@ export const submitTaskResponse = createAsyncThunk(
 export const selectPlaylistResponses = (state: ISelectorState, moduleId: string, playlistId: number) =>
     state.responses[moduleId]?.[playlistId];
 
-export const selectTaskDraftState = createSelector(selectPlaylistResponses, (responses) => {
-    if (!responses) {
-        return;
-    }
-
-    return responses.map((response) => response?.draft);
-});
+export const selectTaskResponse = (state: ISelectorState, moduleId: string, playlistId: number, taskId: number) =>
+    selectPlaylistResponses(state, moduleId, playlistId)?.[taskId];
 
 export default createSlice({
     name: 'responses',

@@ -22,7 +22,13 @@ const JoinTeamModal = function (props: IJoinTeamModal) {
     });
 
     return (
-        <Modal headerTitle="Join a team" onAction={handleSubmit} {...props}>
+        <Modal
+            headerTitle="Join a team"
+            initialBreakpoint={0.5}
+            breakpoints={[0, 0.5, 0.75]}
+            onAction={handleSubmit}
+            {...props}
+        >
             <Alert sx={{ mb: 3 }}>
                 An invite code is a unique 6-digit code assigned to each team. Ask the owner, or any member of the team
                 you want to join to continue.
