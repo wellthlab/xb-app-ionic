@@ -22,7 +22,7 @@ const Form = function ({ onSubmit, children, footer, submitLabel, submitButtonCo
         try {
             await onSubmit();
         } catch (error) {
-            console.error(error);
+            console.log(error);
             setErrorMessage(getErrorMessage(error, 'Sorry, cannot submit this form at the moment'));
         } finally {
             setPending(false);

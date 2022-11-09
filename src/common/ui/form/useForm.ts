@@ -22,7 +22,15 @@ type Errors<T> = {
 };
 
 interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
-    values: T;
+    form: {
+        values: T;
+        dirty: boolean;
+        errors: Errors<T>;
+        resetErrors: () => void;
+        resetDirty: () => void;
+        resetValues: () => void;
+        resetForm: () => void;
+    };
     getInputProps: GetInputProps<T>;
     getCheckboxProps: GetCheckboxProps<T>;
     createHandleSubmit: CreateHandleSubmit<TS>;
@@ -42,6 +50,7 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
     schema: TS,
 ): IUseFormReturns<T, TS> {
     const [values, setValues] = React.useState(initial);
+    const [dirty, setDirty] = React.useState(false);
     const [errors, setErrors] = React.useState<Errors<T>>({});
 
     const getBaseInputProps = function <TKey extends keyof T>(name: TKey): IBaseInputProps {
@@ -50,6 +59,10 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
             error: !!errors[name],
 
             onChange: (e) => {
+                if (!dirty) {
+                    setDirty(true);
+                }
+
                 setValues({
                     ...values,
                     [name]: e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value,
@@ -58,8 +71,33 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
         };
     };
 
+    const resetErrors = function () {
+        setErrors({});
+    };
+
+    const resetDirty = function () {
+        setDirty(false);
+    };
+
+    const resetValues = function () {
+        setValues(initial);
+    };
+
     return {
-        values,
+        form: {
+            values,
+            dirty,
+            errors,
+
+            resetErrors,
+            resetDirty,
+            resetValues,
+            resetForm: () => {
+                resetErrors();
+                resetDirty();
+                resetValues();
+            },
+        },
 
         getInputProps: (name) => {
             return {

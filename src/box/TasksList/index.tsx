@@ -114,7 +114,7 @@ const TasksList = function () {
                     <IconButton color="neutral" disabled={playlistId === 0} onClick={createDirectionHandler(-1)}>
                         <CaretLeft />
                     </IconButton>
-                    <Button startDecorator={<Play />} fullWidth>
+                    <Button startDecorator={<Play />} onClick={createTaskItemHandler(0)} fullWidth>
                         Start
                     </Button>
                     <IconButton

@@ -8,7 +8,7 @@ import getErrorMessage from '../../utils/getErrorMessage';
 
 export interface IModalProps extends React.ComponentProps<typeof IonModal> {
     headerTitle: string;
-    onDismiss: () => void;
+    onDismiss: (reason: string) => void;
     actionButtonLabel?: string;
     onAction?: () => void;
 }
@@ -27,11 +27,21 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
             return setErrorMessage(getErrorMessage(error, 'Sorry, something went wrong'));
         }
 
-        onDismiss();
+        onDismiss('action');
+    };
+
+    const handleDismiss: React.ComponentProps<typeof IonModal>['onDidDismiss'] = function (e) {
+        if (e.detail.role === 'gesture') {
+            onDismiss('gesture');
+        }
+    };
+
+    const handleCancel = function () {
+        onDismiss('cancel');
     };
 
     return (
-        <IonModal canDismiss onDidDismiss={onDismiss} {...others}>
+        <IonModal canDismiss onWillDismiss={handleDismiss} {...others}>
             <Header
                 title={headerTitle}
                 rightButton={
@@ -41,7 +51,7 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
                         </HeaderButton>
                     )
                 }
-                leftButton={<HeaderButton onClick={onDismiss}>Close</HeaderButton>}
+                leftButton={<HeaderButton onClick={handleCancel}>Close</HeaderButton>}
             />
 
             <IonContent>

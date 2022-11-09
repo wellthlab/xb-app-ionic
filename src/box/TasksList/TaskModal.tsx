@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Stack, TextField } from '@mui/joy';
+import { Typography, Stack, TextField, Alert } from '@mui/joy';
 import * as Yup from 'yup';
 
 import HeartrateInput from './HeartrateInput';
 import { IModalProps, Modal } from '../../common/ui/layout';
-import { Checkbox, Form, Select, useForm } from '../../common/ui/form';
+import { Checkbox, Select, useForm } from '../../common/ui/form';
 import { selectTask } from '../../common/slices/modules';
 import { useSelector, useDispatch } from '../../common/store';
 import { IResponse, ITask } from '../../common/models/Box';
@@ -23,8 +23,10 @@ const generateInitialValues = function (inputs: Inputs, response: IResponse | un
     for (const input of inputs) {
         if (response) {
             const value = response.payload[input.label];
-            values[input.label] = typeof value === 'number' ? value.toString() : value;
-            continue;
+            if (value) {
+                values[input.label] = typeof value === 'number' ? value.toString() : value;
+                continue;
+            }
         }
 
         let initialValue: string | boolean = '';
@@ -77,25 +79,35 @@ const TaskModal = function ({ playlistId, taskId, onDismiss, ...others }: ITaskP
 
     const schema = React.useMemo(() => generateSchema(task.inputs), [task.inputs]);
 
-    const { createHandleSubmit, getInputProps, getCheckboxProps, values } = useForm(
+    const { createHandleSubmit, getInputProps, getCheckboxProps, form } = useForm(
         generateInitialValues(task.inputs, response),
         schema,
     );
 
     const dispatch = useDispatch();
 
-    const handleSubmit = createHandleSubmit(async (payload) => {
+    const handleAction = createHandleSubmit(async (payload) => {
         await dispatch(submitTaskResponse({ moduleId, playlistId, taskId, draft: false, payload }));
-        onDismiss();
     });
 
-    const handleDismiss = async function () {
-        await dispatch(submitTaskResponse({ moduleId, playlistId, taskId, draft: true, payload: values }));
-        onDismiss();
+    const handleDismiss = async function (reason: string) {
+        if (reason !== 'action') {
+            await dispatch(
+                submitTaskResponse({
+                    moduleId,
+                    playlistId,
+                    taskId,
+                    draft: !response || response.draft || !form.dirty,
+                    payload: form.values,
+                }),
+            );
+        }
+
+        onDismiss(reason);
     };
 
     return (
-        <Modal headerTitle={task.name} onDismiss={handleDismiss} {...others}>
+        <Modal headerTitle={task.name} onDismiss={handleDismiss} onAction={handleAction} {...others}>
             <Stack spacing={2}>
                 {task.desc && <Typography level="body2">{task.desc}</Typography>}
 
@@ -111,38 +123,30 @@ const TaskModal = function ({ playlistId, taskId, onDismiss, ...others }: ITaskP
                     />
                 )}
 
-                <Form onSubmit={handleSubmit}>
-                    {task.inputs.map((input) => {
-                        const commonProps = {
-                            label: input.label,
-                            required: !input.optional,
-                            key: input.label,
-                            helperText: input.help,
-                        };
+                {task.inputs.map((input) => {
+                    const commonProps = {
+                        label: input.label,
+                        required: !input.optional,
+                        key: input.label,
+                        helperText: input.help,
+                    };
 
-                        if (input.type === 'select') {
-                            return (
-                                <Select
-                                    options={input.options}
-                                    {...commonProps}
-                                    {...(getInputProps(input.label) as any)}
-                                />
-                            );
-                        }
-
-                        if (input.type === 'checkbox') {
-                            return <Checkbox {...commonProps} {...(getCheckboxProps(input.label) as any)} />;
-                        }
-
-                        if (input.type === 'heartrate') {
-                            return <HeartrateInput {...commonProps} {...(getInputProps(input.label) as any)} />;
-                        }
-
+                    if (input.type === 'select') {
                         return (
-                            <TextField type={input.type} {...commonProps} {...(getInputProps(input.label) as any)} />
+                            <Select options={input.options} {...commonProps} {...(getInputProps(input.label) as any)} />
                         );
-                    })}
-                </Form>
+                    }
+
+                    if (input.type === 'checkbox') {
+                        return <Checkbox {...commonProps} {...(getCheckboxProps(input.label) as any)} />;
+                    }
+
+                    if (input.type === 'heartrate') {
+                        return <HeartrateInput {...commonProps} {...(getInputProps(input.label) as any)} />;
+                    }
+
+                    return <TextField type={input.type} {...commonProps} {...(getInputProps(input.label) as any)} />;
+                })}
             </Stack>
         </Modal>
     );

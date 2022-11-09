@@ -14,6 +14,7 @@ const TeamInsights = function () {
     const team = useSelector(selectTeam)!;
 
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
+
     const [leaderboardOpen, setLeaderboardOpen] = React.useState(false);
     const createModalHandler = function (value: boolean) {
         return () => setLeaderboardOpen(value);
