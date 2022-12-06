@@ -4,8 +4,9 @@ import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
 import SharedAuthScreen from './components/AuthScreenLayout';
+import Form from '../foundation/Form';
+import useForm from '../foundation/useForm';
 import { registerUser } from '../slices/account';
-import { Form, useForm } from '../foundation/form';
 import { useDispatch } from '../slices/store';
 
 const schema = Yup.object().shape({
