@@ -4,28 +4,29 @@ import { Alert, Container } from '@mui/joy';
 
 import Header from './Header';
 import HeaderButton from './HeaderButton';
-import getErrorMessage from '../../utils/getErrorMessage';
 
 export interface IModalProps extends React.ComponentProps<typeof IonModal> {
     headerTitle: string;
     onDismiss: (reason: string) => void;
     actionButtonLabel?: string;
     onAction?: () => void;
+    errorMessage?: string;
 }
 
-const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, onAction, ...others }: IModalProps) {
+const Modal = function ({
+    headerTitle,
+    children,
+    onDismiss,
+    actionButtonLabel,
+    onAction,
+    errorMessage,
+    ...others
+}: IModalProps) {
     const [pending, setPending] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState<string>();
     const handleAction = async function () {
         setPending(true);
-
-        try {
-            await onAction!();
-        } catch (error) {
-            setPending(false);
-            console.log('Error in modal', error);
-            return setErrorMessage(getErrorMessage(error, 'Sorry, something went wrong'));
-        }
+        await onAction!();
+        setPending(false);
 
         onDismiss('action');
     };

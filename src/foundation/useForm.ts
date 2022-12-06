@@ -1,6 +1,8 @@
 import React from 'react';
 import * as Yup from 'yup';
 
+import getErrorMessage from '../../utils/getErrorMessage';
+
 interface IBaseInputProps {
     helperText?: string;
     error: boolean;
@@ -18,7 +20,7 @@ type CreateHandleSubmit<TS extends Yup.ObjectSchema<any>> = (
 ) => () => void;
 
 type Errors<T> = {
-    [K in keyof T]?: string;
+    [K in keyof T | '$root']?: string;
 };
 
 interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
@@ -39,7 +41,7 @@ interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
 const processErrors = function (errors: Yup.ValidationError[]) {
     const result: Record<string, string> = {};
     for (const error of errors) {
-        result[error.path!] = error.message;
+        result[error.path || '$root'] = error.message;
     }
 
     return result;
@@ -122,6 +124,7 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
                 onFocus: () => {
                     const newErrors = { ...errors };
                     delete newErrors[name];
+                    delete newErrors.$root;
                     setErrors(newErrors);
                 },
 
@@ -142,14 +145,19 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
                 } catch (error) {
                     if (error instanceof Yup.ValidationError) {
                         setErrors(processErrors(error.inner));
-                        throw new Error('Oops, please check your form again');
                     }
 
                     return;
                 }
 
                 setErrors({});
-                await handleSubmit(finalValues);
+
+                try {
+                    await handleSubmit(finalValues);
+                } catch (error) {
+                    console.log(error);
+                    setErrors({ $root: getErrorMessage(error, 'Sorry, cannot submit this form at the moment') });
+                }
             };
         },
     };

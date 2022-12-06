@@ -4,7 +4,7 @@ import { Alert, Link } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Page, PageTitle } from '../common/ui/layout';
-import { Form, useForm, Checkbox } from '../common/ui/form';
+import { Form, useForm, Checkbox } from '../foundation/form';
 
 const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
 
@@ -15,8 +15,11 @@ const schema = Yup.object().shape({
     c4: checkboxSchema,
 });
 
-const EnrollConsentForm = function () {
-    const { getCheckboxProps, createHandleSubmit } = useForm({ c1: false, c2: false, c3: false, c4: false }, schema);
+const EnrollConsent = function () {
+    const { getCheckboxProps, createHandleSubmit, form } = useForm(
+        { c1: false, c2: false, c3: false, c4: false },
+        schema,
+    );
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
@@ -27,7 +30,12 @@ const EnrollConsentForm = function () {
         <Page>
             <PageTitle>Just a few things...</PageTitle>
 
-            <Form submitButtonColor="success" submitLabel="Enroll!" onSubmit={handleSubmit}>
+            <Form
+                submitButtonColor="success"
+                submitLabel="Enroll!"
+                errorMessage={form.errors.$root}
+                onSubmit={handleSubmit}
+            >
                 <Checkbox
                     label="I have read the provided participant information and consent to take part in the study"
                     {...getCheckboxProps('c1')}
@@ -61,4 +69,4 @@ const EnrollConsentForm = function () {
     );
 };
 
-export default EnrollConsentForm;
+export default EnrollConsent;

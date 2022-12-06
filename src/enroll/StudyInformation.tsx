@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Button } from '@mui/joy';
 
 import { Page } from '../common/ui/layout';
-import AboutThisStudy from '../common/components/AboutThisStudy';
+import AboutThisStudy from '../components/AboutThisStudy';
 
 const StudyInformation = function () {
     return (

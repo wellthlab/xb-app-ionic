@@ -3,9 +3,9 @@ import { Alert, Stack, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Modal, IModalProps } from '../../common/ui/layout';
-import { Textarea, useForm } from '../../common/ui/form';
-import { createTeam } from '../../common/slices/team';
-import { useDispatch } from '../../common/store';
+import { Textarea, useForm } from '../../foundation/form';
+import { createTeam } from '../../slices/team';
+import { useDispatch } from '../../slices/store';
 
 interface ICreateTeamModal extends Omit<IModalProps, 'headerTitle'> {}
 

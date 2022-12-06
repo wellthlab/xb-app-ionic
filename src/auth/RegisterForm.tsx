@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
-import SharedAuthScreen from './SharedAuthScreen';
-import { registerUser } from '../common/slices/account';
-import { Form, useForm } from '../common/ui/form';
-import { useDispatch } from '../common/store';
+import SharedAuthScreen from './components/AuthScreenLayout';
+import { registerUser } from '../slices/account';
+import { Form, useForm } from '../foundation/form';
+import { useDispatch } from '../slices/store';
 
 const schema = Yup.object().shape({
     email: Yup.string().required('Email is missing').email('Please input an email address'),
@@ -20,7 +20,10 @@ const schema = Yup.object().shape({
 });
 
 const RegisterForm = function () {
-    const { createHandleSubmit, getInputProps } = useForm({ email: '', password: '', repeatPassword: '' }, schema);
+    const { createHandleSubmit, getInputProps, form } = useForm(
+        { email: '', password: '', repeatPassword: '' },
+        schema,
+    );
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit(async (data) => {
@@ -47,6 +50,7 @@ const RegisterForm = function () {
             <Form
                 onSubmit={handleSubmit}
                 submitLabel="Register"
+                errorMessage={form.errors.$root}
                 footer={
                     <Link component="button" level="body2" onClick={handleClickLoginLink}>
                         Already had an account? Login

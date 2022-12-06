@@ -1,11 +1,11 @@
 import { useDispatch as useReduxDispatch, useSelector as useReduxSelector, TypedUseSelectorHook } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 
-import accountReducer from './slices/account';
-import teamReducer from './slices/team';
-import modulesReducer from './slices/modules';
-import boxesReducer from './slices/boxes';
-import responsesReducer from './slices/responses';
+import accountReducer from './account';
+import teamReducer from './team';
+import modulesReducer from './modules';
+import boxesReducer from './boxes';
+import responsesReducer from './responses';
 
 const store = configureStore({
     reducer: {

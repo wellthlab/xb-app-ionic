@@ -3,10 +3,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TextField, Alert, Link, Box } from '@mui/joy';
 import * as Yup from 'yup';
 
-import SharedAuthScreen from './SharedAuthScreen';
-import { authenticateUser } from '../common/slices/account';
-import { Form, useForm } from '../common/ui/form';
-import { useDispatch } from '../common/store';
+import SharedAuthScreen from './components/AuthScreenLayout';
+import Form from '../foundation/Form';
+import useForm from '../foundation/useForm';
+import { authenticateUser } from '../slices/account';
+import { useDispatch } from '../slices/store';
 
 const schema = Yup.object().shape({
     email: Yup.string().required('Email is missing').email('Please input an email address'),
@@ -14,7 +15,7 @@ const schema = Yup.object().shape({
 });
 
 const LoginForm = function () {
-    const { createHandleSubmit, getInputProps } = useForm({ email: '', password: '' }, schema);
+    const { createHandleSubmit, getInputProps, form } = useForm({ email: '', password: '' }, schema);
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit(async (data) => {
@@ -41,6 +42,7 @@ const LoginForm = function () {
             <Form
                 onSubmit={handleSubmit}
                 submitLabel="Login"
+                errorMessage={form.errors.$root}
                 footer={
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Link component={RouterLink} level="body2" to="/auth/register">

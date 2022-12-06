@@ -4,9 +4,9 @@ import { Stack, Typography, Box } from '@mui/joy';
 
 import ModulesListItem from './ModulesListItem';
 import { Page, PageTitle, SectionTitle } from '../../common/ui/layout';
-import { selectModulesByBox } from '../../common/slices/modules';
-import { selectBox, selectStage } from '../../common/slices/boxes';
-import { useSelector } from '../../common/store';
+import { selectModulesByBox } from '../../slices/modules';
+import { selectBox, selectStage } from '../../slices/boxes';
+import { useSelector } from '../../slices/store';
 
 const renderModulesList = function (name: string, items: string[]) {
     if (!items.length) {

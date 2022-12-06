@@ -4,10 +4,10 @@ import { IconContext, Info, Palette, User, SignOut, TrashSimple } from 'phosphor
 
 import { List, ListItem } from '../common/ui/list';
 import { Page, PageTitle } from '../common/ui/layout';
-import { Select } from '../common/ui/form';
-import { logOut } from '../common/slices/globalActions';
-import { selectDepartment, selectFullName } from '../common/slices/account';
-import { useSelector, useDispatch } from '../common/store';
+import { Select } from '../foundation/form';
+import { logOut } from '../slices/globalActions';
+import { selectDepartment, selectFullName } from '../slices/account';
+import { useSelector, useDispatch } from '../slices/store';
 
 const SettingsList = function () {
     const fullName = useSelector(selectFullName);

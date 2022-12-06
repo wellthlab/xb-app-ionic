@@ -1,14 +1,15 @@
 import React from 'react';
 import { Box } from '@mui/joy';
 
-import { Page, PageTitle } from '../common/ui/layout';
+import Page from '../../foundation/Page';
+import PageTitle from '../../foundation/PageTitle';
 
-interface ISharedAuthScreenProps {
+interface IAuthScreenLayout {
     children: React.ReactNode;
     title: string;
 }
 
-const SharedAuthScreen = function ({ children, title }: ISharedAuthScreenProps) {
+const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
     return (
         <Page>
             <Box component="img" sx={{ width: 80, mb: 4 }} src="/assets/logo/logo.png" alt="XB App logo" />
@@ -18,4 +19,4 @@ const SharedAuthScreen = function ({ children, title }: ISharedAuthScreenProps) 
     );
 };
 
-export default SharedAuthScreen;
+export default AuthScreenLayout;

@@ -10,27 +10,22 @@ import {
     Ruler,
     Camera,
     Flask,
-    PencilLine,
     Check,
     Barbell,
 } from 'phosphor-react';
 
 import TaskModal from './TaskModal';
 import { Page, PageTitle } from '../../common/ui/layout';
-import { selectModuleById } from '../../common/slices/modules';
-import { useSelector, useDispatch } from '../../common/store';
+import { selectModuleById } from '../../slices/modules';
+import { useSelector, useDispatch } from '../../slices/store';
 import { List, ListItem } from '../../common/ui/list';
-import getErrorMessage from '../../common/utils/getErrorMessage';
-import { getPlaylistResponses, selectPlaylistResponses } from '../../common/slices/responses';
+import getErrorMessage from '../../foundation/utils/getErrorMessage';
+import { getPlaylistResponses, selectPlaylistResponses } from '../../slices/responses';
 
 const getTaskIcon = function (icon: string | undefined, draft: boolean | undefined) {
     // draft could be undefined, which should be handled differently
     if (draft === false) {
         return <Box component={Check} color="success.outlinedColor" />;
-    }
-
-    if (draft) {
-        return <PencilLine />;
     }
 
     if (icon === 'ADVICE') {
@@ -84,14 +79,14 @@ const TasksList = function () {
 
     const playlist = module.playlists[playlistId];
 
-    const [errorMessage, setErrorMessage] = React.useState<string>();
+    const [errorMessage, setErrorMessage] = React.useState<string>('');
     const dispatch = useDispatch();
     React.useEffect(() => {
         const getResponses = async function () {
             try {
                 dispatch(getPlaylistResponses({ moduleId, playlistId }));
             } catch (error) {
-                setErrorMessage(getErrorMessage(error, 'Sorry, cannot retrieve your response at the moment'));
+                setErrorMessage(getErrorMessage(error, 'Sorry, cannot retrieve your responses at the moment'));
             }
         };
 

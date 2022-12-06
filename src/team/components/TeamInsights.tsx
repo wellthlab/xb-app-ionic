@@ -3,10 +3,10 @@ import { IonAlert } from '@ionic/react';
 import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
 import { Users, Fingerprint } from 'phosphor-react';
 
-import { Page, PageTitle, Modal, Centre, SectionTitle } from '../common/ui/layout';
-import { selectFullName, selectUserId } from '../common/slices/account';
-import { leaveTeam, selectTeam } from '../common/slices/team';
-import { useSelector, useDispatch } from '../common/store';
+import { Page, PageTitle, Modal, Centre, SectionTitle } from '../../common/ui/layout';
+import { selectFullName, selectUserId } from '../../slices/account';
+import { leaveTeam, selectTeam } from '../../slices/team';
+import { useSelector, useDispatch } from '../../slices/store';
 
 const TeamInsights = function () {
     const fullName = useSelector(selectFullName);

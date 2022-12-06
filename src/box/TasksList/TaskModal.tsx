@@ -1,15 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Stack, TextField, Alert } from '@mui/joy';
+import { Typography, Stack, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import HeartrateInput from './HeartrateInput';
 import { IModalProps, Modal } from '../../common/ui/layout';
-import { Checkbox, Select, useForm } from '../../common/ui/form';
-import { selectTask } from '../../common/slices/modules';
-import { useSelector, useDispatch } from '../../common/store';
-import { IResponse, ITask } from '../../common/models/Box';
-import { selectTaskResponse, submitTaskResponse } from '../../common/slices/responses';
+import { Checkbox, Select, useForm } from '../../foundation/form';
+import { selectTask } from '../../slices/modules';
+import { useSelector, useDispatch } from '../../slices/store';
+import { IResponse, ITask } from '../../models/Box';
+import { selectTaskResponse, submitTaskResponse } from '../../slices/responses';
 
 interface ITaskProps extends Omit<IModalProps, 'headerTitle'> {
     playlistId: number;
@@ -92,12 +92,14 @@ const TaskModal = function ({ playlistId, taskId, onDismiss, ...others }: ITaskP
 
     const handleDismiss = async function (reason: string) {
         if (reason !== 'action') {
+            form.resetErrors();
+            form.resetDirty();
             await dispatch(
                 submitTaskResponse({
                     moduleId,
                     playlistId,
                     taskId,
-                    draft: !response || response.draft || !form.dirty,
+                    draft: !response || response.draft || form.dirty,
                     payload: form.values,
                 }),
             );
@@ -107,7 +109,13 @@ const TaskModal = function ({ playlistId, taskId, onDismiss, ...others }: ITaskP
     };
 
     return (
-        <Modal headerTitle={task.name} onDismiss={handleDismiss} onAction={handleAction} {...others}>
+        <Modal
+            headerTitle={task.name}
+            onDismiss={handleDismiss}
+            errorMessage={form.errors.$root}
+            onAction={handleAction}
+            {...others}
+        >
             <Stack spacing={2}>
                 {task.desc && <Typography level="body2">{task.desc}</Typography>}
 

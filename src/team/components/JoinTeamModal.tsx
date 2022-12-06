@@ -3,9 +3,9 @@ import { Alert, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { Modal, IModalProps } from '../../common/ui/layout';
-import { useForm } from '../../common/ui/form';
-import { joinTeam } from '../../common/slices/team';
-import { useDispatch } from '../../common/store';
+import { useForm } from '../../foundation/form';
+import { joinTeam } from '../../slices/team';
+import { useDispatch } from '../../slices/store';
 
 const schema = Yup.object().shape({
     invite: Yup.string().required('Invite code is missing').length(6, 'Invite code must have 6 digits'),

@@ -6,14 +6,19 @@ import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ioni
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, Barbell } from 'phosphor-react';
 
-import store, { useSelector, useDispatch } from './common/store';
-import { boot } from './common/slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './common/slices/account';
+import store, { useSelector, useDispatch } from './slices/store';
+import { boot } from './slices/globalActions';
+import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
 import { Page, Centre } from './common/ui/layout';
-import { LoginForm, RegisterForm } from './auth';
-import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
-import { TeamInsights, TeamGuard } from './team';
-import { SettingsList, EditProfileForm, StudyInformation as SettingsStudyInformation } from './settings';
+import LoginForm from './auth/LoginForm';
+import RegisterForm from './auth/RegisterForm';
+import EnrollStudyInformation from './enroll/StudyInformation';
+import EnrollConsent from './enroll/EnrollConsent';
+import CompleteProfile from './enroll/CompleteProfile';
+import SettingsList from './settings/SettingsList';
+import EditProfileForm from './settings/EditProfileForm';
+import SettingsStudyInformation from './settings/StudyInformation';
+import TeamView from './team/TeamView';
 import { ModulesList, TasksList } from './box';
 
 const theme = extendTheme({
@@ -127,15 +132,15 @@ const App = function () {
                                 </Route>
 
                                 <Route path="/enroll" exact>
-                                    <StudyInformation />
+                                    <EnrollStudyInformation />
                                 </Route>
 
                                 <Route path="/enroll/consent" exact>
-                                    <EnrollConsentForm />
+                                    <EnrollConsent />
                                 </Route>
 
                                 <Route path="/enroll/profile" exact>
-                                    <CompleteProfileForm />
+                                    <CompleteProfile />
                                 </Route>
 
                                 <Route path="/loading">
@@ -154,21 +159,15 @@ const App = function () {
                                             </Route>
 
                                             <Route path="/main/team" exact>
-                                                <TeamGuard>
-                                                    <TeamInsights />
-                                                </TeamGuard>
+                                                <TeamView />
                                             </Route>
 
                                             <Route path="/main/box/:type" exact>
-                                                <TeamGuard>
-                                                    <ModulesList />
-                                                </TeamGuard>
+                                                <ModulesList />
                                             </Route>
 
                                             <Route path="/main/box/:type/:moduleId" exact>
-                                                <TeamGuard>
-                                                    <TasksList />
-                                                </TeamGuard>
+                                                <TasksList />
                                             </Route>
 
                                             <Route path="/main/settings" exact>

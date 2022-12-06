@@ -1,17 +1,14 @@
 import React from 'react';
 import { Typography, Button, Stack } from '@mui/joy';
 
-import JoinTeamModal from './JoinTeamModal';
-import CreateTeamModal from './CreateTeamModal';
-import { Centre, Page } from '../../common/ui/layout';
-import { selectTeam } from '../../common/slices/team';
-import { useSelector } from '../../common/store';
+import JoinTeamModal from './components/JoinTeamModal';
+import CreateTeamModal from './components/CreateTeamModal';
+import TeamInsights from './components/TeamInsights';
+import { Centre, Page } from '../common/ui/layout';
+import { selectTeam } from '../slices/team';
+import { useSelector } from '../slices/store';
 
-interface ITeamGuardProps {
-    children: React.ReactNode;
-}
-
-const TeamGuard = function ({ children }: ITeamGuardProps) {
+const TeamView = function () {
     const team = useSelector(selectTeam);
 
     const [joinModalOpen, setJoinModalOpen] = React.useState(false);
@@ -26,7 +23,7 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
     return (
         <React.Fragment>
             {team ? (
-                children
+                <TeamInsights />
             ) : (
                 <Page>
                     <Centre>
@@ -52,4 +49,4 @@ const TeamGuard = function ({ children }: ITeamGuardProps) {
     );
 };
 
-export default TeamGuard;
+export default TeamView;

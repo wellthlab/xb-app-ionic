@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Alert, Stack, ButtonProps } from '@mui/joy';
 
-import getErrorMessage from '../../utils/getErrorMessage';
-
 export interface IFormProps {
     children: React.ReactNode;
     onSubmit: () => void;
@@ -10,23 +8,16 @@ export interface IFormProps {
     submitLabel?: string;
     submitDisabled?: boolean;
     submitButtonColor?: ButtonProps['color'];
+    errorMessage?: string;
 }
 
-const Form = function ({ onSubmit, children, footer, submitLabel, submitButtonColor }: IFormProps) {
+const Form = function ({ onSubmit, children, footer, submitLabel, submitButtonColor, errorMessage }: IFormProps) {
     const [pending, setPending] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState<string>();
 
     const handleSubmit = async function () {
         setPending(true);
-
-        try {
-            await onSubmit();
-        } catch (error) {
-            console.log(error);
-            setErrorMessage(getErrorMessage(error, 'Sorry, cannot submit this form at the moment'));
-        } finally {
-            setPending(false);
-        }
+        await onSubmit();
+        setPending(false);
     };
 
     return (
