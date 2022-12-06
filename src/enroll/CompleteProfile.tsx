@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Page, PageTitle } from '../common/ui/layout';
+import Page from '../foundation/Page';
+import PageTitle from '../foundation/PageTitle';
 import ProfileForm from '../components/ProfileForm';
 
 const CompleteProfile = function () {

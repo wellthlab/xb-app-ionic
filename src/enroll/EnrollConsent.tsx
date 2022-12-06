@@ -3,8 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { Alert, Link } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Page, PageTitle } from '../common/ui/layout';
-import { Form, useForm, Checkbox } from '../foundation/form';
+import Page from '../foundation/Page';
+import PageTitle from '../foundation/PageTitle';
+import Form from '../foundation/Form';
+import Checkbox from '../foundation/Checkbox';
+import useForm from '../foundation/useForm';
 
 const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
 

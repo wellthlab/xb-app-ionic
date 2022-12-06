@@ -2,7 +2,9 @@ import React from 'react';
 import { TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Form, useForm, Select } from '../foundation/form';
+import Form from '../foundation/Form';
+import Select from '../foundation/Select';
+import useForm from '../foundation/useForm';
 import Account from '../models/Account';
 import { selectProfile, updateUserProfile } from '../slices/account';
 import { useDispatch, useSelector } from '../slices/store';
