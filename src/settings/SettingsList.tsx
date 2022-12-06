@@ -2,9 +2,11 @@ import React from 'react';
 import { Stack, Typography, useColorScheme } from '@mui/joy';
 import { IconContext, Info, Palette, User, SignOut, TrashSimple } from 'phosphor-react';
 
-import { List, ListItem } from '../common/ui/list';
-import { Page, PageTitle } from '../common/ui/layout';
-import { Select } from '../foundation/form';
+import List from '../foundation/List';
+import ListItem from '../foundation/ListItem';
+import Page from '../foundation/Page';
+import PageTitle from '../foundation/PageTitle';
+import Select from '../foundation/Select';
 import { logOut } from '../slices/globalActions';
 import { selectDepartment, selectFullName } from '../slices/account';
 import { useSelector, useDispatch } from '../slices/store';

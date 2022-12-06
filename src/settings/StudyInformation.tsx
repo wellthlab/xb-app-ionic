@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Page } from '../common/ui/layout';
+import Page from '../foundation/Page';
 import AboutThisStudy from '../components/AboutThisStudy';
 
 const StudyInformation = function () {

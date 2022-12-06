@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Page } from '../common/ui/layout';
+import Page from '../foundation/Page';
 import ProfileForm from '../components/ProfileForm';
 
 const EditProfileForm = function () {
