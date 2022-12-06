@@ -2,8 +2,8 @@ import React from 'react';
 import { Alert, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Modal, IModalProps } from '../../common/ui/layout';
-import { useForm } from '../../foundation/form';
+import Modal, { IModalProps } from '../../foundation/Modal';
+import useForm from '../../foundation/useForm';
 import { joinTeam } from '../../slices/team';
 import { useDispatch } from '../../slices/store';
 

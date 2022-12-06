@@ -4,7 +4,8 @@ import { Typography, Button, Stack } from '@mui/joy';
 import JoinTeamModal from './components/JoinTeamModal';
 import CreateTeamModal from './components/CreateTeamModal';
 import TeamInsights from './components/TeamInsights';
-import { Centre, Page } from '../common/ui/layout';
+import Page from '../foundation/Page';
+import Centre from '../foundation/Centre';
 import { selectTeam } from '../slices/team';
 import { useSelector } from '../slices/store';
 

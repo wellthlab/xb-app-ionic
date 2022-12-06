@@ -3,7 +3,11 @@ import { IonAlert } from '@ionic/react';
 import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
 import { Users, Fingerprint } from 'phosphor-react';
 
-import { Page, PageTitle, Modal, Centre, SectionTitle } from '../../common/ui/layout';
+import Page from '../../foundation/Page';
+import PageTitle from '../../foundation/PageTitle';
+import Modal from '../../foundation/Modal';
+import Centre from '../../foundation/Centre';
+import SectionTitle from '../../foundation/SectionTitle';
 import { selectFullName, selectUserId } from '../../slices/account';
 import { leaveTeam, selectTeam } from '../../slices/team';
 import { useSelector, useDispatch } from '../../slices/store';

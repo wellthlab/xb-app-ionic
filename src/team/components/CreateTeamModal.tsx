@@ -2,8 +2,9 @@ import React from 'react';
 import { Alert, Stack, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { Modal, IModalProps } from '../../common/ui/layout';
-import { Textarea, useForm } from '../../foundation/form';
+import Modal, { IModalProps } from '../../foundation/Modal';
+import Textarea from '../../foundation/Textarea';
+import useForm from '../../foundation/useForm';
 import { createTeam } from '../../slices/team';
 import { useDispatch } from '../../slices/store';
 
