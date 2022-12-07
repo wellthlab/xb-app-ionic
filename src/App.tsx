@@ -6,20 +6,23 @@ import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ioni
 import { IonReactRouter } from '@ionic/react-router';
 import { IconContext, Users, Gear, ForkKnife, Barbell } from 'phosphor-react';
 
-import store, { useSelector, useDispatch } from './slices/store';
-import { boot } from './slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
-import { Page, Centre } from './common/ui/layout';
-import LoginForm from './auth/LoginForm';
-import RegisterForm from './auth/RegisterForm';
-import EnrollStudyInformation from './enroll/StudyInformation';
-import EnrollConsent from './enroll/EnrollConsent';
-import CompleteProfile from './enroll/CompleteProfile';
-import SettingsList from './settings/SettingsList';
-import EditProfileForm from './settings/EditProfileForm';
-import SettingsStudyInformation from './settings/StudyInformation';
-import TeamView from './team/TeamView';
-import { ModulesList, TasksList } from './box';
+import store, { useSelector, useDispatch } from './shared/slices/store';
+import { boot } from './shared/slices/globalActions';
+import { selectIsAuthenticated, setIsEnrolled } from './shared/slices/account';
+import Page from './shared/foundation/Page';
+import Centre from './shared/foundation/Centre';
+
+import LoginScreen from './authentication/LoginScreen';
+import RegisterScreen from './authentication/RegisterScreen';
+import InformationScreen from './onboarding/InformationScreen';
+import EnrollConsentScreen from './onboarding/EnrollConsentScreen';
+import CompleteProfileScreen from './onboarding/CompleteProfileScreen';
+import SettingsTab from './user-settings/SettingsTab';
+import EditProfileScreen from './user-settings/EditProfileScreen';
+import SettingsInformationScreen from './user-settings/InformationScreen';
+import TeamInsightsTab from './team/TeamInsightsTab';
+import ModulesList from './box/ModulesList';
+import TasksList from './box/TasksList';
 
 const theme = extendTheme({
     components: {
@@ -85,7 +88,7 @@ const AppFlowController = function () {
     }
 
     if (!isEnrolled) {
-        return <Redirect to="/enroll" />;
+        return <Redirect to="/onboarding" />;
     }
 
     return <Redirect to="/main" />;
@@ -124,23 +127,23 @@ const App = function () {
                             <AppFlowController />
                             <IonRouterOutlet>
                                 <Route path="/auth" exact>
-                                    <LoginForm />
+                                    <LoginScreen />
                                 </Route>
 
                                 <Route path="/auth/register" exact>
-                                    <RegisterForm />
+                                    <RegisterScreen />
                                 </Route>
 
-                                <Route path="/enroll" exact>
-                                    <EnrollStudyInformation />
+                                <Route path="/onboarding" exact>
+                                    <InformationScreen />
                                 </Route>
 
-                                <Route path="/enroll/consent" exact>
-                                    <EnrollConsent />
+                                <Route path="/onboarding/consent" exact>
+                                    <EnrollConsentScreen />
                                 </Route>
 
-                                <Route path="/enroll/profile" exact>
-                                    <CompleteProfile />
+                                <Route path="/onboarding/profile" exact>
+                                    <CompleteProfileScreen />
                                 </Route>
 
                                 <Route path="/loading">
@@ -159,7 +162,7 @@ const App = function () {
                                             </Route>
 
                                             <Route path="/main/team" exact>
-                                                <TeamView />
+                                                <TeamInsightsTab />
                                             </Route>
 
                                             <Route path="/main/box/:type" exact>
@@ -171,15 +174,15 @@ const App = function () {
                                             </Route>
 
                                             <Route path="/main/settings" exact>
-                                                <SettingsList />
+                                                <SettingsTab />
                                             </Route>
 
                                             <Route path="/main/settings/about" exact>
-                                                <SettingsStudyInformation />
+                                                <SettingsInformationScreen />
                                             </Route>
 
                                             <Route path="/main/settings/profile" exact>
-                                                <EditProfileForm />
+                                                <EditProfileScreen />
                                             </Route>
                                         </IonRouterOutlet>
 

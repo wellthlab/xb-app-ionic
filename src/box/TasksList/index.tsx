@@ -15,12 +15,17 @@ import {
 } from 'phosphor-react';
 
 import TaskModal from './TaskModal';
-import { Page, PageTitle } from '../../common/ui/layout';
-import { selectModuleById } from '../../slices/modules';
-import { useSelector, useDispatch } from '../../slices/store';
-import { List, ListItem } from '../../common/ui/list';
-import getErrorMessage from '../../foundation/utils/getErrorMessage';
-import { getPlaylistResponses, selectPlaylistResponses } from '../../slices/responses';
+
+import Page from '../../shared/foundation/Page';
+import PageTitle from '../../shared/foundation/PageTitle';
+import List from '../../shared/foundation/List';
+import ListItem from '../../shared/foundation/ListItem';
+
+import { selectModuleById } from '../../shared/slices/modules';
+import { useSelector, useDispatch } from '../../shared/slices/store';
+import { getPlaylistResponses, selectPlaylistResponses } from '../../shared/slices/responses';
+
+import getErrorMessage from '../../shared/utils/getErrorMessage';
 
 const getTaskIcon = function (icon: string | undefined, draft: boolean | undefined) {
     // draft could be undefined, which should be handled differently

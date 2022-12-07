@@ -3,11 +3,13 @@ import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
-import SharedAuthScreen from './components/AuthScreenLayout';
-import Form from '../foundation/Form';
-import useForm from '../foundation/useForm';
-import { registerUser } from '../slices/account';
-import { useDispatch } from '../slices/store';
+import SharedAuthScreen from './shared/AuthScreenLayout';
+
+import Form from '../shared/foundation/Form';
+import useForm from '../shared/foundation/useForm';
+
+import { registerUser } from '../shared/slices/account';
+import { useDispatch } from '../shared/slices/store';
 
 const schema = Yup.object().shape({
     email: Yup.string().required('Email is missing').email('Please input an email address'),
@@ -20,7 +22,7 @@ const schema = Yup.object().shape({
         .oneOf([Yup.ref('password')], 'Passwords must match'),
 });
 
-const RegisterForm = function () {
+const RegisterScreen = function () {
     const { createHandleSubmit, getInputProps, form } = useForm(
         { email: '', password: '', repeatPassword: '' },
         schema,
@@ -66,4 +68,4 @@ const RegisterForm = function () {
     );
 };
 
-export default RegisterForm;
+export default RegisterScreen;

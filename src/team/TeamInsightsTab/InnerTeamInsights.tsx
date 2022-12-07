@@ -3,16 +3,17 @@ import { IonAlert } from '@ionic/react';
 import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
 import { Users, Fingerprint } from 'phosphor-react';
 
-import Page from '../../foundation/Page';
-import PageTitle from '../../foundation/PageTitle';
-import Modal from '../../foundation/Modal';
-import Centre from '../../foundation/Centre';
-import SectionTitle from '../../foundation/SectionTitle';
-import { selectFullName, selectUserId } from '../../slices/account';
-import { leaveTeam, selectTeam } from '../../slices/team';
-import { useSelector, useDispatch } from '../../slices/store';
+import Page from '../../shared/foundation/Page';
+import PageTitle from '../../shared/foundation/PageTitle';
+import Modal from '../../shared/foundation/Modal';
+import Centre from '../../shared/foundation/Centre';
+import SectionTitle from '../../shared/foundation/SectionTitle';
 
-const TeamInsights = function () {
+import { selectFullName, selectUserId } from '../../shared/slices/account';
+import { leaveTeam, selectTeam } from '../../shared/slices/team';
+import { useSelector, useDispatch } from '../../shared/slices/store';
+
+const InnerTeamInsights = function () {
     const fullName = useSelector(selectFullName);
     const userId = useSelector(selectUserId);
     const team = useSelector(selectTeam)!;
@@ -131,4 +132,4 @@ const TeamInsights = function () {
     );
 };
 
-export default TeamInsights;
+export default InnerTeamInsights;

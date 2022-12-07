@@ -2,9 +2,9 @@ import React from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Card, Typography, Box, Link, Stack, Avatar } from '@mui/joy';
 
-import { subscribeToModule } from '../../slices/account';
-import { useSelector, useDispatch } from '../../slices/store';
-import { selectModuleById, selectModuleSubcriberInitials } from '../../slices/modules';
+import { subscribeToModule } from '../../shared/slices/account';
+import { useSelector, useDispatch } from '../../shared/slices/store';
+import { selectModuleById, selectModuleSubcriberInitials } from '../../shared/slices/modules';
 
 interface IModulesListItemProps {
     id: string;

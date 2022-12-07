@@ -4,12 +4,16 @@ import { Typography, Stack, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
 import HeartrateInput from './HeartrateInput';
-import { IModalProps, Modal } from '../../common/ui/layout';
-import { Checkbox, Select, useForm } from '../../foundation/form';
-import { selectTask } from '../../slices/modules';
-import { useSelector, useDispatch } from '../../slices/store';
-import { IResponse, ITask } from '../../models/Box';
-import { selectTaskResponse, submitTaskResponse } from '../../slices/responses';
+
+import Checkbox from '../../shared/foundation/Checkbox';
+import Select from '../../shared/foundation/Select';
+import useForm from '../../shared/foundation/useForm';
+import Modal, { IModalProps } from '../../shared/foundation/Modal';
+
+import { selectTask } from '../../shared/slices/modules';
+import { useSelector, useDispatch } from '../../shared/slices/store';
+import { IResponse, ITask } from '../../shared/models/Box';
+import { selectTaskResponse, submitTaskResponse } from '../../shared/slices/responses';
 
 interface ITaskProps extends Omit<IModalProps, 'headerTitle'> {
     playlistId: number;

@@ -1,15 +1,17 @@
 import React from 'react';
 import { Typography, Button, Stack } from '@mui/joy';
 
-import JoinTeamModal from './components/JoinTeamModal';
-import CreateTeamModal from './components/CreateTeamModal';
-import TeamInsights from './components/TeamInsights';
-import Page from '../foundation/Page';
-import Centre from '../foundation/Centre';
-import { selectTeam } from '../slices/team';
-import { useSelector } from '../slices/store';
+import JoinTeamModal from './JoinTeamModal';
+import CreateTeamModal from './CreateTeamModal';
+import InnerTeamInsights from './InnerTeamInsights';
 
-const TeamView = function () {
+import Page from '../../shared/foundation/Page';
+import Centre from '../../shared/foundation/Centre';
+
+import { selectTeam } from '../../shared/slices/team';
+import { useSelector } from '../../shared/slices/store';
+
+const TeamInsightsTab = function () {
     const team = useSelector(selectTeam);
 
     const [joinModalOpen, setJoinModalOpen] = React.useState(false);
@@ -24,7 +26,7 @@ const TeamView = function () {
     return (
         <React.Fragment>
             {team ? (
-                <TeamInsights />
+                <InnerTeamInsights />
             ) : (
                 <Page>
                     <Centre>
@@ -50,4 +52,4 @@ const TeamView = function () {
     );
 };
 
-export default TeamView;
+export default TeamInsightsTab;

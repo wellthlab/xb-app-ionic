@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 
-import getErrorMessage from '../../utils/getErrorMessage';
+import getErrorMessage from '../utils/getErrorMessage';
 
 interface IBaseInputProps {
     helperText?: string;

@@ -2,16 +2,17 @@ import React from 'react';
 import { Stack, Typography, useColorScheme } from '@mui/joy';
 import { IconContext, Info, Palette, User, SignOut, TrashSimple } from 'phosphor-react';
 
-import List from '../foundation/List';
-import ListItem from '../foundation/ListItem';
-import Page from '../foundation/Page';
-import PageTitle from '../foundation/PageTitle';
-import Select from '../foundation/Select';
-import { logOut } from '../slices/globalActions';
-import { selectDepartment, selectFullName } from '../slices/account';
-import { useSelector, useDispatch } from '../slices/store';
+import List from '../shared/foundation/List';
+import ListItem from '../shared/foundation/ListItem';
+import Page from '../shared/foundation/Page';
+import PageTitle from '../shared/foundation/PageTitle';
+import Select from '../shared/foundation/Select';
 
-const SettingsList = function () {
+import { logOut } from '../shared/slices/globalActions';
+import { selectDepartment, selectFullName } from '../shared/slices/account';
+import { useSelector, useDispatch } from '../shared/slices/store';
+
+const SettingsTab = function () {
     const fullName = useSelector(selectFullName);
     const department = useSelector(selectDepartment);
 
@@ -79,4 +80,4 @@ const SettingsList = function () {
     );
 };
 
-export default SettingsList;
+export default SettingsTab;

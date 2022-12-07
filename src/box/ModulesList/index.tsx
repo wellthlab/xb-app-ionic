@@ -3,10 +3,14 @@ import { useParams } from 'react-router-dom';
 import { Stack, Typography, Box } from '@mui/joy';
 
 import ModulesListItem from './ModulesListItem';
-import { Page, PageTitle, SectionTitle } from '../../common/ui/layout';
-import { selectModulesByBox } from '../../slices/modules';
-import { selectBox, selectStage } from '../../slices/boxes';
-import { useSelector } from '../../slices/store';
+
+import Page from '../../shared/foundation/Page';
+import PageTitle from '../../shared/foundation/PageTitle';
+import SectionTitle from '../../shared/foundation/SectionTitle';
+
+import { selectModulesByBox } from '../../shared/slices/modules';
+import { selectBox, selectStage } from '../../shared/slices/boxes';
+import { useSelector } from '../../shared/slices/store';
 
 const renderModulesList = function (name: string, items: string[]) {
     if (!items.length) {

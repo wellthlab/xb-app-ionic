@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { Alert, Link } from '@mui/joy';
 import * as Yup from 'yup';
 
-import Page from '../foundation/Page';
-import PageTitle from '../foundation/PageTitle';
-import Form from '../foundation/Form';
-import Checkbox from '../foundation/Checkbox';
-import useForm from '../foundation/useForm';
+import Page from '../shared/foundation/Page';
+import PageTitle from '../shared/foundation/PageTitle';
+import Form from '../shared/foundation/Form';
+import Checkbox from '../shared/foundation/Checkbox';
+import useForm from '../shared/foundation/useForm';
 
 const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
 
@@ -18,7 +18,7 @@ const schema = Yup.object().shape({
     c4: checkboxSchema,
 });
 
-const EnrollConsent = function () {
+const EnrollConsentScreen = function () {
     const { getCheckboxProps, createHandleSubmit, form } = useForm(
         { c1: false, c2: false, c3: false, c4: false },
         schema,
@@ -72,4 +72,4 @@ const EnrollConsent = function () {
     );
 };
 
-export default EnrollConsent;
+export default EnrollConsentScreen;

@@ -2,10 +2,11 @@ import React from 'react';
 import { Alert, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import Modal, { IModalProps } from '../../foundation/Modal';
-import useForm from '../../foundation/useForm';
-import { joinTeam } from '../../slices/team';
-import { useDispatch } from '../../slices/store';
+import Modal, { IModalProps } from '../../shared/foundation/Modal';
+import useForm from '../../shared/foundation/useForm';
+
+import { joinTeam } from '../../shared/slices/team';
+import { useDispatch } from '../../shared/slices/store';
 
 const schema = Yup.object().shape({
     invite: Yup.string().required('Invite code is missing').length(6, 'Invite code must have 6 digits'),

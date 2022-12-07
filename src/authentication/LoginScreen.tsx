@@ -3,18 +3,20 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TextField, Alert, Link, Box } from '@mui/joy';
 import * as Yup from 'yup';
 
-import SharedAuthScreen from './components/AuthScreenLayout';
-import Form from '../foundation/Form';
-import useForm from '../foundation/useForm';
-import { authenticateUser } from '../slices/account';
-import { useDispatch } from '../slices/store';
+import SharedAuthScreen from './shared/AuthScreenLayout';
+
+import Form from '../shared/foundation/Form';
+import useForm from '../shared/foundation/useForm';
+
+import { authenticateUser } from '../shared/slices/account';
+import { useDispatch } from '../shared/slices/store';
 
 const schema = Yup.object().shape({
     email: Yup.string().required('Email is missing').email('Please input an email address'),
     password: Yup.string().required('Password is missing'),
 });
 
-const LoginForm = function () {
+const LoginScreen = function () {
     const { createHandleSubmit, getInputProps, form } = useForm({ email: '', password: '' }, schema);
 
     const dispatch = useDispatch();
@@ -61,4 +63,4 @@ const LoginForm = function () {
     );
 };
 
-export default LoginForm;
+export default LoginScreen;

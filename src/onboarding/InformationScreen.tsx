@@ -2,10 +2,11 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button } from '@mui/joy';
 
-import { Page } from '../common/ui/layout';
-import AboutThisStudy from '../components/AboutThisStudy';
+import Page from '../shared/foundation/Page';
 
-const StudyInformation = function () {
+import AboutThisStudy from '../shared/components/AboutThisStudy';
+
+const InformationScreen = function () {
     return (
         <Page>
             <AboutThisStudy />
@@ -16,4 +17,4 @@ const StudyInformation = function () {
     );
 };
 
-export default StudyInformation;
+export default InformationScreen;

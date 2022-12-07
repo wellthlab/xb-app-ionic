@@ -2,11 +2,12 @@ import React from 'react';
 import { Alert, Stack, TextField } from '@mui/joy';
 import * as Yup from 'yup';
 
-import Modal, { IModalProps } from '../../foundation/Modal';
-import Textarea from '../../foundation/Textarea';
-import useForm from '../../foundation/useForm';
-import { createTeam } from '../../slices/team';
-import { useDispatch } from '../../slices/store';
+import Modal, { IModalProps } from '../../shared/foundation/Modal';
+import Textarea from '../../shared/foundation/Textarea';
+import useForm from '../../shared/foundation/useForm';
+
+import { createTeam } from '../../shared/slices/team';
+import { useDispatch } from '../../shared/slices/store';
 
 interface ICreateTeamModal extends Omit<IModalProps, 'headerTitle'> {}
 
