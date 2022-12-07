@@ -26,7 +26,7 @@ const EnrollConsentScreen = function () {
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
-        history.push('/enroll/profile');
+        history.push('/onboarding/profile');
     });
 
     return (

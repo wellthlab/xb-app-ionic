@@ -1,8 +1,9 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
+import { selectUserId } from './account';
 import { boot, logOut } from './globalActions';
+
 import { IBox } from '../models/Box';
-import { selectTeam } from './team';
 import { idToTs } from '../models/utils';
 
 interface IBoxesState extends Partial<Record<string, IBox>> {}
@@ -13,13 +14,13 @@ interface ISelectorState {
 
 export const selectBox = (state: ISelectorState, type: string) => state.boxes[type];
 
-export const selectStage = createSelector(selectTeam, selectBox, (team, box) => {
-    if (!team || !box) {
+export const selectStage = createSelector(selectUserId, selectBox, (id, box) => {
+    if (!id || !box) {
         return;
     }
 
     const now = Date.now();
-    const createdAt = idToTs(team.id);
+    const createdAt = idToTs(id);
     const daysElapsed = Math.floor((now - createdAt) / 1000 / 3600 / 24);
 
     let prev;

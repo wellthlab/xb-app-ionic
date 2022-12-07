@@ -14,6 +14,8 @@ import { useSelector } from '../../shared/slices/store';
 const TeamInsightsTab = function () {
     const team = useSelector(selectTeam);
 
+    const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
+
     const [joinModalOpen, setJoinModalOpen] = React.useState(false);
     const [createModalOpen, setCreateModalOpen] = React.useState(false);
 
@@ -28,7 +30,7 @@ const TeamInsightsTab = function () {
             {team ? (
                 <InnerTeamInsights />
             ) : (
-                <Page>
+                <Page ref={setPresentingElement}>
                     <Centre>
                         <Stack spacing={2}>
                             <Typography level="h6" component="p">
@@ -46,8 +48,16 @@ const TeamInsightsTab = function () {
                 </Page>
             )}
 
-            <CreateTeamModal isOpen={createModalOpen} onDismiss={createModalHandler(setCreateModalOpen, false)} />
-            <JoinTeamModal isOpen={joinModalOpen} onDismiss={createModalHandler(setJoinModalOpen, false)} />
+            <CreateTeamModal
+                isOpen={createModalOpen}
+                onDismiss={createModalHandler(setCreateModalOpen, false)}
+                presentingElement={presentingElement}
+            />
+            <JoinTeamModal
+                isOpen={joinModalOpen}
+                onDismiss={createModalHandler(setJoinModalOpen, false)}
+                presentingElement={presentingElement}
+            />
         </React.Fragment>
     );
 };

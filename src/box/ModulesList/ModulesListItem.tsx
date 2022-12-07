@@ -45,7 +45,7 @@ const ModulesListItem = function ({ id }: IModulesListItemProps) {
                     {module.difficulty} - {module.playlists.length} playlists
                 </Typography>
 
-                {initials.length ? (
+                {initials && initials.length ? (
                     <Stack direction="row" spacing={1}>
                         {initials.map(({ id, initial }) => (
                             <Avatar key={id} size="sm">

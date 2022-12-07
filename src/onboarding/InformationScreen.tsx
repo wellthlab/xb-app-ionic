@@ -10,7 +10,7 @@ const InformationScreen = function () {
     return (
         <Page>
             <AboutThisStudy />
-            <Button component={RouterLink} to="/enroll/consent" sx={{ mt: 4 }} fullWidth>
+            <Button component={RouterLink} to="/onboarding/consent" sx={{ mt: 4 }} fullWidth>
                 Next
             </Button>
         </Page>
