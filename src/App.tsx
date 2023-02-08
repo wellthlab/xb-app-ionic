@@ -1,61 +1,41 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
-import { CssVarsProvider, CircularProgress, extendTheme, useColorScheme } from '@mui/joy';
-import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
+import { Route, Redirect, useLocation } from 'react-router-dom';
+import { CssVarsProvider, CircularProgress } from '@mui/joy';
+import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, ForkKnife, Barbell } from 'phosphor-react';
+import { IconContext, Users, Gear, Cube } from 'phosphor-react';
 
-import store, { useSelector, useDispatch } from './shared/slices/store';
-import { boot } from './shared/slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './shared/slices/account';
-import Page from './shared/foundation/Page';
-import Centre from './shared/foundation/Centre';
+import { theme, ColorModeController } from './theme';
+import store, { useSelector, useDispatch } from './slices/store';
+import { boot } from './slices/globalActions';
+import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
+import Page from './components/foundation/Page';
+import Centre from './components/foundation/Centre';
 
-import LoginScreen from './authentication/LoginScreen';
-import RegisterScreen from './authentication/RegisterScreen';
-import InformationScreen from './onboarding/InformationScreen';
-import EnrollConsentScreen from './onboarding/EnrollConsentScreen';
-import CompleteProfileScreen from './onboarding/CompleteProfileScreen';
-import SettingsTab from './user-settings/SettingsTab';
-import EditProfileScreen from './user-settings/EditProfileScreen';
-import SettingsInformationScreen from './user-settings/InformationScreen';
-import TeamInsightsTab from './team/TeamInsightsTab';
-import ModulesList from './box/ModulesList';
-import TasksList from './box/TasksList';
+import LoginScreen from './screens/auth/Login';
+import RegisterScreen from './screens/auth/Register';
+import ResetPasswordScreen from './screens/auth/ResetPassword';
+import NewPasswordScreen from './screens/auth/NewPassword';
 
-const theme = extendTheme({
-    components: {
-        JoyList: {
-            defaultProps: { variant: 'soft' },
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    borderRadius: theme.vars.radius.sm,
-                    flex: 0,
-                }),
-            },
-        },
+import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
+import OnboardingConsentScreen from './screens/onboarding/Consent';
+import NewProfileScreen from './screens/onboarding/NewProfile';
 
-        JoyCard: {
-            defaultProps: { variant: 'outlined' },
-        },
+import AllSettingsTab from './screens/settings/AllSettings';
+import EditProfileScreen from './screens/settings/EditProfile';
+import SettingsInformationScreen from './screens/settings/StudyInformation';
 
-        JoyContainer: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    minHeight: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: theme.spacing(4, 2),
-                }),
-            },
-        },
-    },
-});
+import TeamInsightsTab from './screens/teams/Insights';
+
+import BoxesListTab from './screens/box/BoxesList';
+import ModulesListScreen from './screens/box/ModulesList';
+import ModuleContentScreen from './screens/box/ModuleContent';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(setIsEnrolled);
+    const location = useLocation();
 
     const [hydrating, setHydrating] = React.useState(true);
     const dispatch = useDispatch();
@@ -80,6 +60,10 @@ const AppFlowController = function () {
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
+        if (location.pathname === '/auth/new-password') {
+            return null;
+        }
+
         return <Redirect to="/auth" />;
     }
 
@@ -94,28 +78,6 @@ const AppFlowController = function () {
     return <Redirect to="/main" />;
 };
 
-const IonicThemeController = function () {
-    const { systemMode, mode } = useColorScheme();
-
-    React.useEffect(() => {
-        const toggleBodyClassName = function (suppliedMode: string | undefined) {
-            if (suppliedMode === 'dark') {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
-            }
-        };
-
-        if (mode !== 'system') {
-            return toggleBodyClassName(mode);
-        }
-
-        toggleBodyClassName(systemMode);
-    }, [systemMode, mode]);
-
-    return null;
-};
-
 const App = function () {
     return (
         <IonApp>
@@ -123,7 +85,7 @@ const App = function () {
                 <IonReactRouter>
                     <CssVarsProvider theme={theme} defaultMode="system">
                         <IconContext.Provider value={{ weight: 'light', size: 24 }}>
-                            <IonicThemeController />
+                            <ColorModeController />
                             <AppFlowController />
                             <IonRouterOutlet>
                                 <Route path="/auth" exact>
@@ -134,16 +96,24 @@ const App = function () {
                                     <RegisterScreen />
                                 </Route>
 
+                                <Route path="/auth/reset-password" exact>
+                                    <ResetPasswordScreen />
+                                </Route>
+
+                                <Route path="/auth/new-password" exact>
+                                    <NewPasswordScreen />
+                                </Route>
+
                                 <Route path="/onboarding" exact>
-                                    <InformationScreen />
+                                    <OnboardingStudyInformationScreen />
                                 </Route>
 
                                 <Route path="/onboarding/consent" exact>
-                                    <EnrollConsentScreen />
+                                    <OnboardingConsentScreen />
                                 </Route>
 
                                 <Route path="/onboarding/profile" exact>
-                                    <CompleteProfileScreen />
+                                    <NewProfileScreen />
                                 </Route>
 
                                 <Route path="/loading">
@@ -165,16 +135,20 @@ const App = function () {
                                                 <TeamInsightsTab />
                                             </Route>
 
-                                            <Route path="/main/box/:type" exact>
-                                                <ModulesList />
+                                            <Route path="/main/box" exact>
+                                                <BoxesListTab />
                                             </Route>
 
-                                            <Route path="/main/box/:type/:moduleId" exact>
-                                                <TasksList />
+                                            <Route path="/main/box/:type" exact>
+                                                <ModulesListScreen />
+                                            </Route>
+
+                                            <Route path="/main/box/:type/:moduleId">
+                                                <ModuleContentScreen />
                                             </Route>
 
                                             <Route path="/main/settings" exact>
-                                                <SettingsTab />
+                                                <AllSettingsTab />
                                             </Route>
 
                                             <Route path="/main/settings/about" exact>
@@ -189,15 +163,15 @@ const App = function () {
                                         <IonTabBar slot="bottom">
                                             <IonTabButton tab="team" href="/main/team">
                                                 <Users />
+                                                <IonLabel>Team</IonLabel>
                                             </IonTabButton>
-                                            <IonTabButton tab="eat" href="/main/box/eat">
-                                                <ForkKnife />
-                                            </IonTabButton>
-                                            <IonTabButton tab="move" href="/main/box/move">
-                                                <Barbell />
+                                            <IonTabButton tab="eat" href="/main/box">
+                                                <Cube />
+                                                <IonLabel>Boxes</IonLabel>
                                             </IonTabButton>
                                             <IonTabButton tab="settings" href="/main/settings">
                                                 <Gear />
+                                                <IonLabel>Settings</IonLabel>
                                             </IonTabButton>
                                         </IonTabBar>
                                     </IonTabs>
