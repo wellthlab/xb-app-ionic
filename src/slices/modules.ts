@@ -3,22 +3,10 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { boot, logOut } from './globalActions';
 import { selectSubscribedModules, selectUserId } from './account';
 import { selectTeamMembers } from './team';
-import { IModule, ITask, IPlaylist } from '../models/Box';
-
-interface IEnhancedTask extends ITask {
-    id: number;
-}
-
-interface IEnhancedPlaylist extends IPlaylist {
-    tasks: IEnhancedTask[];
-}
-
-interface IEnhancedModule extends IModule {
-    playlists: IEnhancedPlaylist[];
-}
+import { IModule, ITask } from '../models/Box';
 
 interface IModulesState {
-    items: Partial<Record<string, IEnhancedModule>>;
+    items: Partial<Record<string, IModule>>;
     byBox: Partial<Record<string, string[]>>;
 }
 
@@ -70,8 +58,8 @@ export const selectModuleSubcriberInitials = createSelector(
                 continue;
             }
 
-            for (const subscribedModuleId of member.modules) {
-                if (subscribedModuleId === id) {
+            for (const subs of member.modules) {
+                if (subs.id === id) {
                     const firstName = member.profile.firstName;
                     const lastName = member.profile.lastName;
 
@@ -94,7 +82,7 @@ export const selectTask = (
     moduleId: string,
     playlistId: number,
     taskId: number,
-): IEnhancedTask | undefined => selectPlaylistTasks(state, moduleId, playlistId)?.[taskId];
+): ITask | undefined => selectPlaylistTasks(state, moduleId, playlistId)?.[taskId];
 
 export default createSlice({
     name: 'modules',
@@ -106,14 +94,7 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 const byBox: IModulesState['byBox'] = {};
                 for (const module of action.payload.modules) {
-                    state.items[module.id] = module as IEnhancedModule;
-
-                    for (let i = 0; i < module.playlists.length; i++) {
-                        const playlist = module.playlists[i];
-                        for (let j = 0; j < playlist.tasks.length; j++) {
-                            state.items[module.id]!.playlists[i].tasks[j].id = j;
-                        }
-                    }
+                    state.items[module.id] = module;
 
                     let box = byBox[module.box];
                     if (!box) {

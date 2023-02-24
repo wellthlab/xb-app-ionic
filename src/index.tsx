@@ -16,7 +16,7 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-import './ionicTheme.css';
+import './app.css';
 
 setupIonicReact();
 defineCustomElements(window);

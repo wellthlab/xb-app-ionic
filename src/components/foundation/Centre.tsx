@@ -1,11 +1,7 @@
 import { Box, BoxProps } from '@mui/joy';
 import React from 'react';
 
-export interface ICentreProps extends BoxProps {
-    children: React.ReactNode;
-}
-
-const Centre = function ({ children, sx }: ICentreProps) {
+const Centre = function ({ children, sx }: BoxProps) {
     return (
         <Box
             sx={{

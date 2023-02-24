@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount } from '../models/Account';
+import Account, { ICredentials, IProfile, IAccount, IModuleSubscription } from '../models/Account';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -19,17 +19,16 @@ export const updateUserProfile = createAsyncThunk(
     },
 );
 
-export const subscribeToModule = createAsyncThunk<string | undefined, string, { state: ISelectorState }>(
+export const subscribeToModule = createAsyncThunk<IModuleSubscription | undefined, string, { state: ISelectorState }>(
     'account/modules/subscribed',
-    async (moduleId, { getState }) => {
+    (moduleId, { getState }) => {
         const modules = selectSubscribedModules(getState());
 
         if (modules.includes(moduleId)) {
             return;
         }
 
-        await Account.subscribeToModule(moduleId);
-        return moduleId;
+        return Account.subscribeToModule(moduleId);
     },
 );
 
@@ -52,7 +51,7 @@ export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
-export const selectSubscribedModules = (state: ISelectorState) => state.account.modules;
+export const selectSubscribedModules = (state: ISelectorState) => state.account.modules.map((subs) => subs.id);
 export const selectUserId = (state: ISelectorState) => state.account.id;
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>

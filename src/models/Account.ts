@@ -19,13 +19,18 @@ export interface IProfile {
 export interface IAccount {
     id: string;
     profile: IProfile;
-    modules: string[];
+    modules: IModuleSubscription[];
     deleted?: boolean;
+}
+
+export interface IModuleSubscription {
+    id: string;
+    subscribedAt: number;
 }
 
 export interface IAccountDocument extends Omit<IAccount, 'id' | 'modules'> {
     _id: ObjectId;
-    modules: ObjectId[];
+    modules: { id: ObjectId; subscribedAt: number }[];
 }
 
 class Account extends BaseModel {
@@ -125,7 +130,7 @@ class Account extends BaseModel {
         return {
             ...others,
             id: _id.toString(),
-            modules: modules.map((moduleId) => moduleId.toString()),
+            modules: modules.map(({ id, subscribedAt }) => ({ id: id.toString(), subscribedAt })),
         };
     }
 
@@ -163,15 +168,19 @@ class Account extends BaseModel {
         };
     }
 
-    static subscribeToModule(moduleId: string) {
+    static async subscribeToModule(moduleId: string) {
         const db = this.getDb();
 
-        return db.collection<IAccountDocument>('accounts').updateOne(
+        const subscribedAt = Date.now();
+
+        await db.collection<IAccountDocument>('accounts').updateOne(
             {
                 _id: this.oid(this.client.currentUser!.id),
             },
-            { $push: { modules: this.oid(moduleId) } },
+            { $push: { modules: { id: this.oid(moduleId), subscribedAt } } },
         );
+
+        return { id: moduleId, subscribedAt };
     }
 }
 
