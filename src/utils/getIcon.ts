@@ -1,5 +1,5 @@
 import React from 'react';
-import { ForkKnife, Barbell, NotePencil, Camera, Ear, Brain, Moon, Timer } from 'phosphor-react';
+import { ForkKnife, Barbell, NotePencil, Camera, Ear, Brain, Moon, Timer, Alarm } from 'phosphor-react';
 
 const iconComponentMap: Record<string, React.ComponentType> = {
     'fork-knife': ForkKnife,
@@ -10,6 +10,7 @@ const iconComponentMap: Record<string, React.ComponentType> = {
     brain: Brain,
     moon: Moon,
     timer: Timer,
+    alarm: Alarm,
 };
 
 const getIcon = function (type: string) {

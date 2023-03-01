@@ -48,7 +48,7 @@ const BoxContent = function () {
                             <Typography level="body2" sx={{ mb: 2 }}>
                                 Day {dayId + 1}
                             </Typography>
-                            <List>
+                            <List sx={{ mb: 4 }}>
                                 {day.tasks.map((task, taskId) => {
                                     const Icon = task.icon ? getIcon(task.icon) : undefined;
 

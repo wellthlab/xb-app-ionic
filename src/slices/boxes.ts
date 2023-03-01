@@ -24,19 +24,34 @@ export default createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(boot.fulfilled, (state, action) => {
+                state.items = {};
+                state.all = [];
+
                 for (const box of action.payload.boxes) {
                     const originalLength = box.days.length;
                     if (originalLength < box.duration) {
                         let day = 0;
 
                         for (let i = 0; i < box.duration - originalLength; i++) {
-                            box.days.push(box.days[day]);
+                            box.days.push({ ...box.days[day] });
                             day++;
 
-                            if (day == originalLength) {
+                            if (day === originalLength) {
                                 day = 0;
                             }
                         }
+                    }
+
+                    for (let i = 0; i < box.days.length; i++) {
+                        const isFirstDay = i === 0;
+                        const isLastDay = i === box.days.length - 1;
+
+                        box.days[i].tasks = box.days[i].tasks.filter(
+                            (task) =>
+                                !task.hideIf ||
+                                (task.hideIf === 'isFirstDay' && !isFirstDay) ||
+                                (task.hideIf === 'isLastDay' && !isLastDay),
+                        );
                     }
 
                     state.items[box.name] = box;
