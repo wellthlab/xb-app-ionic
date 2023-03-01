@@ -5,17 +5,11 @@ import Team from '../models/Team';
 import Box from '../models/Box';
 
 export const boot = createAsyncThunk('global/boot', async () => {
-    const [account, team, modules, boxes] = await Promise.all([
-        Account.getDetails(),
-        Team.getCurrentTeam(),
-        Box.getAllModules(),
-        Box.getBoxes(),
-    ]);
+    const [account, team, boxes] = await Promise.all([Account.getDetails(), Team.getCurrentTeam(), Box.getBoxes()]);
 
     return {
         account,
         team,
-        modules,
         boxes,
     };
 });

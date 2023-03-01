@@ -1,48 +1,51 @@
 import { BaseModel, ObjectId } from './utils';
 
 export interface IBox {
-    type: string;
+    name: string;
     icon: string;
+    desc: string;
+    duration: number;
+    days: IDay[];
 }
 
 export interface IBoxDocument extends IBox {
     _id: ObjectId;
 }
 
-export interface IModule {
-    id: string;
+export interface IDay {
     name: string;
-    tags: string[];
-    desc?: string;
-    box: string;
-    playlists: IPlaylist[];
-}
-
-export interface IPlaylist {
-    name: string;
-    duration: { magnitude: number; unit: string };
+    desc: string;
     tasks: ITask[];
 }
 
 export interface ITask {
     name: string;
-    desc?: string;
+    hideIf?: string;
     icon?: string;
-    video?: string;
-    inputs: (ITextInput | INumberInput | ISelectInput | IHeartrateInput | ICheckboxInput)[];
+    blocks: (
+        | ITextInput
+        | INumberInput
+        | ISelectInput
+        | IHeartrateInput
+        | ICheckbox
+        | IPara
+        | IGreenDetector
+        | ICountdownTimer
+    )[];
 }
 
 interface IGenericInput {
     optional?: boolean;
     label: string;
     help?: string;
+    rk?: string;
 }
 
 interface ITextInput extends IGenericInput {
     type: 'text';
 }
 
-interface ICheckboxInput extends IGenericInput {
+interface ICheckbox extends IGenericInput {
     type: 'checkbox';
 }
 
@@ -59,22 +62,27 @@ interface IHeartrateInput extends IGenericInput {
     type: 'heartrate';
 }
 
-export interface IModuleDocument extends Omit<IModule, 'id'> {
-    _id: ObjectId;
+interface IPara {
+    type: 'para';
+    content: string;
 }
 
-export interface IResponse {
-    id: string;
-    draft: boolean;
-    payload: Record<string, string | number | boolean>;
+interface IGreenDetector {
+    type: 'green-detector';
+    rk?: string;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id'> {
-    _id: ObjectId;
-    userId: ObjectId;
-    moduleId: ObjectId;
-    playlistId: number;
-    taskId: number;
+interface ICountdownTimer {
+    type: 'countdown';
+    fixedDuration?: number;
+    rk?: string;
+}
+
+interface IReponse {
+    box: string;
+    day: number;
+    task: number;
+    payload: Record<string, string | number>;
 }
 
 class Box extends BaseModel {
@@ -87,66 +95,6 @@ class Box extends BaseModel {
             const { _id, ...others } = item;
             return others;
         });
-    }
-
-    static async getAllModules(): Promise<IModule[]> {
-        const db = this.getDb();
-
-        const result = await db.collection<IModuleDocument>('modules').find();
-
-        return result.map((item) => {
-            const { _id, ...others } = item;
-            return {
-                id: _id.toString(),
-                ...others,
-            };
-        });
-    }
-
-    static async submitTaskResponse(
-        moduleId: string,
-        playlistId: number,
-        taskId: number,
-        payload: IResponse['payload'],
-        draft: boolean,
-    ): Promise<IResponse> {
-        const db = this.getDb();
-
-        const result = (await db
-            .collection<IResponseDocument>('responses')
-            .findOneAndUpdate(
-                { userId: this.oid(this.client.currentUser!.id), moduleId: this.oid(moduleId), taskId, playlistId },
-                { $set: { draft, payload } },
-                { upsert: true, returnNewDocument: true },
-            ))!;
-
-        return {
-            id: result._id.toString(),
-            payload: result.payload,
-            draft: result.draft,
-        };
-    }
-
-    static async getPlaylistResponses(moduleId: string, playlistId: number): Promise<(IResponse | undefined)[]> {
-        const db = this.getDb();
-
-        const result = await db.collection<IResponseDocument>('responses').find({
-            userId: this.oid(this.client.currentUser!.id),
-            moduleId: this.oid(moduleId),
-            playlistId,
-        });
-
-        const ret: (IResponse | undefined)[] = [];
-
-        for (const item of result) {
-            ret[item.taskId] = {
-                id: item._id.toString(),
-                payload: item.payload,
-                draft: item.draft,
-            };
-        }
-
-        return ret;
     }
 }
 

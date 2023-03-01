@@ -31,8 +31,7 @@ import SettingsInformationScreen from './screens/settings/StudyInformation';
 import TeamInsightsTab from './screens/teams/Insights';
 
 import BoxesListTab from './screens/box/BoxesList';
-import ModulesListScreen from './screens/box/ModulesList';
-import ModuleContentScreen from './screens/box/ModuleContent';
+import BoxContentScreen from './screens/box/BoxContent';
 
 import JournalTab from './screens/journal/Journal';
 
@@ -144,12 +143,8 @@ const App = function () {
                                                     <BoxesListTab />
                                                 </Route>
 
-                                                <Route path="/main/box/:type" exact>
-                                                    <ModulesListScreen />
-                                                </Route>
-
-                                                <Route path="/main/box/:type/:moduleId">
-                                                    <ModuleContentScreen />
+                                                <Route path="/main/box/:type">
+                                                    <BoxContentScreen />
                                                 </Route>
 
                                                 <Route path="/main/journal">

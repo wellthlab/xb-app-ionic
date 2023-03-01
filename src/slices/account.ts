@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, IModuleSubscription } from '../models/Account';
+import Account, { ICredentials, IProfile, IAccount, IBoxSubscription } from '../models/Account';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -19,16 +19,16 @@ export const updateUserProfile = createAsyncThunk(
     },
 );
 
-export const subscribeToModule = createAsyncThunk<IModuleSubscription | undefined, string, { state: ISelectorState }>(
-    'account/modules/subscribed',
-    (moduleId, { getState }) => {
-        const modules = selectSubscribedModules(getState());
+export const subscribeToBox = createAsyncThunk<IBoxSubscription | undefined, string, { state: ISelectorState }>(
+    'account/boxes/subscribed',
+    (box, { getState }) => {
+        const boxes = selectSubscribedBoxes(getState());
 
-        if (modules.includes(moduleId)) {
+        if (boxes.includes(box)) {
             return;
         }
 
-        return Account.subscribeToModule(moduleId);
+        return Account.subscribeToBox(box);
     },
 );
 
@@ -39,7 +39,7 @@ export const markAccountAsDeleted = createAsyncThunk('account/deleted', async ()
 interface IAccountState {
     id?: string;
     profile?: IProfile;
-    modules: IAccount['modules'];
+    boxes: IAccount['boxes'];
     deleted?: boolean;
 }
 
@@ -51,7 +51,7 @@ export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
-export const selectSubscribedModules = (state: ISelectorState) => state.account.modules.map((subs) => subs.id);
+export const selectSubscribedBoxes = (state: ISelectorState) => state.account.boxes.map((subs) => subs.box);
 export const selectUserId = (state: ISelectorState) => state.account.id;
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>
@@ -59,7 +59,7 @@ export const selectFullName = (state: ISelectorState) =>
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, modules: [] } as IAccountState,
+    initialState: { id: Account.persistedId, boxes: [] } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -79,9 +79,9 @@ export default createSlice({
             })
             .addCase(boot.fulfilled, (state, action) => {
                 if (action.payload.account) {
-                    const { modules, profile, deleted } = action.payload.account;
+                    const { boxes, profile, deleted } = action.payload.account;
                     state.profile = profile;
-                    state.modules = modules;
+                    state.boxes = boxes;
                     state.deleted = deleted;
                 }
             })
@@ -91,20 +91,20 @@ export default createSlice({
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false
 
-                state.modules = [];
+                state.boxes = [];
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
             })
             .addCase(logOut.fulfilled, (state) => {
-                state.modules = [];
+                state.boxes = [];
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
             })
-            .addCase(subscribeToModule.fulfilled, (state, action) => {
+            .addCase(subscribeToBox.fulfilled, (state, action) => {
                 if (action.payload) {
-                    state.modules.push(action.payload);
+                    state.boxes.push(action.payload);
                 }
             });
     },

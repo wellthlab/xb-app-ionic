@@ -1,0 +1,205 @@
+[
+    {
+        "name": "Eat",
+        "icon": "fork-knife",
+        "desc": "Be conscious about what you eat for a week, and see if it makes a difference",
+        "duration": 5,
+        "days": [
+            {
+                "name": "Green and Red",
+                "desc": "Each time you eat today have a green/red BEFORE anything else",
+                "tasks": [
+                    {
+                        "name": "Upload a picture of what you eat",
+                        "icon": "camera",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Please upload a picture of your meal today. We will then roughly estimate how much green and red you have eaten. If incorrect, you can correct the estimations"
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "label": "How do you feel today?",
+                                "options": ["Better", "Much better", "The same", "Worse", "Much worse"],
+                                "rk": "feeling"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Move",
+        "icon": "barbell",
+        "desc": "Try exercising in a certain way for a week, and see if it makes a difference",
+        "containsExercise": true,
+        "duration": 5,
+        "days": [
+            {
+                "name": "Walking and breathing",
+                "desc": "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes",
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "label": "How do you feel today?",
+                                "options": ["More energy", "Fatigue", "In between the above"],
+                                "rk": "feeling"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Cogitate",
+        "icon": "brain",
+        "desc": "Try to sit down and think about your thoughts",
+        "duration": 5,
+        "days": [
+            {
+                "name": "Sitting and thinking",
+                "desc": "Just sit in a particular posture for 4 to 9 mins - this is to get out of the default mode network and build non-verbal awareness. We'll look at a technique called \"letting go of thoughts\"",
+                "tasks": [
+                    {
+                        "name": "Time your sit",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "rk": "sit-duration"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "label": "Did you notice you were thinking about something?",
+                                "options": ["Yes", "No"],
+                                "rk": "has-thoughts"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many times were you thinking?",
+                                "rk": "no-of-thoughts"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Were you able to let go of your thoughts?",
+                                "options": ["Yes", "No"],
+                                "rk": "let-go-of-thoughts"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Engage",
+        "icon": "ear",
+        "desc": "Practice engagement techniques with someone each day, and see if it improves",
+        "duration": 5,
+        "days": [
+            {
+                "name": "Listening for 3 minutes",
+                "desc": "Find someone and just listen to them for three minutes. Then reflect on your engagement techniques used.",
+                "tasks": [
+                    {
+                        "name": "Time your listening period",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "fixedDuration": 180000
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "multiple": true,
+                                "label": "Which of the following techniques did you use?",
+                                "options": ["Eye contact", "Nodding", "Mirroring"],
+                                "rk": "engagement-techniques"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How did it feel not interrupting?"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Sleep",
+        "icon": "moon",
+        "desc": "Track your sleep and see if it makes any difference",
+        "duration": 5,
+        "days": [
+            {
+                "name": "Kill the alarm",
+                "desc": "\"Wake up when you wake up\" or \"kill the alarm\" - try to get a minimum of 7 hours of sleep",
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "hideIf": "isFirstDay",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time did you wake up today?",
+                                "rk": "wake-up-time"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "How do you feel?",
+                                "options": ["Tired", "Rested"],
+                                "rk": "feeling"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Plan your sleep",
+                        "icon": "alarm",
+                        "hideIf": "isLastDay",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time are you sleeping tonight?",
+                                "rk": "sleeping-time"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,28 +1,15 @@
 import React from 'react';
-import {
-    ForkKnife,
-    Barbell,
-    Flask,
-    GraduationCap,
-    Ruler,
-    NotePencil,
-    Camera,
-    Ear,
-    Brain,
-    MoonStars,
-} from 'phosphor-react';
+import { ForkKnife, Barbell, NotePencil, Camera, Ear, Brain, Moon, Timer } from 'phosphor-react';
 
 const iconComponentMap: Record<string, React.ComponentType> = {
-    EAT: ForkKnife,
-    MOVE: Barbell,
-    EXPERIMENT: Flask,
-    ADVICE: GraduationCap,
-    MEASURE: Ruler,
-    QUESTIONNAIRE: NotePencil,
-    CAMERA: Camera,
-    LISTEN: Ear,
-    THINK: Brain,
-    SLEEP: MoonStars,
+    'fork-knife': ForkKnife,
+    barbell: Barbell,
+    'note-pencil': NotePencil,
+    camera: Camera,
+    ear: Ear,
+    brain: Brain,
+    moon: Moon,
+    timer: Timer,
 };
 
 const getIcon = function (type: string) {

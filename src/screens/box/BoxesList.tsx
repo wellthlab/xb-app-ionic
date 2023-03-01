@@ -24,7 +24,7 @@ const BoxesList = function () {
                     const Icon = getIcon(box.icon);
 
                     return (
-                        <Grid xs={4} key={box.type}>
+                        <Grid xs={4} key={box.name}>
                             <Card
                                 sx={{
                                     alignItems: 'center',
@@ -39,9 +39,9 @@ const BoxesList = function () {
                                     textColor="inherit"
                                     underline="none"
                                     component={RouterLink}
-                                    to={`/main/box/${box.type}`}
+                                    to={`/main/box/${box.name}`}
                                 >
-                                    {box.type.toUpperCase()}
+                                    {box.name}
                                 </Link>
                             </Card>
                         </Grid>

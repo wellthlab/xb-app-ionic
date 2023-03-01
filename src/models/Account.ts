@@ -19,18 +19,18 @@ export interface IProfile {
 export interface IAccount {
     id: string;
     profile: IProfile;
-    modules: IModuleSubscription[];
+    boxes: IBoxSubscription[];
     deleted?: boolean;
 }
 
-export interface IModuleSubscription {
-    id: string;
+export interface IBoxSubscription {
+    box: string;
+    progress: boolean[][];
     subscribedAt: number;
 }
 
-export interface IAccountDocument extends Omit<IAccount, 'id' | 'modules'> {
+export interface IAccountDocument extends IAccount {
     _id: ObjectId;
-    modules: { id: ObjectId; subscribedAt: number }[];
 }
 
 class Account extends BaseModel {
@@ -125,12 +125,11 @@ class Account extends BaseModel {
     }
 
     static transformDocument(document: IAccountDocument): IAccount {
-        const { _id, modules, ...others } = document;
+        const { _id, ...others } = document;
 
         return {
             ...others,
             id: _id.toString(),
-            modules: modules.map(({ id, subscribedAt }) => ({ id: id.toString(), subscribedAt })),
         };
     }
 
@@ -157,7 +156,7 @@ class Account extends BaseModel {
             { _id: this.oid(id) },
             {
                 $set: { profile: { ...payload, email } },
-                $setOnInsert: { modules: [] },
+                $setOnInsert: { boxes: [] },
             },
             { upsert: true },
         );
@@ -168,7 +167,7 @@ class Account extends BaseModel {
         };
     }
 
-    static async subscribeToModule(moduleId: string) {
+    static async subscribeToBox(name: string): Promise<IBoxSubscription> {
         const db = this.getDb();
 
         const subscribedAt = Date.now();
@@ -177,10 +176,10 @@ class Account extends BaseModel {
             {
                 _id: this.oid(this.client.currentUser!.id),
             },
-            { $push: { modules: { id: this.oid(moduleId), subscribedAt } } },
+            { $push: { boxes: { box: name, progress: [], subscribedAt } } },
         );
 
-        return { id: moduleId, subscribedAt };
+        return { box: name, progress: [], subscribedAt };
     }
 }
 
