@@ -1,4 +1,5 @@
 import { Credentials } from 'realm-web';
+import Box from './Box';
 
 import { BaseModel, ObjectId } from './utils';
 
@@ -124,7 +125,7 @@ class Account extends BaseModel {
         return this.client.emailPasswordAuth.resetPassword({ password, token, tokenId });
     }
 
-    static transformDocument(document: IAccountDocument): IAccount {
+    static transformDocument(document: IAccountDocument) {
         const { _id, ...others } = document;
 
         return {
@@ -133,7 +134,7 @@ class Account extends BaseModel {
         };
     }
 
-    static async getDetails(): Promise<IAccount | null> {
+    static async getDetails() {
         const db = this.getDb();
         const result = await db.collection<IAccountDocument>('accounts').findOne({
             _id: this.oid(this.client.currentUser!.id),
@@ -146,7 +147,7 @@ class Account extends BaseModel {
         return this.transformDocument(result);
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>): Promise<IProfile> {
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>) {
         const db = this.getDb();
 
         const email = this.client.currentUser!.profile.email!;
@@ -167,7 +168,7 @@ class Account extends BaseModel {
         };
     }
 
-    static async subscribeToBox(name: string): Promise<IBoxSubscription> {
+    static async subscribeToBox(name: string) {
         const db = this.getDb();
 
         const subscribedAt = Date.now();
@@ -180,6 +181,27 @@ class Account extends BaseModel {
         );
 
         return { box: name, progress: [], subscribedAt };
+    }
+
+    static async updateProgress(box: string, dayId: number, taskId: number) {
+        const db = this.getDb();
+
+        await db.collection<IAccountDocument>('accounts').updateOne(
+            {
+                _id: this.oid(this.client.currentUser!.id),
+            },
+            {
+                $push: {
+                    [`boxes.$[elem].progress.${dayId}`]: {
+                        $each: [true],
+                        $position: taskId,
+                    },
+                },
+            },
+            {
+                arrayFilters: [{ 'elem.box': box }],
+            },
+        );
     }
 }
 

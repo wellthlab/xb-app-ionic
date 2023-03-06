@@ -17,7 +17,7 @@ export interface ITeamDocument extends Omit<ITeam, 'id' | 'members'> {
 }
 
 class Team extends BaseModel {
-    static async getCurrentTeam(): Promise<ITeam | null> {
+    static async getCurrentTeam() {
         const db = this.getDb();
 
         const result = await db
@@ -39,7 +39,7 @@ class Team extends BaseModel {
         };
     }
 
-    static async create(payload: Pick<ITeam, 'desc' | 'name'>): Promise<ITeam> {
+    static async create(payload: Pick<ITeam, 'desc' | 'name'>) {
         const db = this.getDb();
 
         const invite = nanoid(6);
@@ -63,7 +63,7 @@ class Team extends BaseModel {
         };
     }
 
-    static async join(invite: string): Promise<ITeam> {
+    static async join(invite: string) {
         const db = this.getDb();
 
         const result = await db
@@ -95,7 +95,7 @@ class Team extends BaseModel {
         return db.collection<ITeamDocument>('teams').updateOne({ members: id }, { $pull: { members: id } });
     }
 
-    private static async _getMembers(ids: ObjectId[]): Promise<IAccount[]> {
+    private static async _getMembers(ids: ObjectId[]) {
         const db = this.getDb();
 
         const result = await db.collection<IAccountDocument>('accounts').find({

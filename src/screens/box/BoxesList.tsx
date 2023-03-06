@@ -5,17 +5,23 @@ import { Typography, Card, Grid, Box, Link } from '@mui/joy';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import { useSelector } from '../../slices/store';
+import { useDispatch, useSelector } from '../../slices/store';
 import { selectAllBoxes } from '../../slices/boxes';
 import getIcon from '../../utils/getIcon';
+import { subscribeToBox } from '../../slices/account';
 
 const BoxesList = function () {
     const boxes = useSelector(selectAllBoxes);
 
+    const dispatch = useDispatch();
+    const createHandleClickBox = function (name: string) {
+        return () => dispatch(subscribeToBox(name));
+    };
+
     return (
         <Page>
             <PageTitle sx={{ mb: 2 }}>Boxes</PageTitle>
-            <Typography level="body2" sx={{ mb: 4 }}>
+            <Typography level="body1" sx={{ mb: 4 }}>
                 Welcome to Spring 2023 XB demo! Please choose a box below to get started.
             </Typography>
 
@@ -39,6 +45,7 @@ const BoxesList = function () {
                                     textColor="inherit"
                                     underline="none"
                                     component={RouterLink}
+                                    onClick={createHandleClickBox(box.name)}
                                     to={`/main/box/${box.name}`}
                                 >
                                     {box.name}

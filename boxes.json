@@ -84,7 +84,7 @@
                         "blocks": [
                             {
                                 "type": "countdown",
-                                "rk": "sit-duration"
+                                "duration": 240
                             }
                         ]
                     },
@@ -132,7 +132,8 @@
                         "blocks": [
                             {
                                 "type": "countdown",
-                                "fixedDuration": 180000
+                                "duration": 180,
+                                "fixed": true
                             }
                         ]
                     },
@@ -149,7 +150,8 @@
                             },
                             {
                                 "type": "text-input",
-                                "label": "How did it feel not interrupting?"
+                                "label": "How did it feel not interrupting?",
+                                "rk": "feeling"
                             }
                         ]
                     }

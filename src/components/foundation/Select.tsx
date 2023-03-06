@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, FormHelperText, FormLabel } from '@mui/joy';
+import { SxProps } from '@mui/joy/styles/types';
 import FormControl from '@mui/joy/FormControl';
 import { CaretDown } from 'phosphor-react';
 
@@ -8,17 +9,30 @@ export interface ISelectProps {
     helperText?: string;
     error?: boolean;
     options: readonly string[];
-    value: string;
+    value?: string;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     onFocus?: () => void;
     onBlur?: () => void;
+    required?: boolean;
+    sx?: SxProps;
 }
 
-const Select = function ({ label, helperText, error, options, value, onChange, onFocus, onBlur }: ISelectProps) {
+const Select = function ({
+    label,
+    helperText,
+    error,
+    options,
+    value,
+    onChange,
+    onFocus,
+    onBlur,
+    sx,
+    required,
+}: ISelectProps) {
     const color = error ? 'danger' : 'neutral';
 
     return (
-        <FormControl error={error}>
+        <FormControl error={error} required={required}>
             {label && <FormLabel>{label}</FormLabel>}
 
             <Box
@@ -38,6 +52,8 @@ const Select = function ({ label, helperText, error, options, value, onChange, o
                         borderColor: 'focusVisible',
                         borderWidth: (theme) => theme.vars.focus.thickness,
                     },
+
+                    ...sx,
                 }}
             >
                 <Box

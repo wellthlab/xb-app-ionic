@@ -26,23 +26,24 @@ export interface ITask {
         | ITextInput
         | INumberInput
         | ISelectInput
-        | IHeartrateInput
+        | IHeartRateInput
         | ICheckbox
+        | ITimeInput
         | IPara
         | IGreenDetector
         | ICountdownTimer
     )[];
 }
 
-interface IGenericInput {
+export interface IGenericInput {
     optional?: boolean;
     label: string;
     help?: string;
-    rk?: string;
+    rk: string;
 }
 
 interface ITextInput extends IGenericInput {
-    type: 'text';
+    type: 'text-input';
 }
 
 interface ICheckbox extends IGenericInput {
@@ -50,16 +51,24 @@ interface ICheckbox extends IGenericInput {
 }
 
 interface INumberInput extends IGenericInput {
-    type: 'number';
+    type: 'number-input';
 }
 
 interface ISelectInput extends IGenericInput {
-    type: 'select';
+    type: 'select-input';
     options: string[];
 }
 
-interface IHeartrateInput extends IGenericInput {
-    type: 'heartrate';
+interface IHeartRateInput extends IGenericInput {
+    type: 'heart-rate-input';
+}
+
+interface ITimeInput extends IGenericInput {
+    type: 'time-input';
+}
+
+interface IGreenDetector extends Omit<IGenericInput, 'label' | 'help'> {
+    type: 'green-detector';
 }
 
 interface IPara {
@@ -67,26 +76,29 @@ interface IPara {
     content: string;
 }
 
-interface IGreenDetector {
-    type: 'green-detector';
-    rk?: string;
-}
-
 interface ICountdownTimer {
     type: 'countdown';
-    fixedDuration?: number;
-    rk?: string;
+    duration: number;
+    fixed?: boolean;
 }
 
-interface IReponse {
+export interface IResponse {
+    id: string;
+    userId: string;
     box: string;
-    day: number;
-    task: number;
+    dayId: number;
+    taskId: number;
     payload: Record<string, string | number>;
+    createdAt: number;
+}
+
+interface IResponseDocument extends Omit<IResponse, 'userId' | 'id'> {
+    _id: ObjectId;
+    userId: ObjectId;
 }
 
 class Box extends BaseModel {
-    static async getBoxes(): Promise<IBox[]> {
+    static async getBoxes() {
         const db = this.getDb();
 
         const result = await db.collection<IBoxDocument>('boxes').find();
@@ -94,6 +106,43 @@ class Box extends BaseModel {
         return result.map((item) => {
             const { _id, ...others } = item;
             return others;
+        });
+    }
+
+    static saveResponse(response: Omit<IResponse, 'userId' | 'createdAt' | 'id'>) {
+        const db = this.getDb();
+
+        return db
+            .collection<IResponseDocument>('responses')
+            .insertOne({ ...response, userId: this.oid(this.client.currentUser!.id), createdAt: Date.now() });
+    }
+
+    static async getResponsesForDate(date: Date) {
+        const startDate = new Date(date);
+        startDate.setUTCHours(0, 0, 0, 0);
+        const startTs = startDate.getTime();
+
+        const endDate = new Date(date);
+        endDate.setUTCHours(23, 59, 59, 9999);
+        const endTs = endDate.getTime();
+
+        const db = this.getDb();
+
+        const result = await db
+            .collection<IResponseDocument>('responses')
+            .find(
+                { userId: this.oid(this.client.currentUser!.id), createdAt: { $gte: startTs, $lte: endTs } },
+                { sort: { createdAt: -1 } },
+            );
+
+        return result.map((result) => {
+            const { _id, ...others } = result;
+
+            return {
+                id: _id.toString(),
+                ...others,
+                userId: others.userId.toString(),
+            };
         });
     }
 }

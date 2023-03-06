@@ -1,8 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
 import { IBox } from '../models/Box';
+import { selectSubscribedBoxes } from './account';
 
 interface ISelectorState {
     boxes: IBoxesState;
@@ -14,7 +15,24 @@ interface IBoxesState {
 }
 
 export const selectAllBoxes = (state: ISelectorState) => state.boxes.all.map((name) => selectBoxByName(state, name));
+export const selectAllBoxesByName = (state: ISelectorState) => state.boxes.items;
 export const selectBoxByName = (state: ISelectorState, name: string) => state.boxes.items[name];
+export const selectTask = (state: ISelectorState, name: string, dayId: number, taskId: number) =>
+    state.boxes.items[name].days[dayId].tasks[taskId];
+
+export const selectCurrentDay = createSelector(
+    selectSubscribedBoxes,
+    (_: ISelectorState, name: string) => name,
+    (subs, name) => {
+        const subscription = subs.find((sub) => sub.box === name);
+        if (!subscription) {
+            return 0;
+        }
+
+        const oneDay = 24 * 60 * 60 * 1000;
+        return Math.round(Math.abs((Date.now() - subscription.subscribedAt) / oneDay));
+    },
+);
 
 export default createSlice({
     name: 'boxes',

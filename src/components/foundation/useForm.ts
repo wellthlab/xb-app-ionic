@@ -4,7 +4,9 @@ import * as Yup from 'yup';
 interface IBaseInputProps {
     helperText?: string;
     error: boolean;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+    onChange: (
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | string | number,
+    ) => void;
 }
 
 type GetInputProps<T> = <TKey extends keyof T>(
@@ -24,11 +26,9 @@ type Errors<T> = {
 interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
     form: {
         values: T;
-        dirty: boolean;
         errors: Errors<T>;
         hasError: () => boolean;
         resetErrors: () => void;
-        resetDirty: () => void;
         resetValues: () => void;
         resetForm: () => void;
     };
@@ -51,7 +51,6 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
     schema: TS,
 ): IUseFormReturns<T, TS> {
     const [values, setValues] = React.useState(initial);
-    const [dirty, setDirty] = React.useState(false);
     const [errors, setErrors] = React.useState<Errors<T>>({});
 
     const getBaseInputProps = function <TKey extends keyof T>(name: TKey): IBaseInputProps {
@@ -60,14 +59,16 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
             error: !!errors[name],
 
             onChange: (e) => {
-                if (!dirty) {
-                    setDirty(true);
-                }
-
-                setValues({
-                    ...values,
-                    [name]: e.target.type === 'checkbox' ? (e.target as HTMLInputElement).checked : e.target.value,
-                });
+                // Use callback here because sometimes multiple onChange will be called
+                setValues((prevValues) => ({
+                    ...prevValues,
+                    [name]:
+                        typeof e === 'string' || typeof e === 'number'
+                            ? e
+                            : e.target.type === 'checkbox'
+                            ? (e.target as HTMLInputElement).checked
+                            : e.target.value,
+                }));
             },
         };
     };
@@ -76,18 +77,18 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
         setErrors({});
     };
 
-    const resetDirty = function () {
-        setDirty(false);
-    };
-
     const resetValues = function () {
         setValues(initial);
+    };
+
+    const resetForm = function () {
+        resetErrors();
+        resetValues();
     };
 
     return {
         form: {
             values,
-            dirty,
             errors,
 
             hasError: () => {
@@ -95,13 +96,8 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
             },
 
             resetErrors,
-            resetDirty,
             resetValues,
-            resetForm: () => {
-                resetErrors();
-                resetDirty();
-                resetValues();
-            },
+            resetForm,
         },
 
         getInputProps: (name) => {
@@ -159,7 +155,14 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
                     await handleSubmit(finalValues);
                 } catch (error) {
                     console.log(error);
-                    setErrors({ $root: 'Sorry, cannot submit this form at the moment' });
+                    setErrors({
+                        $root:
+                            typeof error === 'string'
+                                ? error
+                                : (error as any).message
+                                ? (error as any).message
+                                : 'Sorry, cannot submit this form at the moment',
+                    });
                 }
             };
         },
