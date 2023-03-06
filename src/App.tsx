@@ -1,53 +1,44 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
-import { CssVarsProvider, CircularProgress, extendTheme, useColorScheme } from '@mui/joy';
-import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
+import { Route, Redirect, useLocation } from 'react-router-dom';
+import { CircularProgress } from '@mui/joy';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, ForkKnife, Barbell } from 'phosphor-react';
+import { IconContext, Users, Gear, Cube, CalendarBlank } from 'phosphor-react';
 
-import store, { useSelector, useDispatch } from './common/store';
-import { boot } from './common/slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './common/slices/account';
-import { Page, Centre } from './common/ui/layout';
-import { LoginForm, RegisterForm } from './auth';
-import { StudyInformation, EnrollConsentForm, CompleteProfileForm } from './enroll';
-import { TeamInsights, TeamGuard } from './team';
-import { SettingsList, EditProfileForm, StudyInformation as SettingsStudyInformation } from './settings';
-import { ModulesList, TasksList } from './box';
+import { ThemeProvider, ColorModeController } from './theme';
+import store, { useSelector, useDispatch } from './slices/store';
+import { boot } from './slices/globalActions';
+import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
+import Page from './components/foundation/Page';
+import Centre from './components/foundation/Centre';
 
-const theme = extendTheme({
-    components: {
-        JoyList: {
-            defaultProps: { variant: 'soft' },
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    borderRadius: theme.vars.radius.sm,
-                    flex: 0,
-                }),
-            },
-        },
+import LoginScreen from './screens/auth/Login';
+import RegisterScreen from './screens/auth/Register';
+import ResetPasswordScreen from './screens/auth/ResetPassword';
+import NewPasswordScreen from './screens/auth/NewPassword';
 
-        JoyCard: {
-            defaultProps: { variant: 'outlined' },
-        },
+import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
+import OnboardingConsentScreen from './screens/onboarding/Consent';
+import NewProfileScreen from './screens/onboarding/NewProfile';
 
-        JoyContainer: {
-            styleOverrides: {
-                root: ({ theme }) => ({
-                    minHeight: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: theme.spacing(4, 2),
-                }),
-            },
-        },
-    },
-});
+import AllSettingsTab from './screens/settings/AllSettings';
+import EditProfileScreen from './screens/settings/EditProfile';
+import SettingsInformationScreen from './screens/settings/StudyInformation';
+
+import TeamInsightsTab from './screens/teams/Insights';
+
+import BoxesListTab from './screens/box/BoxesList';
+import BoxContentScreen from './screens/box/BoxContent';
+
+import JournalTab from './screens/journal/Journal';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(setIsEnrolled);
+    const location = useLocation();
 
     const [hydrating, setHydrating] = React.useState(true);
     const dispatch = useDispatch();
@@ -72,6 +63,10 @@ const AppFlowController = function () {
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
+        if (location.pathname === '/auth/new-password') {
+            return null;
+        }
+
         return <Redirect to="/auth" />;
     }
 
@@ -80,32 +75,10 @@ const AppFlowController = function () {
     }
 
     if (!isEnrolled) {
-        return <Redirect to="/enroll" />;
+        return <Redirect to="/onboarding" />;
     }
 
     return <Redirect to="/main" />;
-};
-
-const IonicThemeController = function () {
-    const { systemMode, mode } = useColorScheme();
-
-    React.useEffect(() => {
-        const toggleBodyClassName = function (suppliedMode: string | undefined) {
-            if (suppliedMode === 'dark') {
-                document.body.classList.add('dark');
-            } else {
-                document.body.classList.remove('dark');
-            }
-        };
-
-        if (mode !== 'system') {
-            return toggleBodyClassName(mode);
-        }
-
-        toggleBodyClassName(systemMode);
-    }, [systemMode, mode]);
-
-    return null;
 };
 
 const App = function () {
@@ -113,96 +86,108 @@ const App = function () {
         <IonApp>
             <Provider store={store}>
                 <IonReactRouter>
-                    <CssVarsProvider theme={theme} defaultMode="system">
-                        <IconContext.Provider value={{ weight: 'light', size: 24 }}>
-                            <IonicThemeController />
-                            <AppFlowController />
-                            <IonRouterOutlet>
-                                <Route path="/auth" exact>
-                                    <LoginForm />
-                                </Route>
+                    <ThemeProvider>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <IconContext.Provider value={{ weight: 'light', size: 24 }}>
+                                <ColorModeController />
+                                <AppFlowController />
+                                <IonRouterOutlet>
+                                    <Route path="/auth" exact>
+                                        <LoginScreen />
+                                    </Route>
 
-                                <Route path="/auth/register" exact>
-                                    <RegisterForm />
-                                </Route>
+                                    <Route path="/auth/register" exact>
+                                        <RegisterScreen />
+                                    </Route>
 
-                                <Route path="/enroll" exact>
-                                    <StudyInformation />
-                                </Route>
+                                    <Route path="/auth/reset-password" exact>
+                                        <ResetPasswordScreen />
+                                    </Route>
 
-                                <Route path="/enroll/consent" exact>
-                                    <EnrollConsentForm />
-                                </Route>
+                                    <Route path="/auth/new-password" exact>
+                                        <NewPasswordScreen />
+                                    </Route>
 
-                                <Route path="/enroll/profile" exact>
-                                    <CompleteProfileForm />
-                                </Route>
+                                    <Route path="/onboarding" exact>
+                                        <OnboardingStudyInformationScreen />
+                                    </Route>
 
-                                <Route path="/loading">
-                                    <Page>
-                                        <Centre>
-                                            <CircularProgress />
-                                        </Centre>
-                                    </Page>
-                                </Route>
+                                    <Route path="/onboarding/consent" exact>
+                                        <OnboardingConsentScreen />
+                                    </Route>
 
-                                <Route path="/main">
-                                    <IonTabs>
-                                        <IonRouterOutlet>
-                                            <Route path="/main" exact>
-                                                <Redirect to="/main/team" />
-                                            </Route>
+                                    <Route path="/onboarding/profile" exact>
+                                        <NewProfileScreen />
+                                    </Route>
 
-                                            <Route path="/main/team" exact>
-                                                <TeamGuard>
-                                                    <TeamInsights />
-                                                </TeamGuard>
-                                            </Route>
+                                    <Route path="/loading">
+                                        <Page>
+                                            <Centre>
+                                                <CircularProgress />
+                                            </Centre>
+                                        </Page>
+                                    </Route>
 
-                                            <Route path="/main/box/:type" exact>
-                                                <TeamGuard>
-                                                    <ModulesList />
-                                                </TeamGuard>
-                                            </Route>
+                                    <Route path="/main">
+                                        <IonTabs>
+                                            <IonRouterOutlet>
+                                                <Route path="/main" exact>
+                                                    <Redirect to="/main/team" />
+                                                </Route>
 
-                                            <Route path="/main/box/:type/:moduleId" exact>
-                                                <TeamGuard>
-                                                    <TasksList />
-                                                </TeamGuard>
-                                            </Route>
+                                                <Route path="/main/team" exact>
+                                                    <TeamInsightsTab />
+                                                </Route>
 
-                                            <Route path="/main/settings" exact>
-                                                <SettingsList />
-                                            </Route>
+                                                <Route path="/main/box" exact>
+                                                    <BoxesListTab />
+                                                </Route>
 
-                                            <Route path="/main/settings/about" exact>
-                                                <SettingsStudyInformation />
-                                            </Route>
+                                                <Route path="/main/box/:type">
+                                                    <BoxContentScreen />
+                                                </Route>
 
-                                            <Route path="/main/settings/profile" exact>
-                                                <EditProfileForm />
-                                            </Route>
-                                        </IonRouterOutlet>
+                                                <Route path="/main/journal">
+                                                    <JournalTab />
+                                                </Route>
 
-                                        <IonTabBar slot="bottom">
-                                            <IonTabButton tab="team" href="/main/team">
-                                                <Users />
-                                            </IonTabButton>
-                                            <IonTabButton tab="eat" href="/main/box/eat">
-                                                <ForkKnife />
-                                            </IonTabButton>
-                                            <IonTabButton tab="move" href="/main/box/move">
-                                                <Barbell />
-                                            </IonTabButton>
-                                            <IonTabButton tab="settings" href="/main/settings">
-                                                <Gear />
-                                            </IonTabButton>
-                                        </IonTabBar>
-                                    </IonTabs>
-                                </Route>
-                            </IonRouterOutlet>
-                        </IconContext.Provider>
-                    </CssVarsProvider>
+                                                <Route path="/main/settings" exact>
+                                                    <AllSettingsTab />
+                                                </Route>
+
+                                                <Route path="/main/settings/about" exact>
+                                                    <SettingsInformationScreen />
+                                                </Route>
+
+                                                <Route path="/main/settings/profile" exact>
+                                                    <EditProfileScreen />
+                                                </Route>
+                                            </IonRouterOutlet>
+
+                                            <IonTabBar slot="bottom">
+                                                <IonTabButton tab="team" href="/main/team">
+                                                    <Users />
+                                                    <IonLabel>Team</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="box" href="/main/box">
+                                                    <Cube />
+                                                    <IonLabel>Boxes</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="journal" href="/main/journal">
+                                                    <CalendarBlank />
+                                                    <IonLabel>Journal</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="settings" href="/main/settings">
+                                                    <Gear />
+                                                    <IonLabel>Settings</IonLabel>
+                                                </IonTabButton>
+                                            </IonTabBar>
+                                        </IonTabs>
+                                    </Route>
+                                </IonRouterOutlet>
+                            </IconContext.Provider>
+                        </LocalizationProvider>
+                    </ThemeProvider>
                 </IonReactRouter>
             </Provider>
         </IonApp>

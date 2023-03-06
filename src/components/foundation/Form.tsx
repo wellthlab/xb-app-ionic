@@ -1,0 +1,60 @@
+import React from 'react';
+import { Button, Alert, Stack, ButtonProps, AlertProps } from '@mui/joy';
+
+export interface IFormProps {
+    children: React.ReactNode;
+    onSubmit: () => void;
+    footer?: React.ReactNode;
+    submitLabel?: string;
+    submitDisabled?: boolean;
+    submitButtonColor?: ButtonProps['color'];
+    message?: string;
+    messageColor?: AlertProps['color'];
+}
+
+const Form = function ({
+    onSubmit,
+    children,
+    footer,
+    submitLabel,
+    submitButtonColor,
+    message,
+    messageColor = 'danger',
+}: IFormProps) {
+    const [pending, setPending] = React.useState(false);
+
+    const handleSubmit = async function () {
+        setPending(true);
+        await onSubmit();
+        setPending(false);
+    };
+
+    return (
+        <React.Fragment>
+            {message && (
+                <Alert color={messageColor} sx={{ mb: 2 }}>
+                    {message}
+                </Alert>
+            )}
+            <Stack component="form" spacing={2}>
+                {children}
+            </Stack>
+
+            <Button
+                disabled={pending}
+                loading={pending}
+                loadingPosition="start"
+                onClick={handleSubmit}
+                color={submitButtonColor}
+                sx={{ mt: 3, mb: 2 }}
+                fullWidth
+            >
+                {submitLabel || 'Submit'}
+            </Button>
+
+            {footer}
+        </React.Fragment>
+    );
+};
+
+export default Form;

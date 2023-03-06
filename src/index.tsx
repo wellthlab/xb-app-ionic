@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { setupIonicReact } from '@ionic/react';
+
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
 // Core CSS required for Ionic components to work properly
 
@@ -15,7 +16,7 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-import './theme.css';
+import './app.css';
 
 setupIonicReact();
 defineCustomElements(window);
