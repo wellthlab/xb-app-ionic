@@ -80,7 +80,7 @@ const Journal = function () {
                                     <TimelineDot>
                                         <Icon />
                                     </TimelineDot>
-                                    {responseId != responses.length - 1 && <TimelineConnector />}
+                                    {responseId !== responses.length - 1 && <TimelineConnector />}
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="h4" mb={1}>
@@ -101,7 +101,7 @@ const Journal = function () {
                                         )}
                                         {Object.keys(response.payload).map((key) => {
                                             if (key === detectorGreenKey || key === detectorRedKey) {
-                                                return;
+                                                return null;
                                             }
 
                                             const blockDefinition = task.blocks.find(
@@ -109,7 +109,7 @@ const Journal = function () {
                                             );
 
                                             if (!blockDefinition) {
-                                                return;
+                                                return null;
                                             }
 
                                             return (

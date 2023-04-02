@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid';
+import { customAlphabet } from 'nanoid';
 
 import { BaseModel, ObjectId } from './utils';
 import Account, { IAccount, IAccountDocument } from './Account';
@@ -15,6 +15,8 @@ export interface ITeamDocument extends Omit<ITeam, 'id' | 'members'> {
     _id: ObjectId;
     members: ObjectId[];
 }
+
+const generateInvite = customAlphabet('ABCDEFGHJKLMNPQRSTUVWXYZ', 6);
 
 class Team extends BaseModel {
     static async getCurrentTeam() {
@@ -42,7 +44,7 @@ class Team extends BaseModel {
     static async create(payload: Pick<ITeam, 'desc' | 'name'>) {
         const db = this.getDb();
 
-        const invite = nanoid(6);
+        const invite = generateInvite();
         const membersArray = [this.oid(this.client.currentUser!.id)];
 
         const result = await db.collection<ITeamDocument>('teams').insertOne({

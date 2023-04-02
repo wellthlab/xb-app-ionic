@@ -80,7 +80,7 @@ const BoxContent = function () {
                                 >
                                     {dayCompleted ? <Check /> : unlocked ? <LockOpen /> : <Lock />}
                                 </TimelineDot>
-                                {dayId != box.days.length - 1 && <TimelineConnector />}
+                                {dayId !== box.days.length - 1 && <TimelineConnector />}
                             </TimelineSeparator>
                             <TimelineContent>
                                 <SectionTitle sx={{ mb: 1 }}>{day.name}</SectionTitle>

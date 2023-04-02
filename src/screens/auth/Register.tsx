@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Link, TextField } from '@mui/joy';
 
 import { emailSchema, newPasswordSchema } from './schemas';

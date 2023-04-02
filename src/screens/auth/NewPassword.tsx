@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Redirect, useLocation } from 'react-router-dom';
-import { Alert, Button, TextField } from '@mui/joy';
+import { Redirect, useLocation } from 'react-router-dom';
+import { Alert, TextField } from '@mui/joy';
 
 import { newPasswordSchema } from './schemas';
 import AuthScreenLayout from './AuthScreenLayout';

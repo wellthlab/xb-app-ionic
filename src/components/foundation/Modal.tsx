@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonContent, IonModal } from '@ionic/react';
-import { Alert, Container } from '@mui/joy';
+import { Container } from '@mui/joy';
 
 import Header from './Header';
 import HeaderButton from './HeaderButton';

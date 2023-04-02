@@ -1,5 +1,4 @@
 import { Credentials } from 'realm-web';
-import Box from './Box';
 
 import { BaseModel, ObjectId } from './utils';
 
