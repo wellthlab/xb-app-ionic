@@ -37,11 +37,6 @@ const Login = function () {
 
     return (
         <AuthScreenLayout title="Login to continue">
-            <Alert color="warning" sx={{ mb: 2 }}>
-                We recently made changes to our backend systems. As a result, the app would fail to recognise users
-                registered before October 2022. We kindly request such users to reset their passwords by tapping
-                "Forgotten password?" below
-            </Alert>
             <Form
                 onSubmit={handleSubmit}
                 submitLabel="Login"
