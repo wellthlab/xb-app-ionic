@@ -11,6 +11,7 @@ import TimeInput from './TimeInput';
 import Modal, { IModalProps } from '../../../components/foundation/Modal';
 import Select from '../../../components/foundation/Select';
 import Checkbox from '../../../components/foundation/Checkbox';
+import Slider from '../../../components/foundation/Slider';
 import useForm from '../../../components/foundation/useForm';
 
 import Box, { IGenericInput, ITask } from '../../../models/Box';
@@ -23,7 +24,7 @@ interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
 }
 
 const getInitialValues = function (blocks: ITask['blocks']) {
-    const values: Record<string, string | boolean> = {};
+    const values: Record<string, string | boolean | number> = {};
 
     for (const block of blocks) {
         if (!(block as any).rk) {
@@ -38,6 +39,11 @@ const getInitialValues = function (blocks: ITask['blocks']) {
         if (block.type === 'green-detector') {
             values[block.rk + '-$$g'] = '';
             values[block.rk + '-$$r'] = '';
+            continue;
+        }
+
+        if (block.type === 'slider-input') {
+            values[block.rk] = 0;
             continue;
         }
 
@@ -71,7 +77,7 @@ const getSchema = function (blocks: ITask['blocks']) {
 
         let subSchema: Yup.AnySchema = Yup.string();
 
-        if (block.type === 'number-input' || block.type === 'heart-rate-input') {
+        if (block.type === 'number-input' || block.type === 'heart-rate-input' || block.type === 'slider-input') {
             subSchema = numberSchema;
         }
 
@@ -154,6 +160,20 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
 
                     if (block.type === 'select-input') {
                         return <Select options={block.options} {...commonProps} />;
+                    }
+
+                    if (block.type === 'slider-input') {
+                        return (
+                            <Slider
+                                min={block.range[0]}
+                                max={block.range[1]}
+                                size="sm"
+                                valueLabelDisplay="auto"
+                                marks
+                                valueLabelFormat={(x) => block.labels[x]}
+                                {...commonProps}
+                            />
+                        );
                     }
 
                     if (block.type === 'heart-rate-input') {

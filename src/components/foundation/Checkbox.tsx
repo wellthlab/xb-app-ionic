@@ -1,6 +1,5 @@
 import React from 'react';
-import { Checkbox as JoyCheckbox, CheckboxProps, FormHelperText } from '@mui/joy';
-import FormControl from '@mui/joy/FormControl';
+import { Checkbox as JoyCheckbox, CheckboxProps, FormHelperText, FormControl } from '@mui/joy';
 
 export interface ICheckboxProps extends CheckboxProps {
     error?: boolean;

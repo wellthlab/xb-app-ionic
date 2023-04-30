@@ -1,7 +1,6 @@
 import React from 'react';
-import { Box, FormHelperText, FormLabel } from '@mui/joy';
+import { Box, FormHelperText, FormLabel, FormControl } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
-import FormControl from '@mui/joy/FormControl';
 import { CaretDown } from 'phosphor-react';
 
 export interface ISelectProps {

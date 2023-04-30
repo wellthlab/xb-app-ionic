@@ -27,6 +27,7 @@ export interface ITask {
         | ITextInput
         | INumberInput
         | ISelectInput
+        | ISliderInput
         | IHeartRateInput
         | ICheckbox
         | ITimeInput
@@ -58,6 +59,12 @@ interface INumberInput extends IGenericInput {
 interface ISelectInput extends IGenericInput {
     type: 'select-input';
     options: string[];
+}
+
+interface ISliderInput extends IGenericInput {
+    type: 'slider-input';
+    labels: Record<string, string>;
+    range: [number, number];
 }
 
 interface IHeartRateInput extends IGenericInput {

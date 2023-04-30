@@ -1,6 +1,5 @@
 import React from 'react';
-import { FormLabel, FormHelperText, Textarea as MuiTextarea, TextareaProps } from '@mui/joy';
-import FormControl from '@mui/joy/FormControl';
+import { FormLabel, FormHelperText, Textarea as MuiTextarea, TextareaProps, FormControl } from '@mui/joy';
 
 export interface ITextareaProps extends TextareaProps {
     label?: string;

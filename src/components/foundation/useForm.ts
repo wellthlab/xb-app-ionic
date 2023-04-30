@@ -46,7 +46,7 @@ const processErrors = function (errors: Yup.ValidationError[]) {
     return result;
 };
 
-const useForm = function <T extends Record<string, string | boolean | null>, TS extends Yup.ObjectSchema<any>>(
+const useForm = function <T extends Record<string, string | boolean | number | null>, TS extends Yup.ObjectSchema<any>>(
     initial: T,
     schema: TS,
 ): IUseFormReturns<T, TS> {
@@ -106,17 +106,13 @@ const useForm = function <T extends Record<string, string | boolean | null>, TS 
 
                 onBlur: () => {
                     try {
-                        schema.validateSync(values, { abortEarly: false });
+                        schema.validateSyncAt(name.toString(), values, { abortEarly: false });
                     } catch (error) {
                         if (error instanceof Yup.ValidationError) {
-                            for (const subError of error.inner) {
-                                if (subError.path === name) {
-                                    return setErrors({ ...errors, [name]: subError.message });
-                                }
-                            }
-
-                            return;
+                            return setErrors({ ...errors, [name]: error.message });
                         }
+
+                        return;
                     }
                 },
 

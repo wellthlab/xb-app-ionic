@@ -28,9 +28,16 @@
                         "icon": "note-pencil",
                         "blocks": [
                             {
-                                "type": "select-input",
-                                "label": "How do you feel today?",
-                                "options": ["Better", "Much better", "The same", "Worse", "Much worse"],
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
                                 "rk": "feeling"
                             }
                         ]
@@ -56,9 +63,14 @@
                         "icon": "note-pencil",
                         "blocks": [
                             {
-                                "type": "select-input",
-                                "label": "How do you feel today?",
-                                "options": ["More energy", "Fatigue", "In between the above"],
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
                                 "rk": "feeling"
                             }
                         ]
@@ -187,9 +199,16 @@
                                 "rk": "sleep-cycles"
                             },
                             {
-                                "type": "select-input",
-                                "label": "How do you feel?",
-                                "options": ["Tired", "Rested"],
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
                                 "rk": "feeling"
                             }
                         ]
