@@ -29,8 +29,11 @@ export const selectCurrentDay = createSelector(
             return 0;
         }
 
+        const startOfCurrentDayTs = new Date().setUTCHours(0, 0, 0, 0);
+        const startOfSubscriptionDayTs = new Date(subscription.subscribedAt).setUTCHours(0, 0, 0, 0);
+
         const oneDay = 24 * 60 * 60 * 1000;
-        return Math.round(Math.abs((Date.now() - subscription.subscribedAt) / oneDay));
+        return (startOfCurrentDayTs - startOfSubscriptionDayTs) / oneDay;
     },
 );
 
