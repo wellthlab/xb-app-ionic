@@ -7,9 +7,8 @@ export const authenticateUser = createAsyncThunk('account/authenticated', (crede
     return Account.authenticate(credentials);
 });
 
-export const registerUser = createAsyncThunk('account/registered', async (credentials: ICredentials) => {
-    await Account.create(credentials);
-    return Account.authenticate(credentials);
+export const registerUser = createAsyncThunk('account/registered', (credentials: ICredentials) => {
+    return Account.create(credentials);
 });
 
 export const updateUserProfile = createAsyncThunk(
@@ -76,11 +75,6 @@ export default createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(authenticateUser.fulfilled, (state, action) => {
-                if (action.payload) {
-                    state.id = action.payload.id;
-                }
-            })
-            .addCase(registerUser.fulfilled, (state, action) => {
                 if (action.payload) {
                     state.id = action.payload.id;
                 }

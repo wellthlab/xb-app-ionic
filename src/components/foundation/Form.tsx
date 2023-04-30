@@ -10,6 +10,7 @@ export interface IFormProps {
     submitButtonColor?: ButtonProps['color'];
     message?: string;
     messageColor?: AlertProps['color'];
+    controlledPending?: boolean;
 }
 
 const Form = function ({
@@ -20,13 +21,16 @@ const Form = function ({
     submitButtonColor,
     message,
     messageColor = 'danger',
+    controlledPending,
 }: IFormProps) {
     const [pending, setPending] = React.useState(false);
 
     const handleSubmit = async function () {
         setPending(true);
         await onSubmit();
-        setPending(false);
+        if (!controlledPending) {
+            setPending(false);
+        }
     };
 
     return (

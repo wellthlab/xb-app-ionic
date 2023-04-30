@@ -19,6 +19,7 @@ import LoginScreen from './screens/auth/Login';
 import RegisterScreen from './screens/auth/Register';
 import ResetPasswordScreen from './screens/auth/ResetPassword';
 import NewPasswordScreen from './screens/auth/NewPassword';
+import ConfirmAccountScreen from './screens/auth/ConfirmAccount';
 
 import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
 import OnboardingConsentScreen from './screens/onboarding/Consent';
@@ -63,7 +64,7 @@ const AppFlowController = function () {
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password') {
+        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
             return null;
         }
 
@@ -106,6 +107,10 @@ const App = function () {
 
                                     <Route path="/auth/new-password" exact>
                                         <NewPasswordScreen />
+                                    </Route>
+
+                                    <Route path="/auth/confirm" exact>
+                                        <ConfirmAccountScreen />
                                     </Route>
 
                                     <Route path="/onboarding" exact>

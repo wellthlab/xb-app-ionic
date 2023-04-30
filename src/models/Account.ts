@@ -202,6 +202,14 @@ class Account extends BaseModel {
             },
         );
     }
+
+    static confirmAccount(token: string, tokenId: string) {
+        return this.client.emailPasswordAuth.confirmUser({ token, tokenId });
+    }
+
+    static resendConfirmationEmail(email: string) {
+        return this.client.emailPasswordAuth.resendConfirmationEmail({ email });
+    }
 }
 
 export default Account;
