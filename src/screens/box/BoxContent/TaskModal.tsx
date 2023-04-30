@@ -161,7 +161,7 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
                     }
 
                     if (block.type === 'time-input') {
-                        return <TimeInput {...commonProps} />;
+                        return <TimeInput hideSeconds {...commonProps} />;
                     }
 
                     if (block.type === 'checkbox') {

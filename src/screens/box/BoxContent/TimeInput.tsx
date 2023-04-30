@@ -9,13 +9,14 @@ interface ITimeInputProps extends Omit<FormControlProps, 'onChange'> {
     onChange: (seconds: string) => void;
     label?: string;
     helperText?: string;
+    hideSeconds?: boolean;
 }
 
 const createTimeOptions = function (value: number) {
     return new Array(value).fill(0).map((_, i) => (i < 10 ? `0${i}` : i.toString()));
 };
 
-const TimeInput = function ({ value, onChange, label, helperText, ...others }: ITimeInputProps) {
+const TimeInput = function ({ value, onChange, label, helperText, hideSeconds, ...others }: ITimeInputProps) {
     const actualValue = value || '00:00:00';
     const portions = actualValue.split(':');
 
@@ -37,12 +38,17 @@ const TimeInput = function ({ value, onChange, label, helperText, ...others }: I
         setActivePortion(-1);
     };
 
+    const shownPortions = [portions[0], portions[1]];
+    if (!hideSeconds) {
+        shownPortions.push(portions[2]);
+    }
+
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <FormControl {...others}>
                 {label && <FormLabel>{label}</FormLabel>}
                 <Stack level="h1" component={Typography} direction="row">
-                    {portions.map((portion, portionId) => (
+                    {shownPortions.map((portion, portionId) => (
                         <React.Fragment key={portionId}>
                             {activePortion === portionId ? (
                                 <Select
@@ -60,7 +66,7 @@ const TimeInput = function ({ value, onChange, label, helperText, ...others }: I
                             ) : (
                                 <span onClick={createHandleClickTimePortion(portionId)}>{portion}</span>
                             )}
-                            {portionId < 2 && ':'}
+                            {portionId < shownPortions.length - 1 && ':'}
                         </React.Fragment>
                     ))}
                 </Stack>
