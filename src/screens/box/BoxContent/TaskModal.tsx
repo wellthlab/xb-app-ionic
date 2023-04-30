@@ -142,12 +142,14 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
                         );
                     }
 
+                    const hookProps = block.type === 'checkbox' ? getCheckboxProps(block.rk) : getInputProps(block.rk);
+
                     const commonProps = {
                         label: block.label,
                         required: !block.optional,
-                        helperText: block.help,
                         key: blockId,
-                        ...((block.type === 'checkbox' ? getCheckboxProps(block.rk) : getInputProps(block.rk)) as any),
+                        ...(hookProps as any),
+                        helperText: hookProps.helperText || block.help,
                     };
 
                     if (block.type === 'select-input') {

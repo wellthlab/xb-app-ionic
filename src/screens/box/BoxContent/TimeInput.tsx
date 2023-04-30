@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Typography, FormLabel, FormControl, FormControlProps } from '@mui/joy';
+import { Stack, Typography, FormLabel, FormControl, FormControlProps, FormHelperText } from '@mui/joy';
 import { ClickAwayListener } from '@mui/material';
 
 import Select from '../../../components/foundation/Select';
@@ -8,13 +8,14 @@ interface ITimeInputProps extends Omit<FormControlProps, 'onChange'> {
     value?: string;
     onChange: (seconds: string) => void;
     label?: string;
+    helperText?: string;
 }
 
 const createTimeOptions = function (value: number) {
     return new Array(value).fill(0).map((_, i) => (i < 10 ? `0${i}` : i.toString()));
 };
 
-const TimeInput = function ({ value, onChange, label, ...others }: ITimeInputProps) {
+const TimeInput = function ({ value, onChange, label, helperText, ...others }: ITimeInputProps) {
     const actualValue = value || '00:00:00';
     const portions = actualValue.split(':');
 
@@ -63,6 +64,7 @@ const TimeInput = function ({ value, onChange, label, ...others }: ITimeInputPro
                         </React.Fragment>
                     ))}
                 </Stack>
+                {helperText && <FormHelperText>{helperText}</FormHelperText>}
             </FormControl>
         </ClickAwayListener>
     );

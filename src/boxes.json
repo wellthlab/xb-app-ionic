@@ -181,6 +181,12 @@
                                 "rk": "wake-up-time"
                             },
                             {
+                                "type": "number-input",
+                                "label": "How many sleep cycles do you think you got last night?",
+                                "help": "A sleep cycle lasts for 90 minutes. A person typically goes through multiple cycles during their sleep.",
+                                "rk": "sleep-cycles"
+                            },
+                            {
                                 "type": "select-input",
                                 "label": "How do you feel?",
                                 "options": ["Tired", "Rested"],
