@@ -6,6 +6,7 @@ export interface IBox {
     desc: string;
     duration: number;
     days: IDay[];
+    containsExercise?: boolean;
 }
 
 export interface IBoxDocument extends IBox {

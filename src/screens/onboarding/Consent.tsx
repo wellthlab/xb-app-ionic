@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Alert, Link } from '@mui/joy';
 import * as Yup from 'yup';
 
 import Page from '../../components/foundation/Page';
@@ -8,6 +7,7 @@ import PageTitle from '../../components/foundation/PageTitle';
 import Form from '../../components/foundation/Form';
 import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
+import ExerciseWarning from '../../components/ExerciseWarning';
 
 const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
 
@@ -47,16 +47,7 @@ const Consent = function () {
                     {...getCheckboxProps('c3')}
                 />
 
-                <Alert color="warning">
-                    <div>
-                        Exercise is safe and beneficial for most people, but some people should check with their doctor
-                        before changing their physical activity patterns. Use the{' '}
-                        <Link href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">
-                            PAR Questionnaire
-                        </Link>{' '}
-                        and/or consult your GP before engaging in physical activity.
-                    </div>
-                </Alert>
+                <ExerciseWarning />
 
                 <Checkbox
                     label="I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part"

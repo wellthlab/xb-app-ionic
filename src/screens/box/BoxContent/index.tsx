@@ -18,6 +18,7 @@ import Page from '../../../components/foundation/Page';
 import List from '../../../components/foundation/List';
 import ListItem from '../../../components/foundation/ListItem';
 import SectionTitle from '../../../components/foundation/SectionTitle';
+import ExerciseWarning from '../../../components/ExerciseWarning';
 
 import { useSelector } from '../../../slices/store';
 import getIcon from '../../../utils/getIcon';
@@ -48,6 +49,8 @@ const BoxContent = function () {
 
     return (
         <Page headerTitle={box.name} ref={setPresentingElement}>
+            {box.containsExercise && <ExerciseWarning />}
+
             <Timeline
                 sx={{
                     padding: 0,
