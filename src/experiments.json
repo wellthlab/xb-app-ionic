@@ -38,6 +38,29 @@
                                     "2": "Much better"
                                 },
                                 "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     }
@@ -81,6 +104,29 @@
                                     "1": "More energy"
                                 },
                                 "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     }
@@ -128,6 +174,29 @@
                                 "label": "Were you able to let go of your thoughts?",
                                 "options": ["Yes", "No"],
                                 "rk": "let-go-of-thoughts"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     }
@@ -171,6 +240,30 @@
                                 "type": "text-input",
                                 "label": "How did it feel not interrupting?",
                                 "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     }
@@ -216,6 +309,24 @@
                                     "2": "Much better"
                                 },
                                 "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
                             }
                         ]
                     },
