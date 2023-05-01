@@ -34,6 +34,9 @@ export interface ITask {
         | ICheckbox
         | ITimeInput
         | IPara
+        | IVideo
+        | IImage
+        | ITitle
         | IGreenDetector
         | ICountdownTimer
     )[];
@@ -44,6 +47,14 @@ export interface IGenericInput {
     label: string;
     help?: string;
     rk: string;
+}
+
+interface IMedia {
+    src: string;
+}
+
+interface IText {
+    content: string;
 }
 
 interface ITextInput extends IGenericInput {
@@ -81,9 +92,21 @@ interface IGreenDetector extends Omit<IGenericInput, 'label' | 'help'> {
     type: 'green-detector';
 }
 
-interface IPara {
+interface IPara extends IText {
     type: 'para';
-    content: string;
+}
+
+interface ITitle extends IText {
+    type: 'title';
+}
+
+interface IVideo extends IMedia {
+    type: 'video';
+}
+
+interface IImage extends IMedia {
+    type: 'image';
+    alt: string;
 }
 
 interface ICountdownTimer {

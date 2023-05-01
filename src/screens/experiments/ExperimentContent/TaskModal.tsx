@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Typography, TextField, Stack } from '@mui/joy';
 import * as Yup from 'yup';
 
+import YouTubeVideo from './YoutubeVideo';
 import GreenDetector from './GreenDetector';
 import HeartRateInput from './HeartRateInput';
 import CountdownTimer from './CountdownTimer';
@@ -125,12 +126,20 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
         <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => {
-                    if (block.type === 'para') {
+                    if (block.type === 'para' || block.type === 'title') {
                         return (
-                            <Typography level="body1" key={blockId}>
+                            <Typography level={block.type === 'para' ? 'body1' : 'h6'} key={blockId}>
                                 {block.content}
                             </Typography>
                         );
+                    }
+
+                    if (block.type === 'video') {
+                        return <YouTubeVideo src={block.src} />;
+                    }
+
+                    if (block.type === 'image') {
+                        return <img src={block.src} alt={block.alt} />;
                     }
 
                     if (block.type === 'countdown') {
