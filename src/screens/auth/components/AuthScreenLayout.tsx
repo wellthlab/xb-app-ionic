@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box } from '@mui/joy';
 
-import Page from '../../components/foundation/Page';
-import PageTitle from '../../components/foundation/PageTitle';
+import Page from '../../../components/foundation/Page';
+import PageTitle from '../../../components/foundation/PageTitle';
 
 interface IAuthScreenLayout {
     children: React.ReactNode;

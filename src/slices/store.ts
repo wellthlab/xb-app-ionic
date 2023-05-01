@@ -3,13 +3,13 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import accountReducer from './account';
 import teamReducer from './team';
-import boxesReducer from './boxes';
+import experimentsReducer from './experiments';
 
 const store = configureStore({
     reducer: {
         account: accountReducer,
         team: teamReducer,
-        boxes: boxesReducer,
+        experiments: experimentsReducer,
     },
 
     middleware: (getDefaultMiddleware) =>

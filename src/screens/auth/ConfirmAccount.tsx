@@ -2,10 +2,10 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { CircularProgress, Alert } from '@mui/joy';
 
-import AuthScreenLayout from './AuthScreenLayout';
+import AuthScreenLayout from './components/AuthScreenLayout';
 
 import Centre from '../../components/foundation/Centre';
-import useTokenAndTokenId from '../../hooks/useTokenAndTokenId';
+import useTokenAndTokenId from './hooks/useTokenAndTokenId';
 import Account from '../../models/Account';
 
 const ConfirmAccount = function () {

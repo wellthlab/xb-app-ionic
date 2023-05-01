@@ -2,9 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Link, TextField } from '@mui/joy';
 
-import { emailSchema, newPasswordSchema } from './schemas';
-import AuthScreenLayout from './AuthScreenLayout';
-import ConfirmationRequired from './ConfirmationRequired';
+import { emailSchema, newPasswordSchema } from './utils/schemas';
+import AuthScreenLayout from './components/AuthScreenLayout';
+import ConfirmationRequired from './components/ConfirmationRequired';
 
 import Form from '../../components/foundation/Form';
 import useForm from '../../components/foundation/useForm';

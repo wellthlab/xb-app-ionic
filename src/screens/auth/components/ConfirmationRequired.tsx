@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Alert, Button, Stack, ButtonProps } from '@mui/joy';
 
-import Account from '../../models/Account';
+import Account from '../../../models/Account';
 
 interface IConfirmationRequiredProps {
     onClickLoginLink: ButtonProps['onClick'];

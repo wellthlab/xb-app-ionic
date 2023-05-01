@@ -1,7 +1,9 @@
 import { BaseModel, ObjectId } from './utils';
 
-export interface IBox {
+export interface IExperiment {
+    id: string;
     name: string;
+    box: string;
     icon: string;
     desc: string;
     duration: number;
@@ -9,7 +11,7 @@ export interface IBox {
     containsExercise?: boolean;
 }
 
-export interface IBoxDocument extends IBox {
+export interface IExperimentDocument extends Omit<IExperiment, 'id'> {
     _id: ObjectId;
 }
 
@@ -93,7 +95,7 @@ interface ICountdownTimer {
 export interface IResponse {
     id: string;
     userId: string;
-    box: string;
+    experimentId: string;
     dayId: number;
     taskId: number;
     payload: Record<string, string | number>;
@@ -105,15 +107,15 @@ interface IResponseDocument extends Omit<IResponse, 'userId' | 'id'> {
     userId: ObjectId;
 }
 
-class Box extends BaseModel {
-    static async getBoxes() {
+class Experiment extends BaseModel {
+    static async getExperiments() {
         const db = this.getDb();
 
-        const result = await db.collection<IBoxDocument>('boxes').find();
+        const result = await db.collection<IExperimentDocument>('experiments').find();
 
         return result.map((item) => {
             const { _id, ...others } = item;
-            return others;
+            return { id: _id.toString(), ...others };
         });
     }
 
@@ -144,15 +146,15 @@ class Box extends BaseModel {
             );
 
         return result.map((result) => {
-            const { _id, ...others } = result;
+            const { _id, userId, ...others } = result;
 
             return {
                 id: _id.toString(),
+                userId: userId.toString(),
                 ...others,
-                userId: others.userId.toString(),
             };
         });
     }
 }
 
-export default Box;
+export default Experiment;

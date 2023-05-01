@@ -19,18 +19,23 @@ export interface IProfile {
 export interface IAccount {
     id: string;
     profile: IProfile;
-    boxes: IBoxSubscription[];
+    subscriptions: ISubscription[];
     deleted?: boolean;
 }
 
-export interface IBoxSubscription {
-    box: string;
+export interface ISubscription {
+    experimentId: string;
     progress: boolean[][];
     subscribedAt: number;
 }
 
-export interface IAccountDocument extends IAccount {
+export interface ISubscriptionDocument extends Omit<ISubscription, 'experimentId'> {
+    experimentId: ObjectId;
+}
+
+export interface IAccountDocument extends Omit<IAccount, 'subscriptions'> {
     _id: ObjectId;
+    subscriptions: ISubscriptionDocument[];
 }
 
 class Account extends BaseModel {
@@ -125,11 +130,15 @@ class Account extends BaseModel {
     }
 
     static transformDocument(document: IAccountDocument) {
-        const { _id, ...others } = document;
+        const { _id, subscriptions, ...others } = document;
 
         return {
             ...others,
             id: _id.toString(),
+            subscriptions: subscriptions.map(({ experimentId, ...others }) => ({
+                experimentId: experimentId.toString(),
+                ...others,
+            })),
         };
     }
 
@@ -156,7 +165,7 @@ class Account extends BaseModel {
             { _id: this.oid(id) },
             {
                 $set: { profile: { ...payload, email } },
-                $setOnInsert: { boxes: [] },
+                $setOnInsert: { subscriptions: [] },
             },
             { upsert: true },
         );
@@ -167,7 +176,7 @@ class Account extends BaseModel {
         };
     }
 
-    static async subscribeToBox(name: string) {
+    static async subscribeToExperiment(experimentId: string) {
         const db = this.getDb();
 
         const subscribedAt = Date.now();
@@ -176,13 +185,13 @@ class Account extends BaseModel {
             {
                 _id: this.oid(this.client.currentUser!.id),
             },
-            { $push: { boxes: { box: name, progress: [], subscribedAt } } },
+            { $push: { subscriptions: { experimentId: this.oid(experimentId), progress: [], subscribedAt } } },
         );
 
-        return { box: name, progress: [], subscribedAt };
+        return { experimentId: experimentId, progress: [], subscribedAt };
     }
 
-    static async updateProgress(box: string, dayId: number, taskId: number) {
+    static async updateProgress(experimentId: string, dayId: number, taskId: number) {
         const db = this.getDb();
 
         await db.collection<IAccountDocument>('accounts').updateOne(
@@ -191,14 +200,14 @@ class Account extends BaseModel {
             },
             {
                 $push: {
-                    [`boxes.$[elem].progress.${dayId}`]: {
+                    [`subscriptions.$[elem].progress.${dayId}`]: {
                         $each: [true],
                         $position: taskId,
                     },
                 },
             },
             {
-                arrayFilters: [{ 'elem.box': box }],
+                arrayFilters: [{ 'elem.experimentId': this.oid(experimentId) }],
             },
         );
     }

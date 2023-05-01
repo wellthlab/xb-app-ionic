@@ -14,10 +14,10 @@ import Checkbox from '../../../components/foundation/Checkbox';
 import Slider from '../../../components/foundation/Slider';
 import useForm from '../../../components/foundation/useForm';
 
-import Box, { IGenericInput, ITask } from '../../../models/Box';
+import Experiment, { IGenericInput, ITask } from '../../../models/Experiment';
 import { useDispatch, useSelector } from '../../../slices/store';
 import { updateProgress } from '../../../slices/account';
-import { selectTask } from '../../../slices/boxes';
+import { selectTask } from '../../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     taskLocation: [number, number];
@@ -100,9 +100,9 @@ const getSchema = function (blocks: ITask['blocks']) {
 };
 
 const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...others }: ITaskModalProps) {
-    const { type } = useParams<{ type: string }>();
+    const { experimentId } = useParams<{ experimentId: string }>();
 
-    const task = useSelector((state) => selectTask(state, type, dayId, taskId));
+    const task = useSelector((state) => selectTask(state, experimentId, dayId, taskId));
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);
     const initialValues = React.useMemo(() => getInitialValues(task.blocks), [task.blocks]);
@@ -113,10 +113,10 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
 
     const handleSubmit = createHandleSubmit(async (data) => {
         if (Object.keys(data).length) {
-            await Box.saveResponse({ box: type, taskId, dayId, payload: data });
+            await Experiment.saveResponse({ experimentId, taskId, dayId, payload: data });
         }
 
-        await dispatch(updateProgress({ box: type, dayId, taskId }));
+        await dispatch(updateProgress({ experimentId, dayId, taskId }));
 
         onDismiss();
     });

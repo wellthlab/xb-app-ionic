@@ -3,8 +3,8 @@ import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 import { Link, TextField } from '@mui/joy';
 
-import { emailSchema } from './schemas';
-import AuthScreenLayout from './AuthScreenLayout';
+import { emailSchema } from './utils/schemas';
+import AuthScreenLayout from './components/AuthScreenLayout';
 
 import Account from '../../models/Account';
 

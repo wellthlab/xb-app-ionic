@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, IBoxSubscription } from '../models/Account';
+import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -18,16 +18,16 @@ export const updateUserProfile = createAsyncThunk(
     },
 );
 
-export const subscribeToBox = createAsyncThunk<IBoxSubscription | undefined, string, { state: ISelectorState }>(
-    'account/boxes/subscribed',
-    (box, { getState }) => {
-        const boxes = selectSubscribedBoxNames(getState());
+export const subscribeToExperiment = createAsyncThunk<ISubscription | undefined, string, { state: ISelectorState }>(
+    'account/subscriptions/subscribed',
+    (experimentId, { getState }) => {
+        const experimentIds = selectSubscriptions(getState());
 
-        if (boxes.includes(box)) {
+        if (experimentIds[experimentId]) {
             return;
         }
 
-        return Account.subscribeToBox(box);
+        return Account.subscribeToExperiment(experimentId);
     },
 );
 
@@ -36,21 +36,21 @@ export const markAccountAsDeleted = createAsyncThunk('account/deleted', async ()
 });
 
 export const updateProgress = createAsyncThunk(
-    'account/updateProgress',
-    async ({ box, dayId, taskId }: { box: string; dayId: number; taskId: number }) => {
-        await Account.updateProgress(box, dayId, taskId);
-        return { box, dayId, taskId };
+    'account/subscriptions/updateProgress',
+    async ({ experimentId, dayId, taskId }: { experimentId: string; dayId: number; taskId: number }) => {
+        await Account.updateProgress(experimentId, dayId, taskId);
+        return { experimentId, dayId, taskId };
     },
 );
 
 interface IAccountState {
     id?: string;
     profile?: IProfile;
-    boxes: IAccount['boxes'];
+    subscriptions: Record<string, Omit<IAccount['subscriptions'][number], 'experimentId'>>;
     deleted?: boolean;
 }
 
-interface ISelectorState {
+export interface ISelectorState {
     account: IAccountState;
 }
 
@@ -58,10 +58,9 @@ export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
-export const selectSubscribedBoxNames = (state: ISelectorState) => state.account.boxes.map((subs) => subs.box);
-export const selectSubscribedBoxes = (state: ISelectorState) => state.account.boxes;
-export const selectProgress = (state: ISelectorState, box: string) =>
-    state.account.boxes.find((sub) => sub.box === box)?.progress;
+export const selectSubscriptions = (state: ISelectorState) => state.account.subscriptions;
+export const selectProgress = (state: ISelectorState, experimentId: string) =>
+    state.account.subscriptions[experimentId].progress;
 export const selectUserId = (state: ISelectorState) => state.account.id;
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 export const selectFullName = (state: ISelectorState) =>
@@ -69,7 +68,7 @@ export const selectFullName = (state: ISelectorState) =>
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, boxes: [] } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -82,12 +81,20 @@ export default createSlice({
             .addCase(markAccountAsDeleted.fulfilled, (state) => {
                 state.deleted = true;
             })
-            .addCase(boot.fulfilled, (state, action) => {
+            .addCase(boot.fulfilled, (_, action) => {
                 if (action.payload.account) {
-                    const { boxes, profile, deleted } = action.payload.account;
-                    state.profile = profile;
-                    state.boxes = boxes;
-                    state.deleted = deleted;
+                    const { subscriptions: rawSubs, ...others } = action.payload.account;
+
+                    const subscriptions: IAccountState['subscriptions'] = {};
+
+                    for (const sub of rawSubs) {
+                        subscriptions[sub.experimentId] = { progress: sub.progress, subscribedAt: sub.subscribedAt };
+                    }
+
+                    return {
+                        ...others,
+                        subscriptions,
+                    };
                 }
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
@@ -96,34 +103,33 @@ export default createSlice({
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false
 
-                state.boxes = [];
+                state.subscriptions = {};
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
             })
             .addCase(logOut.fulfilled, (state) => {
-                state.boxes = [];
+                state.subscriptions = {};
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
             })
-            .addCase(subscribeToBox.fulfilled, (state, action) => {
+            .addCase(subscribeToExperiment.fulfilled, (state, action) => {
                 if (action.payload) {
-                    state.boxes.push(action.payload);
+                    const { experimentId, ...others } = action.payload;
+                    state.subscriptions[experimentId] = others;
                 }
             })
             .addCase(updateProgress.fulfilled, (state, action) => {
-                for (const sub of state.boxes) {
-                    if (sub.box === action.payload.box) {
-                        let dayProgress = sub.progress[action.payload.dayId];
+                const progress = state.subscriptions[action.payload.experimentId].progress;
 
-                        if (!dayProgress) {
-                            dayProgress = sub.progress[action.payload.dayId] = [];
-                        }
+                let dayProgress = progress[action.payload.dayId];
 
-                        dayProgress[action.payload.taskId] = true;
-                    }
+                if (!dayProgress) {
+                    dayProgress = progress[action.payload.dayId] = [];
                 }
+
+                dayProgress[action.payload.taskId] = true;
             });
     },
 }).reducer;

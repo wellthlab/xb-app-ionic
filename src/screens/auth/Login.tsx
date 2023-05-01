@@ -3,9 +3,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { TextField, Link, Box } from '@mui/joy';
 import * as Yup from 'yup';
 
-import { emailSchema } from './schemas';
-import AuthScreenLayout from './AuthScreenLayout';
-import ConfirmationRequired from './ConfirmationRequired';
+import { emailSchema } from './utils/schemas';
+import AuthScreenLayout from './components/AuthScreenLayout';
+import ConfirmationRequired from './components/ConfirmationRequired';
 
 import Form from '../../components/foundation/Form';
 import useForm from '../../components/foundation/useForm';

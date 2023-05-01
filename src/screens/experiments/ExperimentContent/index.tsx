@@ -13,6 +13,7 @@ import {
 import { CaretRight, Lock, LockOpen, Check } from 'phosphor-react';
 
 import TaskModal from './TaskModal';
+import getIcon from '../utils/getIcon';
 
 import Page from '../../../components/foundation/Page';
 import List from '../../../components/foundation/List';
@@ -21,16 +22,16 @@ import SectionTitle from '../../../components/foundation/SectionTitle';
 import ExerciseWarning from '../../../components/ExerciseWarning';
 
 import { useSelector } from '../../../slices/store';
-import getIcon from '../../../utils/getIcon';
-import { selectBoxByName, selectCurrentDay } from '../../../slices/boxes';
+import { selectExperiment, selectCurrentDay, selectDayProgress } from '../../../slices/experiments';
 import { selectProgress } from '../../../slices/account';
 
 const BoxContent = function () {
-    const { type } = useParams<{ type: string }>();
+    const { experimentId } = useParams<{ experimentId: string }>();
 
-    const box = useSelector((state) => selectBoxByName(state, type));
-    const currentDay = useSelector((state) => selectCurrentDay(state, type));
-    const progress = useSelector((state) => selectProgress(state, type));
+    const experiment = useSelector((state) => selectExperiment(state, experimentId));
+    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
+    const progress = useSelector((state) => selectProgress(state, experimentId));
+    const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
 
     const [modalOpen, setModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -48,8 +49,8 @@ const BoxContent = function () {
     };
 
     return (
-        <Page headerTitle={box.name} ref={setPresentingElement}>
-            {box.containsExercise && <ExerciseWarning />}
+        <Page headerTitle={experiment.name} ref={setPresentingElement}>
+            {experiment.containsExercise && <ExerciseWarning />}
 
             <Timeline
                 sx={{
@@ -60,14 +61,9 @@ const BoxContent = function () {
                     },
                 }}
             >
-                {box.days.map((day, dayId) => {
+                {experiment.days.map((day, dayId) => {
                     const unlocked = dayId <= currentDay;
-                    const dayProgress = progress && progress[dayId];
-
-                    const dayCompleted =
-                        dayProgress &&
-                        dayProgress.length === day.tasks.length &&
-                        dayProgress.reduce((acc, taskProgress) => acc && taskProgress, true);
+                    const dayCompleted = dayProgress[dayId];
 
                     return (
                         <TimelineItem key={dayId}>
@@ -83,7 +79,7 @@ const BoxContent = function () {
                                 >
                                     {dayCompleted ? <Check /> : unlocked ? <LockOpen /> : <Lock />}
                                 </TimelineDot>
-                                {dayId !== box.days.length - 1 && <TimelineConnector />}
+                                {dayId !== experiment.days.length - 1 && <TimelineConnector />}
                             </TimelineSeparator>
                             <TimelineContent>
                                 <SectionTitle sx={{ mb: 1 }}>{day.name}</SectionTitle>
@@ -94,7 +90,7 @@ const BoxContent = function () {
                                 {unlocked && (
                                     <List sx={{ mb: 4 }}>
                                         {day.tasks.map((task, taskId) => {
-                                            const taskCompleted = dayProgress && dayProgress[taskId];
+                                            const taskCompleted = progress[dayId]?.[taskId];
                                             const Icon = taskCompleted
                                                 ? Check
                                                 : task.icon

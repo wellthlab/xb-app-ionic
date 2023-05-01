@@ -1,12 +1,11 @@
 [
     {
-        "name": "Eat",
-        "icon": "fork-knife",
+        "name": "Green and Red",
+        "box": "eat",
         "desc": "Be conscious about what you eat for a week, and see if it makes a difference",
         "duration": 5,
         "days": [
             {
-                "name": "Green and Red",
                 "desc": "Each time you eat today have a green/red BEFORE anything else",
                 "tasks": [
                     {
@@ -48,14 +47,13 @@
     },
 
     {
-        "name": "Move",
-        "icon": "barbell",
+        "name": "Walking and Breathing",
+        "box": "move",
         "desc": "Try exercising in a certain way for a week, and see if it makes a difference",
         "containsExercise": true,
         "duration": 5,
         "days": [
             {
-                "name": "Walking and breathing",
                 "desc": "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes",
                 "tasks": [
                     {
@@ -81,13 +79,12 @@
     },
 
     {
-        "name": "Cogitate",
-        "icon": "brain",
+        "name": "Sitting and Thinking",
+        "box": "cogitate",
         "desc": "Try to sit down and think about your thoughts",
         "duration": 5,
         "days": [
             {
-                "name": "Sitting and thinking",
                 "desc": "Just sit in a particular posture for 4 to 9 mins - this is to get out of the default mode network and build non-verbal awareness. We'll look at a technique called \"letting go of thoughts\"",
                 "tasks": [
                     {
@@ -129,13 +126,12 @@
     },
 
     {
-        "name": "Engage",
-        "icon": "ear",
+        "name": "Listening for 3 minutes",
+        "box": "engage",
         "desc": "Practice engagement techniques with someone each day, and see if it improves",
         "duration": 5,
         "days": [
             {
-                "name": "Listening for 3 minutes",
                 "desc": "Find someone and just listen to them for three minutes. Then reflect on your engagement techniques used.",
                 "tasks": [
                     {
@@ -173,13 +169,12 @@
     },
 
     {
-        "name": "Sleep",
-        "icon": "moon",
+        "name": "Kill the alarm",
+        "box": "sleep",
         "desc": "Track your sleep and see if it makes any difference",
         "duration": 5,
         "days": [
             {
-                "name": "Kill the alarm",
                 "desc": "\"Wake up when you wake up\" or \"kill the alarm\" - try to get a minimum of 7 hours of sleep",
                 "tasks": [
                     {

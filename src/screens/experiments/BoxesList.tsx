@@ -1,23 +1,37 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Typography, Card, Grid, Box, Link } from '@mui/joy';
+import { Barbell, Brain, Ear, ForkKnife, Moon } from 'phosphor-react';
+
+import capitalise from './utils/capitalise';
 
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import { useDispatch, useSelector } from '../../slices/store';
-import { selectAllBoxes } from '../../slices/boxes';
-import getIcon from '../../utils/getIcon';
-import { subscribeToBox } from '../../slices/account';
+const boxes = [
+    {
+        name: 'eat',
+        icon: ForkKnife,
+    },
+    {
+        name: 'move',
+        icon: Barbell,
+    },
+    {
+        name: 'engage',
+        icon: Ear,
+    },
+    {
+        name: 'cogitate',
+        icon: Brain,
+    },
+    {
+        name: 'sleep',
+        icon: Moon,
+    },
+];
 
 const BoxesList = function () {
-    const boxes = useSelector(selectAllBoxes);
-
-    const dispatch = useDispatch();
-    const createHandleClickBox = function (name: string) {
-        return () => dispatch(subscribeToBox(name));
-    };
-
     return (
         <Page>
             <PageTitle sx={{ mb: 2 }}>Boxes</PageTitle>
@@ -27,7 +41,7 @@ const BoxesList = function () {
 
             <Grid container spacing={1}>
                 {boxes.map((box) => {
-                    const Icon = getIcon(box.icon);
+                    const Icon = box.icon;
 
                     return (
                         <Grid xs={4} key={box.name}>
@@ -45,10 +59,9 @@ const BoxesList = function () {
                                     textColor="inherit"
                                     underline="none"
                                     component={RouterLink}
-                                    onClick={createHandleClickBox(box.name)}
                                     to={`/main/box/${box.name}`}
                                 >
-                                    {box.name}
+                                    {capitalise(box.name)}
                                 </Link>
                             </Card>
                         </Grid>

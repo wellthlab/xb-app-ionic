@@ -15,16 +15,15 @@ import {
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import Box, { IGenericInput, IResponse } from '../../models/Box';
+import Experiment, { IGenericInput, IResponse } from '../../models/Experiment';
 import { useSelector } from '../../slices/store';
-import { selectAllBoxesByName } from '../../slices/boxes';
-import getIcon from '../../utils/getIcon';
+import { selectAllExperimentsById } from '../../slices/experiments';
 
 const Journal = function () {
     const [currentDate, setCurrentDate] = React.useState<Dayjs | null>(dayjs());
     const [responses, setResponses] = React.useState<IResponse[]>([]);
 
-    const boxes = useSelector(selectAllBoxesByName);
+    const experiments = useSelector(selectAllExperimentsById);
 
     React.useEffect(() => {
         if (!currentDate) {
@@ -32,7 +31,7 @@ const Journal = function () {
         }
 
         const fetchResponses = async function () {
-            setResponses(await Box.getResponsesForDate(currentDate.toDate()));
+            setResponses(await Experiment.getResponsesForDate(currentDate.toDate()));
         };
 
         fetchResponses();
@@ -61,11 +60,9 @@ const Journal = function () {
                     }}
                 >
                     {responses.map((response, responseId) => {
-                        const box = boxes[response.box];
-                        const day = box.days[response.dayId];
+                        const experiment = experiments[response.experimentId];
+                        const day = experiment.days[response.dayId];
                         const task = day.tasks[response.taskId];
-
-                        const Icon = getIcon(box.icon);
 
                         const payloadEntries = Object.entries(response.payload);
 
@@ -77,14 +74,12 @@ const Journal = function () {
                         return (
                             <TimelineItem key={response.id}>
                                 <TimelineSeparator>
-                                    <TimelineDot>
-                                        <Icon />
-                                    </TimelineDot>
+                                    <TimelineDot />
                                     {responseId !== responses.length - 1 && <TimelineConnector />}
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="h4" mb={1}>
-                                        {box.name}
+                                        {experiment.name}
                                     </Typography>
                                     <Typography level="body2" mb={1}>
                                         {day.name} (Day {response.dayId + 1}) / {task.name}
