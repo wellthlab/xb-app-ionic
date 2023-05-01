@@ -57,6 +57,17 @@
                 "desc": "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes",
                 "tasks": [
                     {
+                        "name": "Time your walk",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 300,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
                         "name": "Reflection",
                         "icon": "note-pencil",
                         "blocks": [

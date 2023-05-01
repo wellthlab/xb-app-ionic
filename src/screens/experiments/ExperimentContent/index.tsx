@@ -18,7 +18,6 @@ import getIcon from '../utils/getIcon';
 import Page from '../../../components/foundation/Page';
 import List from '../../../components/foundation/List';
 import ListItem from '../../../components/foundation/ListItem';
-import SectionTitle from '../../../components/foundation/SectionTitle';
 import ExerciseWarning from '../../../components/ExerciseWarning';
 
 import { useSelector } from '../../../slices/store';
@@ -82,8 +81,7 @@ const BoxContent = function () {
                                 {dayId !== experiment.days.length - 1 && <TimelineConnector />}
                             </TimelineSeparator>
                             <TimelineContent>
-                                <SectionTitle sx={{ mb: 1 }}>{day.name}</SectionTitle>
-                                <Typography level="body2" sx={{ mb: 2 }}>
+                                <Typography level="body2" sx={{ mb: 1, mt: 2 }}>
                                     Day {dayId + 1}
                                 </Typography>
                                 {unlocked && <Typography sx={{ mb: 2 }}>{day.desc}</Typography>}

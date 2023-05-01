@@ -45,7 +45,7 @@ const TimeInput = function ({ value, onChange, label, helperText, hideSeconds, .
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <FormControl {...others}>
+            <FormControl {...others} sx={{ alignItems: 'center' }}>
                 {label && <FormLabel>{label}</FormLabel>}
                 <Stack level="h1" component={Typography} direction="row">
                     {shownPortions.map((portion, portionId) => (
@@ -70,7 +70,7 @@ const TimeInput = function ({ value, onChange, label, helperText, hideSeconds, .
                         </React.Fragment>
                     ))}
                 </Stack>
-                {helperText && <FormHelperText>{helperText}</FormHelperText>}
+                <FormHelperText>{helperText || 'Tap on the time display to adjust time'}</FormHelperText>
             </FormControl>
         </ClickAwayListener>
     );
