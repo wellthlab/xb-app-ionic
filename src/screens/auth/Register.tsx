@@ -58,7 +58,6 @@ const Register = function () {
                     onSubmit={handleSubmit}
                     submitLabel="Register"
                     message={form.errors.$root}
-                    controlledPending
                     footer={
                         <Link component="button" level="body2" onClick={handleClickLoginLink}>
                             Already had an account? Login

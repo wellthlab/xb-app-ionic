@@ -58,7 +58,6 @@ const Login = function () {
                     onSubmit={handleSubmit}
                     submitLabel="Login"
                     message={form.errors.$root}
-                    controlledPending
                     footer={
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Link component={RouterLink} level="body2" to="/auth/register">
