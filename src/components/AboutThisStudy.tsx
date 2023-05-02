@@ -26,14 +26,11 @@ const AboutThisStudy = function () {
 };
 
 const studyInformationMd = `
-# Welcome to August 2022 study
+# Welcome to May 2023 study
 
-**Researchers:** m.c. schraefel, Nick Maguire, Marion Demossier, Pauline Leonard, Fraser
-Sturt, Richard Gomer
+**Researchers:** m.c. schraefel, Nick Maguire, Marion Demossier, Pauline Leonard, Fraser Sturt, Richard Gomer
 
 **ERGO number:** ERGO/FEPS/62021.A1
-
-Version 3 Last Revised 2022-03-25
 
 ## Abstract
 
@@ -41,19 +38,54 @@ You are being invited to take part in the above research study. To help you deci
 
 ## What is the research about?
 
-The research is about people’s experiences of taking up to 35 minutes per working day to engage in strength or movement practice.
+This particular phrase of the research is named in5.
 
-We hope to understand more about the effects, and how to facilitate, movement during work; as well as collect evidence to help employers evaluate whether such schemes should be offered to their employees.
+The in5 XB is your field guide and laboratory to learn how you can be smarter, kinder, nicer, faster, leaner, sexier without trying to be any of these things.
+
+To achieve this wellbeing and performance boost, we need to know how to TUNE five things:
+
+1. MOVE
+2. ENGAGE
+3. EAT
+4. COGITATE
+5. SLEEP
+
+That's it - how we manage the MEECS affects not only how we feel, think, act, respond, remember, see - everything - but how well we can do any of these things.
+
+But how do we know how much, and of what, when? After all there are tons of ways to move, thousands of things to eat, numerous strategies around sleep, all sorts of ideas about thinking and many many ways to interact - it seems - with each other.
+
+For example.
+
+-   How do you know what to eat, when, to feel less stress or be sharp on a test or in a meeting?
+-   How do you know how much movement you need in a day to remember stuff you learned today, tomorrow? better the next day?
+-   You (and all of us) need quality in person social interaction to thrive - what does that "quality" feel like?
+-   What part of our brain may need to cool down or amp up to help us solve problems that matter to us?
+-   What ways can we stack or combine any of the MEECS to help us dance better, see more clearly, feel better about ourselves?
+
+The in5 xb is your in hand laboratory - a virtual laboratory in a box - to test out scientifically supported approaches to build up your health knowledge skills and practices - easily.
+
+We call these "experiments in a box" - a box is usually 5 days long (you can add in weekends if you wish). You run the experiment; follow the protocol exactly for the week, record some data about your results - like you would with a lab book - and that's that.
+
+In this in5 Introduction you're spending one week per MEECS - why it's five weeks long after the intro week (this).
+
+If later you wish to spend time focussing longer on one of the MEECS, you can do that too.
+We've done a 5 week set of XB's just on EAT; a three week XB just on sleep.
+
+When you finish a box - the main question you'll be asked is: how do you feel? better? worse? the same? All data is good data. If an experiment didn't lead to feeling better, then you have new data: that protocol doesn't work in this context; what might?
+
+OUTCOME: - the goal of the XB is for YOU to be able to build up the knowldge skills and practices over the MEECS that you need to feel better, to thrive - without having to use an app. That's right: this is an app to help you get off an app for owning your own health.
+
+For example: an app approach to EAT might be food tracking with a calorie counter and a scale. The XB you'll encounter: using colour and connecting colour of a food with how you feel. No calorie counters or scales required - just your senses.
 
 ## Why have I been asked to participate?
 
-You have been asked to participate because you are a member of staff at the University of Southampton, employed in a participating faculty or service, and are at least 18 years old.
+You have been asked to participate because you are a member of staff employed in a participating faculty or service, or a student at the University of Southampton.
 
 If you do not meet those criteria, you should not participate in this study.
 
 ## What will happen to me if I take part?
 
-During the experiment, you will be asked to install an app on your smartphone and to spend up to 35 minutes per working day engaging in tasks that are suggested by the app. Tasks range from simple “movement snacks” (short movements that take only a minute or so) to longer movement activities (such as walking or running for a period of time), and tasks which will help you to learn more about strength and movement.
+During the experiment, you will be asked to install an app on your smartphone and to spend up to some time of working day engaging in tasks that are suggested by the app. Tasks range from simple “movement snacks” (short movements that take only a minute or so) to longer movement activities (such as walking or running for a period of time), and tasks which will help you to learn more about strength and movement.
 
 During the study, you will be asked to log the time that you spend on the tasks, as well as answering other questions about your movement and general wellbeing. We will not collect data specifically about your health, but we will ask you for some limited data about your physical condition – for example, how long you’re able to hold a particular position, or how well rested you feel. All of the tasks and the questions you’ll be asked are voluntary – so you won’t have to do, or answer, anything that you are uncomfortable with.
 
@@ -66,9 +98,6 @@ improve the study app, or to further our understanding of the research topic. Ho
 
 Your participation will help us understand how our experiment-in-a-box approach will impact the tuning process on your behavioural patterns. We expect that many participants will feel better and develop healthy strength and movement practices as a result of taking part in the experiments.
 
-Participating faculties have agreed that you can take up to 35 minutes from your working day to participate in this study, and that your participating in tasks suggested by the study should be
-considered part of your work.
-
 ## Are there any risks involved?
 
 There are no significant risks associated with the current study beyond those which you might encounter in your day-to-day life. However, if at any point you feel uncomfortable please let the researchers know immediately.
@@ -76,7 +105,7 @@ There are no significant risks associated with the current study beyond those wh
 ## What data will be collected?
 
 We will collect information through the app about the tasks that you take part in, as well as
-some information about you, like your age, job family, and the service or faculty that you work
+some information about you, like your name, job family, campus, and the service or faculty that you work
 in.
 
 ## Will my participation be confidential?
@@ -146,6 +175,7 @@ If you have any questions about how your personal data is used, or wish to exerc
 ## Thank you
 
 Thank you for taking the time to read the information sheet and considering taking part in the research.
+
 `;
 
 export default AboutThisStudy;

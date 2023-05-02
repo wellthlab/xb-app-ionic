@@ -39,7 +39,7 @@ const Consent = function () {
                     {...getCheckboxProps('c1')}
                 />
                 <Checkbox
-                    label="I am a member of staff at the University of Southampton, and I am at least 18 years old."
+                    label="I am a member of staff or a student at the University of Southampton, and I am at least 18 years old."
                     {...getCheckboxProps('c2')}
                 />
                 <Checkbox
