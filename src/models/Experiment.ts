@@ -9,7 +9,6 @@ export interface IExperiment {
     longDesc?: string[];
     duration: number;
     days: IDay[];
-    containsExercise?: boolean;
 }
 
 export interface IExperimentDocument extends Omit<IExperiment, 'id'> {

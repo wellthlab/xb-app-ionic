@@ -78,7 +78,6 @@
         "longDesc": [
             "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes"
         ],
-        "containsExercise": true,
         "duration": 5,
         "days": [
             {
@@ -562,7 +561,6 @@
             "Please remember: SAFETY FIRST - test these out BEFORE the experiment to see how they feel and where you can do them."
         ],
         "duration": 5,
-        "containsExercise": true,
         "days": [
             {
                 "desc": "Since this is your first day, start by taking your resting heart rate",
@@ -1001,7 +999,6 @@
                             }
                         ]
                     },
-                    {},
                     {
                         "name": "Reflection",
                         "icon": "note-pencil",

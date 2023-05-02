@@ -6,6 +6,7 @@ import capitalise from './utils/capitalise';
 
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
+import ExerciseWarning from '../../components/ExerciseWarning';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectCompletionByExperimentId, selectExperimentByBox } from '../../slices/experiments';
@@ -22,7 +23,7 @@ const ExperimentsList = function () {
     const dispatch = useDispatch();
     const createHandleClickExperiment = function (experiment: IExperiment) {
         return async () => {
-            await dispatch(subscribeToExperiment(experiment));
+            await dispatch(subscribeToExperiment({ experiment, resubscribe: false }));
             history.push(`/main/box/${type}/${experiment.id}`);
         };
     };
@@ -32,6 +33,8 @@ const ExperimentsList = function () {
             <PageTitle>Pick an experiment</PageTitle>
 
             <Stack spacing={2}>
+                {type === 'move' && <ExerciseWarning />}
+
                 {experiments.map((experiment) => {
                     const completion = completionByExperimentId[experiment.id];
 

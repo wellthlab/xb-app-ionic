@@ -18,7 +18,7 @@ const StudyInformation = function () {
     };
 
     return (
-        <Page sx={{ height: '100vh' }}>
+        <Page sx={{ height: '100%' }}>
             <Box sx={{ flex: 1, overflow: 'auto' }} onScroll={handleScroll}>
                 <AboutThisStudy />
             </Box>

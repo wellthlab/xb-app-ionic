@@ -21,12 +21,12 @@ export const updateUserProfile = createAsyncThunk(
 
 export const subscribeToExperiment = createAsyncThunk<
     ISubscription | undefined,
-    IExperiment,
+    { experiment: IExperiment; resubscribe: boolean },
     { state: ISelectorState }
->('account/subscriptions/subscribed', (experiment, { getState }) => {
+>('account/subscriptions/subscribed', ({ experiment, resubscribe }, { getState }) => {
     const experimentIds = selectSubscriptions(getState());
 
-    if (experimentIds[experiment.id]) {
+    if (!resubscribe && experimentIds[experiment.id]) {
         return;
     }
 

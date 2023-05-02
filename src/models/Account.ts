@@ -189,7 +189,22 @@ class Account extends BaseModel {
             {
                 _id: this.oid(this.client.currentUser!.id),
             },
-            { $push: { subscriptions: { experimentId: this.oid(experiment.id), progress, subscribedAt } } },
+            {
+                $pull: {
+                    subscriptions: { experimentId: this.oid(experiment.id) },
+                },
+            },
+        );
+
+        await db.collection<IAccountDocument>('accounts').updateOne(
+            {
+                _id: this.oid(this.client.currentUser!.id),
+            },
+            {
+                $push: {
+                    subscriptions: { experimentId: this.oid(experiment.id), progress, subscribedAt },
+                },
+            },
         );
 
         return { experimentId: experiment.id, progress, subscribedAt };
