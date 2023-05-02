@@ -1,6 +1,7 @@
 import { Credentials } from 'realm-web';
 
 import { BaseModel, ObjectId } from './utils';
+import { IExperiment } from './Experiment';
 
 export interface ICredentials {
     email: string;
@@ -176,19 +177,22 @@ class Account extends BaseModel {
         };
     }
 
-    static async subscribeToExperiment(experimentId: string) {
+    static async subscribeToExperiment(experiment: IExperiment) {
         const db = this.getDb();
 
         const subscribedAt = Date.now();
+        const progress = new Array(experiment.days.length)
+            .fill([])
+            .map((_, i) => new Array(experiment.days[i].tasks.length).fill(false)) as boolean[][];
 
         await db.collection<IAccountDocument>('accounts').updateOne(
             {
                 _id: this.oid(this.client.currentUser!.id),
             },
-            { $push: { subscriptions: { experimentId: this.oid(experimentId), progress: [], subscribedAt } } },
+            { $push: { subscriptions: { experimentId: this.oid(experiment.id), progress, subscribedAt } } },
         );
 
-        return { experimentId: experimentId, progress: [], subscribedAt };
+        return { experimentId: experiment.id, progress, subscribedAt };
     }
 
     static async updateProgress(experimentId: string, dayId: number, taskId: number) {
@@ -199,11 +203,8 @@ class Account extends BaseModel {
                 _id: this.oid(this.client.currentUser!.id),
             },
             {
-                $push: {
-                    [`subscriptions.$[elem].progress.${dayId}`]: {
-                        $each: [true],
-                        $position: taskId,
-                    },
+                $set: {
+                    [`subscriptions.$[elem].progress.${dayId}.${taskId}`]: true,
                 },
             },
             {

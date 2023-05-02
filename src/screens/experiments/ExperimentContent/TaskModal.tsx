@@ -8,6 +8,8 @@ import GreenDetector from './GreenDetector';
 import HeartRateInput from './HeartRateInput';
 import CountdownTimer from './CountdownTimer';
 import TimeInput from './TimeInput';
+import MovementRecorder from './MovementRecorder';
+import MovementPicker from './MovementPicker';
 
 import Modal, { IModalProps } from '../../../components/foundation/Modal';
 import Select from '../../../components/foundation/Select';
@@ -45,6 +47,11 @@ const getInitialValues = function (blocks: ITask['blocks']) {
 
         if (block.type === 'slider-input') {
             values[block.rk] = 0;
+            continue;
+        }
+
+        if (block.type === 'movement-picker') {
+            values[block.rk] = '';
             continue;
         }
 
@@ -135,11 +142,22 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
                     }
 
                     if (block.type === 'video') {
-                        return <YouTubeVideo src={block.src} />;
+                        return <YouTubeVideo src={block.src} key={blockId} />;
                     }
 
                     if (block.type === 'image') {
-                        return <img src={block.src} alt={block.alt} />;
+                        return <img src={block.src} alt={block.alt} key={blockId} />;
+                    }
+
+                    if (block.type === 'movement-recorder') {
+                        return (
+                            <MovementRecorder
+                                countdown={block.countdown}
+                                max={block.max}
+                                movements={block.movements}
+                                key={blockId}
+                            />
+                        );
                     }
 
                     if (block.type === 'countdown') {
@@ -195,6 +213,10 @@ const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...other
 
                     if (block.type === 'checkbox') {
                         return <Checkbox {...commonProps} />;
+                    }
+
+                    if (block.type === 'movement-picker') {
+                        return <MovementPicker movements={block.movements} {...commonProps} />;
                     }
 
                     return <TextField {...commonProps} />;

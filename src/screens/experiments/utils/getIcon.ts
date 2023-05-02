@@ -1,14 +1,11 @@
 import React from 'react';
-import { ForkKnife, Barbell, NotePencil, Camera, Ear, Brain, Moon, Timer, Alarm } from 'phosphor-react';
+import { NotePencil, Camera, Heartbeat, Timer, Alarm, Barbell } from 'phosphor-react';
 
 const iconComponentMap: Record<string, React.ComponentType> = {
-    'fork-knife': ForkKnife,
     barbell: Barbell,
     'note-pencil': NotePencil,
+    heartbeat: Heartbeat,
     camera: Camera,
-    ear: Ear,
-    brain: Brain,
-    moon: Moon,
     timer: Timer,
     alarm: Alarm,
 };

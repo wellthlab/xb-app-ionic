@@ -6,6 +6,7 @@ export interface IExperiment {
     box: string;
     icon: string;
     desc: string;
+    longDesc?: string[];
     duration: number;
     days: IDay[];
     containsExercise?: boolean;
@@ -17,30 +18,32 @@ export interface IExperimentDocument extends Omit<IExperiment, 'id'> {
 
 export interface IDay {
     name: string;
-    desc: string;
+    desc?: string;
     tasks: ITask[];
 }
 
 export interface ITask {
     name: string;
-    hideIf?: string;
     icon?: string;
-    blocks: (
-        | ITextInput
-        | INumberInput
-        | ISelectInput
-        | ISliderInput
-        | IHeartRateInput
-        | ICheckbox
-        | ITimeInput
-        | IPara
-        | IVideo
-        | IImage
-        | ITitle
-        | IGreenDetector
-        | ICountdownTimer
-    )[];
+    blocks: Block[];
 }
+
+export type Block =
+    | ITextInput
+    | INumberInput
+    | ISelectInput
+    | ISliderInput
+    | IHeartRateInput
+    | ICheckbox
+    | ITimeInput
+    | IPara
+    | IVideo
+    | IImage
+    | ITitle
+    | IGreenDetector
+    | ICountdownTimer
+    | IMovementRecorder
+    | IMovementPicker;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -107,6 +110,18 @@ interface IVideo extends IMedia {
 interface IImage extends IMedia {
     type: 'image';
     alt: string;
+}
+
+interface IMovementPicker extends IGenericInput {
+    type: 'movement-picker';
+    movements: [string, string][];
+}
+
+interface IMovementRecorder {
+    type: 'movement-recorder';
+    movements: [string, string][];
+    max: number;
+    countdown: Omit<ICountdownTimer, 'type'>;
 }
 
 interface ICountdownTimer {

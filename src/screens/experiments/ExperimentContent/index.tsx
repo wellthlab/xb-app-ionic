@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box } from '@mui/joy';
+import { Typography, Box, Stack } from '@mui/joy';
 import {
     Timeline,
     TimelineItem,
@@ -24,7 +24,7 @@ import { useSelector } from '../../../slices/store';
 import { selectExperiment, selectCurrentDay, selectDayProgress } from '../../../slices/experiments';
 import { selectProgress } from '../../../slices/account';
 
-const BoxContent = function () {
+const ExperimentContent = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
 
     const experiment = useSelector((state) => selectExperiment(state, experimentId));
@@ -50,6 +50,13 @@ const BoxContent = function () {
     return (
         <Page headerTitle={experiment.name} ref={setPresentingElement}>
             {experiment.containsExercise && <ExerciseWarning />}
+
+            {experiment.longDesc &&
+                experiment.longDesc.map((p, i) => (
+                    <Typography key={i} sx={{ mt: 2 }}>
+                        {p}
+                    </Typography>
+                ))}
 
             <Timeline
                 sx={{
@@ -81,44 +88,46 @@ const BoxContent = function () {
                                 {dayId !== experiment.days.length - 1 && <TimelineConnector />}
                             </TimelineSeparator>
                             <TimelineContent>
-                                <Typography level="body2" sx={{ mb: 1, mt: 2 }}>
+                                <Typography level="body2" sx={{ my: 2 }}>
                                     Day {dayId + 1}
                                 </Typography>
-                                {unlocked && <Typography sx={{ mb: 2 }}>{day.desc}</Typography>}
-                                {unlocked && (
-                                    <List sx={{ mb: 4 }}>
-                                        {day.tasks.map((task, taskId) => {
-                                            const taskCompleted = progress[dayId]?.[taskId];
-                                            const Icon = taskCompleted
-                                                ? Check
-                                                : task.icon
-                                                ? getIcon(task.icon)
-                                                : undefined;
+                                <Stack spacing={2}>
+                                    {unlocked && day.desc && <Typography>{day.desc}</Typography>}
+                                    {unlocked && (
+                                        <List sx={{ mb: 2 }}>
+                                            {day.tasks.map((task, taskId) => {
+                                                const taskCompleted = progress[dayId]?.[taskId];
+                                                const Icon = taskCompleted
+                                                    ? Check
+                                                    : task.icon
+                                                    ? getIcon(task.icon)
+                                                    : undefined;
 
-                                            return (
-                                                <ListItem
-                                                    button={!taskCompleted}
-                                                    key={taskId}
-                                                    startDecorator={
-                                                        Icon &&
-                                                        (taskCompleted ? (
-                                                            <Box
-                                                                component={Icon}
-                                                                sx={{ color: 'success.outlinedColor' }}
-                                                            />
-                                                        ) : (
-                                                            <Icon />
-                                                        ))
-                                                    }
-                                                    endDecorator={!taskCompleted && <CaretRight />}
-                                                    onClick={createHandleClickTask(dayId, taskId)}
-                                                >
-                                                    {task.name}
-                                                </ListItem>
-                                            );
-                                        })}
-                                    </List>
-                                )}
+                                                return (
+                                                    <ListItem
+                                                        button={!taskCompleted}
+                                                        key={taskId}
+                                                        startDecorator={
+                                                            Icon &&
+                                                            (taskCompleted ? (
+                                                                <Box
+                                                                    component={Icon}
+                                                                    sx={{ color: 'success.outlinedColor' }}
+                                                                />
+                                                            ) : (
+                                                                <Icon />
+                                                            ))
+                                                        }
+                                                        endDecorator={!taskCompleted && <CaretRight />}
+                                                        onClick={createHandleClickTask(dayId, taskId)}
+                                                    >
+                                                        {task.name}
+                                                    </ListItem>
+                                                );
+                                            })}
+                                        </List>
+                                    )}
+                                </Stack>
                             </TimelineContent>
                         </TimelineItem>
                     );
@@ -136,4 +145,4 @@ const BoxContent = function () {
     );
 };
 
-export default BoxContent;
+export default ExperimentContent;

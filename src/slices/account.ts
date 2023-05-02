@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
+import { IExperiment } from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -18,18 +19,19 @@ export const updateUserProfile = createAsyncThunk(
     },
 );
 
-export const subscribeToExperiment = createAsyncThunk<ISubscription | undefined, string, { state: ISelectorState }>(
-    'account/subscriptions/subscribed',
-    (experimentId, { getState }) => {
-        const experimentIds = selectSubscriptions(getState());
+export const subscribeToExperiment = createAsyncThunk<
+    ISubscription | undefined,
+    IExperiment,
+    { state: ISelectorState }
+>('account/subscriptions/subscribed', (experiment, { getState }) => {
+    const experimentIds = selectSubscriptions(getState());
 
-        if (experimentIds[experimentId]) {
-            return;
-        }
+    if (experimentIds[experiment.id]) {
+        return;
+    }
 
-        return Account.subscribeToExperiment(experimentId);
-    },
-);
+    return Account.subscribeToExperiment(experiment);
+});
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
@@ -123,13 +125,7 @@ export default createSlice({
             .addCase(updateProgress.fulfilled, (state, action) => {
                 const progress = state.subscriptions[action.payload.experimentId].progress;
 
-                let dayProgress = progress[action.payload.dayId];
-
-                if (!dayProgress) {
-                    dayProgress = progress[action.payload.dayId] = [];
-                }
-
-                dayProgress[action.payload.taskId] = true;
+                progress[action.payload.dayId][action.payload.taskId] = true;
             });
     },
 }).reducer;

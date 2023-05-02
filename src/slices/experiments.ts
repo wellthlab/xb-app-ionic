@@ -37,19 +37,13 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
     return (startOfCurrentDayTs - startOfSubscriptionDayTs) / oneDay;
 };
 
-const getDayProgress = function (progress: boolean[][], experiment: IExperiment) {
-    return progress.map(
-        (dayProgress, index) =>
-            dayProgress.length === experiment.days[index].tasks.length &&
-            dayProgress.reduce((acc, curr) => acc && curr, true),
-    );
+const getDayProgress = function (progress: boolean[][]) {
+    return progress.map((dayProgress) => dayProgress.reduce((acc, curr) => acc && curr, true));
 };
 
 export const selectDayProgress = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const progress = selectProgress(state, experimentId);
-    const experiment = selectExperiment(state, experimentId);
-
-    return getDayProgress(progress, experiment);
+    return getDayProgress(progress);
 };
 
 export const selectCompletionByExperimentId = (state: IAccountSelectorState & ISelectorState) => {
@@ -58,7 +52,7 @@ export const selectCompletionByExperimentId = (state: IAccountSelectorState & IS
 
     for (const [key, { progress }] of Object.entries(subscriptions)) {
         const experiment = selectExperiment(state, key);
-        const dayCompleted = getDayProgress(progress, experiment).filter((day) => day).length;
+        const dayCompleted = getDayProgress(progress).filter((day) => day).length;
         percentages[key] = (dayCompleted / experiment.days.length) * 100;
     }
 
@@ -82,25 +76,13 @@ export default createSlice({
                         let day = 0;
 
                         for (let i = 0; i < experiment.duration - originalLength; i++) {
-                            experiment.days.push({ ...experiment.days[day] });
+                            experiment.days.push(experiment.days[day]);
                             day++;
 
                             if (day === originalLength) {
                                 day = 0;
                             }
                         }
-                    }
-
-                    for (let i = 0; i < experiment.days.length; i++) {
-                        const isFirstDay = i === 0;
-                        const isLastDay = i === experiment.days.length - 1;
-
-                        experiment.days[i].tasks = experiment.days[i].tasks.filter(
-                            (task) =>
-                                !task.hideIf ||
-                                (task.hideIf === 'isFirstDay' && !isFirstDay) ||
-                                (task.hideIf === 'isLastDay' && !isLastDay),
-                        );
                     }
 
                     state.items[experiment.id] = experiment;
