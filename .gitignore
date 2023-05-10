@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+xbapp/node_modules
+
 # testing
 /coverage
 
