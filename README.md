@@ -8,9 +8,9 @@ Documentation can be found [here](./docs/)
 
 This app is built with:
 
-- `npm` for package management
-- `Ionic React` for user interface, toolchain and structure
-- `react-redux` for state management
+-   `npm` for package management
+-   `Ionic React` for interface, toolchain and structure
+-   `react-redux` for state management
 
 ## RUN
 

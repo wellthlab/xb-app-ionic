@@ -1,0 +1,1046 @@
+[
+    {
+        "name": "Green and Red",
+        "box": "eat",
+        "desc": "Be conscious about what you eat for a week, and see if it makes a difference",
+        "longDesc": [
+            "Each time you eat, for every day of the week, has to have some green and red BEFORE anything else"
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Upload a picture of what you eat",
+                        "icon": "camera",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Please upload a picture of your meal today. We will then roughly estimate how much green and red you have eaten. If incorrect, you can correct the estimations"
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Walking and Breathing",
+        "box": "move",
+        "desc": "Try exercising in a certain way for a week, and see if it makes a difference",
+        "longDesc": [
+            "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes"
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Time your walk",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 300,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Sitting and Thinking",
+        "box": "cogitate",
+        "desc": "Try to sit down and think about your thoughts",
+        "longDesc": [
+            "Just sit in a particular posture for 4 to 9 mins - this is to get out of the default mode network and build non-verbal awareness. We'll look at a technique called \"letting go of thoughts\""
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Time your sit",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 240
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "label": "Did you notice you were thinking about something?",
+                                "options": ["Yes", "No"],
+                                "rk": "has-thoughts"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many times were you thinking?",
+                                "rk": "no-of-thoughts"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Were you able to let go of your thoughts?",
+                                "options": ["Yes", "No"],
+                                "rk": "let-go-of-thoughts"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Listening for 3 minutes",
+        "box": "engage",
+        "desc": "Practice engagement techniques with someone each day, and see if it improves",
+        "longDesc": [
+            "Find someone and just listen to them for three minutes. Then reflect on your engagement techniques used."
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Time your listening period",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 180,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "select-input",
+                                "multiple": true,
+                                "label": "Which of the following techniques did you use?",
+                                "options": ["Eye contact", "Nodding", "Mirroring"],
+                                "rk": "engagement-techniques"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How did it feel not interrupting?",
+                                "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Kill the alarm",
+        "box": "sleep",
+        "desc": "Track your sleep and see if it makes any difference",
+        "longDesc": [
+            "\"Wake up when you wake up\" or \"kill the alarm\" - try to get a minimum of 7 hours of sleep every day"
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "desc": "Because this is the first day of the experiment, you only have to plan your sleep for tonight",
+                "tasks": [
+                    {
+                        "name": "Plan your sleep",
+                        "icon": "alarm",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time are you sleeping tonight?",
+                                "rk": "sleeping-time"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "desc": "From today onwards (except the last day), please reflect on your sleep quality last night and plan your sleep for tonight",
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time did you wake up today?",
+                                "rk": "wake-up-time"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many sleep cycles do you think you got last night?",
+                                "help": "A sleep cycle lasts for 90 minutes. A person typically goes through multiple cycles during their sleep.",
+                                "rk": "sleep-cycles"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
+                                "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Plan your sleep",
+                        "icon": "alarm",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time are you sleeping tonight?",
+                                "rk": "sleeping-time"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time did you wake up today?",
+                                "rk": "wake-up-time"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many sleep cycles do you think you got last night?",
+                                "help": "A sleep cycle lasts for 90 minutes. A person typically goes through multiple cycles during their sleep.",
+                                "rk": "sleep-cycles"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
+                                "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Plan your sleep",
+                        "icon": "alarm",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time are you sleeping tonight?",
+                                "rk": "sleeping-time"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time did you wake up today?",
+                                "rk": "wake-up-time"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many sleep cycles do you think you got last night?",
+                                "help": "A sleep cycle lasts for 90 minutes. A person typically goes through multiple cycles during their sleep.",
+                                "rk": "sleep-cycles"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
+                                "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Plan your sleep",
+                        "icon": "alarm",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time are you sleeping tonight?",
+                                "rk": "sleeping-time"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "desc": "Great, you are on the last day of the experiment. Just have to reflect on your sleep last night today",
+                "tasks": [
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "time-input",
+                                "label": "What time did you wake up today?",
+                                "rk": "wake-up-time"
+                            },
+                            {
+                                "type": "number-input",
+                                "label": "How many sleep cycles do you think you got last night?",
+                                "help": "A sleep cycle lasts for 90 minutes. A person typically goes through multiple cycles during their sleep.",
+                                "rk": "sleep-cycles"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-2, 2],
+                                "labels": {
+                                    "-2": "Much worse",
+                                    "-1": "Slightly worse",
+                                    "0": "The same",
+                                    "1": "Better",
+                                    "2": "Much better"
+                                },
+                                "rk": "feeling"
+                            },
+
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "MoveIt",
+        "box": "move",
+        "desc": "Move intensively for 1 minute several times during the day",
+        "longDesc": [
+            "At the start of the week, we will ask you to record your heart rate at rest.",
+            "You can then EXPLORE the list (by tapping the action \"Try a movement\" below) for movements you can get yourself breathing hard (feeling the need to breath in through your mouth) as early into the movement as possible",
+            "Do the selected movement 4 to 8 times during the regular day (from the time you start work, till 8 hours later) no more than once and hour, no less than once every two hours within that 8 hour window. (Max dose 8 times within 8 hours)",
+            "Please remember: SAFETY FIRST - test these out BEFORE the experiment to see how they feel and where you can do them."
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "desc": "Since this is your first day, start by taking your resting heart rate",
+                "tasks": [
+                    {
+                        "name": "Take your heart rate",
+                        "icon": "heartbeat",
+                        "blocks": [
+                            {
+                                "type": "heart-rate-input",
+                                "label": "Your heart rate",
+                                "rk": "heartrate"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Try a movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-picker",
+                                "label": "Pick a movement from below",
+                                "rk": "movement",
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            },
+                            {
+                                "type": "title",
+                                "content": "And time yourself doing it..."
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 60,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-recorder",
+                                "max": 8,
+                                "countdown": {
+                                    "duration": 60,
+                                    "fixed": true
+                                },
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-recorder",
+                                "max": 8,
+                                "countdown": {
+                                    "duration": 60,
+                                    "fixed": true
+                                },
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-recorder",
+                                "max": 8,
+                                "countdown": {
+                                    "duration": 60,
+                                    "fixed": true
+                                },
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-recorder",
+                                "max": 8,
+                                "countdown": {
+                                    "duration": 60,
+                                    "fixed": true
+                                },
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "desc": "Great, you are on the last day of this experiment. Please do your movements as usual, then rest until your heart beats at the normal rate. Then measure your heart rate and compare it to the start of the experiment in Journal",
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "movement-recorder",
+                                "max": 8,
+                                "countdown": {
+                                    "duration": 60,
+                                    "fixed": true
+                                },
+                                "movements": [
+                                    [
+                                        "Hands on knees rapid bodyweight squats",
+                                        "Put your hands on your knees and squat till your bum is level with your knees; use your hands (if you wish) to help push yourself back up to standing; do this move as quickly as possible - which is why using your hands is ok as that will get you breathing harder faster."
+                                    ],
+                                    [
+                                        "Up stairs at pace",
+                                        "Go to a lower floor so you have ample stairs for your minute. Notice what floor you start to feel the effects anywhere in your body. if needed for that minute of effort can up intensity by increasing load. Eg, your back pack with a book or your computer in it; taking two steps rather than one (hang onto the banister)"
+                                    ],
+                                    [
+                                        "Obstacle hops",
+                                        "Put down a pencil, a book, anything (Test this ahead of time) that is low and narrow, and hop over it (both feet together) from one side to the other. This is DEMANDING so please test ahead of time how continuously this is possible to do. Try not to look at your feet - this is similar to skipping without the rope. Note: Do this only once a day"
+                                    ],
+                                    [
+                                        "Jumping Jacks",
+                                        "An oldy but a goody - and again not recommended more than one of your reps during the day as this is a kind of plyometric or explosive movement. It can be effective because the whole body is in motion."
+                                    ],
+                                    [
+                                        "Lunges",
+                                        "Stepping or jumping or blended - back or forward lunging - also side (russian) lunges fine too again, test these out ahead of time to see what works for you and can be sustained for a minute."
+                                    ],
+                                    [
+                                        "Mountain Climbers",
+                                        "Hands on ground - one foot forward one foot back; swap front and rear feet as rapidly as possible, with feet spaced as far away from each other as possible. That spacing may begin quite close together, and over the week, get further apart. "
+                                    ]
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
