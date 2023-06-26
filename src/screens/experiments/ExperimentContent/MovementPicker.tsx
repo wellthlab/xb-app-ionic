@@ -12,8 +12,11 @@ import {
 } from '@mui/joy';
 import { Collapse } from '@mui/material';
 
+import YouTubeVideo from './YoutubeVideo';
+import { IMovementConfig } from '../../../models/Experiment';
+
 interface IMovementPickerProps extends RadioGroupProps {
-    movements: [string, string][];
+    movements: IMovementConfig[];
     label?: string;
     helperText?: string;
     error?: boolean;
@@ -26,13 +29,18 @@ const MovementPicker = function ({ movements, label, value, helperText, error, .
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
             <RadioGroup value={value} {...others}>
                 <Stack spacing={1}>
-                    {movements.map(([movement, explanation], index) => (
+                    {movements.map(({ name, video, desc }, index) => (
                         <Card key={index}>
-                            <Radio value={movement} label={movement} />
-                            <Collapse in={value === movement}>
-                                <Typography level="body2" sx={{ mt: 2 }}>
-                                    {explanation}
-                                </Typography>
+                            <Radio value={name} label={name} />
+                            <Collapse in={value === name}>
+                                <Stack spacing={2}>
+                                    {video && <YouTubeVideo src={video} sx={{ mt: 2 }} />}
+                                    {desc && (
+                                        <Typography level="body2" sx={{ mt: 2 }}>
+                                            {desc}
+                                        </Typography>
+                                    )}
+                                </Stack>
                             </Collapse>
                         </Card>
                     ))}

@@ -17,7 +17,7 @@ const ExperimentsList = function () {
     const { type } = useParams<{ type: string }>();
 
     const experiments = useSelector((state) => selectExperimentByBox(state, type));
-    const completionByExperimentId = useSelector((state) => selectCompletionByExperimentId(state));
+    const completionByExperimentId = useSelector(selectCompletionByExperimentId);
 
     const history = useHistory();
     const dispatch = useDispatch();

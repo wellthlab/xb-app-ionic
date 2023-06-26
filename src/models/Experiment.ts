@@ -113,14 +113,20 @@ interface IImage extends IMedia {
 
 interface IMovementPicker extends IGenericInput {
     type: 'movement-picker';
-    movements: [string, string][];
+    movements: IMovementConfig[];
 }
 
 interface IMovementRecorder {
     type: 'movement-recorder';
-    movements: [string, string][];
+    movements: IMovementConfig[];
     max: number;
     countdown: Omit<ICountdownTimer, 'type'>;
+}
+
+export interface IMovementConfig {
+    name: string;
+    video?: string;
+    desc?: string;
 }
 
 interface ICountdownTimer {
@@ -150,7 +156,7 @@ class Experiment extends BaseModel {
 
         const result = await db.collection<IExperimentDocument>('experiments').find();
 
-        return result.map((item) => {
+        return result.map((item: IExperimentDocument) => {
             const { _id, ...others } = item;
             return { id: _id.toString(), ...others };
         });
@@ -182,7 +188,7 @@ class Experiment extends BaseModel {
                 { sort: { createdAt: -1 } },
             );
 
-        return result.map((result) => {
+        return result.map((result: IResponseDocument) => {
             const { _id, userId, ...others } = result;
 
             return {
