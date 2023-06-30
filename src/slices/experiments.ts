@@ -79,6 +79,12 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
             continue;
         }
 
+        // Skip if the day is empty
+
+        if (!experiment.days[currentDay].tasks.length) {
+            continue;
+        }
+
         tasksByExperiment.push({
             id: experiment.id,
             name: experiment.name,

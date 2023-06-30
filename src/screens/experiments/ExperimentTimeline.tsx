@@ -78,14 +78,14 @@ const ExperimentTimeline = function () {
                                 <TimelineSeparator>
                                     <TimelineDot
                                         sx={{
-                                            bgcolor: dayCompleted
+                                            bgcolor: !unlocked
+                                                ? 'neutral.solidBg'
+                                                : dayCompleted
                                                 ? 'success.solidBg'
-                                                : unlocked
-                                                ? 'primary.solidBg'
-                                                : 'neutral.solidBg',
+                                                : 'primary.solidBg',
                                         }}
                                     >
-                                        {dayCompleted ? <Check /> : unlocked ? <LockOpen /> : <Lock />}
+                                        {!unlocked ? <Lock /> : dayCompleted ? <Check /> : <LockOpen />}
                                     </TimelineDot>
                                     {dayId !== experiment.days.length - 1 && <TimelineConnector />}
                                 </TimelineSeparator>
@@ -94,14 +94,19 @@ const ExperimentTimeline = function () {
                                         Day {dayId + 1}
                                     </Typography>
                                     <Stack spacing={2}>
-                                        {unlocked && (
-                                            <TasksList
-                                                tasks={day.tasks}
-                                                experimentId={experimentId}
-                                                dayId={dayId}
-                                                onTaskClick={handleClickTask}
-                                            />
-                                        )}
+                                        {unlocked &&
+                                            (day.tasks.length ? (
+                                                <TasksList
+                                                    tasks={day.tasks}
+                                                    experimentId={experimentId}
+                                                    dayId={dayId}
+                                                    onTaskClick={handleClickTask}
+                                                />
+                                            ) : (
+                                                <Typography level="body2">
+                                                    There is nothing to do for this day
+                                                </Typography>
+                                            ))}
                                     </Stack>
                                 </TimelineContent>
                             </TimelineItem>

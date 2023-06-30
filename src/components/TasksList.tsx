@@ -30,31 +30,33 @@ const TasksList = function ({ tasks, desc, experimentId, dayId, onTaskClick }: I
     return (
         <Stack spacing={2}>
             {desc && <Typography>{desc}</Typography>}
-            <List sx={{ mb: 2 }}>
-                {tasks.map((task, taskId) => {
-                    const taskCompleted = progress[dayId]?.[taskId];
-                    const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
+            {tasks.length && (
+                <List sx={{ mb: 2 }}>
+                    {tasks.map((task, taskId) => {
+                        const taskCompleted = progress[dayId]?.[taskId];
+                        const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
 
-                    return (
-                        <ListItem
-                            button={!taskCompleted}
-                            key={taskId}
-                            startDecorator={
-                                Icon &&
-                                (taskCompleted ? (
-                                    <Box component={Icon} sx={{ color: 'success.plainColor' }} />
-                                ) : (
-                                    <Icon />
-                                ))
-                            }
-                            endDecorator={!taskCompleted && <CaretRight />}
-                            onClick={createHandleClickTask(taskId)}
-                        >
-                            {task.name}
-                        </ListItem>
-                    );
-                })}
-            </List>
+                        return (
+                            <ListItem
+                                button={!taskCompleted}
+                                key={taskId}
+                                startDecorator={
+                                    Icon &&
+                                    (taskCompleted ? (
+                                        <Box component={Icon} sx={{ color: 'success.plainColor' }} />
+                                    ) : (
+                                        <Icon />
+                                    ))
+                                }
+                                endDecorator={!taskCompleted && <CaretRight />}
+                                onClick={createHandleClickTask(taskId)}
+                            >
+                                {task.name}
+                            </ListItem>
+                        );
+                    })}
+                </List>
+            )}
         </Stack>
     );
 };

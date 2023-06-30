@@ -1181,6 +1181,72 @@
                         ]
                     }
                 ]
+            },
+            { "tasks": [] },
+            { "tasks": [] },
+            { "tasks": [] },
+            {
+                "tasks": [
+                    {
+                        "name": "Bolt score check",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Breath in breath out normally and when ready: exhale, start timer - let the timer run till your FIRST sense of needing to breathe. Stop the timer."
+                            },
+                            {
+                                "type": "para",
+                                "content": "This assessment is NOT about how long you can hold your breath - but when that first bit of AIR HUNGER happens"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 40,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     },
