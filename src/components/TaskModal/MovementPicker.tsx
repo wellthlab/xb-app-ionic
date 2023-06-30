@@ -13,7 +13,7 @@ import {
 import { Collapse } from '@mui/material';
 
 import YouTubeVideo from './YoutubeVideo';
-import { IMovementConfig } from '../../../models/Experiment';
+import { IMovementConfig } from '../../models/Experiment';
 
 interface IMovementPickerProps extends RadioGroupProps {
     movements: IMovementConfig[];

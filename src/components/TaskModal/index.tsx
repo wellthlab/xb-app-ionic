@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { Typography, TextField, Stack } from '@mui/joy';
 import * as Yup from 'yup';
 
@@ -11,19 +10,21 @@ import TimeInput from './TimeInput';
 import MovementRecorder from './MovementRecorder';
 import MovementPicker from './MovementPicker';
 
-import Modal, { IModalProps } from '../../../components/foundation/Modal';
-import Select from '../../../components/foundation/Select';
-import Checkbox from '../../../components/foundation/Checkbox';
-import Slider from '../../../components/foundation/Slider';
-import useForm from '../../../components/foundation/useForm';
+import Modal, { IModalProps } from '../foundation/Modal';
+import Select from '../foundation/Select';
+import Checkbox from '../foundation/Checkbox';
+import Slider from '../foundation/Slider';
+import useForm from '../foundation/useForm';
 
-import Experiment, { IGenericInput, ITask } from '../../../models/Experiment';
-import { useDispatch, useSelector } from '../../../slices/store';
-import { updateProgress } from '../../../slices/account';
-import { selectTask } from '../../../slices/experiments';
+import Experiment, { IGenericInput, ITask } from '../../models/Experiment';
+import { useDispatch, useSelector } from '../../slices/store';
+import { updateProgress } from '../../slices/account';
+import { selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
-    taskLocation: [number, number];
+    experimentId: string;
+    dayId: number;
+    taskId: number;
 }
 
 const getInitialValues = function (blocks: ITask['blocks']) {
@@ -107,9 +108,7 @@ const getSchema = function (blocks: ITask['blocks']) {
     return Yup.object().shape(keys);
 };
 
-const TaskModal = function ({ onDismiss, taskLocation: [dayId, taskId], ...others }: ITaskModalProps) {
-    const { experimentId } = useParams<{ experimentId: string }>();
-
+const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others }: ITaskModalProps) {
     const task = useSelector((state) => selectTask(state, experimentId, dayId, taskId));
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);

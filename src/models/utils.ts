@@ -1,7 +1,11 @@
 import * as Realm from 'realm-web';
 
+const isProd = process.env.NODE_ENV === 'production';
+const APP_ID = isProd ? 'xb-prod-mpzaf' : 'xb-dev-gwbln';
+const DATABASE = isProd ? 'PRODUCTIOn' : 'DEVELOPMENT';
+
 export class BaseModel {
-    protected static client = Realm.getApp('xb-may-2023-cmdmn');
+    protected static client = Realm.getApp(APP_ID);
 
     protected static oid(id?: string) {
         return new Realm.BSON.ObjectId(id);
@@ -12,7 +16,7 @@ export class BaseModel {
             throw new Error('This method should only be called when user is authenticated');
         }
 
-        return this.client.currentUser.mongoClient('mongodb-atlas').db('MAY23');
+        return this.client.currentUser.mongoClient('mongodb-atlas').db(DATABASE);
     }
 }
 

@@ -22,6 +22,7 @@ interface ISelectorState {
 }
 
 export const selectTeam = (state: ISelectorState) => state.team;
+
 export const selectTeamMembers = (state: ISelectorState) => state.team?.members;
 
 export default createSlice({

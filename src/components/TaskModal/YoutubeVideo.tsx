@@ -1,5 +1,5 @@
-import { BoxProps, Box } from '@mui/joy';
 import React from 'react';
+import { BoxProps, Box } from '@mui/joy';
 
 interface IYoutubeVideoProps extends BoxProps {
     src: string;

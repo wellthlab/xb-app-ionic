@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
-import { IExperiment } from '../models/Experiment';
+import { IParentExperiment, IExperiment } from '../models/Experiment';
+import { selectAllExperimentsById, ISelectorState as IExperimentState } from './experiments';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -33,6 +34,24 @@ export const subscribeToExperiment = createAsyncThunk<
     return Account.subscribeToExperiment(experiment);
 });
 
+export const subscribeToParentExperiment = createAsyncThunk<
+    ISubscription[] | undefined,
+    { experiment: IParentExperiment; resubscribe: boolean },
+    { state: ISelectorState & IExperimentState }
+>('account/subscriptions/parent', ({ experiment, resubscribe }, { getState }) => {
+    const experimentIds = selectSubscriptions(getState());
+
+    if (!resubscribe && experiment.children.every((item) => experimentIds[item])) {
+        return;
+    }
+
+    const experiments = selectAllExperimentsById(getState());
+
+    return Promise.all(
+        experiment.children.map((item) => Account.subscribeToExperiment(experiments[item] as IExperiment)), // Experiment children are guaranteed to not be child experiments
+    );
+});
+
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
 });
@@ -57,14 +76,22 @@ export interface ISelectorState {
 }
 
 export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.id;
+
 export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
+
 export const selectProfile = (state: ISelectorState) => state.account.profile;
+
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
+
 export const selectSubscriptions = (state: ISelectorState) => state.account.subscriptions;
+
 export const selectProgress = (state: ISelectorState, experimentId: string) =>
     state.account.subscriptions[experimentId].progress;
+
 export const selectUserId = (state: ISelectorState) => state.account.id;
+
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
+
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -120,6 +147,14 @@ export default createSlice({
                 if (action.payload) {
                     const { experimentId, ...others } = action.payload;
                     state.subscriptions[experimentId] = others;
+                }
+            })
+            .addCase(subscribeToParentExperiment.fulfilled, (state, action) => {
+                if (action.payload) {
+                    for (const subscription of action.payload) {
+                        const { experimentId, ...others } = subscription;
+                        state.subscriptions[experimentId] = others;
+                    }
                 }
             })
             .addCase(updateProgress.fulfilled, (state, action) => {

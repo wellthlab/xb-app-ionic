@@ -1,19 +1,49 @@
 import { BaseModel, ObjectId } from './utils';
 
-export interface IExperiment {
+export interface IBox {
+    name: string;
+    icon: string;
+    disabled?: boolean;
+}
+
+interface IBoxDocument extends IBox {
+    _id: ObjectId;
+}
+
+interface IBaseExperiment {
     id: string;
     name: string;
     box: string;
-    icon: string;
-    desc: string;
-    longDesc?: string[];
+    desc?: string;
     duration: number;
-    days: IDay[];
 }
 
-export interface IExperimentDocument extends Omit<IExperiment, 'id'> {
-    _id: ObjectId;
+export interface IExperiment extends IBaseExperiment {
+    instructions?: string[];
+    duration: number;
+    days: IDay[];
+    parent?: string;
 }
+
+export interface IParentExperiment extends IBaseExperiment {
+    continuation?: string;
+    children: string[];
+}
+
+export type GenericExperiment = IExperiment | IParentExperiment;
+
+interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
+    _id: ObjectId;
+    parent?: ObjectId;
+}
+
+interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'continuation' | 'children'> {
+    _id: ObjectId;
+    continuation?: ObjectId;
+    children: ObjectId[];
+}
+
+type GenericExperimentDocument = IExperimentDocument | IParentExperimentDocument;
 
 export interface IDay {
     name: string;
@@ -133,12 +163,13 @@ interface ICountdownTimer {
     type: 'countdown';
     duration: number;
     fixed?: boolean;
+    notifications?: number[];
 }
 
 export interface IResponse {
     id: string;
     userId: string;
-    experimentId: string;
+    experimentId: string | null;
     dayId: number;
     taskId: number;
     payload: Record<string, string | number>;
@@ -151,15 +182,37 @@ interface IResponseDocument extends Omit<IResponse, 'userId' | 'id'> {
 }
 
 class Experiment extends BaseModel {
-    static async getExperiments() {
+    static async getExperiments(): Promise<GenericExperiment[]> {
         const db = this.getDb();
 
-        const result = await db.collection<IExperimentDocument>('experiments').find();
+        const result = await db.collection<GenericExperimentDocument>('experiments').find({ hidden: { $ne: true } });
 
-        return result.map((item: IExperimentDocument) => {
-            const { _id, ...others } = item;
-            return { id: _id.toString(), ...others };
+        return result.map((item) => {
+            if ('children' in item) {
+                const { _id, children, continuation, ...others } = item;
+                return {
+                    ...others,
+                    id: _id.toString(),
+                    children: children.map((child) => child.toString()),
+                    continuation: continuation?.toString(),
+                };
+            }
+
+            const { _id, parent, ...others } = item;
+            return {
+                ...others,
+                id: _id.toString(),
+                parent: parent?.toString(),
+            };
         });
+    }
+
+    static async getBoxes(): Promise<IBox[]> {
+        const db = this.getDb();
+
+        const result = await db.collection<IBoxDocument>('boxes').find();
+
+        return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
     }
 
     static saveResponse(response: Omit<IResponse, 'userId' | 'createdAt' | 'id'>) {
@@ -170,23 +223,44 @@ class Experiment extends BaseModel {
             .insertOne({ ...response, userId: this.oid(this.client.currentUser!.id), createdAt: Date.now() });
     }
 
+    static saveNote(note: string) {
+        const db = this.getDb();
+
+        const startDate = new Date();
+        startDate.setUTCHours(0, 0, 0, 0);
+
+        const endDate = new Date(startDate);
+        endDate.setUTCHours(23, 59, 59, 9999);
+
+        return db.collection<IResponseDocument>('responses').updateOne(
+            {
+                userId: this.oid(this.client.currentUser!.id),
+                experimentId: null,
+                dayId: 0,
+                taskId: 0,
+                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
+            },
+            { $set: { payload: { note } }, $setOnInsert: { createdAt: Date.now() } },
+            { upsert: true },
+        );
+    }
+
     static async getResponsesForDate(date: Date) {
         const startDate = new Date(date);
         startDate.setUTCHours(0, 0, 0, 0);
-        const startTs = startDate.getTime();
 
         const endDate = new Date(date);
         endDate.setUTCHours(23, 59, 59, 9999);
-        const endTs = endDate.getTime();
 
         const db = this.getDb();
 
-        const result = await db
-            .collection<IResponseDocument>('responses')
-            .find(
-                { userId: this.oid(this.client.currentUser!.id), createdAt: { $gte: startTs, $lte: endTs } },
-                { sort: { createdAt: -1 } },
-            );
+        const result = await db.collection<IResponseDocument>('responses').find(
+            {
+                userId: this.oid(this.client.currentUser!.id),
+                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
+            },
+            { sort: { createdAt: -1 } },
+        );
 
         return result.map((result: IResponseDocument) => {
             const { _id, userId, ...others } = result;

@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, Cube, CalendarBlank } from 'phosphor-react';
+import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
 
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
@@ -33,9 +33,12 @@ import TeamInsightsTab from './screens/teams/Insights';
 
 import BoxesListTab from './screens/experiments/BoxesList';
 import ExperimentsListScreen from './screens/experiments/ExperimentsList';
-import ExperimentContentScreen from './screens/experiments/ExperimentContent';
+import ChildExperimentsListScreen from './screens/experiments/ChildExperimentsList';
+import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 
 import JournalTab from './screens/journal/Journal';
+
+import TodayTab from './screens/today/Today';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -154,7 +157,15 @@ const App = function () {
                                                 </Route>
 
                                                 <Route path="/main/box/:type/:experimentId" exact>
-                                                    <ExperimentContentScreen />
+                                                    <ChildExperimentsListScreen />
+                                                </Route>
+
+                                                <Route path="/main/box/:type/:parentId/:experimentId" exact>
+                                                    <ExperimentTimelineScreen />
+                                                </Route>
+
+                                                <Route path="/main/today" exact>
+                                                    <TodayTab />
                                                 </Route>
 
                                                 <Route path="/main/journal">
@@ -182,6 +193,10 @@ const App = function () {
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
                                                     <IonLabel>Boxes</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="today" href="/main/today">
+                                                    <ListChecks />
+                                                    <IonLabel>Today</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="journal" href="/main/journal">
                                                     <CalendarBlank />

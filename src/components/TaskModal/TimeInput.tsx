@@ -2,7 +2,7 @@ import React from 'react';
 import { Stack, Typography, FormLabel, FormControl, FormControlProps, FormHelperText } from '@mui/joy';
 import { ClickAwayListener } from '@mui/material';
 
-import Select from '../../../components/foundation/Select';
+import Select from '../foundation/Select';
 
 interface ITimeInputProps extends Omit<FormControlProps, 'onChange'> {
     value?: string;

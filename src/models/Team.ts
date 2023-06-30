@@ -19,7 +19,7 @@ export interface ITeamDocument extends Omit<ITeam, 'id' | 'members'> {
 const generateInvite = customAlphabet('ABCDEFGHJKLMNPQRSTUVWXYZ', 6);
 
 class Team extends BaseModel {
-    static async getCurrentTeam() {
+    static async getCurrentTeam(): Promise<ITeam | null> {
         const db = this.getDb();
 
         const result = await db
@@ -30,14 +30,13 @@ class Team extends BaseModel {
             return null;
         }
 
-        const members = await this._getMembers(result.members);
+        const memberProfiles = await this._getMembers(result.members);
 
-        const { _id, ...others } = result;
-
+        const { _id, members, ...others } = result;
         return {
             ...others,
             id: _id.toString(),
-            members,
+            members: memberProfiles,
         };
     }
 
@@ -97,14 +96,14 @@ class Team extends BaseModel {
         return db.collection<ITeamDocument>('teams').updateOne({ members: id }, { $pull: { members: id } });
     }
 
-    private static async _getMembers(ids: ObjectId[]) {
+    private static async _getMembers(ids: ObjectId[]): Promise<IAccount[]> {
         const db = this.getDb();
 
         const result = await db.collection<IAccountDocument>('accounts').find({
             _id: { $in: ids },
         });
 
-        const transformedDocuments = result.map(Account.transformDocument);
+        const transformedDocuments = result.map(Account.fromDocument);
 
         // Sort ids to follow the member ids
         // This is because we want to display the members in the order they joined

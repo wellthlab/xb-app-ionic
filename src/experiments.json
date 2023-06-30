@@ -3,7 +3,7 @@
         "name": "Green and Red",
         "box": "eat",
         "desc": "Be conscious about what you eat for a week, and see if it makes a difference",
-        "longDesc": [
+        "instructions": [
             "Each time you eat, for every day of the week, has to have some green and red BEFORE anything else"
         ],
         "duration": 5,
@@ -75,7 +75,7 @@
         "name": "Walking and Breathing",
         "box": "move",
         "desc": "Try exercising in a certain way for a week, and see if it makes a difference",
-        "longDesc": [
+        "instructions": [
             "Deliberately move for five minutes - twice a day - where breathing in and out through the nose starts to feel effortful - this can be a walk, taking stairs, jumping up and down - whatever it is for five minutes"
         ],
         "duration": 5,
@@ -142,7 +142,7 @@
         "name": "Sitting and Thinking",
         "box": "cogitate",
         "desc": "Try to sit down and think about your thoughts",
-        "longDesc": [
+        "instructions": [
             "Just sit in a particular posture for 4 to 9 mins - this is to get out of the default mode network and build non-verbal awareness. We'll look at a technique called \"letting go of thoughts\""
         ],
         "duration": 5,
@@ -214,7 +214,7 @@
         "name": "Listening for 3 minutes",
         "box": "engage",
         "desc": "Practice engagement techniques with someone each day, and see if it improves",
-        "longDesc": [
+        "instructions": [
             "Find someone and just listen to them for three minutes. Then reflect on your engagement techniques used."
         ],
         "duration": 5,
@@ -283,7 +283,7 @@
         "name": "Kill the alarm",
         "box": "sleep",
         "desc": "Track your sleep and see if it makes any difference",
-        "longDesc": [
+        "instructions": [
             "\"Wake up when you wake up\" or \"kill the alarm\" - try to get a minimum of 7 hours of sleep every day"
         ],
         "duration": 5,
@@ -554,7 +554,7 @@
         "name": "MoveIt",
         "box": "move",
         "desc": "Move intensively for 1 minute several times during the day",
-        "longDesc": [
+        "instructions": [
             "At the start of the week, we will ask you to record your heart rate at rest.",
             "You can then EXPLORE the list (by tapping the action \"Try a movement\" below) for movements you can get yourself breathing hard (feeling the need to breath in through your mouth) as early into the movement as possible",
             "Do the selected movement 4 to 8 times during the regular day (from the time you start work, till 8 hours later) no more than once and hour, no less than once every two hours within that 8 hour window. (Max dose 8 times within 8 hours)",
@@ -1073,6 +1073,424 @@
                                     "1": "More energy"
                                 },
                                 "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Move Week 1",
+        "duration": 5,
+        "desc": "Move experiments for Week 1",
+        "continuation": { "$oid": "" },
+        "children": [{ "$oid": "" }]
+    },
+
+    {
+        "name": "Breathe check",
+        "parent": { "$oid": "" },
+        "box": "move",
+        "desc": "Breathing exercises",
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Bolt score check",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Breath in breath out normally and when ready: exhale, start timer - let the timer run till your FIRST sense of needing to breathe. Stop the timer."
+                            },
+                            {
+                                "type": "para",
+                                "content": "This assessment is NOT about how long you can hold your breath - but when that first bit of AIR HUNGER happens"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 40,
+                                "fixed": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Balance",
+        "parent": true,
+        "box": "move",
+        "desc": "Pre balance check - Mobility - Post balance check",
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Pre-check",
+                        "icon": "list-checks",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Do the following, on bare foot, close to a wall or chair in case you need to steady yourself. Check or fill in the boxes to indicate that you have done them."
+                            },
+                            {
+                                "type": "checkbox",
+                                "label": "Feet shoulder with apart with EYES OPEN",
+                                "rk": "pre-check-1"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Raise LEFT knee so balancing on one foot - count how long you can how your balance (maximum 30)"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-2"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same on the opposite side"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-3"
+                            },
+                            {
+                                "type": "checkbox",
+                                "label": "Reset, feet shoulder width apart with EYES CLOSED",
+                                "rk": "pre-check-4"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Raise LEFT knee so balancing on one foot - count how long you can how your balance (maximum 30)"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-5"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same on the opposite side"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-6"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Ankle mobility",
+                        "icon": "list-checks",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Please follow along this video"
+                            },
+                            {
+                                "type": "video",
+                                "src": "ZQdoCjOpFtQ"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Repeat balance check",
+                        "icon": "list-checks",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Do the following, on bare foot, close to a wall or chair in case you need to steady yourself. Check or fill in the boxes to indicate that you have done them."
+                            },
+                            {
+                                "type": "checkbox",
+                                "label": "Feet shoulder with apart with EYES OPEN",
+                                "rk": "post-check-1"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Raise LEFT knee so balancing on one foot - count how long you can how your balance (maximum 30)"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "post-check-2"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same on the opposite side"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "post-check-3"
+                            },
+                            {
+                                "type": "checkbox",
+                                "label": "Reset, feet shoulder width apart with EYES CLOSED",
+                                "rk": "post-check-4"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Raise LEFT knee so balancing on one foot - count how long you can how your balance (maximum 30)"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "post-check-5"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same on the opposite side"
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "post-check-6"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What do you notice?",
+                                "help": "Ideas - what did you notice about the feeling of the OUTSIDE ankle tilts? About the inside ones?",
+                                "rk": "notice"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Coordinate",
+        "parent": { "$oid": "" },
+        "box": "move",
+        "desc": "Stand to squat to floor to squat to stand",
+        "instructions": [
+            "Pick a time between 3-7 minutes.",
+            "Stand to squat to floor to squat to stand - how does this work for you?",
+            "The key bits here are to include a squat in each direction - going down and coming up.",
+            "It doesn’t matter how far into the squat you go; it doesn’t matter how many times you do this within the time you set for yourself.",
+            "Take as many pauses as you need.",
+            "You are exploring how YOU get down and up through the squat - and how as you explore you discover you can make the movement more smooth, continuous, fun.",
+            "This movement may be easier or harder depending when in your day you do this, too - so this is about how you feel and what you notice - how easy is one part of the movement? Is getting up easier than coming down? If so do you notice where your legs or back or shoulders or arms are working?"
+        ],
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Time your squat",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 420
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What do you notice?",
+                                "rk": "notice"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Air Walk",
+        "parent": { "$oid": "" },
+        "box": "move",
+        "duration": 5,
+        "desc": "BREATH THROUGH YOUR NOSE while walking.",
+        "instructions": [
+            "In this experiment you BREATH THROUGH YOUR NOSE for 6 minutes while walking.",
+            "Each time you do this, you can consider if you are going further or shorter at each level every day - because these experiences are not linear - they can vary and that's ok.",
+            "Start the timer and do the following:",
+            "- First 3 minutes: Walk at whatever pace is comfortable, and maintain breathing through your nose",
+            "- Next 2 minutes: Pick up the pace so you FEEL you’re walking - you may need to pay more attention to your pace so you don’t fall back to your usual tempo",
+            "- Last minute: Walk fast/hard enough to get to the edge of your ability to breath through your nose - you may wish to use a hill or stairs for this if walking fast and staying with nose breathing is too easy. If you are a runner go ahead - hit the gas JUST enough to get to that \"I want to breath through my mouth\"",
+            "If you find yourself breathing through your mouth - think about slowing down your breathing - not taking deep breaths, but SLOW and relaxed breaths"
+        ],
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Time your walk",
+                        "icon": "timer",
+                        "blocks": [
+                            {
+                                "type": "countdown",
+                                "duration": 360,
+                                "fixed": true,
+                                "notifications": [180, 120, 60]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What do you notice?",
+                                "help": "Ideas - what are you noticing about breathing through your nose? How does it affect your speed? Your heart rate? Any other physical sensations?",
+                                "rk": "notice"
                             },
                             {
                                 "type": "title",
