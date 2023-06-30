@@ -141,7 +141,7 @@ const App = function () {
                                         <IonTabs>
                                             <IonRouterOutlet>
                                                 <Route path="/main" exact>
-                                                    <Redirect to="/main/team" />
+                                                    <Redirect to="/main/today" />
                                                 </Route>
 
                                                 <Route path="/main/team" exact>
