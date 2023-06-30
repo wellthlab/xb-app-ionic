@@ -2,26 +2,33 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
-import { IExperiment } from '../models/Experiment';
+import { GenericExperiment, IBox, IExperiment } from '../models/Experiment';
 import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectProgress } from './account';
 
-interface ISelectorState {
+export interface ISelectorState {
     experiments: IExperimentState;
 }
 
 interface IExperimentState {
-    items: Record<string, IExperiment>;
+    items: Record<string, GenericExperiment>;
     all: string[];
+    boxes: IBox[];
 }
+
+export const selectBoxes = (state: ISelectorState) => state.experiments.boxes;
 
 export const selectAllExperiments = (state: ISelectorState) =>
     state.experiments.all.map((experimentId) => selectExperiment(state, experimentId));
+
 export const selectExperimentByBox = (state: ISelectorState, type: string) =>
     selectAllExperiments(state).filter(({ box }) => box === type);
+
 export const selectAllExperimentsById = (state: ISelectorState) => state.experiments.items;
+
 export const selectExperiment = (state: ISelectorState, experimentId: string) => state.experiments.items[experimentId];
+
 export const selectTask = (state: ISelectorState, experimentId: string, dayId: number, taskId: number) =>
-    state.experiments.items[experimentId].days[dayId].tasks[taskId];
+    (state.experiments.items[experimentId] as IExperiment).days[dayId].tasks[taskId];
 
 export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const subscriptions = selectSubscriptions(state);
@@ -37,7 +44,7 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
     return (startOfCurrentDayTs - startOfSubscriptionDayTs) / oneDay;
 };
 
-const getDayProgress = function (progress: boolean[][]) {
+const getDayProgress = (progress: boolean[][]) => {
     return progress.map((dayProgress) => dayProgress.reduce((acc, curr) => acc && curr, true));
 };
 
@@ -51,7 +58,7 @@ export const selectCompletionByExperimentId = (state: IAccountSelectorState & IS
     const percentages: Record<string, number> = {};
 
     for (const [key, { progress }] of Object.entries(subscriptions)) {
-        const experiment = selectExperiment(state, key);
+        const experiment = selectExperiment(state, key) as IExperiment;
         const dayCompleted = getDayProgress(progress).filter((day) => day).length;
         percentages[key] = (dayCompleted / experiment.days.length) * 100;
     }
@@ -59,28 +66,56 @@ export const selectCompletionByExperimentId = (state: IAccountSelectorState & IS
     return percentages;
 };
 
+export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState) => {
+    const subscriptions = selectSubscriptions(state);
+
+    const tasksByExperiment = [];
+
+    for (const experimentId of Object.keys(subscriptions)) {
+        const currentDay = selectCurrentDay(state, experimentId);
+        const experiment = selectExperiment(state, experimentId) as IExperiment;
+
+        if (currentDay > experiment.days.length - 1) {
+            continue;
+        }
+
+        tasksByExperiment.push({
+            id: experiment.id,
+            name: experiment.name,
+            day: currentDay,
+            content: experiment.days[currentDay],
+        });
+    }
+
+    return tasksByExperiment;
+};
+
 export default createSlice({
     name: 'experiments',
-    initialState: { items: {}, all: [] } as IExperimentState,
+    initialState: { boxes: [], items: {}, all: [] } as IExperimentState,
     reducers: {},
 
     extraReducers: (builder) => {
         builder
             .addCase(boot.fulfilled, (state, action) => {
+                state.boxes = action.payload.boxes;
+
                 state.items = {};
                 state.all = [];
 
                 for (const experiment of action.payload.experiments) {
-                    const originalLength = experiment.days.length;
-                    if (originalLength < experiment.duration) {
-                        let day = 0;
+                    if (!('children' in experiment)) {
+                        const originalLength = experiment.days.length;
+                        if (originalLength < experiment.duration) {
+                            let day = 0;
 
-                        for (let i = 0; i < experiment.duration - originalLength; i++) {
-                            experiment.days.push(experiment.days[day]);
-                            day++;
+                            for (let i = 0; i < experiment.duration - originalLength; i++) {
+                                experiment.days.push(experiment.days[day]);
+                                day++;
 
-                            if (day === originalLength) {
-                                day = 0;
+                                if (day === originalLength) {
+                                    day = 0;
+                                }
                             }
                         }
                     }
