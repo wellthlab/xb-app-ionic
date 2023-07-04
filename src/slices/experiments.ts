@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
-import { GenericExperiment, IBox, IExperiment } from '../models/Experiment';
+import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment } from '../models/Experiment';
 import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectProgress } from './account';
 
 export interface ISelectorState {
@@ -66,10 +66,18 @@ export const selectCompletionByExperimentId = (state: IAccountSelectorState & IS
     return percentages;
 };
 
+interface ITodayTasks {
+    id: string;
+    name: string;
+    day: number;
+    content: IDay;
+}
+
 export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState) => {
     const subscriptions = selectSubscriptions(state);
 
-    const tasksByExperiment = [];
+    const tasksByExperiment: ITodayTasks[] = [];
+    const experimentsByParent: Record<string, ITodayTasks[]> = {};
 
     for (const experimentId of Object.keys(subscriptions)) {
         const currentDay = selectCurrentDay(state, experimentId);
@@ -85,12 +93,44 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
             continue;
         }
 
+        // Deal with children experiments
+
+        if (experiment.parent) {
+            // First find the corresponding parent experiment
+
+            const parent = selectExperiment(state, experiment.parent) as IParentExperiment;
+
+            // Find the accummulated children array
+
+            let children = experimentsByParent[experiment.parent];
+            if (!children) {
+                children = experimentsByParent[experiment.parent] = [];
+            }
+
+            // Insert to the correct position to preserve order of children experiments
+
+            children[parent.children.indexOf(experiment.id)] = {
+                id: experiment.id,
+                name: experiment.name,
+                day: currentDay,
+                content: experiment.days[currentDay],
+            };
+
+            continue;
+        }
+
         tasksByExperiment.push({
             id: experiment.id,
             name: experiment.name,
             day: currentDay,
             content: experiment.days[currentDay],
         });
+    }
+
+    // Deal with children experiments
+
+    for (const children of Object.values(experimentsByParent)) {
+        tasksByExperiment.unshift(...children);
     }
 
     return tasksByExperiment;
