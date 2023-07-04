@@ -186,17 +186,13 @@ const App = function () {
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">
-                                                <IonTabButton tab="team" href="/main/team">
-                                                    <Users />
-                                                    <IonLabel>Team</IonLabel>
+                                                <IonTabButton tab="today" href="/main/today">
+                                                    <ListChecks />
+                                                    <IonLabel>Today</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
                                                     <IonLabel>Boxes</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="today" href="/main/today">
-                                                    <ListChecks />
-                                                    <IonLabel>Today</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="journal" href="/main/journal">
                                                     <CalendarBlank />
