@@ -18,10 +18,8 @@ const Today = function () {
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [modalOpen, setModalOpen] = React.useState(false);
 
-    // Ensures the below experimentId + dayId has at least 1 task (to initialise TaskModal safely)
-
-    const [experimentId, setExperimentId] = React.useState(tasksByExperiment[0]?.id);
-    const [dayId, setDayId] = React.useState(tasksByExperiment[0]?.day);
+    const [experimentId, setExperimentId] = React.useState<string>();
+    const [dayId, setDayId] = React.useState<number>();
     const [taskId, setTaskId] = React.useState(0);
 
     if (!tasksByExperiment.length) {
@@ -83,8 +81,8 @@ const Today = function () {
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
                 key={`${dayId}.${taskId}`}
-                experimentId={experimentId}
-                dayId={dayId}
+                experimentId={experimentId || tasksByExperiment[0].id}
+                dayId={dayId || tasksByExperiment[0].day}
                 taskId={taskId}
                 presentingElement={presentingElement}
             />
