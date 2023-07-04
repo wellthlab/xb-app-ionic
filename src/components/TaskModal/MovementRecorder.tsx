@@ -6,9 +6,11 @@ import { Timer, Plus, CaretUp } from 'phosphor-react';
 import MovementPicker from './MovementPicker';
 import CountdownTimer from './CountdownTimer';
 
+import { IMovementConfig } from '../../models/Experiment';
+
 interface IMovementRecorderProps {
     max: number;
-    movements: [string, string][];
+    movements: IMovementConfig[];
     countdown: {
         duration: number;
         fixed?: boolean;

@@ -130,20 +130,20 @@ class Account extends BaseModel {
         return this.client.emailPasswordAuth.resetPassword({ password, token, tokenId });
     }
 
-    static transformDocument(document: IAccountDocument) {
+    static fromDocument(document: IAccountDocument): IAccount {
         const { _id, subscriptions, ...others } = document;
 
         return {
             ...others,
             id: _id.toString(),
-            subscriptions: subscriptions.map(({ experimentId, ...others }) => ({
+            subscriptions: subscriptions.map(({ experimentId, ...item }) => ({
+                ...item,
                 experimentId: experimentId.toString(),
-                ...others,
             })),
         };
     }
 
-    static async getDetails() {
+    static async getDetails(): Promise<IAccount | null> {
         const db = this.getDb();
         const result = await db.collection<IAccountDocument>('accounts').findOne({
             _id: this.oid(this.client.currentUser!.id),
@@ -153,7 +153,7 @@ class Account extends BaseModel {
             return null;
         }
 
-        return this.transformDocument(result);
+        return this.fromDocument(result);
     }
 
     static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>) {
@@ -209,6 +209,8 @@ class Account extends BaseModel {
 
         return { experimentId: experiment.id, progress, subscribedAt };
     }
+
+    static async subscribeToParentExperiment() {}
 
     static async updateProgress(experimentId: string, dayId: number, taskId: number) {
         const db = this.getDb();

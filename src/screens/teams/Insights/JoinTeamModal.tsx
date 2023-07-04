@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, TextField, Stack } from '@mui/joy';
+import { Alert, TextField, Stack, Typography } from '@mui/joy';
 import * as Yup from 'yup';
 
 import Modal, { IModalProps } from '../../../components/foundation/Modal';
@@ -26,10 +26,10 @@ const JoinTeamModal = function ({ onDismiss, ...others }: IJoinTeamModal) {
     return (
         <Modal headerTitle="Join a team" onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
-                <Alert>
+                <Typography level="body2">
                     An invite code is a unique 6-digit code assigned to each team. Ask the owner, or any member of the
                     team you want to join to continue.
-                </Alert>
+                </Typography>
                 {form.errors.$root && <Alert color="danger">{form.errors.$root}</Alert>}
                 <TextField label="Invite code" placeholder="AB1234" {...getInputProps('invite')} />
             </Stack>

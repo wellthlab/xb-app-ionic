@@ -13,7 +13,7 @@
         "@mui/joy": "5.0.0-alpha.62",
         "@mui/lab": "^5.0.0-alpha.120",
         "@mui/material": "^5.11.10",
-        "@mui/x-date-pickers": "^5.0.20",
+        "@mui/x-date-pickers": "^6.9.0",
         "@reduxjs/toolkit": "^1.8.5",
         "dayjs": "^1.11.7",
         "nanoid": "^4.0.0",
