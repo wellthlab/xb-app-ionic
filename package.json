@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "@capacitor/android": "4.8.0",
         "@capacitor/camera": "^4.1.4",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
@@ -47,6 +48,7 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.12.11",
+        "@capacitor/cli": "^4.8.0",
         "@types/react-dom": "^18.0.6",
         "@types/react-router-dom": "^5.3.3",
         "joi": "^17.6.0",
