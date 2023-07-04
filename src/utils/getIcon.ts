@@ -12,6 +12,7 @@ import {
     ForkKnife,
     Ear,
     Brain,
+    Play,
 } from 'phosphor-react';
 
 const iconComponentMap: Record<string, React.ComponentType> = {
@@ -27,6 +28,7 @@ const iconComponentMap: Record<string, React.ComponentType> = {
     brain: Brain,
     moon: Moon,
     'person-simple-run': PersonSimpleRun,
+    play: Play,
 };
 
 const getIcon = function (type: string) {

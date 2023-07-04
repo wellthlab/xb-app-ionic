@@ -16,6 +16,7 @@ interface IBaseExperiment {
     box: string;
     desc?: string;
     duration: number;
+    hidden?: boolean;
 }
 
 export interface IExperiment extends IBaseExperiment {
@@ -185,7 +186,7 @@ class Experiment extends BaseModel {
     static async getExperiments(): Promise<GenericExperiment[]> {
         const db = this.getDb();
 
-        const result = await db.collection<GenericExperimentDocument>('experiments').find({ hidden: { $ne: true } });
+        const result = await db.collection<GenericExperimentDocument>('experiments').find();
 
         return result.map((item) => {
             if ('children' in item) {

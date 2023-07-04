@@ -71,6 +71,7 @@ interface ITodayTasks {
     name: string;
     day: number;
     content: IDay;
+    instructions?: string[];
 }
 
 export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState) => {
@@ -114,6 +115,7 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
                 name: experiment.name,
                 day: currentDay,
                 content: experiment.days[currentDay],
+                instructions: experiment.instructions,
             };
 
             continue;
@@ -124,6 +126,7 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
             name: experiment.name,
             day: currentDay,
             content: experiment.days[currentDay],
+            instructions: experiment.instructions,
         });
     }
 

@@ -1113,6 +1113,30 @@
     },
 
     {
+        "name": "Week 1 Introduction",
+        "box": "move",
+        "duration": 1,
+        "hidden": true,
+        "instructions": ["Welcome to the first week of XB!"],
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Watch introduction video",
+                        "icon": "play",
+                        "blocks": [
+                            {
+                                "type": "video",
+                                "src": "tu9iFQh-KPk"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
         "name": "Breathe check",
         "parent": { "$oid": "" },
         "box": "move",

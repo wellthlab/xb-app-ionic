@@ -26,39 +26,41 @@ const ExperimentsList = function ({ experiments, onExperimentClick }: IExperimen
 
     return (
         <Stack spacing={2}>
-            {experiments.map((experiment) => {
-                const completion = completionByExperimentId[experiment.id];
+            {experiments
+                .filter((experiment) => !experiment.hidden)
+                .map((experiment) => {
+                    const completion = completionByExperimentId[experiment.id];
 
-                return (
-                    <Card
-                        key={experiment.id}
-                        variant="outlined"
-                        sx={{
-                            '&:hover, &:focus-within': { bgcolor: 'background.level2' },
-                        }}
-                    >
-                        <Stack spacing={1}>
-                            <Link
-                                overlay
-                                textColor="inherit"
-                                underline="none"
-                                onClick={createHandleExperimentClick(experiment)}
-                            >
-                                {experiment.name}
-                            </Link>
-                            {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
-                            {completion !== undefined ? (
-                                <Stack direction="row" spacing={2} alignItems="center">
-                                    <Typography level="body3">{completion}% completed</Typography>
-                                    <LinearProgress determinate value={completion} />
-                                </Stack>
-                            ) : (
-                                <Typography level="body3">{experiment.duration} day(s)</Typography>
-                            )}
-                        </Stack>
-                    </Card>
-                );
-            })}
+                    return (
+                        <Card
+                            key={experiment.id}
+                            variant="outlined"
+                            sx={{
+                                '&:hover, &:focus-within': { bgcolor: 'background.level2' },
+                            }}
+                        >
+                            <Stack spacing={1}>
+                                <Link
+                                    overlay
+                                    textColor="inherit"
+                                    underline="none"
+                                    onClick={createHandleExperimentClick(experiment)}
+                                >
+                                    {experiment.name}
+                                </Link>
+                                {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
+                                {completion !== undefined ? (
+                                    <Stack direction="row" spacing={2} alignItems="center">
+                                        <Typography level="body3">{completion}% completed</Typography>
+                                        <LinearProgress determinate value={completion} />
+                                    </Stack>
+                                ) : (
+                                    <Typography level="body3">{experiment.duration} day(s)</Typography>
+                                )}
+                            </Stack>
+                        </Card>
+                    );
+                })}
         </Stack>
     );
 };

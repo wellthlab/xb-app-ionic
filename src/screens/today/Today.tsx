@@ -2,6 +2,7 @@ import React from 'react';
 import { Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
+import CollapsibleInstructions from './CollapsibleInstructions';
 
 import TasksList from '../../components/TasksList';
 import TaskModal from '../../components/TaskModal';
@@ -57,8 +58,8 @@ const Today = function () {
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
-                    <div key={entry.id}>
-                        <Stack spacing={2} direction="row" alignItems="center" sx={{ mb: 2 }}>
+                    <Stack spacing={2} key={entry.id}>
+                        <Stack spacing={2} direction="row" alignItems="center">
                             <EntryIcon experimentId={entry.id} dayId={entry.day} />
 
                             <div>
@@ -67,13 +68,15 @@ const Today = function () {
                             </div>
                         </Stack>
 
+                        {entry.instructions && <CollapsibleInstructions instructions={entry.instructions} />}
+
                         <TasksList
                             tasks={entry.content.tasks}
                             dayId={entry.day}
                             experimentId={entry.id}
                             onTaskClick={handleClickTask}
                         />
-                    </div>
+                    </Stack>
                 ))}
             </Stack>
 
