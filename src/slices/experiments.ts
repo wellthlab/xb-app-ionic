@@ -133,7 +133,7 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
     // Deal with children experiments
 
     for (const children of Object.values(experimentsByParent)) {
-        tasksByExperiment.unshift(...children);
+        tasksByExperiment.unshift(...children.filter((child) => child));
     }
 
     return tasksByExperiment;
