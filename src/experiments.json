@@ -1610,5 +1610,542 @@
                 ]
             }
         ]
+    },
+
+    {
+        "name": "What is \"full\"?",
+        "desc": "Exploring the notion of feeling \"almost full\"",
+        "box": "eat",
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Measure your heartrate",
+                        "icon": "heartbeat",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To kick off the experiment, we’d like to gather some initial measurements. Firstly, your resting heart rate and then a measurement of your waistline (check the video for instructions)."
+                            },
+                            {
+                                "type": "heart-rate-input",
+                                "rk": "heartrate"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Take a photo",
+                        "icon": "camera",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Taking a photograph of how you look now can help you to judge changes in your body composition. Take a photo (from your camera app) if you like, and keep it for your own reference."
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Hunger Hack",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"almost full\" feel like?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"full\" feel like?",
+                                "rk": "feeling-2"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you stop at \"almost full\" or keep going?",
+                                "options": ["Stopped", "Kept going"],
+                                "rk": "stop-at-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you eat past \"full\"? A little? A lot? ",
+                                "options": ["Stopped", "Kept going a little", "A lot"],
+                                "rk": "past-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
+                                "options": ["Yes", "No"],
+                                "rk": "resize"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                                "rk": "feeling-3"
+                            },
+                            {
+                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
+                                "type": "number-input",
+                                "rk": "hungry-after"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Worse",
+                                    "0": "The same",
+                                    "1": "Better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Hunger Hack",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"almost full\" feel like?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"full\" feel like?",
+                                "rk": "feeling-2"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you stop at \"almost full\" or keep going?",
+                                "options": ["Stopped", "Kept going"],
+                                "rk": "stop-at-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you eat past \"full\"? A little? A lot? ",
+                                "options": ["Stopped", "Kept going a little", "A lot"],
+                                "rk": "past-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
+                                "options": ["Yes", "No"],
+                                "rk": "resize"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                                "rk": "feeling-3"
+                            },
+                            {
+                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
+                                "type": "number-input",
+                                "rk": "hungry-after"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Worse",
+                                    "0": "The same",
+                                    "1": "Better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Hunger Hack",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"almost full\" feel like?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"full\" feel like?",
+                                "rk": "feeling-2"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you stop at \"almost full\" or keep going?",
+                                "options": ["Stopped", "Kept going"],
+                                "rk": "stop-at-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you eat past \"full\"? A little? A lot? ",
+                                "options": ["Stopped", "Kept going a little", "A lot"],
+                                "rk": "past-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
+                                "options": ["Yes", "No"],
+                                "rk": "resize"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                                "rk": "feeling-3"
+                            },
+                            {
+                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
+                                "type": "number-input",
+                                "rk": "hungry-after"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Worse",
+                                    "0": "The same",
+                                    "1": "Better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Hunger Hack",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"almost full\" feel like?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"full\" feel like?",
+                                "rk": "feeling-2"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you stop at \"almost full\" or keep going?",
+                                "options": ["Stopped", "Kept going"],
+                                "rk": "stop-at-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you eat past \"full\"? A little? A lot? ",
+                                "options": ["Stopped", "Kept going a little", "A lot"],
+                                "rk": "past-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
+                                "options": ["Yes", "No"],
+                                "rk": "resize"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                                "rk": "feeling-3"
+                            },
+                            {
+                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
+                                "type": "number-input",
+                                "rk": "hungry-after"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Worse",
+                                    "0": "The same",
+                                    "1": "Better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Hunger Hack",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"almost full\" feel like?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What does \"full\" feel like?",
+                                "rk": "feeling-2"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you stop at \"almost full\" or keep going?",
+                                "options": ["Stopped", "Kept going"],
+                                "rk": "stop-at-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you eat past \"full\"? A little? A lot? ",
+                                "options": ["Stopped", "Kept going a little", "A lot"],
+                                "rk": "past-full"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
+                                "options": ["Yes", "No"],
+                                "rk": "resize"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
+                                "rk": "feeling-3"
+                            },
+                            {
+                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
+                                "type": "number-input",
+                                "rk": "hungry-after"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Measure your heartrate",
+                        "icon": "heartbeat",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Measure your heartrate at the end of this experiment, and compare it at the start of the week (Please see Journal tab and select the first day of this week)"
+                            },
+                            {
+                                "type": "heart-rate-input",
+                                "rk": "heartrate"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Take a photo",
+                        "icon": "camera",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Take a photo (from your own camera app) if you want to compare to your older photo at the start of the week"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Reflection",
+                        "icon": "note-pencil",
+                        "blocks": [
+                            {
+                                "type": "text-input",
+                                "label": "What are the signs of \"almost full\"?",
+                                "rk": "signs-of-full"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How does it feel to stop eating at \"almost full\"?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How might you change the amount of food on your plate to maintain \"almost full\" for another week?",
+                                "rk": "food-change"
+                            },
+                            {
+                                "label": "Did you try the \"have something small 20 minutes before the meal\"? If so, did you feel satisfied / less hungry sooner during your meal? Did you feel less hungry for longer after your meal?",
+                                "type": "text",
+                                "rk": "tried"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Worse",
+                                    "0": "The same",
+                                    "1": "Better"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "title",
+                                "content": "The boring bit..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 ]
