@@ -54,7 +54,7 @@ const Today = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Today's tasks</PageTitle>
+            <PageTitle>Today's Experiments</PageTitle>
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (

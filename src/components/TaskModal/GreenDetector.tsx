@@ -149,34 +149,35 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
                     : 'A good picture must show your meal as a whole. Try not to get other objects in the picture to get an accurate estimation'}
             </Typography>
 
+            <Grid container spacing={1}>
+                <Grid xs={6}>
+                    <TextField
+                        label="Green (%)"
+                        required={required}
+                        {...greenInputProps}
+                        onChange={createHandleChangeDetectorValues(greenInputProps.onChange)}
+                    />
+                </Grid>
+                <Grid xs={6}>
+                    <TextField
+                        label="Red (%)"
+                        required={required}
+                        {...redInputProps}
+                        onChange={createHandleChangeDetectorValues(redInputProps.onChange)}
+                    />
+                </Grid>
+            </Grid>
+
             {photoUploaded && (
                 <React.Fragment>
-                    <Grid container spacing={1}>
-                        <Grid xs={6}>
-                            <TextField
-                                label="Green (%)"
-                                required={required}
-                                {...greenInputProps}
-                                onChange={createHandleChangeDetectorValues(greenInputProps.onChange)}
-                            />
-                        </Grid>
-                        <Grid xs={6}>
-                            <TextField
-                                label="Red (%)"
-                                required={required}
-                                {...redInputProps}
-                                onChange={createHandleChangeDetectorValues(redInputProps.onChange)}
-                            />
-                        </Grid>
-                    </Grid>
-
                     <Typography level="body3">
-                        The original picture has been re-coloured for you to see if the estimation is correct
+                        The original picture has been re-coloured for you to see if the estimation is correct. Feel free
+                        to modify the estimations
                     </Typography>
+
+                    <canvas ref={canvasRef}></canvas>
                 </React.Fragment>
             )}
-
-            <canvas ref={canvasRef}></canvas>
         </Stack>
     );
 };

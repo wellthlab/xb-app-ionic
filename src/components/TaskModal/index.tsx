@@ -1,6 +1,7 @@
 import React from 'react';
-import { Typography, TextField, Stack } from '@mui/joy';
+import { Typography, TextField, Stack, Link } from '@mui/joy';
 import * as Yup from 'yup';
+import { ArrowSquareOut } from 'phosphor-react';
 
 import YouTubeVideo from './YoutubeVideo';
 import GreenDetector from './GreenDetector';
@@ -31,7 +32,7 @@ const getInitialValues = function (blocks: ITask['blocks']) {
     const values: Record<string, string | boolean | number> = {};
 
     for (const block of blocks) {
-        if (!(block as any).rk) {
+        if (!('rk' in block)) {
             continue;
         }
 
@@ -56,7 +57,7 @@ const getInitialValues = function (blocks: ITask['blocks']) {
             continue;
         }
 
-        values[(block as IGenericInput).rk] = '';
+        values[block.rk] = '';
     }
 
     return values;
@@ -68,7 +69,7 @@ const getSchema = function (blocks: ITask['blocks']) {
     const keys: Record<string, Yup.AnySchema> = {};
 
     for (const block of blocks) {
-        if (!(block as any).rk) {
+        if (!('rk' in block)) {
             continue;
         }
 
@@ -98,14 +99,32 @@ const getSchema = function (blocks: ITask['blocks']) {
             }
         }
 
-        if (!(block as IGenericInput).optional && block.type !== 'checkbox') {
+        if (!block.optional && block.type !== 'checkbox') {
             subSchema = subSchema.required('This field is missing');
         }
 
-        keys[(block as IGenericInput).rk] = subSchema;
+        keys[block.rk] = subSchema;
     }
 
     return Yup.object().shape(keys);
+};
+
+const renderParagraphWithLinks = function (content: string) {
+    // This is a paragrah with [link](https://google.com)
+    const parts = content.split(/(\[[^\]]+\]\([^\)]+\))/);
+
+    return parts.map((part) => {
+        if (part[0] === '[') {
+            const [, mask, , link] = part.split(/[\[\]\(\)]/);
+            return (
+                <Link href={link} target="_blank" rel="noopener" endDecorator={<ArrowSquareOut />}>
+                    {mask}
+                </Link>
+            );
+        }
+
+        return part;
+    });
 };
 
 const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others }: ITaskModalProps) {
@@ -135,7 +154,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
                     if (block.type === 'para' || block.type === 'title') {
                         return (
                             <Typography level={block.type === 'para' ? 'body1' : 'h6'} key={blockId}>
-                                {block.content}
+                                {renderParagraphWithLinks(block.content)}
                             </Typography>
                         );
                     }
