@@ -11,39 +11,277 @@
             {
                 "tasks": [
                     {
-                        "name": "Upload a picture of what you eat",
-                        "icon": "camera",
+                        "name": "Eating 1",
+                        "icon": "fork-knife",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "Please upload a picture of your meal today. We will then roughly estimate how much green and red you have eaten. If incorrect, you can correct the estimations"
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
                             },
                             {
                                 "type": "green-detector",
                                 "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     },
                     {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
+                        "name": "Eating 2 (Optional)",
+                        "icon": "fork-knife",
                         "blocks": [
                             {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-2, 2],
-                                "labels": {
-                                    "-2": "Much worse",
-                                    "-1": "Slightly worse",
-                                    "0": "The same",
-                                    "1": "Better",
-                                    "2": "Much better"
-                                },
-                                "rk": "feeling"
+                                "type": "para",
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 3 (Optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 4 (Optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 5 (Optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 6 (Optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Think about when you last ate. Use the green detector below to help you estimate the amount of green and red you had in this eat."
+                            },
+                            {
+                                "type": "green-detector",
+                                "rk": "meal-content"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "If you had anything else, DID YOU WAIT before having it?",
+                                "options": ["Yes I did wait", "No I didn't wait"],
+                                "rk": "anything-else"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you hit SATIETY with what you ate for this Eat?",
+                                "options": ["Yes I did", "No I didn't"],
+                                "rk": "satiety"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1106,6 +1344,7 @@
 
     {
         "name": "Move Week 1",
+        "box": "move",
         "duration": 5,
         "desc": "Move experiments for Week 1",
         "continuation": { "$oid": "" },
@@ -1113,21 +1352,36 @@
     },
 
     {
-        "name": "Week 1 Introduction",
+        "name": "Daily Reflection",
         "box": "move",
-        "duration": 1,
-        "hidden": true,
-        "instructions": ["Welcome to the first week of XB!"],
+        "duration": 5,
         "days": [
             {
                 "tasks": [
                     {
-                        "name": "Watch introduction video",
-                        "icon": "play",
+                        "name": "Reflection",
+                        "icon": "note-pencil",
                         "blocks": [
                             {
-                                "type": "video",
-                                "src": "tu9iFQh-KPk"
+                                "type": "slider-input",
+                                "label": "How do you feel today relative to yesterday?",
+                                "range": [-1, 1],
+                                "labels": {
+                                    "-1": "Fatigue",
+                                    "0": "The same",
+                                    "1": "More energy"
+                                },
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What are some things you have noticed about your movement?",
+                                "rk": "notice-1"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "What are some things you have noticed about your eating?",
+                                "rk": "notice-2"
                             }
                         ]
                     }
@@ -1163,46 +1417,6 @@
                                 "fixed": true
                             }
                         ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Fatigue",
-                                    "0": "The same",
-                                    "1": "More energy"
-                                },
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "title",
-                                "content": "The boring bit..."
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Where did you do this experiment today?",
-                                "options": ["At home", "At work / uni", "Somewhere else"],
-                                "rk": "location"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Who did you do this experiment with today?",
-                                "options": ["With myself only", "With someone else"],
-                                "help": "We encourage you to do experiments with someone you know",
-                                "rk": "company"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you do this experiment indoors or outdoors today?",
-                                "options": ["Indoors", "Outdoors"],
-                                "rk": "in-or-outdoors"
-                            }
-                        ]
                     }
                 ]
             },
@@ -1227,46 +1441,6 @@
                                 "type": "countdown",
                                 "duration": 40,
                                 "fixed": true
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Fatigue",
-                                    "0": "The same",
-                                    "1": "More energy"
-                                },
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "title",
-                                "content": "The boring bit..."
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Where did you do this experiment today?",
-                                "options": ["At home", "At work / uni", "Somewhere else"],
-                                "rk": "location"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Who did you do this experiment with today?",
-                                "options": ["With myself only", "With someone else"],
-                                "help": "We encourage you to do experiments with someone you know",
-                                "rk": "company"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you do this experiment indoors or outdoors today?",
-                                "options": ["Indoors", "Outdoors"],
-                                "rk": "in-or-outdoors"
                             }
                         ]
                     }
@@ -1307,7 +1481,7 @@
                             },
                             {
                                 "type": "para",
-                                "content": "Do the same on the opposite side"
+                                "content": "Do the same on the right side"
                             },
                             {
                                 "type": "time-input",
@@ -1328,11 +1502,34 @@
                             },
                             {
                                 "type": "para",
-                                "content": "Do the same on the opposite side"
+                                "content": "Do the same on the right side"
                             },
                             {
                                 "type": "time-input",
                                 "rk": "pre-check-6"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     },
@@ -1373,7 +1570,7 @@
                             },
                             {
                                 "type": "para",
-                                "content": "Do the same on the opposite side"
+                                "content": "Do the same on the right side"
                             },
                             {
                                 "type": "time-input",
@@ -1394,38 +1591,15 @@
                             },
                             {
                                 "type": "para",
-                                "content": "Do the same on the opposite side"
+                                "content": "Do the same on the right side"
                             },
                             {
                                 "type": "time-input",
                                 "rk": "post-check-6"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Fatigue",
-                                    "0": "The same",
-                                    "1": "More energy"
-                                },
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What do you notice?",
-                                "help": "Ideas - what did you notice about the feeling of the OUTSIDE ankle tilts? About the inside ones?",
-                                "rk": "notice"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1472,38 +1646,26 @@
             {
                 "tasks": [
                     {
-                        "name": "Time your squat",
+                        "name": "Watch MOVE video",
+                        "icon": "play",
+                        "blocks": [
+                            {
+                                "type": "video",
+                                "src": "tu9iFQh-KPk"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Explore the MOVE",
                         "icon": "timer",
                         "blocks": [
                             {
                                 "type": "countdown",
                                 "duration": 420
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Fatigue",
-                                    "0": "The same",
-                                    "1": "More energy"
-                                },
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What do you notice?",
-                                "rk": "notice"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1560,31 +1722,388 @@
                                 "notifications": [180, 120, 60]
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "What is \"full\"?",
+        "desc": "Exploring the notion of feeling \"almost full\"",
+        "box": "eat",
+        "duration": 5,
+        "days": [
+            {
+                "tasks": [
                     {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
+                        "name": "Eating 1",
+                        "icon": "fork-knife",
                         "blocks": [
                             {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Fatigue",
-                                    "0": "The same",
-                                    "1": "More energy"
-                                },
-                                "rk": "feeling"
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
                             },
                             {
                                 "type": "text-input",
-                                "label": "What do you notice?",
-                                "help": "Ideas - what are you noticing about breathing through your nose? How does it affect your speed? Your heart rate? Any other physical sensations?",
-                                "rk": "notice"
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 2 (optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 3 (optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 4 (optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 5 (optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Eating 6 (optional)",
+                        "icon": "fork-knife",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "What did you eat?",
+                                "options": ["Planned Meal", "A Snack"],
+                                "rk": "meal-type"
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How would you describe the reason you ate that?",
+                                "rk": "meal-reason"
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "How hungry were you when you ate?",
+                                "range": [0, 2],
+                                "labels": {
+                                    "0": "Not hungry",
+                                    "1": "A bit hungry",
+                                    "2": "Very hungry"
+                                }
+                            },
+                            {
+                                "type": "slider-input",
+                                "label": "When you finished, how hungry did you feel?",
+                                "range": [0, 3],
+                                "labels": {
+                                    "0": "Still hungry",
+                                    "1": "Less hungry",
+                                    "2": "Full",
+                                    "3": "Over full"
+                                }
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1613,103 +2132,220 @@
     },
 
     {
-        "name": "What is \"full\"?",
-        "desc": "Exploring the notion of feeling \"almost full\"",
+        "name": "Week 2 - Preparation",
+        "desc": "Think about what GREENS and REDS you want to eat",
         "box": "eat",
-        "duration": 5,
+        "duration": 1,
         "days": [
             {
                 "tasks": [
                     {
-                        "name": "Measure your heartrate",
-                        "icon": "heartbeat",
+                        "name": "Prep: Grocery getting",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To kick off the experiment, we’d like to gather some initial measurements. Firstly, your resting heart rate and then a measurement of your waistline (check the video for instructions)."
-                            },
-                            {
-                                "type": "heart-rate-input",
-                                "rk": "heartrate"
+                                "content": "Before the week starts, have a think about what GREENS you want to get into the hous for the week; what reds (proteins: things that had eyes, or would have eyes if given a chance. On the vegetarian side, that includes eggs - not dairy as a red - we're looking for PROTEIN as the main nutrient; on the vegan side, this is the stuff that needs to be soaked or pressure cooked like lentils, chickpeas, soy, turtle, black beans). TIPS FOR GREENS: above ground grown veggies: leafy, dark, cruciferous all great."
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Week 2 - Preparation",
+        "desc": "To get ready for Monday: a few things to prep for the coming week",
+        "box": "move",
+        "duration": 1,
+        "days": [
+            {
+                "tasks": [
                     {
-                        "name": "Take a photo",
-                        "icon": "camera",
+                        "name": "Prep",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "Taking a photograph of how you look now can help you to judge changes in your body composition. Take a photo (from your camera app) if you like, and keep it for your own reference."
+                                "content": "1. Check out Toe Pulls in our Mobility work - and give them a go with your ankle tilts from this week."
+                            },
+                            {
+                                "type": "video",
+                                "src": "0Y8La2b8XiA"
+                            },
+                            {
+                                "type": "para",
+                                "content": "2. Read through [this post](https://www.wellthlab.ac.uk/2023/07/07/how-get-stronger-easy-find-your-fatigue/) on how FATIGUE works to build strength"
+                            },
+                            {
+                                "type": "para",
+                                "content": "3. Have a think about when you'll slot in your MOVE chunks each day this coming week."
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Week 2 - Exploring Fatigue",
+        "box": "move",
+        "duration": 5,
+        "children": [],
+        "continuation": null
+    },
+
+    {
+        "name": "Balance and Mobility",
+        "box": "move",
+        "duration": 5,
+        "parent": "",
+        "days": [
+            {
+                "tasks": [
                     {
-                        "name": "Hunger Hack",
-                        "icon": "fork-knife",
+                        "name": "Balance Pre-check",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                                "content": "Same move for balance check as last week with a head turn."
                             },
                             {
-                                "type": "text-input",
-                                "label": "What does \"almost full\" feel like?",
-                                "rk": "feeling"
+                                "type": "para",
+                                "content": "So, start timer: RIGHT leg up, eyes open, and then as quickly as comfortable, turn head to the LEFT; Pause a second; if still standing with that right leg up, turn head as quickly as comfortable to the RIGHT."
                             },
                             {
-                                "type": "text-input",
-                                "label": "What does \"full\" feel like?",
-                                "rk": "feeling-2"
+                                "type": "time-input",
+                                "rk": "pre-check-1"
                             },
                             {
-                                "type": "select-input",
-                                "label": "Did you stop at \"almost full\" or keep going?",
-                                "options": ["Stopped", "Kept going"],
-                                "rk": "stop-at-full"
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
                             },
                             {
-                                "type": "select-input",
-                                "label": "Did you eat past \"full\"? A little? A lot? ",
-                                "options": ["Stopped", "Kept going a little", "A lot"],
-                                "rk": "past-full"
+                                "type": "time-input",
+                                "rk": "pre-check-2"
                             },
                             {
-                                "type": "select-input",
-                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
-                                "options": ["Yes", "No"],
-                                "rk": "resize"
+                                "type": "para",
+                                "content": "SAME challenge again, RIGHT leg up, this time with eyes closed - as long as the head turn feels safe - and you are welcome to have a chair close by for your hand."
                             },
                             {
-                                "type": "text-input",
-                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-                                "rk": "feeling-3"
+                                "type": "time-input",
+                                "rk": "pre-check-3"
                             },
                             {
-                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
-                                "type": "number-input",
-                                "rk": "hungry-after"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
                             {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Worse",
-                                    "0": "The same",
-                                    "1": "Better"
-                                },
-                                "rk": "feeling"
+                                "type": "time-input",
+                                "rk": "pre-check-4"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mobility",
+                        "icon": "list-checks",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Do 3 or 4 reps a side of outside and inside ankle tilts, each foot, just like last week; add 3-4 reps of each of the toe pulls, each foot"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Repeat balance check",
+                        "icon": "list-checks",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Same move for balance check as last week with a head turn."
+                            },
+                            {
+                                "type": "para",
+                                "content": "So, start timer: RIGHT leg up, eyes open, and then as quickly as comfortable, turn head to the LEFT; Pause a second; if still standing with that right leg up, turn head as quickly as comfortable to the RIGHT."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-1"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-2"
+                            },
+                            {
+                                "type": "para",
+                                "content": "SAME challenge again, RIGHT leg up, this time with eyes closed - as long as the head turn feels safe - and you are welcome to have a chair close by for your hand."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-3"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-4"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1737,71 +2373,16 @@
             {
                 "tasks": [
                     {
-                        "name": "Hunger Hack",
-                        "icon": "fork-knife",
+                        "name": "Mobility",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"almost full\" feel like?",
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"full\" feel like?",
-                                "rk": "feeling-2"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you stop at \"almost full\" or keep going?",
-                                "options": ["Stopped", "Kept going"],
-                                "rk": "stop-at-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you eat past \"full\"? A little? A lot? ",
-                                "options": ["Stopped", "Kept going a little", "A lot"],
-                                "rk": "past-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
-                                "options": ["Yes", "No"],
-                                "rk": "resize"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-                                "rk": "feeling-3"
-                            },
-                            {
-                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
-                                "type": "number-input",
-                                "rk": "hungry-after"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Worse",
-                                    "0": "The same",
-                                    "1": "Better"
-                                },
-                                "rk": "feeling"
+                                "content": "Do 3 or 4 reps a side of outside and inside ankle tilts, each foot, just like last week; add 3-4 reps of each of the toe pulls, each foot"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1829,71 +2410,16 @@
             {
                 "tasks": [
                     {
-                        "name": "Hunger Hack",
-                        "icon": "fork-knife",
+                        "name": "Mobility",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"almost full\" feel like?",
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"full\" feel like?",
-                                "rk": "feeling-2"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you stop at \"almost full\" or keep going?",
-                                "options": ["Stopped", "Kept going"],
-                                "rk": "stop-at-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you eat past \"full\"? A little? A lot? ",
-                                "options": ["Stopped", "Kept going a little", "A lot"],
-                                "rk": "past-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
-                                "options": ["Yes", "No"],
-                                "rk": "resize"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-                                "rk": "feeling-3"
-                            },
-                            {
-                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
-                                "type": "number-input",
-                                "rk": "hungry-after"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Worse",
-                                    "0": "The same",
-                                    "1": "Better"
-                                },
-                                "rk": "feeling"
+                                "content": "Do 3 or 4 reps a side of outside and inside ankle tilts, each foot, just like last week; add 3-4 reps of each of the toe pulls, each foot"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -1921,71 +2447,16 @@
             {
                 "tasks": [
                     {
-                        "name": "Hunger Hack",
-                        "icon": "fork-knife",
+                        "name": "Mobility",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"almost full\" feel like?",
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "What does \"full\" feel like?",
-                                "rk": "feeling-2"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you stop at \"almost full\" or keep going?",
-                                "options": ["Stopped", "Kept going"],
-                                "rk": "stop-at-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Did you eat past \"full\"? A little? A lot? ",
-                                "options": ["Stopped", "Kept going a little", "A lot"],
-                                "rk": "past-full"
-                            },
-                            {
-                                "type": "select-input",
-                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
-                                "options": ["Yes", "No"],
-                                "rk": "resize"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-                                "rk": "feeling-3"
-                            },
-                            {
-                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
-                                "type": "number-input",
-                                "rk": "hungry-after"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
-                        "blocks": [
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Worse",
-                                    "0": "The same",
-                                    "1": "Better"
-                                },
-                                "rk": "feeling"
+                                "content": "Do 3 or 4 reps a side of outside and inside ankle tilts, each foot, just like last week; add 3-4 reps of each of the toe pulls, each foot"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
@@ -2013,115 +2484,569 @@
             {
                 "tasks": [
                     {
-                        "name": "Hunger Hack",
-                        "icon": "fork-knife",
+                        "name": "Balance Pre-check",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "To feel less hungry, have something small to eat 20 minutes before your meal- like a cup of broth or a few brazil nuts and tea. Or even half a teaspoon of peanut butter with a glass of water. After trying this, please answer the questions below"
+                                "content": "Same move for balance check as last week with a head turn."
                             },
                             {
-                                "type": "text-input",
-                                "label": "What does \"almost full\" feel like?",
-                                "rk": "feeling"
+                                "type": "para",
+                                "content": "So, start timer: RIGHT leg up, eyes open, and then as quickly as comfortable, turn head to the LEFT; Pause a second; if still standing with that right leg up, turn head as quickly as comfortable to the RIGHT."
                             },
                             {
-                                "type": "text-input",
-                                "label": "What does \"full\" feel like?",
-                                "rk": "feeling-2"
+                                "type": "time-input",
+                                "rk": "pre-check-1"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-2"
+                            },
+                            {
+                                "type": "para",
+                                "content": "SAME challenge again, RIGHT leg up, this time with eyes closed - as long as the head turn feels safe - and you are welcome to have a chair close by for your hand."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-3"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-4"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
-                                "label": "Did you stop at \"almost full\" or keep going?",
-                                "options": ["Stopped", "Kept going"],
-                                "rk": "stop-at-full"
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
                             },
                             {
                                 "type": "select-input",
-                                "label": "Did you eat past \"full\"? A little? A lot? ",
-                                "options": ["Stopped", "Kept going a little", "A lot"],
-                                "rk": "past-full"
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
                             },
                             {
                                 "type": "select-input",
-                                "label": "Would you resize your portions to make it easier to hit \"almost full\" for your next main meal?",
-                                "options": ["Yes", "No"],
-                                "rk": "resize"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "How do you feel? Hungry? Stuffed? Comfortable?",
-                                "rk": "feeling-3"
-                            },
-                            {
-                                "label": "Roughly how long does it take for you to feel hungry again after a meal (in minutes)?",
-                                "type": "number-input",
-                                "rk": "hungry-after"
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     },
                     {
-                        "name": "Measure your heartrate",
-                        "icon": "heartbeat",
+                        "name": "Mobility",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "Measure your heartrate at the end of this experiment, and compare it at the start of the week (Please see Journal tab and select the first day of this week)"
+                                "content": "Do 3 or 4 reps a side of outside and inside ankle tilts, each foot, just like last week; add 3-4 reps of each of the toe pulls, each foot"
                             },
                             {
-                                "type": "heart-rate-input",
-                                "rk": "heartrate"
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
                     },
                     {
-                        "name": "Take a photo",
-                        "icon": "camera",
+                        "name": "Repeat balance check",
+                        "icon": "list-checks",
                         "blocks": [
                             {
                                 "type": "para",
-                                "content": "Take a photo (from your own camera app) if you want to compare to your older photo at the start of the week"
+                                "content": "Same move for balance check as last week with a head turn."
+                            },
+                            {
+                                "type": "para",
+                                "content": "So, start timer: RIGHT leg up, eyes open, and then as quickly as comfortable, turn head to the LEFT; Pause a second; if still standing with that right leg up, turn head as quickly as comfortable to the RIGHT."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-1"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-2"
+                            },
+                            {
+                                "type": "para",
+                                "content": "SAME challenge again, RIGHT leg up, this time with eyes closed - as long as the head turn feels safe - and you are welcome to have a chair close by for your hand."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-3"
+                            },
+                            {
+                                "type": "para",
+                                "content": "Do the same thing with eyes open, LEFT knee up."
+                            },
+                            {
+                                "type": "time-input",
+                                "rk": "pre-check-4"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
                             }
                         ]
-                    },
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Strength/Fatigue",
+        "box": "move",
+        "duration": 5,
+        "parent": "",
+        "days": [
+            {
+                "tasks": [
                     {
-                        "name": "Reflection",
-                        "icon": "note-pencil",
+                        "name": "Do your strength movement",
+                        "icon": "barbell",
                         "blocks": [
                             {
-                                "type": "text-input",
-                                "label": "What are the signs of \"almost full\"?",
-                                "rk": "signs-of-full"
+                                "type": "para",
+                                "content": "This week to explore a little bit about fatigue and fitness strength, walk for about a minute  or two - be sure to be in range of a good hill or stairs (several flights optimal). Keep breathng in and out through your nose, then take the stairs, hang onto the rail and take yourself up at a pace that feels comfortable to you. Go up as many flights as you can keeping breathing through your nose, max four flights then come back down and repeat til you feel you need to breath through your mouth either to breath out or in. How does that feel? If you haven't hit 7 minutes total, slow down recover your breathing and finish a walk for the rest of the time. If you haven't felt the need to breath through your mouth in that time, you may want to explore picking up the pace a bit. The goal is to get to that push state. The reason for the hill/stairs is to get those biggest muscles of the body working for you."
+                            },
+                            {
+                                "type": "countdown",
+                                "fixed": true,
+                                "duration": 420
                             },
                             {
                                 "type": "text-input",
-                                "label": "How does it feel to stop eating at \"almost full\"?",
-                                "rk": "feeling"
-                            },
-                            {
-                                "type": "text-input",
-                                "label": "How might you change the amount of food on your plate to maintain \"almost full\" for another week?",
-                                "rk": "food-change"
-                            },
-                            {
-                                "label": "Did you try the \"have something small 20 minutes before the meal\"? If so, did you feel satisfied / less hungry sooner during your meal? Did you feel less hungry for longer after your meal?",
-                                "type": "text",
-                                "rk": "tried"
-                            },
-                            {
-                                "type": "slider-input",
-                                "label": "How do you feel today relative to yesterday?",
-                                "range": [-1, 1],
-                                "labels": {
-                                    "-1": "Worse",
-                                    "0": "The same",
-                                    "1": "Better"
-                                },
+                                "label": "How does it feel to keep moving until you need to breath through your mouth?",
                                 "rk": "feeling"
                             },
                             {
                                 "type": "title",
-                                "content": "The boring bit..."
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+
+    {
+        "name": "Coordination",
+        "box": "move",
+        "duration": 5,
+        "parent": "",
+        "days": [
+            {
+                "tasks": [
+                    {
+                        "name": "Watch FROGGER video",
+                        "icon": "play",
+                        "blocks": [
+                            {
+                                "type": "video",
+                                "src": "NRIIIL7KmSg"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Where did you do this experiment today?",
+                                "options": ["At home", "At work / uni", "Somewhere else"],
+                                "rk": "location"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Who did you do this experiment with today?",
+                                "options": ["With myself only", "With someone else"],
+                                "help": "We encourage you to do experiments with someone you know",
+                                "rk": "company"
+                            },
+                            {
+                                "type": "select-input",
+                                "label": "Did you do this experiment indoors or outdoors today?",
+                                "options": ["Indoors", "Outdoors"],
+                                "rk": "in-or-outdoors"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "tasks": [
+                    {
+                        "name": "Do your movement",
+                        "icon": "barbell",
+                        "blocks": [
+                            {
+                                "type": "para",
+                                "content": "Building on Wk 1: From standinging, get to sitting on the ground; get back up - anyway you can. Repeat this for about two minutes - take pauses as you need them."
+                            },
+                            {
+                                "type": "para",
+                                "content": "Try FROGGER - from down low in as close to a squat as you can go - put your hands on the ground in front of you, and either HOP to your hands, or WALK to your hands, and keep moving forward. Try to keep moving for about 20 secs. Then just pause. And repeat Stand/Ground for a minute and frogger for about 20 seconds (You can use the countdown to adjust the time required for these activities)"
+                            },
+                            {
+                                "type": "countdown",
+                                "duration": 120
+                            },
+                            {
+                                "type": "text-input",
+                                "label": "How do you feel?",
+                                "rk": "feeling"
+                            },
+                            {
+                                "type": "para",
+                                "content": "If you are feeling a little stiff, you can also walk your feet to your hands:"
+                            },
+                            {
+                                "type": "video",
+                                "src": "6RpfyJxY2JA?start=99"
+                            },
+                            {
+                                "type": "title",
+                                "content": "For context..."
                             },
                             {
                                 "type": "select-input",
