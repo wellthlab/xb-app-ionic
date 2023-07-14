@@ -1,9 +1,9 @@
 import React from 'react';
+import { Check, PencilSimple } from 'phosphor-react';
+import { Box } from '@mui/joy';
 
 import { useSelector } from '../../slices/store';
 import { selectDayProgress } from '../../slices/experiments';
-import { Check, PencilSimple } from 'phosphor-react';
-import { Box } from '@mui/joy';
 
 interface IDayIconProps {
     experimentId: string;
@@ -17,6 +17,7 @@ const EntryIcon = function ({ experimentId, dayId }: IDayIconProps) {
     return (
         <Box
             bgcolor={completed ? 'success.solidBg' : 'neutral.solidBg'}
+            color="grey.50"
             width={36}
             height={36}
             display="flex"

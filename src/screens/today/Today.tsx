@@ -52,6 +52,9 @@ const Today = function () {
         setTaskId(taskId);
     };
 
+    const safeExperimentId = experimentId || tasksByExperiment[0].id;
+    const safeDayId = dayId === undefined ? tasksByExperiment[0].day : dayId;
+
     return (
         <Page ref={setPresentingElement}>
             <PageTitle>Today's Experiments</PageTitle>
@@ -83,9 +86,9 @@ const Today = function () {
             <TaskModal
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
-                key={`${dayId}.${taskId}`}
-                experimentId={experimentId || tasksByExperiment[0].id}
-                dayId={dayId || tasksByExperiment[0].day}
+                key={`${safeExperimentId}.${safeDayId}.${taskId}`}
+                experimentId={safeExperimentId}
+                dayId={safeDayId}
                 taskId={taskId}
                 presentingElement={presentingElement}
             />
