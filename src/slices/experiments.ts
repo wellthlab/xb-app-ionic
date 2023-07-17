@@ -12,10 +12,10 @@ export interface ISelectorState {
 interface IExperimentState {
     items: Record<string, GenericExperiment>;
     all: string[];
-    boxes: IBox[];
+    boxes: Record<string, IBox>;
 }
 
-export const selectBoxes = (state: ISelectorState) => state.experiments.boxes;
+export const selectBoxes = (state: ISelectorState) => Object.values(state.experiments.boxes);
 
 export const selectAllExperiments = (state: ISelectorState) =>
     state.experiments.all.map((experimentId) => selectExperiment(state, experimentId));
@@ -26,6 +26,9 @@ export const selectExperimentByBox = (state: ISelectorState, type: string) =>
 export const selectAllExperimentsById = (state: ISelectorState) => state.experiments.items;
 
 export const selectExperiment = (state: ISelectorState, experimentId: string) => state.experiments.items[experimentId];
+
+export const selectBoxFromExperiment = (state: ISelectorState, experimentId: string) =>
+    state.experiments.boxes[state.experiments.items[experimentId].box];
 
 export const selectTask = (state: ISelectorState, experimentId: string, dayId: number, taskId: number) =>
     (state.experiments.items[experimentId] as IExperiment).days[dayId].tasks[taskId];
@@ -141,16 +144,19 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
 
 export default createSlice({
     name: 'experiments',
-    initialState: { boxes: [], items: {}, all: [] } as IExperimentState,
+    initialState: { boxes: {}, items: {}, all: [] } as IExperimentState,
     reducers: {},
 
     extraReducers: (builder) => {
         builder
             .addCase(boot.fulfilled, (state, action) => {
-                state.boxes = action.payload.boxes;
-
+                state.boxes = {};
                 state.items = {};
                 state.all = [];
+
+                for (const box of action.payload.boxes) {
+                    state.boxes[box.name] = box;
+                }
 
                 for (const experiment of action.payload.experiments) {
                     if (!('children' in experiment)) {

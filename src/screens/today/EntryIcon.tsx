@@ -1,9 +1,10 @@
 import React from 'react';
+import { Box } from '@mui/joy';
+import { Check } from 'phosphor-react';
 
 import { useSelector } from '../../slices/store';
-import { selectDayProgress } from '../../slices/experiments';
-import { Check, PencilSimple } from 'phosphor-react';
-import { Box } from '@mui/joy';
+import { selectBoxFromExperiment, selectDayProgress } from '../../slices/experiments';
+import getIcon from '../../utils/getIcon';
 
 interface IDayIconProps {
     experimentId: string;
@@ -11,8 +12,11 @@ interface IDayIconProps {
 }
 
 const EntryIcon = function ({ experimentId, dayId }: IDayIconProps) {
+    const box = useSelector((state) => selectBoxFromExperiment(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
     const completed = dayProgress[dayId];
+
+    const Icon = getIcon(box.icon);
 
     return (
         <Box
@@ -24,7 +28,7 @@ const EntryIcon = function ({ experimentId, dayId }: IDayIconProps) {
             alignItems="center"
             borderRadius={18}
         >
-            {completed ? <Check /> : <PencilSimple />}
+            {completed ? <Check /> : <Icon />}
         </Box>
     );
 };
