@@ -66,6 +66,7 @@ export type Block =
     | IHeartRateInput
     | ICheckbox
     | ITimeInput
+    | IStopwatch
     | IPara
     | IVideo
     | IImage
@@ -119,6 +120,10 @@ interface IHeartRateInput extends IGenericInput {
 
 interface ITimeInput extends IGenericInput {
     type: 'time-input';
+}
+
+interface IStopwatch extends IGenericInput {
+    type: 'stopwatch';
 }
 
 interface IGreenDetector extends Omit<IGenericInput, 'label' | 'help'> {

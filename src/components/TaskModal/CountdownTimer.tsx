@@ -3,6 +3,7 @@ import { Typography, IconButton, Stack } from '@mui/joy';
 import { Play, ClockCounterClockwise, Pause } from 'phosphor-react';
 
 import TimeInput from './TimeInput';
+import TimerControls from './TimerControls';
 
 interface ICountdownTimerProps {
     initialDuration: number;
@@ -18,11 +19,11 @@ const displayTime = function (seconds: number) {
 const CountdownTimer = function ({ initialDuration = 0, fixed }: ICountdownTimerProps) {
     const duration = React.useRef(initialDuration);
     const [seconds, setSeconds] = React.useState(initialDuration);
-    const [isRunning, setIsRunning] = React.useState(false);
+    const [paused, setPaused] = React.useState(true);
     const callbackRef = React.useRef<() => void>();
 
     React.useEffect(() => {
-        if (!isRunning) {
+        if (paused) {
             return;
         }
 
@@ -31,7 +32,7 @@ const CountdownTimer = function ({ initialDuration = 0, fixed }: ICountdownTimer
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isRunning]);
+    }, [paused]);
 
     React.useEffect(() => {
         callbackRef.current = function () {
@@ -44,16 +45,16 @@ const CountdownTimer = function ({ initialDuration = 0, fixed }: ICountdownTimer
     });
 
     const handleStartOrStopCountdown = function () {
-        setIsRunning(!isRunning);
+        setPaused(!paused);
     };
 
     const handleResetCountdown = function () {
-        setIsRunning(false);
+        setPaused(true);
         setSeconds(duration.current);
     };
 
     const handleChangeDuration = function (time: string) {
-        setIsRunning(false);
+        setPaused(true);
 
         const portions = time.split(':');
         const newDuration = Number(portions[0]) * 3600 + Number(portions[1]) * 60 + Number(portions[2]);
@@ -62,28 +63,22 @@ const CountdownTimer = function ({ initialDuration = 0, fixed }: ICountdownTimer
     };
 
     const handleStopCountdown = function () {
-        setIsRunning(false);
+        setPaused(true);
     };
 
     const displayedTime = displayTime(seconds);
 
     return (
-        <Stack alignItems="center" spacing={1}>
+        <Stack spacing={1}>
             {fixed ? (
-                <Typography level="h1" component="p">
+                <Typography textAlign="center" level="h1" component="p">
                     {displayedTime}
                 </Typography>
             ) : (
                 <TimeInput value={displayedTime} onChange={handleChangeDuration} onClick={handleStopCountdown} />
             )}
-            <Stack spacing={1} direction="row">
-                <IconButton variant="solid" onClick={handleStartOrStopCountdown}>
-                    {isRunning ? <Pause /> : <Play />}
-                </IconButton>
-                <IconButton variant="outlined" onClick={handleResetCountdown}>
-                    <ClockCounterClockwise />
-                </IconButton>
-            </Stack>
+
+            <TimerControls paused={paused} onStart={handleStartOrStopCountdown} onReset={handleResetCountdown} />
         </Stack>
     );
 };

@@ -10,6 +10,7 @@ import CountdownTimer from './CountdownTimer';
 import TimeInput from './TimeInput';
 import MovementRecorder from './MovementRecorder';
 import MovementPicker from './MovementPicker';
+import Stopwatch from './Stopwatch';
 
 import Modal, { IModalProps } from '../foundation/Modal';
 import Select from '../foundation/Select';
@@ -17,7 +18,7 @@ import Checkbox from '../foundation/Checkbox';
 import Slider from '../foundation/Slider';
 import useForm from '../foundation/useForm';
 
-import Experiment, { IGenericInput, ITask } from '../../models/Experiment';
+import Experiment, { ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
 import { updateProgress } from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
@@ -47,7 +48,7 @@ const getInitialValues = function (blocks: ITask['blocks']) {
             continue;
         }
 
-        if (block.type === 'slider-input') {
+        if (block.type === 'slider-input' || block.type === 'stopwatch') {
             values[block.rk] = 0;
             continue;
         }
@@ -89,6 +90,10 @@ const getSchema = function (blocks: ITask['blocks']) {
 
         if (block.type === 'number-input' || block.type === 'heart-rate-input' || block.type === 'slider-input') {
             subSchema = numberSchema;
+        }
+
+        if (block.type === 'stopwatch') {
+            subSchema = numberSchema.notOneOf([0], 'You need to time this activity!');
         }
 
         if (block.type === 'checkbox') {
@@ -227,6 +232,10 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
 
                     if (block.type === 'time-input') {
                         return <TimeInput hideSeconds {...commonProps} />;
+                    }
+
+                    if (block.type === 'stopwatch') {
+                        return <Stopwatch {...commonProps} />;
                     }
 
                     if (block.type === 'checkbox') {
