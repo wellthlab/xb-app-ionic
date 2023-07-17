@@ -21,6 +21,7 @@ const EntryIcon = function ({ experimentId, dayId }: IDayIconProps) {
     return (
         <Box
             bgcolor={completed ? 'success.solidBg' : 'neutral.solidBg'}
+            color="grey.50"
             width={36}
             height={36}
             display="flex"
