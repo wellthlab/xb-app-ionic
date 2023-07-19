@@ -82,12 +82,27 @@ class Account extends BaseModel {
         return this.client.currentUser?.id;
     }
 
-    static authenticate(credentials: ICredentials) {
+    static async authenticate(
+        credentials: ICredentials,
+        retried?: boolean,
+    ): Promise<Awaited<ReturnType<typeof this.client.logIn>> | undefined> {
         if (this.client.currentUser) {
             return;
         }
 
-        return this.client.logIn(Credentials.emailPassword(credentials.email, credentials.password));
+        try {
+            return await this.client.logIn(Credentials.emailPassword(credentials.email, credentials.password));
+        } catch (error) {
+            if (error instanceof Error && error.message.includes('invalid') && !retried) {
+                console.log('Failed authentication, retrying with lowercase email');
+                return this.authenticate(
+                    { email: credentials.email.toLowerCase(), password: credentials.password },
+                    true,
+                );
+            }
+
+            throw error;
+        }
     }
 
     static logOut() {
@@ -106,12 +121,18 @@ class Account extends BaseModel {
         return this.client.emailPasswordAuth.registerUser(credentials.email, credentials.password);
     }
 
-    static async sendResetPasswordEmail(email: string) {
+    static async sendResetPasswordEmail(email: string, retried?: boolean) {
         try {
             return await this.client.emailPasswordAuth.sendResetPasswordEmail({ email });
         } catch (error) {
             console.log(error);
             if (error instanceof Error && error.message.includes('user not found')) {
+                if (!retried) {
+                    console.log('Failed reset, retrying with lowercase email');
+                    this.sendResetPasswordEmail(email.toLowerCase(), true);
+                    return;
+                }
+
                 return;
             }
 

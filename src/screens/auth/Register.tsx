@@ -13,7 +13,7 @@ import { registerUser } from '../../slices/account';
 import { useDispatch } from '../../slices/store';
 
 const schema = newPasswordSchema.shape({
-    email: emailSchema,
+    email: emailSchema.lowercase(),
 });
 
 const Register = function () {

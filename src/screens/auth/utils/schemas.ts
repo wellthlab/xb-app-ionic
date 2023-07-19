@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const emailSchema = Yup.string().required('Email is missing').email('Please input an email address').lowercase();
+export const emailSchema = Yup.string().required('Email is missing').email('Please input an email address');
 
 export const newPasswordSchema = Yup.object().shape({
     password: Yup.string()
