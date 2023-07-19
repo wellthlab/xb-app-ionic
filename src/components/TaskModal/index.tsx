@@ -184,7 +184,14 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
                     }
 
                     if (block.type === 'countdown') {
-                        return <CountdownTimer key={blockId} initialDuration={block.duration} fixed={block.fixed} />;
+                        return (
+                            <CountdownTimer
+                                key={blockId}
+                                initialDuration={block.duration}
+                                fixed={block.fixed}
+                                notifications={block.notifications}
+                            />
+                        );
                     }
 
                     if (block.type === 'green-detector') {
