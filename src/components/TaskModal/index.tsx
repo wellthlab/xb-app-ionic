@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, TextField, Stack, Link } from '@mui/joy';
+import { Typography, TextField, Stack, Link, sliderClasses } from '@mui/joy';
 import * as Yup from 'yup';
 import { ArrowSquareOut } from 'phosphor-react';
 
@@ -88,12 +88,17 @@ const getSchema = function (blocks: ITask['blocks']) {
 
         let subSchema: Yup.AnySchema = Yup.string();
 
-        if (block.type === 'number-input' || block.type === 'heart-rate-input' || block.type === 'slider-input') {
+        if (
+            block.type === 'number-input' ||
+            block.type === 'heart-rate-input' ||
+            block.type === 'slider-input' ||
+            block.type === 'stopwatch'
+        ) {
             subSchema = numberSchema;
         }
 
-        if (block.type === 'stopwatch') {
-            subSchema = numberSchema.notOneOf([0], 'You need to time this activity!');
+        if (block.type === 'stopwatch' && !block.optional) {
+            subSchema = subSchema.notOneOf([0], 'You need to time this activity!');
         }
 
         if (block.type === 'checkbox') {
@@ -104,7 +109,7 @@ const getSchema = function (blocks: ITask['blocks']) {
             }
         }
 
-        if (!block.optional && block.type !== 'checkbox') {
+        if (!block.optional && block.type !== 'checkbox' && block.type !== 'stopwatch') {
             subSchema = subSchema.required('This field is missing');
         }
 
@@ -220,15 +225,51 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
                     }
 
                     if (block.type === 'slider-input') {
+                        const marks = [];
+
+                        for (const key of Object.keys(block.labels)) {
+                            marks.push({ value: Number(key), label: block.labels[key] });
+                        }
+
                         return (
                             <Slider
                                 min={block.range[0]}
                                 max={block.range[1]}
                                 size="sm"
-                                valueLabelDisplay="auto"
-                                marks
-                                valueLabelFormat={(x) => block.labels[x]}
+                                marks={marks}
                                 {...commonProps}
+                                sx={{
+                                    // Need both of the selectors to make it works on the server-side and client-side
+                                    [`& [style*="left:0%"], & [style*="left: 0%"]`]: {
+                                        [`&.${sliderClasses.markLabel}`]: {
+                                            transform: 'none',
+                                        },
+                                        [`& .${sliderClasses.valueLabel}`]: {
+                                            left: 'calc(var(--Slider-thumbSize) / 2)',
+                                            borderBottomLeftRadius: 0,
+                                            '&::before': {
+                                                left: 0,
+                                                transform: 'translateY(100%)',
+                                                borderLeftColor: 'currentColor',
+                                            },
+                                        },
+                                    },
+                                    [`& [style*="left:100%"], & [style*="left: 100%"]`]: {
+                                        [`&.${sliderClasses.markLabel}`]: {
+                                            transform: 'translateX(-100%)',
+                                        },
+                                        [`& .${sliderClasses.valueLabel}`]: {
+                                            right: 'calc(var(--Slider-thumbSize) / 2)',
+                                            borderBottomRightRadius: 0,
+                                            '&::before': {
+                                                left: 'initial',
+                                                right: 0,
+                                                transform: 'translateY(100%)',
+                                                borderRightColor: 'currentColor',
+                                            },
+                                        },
+                                    },
+                                }}
                             />
                         );
                     }
