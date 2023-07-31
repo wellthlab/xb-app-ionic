@@ -10,7 +10,6 @@ function LineEditor() {
     const [currentPoint, setCurrentPoint] = useState<L.LatLngLiteral | null>()
 
     const handleMapClick = (e: LeafletMouseEvent) => {
-        console.log(e)
         if (currentPoint != null) {
             L.DomEvent.stopPropagation(e)
             setLines([...lines, [currentPoint, e.latlng]])

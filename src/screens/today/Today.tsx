@@ -13,6 +13,7 @@ import PageTitle from '../../components/foundation/PageTitle';
 import { useSelector } from '../../slices/store';
 import { selectTodaysTasks } from '../../slices/experiments';
 import Journey from '../journey/Journey';
+import HeaderButton from '../../components/foundation/HeaderButton';
 
 const Today = function () {
     const tasksByExperiment = useSelector(selectTodaysTasks);
@@ -24,11 +25,16 @@ const Today = function () {
     const [dayId, setDayId] = React.useState<number>();
     const [taskId, setTaskId] = React.useState(0);
 
+    const handleAddJourney = function() {
+        
+    }
+
     if (!tasksByExperiment.length) {
         return (
             <Page>
                 <Centre>
                     <Stack spacing={1}>
+                        <HeaderButton>Add new Journey</HeaderButton>
                         <Typography level="h6" component="p">
                             You haven't got any task today
                             <Journey/>
