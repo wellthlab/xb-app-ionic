@@ -1,6 +1,6 @@
 import * as Realm from 'realm-web';
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === 'development';
 const APP_ID = isProd ? 'xb-prod-mpzaf' : 'xb-dev-gwbln';
 const DATABASE = isProd ? 'PRODUCTION' : 'DEVELOPMENT';
 

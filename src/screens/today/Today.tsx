@@ -12,6 +12,7 @@ import PageTitle from '../../components/foundation/PageTitle';
 
 import { useSelector } from '../../slices/store';
 import { selectTodaysTasks } from '../../slices/experiments';
+import Journey from '../journey/Journey';
 
 const Today = function () {
     const tasksByExperiment = useSelector(selectTodaysTasks);
@@ -30,6 +31,7 @@ const Today = function () {
                     <Stack spacing={1}>
                         <Typography level="h6" component="p">
                             You haven't got any task today
+                            <Journey/>
                         </Typography>
 
                         <Typography level="body2" textAlign="center">
