@@ -38,7 +38,8 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 
 import JournalTab from './screens/journal/Journal';
 
-import TodayTab from './screens/today/Today';
+import TodayTab from './screens/today/Home';
+import Journey from './screens/journey/Journey';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -141,7 +142,7 @@ const App = function () {
                                         <IonTabs>
                                             <IonRouterOutlet>
                                                 <Route path="/main" exact>
-                                                    <Redirect to="/main/today" />
+                                                    <Redirect to="/main/home" />
                                                 </Route>
 
                                                 <Route path="/main/team" exact>
@@ -164,8 +165,12 @@ const App = function () {
                                                     <ExperimentTimelineScreen />
                                                 </Route>
 
-                                                <Route path="/main/today" exact>
+                                                <Route path="/main/home" exact>
                                                     <TodayTab />
+                                                </Route>
+
+                                                <Route path="/main/newJourney" exact>
+                                                    <Journey/>
                                                 </Route>
 
                                                 <Route path="/main/journal">
@@ -186,9 +191,9 @@ const App = function () {
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">
-                                                <IonTabButton tab="today" href="/main/today">
+                                                <IonTabButton tab="home" href="/main/home">
                                                     <ListChecks />
-                                                    <IonLabel>Today</IonLabel>
+                                                    <IonLabel>Home</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />

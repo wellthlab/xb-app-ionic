@@ -11,7 +11,7 @@ function Map(props: MapProps) {
             zoom={13}
             scrollWheelZoom={false}
             zoomControl={false}
-            style={{ height: '400px', width: '200px' }}
+            style={{ height: '300px', width: '600px' }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
