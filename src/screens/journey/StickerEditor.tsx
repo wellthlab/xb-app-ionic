@@ -9,19 +9,14 @@ import { useMap } from 'react-leaflet'
 import StickerDrawer from './Elements/StickerDrawer'
 
 /**Editor allows you to add, drag and remove stickers from the map */
-function StickerEditor() {
-    const supportedStickers =
-        Object.keys(Sticker).map((s) => Sticker[s as keyof typeof Sticker])
-    const [activeSticker, setActiveSticker] = useState<number>(0)
-    const [stickers, setStickers] = useState<[StickersProps][]>([])
-
+function StickerEditor(props: StickerEditorProps) {
     const map = useMap();
-    useEffect(()=> {
+
+    useEffect(() => {
         const handleStickerClick = (e: LeafletMouseEvent) => {
             L.DomEvent.stopPropagation(e)
-            console.log("udsifu")
-            if (!stickers) return
-            setStickers([...stickers, [{ point: e.latlng, index: activeSticker, uuid: v4() }]])
+            if (!props.stickers) return
+            props.setStickers([...props.stickers, [{ point: e.latlng, index: props.activeSticker, uuid: v4() }]])
         }
 
         map.addEventListener("click", handleStickerClick)
@@ -32,13 +27,13 @@ function StickerEditor() {
     })
 
     const handleStickerRemove = (uuid: string) => {
-        if (!stickers) return
-        setStickers(stickers.filter(([p]) => p.uuid != uuid))
+        if (!props.stickers) return
+        props.setStickers(props.stickers.filter(([p]) => p.uuid != uuid))
     }
 
     const handleStickerDrag = (uuid: string, e: LeafletEvent) => {
-        if (!stickers) return
-        setStickers(stickers.map(([s]) =>
+        if (!props.stickers) return
+        props.setStickers(props.stickers.map(([s]) =>
             s.uuid === uuid ? [{ point: e.target.getLatLng(), index: s.index, uuid: s.uuid }] : [s]
         ),
         )
@@ -46,10 +41,10 @@ function StickerEditor() {
 
     return (
         <>
-            {stickers.map(([s]) => (<StickerMarker key={s.uuid} position={{
+            {props.stickers.map(([s]) => (<StickerMarker key={s.uuid} position={{
                 lat: s.point.lat,
                 lng: s.point.lng,
-            }} sticker={supportedStickers[s.index]}
+            }} sticker={props.stickerSet[s.index]}
                 onRemove={() => handleStickerRemove(s.uuid)}
                 onDrag={(e) => handleStickerDrag(s.uuid, e)} />))}
         </>
@@ -60,6 +55,13 @@ type StickersProps = {
     point: LatLngLiteral,
     index: number,
     uuid: string
+}
+
+type StickerEditorProps = {
+    stickerSet: Sticker[],
+    stickers: [StickersProps][],
+    setStickers: React.Dispatch<React.SetStateAction<[StickersProps][]>>,
+    activeSticker: number,
 }
 
 export default StickerEditor

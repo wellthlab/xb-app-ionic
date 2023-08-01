@@ -5,12 +5,13 @@ import { ButtonGroup } from "@mui/material";
 import Button from "@mui/joy/Button";
 import Page from "../../components/foundation/Page";
 import Centre from "../../components/foundation/Centre";
-import { LatLngLiteral } from "leaflet";
+import { DragEndEvent, LatLngLiteral } from "leaflet";
 import StickerEditor from "./StickerEditor";
 import { CircularProgress, Stack } from "@mui/joy";
 import LineSegment from "./Elements/LineSegment";
 import Sticker from "./sticker";
 import StickerDrawer from "./Elements/StickerDrawer";
+import StickerMarker from "./Markers/StickerMarker";
 const Map = lazy(() => import("./Map"))
 
 function Journey() {
@@ -18,16 +19,24 @@ function Journey() {
     const [lines, setLines] = useState<[L.LatLngLiteral, L.LatLngLiteral][]>([])
     const [mode, setMode] = useState<Mode>(Mode.ROUTE)
     const [activeSticker, setActiveSticker] = useState<number>(0)
-    const [state, setStart] = useState<StickersProps>()
-    const [end, setEnd] = useState<StickersProps>()
+    const [start, setStart] = useState<[StickersProps][]>([])
+    const [end, setEnd] = useState<[StickersProps][]>([])
 
     const handleSave = function () {
         console.log("Saving data...")
     }
 
     const handleNext = function () {
-        console.log("Going to the next stage...")
-        setMode(Mode.STARTPOINT)
+        switch (mode) {
+            case Mode.ROUTE:
+                setMode(Mode.STARTPOINT)
+                break
+            case Mode.STARTPOINT:
+                setMode(Mode.ENDPOINT)
+                break
+            case Mode.ENDPOINT:
+                console.log("Thank you for your response")
+        }
     }
 
     function DisplayEditor(mode: Mode) {
@@ -36,10 +45,25 @@ function Journey() {
                 return (<LineEditor lines={lines} setLines={setLines} />)
             case Mode.STARTPOINT:
                 return (<>
-                    <StickerEditor />
+                    <StickerEditor stickerSet={mode.getListStickers()} stickers={start} setStickers={setStart} activeSticker={activeSticker} />
                     {lines?.map(([i, j]) =>
                         <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
                     }
+                </>)
+            case Mode.ENDPOINT:
+                return (<>
+                    <StickerEditor stickerSet={mode.getListStickers()} stickers={end} setStickers={setEnd} activeSticker={activeSticker} />
+                    {lines?.map(([i, j]) =>
+                        <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
+                    }
+                    {start.map(([s]) => (<StickerMarker key={s.uuid} position={{
+                        lat: s.point.lat,
+                        lng: s.point.lng,
+                    }} sticker={Mode.STARTPOINT.getListStickers()[s.index]} onDrag={function (e: DragEndEvent): void {
+                        throw new Error("Function not implemented.");
+                    }} onRemove={function (): void {
+                        throw new Error("Function not implemented.");
+                    }} />))}
                 </>)
         }
     }
@@ -80,6 +104,7 @@ type StickersProps = {
 class Mode {
     public static ROUTE = new Mode("Draw the route for today's journey", [Sticker.Sunny])
     public static STARTPOINT = new Mode("Place a sticker onto your start point", [Sticker.StartPoint])
+    public static ENDPOINT = new Mode("Place a sticker onto your end point", [Sticker.Stop])
 
     private title: string;
     private stickers: Sticker[];
