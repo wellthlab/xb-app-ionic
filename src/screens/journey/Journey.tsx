@@ -7,16 +7,19 @@ import Page from "../../components/foundation/Page";
 import Centre from "../../components/foundation/Centre";
 import { LatLngLiteral } from "leaflet";
 import StickerEditor from "./StickerEditor";
-import { CircularProgress } from "@mui/joy";
+import { CircularProgress, Stack } from "@mui/joy";
 import LineSegment from "./Elements/LineSegment";
+import Sticker from "./sticker";
+import StickerDrawer from "./Elements/StickerDrawer";
 const Map = lazy(() => import("./Map"))
 
 function Journey() {
 
     const [lines, setLines] = useState<[L.LatLngLiteral, L.LatLngLiteral][]>([])
+    const [mode, setMode] = useState<Mode>(Mode.ROUTE)
+    const [activeSticker, setActiveSticker] = useState<number>(0)
     const [state, setStart] = useState<StickersProps>()
     const [end, setEnd] = useState<StickersProps>()
-    const [mode, setMode] = useState<Mode>(Mode.ROUTE)
 
     const handleSave = function () {
         console.log("Saving data...")
@@ -30,23 +33,35 @@ function Journey() {
     function DisplayEditor(mode: Mode) {
         switch (mode) {
             case Mode.ROUTE:
-                return (<LineEditor lines={lines} setLines={setLines}/>)
+                return (<LineEditor lines={lines} setLines={setLines} />)
             case Mode.STARTPOINT:
                 return (<>
                     <StickerEditor />
                     {lines?.map(([i, j]) =>
-            <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
-        }
+                        <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
+                    }
                 </>)
         }
     }
+
+    const handleStickerSelect = (index: number) => {
+        setActiveSticker(index)
+    }
+
     return (<Page>
         <Centre>
             <Header title={mode.getTitle()} />
             <Suspense fallback={<CircularProgress />}>
-                <Map>
-                    {DisplayEditor(mode)}
-                </Map>
+                <Stack direction="row">
+                    <Map>
+                        {DisplayEditor(mode)}
+                    </Map>
+                    <StickerDrawer
+                        stickers={mode.getListStickers()}
+                        activeSticker={activeSticker}
+                        onStickerClick={handleStickerSelect}
+                    />
+                </Stack>
             </Suspense>
             <ButtonGroup>
                 <Button onClick={handleSave}>Save</Button>
@@ -63,17 +78,23 @@ type StickersProps = {
 }
 
 class Mode {
-    public static ROUTE = new Mode("Draw the route for today's journey")
-    public static STARTPOINT = new Mode("Place a sticker onto your start point")
+    public static ROUTE = new Mode("Draw the route for today's journey", [Sticker.Sunny])
+    public static STARTPOINT = new Mode("Place a sticker onto your start point", [Sticker.StartPoint])
 
     private title: string;
+    private stickers: Sticker[];
 
-    private constructor(title: string) {
+    private constructor(title: string, stickers: Sticker[]) {
         this.title = title;
+        this.stickers = stickers;
     }
 
     public getTitle() {
         return this.title
+    }
+
+    public getListStickers() {
+        return this.stickers;
     }
 }
 

@@ -6,12 +6,13 @@ import StickerMarker from './Markers/StickerMarker'
 import { v4 } from "uuid"
 import React from 'react'
 import { useMap } from 'react-leaflet'
+import StickerDrawer from './Elements/StickerDrawer'
 
 /**Editor allows you to add, drag and remove stickers from the map */
 function StickerEditor() {
     const supportedStickers =
         Object.keys(Sticker).map((s) => Sticker[s as keyof typeof Sticker])
-    const activeSticker = 0
+    const [activeSticker, setActiveSticker] = useState<number>(0)
     const [stickers, setStickers] = useState<[StickersProps][]>([])
 
     const map = useMap();
