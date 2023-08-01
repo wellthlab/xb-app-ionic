@@ -1,4 +1,4 @@
-import React, { ReactNode, Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import LineEditor from "./LineEditor";
 import Header from "../../components/foundation/Header";
 import { ButtonGroup } from "@mui/material";
@@ -7,8 +7,8 @@ import Page from "../../components/foundation/Page";
 import Centre from "../../components/foundation/Centre";
 import { LatLngLiteral } from "leaflet";
 import StickerEditor from "./StickerEditor";
-import LineSegment from "./Elements/LineSegment";
 import { CircularProgress } from "@mui/joy";
+import LineSegment from "./Elements/LineSegment";
 const Map = lazy(() => import("./Map"))
 
 function Journey() {
@@ -30,12 +30,14 @@ function Journey() {
     function DisplayEditor(mode: Mode) {
         switch (mode) {
             case Mode.ROUTE:
-                return (<LineEditor lines={lines} setLines={setLines} />)
+                return (<LineEditor lines={lines} setLines={setLines}/>)
             case Mode.STARTPOINT:
                 return (<>
                     <StickerEditor />
-                    {lines.map(([i, j]) =>
-                        <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)}</>)
+                    {lines?.map(([i, j]) =>
+            <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
+        }
+                </>)
         }
     }
     return (<Page>
