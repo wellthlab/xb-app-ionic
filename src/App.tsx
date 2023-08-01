@@ -40,6 +40,7 @@ import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/home/Home';
 import Journey from './screens/journey/Journey';
+import JourneyDetails from './screens/journey/JourneyDetails';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -171,6 +172,10 @@ const App = function () {
 
                                                 <Route path="/main/newJourney" exact>
                                                     <Journey/>
+                                                </Route>
+
+                                                <Route path="/main/newJourney/JourneyDetails" exact>
+                                                    <JourneyDetails/>
                                                 </Route>
 
                                                 <Route path="/main/journal">

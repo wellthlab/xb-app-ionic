@@ -12,6 +12,7 @@ import LineSegment from "./Elements/LineSegment";
 import Sticker from "./sticker";
 import StickerDrawer from "./Elements/StickerDrawer";
 import StickerMarker from "./Markers/StickerMarker";
+import { useHistory } from "react-router-dom";
 const Map = lazy(() => import("./Map"))
 
 function Journey() {
@@ -21,6 +22,7 @@ function Journey() {
     const [activeSticker, setActiveSticker] = useState<number>(0)
     const [start, setStart] = useState<[StickersProps][]>([])
     const [end, setEnd] = useState<[StickersProps][]>([])
+    const navigate = useHistory();
 
     const handleSave = function () {
         console.log("Saving data...")
@@ -35,7 +37,7 @@ function Journey() {
                 setMode(Mode.ENDPOINT)
                 break
             case Mode.ENDPOINT:
-                console.log("Thank you for your response")
+                navigate.push("/main/newJourney/JourneyDetails")
         }
     }
 
@@ -71,6 +73,7 @@ function Journey() {
     const handleStickerSelect = (index: number) => {
         setActiveSticker(index)
     }
+
 
     return (<Page>
         <Centre>
