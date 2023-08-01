@@ -4,25 +4,29 @@ import ClickListener from "./utils/ClickListener"
 import LineSegment from "./Elements/LineSegment"
 import React from "react"
 
-function LineEditor() {
+function LineEditor(props: LineProps) {
 
-    const [lines, setLines] = useState<[L.LatLngLiteral, L.LatLngLiteral][]>([])
     const [currentPoint, setCurrentPoint] = useState<L.LatLngLiteral | null>()
 
     const handleMapClick = (e: LeafletMouseEvent) => {
         if (currentPoint != null) {
             L.DomEvent.stopPropagation(e)
-            setLines([...lines, [currentPoint, e.latlng]])
+            props.setLines([...props.lines, [currentPoint, e.latlng]])
         }
         setCurrentPoint(e.latlng)
     }
 
     return (<>
-        {lines?.map(([i, j]) =>
+        {props.lines?.map(([i, j]) =>
             <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
         }
         <ClickListener onMapClick={handleMapClick} /></>
     )
+}
+
+type LineProps = {
+    lines: [L.LatLngLiteral, L.LatLngLiteral][],
+    setLines: React.Dispatch<React.SetStateAction<[L.LatLngLiteral, L.LatLngLiteral][]>>,
 }
 
 export default LineEditor

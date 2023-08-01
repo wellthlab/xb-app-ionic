@@ -38,7 +38,7 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 
 import JournalTab from './screens/journal/Journal';
 
-import TodayTab from './screens/today/Home';
+import TodayTab from './screens/home/Home';
 import Journey from './screens/journey/Journey';
 
 const AppFlowController = function () {
