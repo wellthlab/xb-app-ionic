@@ -74,7 +74,10 @@ export type Block =
     | IGreenDetector
     | ICountdownTimer
     | IMovementRecorder
-    | IMovementPicker;
+    | IMovementPicker
+    | IRoute
+    | IJourneyDefinition
+    | IJourneyExperience;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -89,6 +92,11 @@ interface IMedia {
 
 interface IText {
     content: string;
+}
+
+//Every journey task will have an associated journey connected to it
+export interface IJourney extends IGenericInput {
+    journey: string;
 }
 
 interface ITextInput extends IGenericInput {
@@ -170,6 +178,18 @@ interface ICountdownTimer {
     duration: number;
     fixed?: boolean;
     notifications?: number[];
+}
+
+interface IRoute extends IJourney {
+    type: "route"
+}
+
+interface IJourneyDefinition extends IJourney {
+    type: "journeydefinition"
+}
+
+interface IJourneyExperience extends IJourney {
+    type: "journeyexperience"
 }
 
 export interface IResponse {

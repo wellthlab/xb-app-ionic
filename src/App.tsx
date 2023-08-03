@@ -38,9 +38,10 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 
 import JournalTab from './screens/journal/Journal';
 
-import TodayTab from './screens/home/Home';
+import TodayTab from './screens/Today/Today';
 import Journey from './screens/journey/Journey';
 import JourneyDetails from './screens/journey/JourneyDetails';
+import JourneyTransport from './screens/journey/JourneyTransport';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -143,7 +144,7 @@ const App = function () {
                                         <IonTabs>
                                             <IonRouterOutlet>
                                                 <Route path="/main" exact>
-                                                    <Redirect to="/main/home" />
+                                                    <Redirect to="/main/today" />
                                                 </Route>
 
                                                 <Route path="/main/team" exact>
@@ -166,18 +167,10 @@ const App = function () {
                                                     <ExperimentTimelineScreen />
                                                 </Route>
 
-                                                <Route path="/main/home" exact>
+                                                <Route path="/main/today" exact>
                                                     <TodayTab />
                                                 </Route>
-
-                                                <Route path="/main/newJourney" exact>
-                                                    <Journey/>
-                                                </Route>
-
-                                                <Route path="/main/newJourney/JourneyDetails" exact>
-                                                    <JourneyDetails/>
-                                                </Route>
-
+                                                
                                                 <Route path="/main/journal">
                                                     <JournalTab />
                                                 </Route>
@@ -196,9 +189,9 @@ const App = function () {
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">
-                                                <IonTabButton tab="home" href="/main/home">
+                                                <IonTabButton tab="home" href="/main/today">
                                                     <ListChecks />
-                                                    <IonLabel>Home</IonLabel>
+                                                    <IonLabel>Today</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
