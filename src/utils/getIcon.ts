@@ -13,6 +13,7 @@ import {
     Ear,
     Brain,
     Play,
+    MapTrifold
 } from 'phosphor-react';
 
 const iconComponentMap: Record<string, React.ComponentType> = {
@@ -29,6 +30,7 @@ const iconComponentMap: Record<string, React.ComponentType> = {
     moon: Moon,
     'person-simple-run': PersonSimpleRun,
     play: Play,
+    'map-trifold': MapTrifold
 };
 
 const getIcon = function (type: string) {

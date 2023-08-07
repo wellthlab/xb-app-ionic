@@ -297,11 +297,11 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
                     }
 
                     if (block.type === 'route-drawer') {
-                        return <RouteDrawer title='h'/>
+                        return <RouteDrawer {...commonProps}/>
                     }
 
                     if (block.type === 'sticker-placer') {
-                        return <StickerPlacer title='h' />
+                        return <StickerPlacer {...commonProps} />
                     }
 
                     return <TextField {...commonProps} />;

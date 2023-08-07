@@ -6,17 +6,12 @@ import { useMap } from "react-leaflet"
 
 function LineEditor(props: LineProps) {
 
-    const [currentPoint, setCurrentPoint] = useState<L.LatLngLiteral | null>()
-
     const map = useMap();
 
     useEffect(()=> {
         const handleMapClick = (e: LeafletMouseEvent) => {
             L.DomEvent.stopPropagation(e)
-            if (currentPoint != null) {
-                props.setLines([...props.lines, [currentPoint, e.latlng]])
-            }
-            setCurrentPoint(e.latlng)
+            props.setLines(props.lines.concat([e.latlng]))
         }
         map.addEventListener("click", handleMapClick)
 
@@ -25,16 +20,23 @@ function LineEditor(props: LineProps) {
         }
     })
 
-    return (<>
-        {props.lines?.map(([i, j]) =>
-            <LineSegment start={i} end={j} colour={"lime"} key={i.lat} />)
-        }</>
+    const DisplayLines = function(){
+        if (props.lines.length >=2) {
+            return (<>{props.lines?.slice(0, -1).map((i,j) =>
+                <LineSegment start={i} end={props.lines[j+1]} colour={"lime"} key={i.lat} />)}
+                </>)
+        } else {
+            return(<></>)
+        }
+    }
+
+    return (<DisplayLines/>
     )
 }
 
 type LineProps = {
-    lines: [L.LatLngLiteral, L.LatLngLiteral][],
-    setLines: React.Dispatch<React.SetStateAction<[L.LatLngLiteral, L.LatLngLiteral][]>>
+    lines: L.LatLngLiteral[],
+    setLines: React.Dispatch<React.SetStateAction<L.LatLngLiteral[]>>
 }
 
 export default LineEditor

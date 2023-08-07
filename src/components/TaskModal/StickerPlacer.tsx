@@ -1,9 +1,9 @@
 import L, { LatLngLiteral } from "leaflet";
 import StickerEditor from "./Map/StickerEditor";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Sticker from "./Map/sticker";
 import LineSegment from "./Map/LineSegment";
-import { Stack, Typography } from "@mui/joy";
+import { CircularProgress, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import StickerDrawer from "./Map/StickerDrawer";
 
@@ -20,8 +20,10 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         setActiveSticker(index)
     }
 
+    //Add function to get route
+
     return (
-        <Stack spacing={1}>
+        <Suspense fallback={<CircularProgress />}><Stack spacing={1}>
             <Typography textAlign="center" level="h1" component="p">
                 {props.title}
             </Typography>
@@ -36,7 +38,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                         onStickerClick={handleStickerSelect}
                     />
             </Map>
-        </Stack>)
+        </Stack></Suspense>)
 }
 
 type StickersProps = {

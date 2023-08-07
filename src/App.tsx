@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
+import { IconContext, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
 
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
@@ -39,9 +39,6 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/Today/Today';
-import Journey from './screens/journey/Journey';
-import JourneyDetails from './screens/journey/JourneyDetails';
-import JourneyTransport from './screens/journey/JourneyTransport';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
