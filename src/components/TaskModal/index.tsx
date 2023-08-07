@@ -22,6 +22,8 @@ import Experiment, { ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
 import { updateProgress } from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
+import RouteDrawer from './RouteDrawer';
+import StickerPlacer from './StickerPlacer';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
@@ -292,6 +294,14 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
 
                     if (block.type === 'movement-picker') {
                         return <MovementPicker movements={block.movements} {...commonProps} />;
+                    }
+
+                    if (block.type === 'route-drawer') {
+                        return <RouteDrawer title='h'/>
+                    }
+
+                    if (block.type === 'sticker-placer') {
+                        return <StickerPlacer title='h' />
                     }
 
                     return <TextField {...commonProps} />;

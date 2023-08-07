@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import { ReactNode } from 'react'
 import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
-import LocationChanger from './utils/LocationChanger'
+import LocationChanger from './LocationChanger'
 import React from 'react'
 
 function Map(props: MapProps) {

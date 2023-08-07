@@ -1,6 +1,6 @@
 import React from 'react'
-import Sticker from '../sticker'
-import List from '../../../components/foundation/List'
+import Sticker from './sticker'
+import List from '../../foundation/List'
 
 function StickerDrawer(props: StickerDrawerProps) {
 

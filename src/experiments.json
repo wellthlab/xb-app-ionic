@@ -14,7 +14,7 @@
                         "id": 12,
                         "name": "Route Selection",
                         "icon": "map",
-                        "steps": [
+                        "blocks": [
                             {
                                 "type": "route",
                                 "label": "Draw a route on the map",
@@ -26,7 +26,7 @@
                         "id": 12,
                         "name": "Journey Definition",
                         "icon": "map",
-                        "steps": [
+                        "blocks": [
                             {
                                 "type": "para",
                                 "content": "What was the purpose of your journey?"

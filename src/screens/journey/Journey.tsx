@@ -1,19 +1,19 @@
 import React, { Suspense, lazy, useState } from "react";
-import LineEditor from "./LineEditor";
+import LineEditor from "../../components/TaskModal/Map/LineEditor";
 import Header from "../../components/foundation/Header";
 import { ButtonGroup } from "@mui/material";
 import Button from "@mui/joy/Button";
 import Page from "../../components/foundation/Page";
 import Centre from "../../components/foundation/Centre";
 import { DragEndEvent, LatLngLiteral } from "leaflet";
-import StickerEditor from "./StickerEditor";
+import StickerEditor from "../../components/TaskModal/Map/StickerEditor";
 import { CircularProgress, Stack } from "@mui/joy";
-import LineSegment from "./Elements/LineSegment";
-import Sticker from "./sticker";
-import StickerDrawer from "./Elements/StickerDrawer";
-import StickerMarker from "./Markers/StickerMarker";
+import LineSegment from "../../components/TaskModal/Map/LineSegment";
+import Sticker from "../../components/TaskModal/Map/sticker";
+import StickerDrawer from "../../components/TaskModal/Map/StickerDrawer";
+import StickerMarker from "../../components/TaskModal/Map/StickerMarker";
 import { useHistory } from "react-router-dom";
-const Map = lazy(() => import("./Map"))
+const Map = lazy(() => import("../../components/TaskModal/Map/Map"))
 
 function Journey() {
 

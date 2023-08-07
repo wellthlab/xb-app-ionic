@@ -74,7 +74,9 @@ export type Block =
     | IGreenDetector
     | ICountdownTimer
     | IMovementRecorder
-    | IMovementPicker;
+    | IMovementPicker
+    | IRouteDrawer
+    | IStickerPlacer;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -170,6 +172,14 @@ interface ICountdownTimer {
     duration: number;
     fixed?: boolean;
     notifications?: number[];
+}
+
+interface IRouteDrawer extends IGenericInput {
+    type: 'route-drawer'
+}
+
+interface IStickerPlacer extends IGenericInput {
+    type: 'sticker-placer'
 }
 
 export interface IResponse {

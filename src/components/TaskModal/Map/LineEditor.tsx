@@ -1,8 +1,7 @@
 import L, { LeafletMouseEvent, Map } from "leaflet"
 import { useEffect, useState } from "react"
-import LineSegment from "./Elements/LineSegment"
+import LineSegment from "./LineSegment"
 import React from "react"
-import ClickListener from "./utils/ClickListener"
 import { useMap } from "react-leaflet"
 
 function LineEditor(props: LineProps) {
@@ -10,6 +9,7 @@ function LineEditor(props: LineProps) {
     const [currentPoint, setCurrentPoint] = useState<L.LatLngLiteral | null>()
 
     const map = useMap();
+
     useEffect(()=> {
         const handleMapClick = (e: LeafletMouseEvent) => {
             L.DomEvent.stopPropagation(e)
