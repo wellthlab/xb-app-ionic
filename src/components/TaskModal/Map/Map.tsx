@@ -9,17 +9,14 @@ function Map(props: MapProps) {
         <MapContainer
             center={[51.505, -0.09]}
             zoom={13}
-            scrollWheelZoom={false}
-            zoomControl={false}
-            style={{ height: '300px', width: '600px' }}
+            style={{ height: '300px', width: '300px' }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <ZoomControl />
-            <LocationChanger />
             {props.children}
+            <LocationChanger />
         </MapContainer>
     )
 }
