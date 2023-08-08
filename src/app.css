@@ -157,3 +157,10 @@ body.dark {
 
     --ion-card-background: #1e1e1e;
 }
+
+@import url("~leaflet/dist/leaflet.css");
+
+.leaflet-container {
+  width: 300px;
+  height: 300px;
+}

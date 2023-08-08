@@ -76,7 +76,8 @@ export type Block =
     | IMovementRecorder
     | IMovementPicker
     | IRouteDrawer
-    | IStickerPlacer;
+    | IStickerPlacer
+    | IMultipleSelecter;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -180,6 +181,11 @@ interface IRouteDrawer extends IGenericInput {
 
 interface IStickerPlacer extends IGenericInput {
     type: 'sticker-placer'
+}
+
+interface IMultipleSelecter extends IGenericInput {
+    type: 'multiple-selector'
+    options: string[];
 }
 
 export interface IResponse {

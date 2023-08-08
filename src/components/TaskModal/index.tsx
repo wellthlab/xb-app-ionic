@@ -24,6 +24,7 @@ import { updateProgress } from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
 import RouteDrawer from './RouteDrawer';
 import StickerPlacer from './StickerPlacer';
+import MultipleSelect from '../foundation/MultipleSelect';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
@@ -302,6 +303,10 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
 
                     if (block.type === 'sticker-placer') {
                         return <StickerPlacer {...commonProps} />
+                    }
+
+                    if (block.type === 'multiple-selector') {
+                        return <MultipleSelect options={block.options} {...commonProps}/>
                     }
 
                     return <TextField {...commonProps} />;

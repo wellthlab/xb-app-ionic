@@ -29,7 +29,7 @@ const RouteDrawer = function (props: RouteDrawerProps) {
             <Map>
                 <LineEditor lines={lines} setLines={setLines} />
             </Map>
-            <Button onClick={handleSubmitRoute}> Save new route</Button>
+            <Button onClick={handleSubmitRoute}>Save</Button>
             </Suspense>
         </Stack>)
 }
