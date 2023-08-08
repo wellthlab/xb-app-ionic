@@ -1,9 +1,12 @@
 enum Sticker {
     'StartPoint' = 'Start Point',
     'Stop' = 'Stop',
-    'Sunny' = 'Sunny',
     'Walking' = 'Walking',
-    'Cycling' = 'Cycling'
+    'Cycling' = 'Cycling',
+    'Scooter' = 'Scooter',
+    'Car' = 'Car',
+    'Tube' = 'Tube',
+    'Bus' = 'Bus'
   }
   
   export function valueToKey(value: Sticker): string {
