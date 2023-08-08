@@ -46,7 +46,7 @@ const processErrors = function (errors: Yup.ValidationError[]) {
     return result;
 };
 
-const useForm = function <T extends Record<string, string | boolean | number | null>, TS extends Yup.ObjectSchema<any>>(
+const useForm = function <T extends Record<string, string | boolean | number | string[]| null>, TS extends Yup.ObjectSchema<any>>(
     initial: T,
     schema: TS,
 ): IUseFormReturns<T, TS> {

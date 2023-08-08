@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Typography, TextField, Stack, Link, sliderClasses } from '@mui/joy';
 import * as Yup from 'yup';
@@ -33,7 +34,7 @@ interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
 }
 
 const getInitialValues = function (blocks: ITask['blocks']) {
-    const values: Record<string, string | boolean | number> = {};
+    const values: Record<string, string | boolean | number | string[]> = {};
 
     for (const block of blocks) {
         if (!('rk' in block)) {
@@ -59,6 +60,10 @@ const getInitialValues = function (blocks: ITask['blocks']) {
         if (block.type === 'movement-picker') {
             values[block.rk] = '';
             continue;
+        }
+
+        if (block.type === 'multiple-selector' || block.type === 'sticker-placer') {
+            values[block.rk] = []
         }
 
         values[block.rk] = '';

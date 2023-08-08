@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import L, { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
 import Sticker from './sticker'
 import StickerMarker from './StickerMarker'
 import { v4 } from "uuid"
 import React from 'react'
 import { useMap } from 'react-leaflet'
-import StickerDrawer from './StickerDrawer'
 
 /**Editor allows you to add, drag and remove stickers from the map */
 function StickerEditor(props: StickerEditorProps) {
@@ -50,7 +49,7 @@ function StickerEditor(props: StickerEditorProps) {
     )
 }
 
-type StickersProps = {
+export type StickersProps = {
     point: LatLngLiteral,
     index: number,
     uuid: string

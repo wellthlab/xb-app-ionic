@@ -1,9 +1,9 @@
-import L, { LatLngLiteral } from "leaflet";
+import { LatLngLiteral } from "leaflet";
 import StickerEditor from "./Map/StickerEditor";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sticker from "./Map/sticker";
 import LineSegment from "./Map/LineSegment";
-import { CircularProgress, Stack, Typography } from "@mui/joy";
+import { Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import StickerDrawer from "./Map/StickerDrawer";
 import Routes, { IPoints } from "../../models/Route";
@@ -21,37 +21,34 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         setActiveSticker(index)
     }
 
-    //Add function to get route
-
     useEffect(() => {
         getTodayRoute()
-    },[]
+    }, []
     )
 
-    const getTodayRoute = async function() {
+    const getTodayRoute = async function () {
         const raw = await Routes.getRoutes();
         setLines(raw[0].route)
     }
 
     return (
-        <Suspense fallback={<CircularProgress />}>
-            <Stack spacing={1}>
+        <Stack spacing={1}>
             <Typography textAlign="center" level="h3" component="p">
                 {props.label}
             </Typography>
             <Stack direction="row">
-            <Map>
-                <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setSticikers} activeSticker={activeSticker} />
-                {lines?.slice(0, -1).map((i,j) =>
-                <LineSegment start={i} end={lines[j+1]} colour={"lime"} key={i.lat} />)}
-            </Map>
-            <StickerDrawer
-                        stickers={stickerList}
-                        activeSticker={activeSticker}
-                        onStickerClick={handleStickerSelect}
-                    />
+                <Map>
+                    <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setSticikers} activeSticker={activeSticker} />
+                    {lines?.slice(0, -1).map((i, j) =>
+                        <LineSegment start={i} end={lines[j + 1]} colour={"lime"} key={i.lat} />)}
+                </Map>
+                <StickerDrawer
+                    stickers={stickerList}
+                    activeSticker={activeSticker}
+                    onStickerClick={handleStickerSelect}
+                />
             </Stack>
-        </Stack></Suspense>)
+        </Stack>)
 }
 
 type StickersProps = {

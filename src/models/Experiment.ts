@@ -194,7 +194,7 @@ export interface IResponse {
     experimentId: string | null;
     dayId: number;
     taskId: number;
-    payload: Record<string, string | number>;
+    payload: Record<string, string | number | string[]>;
     createdAt: number;
 }
 

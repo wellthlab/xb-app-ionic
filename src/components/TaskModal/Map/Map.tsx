@@ -1,8 +1,7 @@
-import { ReactNode, Suspense } from 'react'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { ReactNode } from 'react'
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
 import LocationChanger from './LocationChanger'
 import React from 'react'
-import "../../../app.css"
 
 function Map(props: MapProps) {
     return (
@@ -12,11 +11,11 @@ function Map(props: MapProps) {
             scrollWheelZoom={false}
         >
             <TileLayer
-                attribution= '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {props.children}
             <LocationChanger />
+            {props.children}
         </MapContainer>
     )
 }
