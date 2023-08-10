@@ -1,12 +1,12 @@
 import { ReactNode } from 'react'
 import { Marker, Popup, useMap } from 'react-leaflet'
-import Sticker, { valueToKey as stickerToKey } from './sticker'
+import Sticker from './sticker'
 import L, { DragEndEvent } from 'leaflet'
 import Button from '../../foundation/StickerButton'
 import React from 'react'
 function StickerMarker(props: StickerMarkerProps) {
   const icon = L.icon({
-    iconUrl: `/assets/sticker/${stickerToKey(props.sticker)}.svg`,
+    iconUrl: `/assets/sticker/${props.sticker.getLabel()}.svg`,
     iconSize: [32, 32],
   })
 

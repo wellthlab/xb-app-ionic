@@ -7,13 +7,13 @@ const MultipleSelect = function(props: MultipleSelectProps) {
 
     const handleCheckboxChange = function(e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value
-        const checked = e.target.checked
-        if (checked) {
+        if (e.target.checked) {
             setGroup(group.concat([value]))
         } else {
             setGroup(group.filter(v => v != value))
         }
     }
+    
     return (
     <List>
         {props.options.map((i) => <ListItem>

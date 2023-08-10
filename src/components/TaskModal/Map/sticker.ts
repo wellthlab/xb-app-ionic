@@ -1,25 +1,33 @@
-enum Sticker {
-    'StartPoint' = 'Start Point',
-    'Stop' = 'Stop',
-    'Walking' = 'Walking',
-    'Cycling' = 'Cycling',
-    'Scooter' = 'Scooter',
-    'Car' = 'Car',
-    'Tube' = 'Tube',
-    'Bus' = 'Bus'
+enum Category {
+  transport = 'transport',
+  util = 'util'
+}
+
+export class Sticker {
+  public static bus = new Sticker("Bus", Category.transport)
+  public static car = new Sticker("Car", Category.transport)
+  public static startPoint = new Sticker("StartPoint", Category.util)
+  public static stop = new Sticker("Stop", Category.util)
+  public static walking = new Sticker("Walking", Category.transport)
+  public static cycling = new Sticker("Cycling", Category.transport)
+  public static scooter = new Sticker("Scooter", Category.transport)
+  public static tube = new Sticker("Tube", Category.transport)
+
+  private label
+  private category
+
+  private constructor(label: string, category: Category) {
+    this.label = label;
+    this.category = category;
   }
-  
-  export function valueToKey(value: Sticker): string {
-    const res = Object.keys(Sticker).find(
-      (key) => Sticker[key as keyof typeof Sticker] === value
-    )
-  
-    if (!res) {
-      throw new Error(`Sticker ${value} not found`)
-    }
-  
-    return res
+
+  public getLabel() {
+    return this.label;
   }
-  
-  export default Sticker
-  
+
+  public getCategory() {
+    return this.category;
+  }
+}
+
+export default Sticker

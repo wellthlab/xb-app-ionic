@@ -42,7 +42,7 @@ function StickerEditor(props: StickerEditorProps) {
             {props.stickers.map(([s]) => (<StickerMarker key={s.uuid} position={{
                 lat: s.point.lat,
                 lng: s.point.lng,
-            }} sticker={props.stickerSet[s.index]}
+            }} sticker={s.index}
                 onRemove={() => handleStickerRemove(s.uuid)}
                 onDrag={(e) => handleStickerDrag(s.uuid, e)} />))}
         </>
@@ -51,7 +51,7 @@ function StickerEditor(props: StickerEditorProps) {
 
 export type StickersProps = {
     point: LatLngLiteral,
-    index: number,
+    index: Sticker,
     uuid: string
 }
 
@@ -59,7 +59,7 @@ type StickerEditorProps = {
     stickerSet: Sticker[],
     stickers: [StickersProps][],
     setStickers: React.Dispatch<React.SetStateAction<[StickersProps][]>>,
-    activeSticker: number,
+    activeSticker: Sticker,
 }
 
 export default StickerEditor

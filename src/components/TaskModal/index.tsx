@@ -120,6 +120,10 @@ const getSchema = function (blocks: ITask['blocks']) {
         if (!block.optional && block.type !== 'checkbox' && block.type !== 'stopwatch') {
             subSchema = subSchema.required('This field is missing');
         }
+        
+        if (block.type==='multiple-selector') {
+            subSchema = Yup.mixed();
+        }
 
         keys[block.rk] = subSchema;
     }
