@@ -1,4 +1,4 @@
-import L, { LatLngLiteral } from "leaflet";
+import L from "leaflet";
 import StickerEditor, { StickersProps } from "./Map/StickerEditor";
 import React, { useEffect, useState } from "react";
 import LineSegment from "./Map/LineSegment";

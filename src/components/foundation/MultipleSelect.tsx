@@ -1,29 +1,36 @@
-import { ListItem, Checkbox, List } from "@mui/joy"
-import React, { useState } from "react"
+import { ListItem, Checkbox, List, FormControlProps } from "@mui/joy"
+import React from "react"
 
-const MultipleSelect = function(props: MultipleSelectProps) {
+const MultipleSelect = function (props: MultipleSelectProps) {
 
-    const [group, setGroup] = useState<string[]>([])
+    let group = props.value
 
-    const handleCheckboxChange = function(e: React.ChangeEvent<HTMLInputElement>) {
+    const handleCheckboxChange = function (e: React.ChangeEvent<HTMLInputElement>) {
         const value = e.target.value
         if (e.target.checked) {
-            setGroup(group.concat([value]))
+            group = group + " " + value
         } else {
-            setGroup(group.filter(v => v != value))
+            group = group.replace(value, "")
         }
+        props.onChange(group)
     }
-    
+
     return (
-    <List>
-        {props.options.map((i) => <ListItem>
-        <Checkbox onChange={(e) =>handleCheckboxChange(e)} label={i} key={i}/>
-      </ListItem>)}
-    </List>)
+        <List>
+            <p>{props.label}</p>
+            <p>{group}</p>
+            {props.options.map((i) =>
+                <ListItem>
+                    <Checkbox onChange={(e) => handleCheckboxChange(e)} value={i} label={i} key={i} />
+                </ListItem>)}
+        </List>)
 }
 
-export interface MultipleSelectProps {
-    options: string[]
+export interface MultipleSelectProps extends Omit<FormControlProps, 'onChange'> {
+    options: string[],
+    label: string,
+    value: string,
+    onChange: (group: string) => void
 }
 
 export default MultipleSelect

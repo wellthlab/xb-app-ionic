@@ -34,7 +34,7 @@ interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
 }
 
 const getInitialValues = function (blocks: ITask['blocks']) {
-    const values: Record<string, string | boolean | number | string[]> = {};
+    const values: Record<string, string | boolean | number> = {};
 
     for (const block of blocks) {
         if (!('rk' in block)) {
@@ -60,10 +60,6 @@ const getInitialValues = function (blocks: ITask['blocks']) {
         if (block.type === 'movement-picker') {
             values[block.rk] = '';
             continue;
-        }
-
-        if (block.type === 'multiple-selector' || block.type === 'sticker-placer') {
-            values[block.rk] = []
         }
 
         values[block.rk] = '';
@@ -119,10 +115,6 @@ const getSchema = function (blocks: ITask['blocks']) {
 
         if (!block.optional && block.type !== 'checkbox' && block.type !== 'stopwatch') {
             subSchema = subSchema.required('This field is missing');
-        }
-        
-        if (block.type==='multiple-selector') {
-            subSchema = Yup.mixed();
         }
 
         keys[block.rk] = subSchema;
