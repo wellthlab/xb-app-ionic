@@ -1,5 +1,5 @@
-import L, { LeafletMouseEvent, Map } from "leaflet"
-import { useEffect, useState } from "react"
+import L, { LeafletMouseEvent } from "leaflet"
+import { useEffect } from "react"
 import LineSegment from "./LineSegment"
 import React from "react"
 import { useMap } from "react-leaflet"
@@ -23,7 +23,7 @@ function LineEditor(props: LineProps) {
     const DisplayLines = function(){
         if (props.lines.length >=2) {
             return (<>{props.lines?.slice(0, -1).map((i,j) =>
-                <LineSegment start={i} end={props.lines[j+1]} colour={"lime"} key={i.lat} />)}
+                <LineSegment start={i} end={props.lines[j+1]} colour={"black"} key={i.lat} />)}
                 </>)
         } else {
             return(<></>)
