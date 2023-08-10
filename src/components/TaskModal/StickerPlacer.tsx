@@ -2,19 +2,21 @@ import L from "leaflet";
 import StickerEditor, { StickersProps } from "./Map/StickerEditor";
 import React, { useEffect, useState } from "react";
 import LineSegment from "./Map/LineSegment";
-import { Stack, Typography } from "@mui/joy";
+import { FormControlProps, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import Routes, { IPoints } from "../../models/Route";
 import { Marker } from "react-leaflet";
 import Sticker from './Map/sticker'
 import SearchBar from "../foundation/SearchBar";
 
-interface StickerPlacerProps {
+interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'>{
     label: string
+    value: string
+    onChange: (sticker: string) => void;
 }
 const StickerPlacer = function (props: StickerPlacerProps) {
     const [activeSticker, setActiveSticker] = useState<Sticker>(Sticker.bus)
-    const [stickers, setStickers] = useState<[StickersProps][]>([])
+    const [stickers, setStickers] = useState<StickersProps[]>([])
     const stickerList = [Sticker.bus, Sticker.car, Sticker.cycling, Sticker.scooter, Sticker.tube, Sticker.walking]
     const [stickerResult, setStickerResult] = useState<Sticker[]>(stickerList)
     const [lines, setLines] = useState<IPoints[]>([])
@@ -58,7 +60,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                 {props.label}
             </Typography>
             <Map>
-                <StickerEditor stickerSet={stickerResult} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} />
+                <StickerEditor stickerSet={stickerResult} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange}/>
                 <AddRoute />
             </Map>
             <SearchBar data={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerList={stickerResult} setStickerList={setStickerResult} />
