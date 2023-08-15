@@ -15,8 +15,8 @@ const SearchBar = function (props: SearchBarProps) {
 
     return (
         <>
-            <Stack direction="row">
-                <TextField onChange={(e) => setState({ text: e.target.value, list: state.list })} />
+            <Stack direction="row" spacing={1}>
+                <TextField onChange={(e) => setState({ text: e.target.value, list: state.list })} fullWidth={true}/>
                 <IconButton type="submit" onClick={searchList}>
                     <Search />
                 </IconButton>
