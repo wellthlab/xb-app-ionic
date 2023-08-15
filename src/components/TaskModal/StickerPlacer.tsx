@@ -9,7 +9,7 @@ import { Marker } from "react-leaflet";
 import Sticker from './Map/sticker'
 import SearchBar from "../foundation/SearchBar";
 
-interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
+interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'>{
     label: string
     value: string
     onChange: (sticker: string) => void;
@@ -56,9 +56,11 @@ const StickerPlacer = function (props: StickerPlacerProps) {
 
     return (
         <Stack spacing={1}>
-            <Typography>{props.label}</Typography>
+            <Typography>
+                {props.label}
+            </Typography>
             <Map>
-                <StickerEditor stickerSet={stickerResult} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
+                <StickerEditor stickerSet={stickerResult} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange}/>
                 <AddRoute />
             </Map>
             <SearchBar data={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerList={stickerResult} setStickerList={setStickerResult} />

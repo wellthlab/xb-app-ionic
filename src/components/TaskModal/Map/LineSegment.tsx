@@ -14,14 +14,6 @@ function LineSegment({
         positions={[start, end]}
         weight={5}
         pathOptions={{ color: colour, fillColor: colour }}
-      />
-      <Polyline
-        positions={[start, end]}
-        weight={20}
-        pathOptions={{
-          color: 'transparent',
-          fillColor: 'transparent',
-        }}
         bubblingMouseEvents={false}
         eventHandlers={{
           click: (e: { latlng: any }) => onClick && onClick(start, end, e.latlng),

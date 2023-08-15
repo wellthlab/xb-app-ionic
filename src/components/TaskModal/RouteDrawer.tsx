@@ -19,16 +19,21 @@ const RouteDrawer = function (props: RouteDrawerProps) {
         await Routes.saveRoute({ route: points });
     };
 
+    const removeRoute = function() {
+        setLines([])
+    }
+
     return (
         <Stack spacing={1}>
-            <Typography textAlign="center" level="h3" component="p">
-                {props.label}
-            </Typography>
+            <Typography>{props.label}</Typography>
             <Suspense fallback={<CircularProgress />}>
                 <Map>
                     <LineEditor lines={lines} setLines={setLines} />
                 </Map>
-                <Button onClick={handleSubmitRoute}> Save route</Button>
+                <Stack direction="row" spacing={1}>
+                <Button onClick={removeRoute} fullWidth> Remove route </Button>
+                <Button onClick={handleSubmitRoute} fullWidth> Save route</Button>
+                </Stack>
             </Suspense>
         </Stack>)
 }
