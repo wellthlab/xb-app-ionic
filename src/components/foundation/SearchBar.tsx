@@ -1,6 +1,6 @@
 import { Search } from "@mui/icons-material"
 import { IconButton, Stack, TextField } from "@mui/joy"
-import React, { ReactNode, useState } from "react"
+import React, { useState } from "react"
 import Sticker from "../TaskModal/Map/sticker"
 import StickerDrawer from "../TaskModal/Map/StickerDrawer"
 
