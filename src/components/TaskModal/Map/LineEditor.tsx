@@ -20,6 +20,12 @@ function LineEditor(props: LineProps) {
         }
     })
 
+    useEffect(() => {
+        map.locate().on("locationfound", function (e) {
+          map.flyTo(e.latlng, map.getZoom());
+        });
+      }, [map]);
+
     const DisplayLines = function(){
         if (props.lines.length >=2) {
             return (<>{props.lines?.slice(0, -1).map((i,j) =>

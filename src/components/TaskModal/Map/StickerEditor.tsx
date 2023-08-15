@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import L, { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
 import Sticker from './sticker'
 import StickerMarker from './StickerMarker'
@@ -32,6 +32,12 @@ function StickerEditor(props: StickerEditorProps) {
             map.removeEventListener("click")
         }
     })
+
+    useEffect(() => {
+        map.locate().on("locationfound", function (e) {
+          map.flyTo(e.latlng, map.getZoom());
+        });
+      }, [map]);
 
     const handleStickerRemove = (uuid: string) => {
         if (!props.stickers) return
