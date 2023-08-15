@@ -1,33 +1,17 @@
-enum Category {
-  transport = 'transport',
-  util = 'util'
+enum Sticker {
+  Bus = 'Bus',
+  Car = 'Car',
+  StartPoint = 'StartPoint',
+  Stop = 'Stop',
+  Walking = 'Walking',
+  Cycling = 'Cycling',
+  Scooter = 'Scooter',
+  Tube = 'Tube'
 }
 
-export class Sticker {
-  public static bus = new Sticker("Bus", Category.transport)
-  public static car = new Sticker("Car", Category.transport)
-  public static startPoint = new Sticker("StartPoint", Category.util)
-  public static stop = new Sticker("Stop", Category.util)
-  public static walking = new Sticker("Walking", Category.transport)
-  public static cycling = new Sticker("Cycling", Category.transport)
-  public static scooter = new Sticker("Scooter", Category.transport)
-  public static tube = new Sticker("Tube", Category.transport)
-
-  private label
-  private category
-
-  private constructor(label: string, category: Category) {
-    this.label = label;
-    this.category = category;
-  }
-
-  public getLabel() {
-    return this.label;
-  }
-
-  public getCategory() {
-    return this.category;
-  }
-}
+//List of all the categories and the stickers that fit in each category
+const Transport = [Sticker.Bus, Sticker.Car, Sticker.Cycling, Sticker.Scooter, Sticker.Tube, Sticker.Walking]
+const Util = [Sticker.StartPoint, Sticker.Stop]
+const Categories = [Transport, Util]
 
 export default Sticker

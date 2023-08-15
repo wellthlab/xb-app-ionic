@@ -15,17 +15,20 @@ interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'>{
     onChange: (sticker: string) => void;
 }
 const StickerPlacer = function (props: StickerPlacerProps) {
-    const [activeSticker, setActiveSticker] = useState<Sticker>(Sticker.bus)
     const [stickers, setStickers] = useState<StickersProps[]>([])
-    const stickerList = [Sticker.bus, Sticker.car, Sticker.cycling, Sticker.scooter, Sticker.tube, Sticker.walking]
+    let stickerList: Sticker[] = []
+    Object.values(Sticker).forEach(s => {
+        stickerList.push(s)
+    });
+    const [activeSticker, setActiveSticker] = useState<Sticker>(stickerList[0])
     const [stickerResult, setStickerResult] = useState<Sticker[]>(stickerList)
     const [lines, setLines] = useState<IPoints[]>([])
     const startIcon = L.icon({
-        iconUrl: `/assets/sticker/${Sticker.startPoint.getLabel()}.svg`,
+        iconUrl: `/assets/sticker/${Sticker.StartPoint}.svg`,
         iconSize: [32, 32],
     })
     const endIcon = L.icon({
-        iconUrl: `/assets/sticker/${Sticker.stop.getLabel()}.svg`,
+        iconUrl: `/assets/sticker/${Sticker.Stop}.svg`,
         iconSize: [32, 32],
     })
 

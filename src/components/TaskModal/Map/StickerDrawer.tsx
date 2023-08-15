@@ -9,16 +9,16 @@ function StickerDrawer(props: StickerDrawerProps) {
     <Grid container spacing={2}>
       {props.stickers.map(sticker => {
         return (
-          <Grid item xs={2} key={sticker.getLabel()}>
+          <Grid item xs={2} key={sticker}>
             <button
               onClick={() => props.onStickerClick(sticker)}
-              key={sticker.getLabel()}>
+              key={sticker}>
               <img
-                src={`/assets/sticker/${sticker.getLabel()}.svg`}
-                alt={sticker.getLabel()}
+                src={`/assets/sticker/${sticker}.svg`}
+                alt={sticker}
                 width={32}
                 height={32} />
-              {sticker.getLabel()}
+              {sticker}
             </button>
           </Grid>
         )

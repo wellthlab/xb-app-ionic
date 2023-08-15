@@ -4,9 +4,10 @@ import Sticker from './sticker'
 import L, { DragEndEvent } from 'leaflet'
 import Button from '../../foundation/StickerButton'
 import React from 'react'
+
 function StickerMarker(props: StickerMarkerProps) {
   const icon = L.icon({
-    iconUrl: `/assets/sticker/${props.sticker.getLabel()}.svg`,
+    iconUrl: `/assets/sticker/${props.sticker}.svg`,
     iconSize: [32, 32],
   })
 

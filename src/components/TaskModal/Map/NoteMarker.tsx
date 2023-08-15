@@ -7,7 +7,7 @@ import React from 'react'
 function NoteMarker(props: NoteMarkerProps) {
     // Replace with note icon
     const icon = L.icon({
-        iconUrl: `/assets/sticker/${Sticker.startPoint.getLabel()}.svg`,
+        iconUrl: `/assets/sticker/${Sticker.StartPoint}.svg`,
         iconSize: [32, 32],
     })
 

@@ -10,7 +10,7 @@ const SearchBar = function (props: SearchBarProps) {
 
     const searchList = function () {
         if (!state.text) props.setStickerList(props.data)
-        props.setStickerList(props.data.filter((i) => i.getLabel().toLowerCase().includes(state.text)))
+        props.setStickerList(props.data.filter((i) => i.toLowerCase().includes(state.text)))
     }
 
     return (
