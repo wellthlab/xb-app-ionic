@@ -6,9 +6,7 @@ import StickerDrawer from "../TaskModal/Map/StickerDrawer"
 
 const SearchBar = function (props: SearchBarProps) {
 
-    const [state, setState] = useState({ text: "", list: props.data })
-
-    const [selected, setSelected] = React.useState(Category.Any.toString());
+    const [state, setState] = useState({ text: "", list: props.stickerList, selectedCategory: Category.Any.toString() })
 
     let categoryList: Category[] = []
     Object.values(Category).forEach(s => {
@@ -16,14 +14,14 @@ const SearchBar = function (props: SearchBarProps) {
     });
 
     const searchList = function () {
-        if (!state.text) props.setStickerList(props.data)
-        setSelected(Category.Any.toString())
-        props.setStickerList(props.data.filter((i) => i.toLowerCase().includes(state.text)))
+        if (!state.text) props.setStickerList(props.stickerList)
+        setState({text: state.text, list: state.list, selectedCategory: Category.Any.toString()})
+        props.setStickerList(props.stickerList.filter((i) => i.toLowerCase().includes(state.text)))
     }
 
     const changeCategory = function (name: string, e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.checked) {
-            setSelected(name)
+            setState({text: "", list: state.list, selectedCategory: name})
             switch (name) {
                 case Category.Transport:
                     props.setStickerList(Transport)
@@ -47,7 +45,7 @@ const SearchBar = function (props: SearchBarProps) {
                     props.setStickerList(Places)
                     break;
                 case Category.Any:
-                    props.setStickerList(props.data)
+                    props.setStickerList(props.stickerList)
             }
         }
     }
@@ -55,19 +53,19 @@ const SearchBar = function (props: SearchBarProps) {
     return (
         <>
             <Stack direction="row" spacing={1}>
-                <TextField onChange={(e) => setState({ text: e.target.value, list: state.list })} fullWidth={true} />
+                <TextField value ={state.text} onChange={(e) => setState({ text: e.target.value, list: state.list, selectedCategory: state.selectedCategory })} fullWidth={true} />
                 <IconButton type="submit" onClick={searchList}>
                     <Search />
                 </IconButton>
             </Stack>
             <StickerDrawer
-                stickers={props.stickerList}
+                stickers={props.stickerResult}
                 activeSticker={props.activeSticker}
                 onStickerClick={props.onStickerClick}
             />
             <RadioGroup row sx={{ overflow: "scroll", gap: 1 }}>
                 {categoryList.map(name => {
-                    const checked = selected === name;
+                    const checked = state.selectedCategory === name;
                     return (
                         <Chip key={name} startDecorator={checked && <CheckCircle />} color={checked ? 'primary' : 'neutral'} variant="plain">
                             <Radio disableIcon overlay color={checked ? 'primary' : 'neutral'} label={name} key={name} onChange={(e) => changeCategory(name, e)} />
@@ -80,10 +78,10 @@ const SearchBar = function (props: SearchBarProps) {
 }
 
 type SearchBarProps = {
-    data: Sticker[]
+    stickerList: Sticker[]
     activeSticker: Sticker
     onStickerClick: (index: Sticker) => void
-    stickerList: Sticker[]
+    stickerResult: Sticker[]
     setStickerList: React.Dispatch<React.SetStateAction<Sticker[]>>
 }
 

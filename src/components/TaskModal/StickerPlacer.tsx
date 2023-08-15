@@ -66,7 +66,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                 <StickerEditor stickerSet={stickerResult} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange}/>
                 <AddRoute />
             </Map>
-            <SearchBar data={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerList={stickerResult} setStickerList={setStickerResult} />
+            <SearchBar stickerList={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerResult={stickerResult} setStickerList={setStickerResult} />
         </Stack>)
 }
 

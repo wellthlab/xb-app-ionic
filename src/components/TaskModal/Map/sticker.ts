@@ -1,3 +1,4 @@
+//Sort alphabetically
 enum Sticker {
   Bus = 'Bus',
   Car = 'Car',
