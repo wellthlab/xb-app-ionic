@@ -19,14 +19,14 @@ function EmotionWheel(props: EmotionWheelProps) {
     }
 
     return (
-        <Stack spacing={1}>
+        <>
             <Stack direction="row" spacing={1}>
                 <TextField onChange={(e) => setState({ text: e.target.value, list: state.list })} fullWidth={true} />
                 <IconButton type="submit" onClick={searchList}>
                     <Search />
                 </IconButton>
-            </Stack>
-            <Grid container spacing={2}>
+                </Stack>
+                <Grid container spacing={2}>
                 {props.emotionList.map(e => {
                     return (
                         <Grid item spacing={2} key={e}>
@@ -40,7 +40,7 @@ function EmotionWheel(props: EmotionWheelProps) {
                 })}
             </Grid>
             <img src={"emotion-wheel.png"}></img>
-        </Stack>
+        </>
     )
 }
 

@@ -1,6 +1,4 @@
-import { ReactNode } from 'react'
-import { Marker, Popup, useMap, CircleMarker } from 'react-leaflet'
-import L, { DragEndEvent } from 'leaflet'
+import { Popup, useMap, CircleMarker } from 'react-leaflet'
 import React from 'react'
 import { Button, Stack, Typography } from '@mui/joy'
 import Emotion, { getKeyFromValue } from './emotion'
@@ -18,7 +16,7 @@ function EmotionMarker(props: EmotionMarkerProps) {
     }
 
     return (
-        <CircleMarker center={props.point} color={props.emotion.valueOf()} fillColor={props.emotion.valueOf()} radius={30}>
+        <CircleMarker center={props.point} color={props.emotion.valueOf()} fillColor={props.emotion.valueOf()} radius={30} fillOpacity={0.6}>
             <Popup>
                 <Stack>
                     <Typography>{getKeyFromValue(props.emotion)}</Typography>
