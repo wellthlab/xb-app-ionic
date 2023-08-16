@@ -1,9 +1,8 @@
-import { ReactNode } from 'react'
 import { Marker, Popup, useMap } from 'react-leaflet'
 import Sticker from './sticker'
 import L, { DragEndEvent } from 'leaflet'
 import React from 'react'
-import { Button } from '@mui/joy'
+import { Button, Stack, TextField } from '@mui/joy'
 
 function StickerMarker(props: StickerMarkerProps) {
   const icon = L.icon({
@@ -30,9 +29,11 @@ function StickerMarker(props: StickerMarkerProps) {
         dragend: props.onDrag,
       }}
     >
-      {props.children}
       <Popup closeOnClick closeOnEscapeKey>
-        <Button onClick={remove}>Remove</Button>
+        <Stack spacing={1}>
+          <TextField value={props.note} fullWidth onChange={(e) => props.setNote(e)} placeholder='Enter your note here...' />
+          <Button onClick={remove} fullWidth >Remove</Button>
+        </Stack>
       </Popup>
     </Marker>
   )
@@ -46,7 +47,8 @@ type StickerMarkerProps = {
   sticker: Sticker
   onDrag: (e: DragEndEvent) => void
   onRemove: () => void
-  children?: ReactNode
+  note: string
+  setNote: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default StickerMarker

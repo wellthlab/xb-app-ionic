@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import L, { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
 import Sticker from './sticker'
 import StickerMarker from './StickerMarker'
@@ -6,7 +6,6 @@ import { v4 } from "uuid"
 import React from 'react'
 import { useMap } from 'react-leaflet'
 
-/**Editor allows you to add, drag and remove stickers from the map */
 function StickerEditor(props: StickerEditorProps) {
     const map = useMap();
 
@@ -14,14 +13,14 @@ function StickerEditor(props: StickerEditorProps) {
         const handleStickerClick = (e: LeafletMouseEvent) => {
             L.DomEvent.stopPropagation(e)
             if (!props.stickers) return
-            props.setStickers([...props.stickers, { point: e.latlng, index: props.activeSticker, uuid: v4() }])
+            props.setStickers([...props.stickers, { point: e.latlng, sticker: props.activeSticker, note: "", uuid: v4() }])
             convertStickersToString(props.stickers)
         }
 
-        const convertStickersToString = function(stickers: StickersProps[]) {
+        const convertStickersToString = function (stickers: StickersProps[]) {
             let result = ""
-            stickers.map((s)=> {
-                result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.index + " " + s.uuid
+            stickers.map((s) => {
+                result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.sticker + " " + s.note + " " + s.uuid
             })
             props.onChange(result)
         }
@@ -35,9 +34,9 @@ function StickerEditor(props: StickerEditorProps) {
 
     useEffect(() => {
         map.locate().on("locationfound", function (e) {
-          map.flyTo(e.latlng, map.getZoom());
+            map.flyTo(e.latlng, map.getZoom());
         });
-      }, [map]);
+    }, [map]);
 
     const handleStickerRemove = (uuid: string) => {
         if (!props.stickers) return
@@ -47,9 +46,15 @@ function StickerEditor(props: StickerEditorProps) {
     const handleStickerDrag = (uuid: string, e: LeafletEvent) => {
         if (!props.stickers) return
         props.setStickers(props.stickers.map((s) =>
-            s.uuid === uuid ? { point: e.target.getLatLng(), index: s.index, uuid: s.uuid } : s
+            s.uuid === uuid ? { point: e.target.getLatLng(), sticker: s.sticker, note: s.note, uuid: s.uuid } : s
         ),
         )
+    }
+
+    const constHandleNoteChange = function (e: React.ChangeEvent<HTMLInputElement>, uuid: string) {
+        props.setStickers(props.stickers.map((s) =>
+            s.uuid === uuid ? { point: s.point, sticker: s.sticker, note: e.target.value, uuid: s.uuid } : s
+        ),)
     }
 
     return (
@@ -57,16 +62,17 @@ function StickerEditor(props: StickerEditorProps) {
             {props.stickers.map((s) => (<StickerMarker key={s.uuid} position={{
                 lat: s.point.lat,
                 lng: s.point.lng,
-            }} sticker={s.index}
+            }} sticker={s.sticker}
                 onRemove={() => handleStickerRemove(s.uuid)}
-                onDrag={(e) => handleStickerDrag(s.uuid, e)} />))}
+                onDrag={(e) => handleStickerDrag(s.uuid, e)} note={s.note} setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
         </>
     )
 }
 
 export type StickersProps = {
     point: LatLngLiteral,
-    index: Sticker,
+    sticker: Sticker,
+    note: string,
     uuid: string
 }
 
