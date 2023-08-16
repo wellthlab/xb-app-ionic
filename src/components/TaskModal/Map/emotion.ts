@@ -10,3 +10,7 @@ enum Emotion {
 }
 
 export default Emotion
+
+export const getKeyFromValue = function (e: Emotion) {
+    return Object.keys(Emotion)[Object.values(Emotion).indexOf(e)]
+}

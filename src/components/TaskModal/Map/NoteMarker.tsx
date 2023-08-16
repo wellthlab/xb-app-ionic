@@ -1,8 +1,8 @@
 import { Marker, Popup, useMap } from 'react-leaflet'
 import Sticker from './sticker'
 import L, { DragEndEvent } from 'leaflet'
-import Button from '../../foundation/StickerButton'
 import React from 'react'
+import { Button } from '@mui/joy'
 
 function NoteMarker(props: NoteMarkerProps) {
     // Replace with note icon

@@ -2,8 +2,9 @@ import { useEffect } from 'react'
 import L, { LatLngLiteral, LeafletMouseEvent, } from 'leaflet'
 import { v4 } from "uuid"
 import React from 'react'
-import { Circle, useMap } from 'react-leaflet'
+import { useMap } from 'react-leaflet'
 import Emotion from './emotion'
+import EmotionMarker from './EmotionMarker'
 
 
 function EmotionEditor(props: EmotionEditorProps) {
@@ -12,6 +13,7 @@ function EmotionEditor(props: EmotionEditorProps) {
     useEffect(() => {
         const handleEmotionClick = (e: LeafletMouseEvent) => {
             L.DomEvent.stopPropagation(e)
+            if (!props.emotions) return
             props.setEmotions([...props.emotions, { point: e.latlng, emotion: props.activeEmotion, uuid: v4() }])
             convertEmotionsToString(props.emotions)
         }
@@ -19,7 +21,7 @@ function EmotionEditor(props: EmotionEditorProps) {
         const convertEmotionsToString = function (emotions: EmotionsProps[]) {
             let result = ""
             emotions.map((s) => {
-                result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + getKeyFromValue(s.emotion) + " " + s.uuid
+                result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.emotion + " " + s.uuid
             })
             props.onChange(result)
         }
@@ -37,13 +39,15 @@ function EmotionEditor(props: EmotionEditorProps) {
         });
     }, [map]);
 
-    const getKeyFromValue = function (e: Emotion) {
-        return Object.keys(Emotion)[Object.values(Emotion).indexOf(e)]
+    const handleRemove = function (uuid: string) {
+        if (!props.emotions) return
+        props.setEmotions(props.emotions.filter((e) => e.uuid != uuid))
     }
 
     return (
         <>
-            {props.emotions.map((s) => (<Circle center={s.point} color={s.emotion.valueOf()} radius={30} />))}
+            {props.emotions.map((s) => (
+                <EmotionMarker point={s.point} emotion={s.emotion} onRemove={() => handleRemove(s.uuid)} />))}
         </>
     )
 }
