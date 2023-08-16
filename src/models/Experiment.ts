@@ -77,7 +77,8 @@ export type Block =
     | IMovementPicker
     | IRouteDrawer
     | IStickerPlacer
-    | IMultipleSelecter;
+    | IMultipleSelecter
+    | IEmotionPlacer;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -186,6 +187,10 @@ interface IStickerPlacer extends IGenericInput {
 interface IMultipleSelecter extends IGenericInput {
     type: 'multiple-selector'
     options: string[];
+}
+
+interface IEmotionPlacer extends IGenericInput {
+    type: 'emotion-placer'
 }
 
 export interface IResponse {

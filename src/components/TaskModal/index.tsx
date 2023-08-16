@@ -26,6 +26,7 @@ import { selectTask } from '../../slices/experiments';
 import RouteDrawer from './RouteDrawer';
 import StickerPlacer from './StickerPlacer';
 import MultipleSelect from '../foundation/MultipleSelect';
+import EmotionPlacer from './EmotionPlacer';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
@@ -308,6 +309,10 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
 
                     if (block.type === 'multiple-selector') {
                         return <MultipleSelect options={block.options} {...commonProps}/>
+                    }
+
+                    if (block.type === 'emotion-placer') {
+                        return <EmotionPlacer {...commonProps} />
                     }
 
                     return <TextField {...commonProps} />;

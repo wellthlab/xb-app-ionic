@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useState } from 'react'
-import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
+import { ReactNode } from 'react'
+import { MapContainer, TileLayer } from 'react-leaflet'
 import LocationChanger from './LocationChanger'
 import React from 'react'
 import "leaflet/dist/leaflet.css";

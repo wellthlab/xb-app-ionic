@@ -16,8 +16,10 @@ const MultipleSelect = function (props: MultipleSelectProps) {
     }
 
     return (
-        <List>
+        <List sx={{"backgroundColor": "white"}}>
+            <ListItem>
             <p>{props.label}</p>
+            </ListItem>
             {props.options.map((i) =>
                 <ListItem>
                     <Checkbox onChange={(e) => handleCheckboxChange(e)} value={i} label={i} key={i} />
