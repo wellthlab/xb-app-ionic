@@ -9,11 +9,11 @@ interface IBaseInputProps {
     ) => void;
 }
 
-type GetInputProps<T> = <TKey extends keyof T>(
+export type GetInputProps<T> = <TKey extends keyof T>(
     name: TKey,
 ) => IBaseInputProps & { value: T[TKey]; onFocus: () => void; onBlur: () => void };
 
-type GetCheckboxProps<T> = <TKey extends keyof T>(name: TKey) => IBaseInputProps & { checked: T[TKey] };
+export type GetCheckboxProps<T> = <TKey extends keyof T>(name: TKey) => IBaseInputProps & { checked: T[TKey] };
 
 type CreateHandleSubmit<TS extends Yup.ObjectSchema<any>> = (
     handleSubmit: (data: Yup.Asserts<TS>) => void,

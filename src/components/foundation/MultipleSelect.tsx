@@ -21,7 +21,7 @@ const MultipleSelect = function (props: MultipleSelectProps) {
             <p>{props.label}</p>
             </ListItem>
             {props.options.map((i) =>
-                <ListItem>
+                <ListItem key={i}>
                     <Checkbox onChange={(e) => handleCheckboxChange(e)} value={i} label={i} key={i} />
                 </ListItem>)}
         </List>)

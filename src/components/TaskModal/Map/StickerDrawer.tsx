@@ -9,7 +9,7 @@ function StickerDrawer(props: StickerDrawerProps) {
     <Grid container spacing={2}>
       {props.stickers.map(sticker => {
         return (
-          <Grid item spacing={2} key={sticker}>
+          <Grid item key={sticker}>
             <button
               onClick={() => props.onStickerClick(sticker)}
               key={sticker}
