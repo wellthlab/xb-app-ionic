@@ -20,7 +20,7 @@ const schema = Yup.object().shape({
 
 const Consent = function () {
     const { getCheckboxProps, createHandleSubmit, form } = useForm(
-        { c1: false, c2: false, c3: false, c4: false },
+        { c1: false, c2: false, c3: false, c4: false, c5: false, c6: false },
         schema,
     );
 
@@ -35,23 +35,28 @@ const Consent = function () {
 
             <Form submitButtonColor="success" submitLabel="Enroll!" message={form.errors.$root} onSubmit={handleSubmit}>
                 <Checkbox
-                    label="I have read the provided participant information and consent to take part in the study"
+                    label="I have read and understood the information sheet (2023-06-09 / V4 of participant information sheet) and have had the opportunity to ask questions about the study."
                     {...getCheckboxProps('c1')}
                 />
                 <Checkbox
-                    label="I am a member of staff or a student at the University of Southampton, and I am at least 18 years old."
+                    label="I agree to take part in this research project and agree for my data to be used for the purpose of this study."
                     {...getCheckboxProps('c2')}
                 />
                 <Checkbox
-                    label="I understand that I must be employed in a participating faculty or service, and that in some faculties or services I should discuss or raise participation with my line manager, as directed by my faculty or service."
+                    label="I understand my participation is voluntary and I may withdraw (at any time) for any reason without my participation rights being affected."
                     {...getCheckboxProps('c3')}
                 />
-
-                <ExerciseWarning />
-
                 <Checkbox
-                    label="I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part"
+                    label="I understand that should I withdraw from the study then the information collected about me up to this point may still be used for the purposes of achieving the objectives of the study only."
                     {...getCheckboxProps('c4')}
+                />
+                <Checkbox
+                    label="I understand that I may be quoted directly in reports of the research but that I will not be directly identified (e.g., that my name will not be used)."
+                    {...getCheckboxProps('c5')}
+                />
+                <Checkbox
+                    label="I understand that my personal information collected about me such as my name or where I live will not be shared beyond the study team."
+                    {...getCheckboxProps('c6')}
                 />
             </Form>
         </Page>

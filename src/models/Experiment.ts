@@ -198,11 +198,17 @@ interface IIfSelection {
     type: "if-selection"
     value: string
     options: Option[]
+    compare: Compare
 }
 
 export interface Option {
-    value: string
+    value: string[]
     blocks: Block[]
+}
+
+export enum Compare {
+    Equal = "equal",
+    Include = "include"
 }
 
 export interface IResponse {

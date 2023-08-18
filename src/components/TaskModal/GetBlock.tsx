@@ -1,6 +1,6 @@
 import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack } from "@mui/joy";
 import React from "react";
-import Experiment, { Block } from "../../models/Experiment";
+import { Block, Compare } from "../../models/Experiment";
 import MultipleSelect from "../foundation/MultipleSelect";
 import CountdownTimer from "./CountdownTimer";
 import EmotionPlacer from "./EmotionPlacer";
@@ -14,9 +14,7 @@ import Stopwatch from "./Stopwatch";
 import TimeInput from "./TimeInput";
 import YouTubeVideo from "./YoutubeVideo";
 import { ArrowSquareOut } from "phosphor-react";
-import useForm, { GetCheckboxProps, GetInputProps } from "../foundation/useForm";
-import ObjectSchema, { TypeOfShape, AssertsShape } from "yup/lib/object";
-import { AnyObject } from "yup/lib/types";
+import { GetCheckboxProps, GetInputProps } from "../foundation/useForm";
 
 const renderParagraphWithLinks = function (content: string) {
     // This is a paragrah with [link](https://google.com)
@@ -88,12 +86,24 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'if-selection') {
-        const valueToCompare = props.response.duration
+        const valueToCompare = props.response[props.block.value]
         for (var option of props.block.options) {
-            if (valueToCompare === option.value) {
-                return <Stack spacing={2}>
-                    {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
-                </Stack>
+            switch (props.block.compare) {
+                case Compare.Equal:
+                    if (valueToCompare === option.value[0]) {
+                        return <Stack spacing={2}>
+                            {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
+                        </Stack>
+                    }
+                    break
+                case Compare.Include:
+                    for (var word in option.value) {
+                        if (valueToCompare.toString().includes(option.value[word])) {
+                            return <Stack spacing={2}>
+                                {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
+                            </Stack>
+                        }
+                    }
             }
         }
         return <></>
