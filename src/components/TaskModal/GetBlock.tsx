@@ -1,4 +1,4 @@
-import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link } from "@mui/joy";
+import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack } from "@mui/joy";
 import React from "react";
 import Experiment, { Block } from "../../models/Experiment";
 import MultipleSelect from "../foundation/MultipleSelect";
@@ -91,7 +91,9 @@ function GetBlock(props: BlockProps): JSX.Element {
         const valueToCompare = props.response.duration
         for (var option of props.block.options) {
             if (valueToCompare === option.value) {
-                return <GetBlock block={option.blocks} blockId={props.blockId} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />
+                return <Stack spacing={2}>
+                    {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
+                </Stack>
             }
         }
         return <></>

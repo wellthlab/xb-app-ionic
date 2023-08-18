@@ -202,7 +202,7 @@ interface IIfSelection {
 
 export interface Option {
     value: string
-    blocks: Block
+    blocks: Block[]
 }
 
 export interface IResponse {
