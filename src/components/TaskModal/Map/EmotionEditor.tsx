@@ -1,43 +1,26 @@
-import { useEffect } from 'react'
 import L, { LatLngLiteral, LeafletMouseEvent, } from 'leaflet'
 import { v4 } from "uuid"
 import React from 'react'
-import { useMap } from 'react-leaflet'
 import Emotion from './emotion'
 import EmotionMarker from './EmotionMarker'
-
+import ClickListener from './ClickListener'
 
 function EmotionEditor(props: EmotionEditorProps) {
-    const map = useMap();
 
-    useEffect(() => {
-        const handleEmotionClick = (e: LeafletMouseEvent) => {
-            L.DomEvent.stopPropagation(e)
-            if (!props.emotions) return
-            props.setEmotions([...props.emotions, { point: e.latlng, emotion: props.activeEmotion, uuid: v4() }])
-            convertEmotionsToString(props.emotions)
-        }
+    const handleEmotionClick = (e: LeafletMouseEvent) => {
+        L.DomEvent.stopPropagation(e)
+        if (!props.emotions) return
+        props.setEmotions([...props.emotions, { point: e.latlng, emotion: props.activeEmotion, uuid: v4() }])
+        convertEmotionsToString(props.emotions)
+    }
 
-        const convertEmotionsToString = function (emotions: EmotionsProps[]) {
-            let result = ""
-            emotions.map((s) => {
-                result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.emotion + " " + s.uuid
-            })
-            props.onChange(result)
-        }
-
-        map.addEventListener("click", handleEmotionClick)
-
-        return function cleanup() {
-            map.removeEventListener("click")
-        }
-    })
-
-    useEffect(() => {
-        map.locate().on("locationfound", function (e) {
-            map.flyTo(e.latlng, map.getZoom());
-        });
-    }, [map]);
+    const convertEmotionsToString = function (emotions: EmotionsProps[]) {
+        let result = ""
+        emotions.map((s) => {
+            result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.emotion + " " + s.uuid
+        })
+        props.onChange(result)
+    }
 
     const handleRemove = function (uuid: string) {
         if (!props.emotions) return
@@ -48,6 +31,7 @@ function EmotionEditor(props: EmotionEditorProps) {
         <>
             {props.emotions.map((s) => (
                 <EmotionMarker point={s.point} emotion={s.emotion} onRemove={() => handleRemove(s.uuid)} />))}
+            <ClickListener onMapClick={handleEmotionClick} />
         </>
     )
 }
