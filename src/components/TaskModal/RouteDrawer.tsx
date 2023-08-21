@@ -3,6 +3,7 @@ import LineEditor from "./Map/LineEditor"
 import Map from "./Map/Map"
 import { Button, CircularProgress, Stack, Typography } from "@mui/joy"
 import Routes, { IPoints, pointType } from "../../models/Route"
+import GoogleTimeline from "../foundation/GoogleTimeline"
 
 interface RouteDrawerProps {
     label: string
@@ -31,6 +32,7 @@ const RouteDrawer = function (props: RouteDrawerProps) {
                     <LineEditor lines={lines} setLines={setLines} />
                 </Map>
                 <Stack direction="row" spacing={1}>
+                <GoogleTimeline setLines={setLines}/>
                 <Button onClick={removeRoute} fullWidth> Remove route </Button>
                 <Button onClick={handleSubmitRoute} fullWidth> Save route</Button>
                 </Stack>
