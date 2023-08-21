@@ -164,11 +164,3 @@ body.dark {
   width: 100%;
   height: 300px;
 }
-
-.emotionButton {
-    color: 'black',
-}
-
-.emotionButton:hover {
-    color: "white"
-}

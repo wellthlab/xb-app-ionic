@@ -4,7 +4,7 @@ import Map from "./Map/Map";
 import Emotion, { getKeyFromValue } from "./Map/emotion";
 import EmotionEditor, { EmotionsProps } from "./Map/EmotionEditor";
 import DrawRoute from "./Map/DrawRoute";
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 
 interface EmotionPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
@@ -31,19 +31,21 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
                 <EmotionEditor emotions={emotionList} setEmotions={setEmotionList} activeEmotion={activeEmotion} onChange={props.onChange} />
                 <DrawRoute />
             </Map>
-            <Grid container spacing={2}>
-                {emotionSet.map(e => {
-                    return (
-                        <Grid item spacing={2} key={e}>
-                            <Button sx={{
-                                backgroundColor: e.valueOf(), color: "black", '&:hover': {
-                                    opacity: 0.5, backgroundColor: e.valueOf()
-                                }
-                            }} onClick={() => setActiveEmotion(e)}>{getKeyFromValue(e)}</Button>
-                        </Grid>
-                    )
-                })}
-            </Grid>
+            <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
+                <Grid container spacing={2}>
+                    {emotionSet.map(e => {
+                        return (
+                            <Grid item spacing={2} key={e}>
+                                <Button sx={{
+                                    backgroundColor: e.valueOf(), color: "black", '&:hover': {
+                                        opacity: 0.5, backgroundColor: e.valueOf()
+                                    }
+                                }} onClick={() => setActiveEmotion(e)}>{getKeyFromValue(e)}</Button>
+                            </Grid>
+                        )
+                    })}
+                </Grid>
+            </Paper>
             <img src={"emotion-wheel.png"}></img>
         </Stack>
     )

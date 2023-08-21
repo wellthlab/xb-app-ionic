@@ -6,7 +6,7 @@ function LineSegment({
   start,
   end,
   onClick,
-  colour = '#006781',
+  colour,
 }: LineSegmentProps) {
   return (
     <>
@@ -16,7 +16,7 @@ function LineSegment({
         pathOptions={{ color: colour, fillColor: colour }}
         bubblingMouseEvents={false}
         eventHandlers={{
-          click: (e: { latlng: any }) => onClick && onClick(start, end, e.latlng),
+          click: (e: { latlng: LatLngLiteral }) => onClick && onClick(start, end, e.latlng),
         }}
       />
     </>

@@ -1,22 +1,35 @@
-import L, { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
+import { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
 import Sticker from './sticker'
 import StickerMarker from './StickerMarker'
 import { v4 } from "uuid"
 import React, { useEffect } from 'react'
-import ClickListener from './ClickListener'
+import { useMap } from 'react-leaflet'
 
 function StickerEditor(props: StickerEditorProps) {
-
-    const handleStickerClick = (e: LeafletMouseEvent) => {
-        L.DomEvent.stopPropagation(e)
-        if (!props.stickers) return
-        props.setStickers([...props.stickers, { point: e.latlng, sticker: props.activeSticker, note: "", uuid: v4() }])
-
-    }
+    const map = useMap();
 
     useEffect(() =>
         convertStickersToString(props.stickers),
         [props.stickers])
+
+    useEffect(() => {
+        const handleStickerClick = (e: LeafletMouseEvent) => {
+            if (!props.stickers) return
+            props.setStickers([...props.stickers, { point: e.latlng, sticker: props.activeSticker, note: "", uuid: v4() }])
+        }
+
+        map.addEventListener("click", handleStickerClick)
+
+        return function cleanup() {
+            map.removeEventListener("click")
+        }
+    })
+
+    useEffect(() => {
+        map.locate().on("locationfound", function (e) {
+            map.flyTo(e.latlng, map.getZoom());
+        });
+    }, [map]);
 
     const convertStickersToString = function (stickers: StickersProps[]) {
         let result = ""
@@ -53,7 +66,6 @@ function StickerEditor(props: StickerEditorProps) {
             }} sticker={s.sticker}
                 onRemove={() => handleStickerRemove(s.uuid)}
                 onDrag={(e) => handleStickerDrag(s.uuid, e)} note={s.note} setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
-            <ClickListener onMapClick={handleStickerClick} />
         </>
     )
 }
