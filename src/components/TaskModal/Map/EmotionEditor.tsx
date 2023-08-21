@@ -1,6 +1,6 @@
 import L, { LatLngLiteral, LeafletMouseEvent, } from 'leaflet'
 import { v4 } from "uuid"
-import React from 'react'
+import React, { useEffect } from 'react'
 import Emotion from './emotion'
 import EmotionMarker from './EmotionMarker'
 import ClickListener from './ClickListener'
@@ -14,10 +14,14 @@ function EmotionEditor(props: EmotionEditorProps) {
         convertEmotionsToString(props.emotions)
     }
 
+    useEffect(() =>
+        convertEmotionsToString(props.emotions),
+        [props.emotions])
+
     const convertEmotionsToString = function (emotions: EmotionsProps[]) {
         let result = ""
         emotions.map((s) => {
-            result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.emotion + " " + s.uuid
+            result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.emotion.valueOf() + " " + s.uuid + " "
         })
         props.onChange(result)
     }

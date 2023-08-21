@@ -2,23 +2,26 @@ import L, { LatLngLiteral, LeafletEvent, LeafletMouseEvent, } from 'leaflet'
 import Sticker from './sticker'
 import StickerMarker from './StickerMarker'
 import { v4 } from "uuid"
-import React from 'react'
+import React, { useEffect } from 'react'
 import ClickListener from './ClickListener'
 
 function StickerEditor(props: StickerEditorProps) {
-    
 
     const handleStickerClick = (e: LeafletMouseEvent) => {
         L.DomEvent.stopPropagation(e)
         if (!props.stickers) return
         props.setStickers([...props.stickers, { point: e.latlng, sticker: props.activeSticker, note: "", uuid: v4() }])
-        convertStickersToString(props.stickers)
+
     }
+
+    useEffect(() =>
+        convertStickersToString(props.stickers),
+        [props.stickers])
 
     const convertStickersToString = function (stickers: StickersProps[]) {
         let result = ""
         stickers.map((s) => {
-            result = s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.note + " " + s.uuid
+            result += s.sticker.valueOf() + " " + s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.note + " " + s.uuid + " "
         })
         props.onChange(result)
     }
@@ -50,7 +53,7 @@ function StickerEditor(props: StickerEditorProps) {
             }} sticker={s.sticker}
                 onRemove={() => handleStickerRemove(s.uuid)}
                 onDrag={(e) => handleStickerDrag(s.uuid, e)} note={s.note} setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
-                <ClickListener onMapClick={handleStickerClick} />
+            <ClickListener onMapClick={handleStickerClick} />
         </>
     )
 }
