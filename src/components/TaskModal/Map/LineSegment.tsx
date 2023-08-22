@@ -8,7 +8,6 @@ function LineSegment(props: LineSegmentProps) {
       positions={[props.start, props.end]}
       weight={5}
       pathOptions={{ color: props.colour, fillColor: props.colour }}
-      bubblingMouseEvents={false}
     />
   )
 }

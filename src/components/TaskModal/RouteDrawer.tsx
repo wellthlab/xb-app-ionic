@@ -1,9 +1,11 @@
-import React, { Suspense, useState } from "react"
+import React, { useState } from "react"
 import LineEditor from "./Map/LineEditor"
 import Map from "./Map/Map"
-import { Button, CircularProgress, Stack, Typography } from "@mui/joy"
+import { Button, IconButton, Stack, Typography } from "@mui/joy"
 import Routes, { IPoints, pointType } from "../../models/Route"
 import GoogleTimeline from "../foundation/GoogleTimeline"
+import CreateIcon from '@mui/icons-material/Create';
+import UndoIcon from '@mui/icons-material/Undo';
 
 interface RouteDrawerProps {
     label: string
@@ -20,23 +22,31 @@ const RouteDrawer = function (props: RouteDrawerProps) {
         await Routes.saveRoute({ route: points });
     };
 
-    const removeRoute = function() {
+    const removeRoute = function () {
         setLines([])
+    }
+
+    const removeLastPoint = function () {
+        lines.length == 2 ? removeRoute() : setLines(lines.slice(0, -1))
     }
 
     return (
         <Stack spacing={1}>
             <Typography>{props.label}</Typography>
-            <Suspense fallback={<CircularProgress />}>
-                <Map>
-                    <LineEditor lines={lines} setLines={setLines} />
-                </Map>
                 <Stack direction="row" spacing={1}>
-                <GoogleTimeline setLines={setLines}/>
-                <Button onClick={removeRoute} fullWidth> Remove Route </Button>
-                <Button onClick={handleSubmitRoute} fullWidth> Save Route</Button>
+                    <GoogleTimeline setLines={setLines} />
+                    <Button onClick={removeRoute} fullWidth> Remove Route </Button>
+                    <Button onClick={handleSubmitRoute} fullWidth> Save Route</Button>
                 </Stack>
-            </Suspense>
+                <Stack direction="row" spacing={1}>
+                    <Map>
+                        <LineEditor lines={lines} setLines={setLines} />
+                    </Map>
+                    <Stack spacing={1}>
+                        <IconButton children={<CreateIcon />} />
+                        <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
+                    </Stack>
+                </Stack>
         </Stack>)
 }
 
