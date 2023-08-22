@@ -1,10 +1,11 @@
 import StickerEditor, { StickersProps } from "./Map/StickerEditor";
 import React, { useState } from "react";
-import { FormControlProps, Stack, Typography } from "@mui/joy";
+import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
-import Sticker from './Map/sticker'
+import Sticker, { findFolder } from './Map/sticker'
 import SearchBar from "./Map/SearchBar";
 import DrawRoute from "./Map/DrawRoute";
+import UndoIcon from '@mui/icons-material/Undo';
 
 interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
@@ -26,13 +27,29 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         setActiveSticker(index)
     }
 
+    const removeLastPoint = function () {
+        setStickers(stickers.slice(0, -1))
+    }
+
     return (
         <Stack spacing={1}>
             <Typography>{props.label}</Typography>
-            <Map>
-                <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
-                <DrawRoute />
-            </Map>
+            <Stack direction="row" spacing={1}>
+                <Map>
+                    <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
+                    <DrawRoute />
+                </Map>
+                <Stack spacing={1}>
+                    <img
+                        src={findFolder(activeSticker)}
+                        alt={activeSticker}
+                        width={32}
+                        height={32}
+                        style={{ backgroundColor: "white" }} />
+                    <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
+                </Stack>
+            </Stack>
+
             <SearchBar stickerList={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerResult={stickerResult} setStickerList={setStickerResult} />
         </Stack>
     )
