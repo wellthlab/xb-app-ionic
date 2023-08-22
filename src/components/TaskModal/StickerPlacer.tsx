@@ -6,7 +6,7 @@ import Sticker from './Map/sticker'
 import SearchBar from "./Map/SearchBar";
 import DrawRoute from "./Map/DrawRoute";
 
-interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'>{
+interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
     value: string
     onChange: (sticker: string) => void;
@@ -28,15 +28,14 @@ const StickerPlacer = function (props: StickerPlacerProps) {
 
     return (
         <Stack spacing={1}>
-            <Typography>
-                {props.label}
-            </Typography>
+            <Typography>{props.label}</Typography>
             <Map>
-                <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange}/>
+                <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
                 <DrawRoute />
             </Map>
             <SearchBar stickerList={stickerList} activeSticker={activeSticker} onStickerClick={handleStickerSelect} stickerResult={stickerResult} setStickerList={setStickerResult} />
-        </Stack>)
+        </Stack>
+    )
 }
 
 export default StickerPlacer

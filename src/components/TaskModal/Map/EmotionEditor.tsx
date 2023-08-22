@@ -45,12 +45,10 @@ function EmotionEditor(props: EmotionEditorProps) {
         props.setEmotions(props.emotions.filter((e) => e.uuid != uuid))
     }
 
-    return (
-        <>
-            {props.emotions.map((s) => (
-                <EmotionMarker point={s.point} emotion={s.emotion} onRemove={() => handleRemove(s.uuid)} />))}
-        </>
-    )
+    return (<>
+        {props.emotions.map((s) => (
+            <EmotionMarker key={s.uuid} point={s.point} emotion={s.emotion} onRemove={() => handleRemove(s.uuid)} />))}
+    </>)
 }
 
 export type EmotionsProps = {
