@@ -2,35 +2,20 @@ import { LatLngLiteral } from 'leaflet'
 import React from 'react'
 import { Polyline } from 'react-leaflet'
 
-function LineSegment({
-  start,
-  end,
-  onClick,
-  colour,
-}: LineSegmentProps) {
+function LineSegment(props: LineSegmentProps) {
   return (
-    <>
-      <Polyline
-        positions={[start, end]}
-        weight={5}
-        pathOptions={{ color: colour, fillColor: colour }}
-        bubblingMouseEvents={false}
-        eventHandlers={{
-          click: (e: { latlng: LatLngLiteral }) => onClick && onClick(start, end, e.latlng),
-        }}
-      />
-    </>
+    <Polyline
+      positions={[props.start, props.end]}
+      weight={5}
+      pathOptions={{ color: props.colour, fillColor: props.colour }}
+      bubblingMouseEvents={false}
+    />
   )
 }
 
 type LineSegmentProps = {
   start: LatLngLiteral
   end: LatLngLiteral
-  onClick?: (
-    start: LatLngLiteral,
-    end: LatLngLiteral,
-    pos: LatLngLiteral
-  ) => void
   colour: string
 }
 

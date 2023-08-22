@@ -33,8 +33,8 @@ const RouteDrawer = function (props: RouteDrawerProps) {
                 </Map>
                 <Stack direction="row" spacing={1}>
                 <GoogleTimeline setLines={setLines}/>
-                <Button onClick={removeRoute} fullWidth> Remove route </Button>
-                <Button onClick={handleSubmitRoute} fullWidth> Save route</Button>
+                <Button onClick={removeRoute} fullWidth> Remove Route </Button>
+                <Button onClick={handleSubmitRoute} fullWidth> Save Route</Button>
                 </Stack>
             </Suspense>
         </Stack>)

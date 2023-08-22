@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FormControlProps, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import Sticker from './Map/sticker'
-import SearchBar from "../foundation/SearchBar";
+import SearchBar from "./Map/SearchBar";
 import DrawRoute from "./Map/DrawRoute";
 
 interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'>{

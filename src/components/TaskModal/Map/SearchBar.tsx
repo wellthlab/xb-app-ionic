@@ -1,8 +1,8 @@
 import { CheckCircle, Search } from "@mui/icons-material"
 import { Chip, IconButton, Radio, RadioGroup, Stack, TextField } from "@mui/joy"
-import React, { useState } from "react"
-import Sticker, { Activities, Category, Places, Transport, FacilitiesEnvironment, Navigation} from "../TaskModal/Map/sticker"
-import StickerDrawer from "../TaskModal/Map/StickerDrawer"
+import React, { useEffect, useState } from "react"
+import Sticker, { Activities, Category, Places, Transport, FacilitiesEnvironment, Navigation } from "./sticker"
+import StickerDrawer from "./StickerDrawer"
 
 const SearchBar = function (props: SearchBarProps) {
 
@@ -15,13 +15,21 @@ const SearchBar = function (props: SearchBarProps) {
 
     const searchList = function () {
         if (!state.text) props.setStickerList(props.stickerList)
-        setState({text: state.text, list: state.list, selectedCategory: Category.Any.toString()})
+        setState({ text: state.text, list: state.list, selectedCategory: Category.Any.toString() })
         props.setStickerList(props.stickerList.filter((i) => i.toLowerCase().includes(state.text)))
     }
 
+    const handleTextChange = function (e: React.ChangeEvent<HTMLInputElement>) {
+        setState({ text: e.target.value, list: state.list, selectedCategory: state.selectedCategory })
+    }
+
+    useEffect(() =>
+        searchList(),
+        [state.text])
+
     const changeCategory = function (name: string, e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.checked) {
-            setState({text: "", list: state.list, selectedCategory: name})
+            setState({ text: "", list: state.list, selectedCategory: name })
             switch (name) {
                 case Category.Transport:
                     props.setStickerList(Transport)
@@ -45,19 +53,14 @@ const SearchBar = function (props: SearchBarProps) {
     }
 
     return (
-        <>
+        <Stack spacing={1}>
             <Stack direction="row" spacing={1}>
-                <TextField value ={state.text} onChange={(e) => setState({ text: e.target.value, list: state.list, selectedCategory: state.selectedCategory })} fullWidth={true} />
+                <TextField value={state.text} onChange={(e) => handleTextChange(e)} fullWidth={true} placeholder="Enter a sticker..." />
                 <IconButton type="submit" onClick={searchList}>
                     <Search />
                 </IconButton>
             </Stack>
-            <StickerDrawer
-                stickers={props.stickerResult}
-                activeSticker={props.activeSticker}
-                onStickerClick={props.onStickerClick}
-            />
-            <RadioGroup row sx={{ overflow: "scroll", gap: 1 }}>
+            <RadioGroup row sx={{ overflowX: "scroll", overflowY: 'hidden', gap: 1 }}>
                 {categoryList.map(name => {
                     const checked = state.selectedCategory === name;
                     return (
@@ -67,7 +70,12 @@ const SearchBar = function (props: SearchBarProps) {
                     )
                 })}
             </RadioGroup>
-        </>
+            <StickerDrawer
+                stickers={props.stickerResult}
+                activeSticker={props.activeSticker}
+                onStickerClick={props.onStickerClick}
+            />
+        </Stack>
     )
 }
 

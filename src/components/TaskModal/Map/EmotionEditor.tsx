@@ -6,7 +6,6 @@ import EmotionMarker from './EmotionMarker'
 import { useMap } from 'react-leaflet'
 
 function EmotionEditor(props: EmotionEditorProps) {
-    let result = ""
     const map = useMap();
 
     useEffect(() =>
@@ -34,9 +33,10 @@ function EmotionEditor(props: EmotionEditorProps) {
     }, [map]);
 
     const convertEmotionsToString = function (emotions: EmotionsProps[]) {
-        if (!emotions.length) return
-        const s = emotions.slice(-1)[0]
-        result += getKeyFromValue(s.emotion) + " " + s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.uuid + " "
+        let result = ""
+        emotions.map((s) => {
+            result += getKeyFromValue(s.emotion) + " " + s.point.lat.toString() + " " + s.point.lng.toString() + " "
+        })
         props.onChange(result)
     }
 

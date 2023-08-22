@@ -25,8 +25,8 @@ const GoogleTimeline = function (props: GoogleTimelineProps) {
                         if (!coordinates[0].childNodes[0].nodeValue) break
                         var coordList = coordinates[0].childNodes[0].nodeValue.trim()
                         let coord = coordList.split(",")
-                        let coordLat = new LatLng(+coord[1], +coord[0])
-                        googleMarkers.push(coordLat)
+                        let coordLatLng = new LatLng(+coord[1], +coord[0])
+                        googleMarkers.push(coordLatLng)
                     }
                 }
                 props.setLines(googleMarkers)
