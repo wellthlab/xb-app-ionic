@@ -118,13 +118,13 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(true)
-    const [response, setRespose] = useState<Record<string, string | number>>({ "": "" })
+    const [response, setResponse] = useState<Record<string, string | number>[]>([])
 
     const getResponse = async function (experimentId: string) {
         const today = new Date()
         const raw = await Experiment.getResponsesForDateAndExperiment(experimentId, today);
         if (raw.length > 0) {
-            setRespose(raw[0].payload)
+            raw.map((r) => setResponse([...response,r.payload]))
         }
         setLoading(false)
     }

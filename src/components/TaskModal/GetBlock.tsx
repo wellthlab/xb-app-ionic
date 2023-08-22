@@ -86,24 +86,28 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'if-selection') {
-        const valueToCompare = props.response[props.block.value]
-        for (var option of props.block.options) {
-            switch (props.block.compare) {
-                case Compare.Equal:
-                    if (valueToCompare === option.value[0]) {
-                        return <Stack spacing={2}>
-                            {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
-                        </Stack>
-                    }
-                    break
-                case Compare.Include:
-                    for (var word in option.value) {
-                        if (valueToCompare.toString().includes(option.value[word])) {
+        for (const response of props.response) {
+            // Checks if the response as the field we are trying to compare
+            if (typeof response[props.block.value] === "undefined") break
+            const valueToCompare = response[props.block.value]
+            for (var option of props.block.options) {
+                switch (props.block.compare) {
+                    case Compare.Equal:
+                        if (valueToCompare === option.value[0]) {
                             return <Stack spacing={2}>
                                 {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
                             </Stack>
                         }
-                    }
+                        break
+                    case Compare.Include:
+                        for (var word in option.value) {
+                            if (valueToCompare.toString().includes(option.value[word])) {
+                                return <Stack spacing={2}>
+                                    {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
+                                </Stack>
+                            }
+                        }
+                }
             }
         }
         return <></>
@@ -221,7 +225,7 @@ type BlockProps = {
     blockId: number
     getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
     getInputProps: GetInputProps<Record<string, string | number | boolean>>
-    response: Record<string, string | number>
+    response: Record<string, string | number>[]
 }
 
 export default GetBlock

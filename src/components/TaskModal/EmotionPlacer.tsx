@@ -33,17 +33,14 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
             </Map>
             <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
                 <Grid container spacing={2}>
-                    {emotionSet.map(e => {
-                        return (
-                            <Grid item spacing={2} key={e}>
-                                <Button sx={{
-                                    backgroundColor: e.valueOf(), color: "black", '&:hover': {
-                                        opacity: 0.5, backgroundColor: e.valueOf()
-                                    }
-                                }} onClick={() => setActiveEmotion(e)}>{getKeyFromValue(e)}</Button>
-                            </Grid>
-                        )
-                    })}
+                    {emotionSet.map(e =>
+                        <Grid item key={e}>
+                            <Button sx={{
+                                backgroundColor: e.valueOf(), color: "black", '&:hover': {
+                                    opacity: 0.5, backgroundColor: e.valueOf()
+                                }
+                            }} onClick={() => setActiveEmotion(e)}>{getKeyFromValue(e)}</Button>
+                        </Grid>)}
                 </Grid>
             </Paper>
             <img src={"emotion-wheel.png"}></img>
