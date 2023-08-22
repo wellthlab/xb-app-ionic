@@ -52,6 +52,7 @@ enum Sticker {
   PavementWalkingFriendly = "Pavements Walking Friendly",
   PeacefulSpot = "Peaceful Spot",
   PeopleWatching = "People Watching",
+  Placeholder = "Placeholder",
   Planning = "Planning",
   PleasantSmell = "Pleasant Smell",
   PublicRestroom = "Public Restroom",
@@ -113,7 +114,7 @@ export const Activities = [Sticker.CarryingItems, Sticker.Charging, Sticker.Clea
 export const Transport = [Sticker.Bus, Sticker.Car, Sticker.Cycling, Sticker.Scooter, Sticker.Train, Sticker.Tube, Sticker.Walking]
 export const FacilitiesEnvironment = [Sticker.AirPollution, Sticker.BenchSittingArea, Sticker.BikeRack, Sticker.CarPark, Sticker.CyclingPath, Sticker.DockingStation, Sticker.DrinkingFountain, Sticker.Gym, Sticker.HistoricalLandmark, Sticker.Hospital, Sticker.Inaccessible, Sticker.Library, Sticker.MinorNoTraffic, Sticker.NoWalkingInfrastructure, Sticker.Park, Sticker.PavementWalkingFriendly, Sticker.PleasantSmell, Sticker.PublicRestroom, Sticker.ResidentialArea, Sticker.Shelter, Sticker.ShelteredBusStop, Sticker.SignOnlyBusStop, Sticker.StepFree, Sticker.Steps, Sticker.Stores, Sticker.StreetArt, Sticker.StreetLights, Sticker.TeaCoffeeSpot, Sticker.UnpleasantSmell]
 export const Places = [Sticker.APlacetoAvoid, Sticker.APlacetoVisit, Sticker.AestheticCharmingStreet, Sticker.CrowdedRoute, Sticker.DangerousArea, Sticker.DesertedPlace, Sticker.DullScenery, Sticker.FavouriteStreet, Sticker.GloomyZone, Sticker.LoudStreet, Sticker.PeacefulSpot, Sticker.QuietArea, Sticker.RecreationalArea, Sticker.SafePlace, Sticker.ScenicViews, Sticker.SittingSpot, Sticker.StressfulEnvironment, Sticker.SunsetSpot, Sticker.TranquilTrail, Sticker.UndesirableLocation, Sticker.WorkPlace]
-export const Navigation = [Sticker.AdditionalStops, Sticker.Destination, Sticker.Detour, Sticker.DiscoverNewPath, Sticker.ExploreHere, Sticker.HiddenGem, Sticker.LocalChoice, Sticker.OfftheBeatenPath, Sticker.RetraceYourSteps, Sticker.ReturnPoint, Sticker.StartPoint, Sticker.Shortcut, Sticker.ThisWay, Sticker.TransferPoints, Sticker.TurnLeft, Sticker.TurnRight, Sticker.UnexpectedEvent, Sticker.UnknownPath, Sticker.VisitBackHere, Sticker.Waiting, Sticker.Wander]
+export const Navigation = [Sticker.AdditionalStops, Sticker.Destination, Sticker.Detour, Sticker.DiscoverNewPath, Sticker.ExploreHere, Sticker.HiddenGem, Sticker.LocalChoice, Sticker.OfftheBeatenPath, Sticker.Placeholder, Sticker.RetraceYourSteps, Sticker.ReturnPoint, Sticker.StartPoint, Sticker.Shortcut, Sticker.ThisWay, Sticker.TransferPoints, Sticker.TurnLeft, Sticker.TurnRight, Sticker.UnexpectedEvent, Sticker.UnknownPath, Sticker.VisitBackHere, Sticker.Waiting, Sticker.Wander]
 
 export enum Category {
   Any = "Any",
