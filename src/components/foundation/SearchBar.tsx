@@ -1,7 +1,7 @@
 import { CheckCircle, Search } from "@mui/icons-material"
 import { Chip, IconButton, Radio, RadioGroup, Stack, TextField } from "@mui/joy"
 import React, { useState } from "react"
-import Sticker, { ABC, Activities, Category, Environment, Places, Transport, Util } from "../TaskModal/Map/sticker"
+import Sticker, { Activities, Category, Places, Transport, FacilitiesEnvironment, Navigation} from "../TaskModal/Map/sticker"
 import StickerDrawer from "../TaskModal/Map/StickerDrawer"
 
 const SearchBar = function (props: SearchBarProps) {
@@ -26,23 +26,17 @@ const SearchBar = function (props: SearchBarProps) {
                 case Category.Transport:
                     props.setStickerList(Transport)
                     break;
-                case Category.Util:
-                    props.setStickerList(Util)
-                    break;
-                case Category.ABC:
-                    props.setStickerList(ABC)
-                    break;
                 case Category.Activities:
                     props.setStickerList(Activities)
                     break;
-                case Category.Environment:
-                    props.setStickerList(Environment)
-                    break;
-                case Category.Logistics:
-                    props.setStickerList(Environment)
-                    break;
                 case Category.Places:
                     props.setStickerList(Places)
+                    break;
+                case Category.FacilitiesEnvironment:
+                    props.setStickerList(FacilitiesEnvironment)
+                    break;
+                case Category.Navigation:
+                    props.setStickerList(Navigation)
                     break;
                 case Category.Any:
                     props.setStickerList(props.stickerList)

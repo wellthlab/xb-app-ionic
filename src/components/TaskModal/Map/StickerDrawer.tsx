@@ -1,5 +1,5 @@
 import React from 'react'
-import Sticker from './sticker'
+import Sticker, { findFolder } from './sticker'
 import { Paper, Typography } from '@mui/material'
 import { Grid } from '@mui/material'
 
@@ -9,13 +9,13 @@ function StickerDrawer(props: StickerDrawerProps) {
     <Grid container spacing={2}>
       {props.stickers.map(sticker => {
         return (
-          <Grid item key={sticker}>
+          <Grid item key={sticker} xs={3}>
             <button
               onClick={() => props.onStickerClick(sticker)}
               key={sticker}
               style={{ backgroundColor: "white" }}>
               <img
-                src={`/assets/sticker/${sticker}.svg`}
+                src={findFolder(sticker)}
                 alt={sticker}
                 width={32}
                 height={32}

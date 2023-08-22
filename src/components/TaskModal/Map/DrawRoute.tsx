@@ -9,11 +9,11 @@ function DrawRoute() {
     const [lines, setLines] = useState<IPoints[]>([])
 
     const startIcon = L.icon({
-        iconUrl: `/assets/sticker/${Sticker.StartPoint}.svg`,
+        iconUrl: `/assets/sticker/navigation/${Sticker.StartPoint}.svg`,
         iconSize: [32, 32],
     })
     const endIcon = L.icon({
-        iconUrl: `/assets/sticker/${Sticker.Stop}.svg`,
+        iconUrl: `/assets/sticker/navigation/${Sticker.Destination}.svg`,
         iconSize: [32, 32],
     })
 
