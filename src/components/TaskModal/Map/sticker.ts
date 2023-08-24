@@ -141,4 +141,11 @@ export const findFolder = function(sticker: Sticker) {
   }
 }
 
+export const getKeyFromValue = function (word: String) {
+  for (const value of Object.values(Sticker)) {
+    if (word == value.valueOf()) return value
+  }
+  return -1
+}
+
 export default Sticker

@@ -2,7 +2,7 @@ import StickerEditor, { StickersProps } from "./Map/StickerEditor";
 import React, { useState } from "react";
 import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
-import Sticker, { findFolder } from './Map/sticker'
+import Sticker, { findFolder, getKeyFromValue } from './Map/sticker'
 import SearchBar from "./Map/SearchBar";
 import DrawRoute from "./Map/DrawRoute";
 import UndoIcon from '@mui/icons-material/Undo';
@@ -31,9 +31,27 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         setStickers(stickers.slice(0, -1))
     }
 
+    const AddStickerToText = function (): JSX.Element {
+        const split = props.label.split("$")
+        return <> {split.map((s) => {
+            const stickerKey = getKeyFromValue(s)
+            if (stickerKey != -1) {
+                return <img
+                    src={findFolder(stickerKey)}
+                    width={20}
+                    height={20}/>
+            } else {
+                return s
+            }
+
+        })}</>
+    }
+
     return (
         <Stack spacing={1}>
-            <Typography>{props.label}</Typography>
+            <Typography>
+                <AddStickerToText />
+            </Typography>
             <Stack direction="row" spacing={1}>
                 <Map>
                     <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
