@@ -33,10 +33,11 @@ class Routes extends BaseModel {
         const endDate = new Date(startDate);
         endDate.setUTCHours(23, 59, 59, 9999);
 
-        const result = await db.collection<IRoutesDocument>('routes').find({
+        let result = await db.collection<IRoutesDocument>('routes').find({
             userId: this.oid(this.client.currentUser!.id),
-            createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-        });
+            createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() }},
+            { sort: { createdAt: 1 } },
+        );
 
         return result.map((item) => {
                 const { _id, userId, ...others } = item;

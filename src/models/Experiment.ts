@@ -327,24 +327,22 @@ class Experiment extends BaseModel {
 
         const db = this.getDb();
 
-        const result = await db.collection<IResponseDocument>('responses').find(
+        let result = await db.collection<IResponseDocument>('responses').find(
             {
                 userId: this.oid(this.client.currentUser!.id),
                 experimentId: experimentId,
                 createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
             },
-            { sort: { createdAt: -1 } },
+            { sort: { createdAt: 1 } },
         );
 
-        return result.map((result: IResponseDocument) => {
-            const { _id, userId, ...others } = result;
+        const { _id, userId, ...others } = result[0];
 
-            return {
-                id: _id.toString(),
-                userId: userId.toString(),
-                ...others,
-            };
-        });
+        return {
+            id: _id.toString(),
+            userId: userId.toString(),
+            ...others,
+        };
     }
 }
 
