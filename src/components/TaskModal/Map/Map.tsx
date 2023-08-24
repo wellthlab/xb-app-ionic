@@ -8,7 +8,7 @@ function Map(props: MapProps) {
     // If you don't resize the map after rendering it, then the map won't show properly
     setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
-    }, 1000);
+    }, 100);
    
     return (
         <MapContainer
