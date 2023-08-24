@@ -5,7 +5,7 @@ import { Grid } from '@mui/material'
 
 function StickerDrawer(props: StickerDrawerProps) {
 
-  return (<Paper style={{ maxHeight: 200, overflowY: 'auto', overflowX: 'hidden' }}>
+  return (<Paper style={{ maxHeight: 150, overflowY: 'auto', overflowX: 'hidden' }}>
     <Grid container xs={11.5}>
       {props.stickers.map(sticker => {
         return (
