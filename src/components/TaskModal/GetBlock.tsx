@@ -86,9 +86,10 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'if-selection') {
+        for (const response of props.response) {
             // Checks if the response as the field we are trying to compare
-            if (typeof props.response[props.block.value] === "undefined") return <></>
-            const valueToCompare = props.response[props.block.value]
+            if (typeof response[props.block.value] === "undefined") break
+            const valueToCompare = response[props.block.value]
             for (var option of props.block.options) {
                 switch (props.block.compare) {
                     case Compare.Equal:
@@ -107,6 +108,7 @@ function GetBlock(props: BlockProps): JSX.Element {
                             }
                         }
                 }
+            }
         }
         return <></>
     }
@@ -223,7 +225,7 @@ type BlockProps = {
     blockId: number
     getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
     getInputProps: GetInputProps<Record<string, string | number | boolean>>
-    response: Record<string, string | number>
+    response: Record<string, string | number>[]
 }
 
 export default GetBlock

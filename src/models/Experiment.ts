@@ -336,13 +336,15 @@ class Experiment extends BaseModel {
             { sort: { createdAt: 1 } },
         );
 
-        const { _id, userId, ...others } = result[0];
+        return result.map((result: IResponseDocument) => {
+            const { _id, userId, ...others } = result;
 
-        return {
-            id: _id.toString(),
-            userId: userId.toString(),
-            ...others,
-        };
+            return {
+                id: _id.toString(),
+                userId: userId.toString(),
+                ...others,
+            };
+        });
     }
 }
 
