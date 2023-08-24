@@ -7,11 +7,13 @@ import DrawRoute from "./Map/DrawRoute";
 import { Grid, Paper } from "@mui/material";
 import UndoIcon from '@mui/icons-material/Undo';
 import CircleIcon from '@mui/icons-material/Circle';
+import { LatLngLiteral } from "leaflet";
 
 interface EmotionPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
     value: string
-    onChange: (sticker: string) => void;
+    onChange: (sticker: string) => void
+    points: LatLngLiteral[]
 }
 
 const EmotionPlacer = function (props: EmotionPlacerProps) {
@@ -35,8 +37,8 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
             </Typography>
             <Stack direction="row" spacing={1}>
             <Map>
+                <DrawRoute lines={props.points}/>
                 <EmotionEditor emotions={emotionList} setEmotions={setEmotionList} activeEmotion={activeEmotion} onChange={props.onChange} />
-                <DrawRoute />
             </Map>
             <Stack spacing={1}>
             <CircleIcon sx={{color: activeEmotion, width: "40px", height: "40px"}}/>

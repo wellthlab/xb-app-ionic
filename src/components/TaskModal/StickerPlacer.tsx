@@ -6,11 +6,13 @@ import Sticker, { findFolder, getKeyFromValue } from './Map/sticker'
 import SearchBar from "./Map/SearchBar";
 import DrawRoute from "./Map/DrawRoute";
 import UndoIcon from '@mui/icons-material/Undo';
+import { LatLngLiteral } from "leaflet";
 
 interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
     value: string
-    onChange: (sticker: string) => void;
+    onChange: (sticker: string) => void
+    points: LatLngLiteral[]
 }
 
 const StickerPlacer = function (props: StickerPlacerProps) {
@@ -54,8 +56,8 @@ const StickerPlacer = function (props: StickerPlacerProps) {
             </Typography>
             <Stack direction="row" spacing={1}>
                 <Map>
+                    <DrawRoute lines={props.points} />
                     <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
-                    <DrawRoute />
                 </Map>
                 <Stack spacing={1}>
                     <img

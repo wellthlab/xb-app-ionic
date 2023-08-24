@@ -1,6 +1,6 @@
-import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack } from "@mui/joy";
+import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack, Alert } from "@mui/joy";
 import React from "react";
-import { Block, Compare } from "../../models/Experiment";
+import { Block, Compare, IResponse } from "../../models/Experiment";
 import MultipleSelect from "../foundation/MultipleSelect";
 import CountdownTimer from "./CountdownTimer";
 import EmotionPlacer from "./EmotionPlacer";
@@ -15,6 +15,7 @@ import TimeInput from "./TimeInput";
 import YouTubeVideo from "./YoutubeVideo";
 import { ArrowSquareOut } from "phosphor-react";
 import { GetCheckboxProps, GetInputProps } from "../foundation/useForm";
+import { LatLng, LatLngLiteral } from "leaflet";
 
 const renderParagraphWithLinks = function (content: string) {
     // This is a paragrah with [link](https://google.com)
@@ -33,6 +34,17 @@ const renderParagraphWithLinks = function (content: string) {
         return part;
     });
 };
+
+const convertStringToRoute = function (content: string): LatLngLiteral[] {
+    const points: LatLngLiteral[] = []
+    const split = content.split(",")
+    split.pop()
+    split.map((line) => {
+        const words = line.split(" ")
+        points.push(new LatLng(Number(words[0]), Number(words[1])))
+    })
+    return points
+}
 
 function GetBlock(props: BlockProps): JSX.Element {
 
@@ -87,9 +99,9 @@ function GetBlock(props: BlockProps): JSX.Element {
 
     if (props.block.type === 'if-selection') {
         for (const response of props.response) {
+            const valueToCompare = response.payload[props.block.value]
             // Checks if the response as the field we are trying to compare
-            if (typeof response[props.block.value] === "undefined") break
-            const valueToCompare = response[props.block.value]
+            if (typeof valueToCompare === "undefined") break
             for (var option of props.block.options) {
                 switch (props.block.compare) {
                     case Compare.Equal:
@@ -202,7 +214,13 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'sticker-placer') {
-        return <StickerPlacer {...commonProps} />
+        for (const response of props.response) {
+            const route = response.payload[props.block.value]
+                if (typeof route === 'string') {
+                    return <StickerPlacer points={convertStringToRoute(route)} {...commonProps} />
+                }
+        }
+        return <StickerPlacer points={[]} {...commonProps} />
     }
 
     if (props.block.type === 'multiple-selector') {
@@ -210,7 +228,13 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'emotion-placer') {
-        return <EmotionPlacer {...commonProps} />
+        for (const response of props.response) {
+            const route = response.payload[props.block.value]
+                if (typeof route === 'string') {
+                    return <EmotionPlacer points={convertStringToRoute(route)} {...commonProps} />
+            }
+        }
+        return <StickerPlacer points={[]} {...commonProps} />
     }
 
     if (props.block.type === 'text-input') {
@@ -225,7 +249,7 @@ type BlockProps = {
     blockId: number
     getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
     getInputProps: GetInputProps<Record<string, string | number | boolean>>
-    response: Record<string, string | number>[]
+    response: IResponse[]
 }
 
 export default GetBlock

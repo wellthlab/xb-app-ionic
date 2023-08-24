@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import Modal, { IModalProps } from '../foundation/Modal';
 import useForm from '../foundation/useForm';
 
-import Experiment, { ITask } from '../../models/Experiment';
+import Experiment, { IResponse, ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
 import { updateProgress } from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
@@ -118,19 +118,18 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     const dispatch = useDispatch();
 
     const [loading, setLoading] = useState(true)
-    const [response, setResponse] = useState<Record<string, string | number>[]>([])
+    const [response, setResponse] = useState<IResponse[]>([])
 
-    const getResponse = async function (experimentId: string) {
+    const getResponse = async function () {
         const today = new Date()
-        const raw = await Experiment.getResponsesForDateAndExperiment(experimentId, today);
-        if (raw.length > 0) {
-            raw.map((r) => setResponse([...response,r.payload]))
-        }
+        let raw = await Experiment.getResponsesForDate(today)
+        raw = raw.sort((a,b) => b.createdAt - a.createdAt)
+        setResponse(raw)
         setLoading(false)
     }
 
     useEffect(() => {
-        getResponse(experimentId)
+        getResponse()
     }, []
     )
 

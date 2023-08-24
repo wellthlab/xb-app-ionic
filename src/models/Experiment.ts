@@ -183,6 +183,7 @@ interface IRouteDrawer extends IGenericInput {
 
 interface IStickerPlacer extends IGenericInput {
     type: 'sticker-placer'
+    value: string
 }
 
 interface IMultipleSelecter extends IGenericInput {
@@ -192,6 +193,7 @@ interface IMultipleSelecter extends IGenericInput {
 
 interface IEmotionPlacer extends IGenericInput {
     type: 'emotion-placer'
+    value: string
 }
 
 interface IIfSelection {
@@ -302,35 +304,6 @@ class Experiment extends BaseModel {
         const result = await db.collection<IResponseDocument>('responses').find(
             {
                 userId: this.oid(this.client.currentUser!.id),
-                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-            },
-            { sort: { createdAt: -1 } },
-        );
-
-        return result.map((result: IResponseDocument) => {
-            const { _id, userId, ...others } = result;
-
-            return {
-                id: _id.toString(),
-                userId: userId.toString(),
-                ...others,
-            };
-        });
-    }
-
-    static async getResponsesForDateAndExperiment(experimentId: string, date: Date) {
-        const startDate = new Date(date);
-        startDate.setUTCHours(0, 0, 0, 0);
-
-        const endDate = new Date(date);
-        endDate.setUTCHours(23, 59, 59, 9999);
-
-        const db = this.getDb();
-
-        let result = await db.collection<IResponseDocument>('responses').find(
-            {
-                userId: this.oid(this.client.currentUser!.id),
-                experimentId: experimentId,
                 createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
             },
             { sort: { createdAt: 1 } },
