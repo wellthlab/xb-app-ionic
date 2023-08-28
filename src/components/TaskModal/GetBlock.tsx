@@ -217,7 +217,7 @@ function GetBlock(props: BlockProps): JSX.Element {
         for (const response of props.response) {
             const route = response.payload[props.block.value]
                 if (typeof route === 'string') {
-                    return <StickerPlacer points={convertStringToRoute(route)} {...commonProps} />
+                    return <StickerPlacer points={convertStringToRoute(route)} option={props.block.option}{...commonProps} />
                 }
         }
         return <StickerPlacer points={[]} {...commonProps} />

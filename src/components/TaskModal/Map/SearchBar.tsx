@@ -2,7 +2,6 @@ import { CheckCircle, Search } from "@mui/icons-material"
 import { Chip, IconButton, Radio, RadioGroup, Stack, TextField } from "@mui/joy"
 import React, { useEffect, useState } from "react"
 import Sticker, { Activities, Category, Places, Transport, FacilitiesEnvironment, Navigation } from "./sticker"
-import StickerDrawer from "./StickerDrawer"
 
 const SearchBar = function (props: SearchBarProps) {
 
@@ -60,7 +59,7 @@ const SearchBar = function (props: SearchBarProps) {
                     <Search />
                 </IconButton>
             </Stack>
-            <RadioGroup row sx={{ overflowX: "scroll", overflowY: 'hidden', gap: 1 }}>
+            {props.changeCategory ? <RadioGroup row sx={{ overflowX: "scroll", overflowY: 'hidden', gap: 1 }}>
                 {categoryList.map(name => {
                     const checked = state.selectedCategory === name;
                     return (
@@ -69,22 +68,16 @@ const SearchBar = function (props: SearchBarProps) {
                         </Chip>
                     )
                 })}
-            </RadioGroup>
-            <StickerDrawer
-                stickers={props.stickerResult}
-                activeSticker={props.activeSticker}
-                onStickerClick={props.onStickerClick}
-            />
+            </RadioGroup>: <></>}
         </Stack>
     )
 }
 
 type SearchBarProps = {
     stickerList: Sticker[]
-    activeSticker: Sticker
-    onStickerClick: (index: Sticker) => void
     stickerResult: Sticker[]
     setStickerList: React.Dispatch<React.SetStateAction<Sticker[]>>
+    changeCategory: boolean
 }
 
 export default SearchBar

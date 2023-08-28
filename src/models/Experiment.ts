@@ -184,6 +184,7 @@ interface IRouteDrawer extends IGenericInput {
 interface IStickerPlacer extends IGenericInput {
     type: 'sticker-placer'
     value: string
+    option: string
 }
 
 interface IMultipleSelecter extends IGenericInput {
