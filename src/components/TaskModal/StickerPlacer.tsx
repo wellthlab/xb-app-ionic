@@ -28,7 +28,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
     } else if (props.option == Category.Any) {
         Object.values(Sticker).forEach(s => {
             stickerList.push(s)
-        });
+        })
         changeCategory = true
     } else if (props.option == Category.FacilitiesEnvironment) {
         stickerList = FacilitiesEnvironment
@@ -43,7 +43,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         if (key != -1) {
             stickerList.push(key)
         }
-        category = false  
+        category = false
     }
 
     const [activeSticker, setActiveSticker] = useState<Sticker>(stickerList[0])
@@ -61,7 +61,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                 return <img
                     src={findFolder(stickerKey)}
                     width={20}
-                    height={20}/>
+                    height={20} />
             } else {
                 return s
             }
@@ -90,8 +90,8 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                 </Stack>
             </Stack>
             {category ? <>
-                <SearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerList={setStickerResult} changeCategory={changeCategory}/> 
-            <StickerDrawer stickers={stickerList} activeSticker={activeSticker} onStickerClick={setActiveSticker} />
+                <SearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerList={setStickerResult} changeCategory={changeCategory} />
+                <StickerDrawer stickers={stickerResult} activeSticker={activeSticker} onStickerClick={setActiveSticker} />
             </> : <></>}
         </Stack>
     )

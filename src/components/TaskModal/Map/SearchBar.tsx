@@ -68,7 +68,7 @@ const SearchBar = function (props: SearchBarProps) {
                         </Chip>
                     )
                 })}
-            </RadioGroup>: <></>}
+            </RadioGroup> : <></>}
         </Stack>
     )
 }
