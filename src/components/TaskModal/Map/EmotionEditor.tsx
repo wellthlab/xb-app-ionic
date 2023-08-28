@@ -35,7 +35,7 @@ function EmotionEditor(props: EmotionEditorProps) {
     const convertEmotionsToString = function (emotions: EmotionsProps[]) {
         let result = ""
         emotions.map((s) => {
-            result += getKeyFromValue(s.emotion) + " " + s.point.lat.toString() + " " + s.point.lng.toString() + " "
+            result += s.emotion.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ","
         })
         props.onChange(result)
     }

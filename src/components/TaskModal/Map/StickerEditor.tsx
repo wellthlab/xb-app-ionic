@@ -34,7 +34,7 @@ function StickerEditor(props: StickerEditorProps) {
     const convertStickersToString = function (stickers: StickersProps[]) {
         let result = ""
         stickers.map((s) => {
-            result += s.sticker.valueOf() + " " + s.point.lat.toString() + " " + s.point.lng.toString() + " " + s.note + " "
+            result += s.sticker.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ":" + s.note + ","
         })
         props.onChange(result)
     }
