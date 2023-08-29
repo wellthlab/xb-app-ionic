@@ -2,6 +2,10 @@ import { Button } from "@mui/joy"
 import { LatLng, LatLngLiteral } from "leaflet"
 import React from "react"
 
+type GoogleTimelineProps = {
+    setLines: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>
+}
+
 const GoogleTimeline = function (props: GoogleTimelineProps) {
 
     const handleFileUpload = function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -17,15 +21,15 @@ const GoogleTimeline = function (props: GoogleTimelineProps) {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(kmlText, 'text/xml');
                 let googleMarkers = []
+
                 for (const item of kml.getElementsByTagName('Placemark') as HTMLCollectionOf<Element>) {
                     let markers = item.getElementsByTagName('Point')
                     for (const marker of markers) {
-                        let coordinates = marker.getElementsByTagName('coordinates')
+                        var coordinates = marker.getElementsByTagName('coordinates')[0].childNodes[0].nodeValue
                         if (!coordinates) break
-                        if (!coordinates[0].childNodes[0].nodeValue) break
-                        var coordList = coordinates[0].childNodes[0].nodeValue.trim()
-                        let coord = coordList.split(",")
-                        let coordLatLng = new LatLng(+coord[1], +coord[0])
+                        coordinates = coordinates.trim()
+                        let coordList = coordinates.split(",")
+                        let coordLatLng = new LatLng(+coordList[1], +coordList[0])
                         googleMarkers.push(coordLatLng)
                     }
                 }
@@ -35,16 +39,13 @@ const GoogleTimeline = function (props: GoogleTimelineProps) {
         fileReader.readAsText(file)
     }
 
-    return (<Button component="label" fullWidth>
+    return (
+    <Button component="label" fullWidth>
         Upload from Google Timeline
         <input type="file" hidden onChange={(e) => handleFileUpload(e)} />
     </Button>
     
     )
-}
-
-type GoogleTimelineProps = {
-    setLines: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>
 }
 
 export default GoogleTimeline

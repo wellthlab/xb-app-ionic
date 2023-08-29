@@ -5,6 +5,20 @@ import { v4 } from "uuid"
 import React, { useEffect } from 'react'
 import { useMap } from 'react-leaflet'
 
+export type StickersProps = {
+    point: LatLngLiteral,
+    sticker: Sticker,
+    note: string,
+    uuid: string
+}
+
+type StickerEditorProps = {
+    stickerSet: Sticker[],
+    stickers: StickersProps[],
+    setStickers: React.Dispatch<React.SetStateAction<StickersProps[]>>,
+    activeSticker: Sticker
+}
+
 function StickerEditor(props: StickerEditorProps) {
     const map = useMap();
 
@@ -56,20 +70,6 @@ function StickerEditor(props: StickerEditorProps) {
                 setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
         </>
     )
-}
-
-export type StickersProps = {
-    point: LatLngLiteral,
-    sticker: Sticker,
-    note: string,
-    uuid: string
-}
-
-type StickerEditorProps = {
-    stickerSet: Sticker[],
-    stickers: StickersProps[],
-    setStickers: React.Dispatch<React.SetStateAction<StickersProps[]>>,
-    activeSticker: Sticker
 }
 
 export default StickerEditor

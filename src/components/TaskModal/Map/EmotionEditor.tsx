@@ -5,14 +5,31 @@ import Emotion from './emotion'
 import EmotionMarker from './EmotionMarker'
 import { useMap } from 'react-leaflet'
 
+export type EmotionsProps = {
+    point: LatLngLiteral,
+    emotion: Emotion,
+    uuid: string
+}
+
+type EmotionEditorProps = {
+    emotionList: EmotionsProps[],
+    setEmotionList: React.Dispatch<React.SetStateAction<EmotionsProps[]>>,
+    activeEmotion: Emotion
+}
+
 function EmotionEditor(props: EmotionEditorProps) {
     const map = useMap();
+
+    const handleRemove = function (uuid: string) {
+        if (!props.emotionList) return
+        props.setEmotionList(props.emotionList.filter((e) => e.uuid != uuid))
+    }
 
     useEffect(() => {
 
         const handleEmotionClick = (e: LeafletMouseEvent) => {
-            if (!props.emotions) return
-            props.setEmotions([...props.emotions, { point: e.latlng, emotion: props.activeEmotion, uuid: v4() }])
+            if (!props.emotionList) return
+            props.setEmotionList([...props.emotionList, { point: e.latlng, emotion: props.activeEmotion, uuid: v4() }])
         }
 
         map.addEventListener("click", handleEmotionClick)
@@ -26,29 +43,13 @@ function EmotionEditor(props: EmotionEditorProps) {
         map.locate().on("locationfound", function (e) {
             map.flyTo(e.latlng, map.getZoom());
         });
-    }, [map]);
-
-    const handleRemove = function (uuid: string) {
-        if (!props.emotions) return
-        props.setEmotions(props.emotions.filter((e) => e.uuid != uuid))
-    }
+    }, [map])
 
     return (<>
-        {props.emotions.map((s) => (
-            <EmotionMarker key={s.uuid} emotion={s} onRemove={() => handleRemove(s.uuid)} />))}
+        {props.emotionList.map((e) => (
+            <EmotionMarker key={e.uuid} emotionProps={e} onRemove={() => handleRemove(e.uuid)} />
+        ))}
     </>)
-}
-
-export type EmotionsProps = {
-    point: LatLngLiteral,
-    emotion: Emotion,
-    uuid: string
-}
-
-type EmotionEditorProps = {
-    emotions: EmotionsProps[],
-    setEmotions: React.Dispatch<React.SetStateAction<EmotionsProps[]>>,
-    activeEmotion: Emotion
 }
 
 export default EmotionEditor

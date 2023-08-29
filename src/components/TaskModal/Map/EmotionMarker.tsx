@@ -1,8 +1,13 @@
 import { Popup, useMap, CircleMarker } from 'react-leaflet'
 import React from 'react'
 import { Button, Stack, Typography } from '@mui/joy'
-import { getKeyFromValue } from './emotion'
+import { getStringValueFromEmotion } from './emotion'
 import { EmotionsProps } from './EmotionEditor'
+
+type EmotionMarkerProps = {
+    emotionProps: EmotionsProps
+    onRemove: () => void
+}
 
 function EmotionMarker(props: EmotionMarkerProps) {
 
@@ -17,20 +22,20 @@ function EmotionMarker(props: EmotionMarkerProps) {
     }
 
     return (
-        <CircleMarker center={props.emotion.point} color={props.emotion.emotion.valueOf()} fillColor={props.emotion.emotion.valueOf()} radius={30} fillOpacity={0.6}>
+        <CircleMarker 
+            center={props.emotionProps.point}
+            color={props.emotionProps.emotion.valueOf()}
+            fillColor={props.emotionProps.emotion.valueOf()}
+            radius={30}
+            fillOpacity={0.6}>
             <Popup>
                 <Stack>
-                    <Typography>{getKeyFromValue(props.emotion.emotion)}</Typography>
+                    <Typography>{getStringValueFromEmotion(props.emotionProps.emotion)}</Typography>
                     <Button onClick={remove}>Remove</Button>
                 </Stack>
             </Popup>
         </CircleMarker>
     )
-}
-
-type EmotionMarkerProps = {
-    emotion: EmotionsProps
-    onRemove: () => void
 }
 
 export default EmotionMarker

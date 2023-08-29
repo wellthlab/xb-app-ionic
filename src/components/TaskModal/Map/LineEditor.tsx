@@ -1,8 +1,12 @@
-import L, { LatLngLiteral, LeafletMouseEvent } from "leaflet"
-import LineSegment from "./LineSegment"
+import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
 import React, { useEffect } from "react"
 import { useMap } from "react-leaflet";
 import DrawRoute from "./DrawRoute";
+
+type LineProps = {
+    lines: LatLngLiteral[]
+    setLines: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>
+}
 
 function LineEditor(props: LineProps) {
 
@@ -16,7 +20,7 @@ function LineEditor(props: LineProps) {
 
     useEffect(() => {
         const handleMapClick = (e: LeafletMouseEvent) => {
-            props.setLines(props.lines.concat(e.latlng))
+            props.setLines([...props.lines, e.latlng])
         }
         map.addEventListener("click", handleMapClick)
 
@@ -25,12 +29,9 @@ function LineEditor(props: LineProps) {
         }
     })
 
-    return(<DrawRoute lines={props.lines}/>)
-}
-
-type LineProps = {
-    lines: LatLngLiteral[]
-    setLines: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>
+    return (
+        <DrawRoute lines={props.lines} />
+    )
 }
 
 export default LineEditor

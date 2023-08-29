@@ -1,5 +1,5 @@
 enum Emotion {
-    Ecstacy = "#fade1f",
+    Ecstasy = "#fade1f",
     Joy = "#fae54d",
     Serenity = "#fcf089",
     Optimism = "#fdbd5a",
@@ -29,12 +29,12 @@ enum Emotion {
     Submission = "#90c069",
     Admiration = "#a2c737",
     Trust = "#b6d166",
-    Accpetance = "#d1df95",
+    Acceptance = "#d1df95",
     Love = "#dce15c",
 }
 
 export default Emotion
 
-export const getKeyFromValue = function (e: Emotion) {
+export const getStringValueFromEmotion = function (e: Emotion) {
     return Object.keys(Emotion)[Object.values(Emotion).indexOf(e)]
 }

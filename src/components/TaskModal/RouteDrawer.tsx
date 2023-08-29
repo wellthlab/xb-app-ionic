@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import LineEditor from "./Map/LineEditor"
 import Map from "./Map/Map"
 import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy"
-import GoogleTimeline from "../foundation/GoogleTimeline"
+import GoogleTimeline from "./Map/GoogleTimeline"
 import CreateIcon from '@mui/icons-material/Create';
 import UndoIcon from '@mui/icons-material/Undo';
 import DeleteIcon from '@mui/icons-material/Delete';

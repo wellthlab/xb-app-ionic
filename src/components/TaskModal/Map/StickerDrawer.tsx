@@ -3,6 +3,12 @@ import Sticker, { findFolder } from './sticker'
 import { Paper } from '@mui/material'
 import { Grid } from '@mui/material'
 
+type StickerDrawerProps = {
+  stickers: Sticker[]
+  activeSticker: Sticker
+  onStickerClick: (index: Sticker) => void
+}
+
 function StickerDrawer(props: StickerDrawerProps) {
 
   return (<Paper style={{ maxHeight: 150, overflowY: 'auto', overflowX: 'hidden' }}>
@@ -28,12 +34,6 @@ function StickerDrawer(props: StickerDrawerProps) {
     </Grid>
   </Paper>
   )
-}
-
-type StickerDrawerProps = {
-  stickers: Sticker[]
-  activeSticker: Sticker
-  onStickerClick: (index: Sticker) => void
 }
 
 export default StickerDrawer

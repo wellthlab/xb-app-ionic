@@ -108,7 +108,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                 </Stack>
             </Stack>
             {category ? <>
-                <SearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerList={setStickerResult} changeCategory={changeCategory} />
+                <SearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerResult={setStickerResult} changeCategory={changeCategory} />
                 <StickerDrawer stickers={stickerResult} activeSticker={activeSticker} onStickerClick={setActiveSticker} />
             </> : <></>}
         </Stack>

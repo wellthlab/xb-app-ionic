@@ -3,6 +3,10 @@ import { MapContainer, TileLayer } from 'react-leaflet'
 import React from 'react'
 import "leaflet/dist/leaflet.css";
 
+type MapProps = {
+    children: ReactNode
+}
+
 function Map(props: MapProps) {
 
     // If you don't resize the map after rendering it, then the map won't show properly
@@ -23,10 +27,6 @@ function Map(props: MapProps) {
             {props.children}
         </MapContainer>
     )
-}
-
-type MapProps = {
-    children: ReactNode
 }
 
 export default Map

@@ -1,13 +1,12 @@
 import L, { LatLngLiteral } from "leaflet"
-import React, { useState, useEffect } from "react"
+import React from "react"
 import Sticker from "./sticker"
-import { Marker } from "react-leaflet";
-import LineSegment from "./LineSegment"
-
+import { Marker, Polyline } from "react-leaflet";
 
 type DrawLineProps = {
     lines: LatLngLiteral[]
 }
+
 function DrawRoute(props: DrawLineProps) {
 
     const startIcon = L.icon({
@@ -20,9 +19,17 @@ function DrawRoute(props: DrawLineProps) {
     })
 
     return (props.lines.length > 1 ?
-        <><Marker position={props.lines[0]} icon={startIcon} />
+        <>
+            <Marker position={props.lines[0]} icon={startIcon} />
             <Marker position={props.lines.slice(-1)[0]} icon={endIcon} />
-            {props.lines.slice(0, -1).map((i, j) => <LineSegment start={i} end={props.lines[j + 1]} colour={"black"} key={i.lat} />)}</>
+            {props.lines.slice(0, -1).map((latLng, i) =>
+                <Polyline
+                    positions={[latLng, props.lines[i + 1]]}
+                    weight={5}
+                    pathOptions={{ color: "black", fillColor: "black" }}
+                />
+            )}
+        </>
         : <></>
     )
 }

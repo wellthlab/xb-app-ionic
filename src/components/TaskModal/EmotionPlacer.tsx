@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
-import Emotion, { getKeyFromValue } from "./Map/emotion";
+import Emotion, { getStringValueFromEmotion } from "./Map/emotion";
 import EmotionEditor, { EmotionsProps } from "./Map/EmotionEditor";
 import DrawRoute from "./Map/DrawRoute";
 import { Grid, Paper } from "@mui/material";
@@ -55,7 +55,7 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
             <Stack direction="row" spacing={1}>
                 <Map>
                     <DrawRoute lines={props.points} />
-                    <EmotionEditor emotions={emotionList} setEmotions={setEmotionList} activeEmotion={activeEmotion} />
+                    <EmotionEditor emotionList={emotionList} setEmotionList={setEmotionList} activeEmotion={activeEmotion} />
                 </Map>
                 <Stack spacing={1}>
                     <CircleIcon sx={{ color: activeEmotion, width: "40px", height: "40px" }} />
@@ -71,7 +71,7 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
                                 backgroundColor: "white", color: "black", borderColor: e.valueOf(), borderStyle: "solid", borderWidth: "5px", '&:hover': {
                                     opacity: 0.5, backgroundColor: "white"
                                 }
-                            }} onClick={() => setActiveEmotion(e)}>{getKeyFromValue(e)}</Button>
+                            }} onClick={() => setActiveEmotion(e)}>{getStringValueFromEmotion(e)}</Button>
                         </Grid>)}
                 </Grid>
             </Paper>
