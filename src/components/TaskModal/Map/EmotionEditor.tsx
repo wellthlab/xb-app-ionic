@@ -1,16 +1,12 @@
 import { LatLngLiteral, LeafletMouseEvent, } from 'leaflet'
 import { v4 } from "uuid"
 import React, { useEffect } from 'react'
-import Emotion, { getKeyFromValue } from './emotion'
+import Emotion from './emotion'
 import EmotionMarker from './EmotionMarker'
 import { useMap } from 'react-leaflet'
 
 function EmotionEditor(props: EmotionEditorProps) {
     const map = useMap();
-
-    useEffect(() =>
-        convertEmotionsToString(props.emotions),
-        [props.emotions])
 
     useEffect(() => {
 
@@ -32,14 +28,6 @@ function EmotionEditor(props: EmotionEditorProps) {
         });
     }, [map]);
 
-    const convertEmotionsToString = function (emotions: EmotionsProps[]) {
-        let result = ""
-        emotions.map((s) => {
-            result += s.emotion.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ","
-        })
-        props.onChange(result)
-    }
-
     const handleRemove = function (uuid: string) {
         if (!props.emotions) return
         props.setEmotions(props.emotions.filter((e) => e.uuid != uuid))
@@ -47,7 +35,7 @@ function EmotionEditor(props: EmotionEditorProps) {
 
     return (<>
         {props.emotions.map((s) => (
-            <EmotionMarker key={s.uuid} point={s.point} emotion={s.emotion} onRemove={() => handleRemove(s.uuid)} />))}
+            <EmotionMarker key={s.uuid} emotion={s} onRemove={() => handleRemove(s.uuid)} />))}
     </>)
 }
 
@@ -60,8 +48,7 @@ export type EmotionsProps = {
 type EmotionEditorProps = {
     emotions: EmotionsProps[],
     setEmotions: React.Dispatch<React.SetStateAction<EmotionsProps[]>>,
-    activeEmotion: Emotion,
-    onChange: (Emotion: string) => void
+    activeEmotion: Emotion
 }
 
 export default EmotionEditor

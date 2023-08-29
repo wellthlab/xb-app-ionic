@@ -1,5 +1,5 @@
 import StickerEditor, { StickersProps } from "./Map/StickerEditor";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import Sticker, { Activities, Category, FacilitiesEnvironment, Navigation, Places, Transport, findFolder, getKeyFromValue } from './Map/sticker'
@@ -8,6 +8,7 @@ import DrawRoute from "./Map/DrawRoute";
 import UndoIcon from '@mui/icons-material/Undo';
 import { LatLngLiteral } from "leaflet";
 import StickerDrawer from "./Map/StickerDrawer";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
@@ -69,6 +70,22 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         })}</>
     }
 
+    const removeStickers = function () {
+        setStickers([])
+    }
+
+    useEffect(() =>
+        convertStickersToString(),
+        [stickers])
+    
+    const convertStickersToString = function () {
+        let result = ""
+        stickers.map((s) => {
+            result += s.sticker.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ":" + s.note + ","
+        })
+        props.onChange(result)
+    }
+
     return (
         <Stack spacing={1}>
             <Typography>
@@ -77,7 +94,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
             <Stack direction="row" spacing={1}>
                 <Map>
                     <DrawRoute lines={props.points} />
-                    <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} value={props.value} onChange={props.onChange} />
+                    <StickerEditor stickerSet={stickerList} stickers={stickers} setStickers={setStickers} activeSticker={activeSticker} />
                 </Map>
                 <Stack spacing={1}>
                     <img
@@ -87,6 +104,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                         height={32}
                         style={{ backgroundColor: "white" }} />
                     <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
+                    <IconButton children={<DeleteIcon />} onClick={removeStickers} />
                 </Stack>
             </Stack>
             {category ? <>

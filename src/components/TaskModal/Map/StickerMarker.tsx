@@ -1,16 +1,17 @@
 import { Marker, Popup, useMap } from 'react-leaflet'
-import Sticker, { findFolder } from './sticker'
+import { findFolder } from './sticker'
 import L, { DragEndEvent } from 'leaflet'
 import React from 'react'
 import { Button, Stack, TextField } from '@mui/joy'
+import { StickersProps } from './StickerEditor'
 
 function StickerMarker(props: StickerMarkerProps) {
   const icon = L.icon({
-    iconUrl: findFolder(props.sticker),
+    iconUrl: findFolder(props.sticker.sticker),
     iconSize: [32, 32],
   })
-
   const map = useMap()
+
   const remove = () => {
     // When the popup closes, Leaflet tries to remove the click handlers
     // So we need to use the setTimeout "hack" to prevent a null pointer error
@@ -22,7 +23,7 @@ function StickerMarker(props: StickerMarkerProps) {
 
   return (
     <Marker
-      position={props.position}
+      position={props.sticker.point}
       icon={icon}
       draggable
       eventHandlers={{
@@ -31,7 +32,7 @@ function StickerMarker(props: StickerMarkerProps) {
     >
       <Popup closeOnClick closeOnEscapeKey>
         <Stack spacing={1}>
-          <TextField value={props.note} fullWidth onChange={(e) => props.setNote(e)} placeholder='Enter your note here...' />
+          <TextField value={props.sticker.note} fullWidth onChange={(e) => props.setNote(e)} placeholder='Enter your note here...' />
           <Button onClick={remove} fullWidth >Remove</Button>
         </Stack>
       </Popup>
@@ -40,14 +41,9 @@ function StickerMarker(props: StickerMarkerProps) {
 }
 
 type StickerMarkerProps = {
-  position: {
-    lat: number
-    lng: number
-  }
-  sticker: Sticker
+  sticker: StickersProps
   onDrag: (e: DragEndEvent) => void
   onRemove: () => void
-  note: string
   setNote: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 

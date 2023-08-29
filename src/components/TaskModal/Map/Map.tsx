@@ -9,7 +9,7 @@ function Map(props: MapProps) {
     setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
     }, 100);
-   
+
     return (
         <MapContainer
             center={[51.505, -0.09]}

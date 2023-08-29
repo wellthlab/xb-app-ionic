@@ -25,26 +25,12 @@ function LineEditor(props: LineProps) {
         }
     })
 
-    useEffect(() =>
-        convertRouteToString(),
-        [props.lines])
-
-    const convertRouteToString = function () {
-        let result = ""
-        props.lines.map((line) => {
-            result += line.lat.toString() + " " + line.lng.toString() + ","
-        })
-        props.onChange(result)
-    }
-
     return(<DrawRoute lines={props.lines}/>)
 }
 
 type LineProps = {
     lines: LatLngLiteral[]
     setLines: React.Dispatch<React.SetStateAction<LatLngLiteral[]>>
-    onChange: (route: string) => void
-    value: string
 }
 
 export default LineEditor

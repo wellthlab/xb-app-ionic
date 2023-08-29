@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import LineEditor from "./Map/LineEditor"
 import Map from "./Map/Map"
-import { Button, FormControlProps, IconButton, Stack, Typography } from "@mui/joy"
+import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy"
 import GoogleTimeline from "../foundation/GoogleTimeline"
 import CreateIcon from '@mui/icons-material/Create';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -25,19 +25,32 @@ const RouteDrawer = function (props: RouteDrawerProps) {
         lines.length == 2 ? removeRoute() : setLines(lines.slice(0, -1))
     }
 
+    useEffect(() =>
+        convertRouteToString(),
+        [lines])
+
+    const convertRouteToString = function () {
+        let result = ""
+        lines.map((line) => {
+            result += line.lat.toString() + " " + line.lng.toString() + ","
+        })
+        props.onChange(result)
+    }
+
     return (
         <Stack spacing={1}>
             <Typography>{props.label}</Typography>
-                <Stack direction="row" spacing={1}>
-                    <Map>
-                        <LineEditor lines={lines} setLines={setLines} onChange={props.onChange} value={props.value}/>
-                    </Map>
-                    <Stack spacing={1}>
-                        <IconButton children={<CreateIcon />} />
-                        <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
-                        <IconButton children={<DeleteIcon />} onClick={removeRoute} />
-                    </Stack>
+            <GoogleTimeline setLines={setLines} />
+            <Stack direction="row" spacing={1}>
+                <Map>
+                    <LineEditor lines={lines} setLines={setLines} />
+                </Map>
+                <Stack spacing={1}>
+                    <IconButton children={<CreateIcon />} />
+                    <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
+                    <IconButton children={<DeleteIcon />} onClick={removeRoute} />
                 </Stack>
+            </Stack>
         </Stack>)
 }
 

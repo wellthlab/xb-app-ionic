@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import Emotion, { getKeyFromValue } from "./Map/emotion";
@@ -8,6 +8,7 @@ import { Grid, Paper } from "@mui/material";
 import UndoIcon from '@mui/icons-material/Undo';
 import CircleIcon from '@mui/icons-material/Circle';
 import { LatLngLiteral } from "leaflet";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface EmotionPlacerProps extends Omit<FormControlProps, 'onChange'> {
     label: string
@@ -26,8 +27,24 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
     const [emotionList, setEmotionList] = useState<EmotionsProps[]>([])
     const [activeEmotion, setActiveEmotion] = useState<Emotion>(emotionSet[0])
 
-    const removeLastPoint = function() {
+    const removeLastPoint = function () {
         setEmotionList(emotionList.slice(0, -1))
+    }
+
+    useEffect(() =>
+        convertEmotionsToString(),
+        [emotionList])
+
+    const convertEmotionsToString = function () {
+        let result = ""
+        emotionList.map((s) => {
+            result += s.emotion.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ","
+        })
+        props.onChange(result)
+    }
+
+    const removeEmotions = function () {
+        setEmotionList([])
     }
 
     return (
@@ -36,14 +53,15 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
                 {props.label}
             </Typography>
             <Stack direction="row" spacing={1}>
-            <Map>
-                <DrawRoute lines={props.points}/>
-                <EmotionEditor emotions={emotionList} setEmotions={setEmotionList} activeEmotion={activeEmotion} onChange={props.onChange} />
-            </Map>
-            <Stack spacing={1}>
-            <CircleIcon sx={{color: activeEmotion, width: "40px", height: "40px"}}/>
-            <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
-            </Stack>
+                <Map>
+                    <DrawRoute lines={props.points} />
+                    <EmotionEditor emotions={emotionList} setEmotions={setEmotionList} activeEmotion={activeEmotion} />
+                </Map>
+                <Stack spacing={1}>
+                    <CircleIcon sx={{ color: activeEmotion, width: "40px", height: "40px" }} />
+                    <IconButton children={<UndoIcon />} onClick={removeLastPoint} />
+                    <IconButton children={<DeleteIcon />} onClick={removeEmotions} />
+                </Stack>
             </Stack>
             <Paper style={{ maxHeight: 150, overflow: 'auto' }}>
                 <Grid container spacing={2}>

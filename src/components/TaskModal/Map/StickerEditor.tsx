@@ -8,10 +8,6 @@ import { useMap } from 'react-leaflet'
 function StickerEditor(props: StickerEditorProps) {
     const map = useMap();
 
-    useEffect(() =>
-        convertStickersToString(props.stickers),
-        [props.stickers])
-
     useEffect(() => {
         const handleStickerClick = (e: LeafletMouseEvent) => {
             if (!props.stickers) return
@@ -31,14 +27,6 @@ function StickerEditor(props: StickerEditorProps) {
         });
     }, [map]);
 
-    const convertStickersToString = function (stickers: StickersProps[]) {
-        let result = ""
-        stickers.map((s) => {
-            result += s.sticker.valueOf() + ":" + s.point.lat.toString() + ":" + s.point.lng.toString() + ":" + s.note + ","
-        })
-        props.onChange(result)
-    }
-
     const handleStickerRemove = (uuid: string) => {
         if (!props.stickers) return
         props.setStickers(props.stickers.filter((p) => p.uuid != uuid))
@@ -53,6 +41,7 @@ function StickerEditor(props: StickerEditorProps) {
     }
 
     const constHandleNoteChange = function (e: React.ChangeEvent<HTMLInputElement>, uuid: string) {
+        if (!props.stickers) return
         props.setStickers(props.stickers.map((s) =>
             s.uuid === uuid ? { point: s.point, sticker: s.sticker, note: e.target.value, uuid: s.uuid } : s
         ),)
@@ -60,12 +49,11 @@ function StickerEditor(props: StickerEditorProps) {
 
     return (
         <>
-            {props.stickers.map((s) => (<StickerMarker key={s.uuid} position={{
-                lat: s.point.lat,
-                lng: s.point.lng,
-            }} sticker={s.sticker}
+            {props.stickers.map((s) => (<StickerMarker key={s.uuid}
+                sticker={s}
                 onRemove={() => handleStickerRemove(s.uuid)}
-                onDrag={(e) => handleStickerDrag(s.uuid, e)} note={s.note} setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
+                onDrag={(e) => handleStickerDrag(s.uuid, e)}
+                setNote={(e) => constHandleNoteChange(e, s.uuid)} />))}
         </>
     )
 }
@@ -81,9 +69,7 @@ type StickerEditorProps = {
     stickerSet: Sticker[],
     stickers: StickersProps[],
     setStickers: React.Dispatch<React.SetStateAction<StickersProps[]>>,
-    activeSticker: Sticker,
-    value: string,
-    onChange: (sticker: string) => void
+    activeSticker: Sticker
 }
 
 export default StickerEditor
