@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FormControlProps, IconButton, Stack, Typography } from "@mui/joy";
 import Map from "./Map/Map";
 import Sticker, { Activities, Category, FacilitiesEnvironment, Navigation, Places, Transport, findFolder, getKeyFromValue } from './Map/sticker'
-import SearchBar from "./Map/SearchBar";
+import StickerSearchBar from "./Map/StickerSearchBar";
 import DrawRoute from "./Map/DrawRoute";
 import UndoIcon from '@mui/icons-material/Undo';
 import { LatLngLiteral } from "leaflet";
@@ -21,7 +21,7 @@ interface StickerPlacerProps extends Omit<FormControlProps, 'onChange'> {
 const StickerPlacer = function (props: StickerPlacerProps) {
     const [stickers, setStickers] = useState<StickersProps[]>([])
     let stickerList: Sticker[] = []
-    let category: boolean = true
+    let addCategory: boolean = true
     let changeCategory: boolean = false
 
     if (props.option == Category.Activities) {
@@ -44,7 +44,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         if (key != -1) {
             stickerList.push(key)
         }
-        category = false
+        addCategory = false
     }
 
     const [activeSticker, setActiveSticker] = useState<Sticker>(stickerList[0])
@@ -58,15 +58,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         const split = props.label.split("$")
         return <> {split.map((s) => {
             const stickerKey = getKeyFromValue(s)
-            if (stickerKey != -1) {
-                return <img
-                    src={findFolder(stickerKey)}
-                    width={20}
-                    height={20} />
-            } else {
-                return s
-            }
-
+            return stickerKey != -1 ? <img src={findFolder(stickerKey)} width={20} height={20} /> : s
         })}</>
     }
 
@@ -74,10 +66,7 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         setStickers([])
     }
 
-    useEffect(() =>
-        convertStickersToString(),
-        [stickers])
-    
+    //Format of payload: "stickerName:lat:lng:notes," comma separates each sticker added
     const convertStickersToString = function () {
         let result = ""
         stickers.map((s) => {
@@ -86,11 +75,14 @@ const StickerPlacer = function (props: StickerPlacerProps) {
         props.onChange(result)
     }
 
+    useEffect(() =>
+        convertStickersToString(),
+        [stickers]
+    )
+
     return (
         <Stack spacing={1}>
-            <Typography>
-                <AddStickerToText />
-            </Typography>
+            <Typography> <AddStickerToText /> </Typography>
             <Stack direction="row" spacing={1}>
                 <Map>
                     <DrawRoute lines={props.points} />
@@ -107,8 +99,8 @@ const StickerPlacer = function (props: StickerPlacerProps) {
                     <IconButton children={<DeleteIcon />} onClick={removeStickers} />
                 </Stack>
             </Stack>
-            {category ? <>
-                <SearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerResult={setStickerResult} changeCategory={changeCategory} />
+            {addCategory ? <>
+                <StickerSearchBar stickerList={stickerList} stickerResult={stickerResult} setStickerResult={setStickerResult} changeCategory={changeCategory} />
                 <StickerDrawer stickers={stickerResult} activeSticker={activeSticker} onStickerClick={setActiveSticker} />
             </> : <></>}
         </Stack>

@@ -31,10 +31,7 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
         setEmotionList(emotionList.slice(0, -1))
     }
 
-    useEffect(() =>
-        convertEmotionsToString(),
-        [emotionList])
-
+    //Format of payload: emotion-colour:lat:lng,
     const convertEmotionsToString = function () {
         let result = ""
         emotionList.map((s) => {
@@ -46,6 +43,10 @@ const EmotionPlacer = function (props: EmotionPlacerProps) {
     const removeEmotions = function () {
         setEmotionList([])
     }
+
+    useEffect(() =>
+        convertEmotionsToString(),
+        [emotionList])
 
     return (
         <Stack spacing={1}>

@@ -10,7 +10,7 @@ type SearchBarProps = {
     changeCategory: boolean
 }
 
-const SearchBar = function (props: SearchBarProps) {
+const StickerSearchBar = function (props: SearchBarProps) {
 
     const [state, setState] = useState({ text: "", list: props.stickerList, selectedCategory: Category.Any.toString() })
 
@@ -80,4 +80,4 @@ const SearchBar = function (props: SearchBarProps) {
     )
 }
 
-export default SearchBar
+export default StickerSearchBar

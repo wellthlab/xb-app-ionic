@@ -29,6 +29,7 @@ const RouteDrawer = function (props: RouteDrawerProps) {
         convertRouteToString(),
         [lines])
 
+    //Format of payload: lat lng,
     const convertRouteToString = function () {
         let result = ""
         lines.map((line) => {

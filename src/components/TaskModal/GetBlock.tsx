@@ -46,6 +46,14 @@ const convertStringToRoute = function (content: string): LatLngLiteral[] {
     return points
 }
 
+type BlockProps = {
+    block: Block
+    blockId: number
+    getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
+    getInputProps: GetInputProps<Record<string, string | number | boolean>>
+    response: IResponse[]
+}
+
 function GetBlock(props: BlockProps): JSX.Element {
 
     if (props.block.type === 'para' || props.block.type === 'title') {
@@ -234,7 +242,7 @@ function GetBlock(props: BlockProps): JSX.Element {
                     return <EmotionPlacer points={convertStringToRoute(route)} {...commonProps} />
             }
         }
-        return <StickerPlacer points={[]} {...commonProps} />
+        return <EmotionPlacer points={[]} {...commonProps} />
     }
 
     if (props.block.type === 'text-input') {
@@ -242,14 +250,6 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     return <TextField {...commonProps} />;
-}
-
-type BlockProps = {
-    block: Block
-    blockId: number
-    getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
-    getInputProps: GetInputProps<Record<string, string | number | boolean>>
-    response: IResponse[]
 }
 
 export default GetBlock
