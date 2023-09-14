@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
+import Account, { ICredentials, IAccount, ISubscription } from '../models/Account';
 import { IParentExperiment, IExperiment } from '../models/Experiment';
 import { selectAllExperimentsById, ISelectorState as IExperimentState } from './experiments';
 
@@ -13,12 +13,9 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
     return Account.create(credentials);
 });
 
-export const updateUserProfile = createAsyncThunk(
-    'account/profile/updated',
-    (payload: Omit<IProfile, 'id' | 'email'>) => {
-        return Account.updateProfile(payload);
-    },
-);
+export const enroll = createAsyncThunk('account/profile/updated', () => {
+    return Account.enroll();
+});
 
 export const subscribeToExperiment = createAsyncThunk<
     ISubscription | undefined,
@@ -66,7 +63,7 @@ export const updateProgress = createAsyncThunk(
 
 interface IAccountState {
     id?: string;
-    profile?: IProfile;
+    enrolled: boolean;
     subscriptions: Record<string, Omit<IAccount['subscriptions'][number], 'experimentId'>>;
     deleted?: boolean;
 }
@@ -77,9 +74,7 @@ export interface ISelectorState {
 
 export const selectIsAuthenticated = (state: ISelectorState) => !!state.account.id;
 
-export const setIsEnrolled = (state: ISelectorState) => !!state.account.profile;
-
-export const selectProfile = (state: ISelectorState) => state.account.profile;
+export const selectIsEnrolled = (state: ISelectorState) => state.account.enrolled;
 
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
 
@@ -90,14 +85,9 @@ export const selectProgress = (state: ISelectorState, experimentId: string) =>
 
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
-export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
-
-export const selectFullName = (state: ISelectorState) =>
-    state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
-
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {} } as IAccountState,
+    initialState: { id: Account.persistedId, enrolled: false, subscriptions: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -122,26 +112,27 @@ export default createSlice({
 
                     return {
                         ...others,
+                        enrolled: true,
                         subscriptions,
                     };
                 }
             })
-            .addCase(updateUserProfile.fulfilled, (state, action) => {
-                state.profile = action.payload;
+            .addCase(enroll.fulfilled, (state) => {
+                state.enrolled = true;
             })
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false
 
                 state.subscriptions = {};
+                state.enrolled = false;
                 delete state.id;
-                delete state.profile;
                 delete state.deleted;
             })
             .addCase(logOut.fulfilled, (state) => {
                 state.subscriptions = {};
                 delete state.id;
-                delete state.profile;
                 delete state.deleted;
+                state.enrolled = false;
             })
             .addCase(subscribeToExperiment.fulfilled, (state, action) => {
                 if (action.payload) {

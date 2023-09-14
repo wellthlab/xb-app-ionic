@@ -10,12 +10,11 @@ import PageTitle from '../../components/foundation/PageTitle';
 import Select from '../../components/foundation/Select';
 
 import { logOut } from '../../slices/globalActions';
-import { selectDepartment, selectFullName, markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
+import { selectUserId, markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
 import { useSelector, useDispatch } from '../../slices/store';
 
 const AllSettings = function () {
-    const fullName = useSelector(selectFullName);
-    const department = useSelector(selectDepartment);
+    const userId = useSelector(selectUserId);
     const isDeleted = useSelector(selectIsDeleted);
 
     // Set dark mode option
@@ -69,11 +68,11 @@ const AllSettings = function () {
             <IconContext.Provider value={{ size: 20 }}>
                 <Stack spacing={2}>
                     <List>
-                        <ListItem href="/main/settings/profile" startDecorator={<User />}>
-                            {fullName}
+                        <ListItem startDecorator={<User />}>
                             <Typography level="body3" noWrap>
-                                {department}
+                                Participant ID
                             </Typography>
+                            {userId}
                         </ListItem>
                     </List>
 

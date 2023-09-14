@@ -1,21 +1,21 @@
-import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack, Alert } from "@mui/joy";
-import React from "react";
-import { Block, Compare, IResponse } from "../../models/Experiment";
-import MultipleSelect from "../foundation/MultipleSelect";
-import CountdownTimer from "./CountdownTimer";
-import EmotionPlacer from "./EmotionPlacer";
-import GreenDetector from "./GreenDetector";
-import HeartRateInput from "./HeartRateInput";
-import MovementPicker from "./MovementPicker";
-import MovementRecorder from "./MovementRecorder";
-import RouteDrawer from "./RouteDrawer";
-import StickerPlacer from "./StickerPlacer";
-import Stopwatch from "./Stopwatch";
-import TimeInput from "./TimeInput";
-import YouTubeVideo from "./YoutubeVideo";
-import { ArrowSquareOut } from "phosphor-react";
-import { GetCheckboxProps, GetInputProps } from "../foundation/useForm";
-import { LatLng, LatLngLiteral } from "leaflet";
+import { Typography, Select, Slider, sliderClasses, Checkbox, TextField, Link, Stack, Alert } from '@mui/joy';
+import React from 'react';
+import { Block, Compare, IResponse } from '../../models/Experiment';
+import MultipleSelect from '../foundation/MultipleSelect';
+import CountdownTimer from './CountdownTimer';
+import EmotionPlacer from './EmotionPlacer';
+import GreenDetector from './GreenDetector';
+import HeartRateInput from './HeartRateInput';
+import MovementPicker from './MovementPicker';
+import MovementRecorder from './MovementRecorder';
+import RouteDrawer from './RouteDrawer';
+import StickerPlacer from './StickerPlacer';
+import Stopwatch from './Stopwatch';
+import TimeInput from './TimeInput';
+import YouTubeVideo from './YoutubeVideo';
+import { ArrowSquareOut } from 'phosphor-react';
+import { GetCheckboxProps, GetInputProps } from '../foundation/useForm';
+import { LatLng, LatLngLiteral } from 'leaflet';
 
 const renderParagraphWithLinks = function (content: string) {
     // This is a paragrah with [link](https://google.com)
@@ -36,26 +36,25 @@ const renderParagraphWithLinks = function (content: string) {
 };
 
 const convertStringToRoute = function (content: string): LatLngLiteral[] {
-    const points: LatLngLiteral[] = []
-    const split = content.split(",")
-    split.pop()
+    const points: LatLngLiteral[] = [];
+    const split = content.split(',');
+    split.pop();
     split.map((line) => {
-        const words = line.split(" ")
-        points.push(new LatLng(Number(words[0]), Number(words[1])))
-    })
-    return points
-}
+        const words = line.split(' ');
+        points.push(new LatLng(Number(words[0]), Number(words[1])));
+    });
+    return points;
+};
 
 type BlockProps = {
-    block: Block
-    blockId: number
-    getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>
-    getInputProps: GetInputProps<Record<string, string | number | boolean>>
-    response: IResponse[]
-}
+    block: Block;
+    blockId: number;
+    getCheckboxProps: GetCheckboxProps<Record<string, string | number | boolean>>;
+    getInputProps: GetInputProps<Record<string, string | number | boolean>>;
+    response: IResponse[];
+};
 
 function GetBlock(props: BlockProps): JSX.Element {
-
     if (props.block.type === 'para' || props.block.type === 'title') {
         return (
             <Typography level={props.block.type === 'para' ? 'body1' : 'h6'} key={props.blockId}>
@@ -106,34 +105,65 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'if-selection') {
+        let toRender: JSX.Element | null = null;
         for (const response of props.response) {
-            const valueToCompare = response.payload[props.block.value]
+            const valueToCompare = response.payload[props.block.value];
             // Checks if the response as the field we are trying to compare
-            if (typeof valueToCompare === "undefined") break
+            if (typeof valueToCompare === 'undefined') break;
             for (var option of props.block.options) {
                 switch (props.block.compare) {
                     case Compare.Equal:
                         if (valueToCompare === option.value[0]) {
-                            return <Stack spacing={2}>
-                                {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
-                            </Stack>
+                            toRender = (
+                                <Stack spacing={2}>
+                                    {option.blocks.map((block, blockid) => (
+                                        <GetBlock
+                                            block={block}
+                                            blockId={blockid}
+                                            getInputProps={props.getInputProps}
+                                            getCheckboxProps={props.getCheckboxProps}
+                                            response={props.response}
+                                        />
+                                    ))}
+                                </Stack>
+                            );
                         }
-                        break
+
+                        break;
+
                     case Compare.Include:
                         for (var word in option.value) {
                             if (valueToCompare.toString().includes(option.value[word])) {
-                                return <Stack spacing={2}>
-                                    {option.blocks.map((block, blockid) => <GetBlock block={block} blockId={blockid} getInputProps={props.getInputProps} getCheckboxProps={props.getCheckboxProps} response={props.response} />)}
-                                </Stack>
+                                toRender = (
+                                    <Stack spacing={2}>
+                                        {option.blocks.map((block, blockid) => (
+                                            <GetBlock
+                                                block={block}
+                                                blockId={blockid}
+                                                getInputProps={props.getInputProps}
+                                                getCheckboxProps={props.getCheckboxProps}
+                                                response={props.response}
+                                            />
+                                        ))}
+                                    </Stack>
+                                );
                             }
                         }
+
+                        break;
                 }
             }
         }
-        return <></>
+
+        if (!toRender) {
+            return <Alert>You need to complete the previous task first!</Alert>;
+        }
+
+        return toRender;
     }
 
-    const hookProps = props.block.type === 'checkbox' ? props.getCheckboxProps(props.block.rk) : props.getInputProps(props.block.rk);
+    const hookProps =
+        props.block.type === 'checkbox' ? props.getCheckboxProps(props.block.rk) : props.getInputProps(props.block.rk);
 
     const commonProps = {
         label: props.block.label,
@@ -218,39 +248,40 @@ function GetBlock(props: BlockProps): JSX.Element {
     }
 
     if (props.block.type === 'route-drawer') {
-        return <RouteDrawer {...commonProps} />
+        return <RouteDrawer {...commonProps} />;
     }
 
     if (props.block.type === 'sticker-placer') {
         for (const response of props.response) {
-            const route = response.payload[props.block.value]
-                if (typeof route === 'string') {
-                    return <StickerPlacer points={convertStringToRoute(route)} option={props.block.option} {...commonProps} />
-                }
+            const route = response.payload[props.block.value];
+            if (typeof route === 'string') {
+                return (
+                    <StickerPlacer points={convertStringToRoute(route)} option={props.block.option} {...commonProps} />
+                );
+            }
         }
-        return <StickerPlacer points={[]} option={props.block.option} {...commonProps} />
+        return <StickerPlacer points={[]} option={props.block.option} {...commonProps} />;
     }
 
     if (props.block.type === 'multiple-selector') {
-        return <MultipleSelect options={props.block.options} {...commonProps} />
+        return <MultipleSelect options={props.block.options} {...commonProps} />;
     }
 
     if (props.block.type === 'emotion-placer') {
         for (const response of props.response) {
-            const route = response.payload[props.block.value]
-                if (typeof route === 'string') {
-                    return <EmotionPlacer points={convertStringToRoute(route)} {...commonProps} />
+            const route = response.payload[props.block.value];
+            if (typeof route === 'string') {
+                return <EmotionPlacer points={convertStringToRoute(route)} {...commonProps} />;
             }
         }
-        return <EmotionPlacer points={[]} {...commonProps} />
+        return <EmotionPlacer points={[]} {...commonProps} />;
     }
 
     if (props.block.type === 'text-input') {
-        return <TextField {...commonProps} />
+        return <TextField {...commonProps} />;
     }
 
     return <TextField {...commonProps} />;
 }
 
-export default GetBlock
-
+export default GetBlock;

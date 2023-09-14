@@ -8,18 +8,8 @@ export interface ICredentials {
     password: string;
 }
 
-export interface IProfile {
-    firstName: string;
-    lastName: string;
-    email: string;
-    department: string;
-    campus?: string;
-    office?: string;
-}
-
 export interface IAccount {
     id: string;
-    profile: IProfile;
     subscriptions: ISubscription[];
     deleted?: boolean;
 }
@@ -34,7 +24,7 @@ export interface ISubscriptionDocument extends Omit<ISubscription, 'experimentId
     experimentId: ObjectId;
 }
 
-export interface IAccountDocument extends Omit<IAccount, 'subscriptions'> {
+export interface IAccountDocument extends Omit<IAccount, 'subscriptions' | 'id'> {
     _id: ObjectId;
     subscriptions: ISubscriptionDocument[];
 }
@@ -177,25 +167,13 @@ class Account extends BaseModel {
         return this.fromDocument(result);
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>) {
+    static async enroll() {
         const db = this.getDb();
 
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
-        await db.collection<IAccountDocument>('accounts').updateOne(
-            { _id: this.oid(id) },
-            {
-                $set: { profile: { ...payload, email } },
-                $setOnInsert: { subscriptions: [] },
-            },
-            { upsert: true },
-        );
-
-        return {
-            email,
-            ...payload,
-        };
+        await db.collection<IAccountDocument>('accounts').insertOne({ _id: this.oid(id), subscriptions: [] });
     }
 
     static async subscribeToExperiment(experiment: IExperiment) {

@@ -7,7 +7,8 @@ import PageTitle from '../../components/foundation/PageTitle';
 import Form from '../../components/foundation/Form';
 import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
-import ExerciseWarning from '../../components/ExerciseWarning';
+import { enroll } from '../../slices/account';
+import { useDispatch } from '../../slices/store';
 
 const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
 
@@ -24,9 +25,12 @@ const Consent = function () {
         schema,
     );
 
+    const dispatch = useDispatch();
     const history = useHistory();
-    const handleSubmit = createHandleSubmit(() => {
-        history.push('/onboarding/profile');
+    const handleSubmit = createHandleSubmit(async () => {
+        await dispatch(enroll()).unwrap();
+
+        history.push('/main');
     });
 
     return (

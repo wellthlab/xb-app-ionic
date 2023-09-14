@@ -26,10 +26,6 @@ const Register = function () {
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit(async (data) => {
-        if (!data.email.includes('@soton.ac.uk')) {
-            throw new Error('You must register with a valid soton.ac.uk email address');
-        }
-
         const result = await dispatch(registerUser(data));
 
         if (!registerUser.rejected.match(result)) {
@@ -64,7 +60,7 @@ const Register = function () {
                         </Link>
                     }
                 >
-                    <TextField label="University email" {...getInputProps('email')} />
+                    <TextField label="Email" {...getInputProps('email')} />
                     <TextField label="Password" type="password" {...getInputProps('password')} />
                     <TextField label="Repeat password" type="password" {...getInputProps('repeatPassword')} />
                 </Form>

@@ -11,7 +11,7 @@ import { IconContext, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-rea
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
 import { boot } from './slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
+import { selectIsAuthenticated, selectIsEnrolled } from './slices/account';
 import Page from './components/foundation/Page';
 import Centre from './components/foundation/Centre';
 
@@ -23,13 +23,9 @@ import ConfirmAccountScreen from './screens/auth/ConfirmAccount';
 
 import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
 import OnboardingConsentScreen from './screens/onboarding/Consent';
-import NewProfileScreen from './screens/onboarding/NewProfile';
 
 import AllSettingsTab from './screens/settings/AllSettings';
-import EditProfileScreen from './screens/settings/EditProfile';
 import SettingsInformationScreen from './screens/settings/StudyInformation';
-
-import TeamInsightsTab from './screens/teams/Insights';
 
 import BoxesListTab from './screens/experiments/BoxesList';
 import ExperimentsListScreen from './screens/experiments/ExperimentsList';
@@ -42,7 +38,7 @@ import TodayTab from './screens/Today/Today';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
-    const isEnrolled = useSelector(setIsEnrolled);
+    const isEnrolled = useSelector(selectIsEnrolled);
     const location = useLocation();
 
     const [hydrating, setHydrating] = React.useState(true);
@@ -125,10 +121,6 @@ const App = function () {
                                         <OnboardingConsentScreen />
                                     </Route>
 
-                                    <Route path="/onboarding/profile" exact>
-                                        <NewProfileScreen />
-                                    </Route>
-
                                     <Route path="/loading">
                                         <Page>
                                             <Centre>
@@ -142,10 +134,6 @@ const App = function () {
                                             <IonRouterOutlet>
                                                 <Route path="/main" exact>
                                                     <Redirect to="/main/today" />
-                                                </Route>
-
-                                                <Route path="/main/team" exact>
-                                                    <TeamInsightsTab />
                                                 </Route>
 
                                                 <Route path="/main/box" exact>
@@ -167,10 +155,6 @@ const App = function () {
                                                 <Route path="/main/today" exact>
                                                     <TodayTab />
                                                 </Route>
-                                                
-                                                <Route path="/main/journal">
-                                                    <JournalTab />
-                                                </Route>
 
                                                 <Route path="/main/settings" exact>
                                                     <AllSettingsTab />
@@ -178,10 +162,6 @@ const App = function () {
 
                                                 <Route path="/main/settings/about" exact>
                                                     <SettingsInformationScreen />
-                                                </Route>
-
-                                                <Route path="/main/settings/profile" exact>
-                                                    <EditProfileScreen />
                                                 </Route>
                                             </IonRouterOutlet>
 
@@ -193,10 +173,6 @@ const App = function () {
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
                                                     <IonLabel>Boxes</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="journal" href="/main/journal">
-                                                    <CalendarBlank />
-                                                    <IonLabel>Journal</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="settings" href="/main/settings">
                                                     <Gear />

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Stack } from '@mui/joy';
 import * as Yup from 'yup';
@@ -117,21 +116,20 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
 
     const dispatch = useDispatch();
 
-    const [loading, setLoading] = useState(true)
-    const [response, setResponse] = useState<IResponse[]>([])
+    const [loading, setLoading] = useState(true);
+    const [response, setResponse] = useState<IResponse[]>([]);
 
     const getResponse = async function () {
-        const today = new Date()
-        let raw = await Experiment.getResponsesForDate(today)
-        raw = raw.sort((a,b) => b.createdAt - a.createdAt)
-        setResponse(raw)
-        setLoading(false)
-    }
+        const today = new Date();
+        let raw = await Experiment.getResponsesForDate(today);
+        raw = raw.sort((a, b) => b.createdAt - a.createdAt);
+        setResponse(raw);
+        setLoading(false);
+    };
 
     useEffect(() => {
-        getResponse()
-    }, []
-    )
+        getResponse();
+    }, []);
 
     const handleSubmit = createHandleSubmit(async (data) => {
         if (Object.keys(data).length) {
@@ -146,7 +144,20 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     return (
         <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
-                {loading ? <CircularProgress /> : task.blocks.map((block, blockId) => <GetBlock block={block} blockId={blockId} getCheckboxProps={getCheckboxProps} getInputProps={getInputProps} response={response} />)}
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    task.blocks.map((block, blockId) => (
+                        <GetBlock
+                            key={blockId}
+                            block={block}
+                            blockId={blockId}
+                            getCheckboxProps={getCheckboxProps}
+                            getInputProps={getInputProps}
+                            response={response}
+                        />
+                    ))
+                )}
             </Stack>
         </Modal>
     );
