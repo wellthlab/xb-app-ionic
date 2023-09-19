@@ -51,7 +51,7 @@ const ExperimentsList = function ({ experiments, onExperimentClick }: IExperimen
                                 {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography level="body3">{completion}% completed</Typography>
+                                        <Typography level="body3">{Math.round(completion)}% completed</Typography>
                                         <LinearProgress determinate value={completion} />
                                     </Stack>
                                 ) : (

@@ -33,18 +33,18 @@ export interface IParentExperiment extends IBaseExperiment {
 
 export type GenericExperiment = IExperiment | IParentExperiment;
 
-interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
+export interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
     _id: ObjectId;
     parent?: ObjectId;
 }
 
-interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'continuation' | 'children'> {
+export interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'continuation' | 'children'> {
     _id: ObjectId;
     continuation?: ObjectId;
     children: ObjectId[];
 }
 
-type GenericExperimentDocument = IExperimentDocument | IParentExperimentDocument;
+export type GenericExperimentDocument = IExperimentDocument | IParentExperimentDocument;
 
 export interface IDay {
     name: string;
@@ -178,40 +178,40 @@ interface ICountdownTimer {
 }
 
 interface IRouteDrawer extends IGenericInput {
-    type: 'route-drawer'
+    type: 'route-drawer';
 }
 
 interface IStickerPlacer extends IGenericInput {
-    type: 'sticker-placer'
-    value: string
-    option: string
+    type: 'sticker-placer';
+    value: string;
+    option: string;
 }
 
 interface IMultipleSelecter extends IGenericInput {
-    type: 'multiple-selector'
+    type: 'multiple-selector';
     options: string[];
 }
 
 interface IEmotionPlacer extends IGenericInput {
-    type: 'emotion-placer'
-    value: string
+    type: 'emotion-placer';
+    value: string;
 }
 
 interface IIfSelection {
-    type: "if-selection"
-    value: string
-    options: Option[]
-    compare: Compare
+    type: 'if-selection';
+    value: string;
+    options: Option[];
+    compare: Compare;
 }
 
 export interface Option {
-    value: string[]
-    blocks: Block[]
+    value: string[];
+    blocks: Block[];
 }
 
 export enum Compare {
-    Equal = "equal",
-    Include = "include"
+    Equal = 'equal',
+    Include = 'include',
 }
 
 export interface IResponse {

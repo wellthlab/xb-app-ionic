@@ -1,7 +1,7 @@
 import { Credentials } from 'realm-web';
 
 import { BaseModel, ObjectId } from './utils';
-import { IExperiment } from './Experiment';
+import { GenericExperimentDocument, IExperiment, IExperimentDocument } from './Experiment';
 
 export interface ICredentials {
     email: string;
@@ -10,6 +10,7 @@ export interface ICredentials {
 
 export interface IAccount {
     id: string;
+    email: string;
     subscriptions: ISubscription[];
     deleted?: boolean;
 }
@@ -173,7 +174,22 @@ class Account extends BaseModel {
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
-        await db.collection<IAccountDocument>('accounts').insertOne({ _id: this.oid(id), subscriptions: [] });
+        const experiments = await db.collection<GenericExperimentDocument>('experiments').find({});
+        const getProgress = (experiment: IExperimentDocument) =>
+            experiment.days.map((day) => (day.tasks.length ? day.tasks.map(() => false) : [true]));
+        const subscriptions = experiments
+            .filter((experiment): experiment is IExperimentDocument => !('children' in experiment))
+            .map((experiment: IExperimentDocument) => ({
+                experimentId: experiment._id,
+                progress: getProgress(experiment),
+                subscribedAt: new Date().setUTCHours(0, 0, 0, 0),
+            }));
+
+        await db.collection<IAccountDocument>('accounts').insertOne({ _id: this.oid(id), email, subscriptions });
+        return subscriptions.map(({ experimentId, ...others }) => ({
+            ...others,
+            experimentId: experimentId.toString(),
+        }));
     }
 
     static async subscribeToExperiment(experiment: IExperiment) {

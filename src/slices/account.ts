@@ -117,8 +117,16 @@ export default createSlice({
                     };
                 }
             })
-            .addCase(enroll.fulfilled, (state) => {
+            .addCase(enroll.fulfilled, (state, action) => {
                 state.enrolled = true;
+
+                const subscriptions: IAccountState['subscriptions'] = {};
+
+                for (const sub of action.payload) {
+                    subscriptions[sub.experimentId] = { progress: sub.progress, subscribedAt: sub.subscribedAt };
+                }
+
+                state.subscriptions = subscriptions;
             })
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false

@@ -12,7 +12,7 @@ interface IAuthScreenLayout {
 const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
     return (
         <Page>
-            <Box component="img" sx={{ width: 80, mb: 4 }} src="/assets/logo/logo.png" alt="XB App logo" />
+            <Box component="img" sx={{ width: 80, mb: 4 }} src="/assets/jx-logo.svg" alt="XB App logo" />
             <PageTitle sx={{ mb: 3 }}>{title}</PageTitle>
             {children}
         </Page>

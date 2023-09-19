@@ -104,7 +104,8 @@ const ExperimentTimeline = function () {
                                                 />
                                             ) : (
                                                 <Typography level="body2">
-                                                    There is nothing to do for this day
+                                                    On this day, you are using the paper version of the application.
+                                                    Please follow the guidelines outlined in the printed materials.
                                                 </Typography>
                                             ))}
                                     </Stack>
