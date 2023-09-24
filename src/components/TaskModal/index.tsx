@@ -119,17 +119,16 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     const [loading, setLoading] = useState(true);
     const [response, setResponse] = useState<IResponse[]>([]);
 
-    const getResponse = async function () {
-        const today = new Date();
-        let raw = await Experiment.getResponsesForDate(today);
-        raw = raw.sort((a, b) => b.createdAt - a.createdAt);
-        setResponse(raw);
-        setLoading(false);
-    };
-
     useEffect(() => {
+        const getResponse = async function () {
+            let raw = await Experiment.getResponseForExperimentDay(experimentId, dayId);
+            raw = raw.sort((a, b) => b.createdAt - a.createdAt);
+            setResponse(raw);
+            setLoading(false);
+        };
+
         getResponse();
-    }, []);
+    }, [experimentId, dayId]);
 
     const handleSubmit = createHandleSubmit(async (data) => {
         if (Object.keys(data).length) {

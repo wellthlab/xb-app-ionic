@@ -106,6 +106,7 @@ function GetBlock(props: BlockProps): JSX.Element {
 
     if (props.block.type === 'if-selection') {
         let toRender: JSX.Element | null = null;
+        console.log(props.response);
         for (const response of props.response) {
             const valueToCompare = response.payload[props.block.value];
             // Checks if the response as the field we are trying to compare
@@ -152,14 +153,16 @@ function GetBlock(props: BlockProps): JSX.Element {
 
                         break;
                 }
+
+                console.log(toRender);
+
+                if (toRender) {
+                    return toRender;
+                }
             }
         }
 
-        if (!toRender) {
-            return <Alert>You need to complete the previous task first!</Alert>;
-        }
-
-        return toRender;
+        return <Alert>You need to complete the previous task first!</Alert>;
     }
 
     const hookProps =

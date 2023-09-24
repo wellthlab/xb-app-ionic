@@ -320,6 +320,25 @@ class Experiment extends BaseModel {
             };
         });
     }
+
+    static async getResponseForExperimentDay(experimentId: string, dayId: number) {
+        const db = this.getDb();
+        const result = await db.collection<IResponseDocument>('responses').find({
+            userId: this.oid(this.client.currentUser!.id),
+            experimentId,
+            dayId,
+        });
+
+        return result.map((result: IResponseDocument) => {
+            const { _id, userId, ...others } = result;
+
+            return {
+                id: _id.toString(),
+                userId: userId.toString(),
+                ...others,
+            };
+        });
+    }
 }
 
 export default Experiment;
