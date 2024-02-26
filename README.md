@@ -16,6 +16,8 @@ This app is built with:
 
 For development: `ionic serve`
 
+- Note: you may have to run this command as a super user the first time you run it to give ionic the permissions to create the relevant local directory structure for the app.
+
 Code beautifier: `npx prettier --write .`
 
 ## BUILD
