@@ -2,7 +2,6 @@ import { Credentials } from 'realm-web';
 
 import { BaseModel, ObjectId } from './utils';
 import { IExperiment } from './Experiment';
-import { fcmService } from '../index';
 
 export interface ICredentials {
     email: string;
@@ -183,7 +182,6 @@ class Account extends BaseModel {
 
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
-        const fcmDeviceToken = fcmService.getFCMDeviceToken();
 
         await db.collection<IAccountDocument>('accounts').updateOne(
             { _id: this.oid(id) },
@@ -194,21 +192,10 @@ class Account extends BaseModel {
             { upsert: true },
         );
 
-        if (fcmDeviceToken) {
-          await  Account.updateFCMDeviceToken(fcmDeviceToken);
-        }
-
         return {
             email,
             ...payload,
         };
-    }
-
-    static async updateFCMDeviceToken(fcmDeviceToken: string) {
-        const db = this.getDb();
-        //
-        // await db.collection<IAccountDocument>('accounts').updateOne(
-        // );
     }
 
     static async subscribeToExperiment(experiment: IExperiment) {
