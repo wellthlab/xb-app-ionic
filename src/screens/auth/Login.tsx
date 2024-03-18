@@ -13,7 +13,7 @@ import useForm from '../../components/foundation/useForm';
 import { authenticateUser } from '../../slices/account';
 import { useDispatch } from '../../slices/store';
 import Account from '../../models/Account';
-import { fcmService } from '../../index';
+import { AppDevice} from '../../models/Device';
 
 const schema = Yup.object().shape({
     email: emailSchema,
@@ -30,10 +30,7 @@ const Login = function () {
         const result = await dispatch(authenticateUser(data));
 
         if (!authenticateUser.rejected.match(result)) {
-            const fcmDeviceToken = fcmService.getFCMDeviceToken();
-            if (fcmDeviceToken) {
-                Account.updateFCMDeviceToken(fcmDeviceToken);
-            }
+            AppDevice.updateDeviceInfo();
             return;
         }
 
