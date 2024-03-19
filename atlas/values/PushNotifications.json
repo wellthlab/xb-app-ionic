@@ -1,0 +1,13 @@
+{
+    "TO-DO":" *** Replace this with actual notifications when provided by M.C/Richard and upload to mongo-db. **** ",
+    "DUMMY_NOTIFICATION": {
+        "title": "XB App Dummy Notification",
+        "body": "XB App says hello!",
+        "descritpion": "A dummy notification for test purposes"
+    },
+    "ANOTHER_DUMMY_NOTIFICATION": {
+        "title": "XB App Dummy Notification",
+        "body": "XB App says hello!",
+        "descritpion": "A dummy notification for test purposes"
+    }
+}
