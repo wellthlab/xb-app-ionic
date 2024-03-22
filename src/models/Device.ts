@@ -10,14 +10,15 @@ export class AppDevice extends BaseModel {
         const accountId = this.client.currentUser!.id;
         const deviceId = await Device.getId();
         const deviceFCMToken = fcmService.getFCMDeviceToken();
+        const deviceUTCOffsetMilliSecs =  new Date().getTimezoneOffset() * 60 * 1000;
 
         if (deviceFCMToken) {
             await db.collection<IAccountDocument>('devices').updateOne(
                 { _id: deviceId.identifier},
                 {
-                    $set: { accountId: this.oid(accountId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now() },
+                    $set: { accountId: this.oid(accountId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs}
                 },
-                { upsert: true },
+                { upsert: true }
             );
         }
     }
