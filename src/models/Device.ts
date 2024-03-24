@@ -17,7 +17,7 @@ export class AppDevice extends BaseModel {
                 { _id: deviceId.identifier},
                 {
                     $set: { userId: this.oid(userId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs},
-                    $setOnInsert: { userId: this.oid(userId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs}
+                    $setOnInsert: { _id:  deviceId.identifier }
                 },
                 { upsert: true }
             );
