@@ -7,7 +7,7 @@ export class AppDevice extends BaseModel {
     static async updateDeviceInfo () {
         const db = this.getDb();
 
-        const accountId = this.client.currentUser!.id;
+        const userId = this.client.currentUser!.id;
         const deviceId = await Device.getId();
         const deviceFCMToken = fcmService.getFCMDeviceToken();
         const deviceUTCOffsetMilliSecs =  new Date().getTimezoneOffset() * 60 * 1000;
@@ -16,7 +16,8 @@ export class AppDevice extends BaseModel {
             await db.collection<IAccountDocument>('devices').updateOne(
                 { _id: deviceId.identifier},
                 {
-                    $set: { accountId: this.oid(accountId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs}
+                    $set: { userId: this.oid(userId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs},
+                    $setOnInsert: { userId: this.oid(userId), fcmToken: deviceFCMToken,  fcmTokenLastRetrievedTime: Date.now(), timezoneUTCOffsetMilliSecs: deviceUTCOffsetMilliSecs}
                 },
                 { upsert: true }
             );
