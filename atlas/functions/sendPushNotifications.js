@@ -1,27 +1,29 @@
- /* This function is uploaded on mongo-db atlas where it is invoked by a mongo-db trigger and runs as a serverless function.
- *  Sends push notification specified by a given title to all devices belonging to the users having Ids specified in userIds array
- * */
+/**
+ * Is invoked by the handlePendingNotifications function. Given a notification title and a list of fcmTokens, it sends the
+ * notification to the devices specified by the tokens.
+ **/
 
-exports = async function (userIds, notificationTitle) {
+exports = async function (notificationTitle, fcmTokens) {
     const admin = require("firebase-admin");
-    const firebaseCredentials = context.values.get("fireBaseKey");
+    const firebaseCredentials = context.values.get("firebaseCredentialsSecret");
     const cert = JSON.parse(firebaseCredentials);
-    admin.initializeApp({
-        credential: admin.credential.cert(cert),
-    });
+    if (admin.apps.length === 0 ) {
+        admin.initializeApp({
+            credential: admin.credential.cert(cert),
+        });
+    }
 
-    const userIdsAsObjectId = userIds.map(userId => new BSON.ObjectId(userId));
-    const mongodb = context.services.get("mongodb-atlas").db("DEVELOPMENT"); // TO-DO - can DB instance be determined by a mongodb env variable instead of hardcoding?
-    const deviceTokens = await mongodb.collection('devices').distinct('fcmToken', {accountId: {$in: userIdsAsObjectId}});
+    const mongodb = context.services.get("mongodb-atlas").db("PRODUCTION");
 
     const pushNotifications = context.values.get("pushNotifications");
     const notification = pushNotifications[notificationTitle];
 
-    const maxNumTokensInRequest = 500; // Notifications can be sent to a maximum of 500 devices at once
+    // Maximum number of devices to which FCM can send notifications simultaneously to is 500
+    const maxNumTokensInRequest = 500;
     const failedTokens = [];
 
-    for (let i = 0; i < deviceTokens.length; i += maxNumTokensInRequest) {
-        const batchTokens = deviceTokens.slice(i, i + maxNumTokensInRequest);
+    for (let i = 0; i < fcmTokens.length; i += maxNumTokensInRequest) {
+        const batchTokens = fcmTokens.slice(i, i + maxNumTokensInRequest);
 
         const message = {
             notification: {
@@ -37,7 +39,7 @@ exports = async function (userIds, notificationTitle) {
                 if (response.failureCount > 0) {
                     response.responses.forEach((resp, idx) => {
                         if (!resp.success && (resp.error?.code === "messaging/invalid-argument"  || resp.error?.code === "messaging/registration-token-not-registered")) {
-                            // If message sending failed, then token for the device is no longer valid and should be removed from db.
+                            // If FCM couldn't send the notification, then the device token is no longer valid and needs to be cleared from DB.
                             failedTokens.push(batchTokens[idx]);
                         }
                     });
@@ -48,6 +50,7 @@ exports = async function (userIds, notificationTitle) {
     }
 
     if (failedTokens.length > 0) {
+        // removing invalid tokens
         await mongodb.collection('devices').deleteMany({ fcmToken: {$in: failedTokens}});
     }
 };
