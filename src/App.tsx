@@ -66,6 +66,7 @@ const AppFlowController = function () {
         };
 
         hydrate();
+        AppDevice.updateDeviceInfo();
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
@@ -84,7 +85,6 @@ const AppFlowController = function () {
         return <Redirect to="/onboarding" />;
     }
 
-    AppDevice.updateDeviceInfo();
     return <Redirect to="/main" />;
 };
 
