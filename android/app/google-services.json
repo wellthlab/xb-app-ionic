@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "978259911444",
+    "project_id": "project-xb-demo",
+    "storage_bucket": "project-xb-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978259911444:android:2e9fb081c21fee3d3d9801",
+        "android_client_info": {
+          "package_name": "uk.ac.soton.ecs.xbapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg5IEIhqLewQbRwQ1FWaFymMF8NERPyAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+    "configuration_version": "1"
+}
