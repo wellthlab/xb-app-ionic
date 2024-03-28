@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCCd268TugxEyTh2bRRkJ4iX7U96yq9gQI</string>
+	<string>AIzaSyD9K6PV-zjI-kCaJwtY7v7ktCu_nesxkE4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>978259911444</string>
+	<string>601422797354</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>uk.ac.soton.ecs.xbapp</string>
 	<key>PROJECT_ID</key>
-	<string>project-xb-demo</string>
+	<string>xb-app-36cb2</string>
 	<key>STORAGE_BUCKET</key>
-	<string>project-xb-demo.appspot.com</string>
+	<string>xb-app-36cb2.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:978259911444:ios:936847b77b5596843d9801</string>
+	<string>1:601422797354:ios:a808fda2f0934c09ca0153</string>
 </dict>
 </plist>
