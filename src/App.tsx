@@ -39,6 +39,7 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/today/Today';
+import { AppDevice } from './models/Device';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -65,6 +66,7 @@ const AppFlowController = function () {
         };
 
         hydrate();
+        AppDevice.updateDeviceInfo();
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
