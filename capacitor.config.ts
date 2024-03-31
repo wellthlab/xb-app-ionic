@@ -1,22 +1,12 @@
-// <reference types="@capacitor/splash-screen" />
-
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'uk.ac.soton.ecs.xbapp',
-    appName: 'xbapp',
-    webDir: 'build',
-    bundledWebRuntime: false,
-    plugins: {
-        SplashScreen: {
-            launchAutoHide: false,
-        },
+    appId: 'io.ionic.starter',
+    appName: 'xb-app',
+    webDir: 'dist',
+    server: {
+        androidScheme: 'https',
     },
-    android: {
-        allowMixedContent: true,
-        webContentsDebuggingEnabled: true,
-    },
-    cordova: {},
 };
 
 export default config;

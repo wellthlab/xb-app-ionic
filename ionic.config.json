@@ -1,7 +1,7 @@
 {
-    "name": "xbapp",
-    "integrations": {
-        "capacitor": {}
-    },
-    "type": "react"
+  "name": "xb-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
 }

@@ -5,17 +5,11 @@
 /.pnp
 .pnp.js
 
-xbapp/node_modules
-
 # testing
 /coverage
 
 # production
-build/
-ios/
-android/
-hosted_site/
-.gradle/
+/dist
 
 # misc
 .DS_Store
@@ -23,9 +17,13 @@ hosted_site/
 .env.development.local
 .env.test.local
 .env.production.local
-.vscode
+/.vscode/*
+!/.vscode/extensions.json
 .idea
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Optional eslint cache
+.eslintcache

@@ -1,218 +1,56 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { Route, Redirect, useLocation } from 'react-router-dom';
-import { CircularProgress } from '@mui/joy';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
+import { IonApp, setupIonicReact } from '@ionic/react';
+import { CssBaseline, CssVarsProvider } from '@mui/joy';
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ThemeProvider, ColorModeController } from './theme';
-import store, { useSelector, useDispatch } from './slices/store';
-import { boot } from './slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
-import Page from './components/foundation/Page';
-import Centre from './components/foundation/Centre';
+import { LoginErrorCodes, queryKeys } from '@/auth/queries';
+import { isRealmErrorCode, isRealmErrorStatusCode } from '@/realm';
+import { Router } from '@/router';
+import { GlobalStyles } from '@/global-styles';
 
-import LoginScreen from './screens/auth/Login';
-import RegisterScreen from './screens/auth/Register';
-import ResetPasswordScreen from './screens/auth/ResetPassword';
-import NewPasswordScreen from './screens/auth/NewPassword';
-import ConfirmAccountScreen from './screens/auth/ConfirmAccount';
+/* Core CSS required for Ionic components to work properly */
+import '@ionic/react/css/core.css';
 
-import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
-import OnboardingConsentScreen from './screens/onboarding/Consent';
-import NewProfileScreen from './screens/onboarding/NewProfile';
+/* Basic CSS for apps built with Ionic */
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/structure.css';
+import '@ionic/react/css/typography.css';
 
-import AllSettingsTab from './screens/settings/AllSettings';
-import EditProfileScreen from './screens/settings/EditProfile';
-import SettingsInformationScreen from './screens/settings/StudyInformation';
+setupIonicReact();
 
-import TeamInsightsTab from './screens/teams/Insights';
+const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+        onError: (error) => {
+            if (isRealmErrorStatusCode(error, 401)) {
+                queryClient.setQueryData(queryKeys.user, null);
+            }
+        },
+    }),
 
-import BoxesListTab from './screens/experiments/BoxesList';
-import ExperimentsListScreen from './screens/experiments/ExperimentsList';
-import ChildExperimentsListScreen from './screens/experiments/ChildExperimentsList';
-import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
+    mutationCache: new MutationCache({
+        onError: (error) => {
+            if (isRealmErrorStatusCode(error, 401) && !isRealmErrorCode(error, LoginErrorCodes.Unverified)) {
+                queryClient.setQueryData(queryKeys.user, null);
+            }
+        },
+    }),
 
-import JournalTab from './screens/journal/Journal';
+    defaultOptions: {
+        queries: {
+            retry: (_, error) => !isRealmErrorStatusCode(error, 401) && !isRealmErrorStatusCode(error, 403),
+        },
+    },
+});
 
-import TodayTab from './screens/today/Today';
-
-const AppFlowController = function () {
-    const isAuthenticated = useSelector(selectIsAuthenticated);
-    const isEnrolled = useSelector(setIsEnrolled);
-    const location = useLocation();
-
-    const [hydrating, setHydrating] = React.useState(true);
-    const dispatch = useDispatch();
-    React.useEffect(() => {
-        // Call boot only if authenticated
-
-        if (!isAuthenticated) {
-            return;
-        }
-
-        const hydrate = async function () {
-            console.log('BOOTING...');
-            setHydrating(true);
-
-            await dispatch(boot());
-
-            console.log('BOOTED');
-            setHydrating(false);
-        };
-
-        hydrate();
-    }, [isAuthenticated]);
-
-    if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
-            return null;
-        }
-
-        return <Redirect to="/auth" />;
-    }
-
-    if (hydrating) {
-        return <Redirect to="/loading" />;
-    }
-
-    if (!isEnrolled) {
-        return <Redirect to="/onboarding" />;
-    }
-
-    return <Redirect to="/main" />;
-};
-
-const App = function () {
+export function App() {
     return (
         <IonApp>
-            <Provider store={store}>
-                <IonReactRouter>
-                    <ThemeProvider>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <IconContext.Provider value={{ weight: 'light', size: 24 }}>
-                                <ColorModeController />
-                                <AppFlowController />
-                                <IonRouterOutlet>
-                                    <Route path="/auth" exact>
-                                        <LoginScreen />
-                                    </Route>
-
-                                    <Route path="/auth/register" exact>
-                                        <RegisterScreen />
-                                    </Route>
-
-                                    <Route path="/auth/reset-password" exact>
-                                        <ResetPasswordScreen />
-                                    </Route>
-
-                                    <Route path="/auth/new-password" exact>
-                                        <NewPasswordScreen />
-                                    </Route>
-
-                                    <Route path="/auth/confirm" exact>
-                                        <ConfirmAccountScreen />
-                                    </Route>
-
-                                    <Route path="/onboarding" exact>
-                                        <OnboardingStudyInformationScreen />
-                                    </Route>
-
-                                    <Route path="/onboarding/consent" exact>
-                                        <OnboardingConsentScreen />
-                                    </Route>
-
-                                    <Route path="/onboarding/profile" exact>
-                                        <NewProfileScreen />
-                                    </Route>
-
-                                    <Route path="/loading">
-                                        <Page>
-                                            <Centre>
-                                                <CircularProgress />
-                                            </Centre>
-                                        </Page>
-                                    </Route>
-
-                                    <Route path="/main">
-                                        <IonTabs>
-                                            <IonRouterOutlet>
-                                                <Route path="/main" exact>
-                                                    <Redirect to="/main/today" />
-                                                </Route>
-
-                                                <Route path="/main/team" exact>
-                                                    <TeamInsightsTab />
-                                                </Route>
-
-                                                <Route path="/main/box" exact>
-                                                    <BoxesListTab />
-                                                </Route>
-
-                                                <Route path="/main/box/:type" exact>
-                                                    <ExperimentsListScreen />
-                                                </Route>
-
-                                                <Route path="/main/box/:type/:experimentId" exact>
-                                                    <ChildExperimentsListScreen />
-                                                </Route>
-
-                                                <Route path="/main/box/:type/:parentId/:experimentId" exact>
-                                                    <ExperimentTimelineScreen />
-                                                </Route>
-
-                                                <Route path="/main/today" exact>
-                                                    <TodayTab />
-                                                </Route>
-
-                                                <Route path="/main/journal">
-                                                    <JournalTab />
-                                                </Route>
-
-                                                <Route path="/main/settings" exact>
-                                                    <AllSettingsTab />
-                                                </Route>
-
-                                                <Route path="/main/settings/about" exact>
-                                                    <SettingsInformationScreen />
-                                                </Route>
-
-                                                <Route path="/main/settings/profile" exact>
-                                                    <EditProfileScreen />
-                                                </Route>
-                                            </IonRouterOutlet>
-
-                                            <IonTabBar slot="bottom">
-                                                <IonTabButton tab="today" href="/main/today">
-                                                    <ListChecks />
-                                                    <IonLabel>Today</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="box" href="/main/box">
-                                                    <Cube />
-                                                    <IonLabel>Boxes</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="journal" href="/main/journal">
-                                                    <CalendarBlank />
-                                                    <IonLabel>Journal</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="settings" href="/main/settings">
-                                                    <Gear />
-                                                    <IonLabel>Settings</IonLabel>
-                                                </IonTabButton>
-                                            </IonTabBar>
-                                        </IonTabs>
-                                    </Route>
-                                </IonRouterOutlet>
-                            </IconContext.Provider>
-                        </LocalizationProvider>
-                    </ThemeProvider>
-                </IonReactRouter>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <CssVarsProvider defaultMode="system">
+                    <CssBaseline />
+                    <GlobalStyles />
+                    <Router />
+                </CssVarsProvider>
+            </QueryClientProvider>
         </IonApp>
     );
-};
-
-export default App;
+}
