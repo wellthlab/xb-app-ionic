@@ -19,7 +19,7 @@ const options = [
     },
 ];
 
-export default function JoinACohort() {
+export default function JoinACohortPage() {
     return (
         <IonPage>
             <IonContent>
