@@ -20,8 +20,8 @@ const Today = function () {
     const [modalOpen, setModalOpen] = React.useState(false);
 
     const [experimentId, setExperimentId] = React.useState<string>();
-    const [dayId, setDayId] = React.useState<number>();
-    const [taskId, setTaskId] = React.useState(0);
+    const [dayNum, setDayNum] = React.useState<number>();
+    const [taskNum, setTaskNum] = React.useState(0);
 
     if (!tasksByExperiment.length) {
         return (
@@ -45,15 +45,15 @@ const Today = function () {
         setModalOpen(false);
     };
 
-    const handleClickTask = function (experimentId: string, dayId: number, taskId: number) {
+    const handleClickTask = function (experimentId: string, dayNum: number, taskNum: number) {
         setModalOpen(true);
         setExperimentId(experimentId);
-        setDayId(dayId);
-        setTaskId(taskId);
+        setDayNum(dayNum);
+        setTaskNum(taskNum);
     };
 
     const safeExperimentId = experimentId || tasksByExperiment[0].id;
-    const safeDayId = dayId === undefined ? tasksByExperiment[0].day : dayId;
+    const safeDayNum = dayNum === undefined ? tasksByExperiment[0].day : dayNum;
 
     return (
         <Page ref={setPresentingElement}>
@@ -63,7 +63,7 @@ const Today = function () {
                 {tasksByExperiment.map((entry) => (
                     <Stack spacing={2} key={entry.id}>
                         <Stack spacing={2} direction="row" alignItems="center">
-                            <EntryIcon experimentId={entry.id} dayId={entry.day} />
+                            <EntryIcon experimentId={entry.id} dayNum={entry.day} />
 
                             <div>
                                 <Typography level="h4">{entry.name}</Typography>
@@ -75,7 +75,7 @@ const Today = function () {
 
                         <TasksList
                             tasks={entry.content.tasks}
-                            dayId={entry.day}
+                            dayNum={entry.day}
                             experimentId={entry.id}
                             onTaskClick={handleClickTask}
                         />
@@ -86,10 +86,10 @@ const Today = function () {
             <TaskModal
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
-                key={`${safeExperimentId}.${safeDayId}.${taskId}`}
+                key={`${safeExperimentId}.${safeDayNum}.${taskNum}`}
                 experimentId={safeExperimentId}
-                dayId={safeDayId}
-                taskId={taskId}
+                dayNum={safeDayNum}
+                taskNum={taskNum}
                 presentingElement={presentingElement}
             />
         </Page>

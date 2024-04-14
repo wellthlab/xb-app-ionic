@@ -8,40 +8,41 @@ import ListItem from './foundation/ListItem';
 import { ITask } from '../models/Experiment';
 import getIcon from '../utils/getIcon';
 import { useSelector } from '../slices/store';
-import { selectProgress } from '../slices/account';
+import { selectProgressByDayNumAndTasks } from '../slices/experiments';
+// import { selectProgress } from '../slices/account';
 
 interface ITasksListProps {
     tasks: ITask[];
     experimentId: string;
-    dayId: number;
-    onTaskClick: (experimentId: string, dayId: number, taskId: number) => void;
+    dayNum: number;
+    onTaskClick: (experimentId: string, dayNum: number, taskNum: number) => void;
 }
 
-const TasksList = function ({ tasks, experimentId, dayId, onTaskClick }: ITasksListProps) {
-    const progress = useSelector((state) => selectProgress(state, experimentId));
+const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasksListProps) {
+    const progress: boolean[] = useSelector((state) => selectProgressByDayNumAndTasks(state, tasks, dayNum));
 
-    const createHandleClickTask = function (taskId: number) {
+    const createHandleClickTask = function (taskNum: number) {
         return () => {
-            onTaskClick(experimentId, dayId, taskId);
+            onTaskClick(experimentId, dayNum, taskNum);
         };
     };
 
     return (
         <List sx={{ mb: 2 }}>
-            {tasks.map((task, taskId) => {
-                const taskCompleted = progress[dayId]?.[taskId];
+            {tasks.map((task, taskNum) => {
+                const taskCompleted = progress[taskNum];
                 const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
 
                 return (
                     <ListItem
                         button={!taskCompleted}
-                        key={taskId}
+                        key={taskNum}
                         startDecorator={
                             Icon &&
                             (taskCompleted ? <Box component={Icon} sx={{ color: 'success.plainColor' }} /> : <Icon />)
                         }
                         endDecorator={!taskCompleted && <CaretRight />}
-                        onClick={createHandleClickTask(taskId)}
+                        onClick={createHandleClickTask(taskNum)}
                     >
                         {task.name}
                     </ListItem>

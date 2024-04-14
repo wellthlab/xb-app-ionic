@@ -29,7 +29,7 @@ const ProfileForm = function () {
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit((data) => {
-        return dispatch(updateUserProfile(data)).unwrap();
+        return dispatch(updateUserProfile({ payload: data, cohortId: "test_cohort_id" })).unwrap();
     });
 
     return (

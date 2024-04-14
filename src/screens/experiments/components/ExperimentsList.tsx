@@ -4,7 +4,7 @@ import { Stack, Card, Typography, Link, LinearProgress } from '@mui/joy';
 
 import { GenericExperiment } from '../../../models/Experiment';
 import { useSelector } from '../../../slices/store';
-import { selectCompletionByExperimentId } from '../../../slices/experiments';
+import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 
 interface IExperimentsListProps {
     experiments: GenericExperiment[];
@@ -14,7 +14,7 @@ interface IExperimentsListProps {
 const ExperimentsList = function ({ experiments, onExperimentClick }: IExperimentsListProps) {
     const { pathname } = useLocation();
 
-    const completionByExperimentId = useSelector(selectCompletionByExperimentId);
+    const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
 
     const history = useHistory();
     const createHandleExperimentClick = function (experiment: GenericExperiment) {

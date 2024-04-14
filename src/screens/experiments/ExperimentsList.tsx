@@ -11,14 +11,14 @@ import PageTitle from '../../components/foundation/PageTitle';
 import ExerciseWarning from '../../components/ExerciseWarning';
 
 import { useDispatch, useSelector } from '../../slices/store';
-import { selectExperimentByBox } from '../../slices/experiments';
+import { selectExperimentByBoxName } from '../../slices/experiments';
 import { subscribeToExperiment, subscribeToParentExperiment } from '../../slices/account';
 import { GenericExperiment } from '../../models/Experiment';
 
 const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
 
-    const experiments = useSelector((state) => selectExperimentByBox(state, type));
+    const experiments = useSelector((state) => selectExperimentByBoxName(state, type));
 
     const dispatch = useDispatch();
     const handleClickExperiment = function (experiment: GenericExperiment) {

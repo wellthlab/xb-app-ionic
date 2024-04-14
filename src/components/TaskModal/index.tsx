@@ -20,13 +20,13 @@ import useForm from '../foundation/useForm';
 
 import Experiment, { ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
-import { updateProgress } from '../../slices/account';
+import { selectSubscriptionByExperimentId, updateProgress } from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
-    dayId: number;
-    taskId: number;
+    dayNum: number;
+    taskNum: number;
 }
 
 const getInitialValues = function (blocks: ITask['blocks']) {
@@ -137,8 +137,9 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others }: ITaskModalProps) {
-    const task = useSelector((state) => selectTask(state, experimentId, dayId, taskId));
+const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...others }: ITaskModalProps) {
+    const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
+    const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);
     const initialValues = React.useMemo(() => getInitialValues(task.blocks), [task.blocks]);
@@ -148,155 +149,155 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     const dispatch = useDispatch();
 
     const handleSubmit = createHandleSubmit(async (data) => {
-        if (Object.keys(data).length) {
-            await Experiment.saveResponse({ experimentId, taskId, dayId, payload: data });
+        if (Object.keys(data).length && subscription) {
+            await Experiment.saveResponse({ taskId: task.id, payload: data, dayNum }, subscription.id);
         }
 
-        await dispatch(updateProgress({ experimentId, dayId, taskId }));
+        await dispatch(updateProgress({ experimentId, dayNum, taskNum }));
 
         onDismiss();
     });
 
     return (
         <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
-            <Stack spacing={2}>
-                {task.blocks.map((block, blockId) => {
-                    if (block.type === 'para' || block.type === 'title') {
-                        return (
-                            <Typography level={block.type === 'para' ? 'body1' : 'h6'} key={blockId}>
-                                {renderParagraphWithLinks(block.content)}
-                            </Typography>
-                        );
-                    }
+            {/*<Stack spacing={2}>*/}
+            {/*    {task.blocks.map((block, blockId) => {*/}
+            {/*        if (block.type === 'para' || block.type === 'title') {*/}
+            {/*            return (*/}
+            {/*                <Typography level={block.type === 'para' ? 'body1' : 'h6'} key={blockId}>*/}
+            {/*                    {renderParagraphWithLinks(block.content)}*/}
+            {/*                </Typography>*/}
+            {/*            );*/}
+            {/*        }*/}
 
-                    if (block.type === 'video') {
-                        return <YouTubeVideo src={block.src} key={blockId} />;
-                    }
+            {/*        if (block.type === 'video') {*/}
+            {/*            return <YouTubeVideo src={block.src} key={blockId} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'image') {
-                        return <img src={block.src} alt={block.alt} key={blockId} />;
-                    }
+            {/*        if (block.type === 'image') {*/}
+            {/*            return <img src={block.src} alt={block.alt} key={blockId} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'movement-recorder') {
-                        return (
-                            <MovementRecorder
-                                countdown={block.countdown}
-                                max={block.max}
-                                movements={block.movements}
-                                key={blockId}
-                            />
-                        );
-                    }
+            {/*        if (block.type === 'movement-recorder') {*/}
+            {/*            return (*/}
+            {/*                <MovementRecorder*/}
+            {/*                    countdown={block.countdown}*/}
+            {/*                    max={block.max}*/}
+            {/*                    movements={block.movements}*/}
+            {/*                    key={blockId}*/}
+            {/*                />*/}
+            {/*            );*/}
+            {/*        }*/}
 
-                    if (block.type === 'countdown') {
-                        return (
-                            <CountdownTimer
-                                key={blockId}
-                                initialDuration={block.duration}
-                                fixed={block.fixed}
-                                notifications={block.notifications}
-                            />
-                        );
-                    }
+            {/*        if (block.type === 'countdown') {*/}
+            {/*            return (*/}
+            {/*                <CountdownTimer*/}
+            {/*                    key={blockId}*/}
+            {/*                    initialDuration={block.duration}*/}
+            {/*                    fixed={block.fixed}*/}
+            {/*                    notifications={block.notifications}*/}
+            {/*                />*/}
+            {/*            );*/}
+            {/*        }*/}
 
-                    if (block.type === 'green-detector') {
-                        return (
-                            <GreenDetector
-                                key={blockId}
-                                required={!block.optional}
-                                greenInputProps={getInputProps(block.rk + '-$$g') as any}
-                                redInputProps={getInputProps(block.rk + '-$$r') as any}
-                            />
-                        );
-                    }
+            {/*        if (block.type === 'green-detector') {*/}
+            {/*            return (*/}
+            {/*                <GreenDetector*/}
+            {/*                    key={blockId}*/}
+            {/*                    required={!block.optional}*/}
+            {/*                    greenInputProps={getInputProps(block.rk + '-$$g') as any}*/}
+            {/*                    redInputProps={getInputProps(block.rk + '-$$r') as any}*/}
+            {/*                />*/}
+            {/*            );*/}
+            {/*        }*/}
 
-                    const hookProps = block.type === 'checkbox' ? getCheckboxProps(block.rk) : getInputProps(block.rk);
+            {/*        const hookProps = block.type === 'checkbox' ? getCheckboxProps(block.rk) : getInputProps(block.rk);*/}
 
-                    const commonProps = {
-                        label: block.label,
-                        required: !block.optional,
-                        key: blockId,
-                        ...(hookProps as any),
-                        helperText: hookProps.helperText || block.help,
-                    };
+            {/*        const commonProps = {*/}
+            {/*            label: block.label,*/}
+            {/*            required: !block.optional,*/}
+            {/*            key: blockId,*/}
+            {/*            ...(hookProps as any),*/}
+            {/*            helperText: hookProps.helperText || block.help,*/}
+            {/*        };*/}
 
-                    if (block.type === 'select-input') {
-                        return <Select options={block.options} {...commonProps} />;
-                    }
+            {/*        if (block.type === 'select-input') {*/}
+            {/*            return <Select options={block.options} {...commonProps} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'slider-input') {
-                        const marks = [];
+            {/*        if (block.type === 'slider-input') {*/}
+            {/*            const marks = [];*/}
 
-                        for (const key of Object.keys(block.labels)) {
-                            marks.push({ value: Number(key), label: block.labels[key] });
-                        }
+            {/*            for (const key of Object.keys(block.labels)) {*/}
+            {/*                marks.push({ value: Number(key), label: block.labels[key] });*/}
+            {/*            }*/}
 
-                        return (
-                            <Slider
-                                min={block.range[0]}
-                                max={block.range[1]}
-                                size="sm"
-                                marks={marks}
-                                {...commonProps}
-                                sx={{
-                                    // Need both of the selectors to make it works on the server-side and client-side
-                                    [`& [style*="left:0%"], & [style*="left: 0%"]`]: {
-                                        [`&.${sliderClasses.markLabel}`]: {
-                                            transform: 'none',
-                                        },
-                                        [`& .${sliderClasses.valueLabel}`]: {
-                                            left: 'calc(var(--Slider-thumbSize) / 2)',
-                                            borderBottomLeftRadius: 0,
-                                            '&::before': {
-                                                left: 0,
-                                                transform: 'translateY(100%)',
-                                                borderLeftColor: 'currentColor',
-                                            },
-                                        },
-                                    },
-                                    [`& [style*="left:100%"], & [style*="left: 100%"]`]: {
-                                        [`&.${sliderClasses.markLabel}`]: {
-                                            transform: 'translateX(-100%)',
-                                        },
-                                        [`& .${sliderClasses.valueLabel}`]: {
-                                            right: 'calc(var(--Slider-thumbSize) / 2)',
-                                            borderBottomRightRadius: 0,
-                                            '&::before': {
-                                                left: 'initial',
-                                                right: 0,
-                                                transform: 'translateY(100%)',
-                                                borderRightColor: 'currentColor',
-                                            },
-                                        },
-                                    },
-                                }}
-                            />
-                        );
-                    }
+            {/*            return (*/}
+            {/*                <Slider*/}
+            {/*                    min={block.range[0]}*/}
+            {/*                    max={block.range[1]}*/}
+            {/*                    size="sm"*/}
+            {/*                    marks={marks}*/}
+            {/*                    {...commonProps}*/}
+            {/*                    sx={{*/}
+            {/*                        // Need both of the selectors to make it works on the server-side and client-side*/}
+            {/*                        [`& [style*="left:0%"], & [style*="left: 0%"]`]: {*/}
+            {/*                            [`&.${sliderClasses.markLabel}`]: {*/}
+            {/*                                transform: 'none',*/}
+            {/*                            },*/}
+            {/*                            [`& .${sliderClasses.valueLabel}`]: {*/}
+            {/*                                left: 'calc(var(--Slider-thumbSize) / 2)',*/}
+            {/*                                borderBottomLeftRadius: 0,*/}
+            {/*                                '&::before': {*/}
+            {/*                                    left: 0,*/}
+            {/*                                    transform: 'translateY(100%)',*/}
+            {/*                                    borderLeftColor: 'currentColor',*/}
+            {/*                                },*/}
+            {/*                            },*/}
+            {/*                        },*/}
+            {/*                        [`& [style*="left:100%"], & [style*="left: 100%"]`]: {*/}
+            {/*                            [`&.${sliderClasses.markLabel}`]: {*/}
+            {/*                                transform: 'translateX(-100%)',*/}
+            {/*                            },*/}
+            {/*                            [`& .${sliderClasses.valueLabel}`]: {*/}
+            {/*                                right: 'calc(var(--Slider-thumbSize) / 2)',*/}
+            {/*                                borderBottomRightRadius: 0,*/}
+            {/*                                '&::before': {*/}
+            {/*                                    left: 'initial',*/}
+            {/*                                    right: 0,*/}
+            {/*                                    transform: 'translateY(100%)',*/}
+            {/*                                    borderRightColor: 'currentColor',*/}
+            {/*                                },*/}
+            {/*                            },*/}
+            {/*                        },*/}
+            {/*                    }}*/}
+            {/*                />*/}
+            {/*            );*/}
+            {/*        }*/}
 
-                    if (block.type === 'heart-rate-input') {
-                        return <HeartRateInput {...commonProps} />;
-                    }
+            {/*        if (block.type === 'heart-rate-input') {*/}
+            {/*            return <HeartRateInput {...commonProps} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'time-input') {
-                        return <TimeInput hideSeconds {...commonProps} />;
-                    }
+            {/*        if (block.type === 'time-input') {*/}
+            {/*            return <TimeInput hideSeconds {...commonProps} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'stopwatch') {
-                        return <Stopwatch {...commonProps} />;
-                    }
+            {/*        if (block.type === 'stopwatch') {*/}
+            {/*            return <Stopwatch {...commonProps} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'checkbox') {
-                        return <Checkbox {...commonProps} />;
-                    }
+            {/*        if (block.type === 'checkbox') {*/}
+            {/*            return <Checkbox {...commonProps} />;*/}
+            {/*        }*/}
 
-                    if (block.type === 'movement-picker') {
-                        return <MovementPicker movements={block.movements} {...commonProps} />;
-                    }
+            {/*        if (block.type === 'movement-picker') {*/}
+            {/*            return <MovementPicker movements={block.movements} {...commonProps} />;*/}
+            {/*        }*/}
 
-                    return <TextField {...commonProps} />;
-                })}
-            </Stack>
+            {/*        return <TextField {...commonProps} />;*/}
+            {/*    })}*/}
+            {/*</Stack>*/}
         </Modal>
     );
 };

@@ -31,7 +31,7 @@ import PageTitle from '../../components/foundation/PageTitle';
 
 import Experiment, { IExperiment, IGenericInput, IResponse } from '../../models/Experiment';
 import { useSelector } from '../../slices/store';
-import { selectAllExperimentsById } from '../../slices/experiments';
+import { selectAllExperiments } from '../../slices/experiments';
 import List from '../../components/foundation/List';
 import ListItem from '../../components/foundation/ListItem';
 import Modal from '../../components/foundation/Modal';
@@ -75,42 +75,42 @@ const Journal = function () {
 
     const [responses, setResponses] = React.useState<IResponse[]>([]);
 
-    const experiments = useSelector(selectAllExperimentsById);
+    const experiments = useSelector(selectAllExperiments);
 
-    React.useEffect(() => {
-        if (!currentDate) {
-            return;
-        }
-
-        const fetchResponses = async function () {
-            const raw = await Experiment.getResponsesForDate(currentDate.toDate());
-
-            const responses = [];
-
-            let hasNotes = false;
-
-            for (const response of raw) {
-                if (!response.experimentId) {
-                    hasNotes = true;
-                    const currentNote = response.payload.note as string;
-                    setNote(currentNote);
-                    setNoteValue(currentNote);
-                    continue;
-                }
-
-                responses.push(response);
-            }
-
-            if (!hasNotes) {
-                setNote('');
-                setNoteValue('');
-            }
-
-            setResponses(responses);
-        };
-
-        fetchResponses();
-    }, [currentDate]);
+    // React.useEffect(() => {
+    //     if (!currentDate) {
+    //         return;
+    //     }
+    //
+    //     const fetchResponses = async function () {
+    //         const raw = await Experiment.getResponsesForDate(currentDate.toDate());
+    //
+    //         const responses = [];
+    //
+    //         let hasNotes = false;
+    //
+    //         for (const response of raw) {
+    //             if (!response.experimentId) {
+    //                 hasNotes = true;
+    //                 const currentNote = response.payload.note as string;
+    //                 setNote(currentNote);
+    //                 setNoteValue(currentNote);
+    //                 continue;
+    //             }
+    //
+    //             responses.push(response);
+    //         }
+    //
+    //         if (!hasNotes) {
+    //             setNote('');
+    //             setNoteValue('');
+    //         }
+    //
+    //         setResponses(responses);
+    //     };
+    //
+    //     fetchResponses();
+    // }, [currentDate]);
 
     const [note, setNote] = React.useState('');
     const [noteValue, setNoteValue] = React.useState('');
@@ -207,13 +207,21 @@ const Journal = function () {
                                         }}
                                     >
                                         {responses.map((response, responseId) => {
-                                            if (!response.experimentId) {
+                                            // if (!response.experimentId) {
+                                            //     return null;
+                                            // }
+
+                                            if (false) {
                                                 return null;
                                             }
 
-                                            const experiment = experiments[response.experimentId] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
-                                            const day = experiment.days[response.dayId];
-                                            const task = day.tasks[response.taskId];
+
+                                            // const experiment = experiments[response.experimentId] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
+                                            // const day = experiment.days[response.dayId];
+                                            // const task = day.tasks[response.taskId];
+                                            const experiment = experiments[0] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
+                                            const day = experiment.days[0];
+                                            const task = day.tasks[0];
 
                                             const payloadEntries = Object.entries(response.payload);
 
@@ -233,7 +241,9 @@ const Journal = function () {
                                                             {experiment.name}
                                                         </Typography>
                                                         <Typography level="body2" mb={1}>
-                                                            {day.name} (Day {response.dayId + 1}) / {task.name}
+                                                            {/*{day.name} (Day {response.dayId + 1}) / {task.name}*/}
+                                                            {day.name} (Day {0}) / {task.name}
+
                                                         </Typography>
                                                         <Typography level="body2" mb={3}>
                                                             {dayjs(response.createdAt).format('HH:mm')}

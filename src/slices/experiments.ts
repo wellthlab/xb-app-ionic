@@ -2,36 +2,42 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
-import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment } from '../models/Experiment';
-import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectProgress } from './account';
+import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment, IResponse, ITask } from '../models/Experiment';
+import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectResponses } from './account';
+import _ from 'lodash';
+import { Record } from 'phosphor-react';
 
 export interface ISelectorState {
     experiments: IExperimentState;
 }
 
 interface IExperimentState {
-    items: Record<string, GenericExperiment>;
-    all: string[];
+    experiments: Record<string, GenericExperiment>;
     boxes: Record<string, IBox>;
 }
 
-export const selectBoxes = (state: ISelectorState) => Object.values(state.experiments.boxes);
+export const selectAllBoxes = (state: ISelectorState) => Object.values(state.experiments.boxes);
 
-export const selectAllExperiments = (state: ISelectorState) =>
-    state.experiments.all.map((experimentId) => selectExperiment(state, experimentId));
+export const selectAllExperiments = (state: ISelectorState) => state.experiments.experiments;
 
-export const selectExperimentByBox = (state: ISelectorState, type: string) =>
-    selectAllExperiments(state).filter(({ box }) => box === type);
+export const selectExperimentByBoxName = (state: ISelectorState, boxName: string) => {
+    const boxId = state.experiments.boxes[boxName].id;
+    const experiments =  Object.values(selectAllExperiments(state));
+    return experiments.filter((experiment) => experiment.boxId === boxId);
+}
 
-export const selectAllExperimentsById = (state: ISelectorState) => state.experiments.items;
+export const selectExperimentById = (state: ISelectorState, experimentId: string) => state.experiments.experiments[experimentId];
 
-export const selectExperiment = (state: ISelectorState, experimentId: string) => state.experiments.items[experimentId];
+export const selectBoxByExperimentId = (state: ISelectorState, experimentId: string) => {
+    const boxId = state.experiments.experiments[experimentId].boxId;
+    return Object
+            .entries(selectAllBoxes(state))
+            .filter(([boxName, box]) => box.id === boxId)
+            .map(([boxName, box]) => box)[0];
+}
 
-export const selectBoxFromExperiment = (state: ISelectorState, experimentId: string) =>
-    state.experiments.boxes[state.experiments.items[experimentId].box];
-
-export const selectTask = (state: ISelectorState, experimentId: string, dayId: number, taskId: number) =>
-    (state.experiments.items[experimentId] as IExperiment).days[dayId].tasks[taskId];
+export const selectTask = (state: ISelectorState, experimentId: string, dayNum: number, taskNum: number) =>
+    (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum]; //Done
 
 export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const subscriptions = selectSubscriptions(state);
@@ -47,25 +53,59 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
     return (startOfCurrentDayTs - startOfSubscriptionDayTs) / oneDay;
 };
 
-const getDayProgress = (progress: boolean[][]) => {
-    return progress.map((dayProgress) => dayProgress.reduce((acc, curr) => acc && curr, true));
+export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
+    const responses = selectResponses(state);
+    const progressByDayNumAndTaskIds: boolean[] = [];
+
+    tasks.forEach(task => {
+        const progress = Object
+            .values(responses)
+            .some((responseArr) => responseArr.some(response => response.taskId ===  task.id && response.dayNum >= dayNum));
+        progressByDayNumAndTaskIds.push(progress);
+    })
+    return progressByDayNumAndTaskIds;
 };
 
 export const selectDayProgress = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
-    const progress = selectProgress(state, experimentId);
-    return getDayProgress(progress);
+    const experiment = selectExperimentById(state, experimentId) as IExperiment;
+    const subscription = selectSubscriptions(state)[experimentId];
+    const dayProgress: boolean[] = Array(experiment.days.length).fill(false);
+
+
+    if (subscription &&  selectResponses(state)[subscription.id]) {
+        const responses = selectResponses(state)[subscription.id];
+
+        const taskIdToMaxDayNum =  responses.reduce((record: Record<string, number>, response) => {
+            if (!record[response.taskId] || record[response.taskId] < response.dayNum) {
+                record[response.taskId]  = response.dayNum;
+            }
+            return record;
+        }, {});
+
+
+        experiment.days.forEach((day, dayIndex) => {
+            day.tasks.forEach((task) => {
+                if (taskIdToMaxDayNum[task.id] >= dayIndex) {
+                    dayProgress[dayIndex] = true;
+                }
+            })
+        });
+        return dayProgress;
+    }
+    return dayProgress;
 };
 
-export const selectCompletionByExperimentId = (state: IAccountSelectorState & ISelectorState) => {
-    const subscriptions = selectSubscriptions(state);
+
+
+export const selectCompletionForAllExperiments = (state: IAccountSelectorState & ISelectorState) => {
     const percentages: Record<string, number> = {};
-
-    for (const [key, { progress }] of Object.entries(subscriptions)) {
-        const experiment = selectExperiment(state, key) as IExperiment;
-        const dayCompleted = getDayProgress(progress).filter((day) => day).length;
-        percentages[key] = (dayCompleted / experiment.days.length) * 100;
+    for (const [experimentId, experiment] of Object.entries(state.experiments.experiments)) {
+        if (!('children' in experiment)) {
+            const dayProgress = selectDayProgress(state, experimentId);
+            const daysCompleted =   dayProgress.filter(isComplete => isComplete).length;
+            percentages[experimentId] = (daysCompleted / (experiment as IExperiment).days.length) * 100;
+        }
     }
-
     return percentages;
 };
 
@@ -85,7 +125,7 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
 
     for (const experimentId of Object.keys(subscriptions)) {
         const currentDay = selectCurrentDay(state, experimentId);
-        const experiment = selectExperiment(state, experimentId) as IExperiment;
+        const experiment = selectExperimentById(state, experimentId) as IExperiment;
 
         if (currentDay > experiment.days.length - 1) {
             continue;
@@ -102,7 +142,7 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
         if (experiment.parent) {
             // First find the corresponding parent experiment
 
-            const parent = selectExperiment(state, experiment.parent) as IParentExperiment;
+            const parent = selectExperimentById(state, experiment.parent) as IParentExperiment;
 
             // Find the accummulated children array
 
@@ -144,15 +184,12 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
 
 export default createSlice({
     name: 'experiments',
-    initialState: { boxes: {}, items: {}, all: [] } as IExperimentState,
+    initialState: { experiments: {}, boxes: {} } as IExperimentState,
     reducers: {},
 
     extraReducers: (builder) => {
         builder
             .addCase(boot.fulfilled, (state, action) => {
-                state.boxes = {};
-                state.items = {};
-                state.all = [];
 
                 for (const box of action.payload.boxes) {
                     state.boxes[box.name] = box;
@@ -174,9 +211,7 @@ export default createSlice({
                             }
                         }
                     }
-
-                    state.items[experiment.id] = experiment;
-                    state.all.push(experiment.id);
+                    state.experiments[experiment.id] = experiment;
                 }
             })
             .addCase(logOut.fulfilled, () => {});

@@ -8,10 +8,10 @@ import getIcon from '../../utils/getIcon';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 import { useSelector } from '../../slices/store';
-import { selectBoxes } from '../../slices/experiments';
+import { selectAllBoxes } from '../../slices/experiments';
 
 const BoxesList = function () {
-    const boxes = useSelector(selectBoxes);
+    const boxes = useSelector(selectAllBoxes);
 
     return (
         <Page>

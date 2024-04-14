@@ -17,26 +17,26 @@ import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
 
 import { useSelector, useDispatch } from '../../slices/store';
-import { selectExperiment, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
+import { selectExperimentById, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
 import { subscribeToExperiment } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
 
-    const experiment = useSelector((state) => selectExperiment(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
+    const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
 
     const [modalOpen, setModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
-    const [dayId, setDayId] = React.useState(0);
-    const [taskId, setTaskId] = React.useState(0);
+    const [dayNum, setDayNum] = React.useState(0);
+    const [taskNum, setTaskNum] = React.useState(0);
 
-    const handleClickTask = function (_: string, dayId: number, taskId: number) {
+    const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
         setModalOpen(true);
-        setDayId(dayId);
-        setTaskId(taskId);
+        setDayNum(dayNum);
+        setTaskNum(taskNum);
     };
 
     const handleDismissModal = function () {
@@ -48,6 +48,7 @@ const ExperimentTimeline = function () {
         dispatch(subscribeToExperiment({ experiment, resubscribe: true }));
     };
 
+    console.log(dayProgress);
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (
@@ -99,7 +100,7 @@ const ExperimentTimeline = function () {
                                                 <TasksList
                                                     tasks={day.tasks}
                                                     experimentId={experimentId}
-                                                    dayId={dayId}
+                                                    dayNum={dayId}
                                                     onTaskClick={handleClickTask}
                                                 />
                                             ) : (
@@ -125,10 +126,10 @@ const ExperimentTimeline = function () {
             <TaskModal
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
-                key={`${dayId}.${taskId}`}
+                key={`${dayNum}.${taskNum}`}
                 experimentId={experimentId}
-                dayId={dayId}
-                taskId={taskId}
+                dayNum={dayNum}
+                taskNum={taskNum}
                 presentingElement={presentingElement}
             />
         </Page>

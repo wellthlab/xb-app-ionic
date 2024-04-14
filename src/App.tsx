@@ -11,7 +11,7 @@ import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosp
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
 import { boot } from './slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
+import { selectIsAuthenticated, selectIsEnrolled } from './slices/account';
 import Page from './components/foundation/Page';
 import Centre from './components/foundation/Centre';
 
@@ -43,7 +43,7 @@ import { AppDevice } from './models/Device';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
-    const isEnrolled = useSelector(setIsEnrolled);
+    const isEnrolled = useSelector(selectIsEnrolled);
     const location = useLocation();
 
     const [hydrating, setHydrating] = React.useState(true);
@@ -203,6 +203,10 @@ const App = function () {
                                                 <IonTabButton tab="settings" href="/main/settings">
                                                     <Gear />
                                                     <IonLabel>Settings</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="team" href="/main/team">
+                                                    <Users />
+                                                    <IonLabel>Teams</IonLabel>
                                                 </IonTabButton>
                                             </IonTabBar>
                                         </IonTabs>
