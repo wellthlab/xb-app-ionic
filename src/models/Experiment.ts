@@ -59,7 +59,7 @@ export interface IDay {
 }
 
 export interface ITask {
-    id: string;
+    taskId: string;
     name: string;
     icon?: string;
     blocks: Block[];

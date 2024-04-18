@@ -150,7 +150,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...other
 
     const handleSubmit = createHandleSubmit(async (data) => {
         if (Object.keys(data).length && subscription) {
-            await Experiment.saveResponse({ taskId: task.id, payload: data, dayNum }, subscription.id);
+            await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
         }
 
         await dispatch(updateProgress({ experimentId, dayNum, taskNum }));

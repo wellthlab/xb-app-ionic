@@ -2,10 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
-import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment, IResponse, ITask } from '../models/Experiment';
+import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment, ITask } from '../models/Experiment';
 import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectResponses } from './account';
-import _ from 'lodash';
-import { Record } from 'phosphor-react';
 
 export interface ISelectorState {
     experiments: IExperimentState;
@@ -60,7 +58,7 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
     tasks.forEach(task => {
         const progress = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.id && response.dayNum >= dayNum));
+            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum >= dayNum));
         progressByDayNumAndTaskIds.push(progress);
     })
     return progressByDayNumAndTaskIds;
@@ -85,7 +83,7 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
 
         experiment.days.forEach((day, dayIndex) => {
             day.tasks.forEach((task) => {
-                if (taskIdToMaxDayNum[task.id] >= dayIndex) {
+                if (taskIdToMaxDayNum[task.taskId] >= dayIndex) {
                     dayProgress[dayIndex] = true;
                 }
             })

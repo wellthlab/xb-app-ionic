@@ -252,7 +252,7 @@ class Account extends BaseModel {
             },
             {
                 $push: {
-                    subscriptions: { insertedId },
+                    subscriptions: insertedId,
                 },
             },
         );
