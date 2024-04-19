@@ -20,7 +20,11 @@ import useForm from '../foundation/useForm';
 
 import Experiment, { ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
-import { selectSubscriptionByExperimentId, updateProgress } from '../../slices/account';
+import {
+    reloadResponses,
+    selectSubscriptionByExperimentId,
+    selectSubscriptions,
+} from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
@@ -139,6 +143,7 @@ const renderParagraphWithLinks = function (content: string) {
 
 const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...others }: ITaskModalProps) {
     const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
+    const accountSubscriptions = useSelector(selectSubscriptions);
     const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);
@@ -149,12 +154,8 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...other
     const dispatch = useDispatch();
 
     const handleSubmit = createHandleSubmit(async (data) => {
-        if (Object.keys(data).length && subscription) {
-            await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
-        }
-
-        await dispatch(updateProgress({ experimentId, dayNum, taskNum }));
-
+        await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
+        await dispatch(reloadResponses(Object.values(accountSubscriptions).map(subscription => subscription.id)));
         onDismiss();
     });
 

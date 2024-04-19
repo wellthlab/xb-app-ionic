@@ -67,10 +67,9 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
 export const selectDayProgress = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const experiment = selectExperimentById(state, experimentId) as IExperiment;
     const subscription = selectSubscriptions(state)[experimentId];
-    const dayProgress: boolean[] = Array(experiment.days.length).fill(false);
-
 
     if (subscription &&  selectResponses(state)[subscription.id]) {
+        const dayProgress: boolean[] = Array(experiment.days.length).fill(true);
         const responses = selectResponses(state)[subscription.id];
 
         const taskIdToMaxDayNum =  responses.reduce((record: Record<string, number>, response) => {
@@ -80,17 +79,17 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
             return record;
         }, {});
 
-
         experiment.days.forEach((day, dayIndex) => {
             day.tasks.forEach((task) => {
-                if (taskIdToMaxDayNum[task.taskId] >= dayIndex) {
-                    dayProgress[dayIndex] = true;
+                if (!Object.keys(taskIdToMaxDayNum).includes(task.taskId) || taskIdToMaxDayNum[task.taskId] < dayIndex) {
+                    dayProgress[dayIndex] = false;
                 }
             })
         });
         return dayProgress;
+    } else {
+        return Array(experiment.days.length).fill(false);
     }
-    return dayProgress;
 };
 
 

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
-import { IParentExperiment, IExperiment, IResponse } from '../models/Experiment';
+import Experiment, { IParentExperiment, IExperiment, IResponse } from '../models/Experiment';
 import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
@@ -36,6 +36,13 @@ export const subscribeToExperiment = createAsyncThunk<
     return Account.subscribeToExperiment(experiment);
 });
 
+export const reloadResponses = createAsyncThunk(
+    'account/reloadResponses',
+    async (accountSubscriptions: string []) => {
+        return Experiment.getResponses(accountSubscriptions);
+    },
+);
+
 export const subscribeToParentExperiment = createAsyncThunk<
     ISubscription[] | undefined,
     { experiment: IParentExperiment; resubscribe: boolean },
@@ -57,12 +64,6 @@ export const subscribeToParentExperiment = createAsyncThunk<
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
 });
-
-export const updateProgress = createAsyncThunk(
-    'account/subscriptions/updateProgress',
-    async ({ experimentId, dayNum, taskNum }: { experimentId: string; dayNum: number; taskNum: number }) => {
-    },
-);
 
 interface IAccountState {
     id?: string;
@@ -116,7 +117,7 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
                 for (const sub of action.payload.subscriptions) {
-                    state.subscriptions[sub.experimentId] = { id: sub.id, subscribedAt: sub.subscribedAt, accountId: sub.accountId };
+                    state.subscriptions[sub.experimentId] = { id: sub.id, subscribedAt: sub.subscribedAt };
                 }
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
@@ -158,6 +159,9 @@ export default createSlice({
                         state.subscriptions[experimentId] = others;
                     }
                 }
-            });
+            })
+            .addCase(reloadResponses.fulfilled, (state, action) => {
+                state.responses = action.payload;
+        });
     },
 }).reducer;

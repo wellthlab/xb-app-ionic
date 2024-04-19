@@ -48,7 +48,6 @@ const ExperimentTimeline = function () {
         dispatch(subscribeToExperiment({ experiment, resubscribe: true }));
     };
 
-    console.log(dayProgress);
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (

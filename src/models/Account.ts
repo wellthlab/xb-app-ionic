@@ -34,13 +34,11 @@ export interface ISubscription {
     experimentId: string;
     subscribedAt: number;
     id: string;
-    accountId: string;
 }
 
-export interface ISubscriptionDocument extends Omit<ISubscription, 'experimentId' | 'accountId'> {
+export interface ISubscriptionDocument extends Omit<ISubscription, 'experimentId'> {
     experimentId: ObjectId;
     _id: ObjectId;
-    accountId:  ObjectId;
 }
 
 export interface IAccountDocument extends Omit<IAccount, 'subscriptions'> {
@@ -186,11 +184,11 @@ class Account extends BaseModel {
         return asIAccount;
     }
 
-    static async getSubscriptionsByAccountId(): Promise<ISubscription[]> {
+    static async getSubscriptions(subscriptionIds: string[]): Promise<ISubscription[]> {
         const db = this.getDb();
-        const records = await db.collection<ISubscriptionDocument>('subscriptions').find({
-            accountId: this.oid(this.client.currentUser!.id),
-        });
+        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
+
+        const records = await db.collection<ISubscriptionDocument>('subscriptions').find({_id: { $in: subscriptionIdsAsObjectIds }} );
         records.forEach(record => convertObjectIdFieldsToString(record));
 
         return records.map(record => {
