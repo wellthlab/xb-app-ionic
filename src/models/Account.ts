@@ -214,9 +214,12 @@ class Account extends BaseModel {
     //     });
     // }
 
-    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string) {
-        const db = this.getDb();
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
+        if (!cohortId) {
+            cohortId = await this.createNewCohort();
+        }
 
+        const db = this.getDb();
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
@@ -233,6 +236,17 @@ class Account extends BaseModel {
             profile :{email,...payload},
             cohortId
         };
+    }
+
+    static async createNewCohort() {
+        const db = this.getDb();
+        const startDate = Date.now();
+
+        const insertResult = (await db.collection('cohorts').insertOne(
+            {startDate: startDate }
+        ));
+
+        return insertResult.insertedId as string;
     }
 
     static async subscribeToExperiment(experiment: IExperiment) {
