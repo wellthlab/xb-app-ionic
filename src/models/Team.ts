@@ -20,25 +20,24 @@ const generateInvite = customAlphabet('ABCDEFGHJKLMNPQRSTUVWXYZ', 6);
 
 class Team extends BaseModel {
     static async getCurrentTeam(): Promise<ITeam | null> {
-        return null;
-        // const db = this.getDb();
-        //
-        // const result = await db
-        //     .collection<ITeamDocument>('teams')
-        //     .findOne({ members: this.oid(this.client.currentUser!.id) });
-        //
-        // if (!result) {
-        //     return null;
-        // }
-        //
-        // const memberProfiles = await this._getMembers(result.members);
-        //
-        // const { _id, members, ...others } = result;
-        // return {
-        //     ...others,
-        //     id: _id.toString(),
-        //     members: memberProfiles,
-        // };
+        const db = this.getDb();
+
+        const result = await db
+            .collection<ITeamDocument>('teams')
+            .findOne({ members: this.oid(this.client.currentUser!.id) });
+
+        if (!result) {
+            return null;
+        }
+
+        const memberProfiles = await this._getMembers(result.members);
+
+        const { _id, members, ...others } = result;
+        return {
+            ...others,
+            id: _id.toString(),
+            members: memberProfiles,
+        };
     }
 
     static async create(payload: Pick<ITeam, 'desc' | 'name'>) {
