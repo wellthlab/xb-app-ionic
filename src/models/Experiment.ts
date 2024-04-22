@@ -24,7 +24,7 @@ interface IBaseExperiment {
 
 export interface IExperiment extends IBaseExperiment {
     days: IDay[];
-    preconditions?: any[]; // what is this?
+    preconditions?: any[];
     parent?: string;
     instructions?: string[];
 }
@@ -54,7 +54,7 @@ export interface IDay {
     tasks: ITask[];
     disabled?: boolean;
     desc?: string;
-    preconditions?: any[]; // what is this?
+    preconditions?: any[];
     name: string;
 }
 
@@ -64,7 +64,7 @@ export interface ITask {
     icon?: string;
     blocks: Block[];
     disabled?: boolean;
-    preconditions?: any[]; // what is this?
+    preconditions?: any[];
 }
 
 export type Block =

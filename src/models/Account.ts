@@ -198,20 +198,6 @@ class Account extends BaseModel {
         });
     }
 
-    // static async getResponsesByAccountId(): Promise<IResponse[] | null> {
-    //     const db = this.getDb();
-    //     const records = await db.collection<ISubscriptionDocument>('subscriptions').find({
-    //         accountId: this.oid(this.client.currentUser!.id),
-    //     });
-    //     records.forEach(record => convertObjectIdFieldsToString(record));
-    //
-    //     return records.map(record => {
-    //         const asISubscription= record as unknown as ISubscription;
-    //         asISubscription.id = record._id as unknown as string;
-    //         return asISubscription;
-    //     });
-    // }
-
     static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
         if (!cohortId) {
             cohortId = await this.createNewCohort();

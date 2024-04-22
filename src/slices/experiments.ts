@@ -35,7 +35,7 @@ export const selectBoxByExperimentId = (state: ISelectorState, experimentId: str
 }
 
 export const selectTask = (state: ISelectorState, experimentId: string, dayNum: number, taskNum: number) =>
-    (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum]; //Done
+    (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum];
 
 export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const subscriptions = selectSubscriptions(state);
@@ -58,7 +58,7 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
     tasks.forEach(task => {
         const progress = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum >= dayNum));
+            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum));
         progressByDayNumAndTaskIds.push(progress);
     })
     return progressByDayNumAndTaskIds;
@@ -72,16 +72,18 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
         const dayProgress: boolean[] = Array(experiment.days.length).fill(true);
         const responses = selectResponses(state)[subscription.id];
 
-        const taskIdToMaxDayNum =  responses.reduce((record: Record<string, number>, response) => {
-            if (!record[response.taskId] || record[response.taskId] < response.dayNum) {
-                record[response.taskId]  = response.dayNum;
+        const mapOfTaskIdToDayNum =  responses.reduce((record: Record<string, number[]>, response) => {
+            if (!record[response.taskId]) {
+                record[response.taskId]  = [response.dayNum];
+            } else {
+                record[response.taskId].push(response.dayNum);
             }
             return record;
         }, {});
 
         experiment.days.forEach((day, dayIndex) => {
             day.tasks.forEach((task) => {
-                if (!Object.keys(taskIdToMaxDayNum).includes(task.taskId) || taskIdToMaxDayNum[task.taskId] < dayIndex) {
+                if (!Object.keys(mapOfTaskIdToDayNum).includes(task.taskId) || !mapOfTaskIdToDayNum[task.taskId].includes(dayIndex)) {
                     dayProgress[dayIndex] = false;
                 }
             })

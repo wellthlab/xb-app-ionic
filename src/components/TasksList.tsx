@@ -9,7 +9,6 @@ import { ITask } from '../models/Experiment';
 import getIcon from '../utils/getIcon';
 import { useSelector } from '../slices/store';
 import { selectProgressByDayNumAndTasks } from '../slices/experiments';
-// import { selectProgress } from '../slices/account';
 
 interface ITasksListProps {
     tasks: ITask[];
