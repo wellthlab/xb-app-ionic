@@ -84,6 +84,7 @@ export const selectIsEnrolled = (state: ISelectorState) => !!state.account.profi
 
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 
+export const selectCohortId = (state: ISelectorState) => state.account.cohortId;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
 
 export const selectSubscriptions = (state: ISelectorState) => state.account.subscriptions;
@@ -121,6 +122,7 @@ export default createSlice({
                 }
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
+                    state.cohortId = action.payload.account.cohortId;
                 }
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {

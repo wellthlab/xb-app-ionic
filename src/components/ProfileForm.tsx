@@ -8,7 +8,7 @@ import useForm from './foundation/useForm';
 
 import Account from '../models/Account';
 
-import { selectProfile, updateUserProfile } from '../slices/account';
+import { selectCohortId, selectProfile, updateUserProfile } from '../slices/account';
 import { useDispatch, useSelector } from '../slices/store';
 
 const schema = Yup.object().shape({
@@ -21,6 +21,7 @@ const schema = Yup.object().shape({
 
 const ProfileForm = function () {
     const profile = useSelector(selectProfile);
+    const cohortId = useSelector(selectCohortId);
 
     const { getInputProps, createHandleSubmit, form } = useForm(
         { firstName: '', lastName: '', department: '', campus: '', office: '', ...profile },
@@ -29,7 +30,7 @@ const ProfileForm = function () {
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit((data) => {
-        return dispatch(updateUserProfile({ payload: data, cohortId: undefined })).unwrap();
+        return dispatch(updateUserProfile({ payload: data, cohortId: cohortId })).unwrap();
     });
 
     return (

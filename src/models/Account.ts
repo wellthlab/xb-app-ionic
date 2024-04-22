@@ -230,7 +230,7 @@ class Account extends BaseModel {
             {startDate: startDate }
         ));
 
-        return insertResult.insertedId as string;
+        return insertResult.insertedId.toString() as string;
     }
 
     static async subscribeToExperiment(experiment: IExperiment) {
