@@ -240,7 +240,7 @@ class Account extends BaseModel {
         const subscribedAt = Date.now();
 
         const insertedId = (await db.collection('subscriptions').insertOne(
-            {experimentId: this.oid(experiment.id), subscribedAt, accountId }
+            {experimentId: this.oid(experiment.id), subscribedAt }
         )).insertedId;
 
 

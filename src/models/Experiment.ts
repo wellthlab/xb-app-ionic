@@ -30,7 +30,6 @@ export interface IExperiment extends IBaseExperiment {
 }
 
 export interface IParentExperiment extends IBaseExperiment {
-    continuation?: string;
     children: string[];
 }
 
@@ -41,9 +40,8 @@ interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
     parent?: ObjectId;
 }
 
-interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'continuation' | 'children'> {
+interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'children'> {
     _id: ObjectId;
-    continuation?: ObjectId;
     children: ObjectId[];
 }
 
