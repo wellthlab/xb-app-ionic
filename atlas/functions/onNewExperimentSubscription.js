@@ -8,9 +8,10 @@ exports = async function(changeEvent) {
     const isNewSubscriptionEvent = context.functions.execute('isNewSubscriptionEvent', changeEvent);
 
     if (isNewSubscriptionEvent) {
-        const newSubscription = changeEvent.fullDocument.subscriptions[changeEvent.fullDocument.subscriptions.length - 1];
+        const newSubscriptionId = changeEvent.fullDocument.subscriptions[changeEvent.fullDocument.subscriptions.length - 1];
         const mongodb = context.services.get('mongodb-atlas').db('PRODUCTION');
-        const experiment = await mongodb.collection('experiments').findOne({ _id: newSubscription.experimentId });
+        const subscription = await mongodb.collection('subscriptions').findOne({ _id: newSubscriptionId });
+        const experiment = await mongodb.collection('experiments').findOne({ _id: subscription.experimentId });
 
         if (experiment.shouldSendReminders) {
             const devices = await mongodb.collection('devices').find({ userId: changeEvent.fullDocument._id }, {

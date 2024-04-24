@@ -8,9 +8,11 @@ exports = async function(changeEvent) {
     const response = changeEvent.fullDocument;
     const mongodb = context.services.get('mongodb-atlas').db('PRODUCTION');
 
-    const shouldContinueRemindersForAccount = await context.functions.execute('shouldContinueRemindersForAccount', response.userId, mongodb);
+    const account = await mongodb.collection('accounts').findOne({ subscriptions: response.subscriptionId });
+
+    const shouldContinueRemindersForAccount = await context.functions.execute('shouldContinueRemindersForAccount', account, mongodb);
 
     if (!shouldContinueRemindersForAccount) {
-        await mongodb.collection('pendingNotifications').deleteMany({ userId:  response.userId });
+        await mongodb.collection('pendingNotifications').deleteMany({ userId:  account._id });
     }
 };

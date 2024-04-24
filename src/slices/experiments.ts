@@ -72,18 +72,9 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
         const dayProgress: boolean[] = Array(experiment.days.length).fill(true);
         const responses = selectResponses(state)[subscription.id];
 
-        const mapOfTaskIdToDayNum =  responses.reduce((record: Record<string, number[]>, response) => {
-            if (!record[response.taskId]) {
-                record[response.taskId]  = [response.dayNum];
-            } else {
-                record[response.taskId].push(response.dayNum);
-            }
-            return record;
-        }, {});
-
         experiment.days.forEach((day, dayIndex) => {
             day.tasks.forEach((task) => {
-                if (!Object.keys(mapOfTaskIdToDayNum).includes(task.taskId) || !mapOfTaskIdToDayNum[task.taskId].includes(dayIndex)) {
+                if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
                     dayProgress[dayIndex] = false;
                 }
             })

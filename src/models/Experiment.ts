@@ -188,9 +188,10 @@ export interface IResponse {
     createdAt: number;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId'> {
+interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId' > {
     _id: ObjectId;
     subscriptionId: ObjectId;
+    taskId: ObjectId;
 }
 
 class Experiment extends BaseModel {
@@ -219,7 +220,7 @@ class Experiment extends BaseModel {
 
         return db
             .collection<IResponseDocument>('responses')
-            .insertOne({ ...response, subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
+            .insertOne({ ...response, taskId: this.oid(response.taskId), subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
     }
 
      static async getResponses(subscriptionIds: string[]) {

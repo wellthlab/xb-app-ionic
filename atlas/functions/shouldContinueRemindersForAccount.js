@@ -4,16 +4,40 @@
  * 2) the user has not completed all the tasks in the experiment
  **/
 
-exports = async function(userId, mongodb) {
-    const account = await mongodb.collection('accounts').findOne({ _id: userId });
-
-    for (const subscription of account.subscriptions) {
+exports = async function(account, mongodb) {
+    for (let subscriptionId of account.subscriptions) {
+        const subscription = await mongodb.collection('subscriptions').findOne({ _id: subscriptionId });
         const experiment = await mongodb.collection('experiments').findOne({ _id: subscription.experimentId });
+        const responses = await mongodb.collection('responses').find({ subscriptionId: subscriptionId }).toArray();
 
-        const isUnfinised = subscription.progress.some((taskList) => taskList.some((isDone) => !isDone));
-        const requiresNotifications = experiment.shouldSendReminders;
+        if (!('children' in experiment)) {
+            const originalLength = experiment.days.length;
+            if (originalLength < experiment.duration) {
+                let day = 0;
 
-        if (isUnfinised && requiresNotifications) {
+                for (let i = 0; i < experiment.duration - originalLength; i++) {
+                    experiment.days.push(experiment.days[day]);
+                    day++;
+
+                    if (day === originalLength) {
+                        day = 0;
+                    }
+                }
+            }
+        }
+
+        let isFinished = true;
+
+        taskLoop: for (const [dayIndex, day] of experiment.days.entries()) {
+            for (const task of day.tasks) {
+                if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex))) {
+                    isFinished = false;
+                    break taskLoop;
+                }
+            }
+        }
+
+        if (!isFinished && experiment.shouldSendReminders) {
             return true;
         }
     }
