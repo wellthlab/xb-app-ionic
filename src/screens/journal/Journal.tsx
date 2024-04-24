@@ -178,7 +178,7 @@ const Journal = function () {
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 <Stack spacing={2}>
-                                    <Typography>{note || 'You did not have any note for this day'}</Typography>
+                                    <Typography>{note || 'You did not have any notes for this day'}</Typography>
                                     <Button variant="outlined" onClick={handleAddNote}>
                                         Add a note
                                     </Button>
@@ -195,7 +195,7 @@ const Journal = function () {
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 {!responses.length ? (
-                                    'You did not have any activity for this day'
+                                    'You did not have any activities for this day'
                                 ) : (
                                     <Timeline
                                         sx={{
