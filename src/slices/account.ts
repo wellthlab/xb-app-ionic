@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
 });
 
 export const updateUserProfile = createAsyncThunk<
-    Omit <IAccount, 'id' | 'subscriptions'>,
+    Omit <IAccount, 'id' | 'subscriptions'| 'notes'>,
     { payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined }> (
     'account/profile/updated',
     ({ payload, cohortId }) => {
@@ -40,6 +40,13 @@ export const reloadResponses = createAsyncThunk(
     'account/reloadResponses',
     async (accountSubscriptions: string []) => {
         return Experiment.getResponses(accountSubscriptions);
+    },
+);
+
+export const saveNotes = createAsyncThunk(
+    'account/saveNote',
+    async (notes: Record<number, string>) => {
+        return Account.saveNotes(notes);
     },
 );
 
@@ -69,8 +76,9 @@ interface IAccountState {
     id?: string;
     profile?: IProfile;
     cohortId?: string;
-    subscriptions: Record<string, Omit<ISubscription, 'experimentId'>>;
+    subscriptions: Record<string, ISubscription>;
     responses: Record<string, IResponse[]>,
+    notes?: Record<number, string>,
     deleted?: boolean;
 }
 
@@ -91,6 +99,8 @@ export const selectSubscriptions = (state: ISelectorState) => state.account.subs
 
 export const selectSubscriptionByExperimentId = (state: ISelectorState,  experimentId: string) => state.account.subscriptions[experimentId];
 
+export const selectNotes = (state: ISelectorState) => state.account.notes ? state.account.notes: {};
+
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
@@ -102,7 +112,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {} } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -118,11 +128,12 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
                 for (const sub of action.payload.subscriptions) {
-                    state.subscriptions[sub.experimentId] = { id: sub.id, subscribedAt: sub.subscribedAt };
+                    state.subscriptions[sub.experimentId] = sub;
                 }
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
                     state.cohortId = action.payload.account.cohortId;
+                    state.notes = action.payload.account.notes;
                 }
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
@@ -138,6 +149,7 @@ export default createSlice({
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
+                delete state.notes;
             })
             .addCase(logOut.fulfilled, (state) => {
 
@@ -147,20 +159,22 @@ export default createSlice({
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
+                delete state.notes;
             })
             .addCase(subscribeToExperiment.fulfilled, (state, action) => {
                 if (action.payload) {
-                    const { experimentId, ...others } = action.payload;
-                    state.subscriptions[experimentId] = others;
+                    state.subscriptions[action.payload.experimentId] =  action.payload;
                 }
             })
             .addCase(subscribeToParentExperiment.fulfilled, (state, action) => {
                 if (action.payload) {
                     for (const subscription of action.payload) {
-                        const { experimentId, ...others } = subscription;
-                        state.subscriptions[experimentId] = others;
+                        state.subscriptions[subscription.experimentId] = subscription;
                     }
                 }
+            })
+            .addCase(saveNotes.fulfilled, (state, action) => {
+                state.notes = action.payload;
             })
             .addCase(reloadResponses.fulfilled, (state, action) => {
                 state.responses = action.payload;

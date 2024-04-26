@@ -29,15 +29,20 @@ import { Calendar, CaretDown } from 'phosphor-react';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import Experiment, { IExperiment, IGenericInput, IResponse } from '../../models/Experiment';
-import { useSelector } from '../../slices/store';
-import { selectAllExperiments } from '../../slices/experiments';
+import { IExperiment, IGenericInput, IResponse } from '../../models/Experiment';
+import { useDispatch, useSelector } from '../../slices/store';
+import { selectAllExperiments, selectExperimentById } from '../../slices/experiments';
 import List from '../../components/foundation/List';
 import ListItem from '../../components/foundation/ListItem';
 import Modal from '../../components/foundation/Modal';
 import Textarea from '../../components/foundation/Textarea';
+import { saveNotes, selectNotes, selectResponses, selectSubscriptions } from '../../slices/account';
 
 const Journal = function () {
+    const dispatch = useDispatch();
+    const notes = useSelector((state) => selectNotes(state));
+    const allResponses = useSelector((state) => selectResponses(state));
+
     const [tabIndex, setTabIndex] = React.useState(0);
 
     const handleTabChange: TabsProps['onChange'] = function (_, value) {
@@ -76,54 +81,59 @@ const Journal = function () {
     const [responses, setResponses] = React.useState<IResponse[]>([]);
 
     const experiments = useSelector(selectAllExperiments);
+    const subscriptions = useSelector(selectSubscriptions);
 
-    // React.useEffect(() => {
-    //     if (!currentDate) {
-    //         return;
-    //     }
-    //
-    //     const fetchResponses = async function () {
-    //         const raw = await Experiment.getResponsesForDate(currentDate.toDate());
-    //
-    //         const responses = [];
-    //
-    //         let hasNotes = false;
-    //
-    //         for (const response of raw) {
-    //             if (!response.experimentId) {
-    //                 hasNotes = true;
-    //                 const currentNote = response.payload.note as string;
-    //                 setNote(currentNote);
-    //                 setNoteValue(currentNote);
-    //                 continue;
-    //             }
-    //
-    //             responses.push(response);
-    //         }
-    //
-    //         if (!hasNotes) {
-    //             setNote('');
-    //             setNoteValue('');
-    //         }
-    //
-    //         setResponses(responses);
-    //     };
-    //
-    //     fetchResponses();
-    // }, [currentDate]);
+    const [displayedNote, setDisplayedNote] = React.useState('');
+    const [editableNote, setEditableNote] = React.useState('');
 
-    const [note, setNote] = React.useState('');
-    const [noteValue, setNoteValue] = React.useState('');
+    React.useEffect(() => {
+        if (!currentDate) {
+            return;
+        }
+
+        const fetchResponses = async function () {
+            const startDate = new Date(currentDate.toDate());
+            startDate.setUTCHours(0, 0, 0, 0);
+
+            const endDate = new Date(currentDate.toDate());
+            endDate.setUTCHours(23, 59, 59, 9999);
+
+            const responses =  Object.values(allResponses).flat().filter(s =>  s.createdAt  >= startDate.getTime() && s.createdAt <=  endDate.getTime());
+            setResponses(responses);
+        };
+
+        const noteForDisplay = notes[getNoteDate()];
+        if (noteForDisplay) {
+            setEditableNote(noteForDisplay);
+            setDisplayedNote(noteForDisplay);
+        } else {
+            setEditableNote('');
+            setDisplayedNote('');
+        }
+
+        fetchResponses();
+    }, [currentDate]);
+
 
     const handleChangeNote = function (e: React.ChangeEvent<HTMLTextAreaElement>) {
-        setNoteValue(e.target.value);
+        setEditableNote(e.target.value);
     };
 
     const handleSubmitNote = async function () {
-        await Experiment.saveNote(noteValue);
-        setNote(noteValue);
+        if (!currentDate) {
+            return;
+        }
+
+        const updateNotes = JSON.parse(JSON.stringify(notes));
+        updateNotes[getNoteDate()] = editableNote;
+        dispatch(saveNotes(updateNotes));
+        setDisplayedNote(editableNote);
         setIsAddingNote(false);
     };
+
+    const getNoteDate = () => {
+        return  new Date(currentDate!.toDate()).setUTCHours(0, 0, 0, 0);
+    }
 
     return (
         <Page ref={setPresentingElement}>
@@ -178,7 +188,7 @@ const Journal = function () {
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 <Stack spacing={2}>
-                                    <Typography>{note || 'You did not have any note for this day'}</Typography>
+                                    <Typography>{displayedNote || 'You did not have any note for this day'}</Typography>
                                     <Button variant="outlined" onClick={handleAddNote}>
                                         Add a note
                                     </Button>
@@ -206,23 +216,12 @@ const Journal = function () {
                                             },
                                         }}
                                     >
-                                        {responses.map((response, responseId) => {
-                                            // if (!response.experimentId) {
-                                            //     return null;
-                                            // }
+                                        {responses.map((response, responseIndex) => {
 
-                                            if (false) {
-                                                return null;
-                                            }
-
-
-                                            // const experiment = experiments[response.experimentId] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
-                                            // const day = experiment.days[response.dayId];
-                                            // const task = day.tasks[response.taskId];
-                                            const experiment = experiments[0] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
-                                            const day = experiment.days[0];
-                                            const task = day.tasks[0];
-
+                                            const correspondingSubcription = Object.values(subscriptions).find(subscription => subscription.id === response.subscriptionId);
+                                            const experiment = experiments[correspondingSubcription!.experimentId] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
+                                            const day = experiment.days[response.dayNum];
+                                            const task = day.tasks.find(task => task.taskId === response.taskId);
                                             const payloadEntries = Object.entries(response.payload);
 
                                             const [detectorGreenKey, greenPercentage] =
@@ -234,16 +233,14 @@ const Journal = function () {
                                                 <TimelineItem key={response.id}>
                                                     <TimelineSeparator>
                                                         <TimelineDot />
-                                                        {responseId !== responses.length - 1 && <TimelineConnector />}
+                                                        {responseIndex !== responses.length - 1 && <TimelineConnector />}
                                                     </TimelineSeparator>
                                                     <TimelineContent>
                                                         <Typography level="h4" mb={1}>
                                                             {experiment.name}
                                                         </Typography>
                                                         <Typography level="body2" mb={1}>
-                                                            {/*{day.name} (Day {response.dayId + 1}) / {task.name}*/}
-                                                            {day.name} (Day {0}) / {task.name}
-
+                                                            {day.name} (Day {response.dayNum + 1}) / {task!.name}
                                                         </Typography>
                                                         <Typography level="body2" mb={3}>
                                                             {dayjs(response.createdAt).format('HH:mm')}
@@ -263,7 +260,7 @@ const Journal = function () {
                                                                     return null;
                                                                 }
 
-                                                                const blockDefinition = task.blocks.find(
+                                                                const blockDefinition = task!.blocks.find(
                                                                     (block) => (block as IGenericInput).rk === key,
                                                                 );
 
@@ -318,7 +315,7 @@ const Journal = function () {
                         placeholder="A note to your future self"
                         minRows={5}
                         maxRows={14}
-                        value={noteValue}
+                        value={editableNote}
                         onChange={handleChangeNote}
                     />
                 </Stack>
