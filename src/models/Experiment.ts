@@ -20,6 +20,7 @@ interface IBaseExperiment {
     duration: number;
     hidden?: boolean;
     id: string;
+    boxWeek: number
 }
 
 export interface IExperiment extends IBaseExperiment {
