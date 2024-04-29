@@ -35,7 +35,7 @@ const ProfileForm = function () {
 
     return (
         <React.Fragment>
-            <Form submitLabel="Let's roll!" message={form.errors.$root} onSubmit={handleSubmit}>
+            <Form submitLabel="Lets roll!" message={form.errors.$root} onSubmit={handleSubmit}>
                 <TextField label="First name" {...getInputProps('firstName')} />
                 <TextField label="Last name" {...getInputProps('lastName')} />
                 <Select label="Department" options={Account.DEPARTMENTS} {...getInputProps('department')} />
