@@ -31,7 +31,6 @@ const Strings = {
 	journal_tabs : "Journal tabs",
 	you_did_not_have_any_notes : "You did not have any notes for this day",
 	you_did_not_have_any : "You did not have any activities for this day",
-	hhmm : "HH:mm",
 	add_a_note : "Add a note",
 	note : "Note",
 	a_note_to_your_future_self : "A note to your future self",
