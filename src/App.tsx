@@ -15,6 +15,8 @@ import { selectIsAuthenticated, selectIsEnrolled } from './slices/account';
 import Page from './components/foundation/Page';
 import Centre from './components/foundation/Centre';
 
+import Strings from './utils/string_dict.js';
+
 import LoginScreen from './screens/auth/Login';
 import RegisterScreen from './screens/auth/Register';
 import ResetPasswordScreen from './screens/auth/ResetPassword';
@@ -190,23 +192,23 @@ const App = function () {
                                             <IonTabBar slot="bottom">
                                                 <IonTabButton tab="today" href="/main/today">
                                                     <ListChecks />
-                                                    <IonLabel>Today</IonLabel>
+                                                    <IonLabel>{Strings.today}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
-                                                    <IonLabel>Boxes</IonLabel>
+                                                    <IonLabel>{Strings.boxes}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="journal" href="/main/journal">
                                                     <CalendarBlank />
-                                                    <IonLabel>Journal</IonLabel>
+                                                    <IonLabel>{Strings.journal}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="settings" href="/main/settings">
                                                     <Gear />
-                                                    <IonLabel>Settings</IonLabel>
+                                                    <IonLabel>{Strings.settings}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="team" href="/main/team">
                                                     <Users />
-                                                    <IonLabel>Teams</IonLabel>
+                                                    <IonLabel>{Strings.teams}</IonLabel>
                                                 </IonTabButton>
                                             </IonTabBar>
                                         </IonTabs>

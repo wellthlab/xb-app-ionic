@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button } from '@mui/joy';
@@ -24,7 +25,7 @@ const StudyInformation = function () {
             </Box>
 
             <Button disabled={!canContinue} component={RouterLink} to="/onboarding/consent" sx={{ mt: 2 }} fullWidth>
-                {canContinue ? 'Next' : 'Scroll or read to the end to continue'}
+                {canContinue ? Strings.next : Strings.scroll_or_read_to_the_end_to}
             </Button>
         </Page>
     );

@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import * as Yup from 'yup';
 
@@ -157,7 +158,7 @@ const useForm = function <T extends Record<string, string | boolean | number | n
                                 ? error
                                 : (error as any).message
                                 ? (error as any).message
-                                : 'Sorry, cannot submit this form at the moment',
+                                : Strings.sorry_cannot_submit_this_form,
                     });
                 }
             };

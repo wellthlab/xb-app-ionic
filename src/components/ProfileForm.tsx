@@ -1,3 +1,4 @@
+import Strings from '../utils/string_dict.js';
 import React from 'react';
 import { TextField } from '@mui/joy';
 import * as Yup from 'yup';
@@ -12,9 +13,9 @@ import { selectCohortId, selectProfile, updateUserProfile } from '../slices/acco
 import { useDispatch, useSelector } from '../slices/store';
 
 const schema = Yup.object().shape({
-    firstName: Yup.string().required('Your first name is missing'),
-    lastName: Yup.string().required('Your last name is missing'),
-    department: Yup.string().required('Department is missing'),
+    firstName: Yup.string().required(Strings.your_first_name_is_missing),
+    lastName: Yup.string().required(Strings.your_last_name_is_missing),
+    department: Yup.string().required(Strings.department_is_missing),
     campus: Yup.string(),
     office: Yup.string(),
 });
@@ -35,12 +36,12 @@ const ProfileForm = function () {
 
     return (
         <React.Fragment>
-            <Form submitLabel="Let's roll!" message={form.errors.$root} onSubmit={handleSubmit}>
-                <TextField label="First name" {...getInputProps('firstName')} />
-                <TextField label="Last name" {...getInputProps('lastName')} />
-                <Select label="Department" options={Account.DEPARTMENTS} {...getInputProps('department')} />
-                <Select label="Campus" options={Account.CAMPUS} {...getInputProps('campus')} />
-                <TextField label="Office" {...getInputProps('office')} />
+            <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={handleSubmit}>
+                <TextField label={Strings.first_name} {...getInputProps('firstName')} />
+                <TextField label={Strings.last_name} {...getInputProps('lastName')} />
+                <Select label={Strings.department} options={Account.DEPARTMENTS} {...getInputProps('department')} />
+                <Select label={Strings.campus} options={Account.CAMPUS} {...getInputProps('campus')} />
+                <TextField label={Strings.office} {...getInputProps('office')} />
             </Form>
         </React.Fragment>
     );

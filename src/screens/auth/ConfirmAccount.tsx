@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { CircularProgress, Alert } from '@mui/joy';
@@ -38,19 +39,17 @@ const ConfirmAccount = function () {
     }
 
     return (
-        <AuthScreenLayout title="Confirm your account">
+        <AuthScreenLayout title={Strings.confirm_your_account}>
             {status === 'pending' ? (
                 <Centre>
                     <CircularProgress />
                 </Centre>
             ) : status === 'rejected' ? (
                 <Alert color="danger">
-                    Sorry, we cannot confirm this account. You have either confirmed your account, or have waited too
-                    long to confirm this email. Please login with your registered credentials and follow the
-                    instructions.
+                    {Strings.sorry_we_cannot_confirm_this}
                 </Alert>
             ) : (
-                <Alert color="success">Account confirmed. You can now continue in the app</Alert>
+                <Alert color="success">{Strings.account_confirmed_you_can_now}</Alert>
             )}
         </AuthScreenLayout>
     );

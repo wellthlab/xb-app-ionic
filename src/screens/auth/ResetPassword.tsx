@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
@@ -30,19 +31,19 @@ const ResetPassword = function () {
     };
 
     return (
-        <AuthScreenLayout title="Reset your password">
+        <AuthScreenLayout title={Strings.reset_your_password}>
             <Form
-                message={emailSent ? 'If your email is in our records, we will send you an email ' : form.errors.$root}
+                message={emailSent ? Strings.if_your_email_is_in_our : form.errors.$root}
                 messageColor={emailSent ? 'primary' : 'danger'}
                 onSubmit={handleSubmit}
-                submitLabel="Continue"
+                submitLabel={Strings.continue}
                 footer={
                     <Link component="button" level="body2" onClick={handleClickLoginLink}>
-                        Already had an account? Login
+                        {Strings.already_had_an_account_login}
                     </Link>
                 }
             >
-                <TextField label="Email" {...getInputProps('email')} />
+                <TextField label={Strings.email} {...getInputProps('email')} />
             </Form>
         </AuthScreenLayout>
     );

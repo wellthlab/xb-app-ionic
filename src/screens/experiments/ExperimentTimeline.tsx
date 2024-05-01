@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Stack, Alert, Button } from '@mui/joy';
@@ -91,7 +92,7 @@ const ExperimentTimeline = function () {
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="body2" sx={{ my: 2 }}>
-                                        Day {dayId + 1}
+                                        {Strings.day} {dayId + 1}
                                     </Typography>
                                     <Stack spacing={2}>
                                         {unlocked &&
@@ -104,7 +105,7 @@ const ExperimentTimeline = function () {
                                                 />
                                             ) : (
                                                 <Typography level="body2">
-                                                    There is nothing to do for this day
+                                                    {Strings.there_is_nothing_to_do_for}
                                                 </Typography>
                                             ))}
                                     </Stack>
@@ -117,8 +118,8 @@ const ExperimentTimeline = function () {
 
             {experimentCompleted && (
                 <Stack spacing={2}>
-                    <Alert color="success">Congratulations! You have completed this experiment.</Alert>
-                    <Button onClick={handleRedoExperiment}>Redo experiment</Button>
+                    <Alert color="success">{Strings.congratulations_you_have}</Alert>
+                    <Button onClick={handleRedoExperiment}>{Strings.redo_experiment}</Button>
                 </Stack>
             )}
 

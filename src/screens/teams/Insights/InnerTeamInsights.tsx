@@ -1,3 +1,4 @@
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
 import { useIonAlert } from '@ionic/react';
 import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
@@ -30,15 +31,15 @@ const InnerTeamInsights = function () {
 
     const handleLeaveTeam = function () {
         presentAlert({
-            header: 'Are you sure?',
-            subHeader: 'You will be able to join this team again',
+            header: Strings.are_you_sure,
+            subHeader: Strings.you_will_be_able_to_join_this,
             buttons: [
                 {
-                    text: 'Cancel',
+                    text: Strings.cancel,
                     role: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: Strings.ok,
                     role: 'confirm',
                     handler: () => dispatch(leaveTeam()),
                 },
@@ -48,18 +49,18 @@ const InnerTeamInsights = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Welcome, {fullName}</PageTitle>
+            <PageTitle>{Strings.welcome}, {fullName}</PageTitle>
             <Card sx={{ mb: 4 }}>
                 <Typography level="h5" sx={{ mb: 1 }}>
                     {team.name}
                 </Typography>
                 <Typography level="body2" sx={{ mb: 3 }}>
-                    {team.desc || 'No description'}
+                    {team.desc || Strings.no_description}
                 </Typography>
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>
                         <Users />
-                        <Typography>{team.members.length} member(s)</Typography>
+                        <Typography>{team.members.length}{Strings.members}</Typography>
                     </Stack>
 
                     <Stack direction="row" spacing={2}>
@@ -69,16 +70,16 @@ const InnerTeamInsights = function () {
 
                     <Stack direction="row" spacing={1}>
                         <Button fullWidth onClick={createModalHandler(true)}>
-                            Leaderboard
+                            {Strings.leaderboard}
                         </Button>
                         <Button variant="outlined" color="danger" onClick={handleLeaveTeam} fullWidth>
-                            Leave team
+                            {Strings.leave_team}
                         </Button>
                     </Stack>
                 </Stack>
             </Card>
 
-            <SectionTitle>Members</SectionTitle>
+            <SectionTitle>{Strings.members}</SectionTitle>
 
             <Stack spacing={1}>
                 {team.members.map(({ id, profile }) => (
@@ -91,13 +92,13 @@ const InnerTeamInsights = function () {
                             <Stack direction="row" spacing={1}>
                                 {id === userId ? (
                                     <Chip color="info" size="sm">
-                                        You
+                                        {Strings.you}
                                     </Chip>
                                 ) : null}
 
                                 {id === team.members[0].id ? (
                                     <Chip color="success" size="sm">
-                                        Owner
+                                        {Strings.owner}
                                     </Chip>
                                 ) : null}
                             </Stack>
@@ -108,14 +109,14 @@ const InnerTeamInsights = function () {
             </Stack>
 
             <Modal
-                headerTitle="Teams leaderboard"
+                headerTitle={Strings.teams_leaderboard}
                 isOpen={leaderboardOpen}
                 presentingElement={presentingElement}
                 onDismiss={createModalHandler(false)}
             >
                 <Centre>
-                    <Typography>This feature is coming soon</Typography>
-                    <Typography>Stay tuned</Typography>
+                    <Typography>{Strings.this_feature_is_coming_soon}</Typography>
+                    <Typography>{Strings.stay_tuned}</Typography>
                 </Centre>
             </Modal>
         </Page>

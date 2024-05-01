@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Alert, TextField } from '@mui/joy';
@@ -29,13 +30,13 @@ const NewPassword = function () {
     }
 
     return (
-        <AuthScreenLayout title="New password">
+        <AuthScreenLayout title={Strings.new_password}>
             {done ? (
-                <Alert color="success">You have successfully reset your password</Alert>
+                <Alert color="success">{Strings.you_have_successfully_reset}</Alert>
             ) : (
                 <Form onSubmit={handleSubmit} message={form.errors.$root}>
-                    <TextField label="New password" type="password" {...getInputProps('password')} />
-                    <TextField label="Repeat new password" type="password" {...getInputProps('repeatPassword')} />
+                    <TextField label={Strings.new_password} type="password" {...getInputProps('password')} />
+                    <TextField label={Strings.repeat_new_password} type="password" {...getInputProps('repeatPassword')} />
                 </Form>
             )}
         </AuthScreenLayout>

@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Typography, Card, Grid, Box, Link, linkClasses } from '@mui/joy';
@@ -15,9 +16,9 @@ const BoxesList = function () {
 
     return (
         <Page>
-            <PageTitle sx={{ mb: 2 }}>Boxes</PageTitle>
+            <PageTitle sx={{ mb: 2 }}>{Strings.boxes}</PageTitle>
             <Typography level="body1" sx={{ mb: 4 }}>
-                Welcome to Spring 2023 XB demo! Please choose a box below to get started.
+                {Strings.welcome_to_spring_2023_xb}
             </Typography>
 
             <Grid container spacing={1}>

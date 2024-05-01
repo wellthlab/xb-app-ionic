@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 
 import Page from '../../components/foundation/Page';
@@ -6,7 +7,7 @@ import AboutThisStudy from '../../components/AboutThisStudy';
 
 const StudyInformation = function () {
     return (
-        <Page headerTitle="About this study">
+        <Page headerTitle={Strings.about_this_study}>
             <AboutThisStudy />
         </Page>
     );

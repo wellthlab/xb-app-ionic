@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 
 import Page from '../../components/foundation/Page';
@@ -8,7 +9,7 @@ import ProfileForm from '../../components/ProfileForm';
 const NewProfile = function () {
     return (
         <Page>
-            <PageTitle>Your profile</PageTitle>
+            <PageTitle>{Strings.your_profile}</PageTitle>
             <ProfileForm />
         </Page>
     );

@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useIonAlert } from '@ionic/react';
 import { Stack, Typography, Alert, useColorScheme, Box } from '@mui/joy';
@@ -36,15 +37,15 @@ const AllSettings = function () {
 
     const handleClickDelete = function () {
         presentAlert({
-            header: 'Are you sure?',
-            subHeader: 'This action is irreversible',
+            header: Strings.are_you_sure,
+            subHeader: Strings.this_action_is_irreversible,
             buttons: [
                 {
-                    text: 'Cancel',
+                    text: Strings.cancel,
                     role: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: Strings.ok,
                     role: 'confirm',
                     handler: handleDeleteAccount,
                 },
@@ -64,7 +65,7 @@ const AllSettings = function () {
 
     return (
         <Page>
-            <PageTitle>Settings</PageTitle>
+            <PageTitle>{Strings.settings}</PageTitle>
 
             <IconContext.Provider value={{ size: 20 }}>
                 <Stack spacing={2}>
@@ -79,7 +80,7 @@ const AllSettings = function () {
 
                     <List>
                         <ListItem href="/main/settings/about" startDecorator={<Info />}>
-                            About
+                            {Strings.about}
                         </ListItem>
                         <ListItem
                             startDecorator={<Palette />}
@@ -91,20 +92,20 @@ const AllSettings = function () {
                                 />
                             }
                         >
-                            App theme
+                            {Strings.app_theme}
                         </ListItem>
                         <ListItem button startDecorator={<SignOut />} onClick={handleLogOut}>
-                            Log out
+                            {Strings.log_out}
                         </ListItem>
                     </List>
 
                     {isDeleted && (
                         <Alert color="warning">
-                            You have requested your account to be deleted. We will be in touch soon.
+                            {Strings.you_have_requested_your}
                         </Alert>
                     )}
 
-                    {deleteFailed && <Alert color="danger">Sorry, your account cannot be deleted at the moment</Alert>}
+                    {deleteFailed && <Alert color="danger">{Strings.sorry_your_account_cannot_be}</Alert>}
 
                     <List>
                         <ListItem
@@ -113,7 +114,7 @@ const AllSettings = function () {
                             startDecorator={<Box component={TrashSimple} color="danger.plainColor" />}
                             onClick={handleClickDelete}
                         >
-                            Delete your account
+                            {Strings.delete_your_account}
                         </ListItem>
                     </List>
                 </Stack>

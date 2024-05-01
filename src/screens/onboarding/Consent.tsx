@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -9,7 +10,7 @@ import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
 import ExerciseWarning from '../../components/ExerciseWarning';
 
-const checkboxSchema = Yup.bool().oneOf([true], 'Please check this box to continue');
+const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
 const schema = Yup.object().shape({
     c1: checkboxSchema,
@@ -31,26 +32,26 @@ const Consent = function () {
 
     return (
         <Page>
-            <PageTitle>Just a few things...</PageTitle>
+            <PageTitle>{Strings.just_a_few_things}</PageTitle>
 
-            <Form submitButtonColor="success" submitLabel="Enroll!" message={form.errors.$root} onSubmit={handleSubmit}>
+            <Form submitButtonColor="success" submitLabel={Strings.enroll} message={form.errors.$root} onSubmit={handleSubmit}>
                 <Checkbox
-                    label="I have read the provided participant information and consent to take part in the study"
+                    label={Strings.i_have_read_the_provided}
                     {...getCheckboxProps('c1')}
                 />
                 <Checkbox
-                    label="I am a member of staff or a student at the University of Southampton, and I am at least 18 years old."
+                    label={Strings.i_am_a_member_of_staff_or_a}
                     {...getCheckboxProps('c2')}
                 />
                 <Checkbox
-                    label="I understand that I must be employed in a participating faculty or service, and that in some faculties or services I should discuss or raise participation with my line manager, as directed by my faculty or service."
+                    label={Strings.i_understand_that_i_must_be}
                     {...getCheckboxProps('c3')}
                 />
 
                 <ExerciseWarning />
 
                 <Checkbox
-                    label="I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part"
+                    label={Strings.i_understand_that_physical}
                     {...getCheckboxProps('c4')}
                 />
             </Form>

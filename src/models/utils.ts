@@ -1,3 +1,4 @@
+import Strings from '../utils/string_dict.js';
 import * as Realm from 'realm-web';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -13,7 +14,7 @@ export class BaseModel {
 
     protected static getDb() {
         if (!this.client.currentUser) {
-            throw new Error('This method should only be called when user is authenticated');
+            throw new Error(Strings.this_method_should_only_be);
         }
 
         return this.client.currentUser.mongoClient('mongodb-atlas').db(DATABASE);

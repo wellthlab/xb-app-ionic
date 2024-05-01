@@ -1,3 +1,4 @@
+import Strings from '../utils/string_dict.js';
 import { customAlphabet } from 'nanoid';
 
 import { BaseModel, ObjectId } from './utils';
@@ -76,7 +77,7 @@ class Team extends BaseModel {
             );
 
         if (!result) {
-            throw new Error('Sorry, the invite code did not correspond to any team');
+            throw new Error(Strings.sorry_the_invite_code_did_not);
         }
 
         const members = await this._getMembers(result.members);
