@@ -150,7 +150,13 @@ const Strings = {
 	heart_rate_measure : "Heart rate measure illustration",
 	find_your_pulse_by_firmly : "Find your pulse by firmly gripping your wrist like in the diagram below. Count your heartbeats for 20 seconds. Then, multiply by 3.",
 	submit : "Submit",
+	back : "Back",
+	close : "Close",
 	please_select : "Please select",
+	password_must_have_at_least : "Password must have at least",
+	password_must_have_at_least_2 : "characters",
+	password_can_only_have_at : "Password can only have at most",
+	password_can_only_have_at_2 : "characters",
 
 };
 

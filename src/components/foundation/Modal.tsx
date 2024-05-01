@@ -42,7 +42,7 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
                         </HeaderButton>
                     )
                 }
-                leftButton={<HeaderButton onClick={handleCancel}>Close</HeaderButton>}
+                leftButton={<HeaderButton onClick={handleCancel}>{Strings.close}</HeaderButton>}
             />
 
             <IonContent>
