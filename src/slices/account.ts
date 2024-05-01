@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
-import Experiment, { IParentExperiment, IExperiment, IResponse } from '../models/Experiment';
+import Account, { ICredentials, IProfile, IAccount, ISubscription, ISubscriptionSequence } from '../models/Account';
+import Experiment, {IResponse, GenericExperiment } from '../models/Experiment';
 import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
@@ -22,20 +22,6 @@ export const updateUserProfile = createAsyncThunk<
     },
 );
 
-export const subscribeToExperiment = createAsyncThunk<
-    ISubscription | undefined,
-    { experiment: IExperiment; resubscribe: boolean },
-    { state: ISelectorState }
->('account/subscriptions/subscribed', ({ experiment, resubscribe }, { getState }) => {
-    const subscriptions = selectSubscriptions(getState());
-
-    if (!resubscribe && subscriptions[experiment.id]) {
-        return;
-    }
-
-    return Account.subscribeToExperiment(experiment);
-});
-
 export const reloadResponses = createAsyncThunk(
     'account/reloadResponses',
     async (accountSubscriptions: string []) => {
@@ -50,23 +36,50 @@ export const saveNotes = createAsyncThunk(
     },
 );
 
-export const subscribeToParentExperiment = createAsyncThunk<
-    ISubscription[] | undefined,
-    { experiment: IParentExperiment; resubscribe: boolean },
-    { state: ISelectorState & IExperimentState }
->('account/subscriptions/parent', ({ experiment, resubscribe }, { getState }) => {
-    const subscriptions = selectSubscriptions(getState());
+export const saveSubscriptionSequence = createAsyncThunk<
+       ISubscriptionSequence,
+    { experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[] }
+>('account/saveSubscriptionSequence', async ({ boxId, experimentsByBoxWeek, orderedBoxWeeks }) => {
+        return Account.saveSubscriptionSequence(experimentsByBoxWeek, boxId, orderedBoxWeeks);
+    },
+);
 
-    if (!resubscribe && experiment.children.every((item) => subscriptions[item])) {
-        return;
+export const subscribeToExperiments = createAsyncThunk<
+    ISubscription[],
+    GenericExperiment[]>('account/subscriptions/parent', (experiments) => {
+    const subscribedAt = Date.now();
+    const recordsForInsertion:  Omit <ISubscription, 'id'>[] = [];
+
+    for (const experiment of experiments) {
+        if ('children' in experiment) {
+            experiment
+                .children
+                .forEach((child) => {
+                    recordsForInsertion.push({
+                        experimentId: child,
+                        subscribedAt: subscribedAt
+                    });
+                })
+        } else {
+            recordsForInsertion.push({
+                experimentId: experiment.id,
+                subscribedAt: subscribedAt
+            });
+        }
     }
-
-    const experiments = selectAllExperiments(getState());
-
-    return Promise.all(
-        experiment.children.map((item) => Account.subscribeToExperiment(experiments[item] as IExperiment)), // Experiment children are guaranteed to not be child experiments
-    );
+    return Account.subscribeToExperiments(recordsForInsertion);
 });
+
+
+export const unSubscribeFromBox =  async (subscriptionIds: string[], boxId: string) => {
+    await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId), Experiment.deleteResponses(subscriptionIds), Account.deleteSubscriptions(subscriptionIds)]);
+}
+export const subScribeToBox =  (dispatch: ThunkDispatch<any, any, any>, experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string) => {
+    const orderedBoxWeeks = Array.from(experimentsByBoxWeek.keys()).sort();
+    const firstBoxWeekExperiments = experimentsByBoxWeek.get(orderedBoxWeeks[0]);
+    dispatch(subscribeToExperiments(firstBoxWeekExperiments!))
+    dispatch(saveSubscriptionSequence({experimentsByBoxWeek, boxId, orderedBoxWeeks}));
+}
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
@@ -78,6 +91,7 @@ interface IAccountState {
     cohortId?: string;
     subscriptions: Record<string, ISubscription>;
     responses: Record<string, IResponse[]>,
+    subscriptionSequence: Record<string, ISubscriptionSequence>,
     notes?: Record<number, string>,
     deleted?: boolean;
 }
@@ -105,6 +119,21 @@ export const selectUserId = (state: ISelectorState) => state.account.id;
 
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 
+export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExperimentState, boxId: string) => {
+    const experiments = selectAllExperiments(state);
+    const subscriptionSequence = state.account.subscriptionSequence[boxId];
+    const subSeqMap = new Map<number, GenericExperiment[]>();
+
+    if (subscriptionSequence) {
+        for (const [boxWeek, experimentIds] of Object.entries(subscriptionSequence.experimentSequence)) {
+            const experimentsForBoxWeek = experimentIds.map(experimentId => experiments[experimentId]);
+            subSeqMap.set(parseInt(boxWeek), experimentsForBoxWeek);
+        }
+    }
+
+    return subSeqMap;
+}
+
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -112,7 +141,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {} } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, subscriptionSequence: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -127,8 +156,19 @@ export default createSlice({
             })
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
-                for (const sub of action.payload.subscriptions) {
-                    state.subscriptions[sub.experimentId] = sub;
+                if (action.payload.subscriptionSequences.length === 0) {
+                    state.subscriptionSequence = {};
+                } else {
+                    for (const subSeq of action.payload.subscriptionSequences) {
+                        state.subscriptionSequence[subSeq.boxId] = subSeq;
+                    }
+                }
+                if (action.payload.subscriptions.length === 0) {
+                    state.subscriptions = {};
+                } else {
+                    for (const sub of action.payload.subscriptions) {
+                        state.subscriptions[sub.experimentId] = sub;
+                    }
                 }
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
@@ -145,6 +185,7 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
+                state.subscriptionSequence = {};
                 delete state.cohortId;
                 delete state.id;
                 delete state.profile;
@@ -155,18 +196,14 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
+                state.subscriptionSequence = {};
                 delete state.cohortId;
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
                 delete state.notes;
             })
-            .addCase(subscribeToExperiment.fulfilled, (state, action) => {
-                if (action.payload) {
-                    state.subscriptions[action.payload.experimentId] =  action.payload;
-                }
-            })
-            .addCase(subscribeToParentExperiment.fulfilled, (state, action) => {
+            .addCase(subscribeToExperiments.fulfilled, (state, action) => {
                 if (action.payload) {
                     for (const subscription of action.payload) {
                         state.subscriptions[subscription.experimentId] = subscription;
@@ -175,6 +212,9 @@ export default createSlice({
             })
             .addCase(saveNotes.fulfilled, (state, action) => {
                 state.notes = action.payload;
+            })
+            .addCase(saveSubscriptionSequence.fulfilled, (state, action) => {
+                state.subscriptionSequence[action.payload.boxId] = action.payload;
             })
             .addCase(reloadResponses.fulfilled, (state, action) => {
                 state.responses = action.payload;

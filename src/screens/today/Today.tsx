@@ -91,6 +91,7 @@ const Today = function () {
                 dayNum={safeDayNum}
                 taskNum={taskNum}
                 presentingElement={presentingElement}
+                isSubscribed={true}
             />
         </Page>
     );

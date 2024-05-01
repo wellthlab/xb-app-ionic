@@ -248,6 +248,17 @@ class Experiment extends BaseModel {
 
         return responsesGroupedBySubscriptionId;
     }
+
+
+    static deleteResponses(subscriptionIds: string []) {
+        const db = this.getDb();
+        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+
+        return db
+            .collection('responses')
+            .deleteMany({ subscriptionId: { $in : subscriptionIdsAsObjectId } });
+    }
+
 }
 
 export default Experiment;

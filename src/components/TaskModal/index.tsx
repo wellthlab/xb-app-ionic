@@ -31,9 +31,10 @@ interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
     dayNum: number;
     taskNum: number;
+    isSubscribed: boolean;
 }
 
-const getInitialValues = function (blocks: ITask['blocks']) {
+const getInitialValues = function(blocks: ITask['blocks']) {
     const values: Record<string, string | boolean | number> = {};
 
     for (const block of blocks) {
@@ -70,7 +71,7 @@ const getInitialValues = function (blocks: ITask['blocks']) {
 
 const numberSchema = Yup.number().typeError('This field must be a number');
 
-const getSchema = function (blocks: ITask['blocks']) {
+const getSchema = function(blocks: ITask['blocks']) {
     const keys: Record<string, Yup.AnySchema> = {};
 
     for (const block of blocks) {
@@ -123,7 +124,7 @@ const getSchema = function (blocks: ITask['blocks']) {
     return Yup.object().shape(keys);
 };
 
-const renderParagraphWithLinks = function (content: string) {
+const renderParagraphWithLinks = function(content: string) {
     // This is a paragrah with [link](https://google.com)
     const parts = content.split(/(\[[^\]]+\]\([^\)]+\))/);
 
@@ -141,7 +142,7 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...others }: ITaskModalProps) {
+const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscribed, ...others }: ITaskModalProps) {
     const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
     const accountSubscriptions = useSelector(selectSubscriptions);
     const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
@@ -160,8 +161,9 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...other
     });
 
     return (
-        <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
-            <Stack spacing={2}>
+        <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}
+               className={isSubscribed ? '' : 'ion-modal-small'}>
+            {isSubscribed ? <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => {
                     if (block.type === 'para' || block.type === 'title') {
                         return (
@@ -299,6 +301,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...other
                     return <TextField {...commonProps} />;
                 })}
             </Stack>
+                : <Typography level="body1"> <br></br> Subscribe to this experiment to access the tasks in it! </Typography>}
         </Modal>
     );
 };

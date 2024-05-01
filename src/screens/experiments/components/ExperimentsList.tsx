@@ -1,4 +1,4 @@
-import React, { CSSProperties, Fragment } from 'react';
+import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import {
     Stack,
@@ -16,9 +16,11 @@ import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 interface IExperimentsListProps {
     experiments: GenericExperiment[];
     onExperimentSelected?: (experiment: GenericExperiment, isSelected: boolean) => void;
+    isCheckBoxSelected?: (boxWeek: number, experimentId: string) => boolean;
+    isSubscribedToBox?: boolean
 }
 
-const ExperimentsList = function({ experiments, onExperimentSelected }: IExperimentsListProps) {
+const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBoxSelected, isSubscribedToBox }: IExperimentsListProps) {
     const experiments_  = JSON.parse(JSON.stringify(experiments)) as GenericExperiment[];
     let boxWeeks = experiments_.map((e: { boxWeek: number; }) => {
         if (!e.boxWeek) {
@@ -35,16 +37,7 @@ const ExperimentsList = function({ experiments, onExperimentSelected }: IExperim
         setTabIndex(value as number);
     };
 
-
-    const checkBoxStyle: CSSProperties = {
-        position: "absolute",
-        right: 0,
-        padding: "0.5rem",
-        top: 0,
-        fontSize: "1.5rem",
-    };
-
-    const elems = boxWeeks.map((boxWeek) => {
+    const elements = boxWeeks.sort().map((boxWeek) => {
         const boxWeekExperiments = experiments_.filter(e => !e.hidden && e.boxWeek === boxWeek);
         return <Stack spacing={2}
         >
@@ -61,7 +54,7 @@ const ExperimentsList = function({ experiments, onExperimentSelected }: IExperim
                         >
                             <div>
                                 {experiment.name}
-                                {onExperimentSelected && <span style={checkBoxStyle}> <Checkbox variant="outlined"  size="sm" onChange={(event)  => onExperimentSelected(experiment, event.target.checked)}/> </span>}
+                                {onExperimentSelected && <span className="checkBox"> <Checkbox variant={isSubscribedToBox ? 'solid' : 'outlined'}  disabled ={isSubscribedToBox} checked = {isCheckBoxSelected ? isCheckBoxSelected(boxWeek, experiment.id) : false } size="sm" onChange={(event)  => onExperimentSelected(experiment, event.target.checked)}/> </span>}
                             </div>
 
                             <Stack spacing={1}>
@@ -97,12 +90,12 @@ const ExperimentsList = function({ experiments, onExperimentSelected }: IExperim
         <Tabs aria-label="week tabs" value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent', height: "100" }}>
             {onExperimentSelected && <TabList>
                 {boxWeeks.sort().map((boxWeek) => {
-                    return <Tab variant={tabIndex === boxWeek  ? 'solid' : 'plain'} color={tabIndex === boxWeek ? 'primary' : 'neutral'} > Week {boxWeek + 1} </Tab>
+                    return <Tab variant={tabIndex === boxWeek  ? 'solid' : 'plain'} color={tabIndex === boxWeek ? 'primary' : 'neutral'} key={boxWeek}> Week {boxWeek + 1} </Tab>
                 })}
             </TabList>}
             <br/>
             {boxWeeks.sort().map((boxWeek) => {
-                return <TabPanel value={boxWeek}> {elems[boxWeek]} </TabPanel>
+                return <TabPanel value={boxWeek} key={boxWeek}> {elements[boxWeek]} </TabPanel>
             })}
         </Tabs>
     );

@@ -41,15 +41,30 @@ import { saveNotes, selectNotes, selectResponses, selectSubscriptions } from '..
 const Journal = function () {
     const dispatch = useDispatch();
     const notes = useSelector((state) => selectNotes(state));
-    const allResponses = useSelector((state) => selectResponses(state));
-
     const [tabIndex, setTabIndex] = React.useState(0);
-
     const handleTabChange: TabsProps['onChange'] = function (_, value) {
         setTabIndex(value as number);
     };
-
     const [currentDate, setCurrentDate] = React.useState<Dayjs | null>(dayjs());
+
+    const responses = useSelector((state) => {
+        if (!currentDate) {
+            return [];
+        }
+        const allResponses =  selectResponses(state);
+
+        const startDate = new Date(currentDate.toDate());
+        startDate.setUTCHours(0, 0, 0, 0);
+
+        const endDate = new Date(currentDate.toDate());
+        endDate.setUTCHours(23, 59, 59, 9999);
+
+        return Object
+            .values(allResponses)
+            .flat()
+            .filter(s =>  s.createdAt  >= startDate.getTime() && s.createdAt <=  endDate.getTime()) ;
+    });
+
     const [showCalendar, setShowCalendar] = React.useState(false);
 
     const handleToggleCalendar = function () {
@@ -78,8 +93,6 @@ const Journal = function () {
         setIsAddingNote(false);
     };
 
-    const [responses, setResponses] = React.useState<IResponse[]>([]);
-
     const experiments = useSelector(selectAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
 
@@ -87,21 +100,6 @@ const Journal = function () {
     const [editableNote, setEditableNote] = React.useState('');
 
     React.useEffect(() => {
-        if (!currentDate) {
-            return;
-        }
-
-        const fetchResponses = async function () {
-            const startDate = new Date(currentDate.toDate());
-            startDate.setUTCHours(0, 0, 0, 0);
-
-            const endDate = new Date(currentDate.toDate());
-            endDate.setUTCHours(23, 59, 59, 9999);
-
-            const responses =  Object.values(allResponses).flat().filter(s =>  s.createdAt  >= startDate.getTime() && s.createdAt <=  endDate.getTime());
-            setResponses(responses);
-        };
-
         const noteForDisplay = notes[getNoteDate()];
         if (noteForDisplay) {
             setEditableNote(noteForDisplay);
@@ -110,10 +108,7 @@ const Journal = function () {
             setEditableNote('');
             setDisplayedNote('');
         }
-
-        fetchResponses();
     }, [currentDate]);
-
 
     const handleChangeNote = function (e: React.ChangeEvent<HTMLTextAreaElement>) {
         setEditableNote(e.target.value);

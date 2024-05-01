@@ -16,9 +16,9 @@ import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
 
-import { useSelector, useDispatch } from '../../slices/store';
+import { useSelector } from '../../slices/store';
 import { selectExperimentById, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
-import { subscribeToExperiment } from '../../slices/account';
+import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 
 const ExperimentTimeline = function () {
@@ -27,6 +27,9 @@ const ExperimentTimeline = function () {
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
+    const isSubscribedToExperiment = useSelector(state => {
+       return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
+    });
 
     const [modalOpen, setModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -41,11 +44,6 @@ const ExperimentTimeline = function () {
 
     const handleDismissModal = function () {
         setModalOpen(false);
-    };
-
-    const dispatch = useDispatch();
-    const handleRedoExperiment = function () {
-        dispatch(subscribeToExperiment({ experiment, resubscribe: true }));
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
@@ -118,7 +116,6 @@ const ExperimentTimeline = function () {
             {experimentCompleted && (
                 <Stack spacing={2}>
                     <Alert color="success">Congratulations! You have completed this experiment.</Alert>
-                    <Button onClick={handleRedoExperiment}>Redo experiment</Button>
                 </Stack>
             )}
 
@@ -130,6 +127,7 @@ const ExperimentTimeline = function () {
                 dayNum={dayNum}
                 taskNum={taskNum}
                 presentingElement={presentingElement}
+                isSubscribed={isSubscribedToExperiment}
             />
         </Page>
     );
