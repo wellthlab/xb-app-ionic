@@ -247,57 +247,6 @@ class Experiment extends BaseModel {
 
         return responsesGroupedBySubscriptionId;
     }
-
-
-    static saveNote(note: string) {
-        const db = this.getDb();
-
-        const startDate = new Date();
-        startDate.setUTCHours(0, 0, 0, 0);
-
-        const endDate = new Date(startDate);
-        endDate.setUTCHours(23, 59, 59, 9999);
-
-        return db.collection<IResponseDocument>('responses').updateOne(
-            {
-                userId: this.oid(this.client.currentUser!.id),
-                experimentId: null,
-                dayId: 0,
-                taskId: 0,
-                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-            },
-            { $set: { payload: { note } }, $setOnInsert: { createdAt: Date.now() } },
-            { upsert: true },
-        );
-    }
-
-    // static async getResponsesForDate(date: Date) {
-    //     const startDate = new Date(date);
-    //     startDate.setUTCHours(0, 0, 0, 0);
-    //
-    //     const endDate = new Date(date);
-    //     endDate.setUTCHours(23, 59, 59, 9999);
-    //
-    //     const db = this.getDb();
-    //
-    //     const result = await db.collection<IResponseDocument>('responses').find(
-    //         {
-    //             userId: this.oid(this.client.currentUser!.id),
-    //             createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-    //         },
-    //         { sort: { createdAt: -1 } },
-    //     );
-    //
-    //     return result.map((result: IResponseDocument) => {
-    //         const { _id, userId, ...others } = result;
-    //
-    //         return {
-    //             id: _id.toString(),
-    //             userId: userId.toString(),
-    //             ...others,
-    //         };
-    //     });
-    // }
 }
 
 export default Experiment;

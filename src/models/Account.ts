@@ -27,6 +27,7 @@ export interface IAccount {
     profile: IProfile;
     cohortId: string,
     subscriptions: string[],
+    notes?: Record<number, string>
     deleted?: boolean;
 }
 
@@ -261,6 +262,23 @@ class Account extends BaseModel {
             id: insertedId.toString() as string,
             accountId: this.client.currentUser!.id
         };
+    }
+
+    static async saveNotes(notes : Record<number, string>) {
+        const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
+
+        await db.collection<IAccountDocument>('accounts').updateOne(
+            {
+                _id: accountId,
+            },
+            {
+                $set: {
+                    notes: notes
+                }
+            }
+        );
+        return notes;
     }
 
     static confirmAccount(token: string, tokenId: string) {
