@@ -14,7 +14,7 @@ export interface ISubscriptionSequence {
     boxId: string;
     nextUpdateTimeUTC: number,
     userId: string,
-    experimentSequence: Record<number, string[]>,
+    experimentSequence: string[][],
     nextSequenceIndex: number
 }
 
@@ -22,7 +22,7 @@ export interface ISubscriptionSequenceDocument extends Omit<ISubscriptionSequenc
     _id: ObjectId;
     boxId: ObjectId;
     userId: ObjectId;
-    experimentSequence: Record<number, ObjectId[]>;
+    experimentSequence: ObjectId[][];
 }
 
 export interface ICredentials {
@@ -333,27 +333,27 @@ class Account extends BaseModel {
         const userId = this.oid(this.client.currentUser!.id);
         const nextUpdateTimeUTC = Date.now() + (7 * 24 * 60 * 60 * 1000);
         const nextSequenceIndex = 1;
-        const experimentSequence: Record<number, ObjectId[]> = {};
+        const experimentSequence: ObjectId[][] = [];
 
         for (let i = 0; i < orderedBoxWeeks.length; i++) {
             const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map(e => this.oid(e.id));
             experimentSequence[orderedBoxWeeks[i]] = experimentIdsForBoxWeek;
         }
 
-        await db.collection('subscriptionSequences').insertOne({
+       await db.collection('subscriptionSequences').insertOne({
             boxId: boxIdAsObjectId,
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: userId,
             experimentSequence: experimentSequence,
             nextSequenceIndex: nextSequenceIndex,
-        });
+       });
 
         convertObjectIdFieldsToString(experimentSequence);
         return {
             boxId: boxId,
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: this.client.currentUser!.id,
-            experimentSequence: experimentSequence as unknown as Record<number, string[]>,
+            experimentSequence: experimentSequence as unknown as string[][],
             nextSequenceIndex: nextSequenceIndex,
         } as ISubscriptionSequence;
     }

@@ -125,12 +125,11 @@ export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExper
     const subSeqMap = new Map<number, GenericExperiment[]>();
 
     if (subscriptionSequence) {
-        for (const [boxWeek, experimentIds] of Object.entries(subscriptionSequence.experimentSequence)) {
-            const experimentsForBoxWeek = experimentIds.map(experimentId => experiments[experimentId]);
-            subSeqMap.set(parseInt(boxWeek), experimentsForBoxWeek);
+        for(let i=0; i < subscriptionSequence.experimentSequence.length; i++) {
+            const experimentsForBoxWeek = subscriptionSequence.experimentSequence[i].map(experimentId => experiments[experimentId]);
+            subSeqMap.set(i, experimentsForBoxWeek);
         }
     }
-
     return subSeqMap;
 }
 
