@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Stack } from '@mui/joy';
@@ -31,7 +32,7 @@ const ExperimentsListScreen = function () {
 
     return (
         <Page headerTitle={`${capitalise(type)} experiments`} sx={{ position: 'relative' }}>
-            <PageTitle>Pick an experiment</PageTitle>
+            <PageTitle>{Strings.pick_an_experiment}</PageTitle>
 
             <Stack spacing={2}>
                 {type === 'move' && <ExerciseWarning />}

@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Button, Typography, Card, Stack, IconButton } from '@mui/joy';
 import { Collapse } from '@mui/material';
@@ -71,8 +72,7 @@ const MovementRecorder = function ({ max, movements, countdown }: IMovementRecor
     return (
         <React.Fragment>
             <Typography>
-                Click the button below to add a movement, then time yourself doing it. Or if you have done it in on your
-                own, tap Next. Repeat 4 to 8 times if possible.
+                {Strings.click_the_button_below_to_add}
             </Typography>
 
             {movementsDone.map(([movement, id]) => (
@@ -85,15 +85,15 @@ const MovementRecorder = function ({ max, movements, countdown }: IMovementRecor
                         <MovementPicker
                             value={tempMovement}
                             onChange={handleChangeMovement}
-                            label="What move do you want to do?"
+                            label={Strings.what_move_do_you_want_to_do}
                             movements={movements}
                         />
                         <Stack direction="row" spacing={2} justifyContent="flex-end">
                             <Button onClick={handleCancelAddMovement} size="sm" variant="outlined" color="danger">
-                                Cancel
+                                {Strings.cancel}
                             </Button>
                             <Button onClick={handleCommitMovement} size="sm" disabled={!tempMovement}>
-                                Add
+                                {Strings.add}
                             </Button>
                         </Stack>
                     </Stack>

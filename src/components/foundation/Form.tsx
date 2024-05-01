@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Button, Alert, Stack, ButtonProps, AlertProps } from '@mui/joy';
 
@@ -49,7 +50,7 @@ const Form = function ({
                 sx={{ mt: 3, mb: 2 }}
                 fullWidth
             >
-                {submitLabel || 'Submit'}
+                {submitLabel || Strings.submit}
             </Button>
 
             {footer}

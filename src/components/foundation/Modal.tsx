@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { IonContent, IonModal } from '@ionic/react';
 import { Container } from '@mui/joy';
@@ -37,11 +38,11 @@ const Modal = function ({ headerTitle, children, onDismiss, actionButtonLabel, o
                 rightButton={
                     onAction && (
                         <HeaderButton disabled={pending} onClick={handleAction}>
-                            {actionButtonLabel || 'Next'}
+                            {actionButtonLabel || Strings.next}
                         </HeaderButton>
                     )
                 }
-                leftButton={<HeaderButton onClick={handleCancel}>Close</HeaderButton>}
+                leftButton={<HeaderButton onClick={handleCancel}>{Strings.close}</HeaderButton>}
             />
 
             <IonContent>

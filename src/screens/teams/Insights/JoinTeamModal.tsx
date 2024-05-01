@@ -1,3 +1,4 @@
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
 import { Alert, TextField, Stack, Typography } from '@mui/joy';
 import * as Yup from 'yup';
@@ -9,7 +10,7 @@ import { joinTeam } from '../../../slices/team';
 import { useDispatch } from '../../../slices/store';
 
 const schema = Yup.object().shape({
-    invite: Yup.string().required('Invite code is missing').length(6, 'Invite code must have 6 digits'),
+    invite: Yup.string().required(Strings.invite_code_is_missing).length(6, Strings.invite_code_must_have_6),
 });
 
 interface IJoinTeamModal extends Omit<IModalProps, 'headerTitle'> {}
@@ -24,14 +25,13 @@ const JoinTeamModal = function ({ onDismiss, ...others }: IJoinTeamModal) {
     });
 
     return (
-        <Modal headerTitle="Join a team" onAction={handleSubmit} onDismiss={onDismiss} {...others}>
+        <Modal headerTitle={Strings.join_a_team} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
                 <Typography level="body2">
-                    An invite code is a unique 6-digit code assigned to each team. Ask the owner, or any member of the
-                    team you want to join to continue.
+                    {Strings.an_invite_code_is_a_unique}
                 </Typography>
                 {form.errors.$root && <Alert color="danger">{form.errors.$root}</Alert>}
-                <TextField label="Invite code" placeholder="AB1234" {...getInputProps('invite')} />
+                <TextField label={Strings.invite_code} placeholder="AB1234" {...getInputProps('invite')} />
             </Stack>
         </Modal>
     );

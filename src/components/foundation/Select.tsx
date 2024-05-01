@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Box, FormHelperText, FormLabel, FormControl } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
@@ -76,7 +77,7 @@ const Select = function ({
                     onBlur={onBlur}
                 >
                     <option value="" disabled hidden>
-                        Please select
+                        {Strings.please_select}
                     </option>
                     {options.map((option) => (
                         <option value={option} key={option}>
