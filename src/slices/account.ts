@@ -155,20 +155,16 @@ export default createSlice({
             })
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
-                if (action.payload.subscriptionSequences.length === 0) {
-                    state.subscriptionSequence = {};
-                } else {
-                    for (const subSeq of action.payload.subscriptionSequences) {
-                        state.subscriptionSequence[subSeq.boxId] = subSeq;
-                    }
+                state.subscriptions = {};
+                state.subscriptionSequence = {};
+
+                for (const subSeq of action.payload.subscriptionSequences) {
+                    state.subscriptionSequence[subSeq.boxId] = subSeq;
                 }
-                if (action.payload.subscriptions.length === 0) {
-                    state.subscriptions = {};
-                } else {
-                    for (const sub of action.payload.subscriptions) {
-                        state.subscriptions[sub.experimentId] = sub;
-                    }
+                for (const sub of action.payload.subscriptions) {
+                    state.subscriptions[sub.experimentId] = sub;
                 }
+
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
                     state.cohortId = action.payload.account.cohortId;
