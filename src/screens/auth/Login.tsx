@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TextField, Link, Box } from '@mui/joy';
@@ -16,7 +17,7 @@ import Account from '../../models/Account';
 
 const schema = Yup.object().shape({
     email: emailSchema,
-    password: Yup.string().required('Password is missing'),
+    password: Yup.string().required(Strings.password_is_missing),
 });
 
 const Login = function () {
@@ -33,7 +34,7 @@ const Login = function () {
         }
 
         if (result.error.message?.includes('invalid')) {
-            throw new Error('Email or password did not match our record');
+            throw new Error(Strings.email_or_password_did_not);
         }
 
         if (result.error.message?.includes('confirmation required')) {
@@ -50,27 +51,27 @@ const Login = function () {
     };
 
     return (
-        <AuthScreenLayout title="Login to continue">
+        <AuthScreenLayout title={Strings.login_to_continue}>
             {confirmationRequired ? (
                 <ConfirmationRequired email={form.values.email} onClickLoginLink={handleClickLoginLink} />
             ) : (
                 <Form
                     onSubmit={handleSubmit}
-                    submitLabel="Login"
+                    submitLabel={Strings.login}
                     message={form.errors.$root}
                     footer={
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Link component={RouterLink} level="body2" to="/auth/register">
-                                Not yet a user? Register
+                                {Strings.not_yet_a_user_register}
                             </Link>
                             <Link component={RouterLink} level="body2" to="/auth/reset-password">
-                                Forgotten password?
+                                {Strings.forgotten_password}
                             </Link>
                         </Box>
                     }
                 >
-                    <TextField label="Email" {...getInputProps('email')} />
-                    <TextField label="Password" type="password" {...getInputProps('password')} />
+                    <TextField label={Strings.email} {...getInputProps('email')} />
+                    <TextField label={Strings.password} type="password" {...getInputProps('password')} />
                 </Form>
             )}
         </AuthScreenLayout>

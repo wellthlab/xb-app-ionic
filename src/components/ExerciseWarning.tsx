@@ -1,3 +1,4 @@
+import Strings from '../utils/string_dict.js';
 import React from 'react';
 import { Alert, Link } from '@mui/joy';
 
@@ -5,12 +6,12 @@ const ExerciseWarning = function () {
     return (
         <Alert color="warning">
             <div>
-                Exercise is safe and beneficial for most people, but some people should check with their doctor before
-                changing their physical activity patterns. Use the{' '}
+                {Strings.exercise_is_safe_and}
+                {' '}
                 <Link href="https://forms.office.com/r/gnYJRRAkRd" target="_blank">
-                    PAR Questionnaire
+                    {Strings.par_questionnaire}
                 </Link>{' '}
-                and/or consult your GP before engaging in physical activity.
+                {Strings.exercise_is_safe_and_2}
             </div>
         </Alert>
     );

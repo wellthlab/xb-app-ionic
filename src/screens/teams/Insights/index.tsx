@@ -1,3 +1,4 @@
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
 import { Typography, Button, Stack } from '@mui/joy';
 
@@ -34,14 +35,14 @@ const Insights = function () {
                     <Centre>
                         <Stack spacing={2}>
                             <Typography level="h6" component="p">
-                                You are currently not in a team
+                                {Strings.you_are_currently_not_in_a}
                             </Typography>
-                            <Button onClick={createModalHandler(setJoinModalOpen, true)}>Join</Button>
+                            <Button onClick={createModalHandler(setJoinModalOpen, true)}>{Strings.join}</Button>
                             <Typography level="body2" textAlign="center">
-                                Or
+                                {Strings.or}
                             </Typography>
                             <Button variant="outlined" onClick={createModalHandler(setCreateModalOpen, true)}>
-                                Create one
+                                {Strings.create_one}
                             </Button>
                         </Stack>
                     </Centre>

@@ -1,3 +1,4 @@
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
 import { Link, Alert, Button, Stack, ButtonProps } from '@mui/joy';
 
@@ -18,7 +19,7 @@ const ConfirmationRequired = function ({ email, onClickLoginLink }: IConfirmatio
             <Alert>We have sent you an email to confirm your account</Alert>
             <Button onClick={handleResendEmail}>Resend confirmation email</Button>
             <Link component="button" level="body2" onClick={onClickLoginLink}>
-                Confirmed? Login
+                {Strings.confirmed_login}
             </Link>
         </Stack>
     );

@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import { Link, Typography } from '@mui/joy';
 import { Collapse } from '@mui/material';
 import React from 'react';
@@ -29,7 +30,7 @@ const CollapsibleInstructions = function ({ instructions }: ICollapsibleInstruct
                         ))}
                     </Collapse>
                     <Link onClick={handleToggle} sx={{ mt: 1 }}>
-                        Read {open ? 'less' : 'more'}
+                        {Strings.read}{open ? Strings.less : Strings.more}
                     </Link>
                 </React.Fragment>
             )}

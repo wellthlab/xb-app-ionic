@@ -47,46 +47,113 @@ Strings found with assigned keys:
 
 ./theme.tsx:
 
+./theme.tsx:
+
+./theme.tsx:
+
 ./index.tsx:
+
+./App.tsx:
+
+./App.tsx:
 
 ./App.tsx:
 
 ./screens/experiments/BoxesList.tsx:
 
+./screens/experiments/BoxesList.tsx:
+
+./screens/experiments/BoxesList.tsx:
+	welcome_to_spring_2023_xb : "Welcome to Spring 2023 XB demo! Please choose a box below to get started.",
+
 ./screens/experiments/ExperimentTimeline.tsx:
+
+./screens/experiments/ExperimentTimeline.tsx:
+
+./screens/experiments/ExperimentTimeline.tsx:
+	day_dayid__1 : "Day {dayId + 1}",
+	there_is_nothing_to_do_for : "There is nothing to do for this day",
+
+./screens/experiments/ExperimentsList.tsx:
+
+./screens/experiments/ExperimentsList.tsx:
 
 ./screens/experiments/ExperimentsList.tsx:
 
 ./screens/experiments/ChildExperimentsList.tsx:
 
+./screens/experiments/ChildExperimentsList.tsx:
+
+./screens/experiments/ChildExperimentsList.tsx:
+
+./screens/experiments/components/ExperimentsList.tsx:
+
+./screens/experiments/components/ExperimentsList.tsx:
+
 ./screens/experiments/components/ExperimentsList.tsx:
 
 ./screens/settings/StudyInformation.tsx:
+
+./screens/settings/StudyInformation.tsx:
 	about_this_study : "About this study",
+
+./screens/settings/StudyInformation.tsx:
 
 ./screens/settings/AllSettings.tsx:
 	are_you_sure : "Are you sure?",
 	this_action_is_irreversible : "This action is irreversible",
 	cancel : "Cancel",
 
+./screens/settings/AllSettings.tsx:
+
+./screens/settings/AllSettings.tsx:
+	about : "About",
+	app_theme : "App theme",
+	log_out : "Log out",
+	you_have_requested_your : "You have requested your account to be deleted. We will be in touch soon.",
+	delete_your_account : "Delete your account",
+
+./screens/settings/EditProfile.tsx:
+
 ./screens/settings/EditProfile.tsx:
 	your_profile : "Your profile",
+
+./screens/settings/EditProfile.tsx:
 
 ./screens/teams/Insights/JoinTeamModal.tsx:
 	invite_code_is_missing : "Invite code is missing",
 	invite_code_must_have_6 : "Invite code must have 6 digits",
+
+./screens/teams/Insights/JoinTeamModal.tsx:
 	join_a_team : "Join a team",
 	invite_code : "Invite code",
 
+./screens/teams/Insights/JoinTeamModal.tsx:
+	an_invite_code_is_a_unique : "An invite code is a unique 6-digit code assigned to each team. Ask the owner, or any member of the",
+
 ./screens/teams/Insights/CreateTeamModal.tsx:
 	team_name_is_missing : "Team name is missing",
+
+./screens/teams/Insights/CreateTeamModal.tsx:
 	create_a_team : "Create a team",
 	name : "Name",
 	the_blueberries : "The Blueberries",
 	description : "Description",
 	your_amazing_team_description : "Your amazing team description",
 
+./screens/teams/Insights/CreateTeamModal.tsx:
+	once_this_team_is_created_you : "Once this team is created, you can start inviting people by giving them the invite code.",
+
 ./screens/teams/Insights/index.tsx:
+
+./screens/teams/Insights/index.tsx:
+
+./screens/teams/Insights/index.tsx:
+	you_are_currently_not_in_a : "You are currently not in a team",
+	or : "Or",
+	create_one : "Create one",
+
+./screens/teams/Insights/InnerTeamInsights.tsx:
 
 ./screens/teams/Insights/InnerTeamInsights.tsx:
 	are_you_sure : "Are you sure?",
@@ -94,6 +161,14 @@ Strings found with assigned keys:
 	cancel : "Cancel",
 	no_description : "No description",
 	teams_leaderboard : "Teams leaderboard",
+
+./screens/teams/Insights/InnerTeamInsights.tsx:
+	leaderboard : "Leaderboard",
+	leave_team : "Leave team",
+	you : "You",
+	owner : "Owner",
+
+./screens/journal/Journal.tsx:
 
 ./screens/journal/Journal.tsx:
 	journal_tabs : "Journal tabs",
@@ -103,41 +178,81 @@ Strings found with assigned keys:
 	note : "Note",
 	a_note_to_your_future_self : "A note to your future self",
 
+./screens/journal/Journal.tsx:
+	a_summary_of_what_you_have : "A summary of what you have done so far",
+	daily : "Daily",
+	weekly : "Weekly",
+	note : "Note",
+	add_a_note : "Add a note",
+	activity : "Activity",
+	your_meal_today_consisted_of : "Your meal today consisted of {greenPercentage}%",
+	sorry_we_do_not_have_any_data : "Sorry, we do not have any data for now",
+	feel_free_to_jot_down : "Feel free to jot down anything that you want to look back for this day. It is for your use only,",
+
+./screens/onboarding/StudyInformation.tsx:
+
 ./screens/onboarding/StudyInformation.tsx:
 	next : "Next",
 	scroll_or_read_to_the_end_to : "Scroll or read to the end to continue",
+
+./screens/onboarding/StudyInformation.tsx:
+
+./screens/onboarding/NewProfile.tsx:
+
+./screens/onboarding/NewProfile.tsx:
 
 ./screens/onboarding/NewProfile.tsx:
 
 ./screens/onboarding/Consent.tsx:
 	please_check_this_box_to : "Please check this box to continue",
+
+./screens/onboarding/Consent.tsx:
 	enroll : "Enroll!",
 	i_have_read_the_provided : "I have read the provided participant information and consent to take part in the study",
 	i_am_a_member_of_staff_or_a : "I am a member of staff or a student at the University of Southampton, and I am at least 18 years old.",
 	i_understand_that_i_must_be : "I understand that I must be employed in a participating faculty or service, and that in some faculties or services I should discuss or raise participation with my line manager, as directed by my faculty or service.",
 	i_understand_that_physical : "I understand that physical activity can pose the risk of injury, and I have checked that it is safe for me to take part",
 
+./screens/onboarding/Consent.tsx:
+
+./screens/auth/NewPassword.tsx:
+
 ./screens/auth/NewPassword.tsx:
 	new_password : "New password",
 	new_password : "New password",
 	repeat_new_password : "Repeat new password",
 
+./screens/auth/NewPassword.tsx:
+
 ./screens/auth/Register.tsx:
 	you_must_register_with_a : "You must register with a valid soton.ac.uk email address",
 	this_email_is_associated_with : "This email is associated with an account. Please log in instead",
+
+./screens/auth/Register.tsx:
 	register_to_continue : "Register to continue",
 	register : "Register",
 	university_email : "University email",
 	password : "Password",
 	repeat_password : "Repeat password",
 
+./screens/auth/Register.tsx:
+	already_had_an_account_login : "Already had an account? Login",
+
 ./screens/auth/Login.tsx:
 	password_is_missing : "Password is missing",
 	email_or_password_did_not : "Email or password did not match our record",
+
+./screens/auth/Login.tsx:
 	login_to_continue : "Login to continue",
 	login : "Login",
 	email : "Email",
 	password : "Password",
+
+./screens/auth/Login.tsx:
+	not_yet_a_user_register : "Not yet a user? Register",
+	forgotten_password : "Forgotten password?",
+
+./screens/auth/ResetPassword.tsx:
 
 ./screens/auth/ResetPassword.tsx:
 	reset_your_password : "Reset your password",
@@ -145,24 +260,58 @@ Strings found with assigned keys:
 	continue : "Continue",
 	email : "Email",
 
+./screens/auth/ResetPassword.tsx:
+	already_had_an_account_login : "Already had an account? Login",
+
+./screens/auth/ConfirmAccount.tsx:
+
 ./screens/auth/ConfirmAccount.tsx:
 	confirm_your_account : "Confirm your account",
 
+./screens/auth/ConfirmAccount.tsx:
+	sorry_we_cannot_confirm_this : "Sorry, we cannot confirm this account. You have either confirmed your account, or have waited too",
+
 ./screens/auth/components/ConfirmationRequired.tsx:
+
+./screens/auth/components/ConfirmationRequired.tsx:
+
+./screens/auth/components/ConfirmationRequired.tsx:
+	confirmed_login : "Confirmed? Login",
+
+./screens/auth/components/AuthScreenLayout.tsx:
 
 ./screens/auth/components/AuthScreenLayout.tsx:
 	xb_app_logo : "XB App logo",
+
+./screens/auth/components/AuthScreenLayout.tsx:
+
+./screens/today/EntryIcon.tsx:
+
+./screens/today/EntryIcon.tsx:
 
 ./screens/today/EntryIcon.tsx:
 
 ./screens/today/Today.tsx:
 
+./screens/today/Today.tsx:
+
+./screens/today/Today.tsx:
+	you_havent_got_any_task_today : "You haven't got any task today",
+	explore_what_you_can_do_in : "Explore what you can do in "Boxes"",
+
 ./screens/today/CollapsibleInstructions.tsx:
+
+./screens/today/CollapsibleInstructions.tsx:
+
+./screens/today/CollapsibleInstructions.tsx:
+	read_open__less__more : "Read {open ? 'less' : 'more'}",
 
 ./components/ProfileForm.tsx:
 	your_first_name_is_missing : "Your first name is missing",
 	your_last_name_is_missing : "Your last name is missing",
 	department_is_missing : "Department is missing",
+
+./components/ProfileForm.tsx:
 	lets_roll : "Lets roll!",
 	first_name : "First name",
 	last_name : "Last name",
@@ -170,29 +319,70 @@ Strings found with assigned keys:
 	campus : "Campus",
 	office : "Office",
 
+./components/ProfileForm.tsx:
+
 ./components/TasksList.tsx:
 
-./components/AboutThisStudy.tsx:
+./components/TasksList.tsx:
+
+./components/TasksList.tsx:
 
 ./components/ExerciseWarning.tsx:
+
+./components/ExerciseWarning.tsx:
+
+./components/ExerciseWarning.tsx:
+	exercise_is_safe_and : "Exercise is safe and beneficial for most people, but some people should check with their doctor before",
+	par_questionnaire : "PAR Questionnaire",
+
+./components/TaskModal/TimerControls.tsx:
+
+./components/TaskModal/TimerControls.tsx:
 
 ./components/TaskModal/TimerControls.tsx:
 
 ./components/TaskModal/MovementRecorder.tsx:
+
+./components/TaskModal/MovementRecorder.tsx:
 	what_move_do_you_want_to_do : "What move do you want to do?",
+
+./components/TaskModal/MovementRecorder.tsx:
+	click_the_button_below_to_add : "Click the button below to add a movement, then time yourself doing it. Or if you have done it in on your",
+	cancel : "Cancel",
+	add : "Add",
+
+./components/TaskModal/TimeInput.tsx:
 
 ./components/TaskModal/TimeInput.tsx:
 	tap_on_the_time_display_to : "Tap on the time display to adjust time",
 
+./components/TaskModal/TimeInput.tsx:
+
+./components/TaskModal/CountdownTimer.tsx:
+
 ./components/TaskModal/CountdownTimer.tsx:
 	a_minute_has_passed : "A minute has passed",
+
+./components/TaskModal/CountdownTimer.tsx:
+
+./components/TaskModal/Stopwatch.tsx:
+
+./components/TaskModal/Stopwatch.tsx:
 
 ./components/TaskModal/Stopwatch.tsx:
 
 ./components/TaskModal/MovementPicker.tsx:
 
+./components/TaskModal/MovementPicker.tsx:
+
+./components/TaskModal/MovementPicker.tsx:
+
+./components/TaskModal/YoutubeVideo.tsx:
+
 ./components/TaskModal/YoutubeVideo.tsx:
 	youtube_video_player : "YouTube video player",
+
+./components/TaskModal/YoutubeVideo.tsx:
 
 ./components/TaskModal/index.tsx:
 	this_field_must_be_a_number : "This field must be a number",
@@ -202,16 +392,34 @@ Strings found with assigned keys:
 	this_field_must_be_checked : "This field must be checked",
 	this_field_is_missing : "This field is missing",
 
+./components/TaskModal/index.tsx:
+
+./components/TaskModal/index.tsx:
+
+./components/TaskModal/GreenDetector.tsx:
+
 ./components/TaskModal/GreenDetector.tsx:
 	retake_another_picture : "Retake another picture",
 	take_a_picture : "Take a picture",
 	please_review_the_estimation : "Please review the estimation. Note that the percentages do not necessarily add up to 100 as ingredients like rice counts neither as red nor green",
 	a_good_picture_must_show_your : "A good picture must show your meal as a whole. Try not to get other objects in the picture to get an accurate estimation",
-	green_ : "Green (%)",
-	red_ : "Red (%)",
+	green : "Green (%)",
+	red : "Red (%)",
+
+./components/TaskModal/GreenDetector.tsx:
+	the_original_picture_has_been : "The original picture has been re-coloured for you to see if the estimation is correct. Feel free",
+
+./components/TaskModal/HeartRateInput.tsx:
 
 ./components/TaskModal/HeartRateInput.tsx:
 	heart_rate_measure : "Heart rate measure illustration",
+
+./components/TaskModal/HeartRateInput.tsx:
+	find_your_pulse_by_firmly : "Find your pulse by firmly gripping your wrist like in the diagram below. Count your heartbeats for 20",
+
+./components/foundation/List.tsx:
+
+./components/foundation/List.tsx:
 
 ./components/foundation/List.tsx:
 
@@ -221,25 +429,66 @@ Strings found with assigned keys:
 
 ./components/foundation/Centre.tsx:
 
+./components/foundation/Centre.tsx:
+
+./components/foundation/Centre.tsx:
+
 ./components/foundation/Checkbox.tsx:
+
+./components/foundation/Checkbox.tsx:
+
+./components/foundation/Checkbox.tsx:
+
+./components/foundation/Container.tsx:
+
+./components/foundation/Container.tsx:
 
 ./components/foundation/Container.tsx:
 
 ./components/foundation/Textarea.tsx:
 
+./components/foundation/Textarea.tsx:
+
+./components/foundation/Textarea.tsx:
+
 ./components/foundation/Header.tsx:
+
+./components/foundation/Header.tsx:
+
+./components/foundation/Header.tsx:
+
+./components/foundation/Modal.tsx:
 
 ./components/foundation/Modal.tsx:
 	next : "Next",
 
+./components/foundation/Modal.tsx:
+
+./components/foundation/Form.tsx:
+
 ./components/foundation/Form.tsx:
 	submit : "Submit",
+
+./components/foundation/Form.tsx:
 
 ./components/foundation/SectionTitle.tsx:
 
 ./components/foundation/Page.tsx:
 
+./components/foundation/Page.tsx:
+
+./components/foundation/Page.tsx:
+
 ./components/foundation/Select.tsx:
+
+./components/foundation/Select.tsx:
+
+./components/foundation/Select.tsx:
+	please_select : "Please select",
+
+./components/foundation/Slider.tsx:
+
+./components/foundation/Slider.tsx:
 
 ./components/foundation/Slider.tsx:
 

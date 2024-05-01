@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { BoxProps, Box } from '@mui/joy';
 
@@ -10,7 +11,7 @@ const YouTubeVideo = function ({ src, ...others }: IYoutubeVideoProps) {
         <Box
             component="iframe"
             src={`https://youtube.com/embed/${src}`}
-            title="YouTube video player"
+            title={Strings.youtube_video_player}
             style={{ border: 0 }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
