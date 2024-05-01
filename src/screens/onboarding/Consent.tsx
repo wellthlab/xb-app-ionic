@@ -32,7 +32,7 @@ const Consent = function () {
 
     return (
         <Page>
-            <PageTitle>Just a few things...</PageTitle>
+            <PageTitle>{Strings.just_a_few_things}</PageTitle>
 
             <Form submitButtonColor="success" submitLabel={Strings.enroll} message={form.errors.$root} onSubmit={handleSubmit}>
                 <Checkbox

@@ -58,7 +58,7 @@ const Today = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Today's Experiments</PageTitle>
+            <PageTitle>{Strings.todays_experiments}</PageTitle>
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
@@ -68,7 +68,7 @@ const Today = function () {
 
                             <div>
                                 <Typography level="h4">{entry.name}</Typography>
-                                <Typography level="body2">Day {entry.day + 1}</Typography>
+                                <Typography level="body2">{Strings.day} {entry.day + 1}</Typography>
                             </div>
                         </Stack>
 

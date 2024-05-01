@@ -39,7 +39,7 @@ const InnerTeamInsights = function () {
                     role: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: Strings.ok,
                     role: 'confirm',
                     handler: () => dispatch(leaveTeam()),
                 },
@@ -49,7 +49,7 @@ const InnerTeamInsights = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Welcome, {fullName}</PageTitle>
+            <PageTitle>{Strings.welcome}, {fullName}</PageTitle>
             <Card sx={{ mb: 4 }}>
                 <Typography level="h5" sx={{ mb: 1 }}>
                     {team.name}
@@ -60,7 +60,7 @@ const InnerTeamInsights = function () {
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>
                         <Users />
-                        <Typography>{team.members.length} member(s)</Typography>
+                        <Typography>{team.members.length}{Strings.members}</Typography>
                     </Stack>
 
                     <Stack direction="row" spacing={2}>
@@ -79,7 +79,7 @@ const InnerTeamInsights = function () {
                 </Stack>
             </Card>
 
-            <SectionTitle>Members</SectionTitle>
+            <SectionTitle>{Strings.members}</SectionTitle>
 
             <Stack spacing={1}>
                 {team.members.map(({ id, profile }) => (
@@ -115,8 +115,8 @@ const InnerTeamInsights = function () {
                 onDismiss={createModalHandler(false)}
             >
                 <Centre>
-                    <Typography>This feature is coming soon</Typography>
-                    <Typography>Stay tuned</Typography>
+                    <Typography>{Strings.this_feature_is_coming_soon}</Typography>
+                    <Typography>{Strings.stay_tuned}</Typography>
                 </Centre>
             </Modal>
         </Page>

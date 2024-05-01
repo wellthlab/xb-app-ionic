@@ -32,7 +32,7 @@ const NewPassword = function () {
     return (
         <AuthScreenLayout title={Strings.new_password}>
             {done ? (
-                <Alert color="success">You have successfully reset your password</Alert>
+                <Alert color="success">{Strings.you_have_successfully_reset}</Alert>
             ) : (
                 <Form onSubmit={handleSubmit} message={form.errors.$root}>
                     <TextField label={Strings.new_password} type="password" {...getInputProps('password')} />

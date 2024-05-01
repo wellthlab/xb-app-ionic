@@ -30,7 +30,7 @@ const CollapsibleInstructions = function ({ instructions }: ICollapsibleInstruct
                         ))}
                     </Collapse>
                     <Link onClick={handleToggle} sx={{ mt: 1 }}>
-                        {Strings.read}{open ? Strings.less : Strings.more}
+                        {Strings.read} {open ? Strings.less : Strings.more}
                     </Link>
                 </React.Fragment>
             )}

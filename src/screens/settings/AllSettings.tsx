@@ -45,7 +45,7 @@ const AllSettings = function () {
                     role: 'cancel',
                 },
                 {
-                    text: 'OK',
+                    text: Strings.ok,
                     role: 'confirm',
                     handler: handleDeleteAccount,
                 },
@@ -65,7 +65,7 @@ const AllSettings = function () {
 
     return (
         <Page>
-            <PageTitle>Settings</PageTitle>
+            <PageTitle>{Strings.settings}</PageTitle>
 
             <IconContext.Provider value={{ size: 20 }}>
                 <Stack spacing={2}>
@@ -105,7 +105,7 @@ const AllSettings = function () {
                         </Alert>
                     )}
 
-                    {deleteFailed && <Alert color="danger">Sorry, your account cannot be deleted at the moment</Alert>}
+                    {deleteFailed && <Alert color="danger">{Strings.sorry_your_account_cannot_be}</Alert>}
 
                     <List>
                         <ListItem

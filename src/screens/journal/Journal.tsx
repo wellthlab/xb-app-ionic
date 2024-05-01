@@ -88,23 +88,23 @@ const Journal = function () {
     //
     //         const responses = [];
     //
-    //         let has{Strings.note}s = false;
+    //         let hasNotes = false;
     //
     //         for (const response of raw) {
     //             if (!response.experimentId) {
-    //                 has{Strings.note}s = true;
-    //                 const current{Strings.note} = response.payload.note as string;
-    //                 set{Strings.note}(current{Strings.note});
-    //                 set{Strings.note}Value(current{Strings.note});
+    //                 hasNotes = true;
+    //                 const currentNote = response.payload.note as string;
+    //                 setNote(currentNote);
+    //                 setNoteValue(currentNote);
     //                 continue;
     //             }
     //
     //             responses.push(response);
     //         }
     //
-    //         if (!has{Strings.note}s) {
-    //             set{Strings.note}('');
-    //             set{Strings.note}Value('');
+    //         if (!hasNotes) {
+    //             setNote('');
+    //             setNoteValue('');
     //         }
     //
     //         setResponses(responses);
@@ -128,7 +128,7 @@ const Journal = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle sx={{ mb: 2 }}>Journal</PageTitle>
+            <PageTitle sx={{ mb: 2 }}>{Strings.journal}</PageTitle>
             <Typography level="body1" sx={{ mb: 4 }}>
                 {Strings.a_summary_of_what_you_have}
             </Typography>
@@ -252,10 +252,8 @@ const Journal = function () {
                                                         <Stack spacing={1} mb={3}>
                                                             {greenPercentage && redPercentage && (
                                                                 <Typography color="neutral">
-                                                                    {Strings.your_meal_today_consisted_of}
-                                                                    {greenPercentage}
-                                                                    {Strings.your_meal_today_consisted_of_2}
-                                                                    {redPercentage}
+                                                                    {Strings.your_meal_today_consisted_of} {greenPercentage}
+                                                                    {Strings.your_meal_today_consisted_of_2} {redPercentage}
                                                                     {Strings.your_meal_today_consisted_of_3}
                                                                 </Typography>
                                                             )}
