@@ -3,18 +3,18 @@ import { Box } from '@mui/joy';
 import { Check } from 'phosphor-react';
 
 import { useSelector } from '../../slices/store';
-import { selectBoxFromExperiment, selectDayProgress } from '../../slices/experiments';
+import { selectBoxByExperimentId, selectDayProgress } from '../../slices/experiments';
 import getIcon from '../../utils/getIcon';
 
 interface IDayIconProps {
     experimentId: string;
-    dayId: number;
+    dayNum: number;
 }
 
-const EntryIcon = function ({ experimentId, dayId }: IDayIconProps) {
-    const box = useSelector((state) => selectBoxFromExperiment(state, experimentId));
+const EntryIcon = function ({ experimentId, dayNum }: IDayIconProps) {
+    const box = useSelector((state) => selectBoxByExperimentId(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const completed = dayProgress[dayId];
+    const completed = dayProgress[dayNum];
 
     const Icon = getIcon(box.icon);
 

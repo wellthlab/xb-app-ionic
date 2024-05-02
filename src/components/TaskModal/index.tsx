@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Typography, TextField, Stack, Link, sliderClasses } from '@mui/joy';
 import * as Yup from 'yup';
@@ -20,16 +21,21 @@ import useForm from '../foundation/useForm';
 
 import Experiment, { ITask } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
-import { updateProgress } from '../../slices/account';
+import {
+    reloadResponses,
+    selectSubscriptionByExperimentId,
+    selectSubscriptions,
+} from '../../slices/account';
 import { selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
-    dayId: number;
-    taskId: number;
+    dayNum: number;
+    taskNum: number;
+    isSubscribed: boolean;
 }
 
-const getInitialValues = function (blocks: ITask['blocks']) {
+const getInitialValues = function(blocks: ITask['blocks']) {
     const values: Record<string, string | boolean | number> = {};
 
     for (const block of blocks) {
@@ -64,9 +70,9 @@ const getInitialValues = function (blocks: ITask['blocks']) {
     return values;
 };
 
-const numberSchema = Yup.number().typeError('This field must be a number');
+const numberSchema = Yup.number().typeError(Strings.this_field_must_be_a_number);
 
-const getSchema = function (blocks: ITask['blocks']) {
+const getSchema = function(blocks: ITask['blocks']) {
     const keys: Record<string, Yup.AnySchema> = {};
 
     for (const block of blocks) {
@@ -76,8 +82,8 @@ const getSchema = function (blocks: ITask['blocks']) {
 
         if (block.type === 'green-detector') {
             if (!block.optional) {
-                keys[block.rk + '-$$g'] = numberSchema.required('This field is missing');
-                keys[block.rk + '-$$r'] = numberSchema.required('This field is missing');
+                keys[block.rk + '-$$g'] = numberSchema.required(Strings.this_field_is_missing);
+                keys[block.rk + '-$$r'] = numberSchema.required(Strings.this_field_is_missing);
                 continue;
             }
 
@@ -98,19 +104,19 @@ const getSchema = function (blocks: ITask['blocks']) {
         }
 
         if (block.type === 'stopwatch' && !block.optional) {
-            subSchema = subSchema.notOneOf([0], 'You need to time this activity!');
+            subSchema = subSchema.notOneOf([0], Strings.you_need_to_time_this);
         }
 
         if (block.type === 'checkbox') {
             subSchema = Yup.bool();
 
             if (!block.optional) {
-                subSchema = subSchema.oneOf([true], 'This field must be checked');
+                subSchema = subSchema.oneOf([true], Strings.this_field_must_be_checked);
             }
         }
 
         if (!block.optional && block.type !== 'checkbox' && block.type !== 'stopwatch') {
-            subSchema = subSchema.required('This field is missing');
+            subSchema = subSchema.required(Strings.this_field_is_missing);
         }
 
         keys[block.rk] = subSchema;
@@ -119,7 +125,7 @@ const getSchema = function (blocks: ITask['blocks']) {
     return Yup.object().shape(keys);
 };
 
-const renderParagraphWithLinks = function (content: string) {
+const renderParagraphWithLinks = function(content: string) {
     // This is a paragrah with [link](https://google.com)
     const parts = content.split(/(\[[^\]]+\]\([^\)]+\))/);
 
@@ -137,8 +143,10 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others }: ITaskModalProps) {
-    const task = useSelector((state) => selectTask(state, experimentId, dayId, taskId));
+const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscribed, ...others }: ITaskModalProps) {
+    const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
+    const accountSubscriptions = useSelector(selectSubscriptions);
+    const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);
     const initialValues = React.useMemo(() => getInitialValues(task.blocks), [task.blocks]);
@@ -148,18 +156,15 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
     const dispatch = useDispatch();
 
     const handleSubmit = createHandleSubmit(async (data) => {
-        if (Object.keys(data).length) {
-            await Experiment.saveResponse({ experimentId, taskId, dayId, payload: data });
-        }
-
-        await dispatch(updateProgress({ experimentId, dayId, taskId }));
-
+        await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
+        await dispatch(reloadResponses(Object.values(accountSubscriptions).map(subscription => subscription.id)));
         onDismiss();
     });
 
     return (
-        <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
-            <Stack spacing={2}>
+        <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}
+               className={isSubscribed ? '' : 'ion-modal-small'}>
+            {isSubscribed ? <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => {
                     if (block.type === 'para' || block.type === 'title') {
                         return (
@@ -297,6 +302,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayId, taskId, ...others 
                     return <TextField {...commonProps} />;
                 })}
             </Stack>
+                : <Typography level="body1"> {Strings.subscribe_to_access_tasks} </Typography>}
         </Modal>
     );
 };

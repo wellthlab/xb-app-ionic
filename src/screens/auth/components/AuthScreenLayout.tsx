@@ -1,3 +1,4 @@
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
 import { Box } from '@mui/joy';
 
@@ -12,7 +13,7 @@ interface IAuthScreenLayout {
 const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
     return (
         <Page>
-            <Box component="img" sx={{ width: 80, mb: 4 }} src="/assets/logo/logo.png" alt="XB App logo" />
+            <Box component="img" sx={{ width: 80, mb: 4 }} src="/assets/logo/logo.png" alt={Strings.xb_app_logo} />
             <PageTitle sx={{ mb: 3 }}>{title}</PageTitle>
             {children}
         </Page>

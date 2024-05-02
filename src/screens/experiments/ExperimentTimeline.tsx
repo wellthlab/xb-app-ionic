@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Stack, Alert, Button } from '@mui/joy';
@@ -16,36 +17,34 @@ import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
 
-import { useSelector, useDispatch } from '../../slices/store';
-import { selectExperiment, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
-import { subscribeToExperiment } from '../../slices/account';
+import { useSelector } from '../../slices/store';
+import { selectExperimentById, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
+import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
 
-    const experiment = useSelector((state) => selectExperiment(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
+    const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
+    const isSubscribedToExperiment = useSelector(state => {
+       return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
+    });
 
     const [modalOpen, setModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
-    const [dayId, setDayId] = React.useState(0);
-    const [taskId, setTaskId] = React.useState(0);
+    const [dayNum, setDayNum] = React.useState(0);
+    const [taskNum, setTaskNum] = React.useState(0);
 
-    const handleClickTask = function (_: string, dayId: number, taskId: number) {
+    const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
         setModalOpen(true);
-        setDayId(dayId);
-        setTaskId(taskId);
+        setDayNum(dayNum);
+        setTaskNum(taskNum);
     };
 
     const handleDismissModal = function () {
         setModalOpen(false);
-    };
-
-    const dispatch = useDispatch();
-    const handleRedoExperiment = function () {
-        dispatch(subscribeToExperiment({ experiment, resubscribe: true }));
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
@@ -91,7 +90,7 @@ const ExperimentTimeline = function () {
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="body2" sx={{ my: 2 }}>
-                                        Day {dayId + 1}
+                                        {Strings.day} {dayId + 1}
                                     </Typography>
                                     <Stack spacing={2}>
                                         {unlocked &&
@@ -99,12 +98,12 @@ const ExperimentTimeline = function () {
                                                 <TasksList
                                                     tasks={day.tasks}
                                                     experimentId={experimentId}
-                                                    dayId={dayId}
+                                                    dayNum={dayId}
                                                     onTaskClick={handleClickTask}
                                                 />
                                             ) : (
                                                 <Typography level="body2">
-                                                    There is nothing to do for this day
+                                                    {Strings.there_is_nothing_to_do_for}
                                                 </Typography>
                                             ))}
                                     </Stack>
@@ -117,19 +116,19 @@ const ExperimentTimeline = function () {
 
             {experimentCompleted && (
                 <Stack spacing={2}>
-                    <Alert color="success">Congratulations! You have completed this experiment.</Alert>
-                    <Button onClick={handleRedoExperiment}>Redo experiment</Button>
+                    <Alert color="success">{Strings.congratulations_you_have}</Alert>
                 </Stack>
             )}
 
             <TaskModal
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
-                key={`${dayId}.${taskId}`}
+                key={`${dayNum}.${taskNum}`}
                 experimentId={experimentId}
-                dayId={dayId}
-                taskId={taskId}
+                dayNum={dayNum}
+                taskNum={taskNum}
                 presentingElement={presentingElement}
+                isSubscribed={isSubscribedToExperiment}
             />
         </Page>
     );

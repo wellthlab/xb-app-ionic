@@ -1,7 +1,30 @@
-import { Credentials } from 'realm-web';
+import { BSON, Credentials } from 'realm-web';
 
 import { BaseModel, ObjectId } from './utils';
-import { IExperiment } from './Experiment';
+import { GenericExperiment } from './Experiment';
+import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
+
+export interface ICohort {
+    startDate: number,
+    id: string;
+}
+
+export interface ISubscriptionSequence {
+    _id: string;
+    boxId: string;
+    nextUpdateTimeUTC: number,
+    userId: string,
+    experimentSequence: string[][],
+    orderedBoxWeeks: number[]
+    nextSequenceIndex: number
+}
+
+export interface ISubscriptionSequenceDocument extends Omit<ISubscriptionSequence, '_id' | 'boxId' | 'userId' | 'experimentSequence'> {
+    _id: ObjectId;
+    boxId: ObjectId;
+    userId: ObjectId;
+    experimentSequence: ObjectId[][];
+}
 
 export interface ICredentials {
     email: string;
@@ -12,7 +35,7 @@ export interface IProfile {
     firstName: string;
     lastName: string;
     email: string;
-    department: string;
+    department?: string;
     campus?: string;
     office?: string;
 }
@@ -20,23 +43,26 @@ export interface IProfile {
 export interface IAccount {
     id: string;
     profile: IProfile;
-    subscriptions: ISubscription[];
+    cohortId: string,
+    subscriptions: string[],
+    notes?: Record<number, string>
     deleted?: boolean;
 }
 
 export interface ISubscription {
     experimentId: string;
-    progress: boolean[][];
     subscribedAt: number;
+    id: string;
 }
 
 export interface ISubscriptionDocument extends Omit<ISubscription, 'experimentId'> {
     experimentId: ObjectId;
+    _id: ObjectId;
 }
 
 export interface IAccountDocument extends Omit<IAccount, 'subscriptions'> {
     _id: ObjectId;
-    subscriptions: ISubscriptionDocument[];
+    subscriptions: ObjectId[];
 }
 
 class Account extends BaseModel {
@@ -157,10 +183,7 @@ class Account extends BaseModel {
         return {
             ...others,
             id: _id.toString(),
-            subscriptions: subscriptions.map(({ experimentId, ...item }) => ({
-                ...item,
-                experimentId: experimentId.toString(),
-            })),
+            subscriptions: subscriptions.map(subscriptionId => subscriptionId.toString()),
         };
     }
 
@@ -174,81 +197,191 @@ class Account extends BaseModel {
             return null;
         }
 
-        return this.fromDocument(result);
+        convertObjectIdFieldsToString(result);
+        const asIAccount= result as unknown as IAccount;
+        asIAccount.id = result._id as unknown as string;
+        return asIAccount;
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>) {
+    static async getSubscriptions(subscriptionIds: string[]): Promise<ISubscription[]> {
         const db = this.getDb();
+        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
 
+        const records = await db.collection<ISubscriptionDocument>('subscriptions').find({ _id: { $in: subscriptionIdsAsObjectIds } });
+        records.forEach(record => convertObjectIdFieldsToString(record));
+
+        return records.map(record => {
+            const asISubscription = record as unknown as ISubscription;
+            asISubscription.id = record._id as unknown as string;
+            return asISubscription;
+        });
+    }
+
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
+        if (!cohortId) {
+            cohortId = await this.createNewCohort();
+        }
+
+        const db = this.getDb();
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
         await db.collection<IAccountDocument>('accounts').updateOne(
             { _id: this.oid(id) },
             {
-                $set: { profile: { ...payload, email } },
+                $set: { profile: { ...payload, email }, cohortId: cohortId },
                 $setOnInsert: { subscriptions: [] },
             },
             { upsert: true },
         );
 
         return {
-            email,
-            ...payload,
+            profile: { email, ...payload },
+            cohortId,
         };
     }
 
-    static async subscribeToExperiment(experiment: IExperiment) {
+    static async createNewCohort() {
         const db = this.getDb();
+        const startDate = Date.now();
 
-        const subscribedAt = Date.now();
-        const progress = new Array(experiment.days.length)
-            .fill([])
-            .map((_, i) => new Array(experiment.days[i].tasks.length).fill(false)) as boolean[][];
+        const insertResult = (await db.collection('cohorts').insertOne(
+            { startDate: startDate },
+        ));
 
+        return insertResult.insertedId.toString() as string;
+    }
+
+    static async subscribeToExperiments(recordsForInsertion: Omit<ISubscription, 'id'>[]) {
+        const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
+        const records = recordsForInsertion.map(record => {
+            return {
+                _id: new BSON.ObjectId(),
+                experimentId: this.oid(record.experimentId),
+                subscribedAt: record.subscribedAt,
+            };
+        });
+
+        await db.collection('subscriptions').insertMany(records);
         await db.collection<IAccountDocument>('accounts').updateOne(
             {
-                _id: this.oid(this.client.currentUser!.id),
-            },
-            {
-                $pull: {
-                    subscriptions: { experimentId: this.oid(experiment.id) },
-                },
-            },
-        );
-
-        await db.collection<IAccountDocument>('accounts').updateOne(
-            {
-                _id: this.oid(this.client.currentUser!.id),
+                _id: accountId,
             },
             {
                 $push: {
-                    subscriptions: { experimentId: this.oid(experiment.id), progress, subscribedAt },
+                    subscriptions: { $each: records.map(record => record._id) },
                 },
             },
         );
 
-        return { experimentId: experiment.id, progress, subscribedAt };
+        return records.map((record) => {
+            return {
+                experimentId: record.experimentId.toString(),
+                subscribedAt: record.subscribedAt,
+                id: record._id.toString(),
+                accountId: this.client.currentUser!.id,
+            };
+        });
     }
 
-    static async subscribeToParentExperiment() {}
-
-    static async updateProgress(experimentId: string, dayId: number, taskId: number) {
+    static async saveNotes(notes: Record<number, string>) {
         const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
 
         await db.collection<IAccountDocument>('accounts').updateOne(
             {
-                _id: this.oid(this.client.currentUser!.id),
+                _id: accountId,
             },
             {
                 $set: {
-                    [`subscriptions.$[elem].progress.${dayId}.${taskId}`]: true,
+                    notes: notes,
                 },
             },
+        );
+        return notes;
+    }
+
+    static deleteSubscriptions(subscriptionIds: string []) {
+        const db = this.getDb();
+        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+
+        return db
+            .collection('subscriptions')
+            .deleteMany({ _id: { $in: subscriptionIdsAsObjectId } });
+    }
+
+    static async removeAccountSubscriptions(subscriptionIds: string[]) {
+        const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
+        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+
+        await db.collection<IAccountDocument>('accounts').updateOne(
             {
-                arrayFilters: [{ 'elem.experimentId': this.oid(experimentId) }],
+                _id: accountId,
+            },
+            {
+                $pull: {
+                    subscriptions: { $in: subscriptionIdsAsObjectId },
+                },
             },
         );
+    }
+
+    static async saveSubscriptionSequence(experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[]) {
+        const db = this.getDb();
+        const boxIdAsObjectId = this.oid(boxId);
+        const userId = this.oid(this.client.currentUser!.id);
+        const nextUpdateTimeUTC = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        const nextSequenceIndex = 1;
+        const experimentSequence: ObjectId[][] = [];
+
+        for (let i = 0; i < orderedBoxWeeks.length; i++) {
+            const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map(e => this.oid(e.id));
+            experimentSequence.push(experimentIdsForBoxWeek);
+        }
+
+       await db.collection('subscriptionSequences').insertOne({
+            boxId: boxIdAsObjectId,
+            nextUpdateTimeUTC: nextUpdateTimeUTC,
+            userId: userId,
+            experimentSequence: experimentSequence,
+            orderedBoxWeeks: orderedBoxWeeks,
+            nextSequenceIndex: nextSequenceIndex,
+       });
+
+        convertObjectIdFieldsToString(experimentSequence);
+        return {
+            boxId: boxId,
+            nextUpdateTimeUTC: nextUpdateTimeUTC,
+            userId: this.client.currentUser!.id,
+            experimentSequence: experimentSequence as unknown as string[][],
+            orderedBoxWeeks: orderedBoxWeeks,
+            nextSequenceIndex: nextSequenceIndex,
+        } as ISubscriptionSequence;
+    }
+
+    static async getSubscriptionSequence() {
+        const db = this.getDb();
+        const userId = this.oid(this.client.currentUser!.id);
+
+        const result = await db.collection<ISubscriptionSequenceDocument>('subscriptionSequences').find({
+            userId: userId,
+        });
+
+        convertObjectIdFieldsToString(result);
+        return result as unknown as ISubscriptionSequence[];
+    }
+
+    static async deleteSubscriptionSequence(boxId: string) {
+        const db = this.getDb();
+        const userId = this.oid(this.client.currentUser!.id);
+        const boxIdAsObjectId = this.oid(boxId);
+
+        await db.collection('subscriptionSequences').deleteMany({
+            userId: userId,
+            boxId: boxIdAsObjectId,
+        });
     }
 
     static confirmAccount(token: string, tokenId: string) {

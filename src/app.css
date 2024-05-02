@@ -157,3 +157,16 @@ body.dark {
 
     --ion-card-background: #1e1e1e;
 }
+
+
+.ion-modal-small {
+    --height: 15%;
+}
+
+.checkBox {
+    position: absolute;
+    right: 0;
+    padding: 0.5rem;
+    top: 0;
+    font-size: 1.5rem;
+}

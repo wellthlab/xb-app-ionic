@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Stack, Typography } from '@mui/joy';
 
@@ -20,8 +21,8 @@ const Today = function () {
     const [modalOpen, setModalOpen] = React.useState(false);
 
     const [experimentId, setExperimentId] = React.useState<string>();
-    const [dayId, setDayId] = React.useState<number>();
-    const [taskId, setTaskId] = React.useState(0);
+    const [dayNum, setDayNum] = React.useState<number>();
+    const [taskNum, setTaskNum] = React.useState(0);
 
     if (!tasksByExperiment.length) {
         return (
@@ -29,11 +30,11 @@ const Today = function () {
                 <Centre>
                     <Stack spacing={1}>
                         <Typography level="h6" component="p">
-                            You haven't got any task today
+                            {Strings.you_havent_got_any_task_today}
                         </Typography>
 
                         <Typography level="body2" textAlign="center">
-                            Explore what you can do in "Boxes"
+                            {Strings.explore_what_you_can_do_in}
                         </Typography>
                     </Stack>
                 </Centre>
@@ -45,29 +46,29 @@ const Today = function () {
         setModalOpen(false);
     };
 
-    const handleClickTask = function (experimentId: string, dayId: number, taskId: number) {
+    const handleClickTask = function (experimentId: string, dayNum: number, taskNum: number) {
         setModalOpen(true);
         setExperimentId(experimentId);
-        setDayId(dayId);
-        setTaskId(taskId);
+        setDayNum(dayNum);
+        setTaskNum(taskNum);
     };
 
     const safeExperimentId = experimentId || tasksByExperiment[0].id;
-    const safeDayId = dayId === undefined ? tasksByExperiment[0].day : dayId;
+    const safeDayNum = dayNum === undefined ? tasksByExperiment[0].day : dayNum;
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Today's Experiments</PageTitle>
+            <PageTitle>{Strings.todays_experiments}</PageTitle>
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
                     <Stack spacing={2} key={entry.id}>
                         <Stack spacing={2} direction="row" alignItems="center">
-                            <EntryIcon experimentId={entry.id} dayId={entry.day} />
+                            <EntryIcon experimentId={entry.id} dayNum={entry.day} />
 
                             <div>
                                 <Typography level="h4">{entry.name}</Typography>
-                                <Typography level="body2">Day {entry.day + 1}</Typography>
+                                <Typography level="body2">{Strings.day} {entry.day + 1}</Typography>
                             </div>
                         </Stack>
 
@@ -75,7 +76,7 @@ const Today = function () {
 
                         <TasksList
                             tasks={entry.content.tasks}
-                            dayId={entry.day}
+                            dayNum={entry.day}
                             experimentId={entry.id}
                             onTaskClick={handleClickTask}
                         />
@@ -86,11 +87,12 @@ const Today = function () {
             <TaskModal
                 isOpen={modalOpen}
                 onDismiss={handleDismissModal}
-                key={`${safeExperimentId}.${safeDayId}.${taskId}`}
+                key={`${safeExperimentId}.${safeDayNum}.${taskNum}`}
                 experimentId={safeExperimentId}
-                dayId={safeDayId}
-                taskId={taskId}
+                dayNum={safeDayNum}
+                taskNum={taskNum}
                 presentingElement={presentingElement}
+                isSubscribed={true}
             />
         </Page>
     );

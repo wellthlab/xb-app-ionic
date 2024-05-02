@@ -7,13 +7,13 @@ import ExperimentsList from './components/ExperimentsList';
 import Page from '../../components/foundation/Page';
 
 import { useSelector } from '../../slices/store';
-import { selectAllExperimentsById, selectExperiment } from '../../slices/experiments';
+import { selectAllExperiments, selectExperimentById } from '../../slices/experiments';
 
 const ChildExperimentsList = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
 
-    const experiment = useSelector((state) => selectExperiment(state, experimentId));
-    const experiments = useSelector(selectAllExperimentsById);
+    const experiment = useSelector((state) => selectExperimentById(state, experimentId));
+    const experiments = useSelector(selectAllExperiments);
 
     if (!('children' in experiment)) {
         return <ExperimentTimeline />;

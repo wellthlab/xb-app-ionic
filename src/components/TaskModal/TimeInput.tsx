@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Stack, Typography, FormLabel, FormControl, FormControlProps, FormHelperText } from '@mui/joy';
 import { ClickAwayListener } from '@mui/material';
@@ -70,7 +71,7 @@ const TimeInput = function ({ value, onChange, label, helperText, hideSeconds, .
                         </React.Fragment>
                     ))}
                 </Stack>
-                <FormHelperText>{helperText || 'Tap on the time display to adjust time'}</FormHelperText>
+                <FormHelperText>{helperText || Strings.tap_on_the_time_display_to}</FormHelperText>
             </FormControl>
         </ClickAwayListener>
     );

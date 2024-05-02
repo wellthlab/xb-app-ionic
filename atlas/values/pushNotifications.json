@@ -1,0 +1,12 @@
+{
+    "END_OF_DAY_REMINDER": {
+        "title": "Review your day!",
+        "body": "It’s time to check in and see how you feel.",
+        "descritpion": "A notification to be sent at the end of day (approximately 9PM local time)"
+    },
+    "START_OF_DAY_REMINDER": {
+        "title": "Tasks are due!",
+        "body": "You have some actions to complete in the XB app today",
+        "descritpion": "A notification to be sent at the beginning of the day (approximately 8AM local time)"
+    }
+}

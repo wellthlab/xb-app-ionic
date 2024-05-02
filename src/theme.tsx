@@ -138,8 +138,6 @@ mergedTheme.unstable_sxConfig = {
     ...joySxConfig,
 };
 
-console.log(mergedTheme);
-
 export const ThemeProvider = function ({ children }: React.PropsWithChildren) {
     return (
         <CssVarsProvider

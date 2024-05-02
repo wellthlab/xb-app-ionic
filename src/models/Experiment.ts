@@ -1,6 +1,9 @@
 import { BaseModel, ObjectId } from './utils';
+import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
+import { Record } from 'phosphor-react';
 
 export interface IBox {
+    id: string;
     name: string;
     icon: string;
     disabled?: boolean;
@@ -11,23 +14,23 @@ interface IBoxDocument extends IBox {
 }
 
 interface IBaseExperiment {
-    id: string;
     name: string;
-    box: string;
+    boxId: string;
     desc?: string;
     duration: number;
     hidden?: boolean;
+    id: string;
+    boxWeek: number
 }
 
 export interface IExperiment extends IBaseExperiment {
-    instructions?: string[];
-    duration: number;
     days: IDay[];
+    preconditions?: any[];
     parent?: string;
+    instructions?: string[];
 }
 
 export interface IParentExperiment extends IBaseExperiment {
-    continuation?: string;
     children: string[];
 }
 
@@ -38,24 +41,29 @@ interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
     parent?: ObjectId;
 }
 
-interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'continuation' | 'children'> {
+interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'children'> {
     _id: ObjectId;
-    continuation?: ObjectId;
     children: ObjectId[];
 }
 
 type GenericExperimentDocument = IExperimentDocument | IParentExperimentDocument;
 
 export interface IDay {
-    name: string;
-    desc?: string;
+    id: string;
     tasks: ITask[];
+    disabled?: boolean;
+    desc?: string;
+    preconditions?: any[];
+    name: string;
 }
 
 export interface ITask {
+    taskId: string;
     name: string;
     icon?: string;
     blocks: Block[];
+    disabled?: boolean;
+    preconditions?: any[];
 }
 
 export type Block =
@@ -174,42 +182,29 @@ interface ICountdownTimer {
 
 export interface IResponse {
     id: string;
-    userId: string;
-    experimentId: string | null;
-    dayId: number;
-    taskId: number;
+    subscriptionId: string;
+    taskId: string;
+    dayNum: number;
     payload: Record<string, string | number>;
     createdAt: number;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'userId' | 'id'> {
+interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId' > {
     _id: ObjectId;
-    userId: ObjectId;
+    subscriptionId: ObjectId;
+    taskId: ObjectId;
 }
 
 class Experiment extends BaseModel {
     static async getExperiments(): Promise<GenericExperiment[]> {
         const db = this.getDb();
+        const records = await db.collection<GenericExperimentDocument>('experiments').find();
+        records.forEach(record => convertObjectIdFieldsToString(record));
 
-        const result = await db.collection<GenericExperimentDocument>('experiments').find();
-
-        return result.map((item) => {
-            if ('children' in item) {
-                const { _id, children, continuation, ...others } = item;
-                return {
-                    ...others,
-                    id: _id.toString(),
-                    children: children.map((child) => child.toString()),
-                    continuation: continuation?.toString(),
-                };
-            }
-
-            const { _id, parent, ...others } = item;
-            return {
-                ...others,
-                id: _id.toString(),
-                parent: parent?.toString(),
-            };
+        return records.map(record => {
+             const asGenericExperiment= record as unknown as GenericExperiment;
+             asGenericExperiment.id = record._id as unknown as string;
+             return asGenericExperiment;
         });
     }
 
@@ -221,63 +216,49 @@ class Experiment extends BaseModel {
         return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
     }
 
-    static saveResponse(response: Omit<IResponse, 'userId' | 'createdAt' | 'id'>) {
+    static saveResponse(response: Omit<IResponse, 'subscriptionId' |'createdAt' | 'id'>, subscriptionId: string) {
         const db = this.getDb();
 
         return db
             .collection<IResponseDocument>('responses')
-            .insertOne({ ...response, userId: this.oid(this.client.currentUser!.id), createdAt: Date.now() });
+            .insertOne({ ...response, taskId: this.oid(response.taskId), subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
     }
 
-    static saveNote(note: string) {
+     static async getResponses(subscriptionIds: string[]) {
         const db = this.getDb();
+        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
+        const responses = await db.collection<IResponseDocument>('responses')
+            .find({ subscriptionId: { $in: subscriptionIdsAsObjectIds } });
+        convertObjectIdFieldsToString(responses);
 
-        const startDate = new Date();
-        startDate.setUTCHours(0, 0, 0, 0);
-
-        const endDate = new Date(startDate);
-        endDate.setUTCHours(23, 59, 59, 9999);
-
-        return db.collection<IResponseDocument>('responses').updateOne(
-            {
-                userId: this.oid(this.client.currentUser!.id),
-                experimentId: null,
-                dayId: 0,
-                taskId: 0,
-                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-            },
-            { $set: { payload: { note } }, $setOnInsert: { createdAt: Date.now() } },
-            { upsert: true },
-        );
-    }
-
-    static async getResponsesForDate(date: Date) {
-        const startDate = new Date(date);
-        startDate.setUTCHours(0, 0, 0, 0);
-
-        const endDate = new Date(date);
-        endDate.setUTCHours(23, 59, 59, 9999);
-
-        const db = this.getDb();
-
-        const result = await db.collection<IResponseDocument>('responses').find(
-            {
-                userId: this.oid(this.client.currentUser!.id),
-                createdAt: { $gte: startDate.getTime(), $lte: endDate.getTime() },
-            },
-            { sort: { createdAt: -1 } },
-        );
-
-        return result.map((result: IResponseDocument) => {
-            const { _id, userId, ...others } = result;
-
-            return {
-                id: _id.toString(),
-                userId: userId.toString(),
-                ...others,
-            };
+        const responsesAsIResponse =  responses.map(record => {
+            const asIResponse= record as unknown as IResponse;
+            asIResponse.id = record._id as unknown as string;
+            return asIResponse;
         });
+
+        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce((records: Record<string, IResponse[]>, response) => {
+            if (records[response.subscriptionId]) {
+                records[response.subscriptionId].push(response);
+            } else {
+                records[response.subscriptionId] = [response];
+            }
+            return records;
+        }, {});
+
+        return responsesGroupedBySubscriptionId;
     }
+
+
+    static deleteResponses(subscriptionIds: string []) {
+        const db = this.getDb();
+        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+
+        return db
+            .collection('responses')
+            .deleteMany({ subscriptionId: { $in : subscriptionIdsAsObjectId } });
+    }
+
 }
 
 export default Experiment;

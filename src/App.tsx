@@ -11,9 +11,11 @@ import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosp
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
 import { boot } from './slices/globalActions';
-import { selectIsAuthenticated, setIsEnrolled } from './slices/account';
+import { selectIsAuthenticated, selectIsEnrolled } from './slices/account';
 import Page from './components/foundation/Page';
 import Centre from './components/foundation/Centre';
+
+import Strings from './utils/string_dict.js';
 
 import LoginScreen from './screens/auth/Login';
 import RegisterScreen from './screens/auth/Register';
@@ -39,10 +41,11 @@ import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/today/Today';
+import { AppDevice } from './models/Device';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
-    const isEnrolled = useSelector(setIsEnrolled);
+    const isEnrolled = useSelector(selectIsEnrolled);
     const location = useLocation();
 
     const [hydrating, setHydrating] = React.useState(true);
@@ -65,6 +68,7 @@ const AppFlowController = function () {
         };
 
         hydrate();
+        AppDevice.updateDeviceInfo();
     }, [isAuthenticated]);
 
     if (!isAuthenticated) {
@@ -188,19 +192,23 @@ const App = function () {
                                             <IonTabBar slot="bottom">
                                                 <IonTabButton tab="today" href="/main/today">
                                                     <ListChecks />
-                                                    <IonLabel>Today</IonLabel>
+                                                    <IonLabel>{Strings.today}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="box" href="/main/box">
                                                     <Cube />
-                                                    <IonLabel>Boxes</IonLabel>
+                                                    <IonLabel>{Strings.boxes}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="journal" href="/main/journal">
                                                     <CalendarBlank />
-                                                    <IonLabel>Journal</IonLabel>
+                                                    <IonLabel>{Strings.journal}</IonLabel>
                                                 </IonTabButton>
                                                 <IonTabButton tab="settings" href="/main/settings">
                                                     <Gear />
-                                                    <IonLabel>Settings</IonLabel>
+                                                    <IonLabel>{Strings.settings}</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="team" href="/main/team">
+                                                    <Users />
+                                                    <IonLabel>{Strings.teams}</IonLabel>
                                                 </IonTabButton>
                                             </IonTabBar>
                                         </IonTabs>

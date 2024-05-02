@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Typography, IconButton, Stack } from '@mui/joy';
 import { Play, ClockCounterClockwise, Pause } from 'phosphor-react';
@@ -47,7 +48,7 @@ const CountdownTimer = function ({ initialDuration = 0, fixed, notifications }: 
             }
 
             if (indextime.current < notifications.length && seconds - 1 <= notifications[indextime.current]) {
-                console.log('A minute has passed');
+                console.log(Strings.a_minute_has_passed);
                 var audio = new Audio('/assets/beep-09.mp3');
                 audio.play();
                 indextime.current = indextime.current + 1;
