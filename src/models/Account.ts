@@ -337,7 +337,7 @@ class Account extends BaseModel {
 
         for (let i = 0; i < orderedBoxWeeks.length; i++) {
             const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map(e => this.oid(e.id));
-            experimentSequence[orderedBoxWeeks[i]] = experimentIdsForBoxWeek;
+            experimentSequence.push(experimentIdsForBoxWeek);
         }
 
        await db.collection('subscriptionSequences').insertOne({
