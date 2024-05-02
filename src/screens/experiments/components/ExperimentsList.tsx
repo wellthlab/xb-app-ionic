@@ -12,6 +12,7 @@ import {
 import { GenericExperiment } from '../../../models/Experiment';
 import { useSelector } from '../../../slices/store';
 import { selectCompletionForAllExperiments } from '../../../slices/experiments';
+import Strings from '../../../utils/string_dict';
 
 interface IExperimentsListProps {
     experiments: GenericExperiment[];
@@ -69,11 +70,11 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
                                 {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography level="body3">{completion}% completed</Typography>
+                                        <Typography level="body3">{completion}{Strings.percent_completed}</Typography>
                                         <LinearProgress determinate value={completion} />
                                     </Stack>
                                 ) : (
-                                    <Typography level="body3">{experiment.duration} day(s)</Typography>
+                                    <Typography level="body3">{experiment.duration}{Strings.day_s_}</Typography>
                                 )}
                             </Stack>
 

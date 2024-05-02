@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import { PushNotifications } from '@capacitor/push-notifications';
 
 export const FCMService = class {
@@ -17,7 +18,7 @@ export const FCMService = class {
          }
 
          if (permStatus.receive !== 'granted') {
-             throw new Error('User denied permissions!');
+             throw new Error(Strings.user_denied_permissions);
          }
 
          await PushNotifications.register();

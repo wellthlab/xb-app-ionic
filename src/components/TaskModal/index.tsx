@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Typography, TextField, Stack, Link, sliderClasses } from '@mui/joy';
 import * as Yup from 'yup';
@@ -69,7 +70,7 @@ const getInitialValues = function(blocks: ITask['blocks']) {
     return values;
 };
 
-const numberSchema = Yup.number().typeError('This field must be a number');
+const numberSchema = Yup.number().typeError(Strings.this_field_must_be_a_number);
 
 const getSchema = function(blocks: ITask['blocks']) {
     const keys: Record<string, Yup.AnySchema> = {};
@@ -81,8 +82,8 @@ const getSchema = function(blocks: ITask['blocks']) {
 
         if (block.type === 'green-detector') {
             if (!block.optional) {
-                keys[block.rk + '-$$g'] = numberSchema.required('This field is missing');
-                keys[block.rk + '-$$r'] = numberSchema.required('This field is missing');
+                keys[block.rk + '-$$g'] = numberSchema.required(Strings.this_field_is_missing);
+                keys[block.rk + '-$$r'] = numberSchema.required(Strings.this_field_is_missing);
                 continue;
             }
 
@@ -103,19 +104,19 @@ const getSchema = function(blocks: ITask['blocks']) {
         }
 
         if (block.type === 'stopwatch' && !block.optional) {
-            subSchema = subSchema.notOneOf([0], 'You need to time this activity!');
+            subSchema = subSchema.notOneOf([0], Strings.you_need_to_time_this);
         }
 
         if (block.type === 'checkbox') {
             subSchema = Yup.bool();
 
             if (!block.optional) {
-                subSchema = subSchema.oneOf([true], 'This field must be checked');
+                subSchema = subSchema.oneOf([true], Strings.this_field_must_be_checked);
             }
         }
 
         if (!block.optional && block.type !== 'checkbox' && block.type !== 'stopwatch') {
-            subSchema = subSchema.required('This field is missing');
+            subSchema = subSchema.required(Strings.this_field_is_missing);
         }
 
         keys[block.rk] = subSchema;

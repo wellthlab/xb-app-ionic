@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Stack, Typography } from '@mui/joy';
 
@@ -29,11 +30,11 @@ const Today = function () {
                 <Centre>
                     <Stack spacing={1}>
                         <Typography level="h6" component="p">
-                            You haven't got any task today
+                            {Strings.you_havent_got_any_task_today}
                         </Typography>
 
                         <Typography level="body2" textAlign="center">
-                            Explore what you can do in "Boxes"
+                            {Strings.explore_what_you_can_do_in}
                         </Typography>
                     </Stack>
                 </Centre>
@@ -57,7 +58,7 @@ const Today = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>Today's Experiments</PageTitle>
+            <PageTitle>{Strings.todays_experiments}</PageTitle>
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
@@ -67,7 +68,7 @@ const Today = function () {
 
                             <div>
                                 <Typography level="h4">{entry.name}</Typography>
-                                <Typography level="body2">Day {entry.day + 1}</Typography>
+                                <Typography level="body2">{Strings.day} {entry.day + 1}</Typography>
                             </div>
                         </Stack>
 

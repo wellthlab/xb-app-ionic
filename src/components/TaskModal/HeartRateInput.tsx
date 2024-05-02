@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Typography, TextField, Box, TextFieldProps } from '@mui/joy';
 
@@ -9,14 +10,13 @@ const HeartRateInput = function (props: IHeartRateInputProps) {
     return (
         <React.Fragment>
             <Typography level="body2">
-                Find your pulse by firmly gripping your wrist like in the diagram below. Count your heartbeats for 20
-                seconds. Then, multiply by 3.
+                {Strings.find_your_pulse_by_firmly}
             </Typography>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
                 <Box
                     component="img"
-                    alt="Heart rate measure illustration"
+                    alt={Strings.heart_rate_measure}
                     src="/assets/heartrate.png"
                     sx={{ width: 160 }}
                 />

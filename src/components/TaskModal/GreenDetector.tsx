@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Button, Typography, TextField, Grid, TextFieldProps } from '@mui/joy';
 import { Camera as CameraIcon } from 'phosphor-react';
@@ -140,19 +141,19 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
     return (
         <Stack spacing={2}>
             <Button startDecorator={<CameraIcon />} onClick={handleTakePhoto}>
-                {photoUploaded ? 'Retake another picture' : 'Take a picture'}
+                {photoUploaded ? Strings.retake_another_picture : Strings.take_a_picture}
             </Button>
 
             <Typography level="body3">
                 {photoUploaded
-                    ? 'Please review the estimation. Note that the percentages do not necessarily add up to 100 as ingredients like rice counts neither as red nor green'
-                    : 'A good picture must show your meal as a whole. Try not to get other objects in the picture to get an accurate estimation'}
+                    ? Strings.please_review_the_estimation
+                    : Strings.a_good_picture_must_show_your}
             </Typography>
 
             <Grid container spacing={1}>
                 <Grid xs={6}>
                     <TextField
-                        label="Green (%)"
+                        label={Strings.green}
                         required={required}
                         {...greenInputProps}
                         onChange={createHandleChangeDetectorValues(greenInputProps.onChange)}
@@ -160,7 +161,7 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
                 </Grid>
                 <Grid xs={6}>
                     <TextField
-                        label="Red (%)"
+                        label={Strings.red}
                         required={required}
                         {...redInputProps}
                         onChange={createHandleChangeDetectorValues(redInputProps.onChange)}
@@ -171,8 +172,7 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
             {photoUploaded && (
                 <React.Fragment>
                     <Typography level="body3">
-                        The original picture has been re-coloured for you to see if the estimation is correct. Feel free
-                        to modify the estimations
+                        {Strings.the_original_picture_has_been}
                     </Typography>
 
                     <canvas ref={canvasRef}></canvas>

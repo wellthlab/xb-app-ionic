@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import {
@@ -132,18 +133,18 @@ const Journal = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle sx={{ mb: 2 }}>Journal</PageTitle>
+            <PageTitle sx={{ mb: 2 }}>{Strings.journal}</PageTitle>
             <Typography level="body1" sx={{ mb: 4 }}>
-                A summary of what you have done so far
+                {Strings.a_summary_of_what_you_have}
             </Typography>
 
-            <Tabs aria-label="Journal tabs" value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent' }}>
+            <Tabs aria-label={Strings.journal_tabs} value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent' }}>
                 <TabList>
                     <Tab variant={tabIndex === 0 ? 'solid' : 'plain'} color={tabIndex === 0 ? 'primary' : 'neutral'}>
-                        Daily
+                        {Strings.daily}
                     </Tab>
                     <Tab variant={tabIndex === 1 ? 'solid' : 'plain'} color={tabIndex === 1 ? 'primary' : 'neutral'}>
-                        Weekly
+                        {Strings.weekly}
                     </Tab>
                 </TabList>
                 <TabPanel value={0}>
@@ -176,16 +177,16 @@ const Journal = function () {
 
                     <List noDividers sx={{ mt: 2 }}>
                         <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('note')}>
-                            Note
+                            {Strings.note}
                         </ListItem>
 
                         <Collapse in={openStates.note}>
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 <Stack spacing={2}>
-                                    <Typography>{displayedNote || 'You did not have any note for this day'}</Typography>
+                                    <Typography>{note || Strings.you_did_not_have_any_notes}</Typography>
                                     <Button variant="outlined" onClick={handleAddNote}>
-                                        Add a note
+                                        {Strings.add_a_note}
                                     </Button>
                                 </Stack>
                             </ListItem>
@@ -193,14 +194,14 @@ const Journal = function () {
 
                         <ListDivider />
                         <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('activity')}>
-                            Activity
+                            {Strings.activity}
                         </ListItem>
 
                         <Collapse in={openStates.activity}>
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 {!responses.length ? (
-                                    'You did not have any activity for this day'
+                                    Strings.you_did_not_have_any
                                 ) : (
                                     <Timeline
                                         sx={{
@@ -243,8 +244,9 @@ const Journal = function () {
                                                         <Stack spacing={1} mb={3}>
                                                             {greenPercentage && redPercentage && (
                                                                 <Typography color="neutral">
-                                                                    Your meal today consisted of {greenPercentage}%
-                                                                    green and {redPercentage}% red.
+                                                                    {Strings.your_meal_today_consisted_of} {greenPercentage}
+                                                                    {Strings.your_meal_today_consisted_of_2} {redPercentage}
+                                                                    {Strings.your_meal_today_consisted_of_3}
                                                                 </Typography>
                                                             )}
                                                             {Object.keys(response.payload).map((key) => {
@@ -288,12 +290,12 @@ const Journal = function () {
                     </List>
                 </TabPanel>
                 <TabPanel value={1} sx={{ p: 2 }}>
-                    Sorry, we do not have any data for now
+                    {Strings.sorry_we_do_not_have_any_data}
                 </TabPanel>
             </Tabs>
 
             <Modal
-                headerTitle="Add a note"
+                headerTitle={Strings.add_a_note}
                 isOpen={isAddingNote}
                 presentingElement={presentingElement}
                 onDismiss={handleDismiss}
@@ -301,13 +303,12 @@ const Journal = function () {
             >
                 <Stack spacing={2}>
                     <Typography level="body2">
-                        Feel free to jot down anything that you want to look back for this day. It is for your use only,
-                        and feel free to edit it anytime.
+                        {Strings.feel_free_to_jot_down}
                     </Typography>
 
                     <Textarea
-                        label="Note"
-                        placeholder="A note to your future self"
+                        label={Strings.note}
+                        placeholder={Strings.a_note_to_your_future_self}
                         minRows={5}
                         maxRows={14}
                         value={editableNote}

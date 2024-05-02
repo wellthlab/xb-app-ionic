@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonHeader, IonTitle, IonToolbar, IonButtons } from '@ionic/react';
@@ -22,7 +23,7 @@ const Header = function ({ title, leftButton, rightButton }: IHeaderProps) {
         <IonHeader>
             <Box component={IonToolbar} sx={{ paddingInline: 1 }}>
                 <IonButtons slot="start">
-                    {leftButton || <HeaderButton onClick={handleGoBack}>Back</HeaderButton>}
+                    {leftButton || <HeaderButton onClick={handleGoBack}>{Strings.back}</HeaderButton>}
                 </IonButtons>
                 <IonTitle>
                     <Typography>{title}</Typography>

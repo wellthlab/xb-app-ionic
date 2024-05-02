@@ -1,3 +1,4 @@
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Link, TextField } from '@mui/joy';
@@ -27,7 +28,7 @@ const Register = function () {
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit(async (data) => {
         if (!data.email.includes('@soton.ac.uk')) {
-            throw new Error('You must register with a valid soton.ac.uk email address');
+            throw new Error(Strings.you_must_register_with_a);
         }
 
         const result = await dispatch(registerUser(data));
@@ -38,7 +39,7 @@ const Register = function () {
         }
 
         if (result.error.message?.includes('name already in use')) {
-            throw new Error('This email is associated with an account. Please log in instead');
+            throw new Error(Strings.this_email_is_associated_with);
         }
 
         throw new Error(result.error.message);
@@ -50,23 +51,23 @@ const Register = function () {
     };
 
     return (
-        <AuthScreenLayout title="Register to continue">
+        <AuthScreenLayout title={Strings.register_to_continue}>
             {confirmationRequired ? (
                 <ConfirmationRequired email={form.values.email} onClickLoginLink={handleClickLoginLink} />
             ) : (
                 <Form
                     onSubmit={handleSubmit}
-                    submitLabel="Register"
+                    submitLabel={Strings.register}
                     message={form.errors.$root}
                     footer={
                         <Link component="button" level="body2" onClick={handleClickLoginLink}>
-                            Already had an account? Login
+                            {Strings.already_had_an_account_login}
                         </Link>
                     }
                 >
-                    <TextField label="University email" {...getInputProps('email')} />
-                    <TextField label="Password" type="password" {...getInputProps('password')} />
-                    <TextField label="Repeat password" type="password" {...getInputProps('repeatPassword')} />
+                    <TextField label={Strings.university_email} {...getInputProps('email')} />
+                    <TextField label={Strings.password} type="password" {...getInputProps('password')} />
+                    <TextField label={Strings.repeat_password} type="password" {...getInputProps('repeatPassword')} />
                 </Form>
             )}
         </AuthScreenLayout>
