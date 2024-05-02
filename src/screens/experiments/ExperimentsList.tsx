@@ -20,6 +20,7 @@ import {
     unSubscribeFromBox,
 } from '../../slices/account';
 import { boot } from '../../slices/globalActions';
+import Strings from '../../utils/string_dict';
 
 const ExperimentsListScreen = function() {
     const { type } = useParams<{ type: string }>();
@@ -95,11 +96,10 @@ const ExperimentsListScreen = function() {
 
     const getModalChildren = () => {
         if (isSubscribedToBox()) {
-            return <Typography component="span" display="inline" level="body1"> Are you sure you want to restart this
-                subscription?. You will lose all progress with your current subscription !</Typography>;
+            return <Typography component="span" display="inline" level="body1"> {Strings.confirm_restart_subscription}</Typography>;
         } else {
             return <div>
-                <Typography level="h6"> Do you want to subscribe to these selected experiments: </Typography>
+                <Typography level="h6"> {Strings.confirm_experiment_selection} </Typography>
                 <br />
                 <br />
                 <List>
@@ -108,7 +108,7 @@ const ExperimentsListScreen = function() {
                             return <ListItem key={experiment.boxWeek + experiment.name}>
                                 <ListItemContent>
                                     <Typography>
-                                        Week {experiment.boxWeek + 1} - {experiment.name}
+                                        {Strings.week} {experiment.boxWeek + 1} - {experiment.name}
                                     </Typography>
                                 </ListItemContent>
                             </ListItem>;
@@ -121,9 +121,9 @@ const ExperimentsListScreen = function() {
 
     const getConfirmationText = () => {
         if (isSubscribedToBox()) {
-            return 'Restart subscription for this box';
+            return Strings.restart_subscription;
         } else {
-            return 'Subscribe to this box';
+            return Strings.subscribe_to_box;
         }
     };
 
@@ -149,7 +149,7 @@ const ExperimentsListScreen = function() {
             <Button onClick={toggleSubscriptionModal} disabled={experimentSelections.size === 0}> {getConfirmationText()} </Button>
 
             <Modal
-                headerTitle="Confirm Subscription"
+                headerTitle={Strings.confirm_subscription}
                 isOpen={subscriptionModalOpen}
                 presentingElement={presentingElement}
                 onDismiss={toggleSubscriptionModal}

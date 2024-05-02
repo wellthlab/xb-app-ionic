@@ -92,7 +92,7 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
         <Tabs aria-label="week tabs" value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent', height: "100" }}>
             {onExperimentSelected && <TabList>
                 {boxWeeks.sort().map((boxWeek) => {
-                    return <Tab variant={tabIndex === boxWeeks.indexOf(boxWeek)  ? 'solid' : 'plain'} color={tabIndex === boxWeeks.indexOf(boxWeek) ? 'primary' : 'neutral'} key={boxWeek}> Week {boxWeek + 1} </Tab>
+                    return <Tab variant={tabIndex === boxWeeks.indexOf(boxWeek)  ? 'solid' : 'plain'} color={tabIndex === boxWeeks.indexOf(boxWeek) ? 'primary' : 'neutral'} key={boxWeek}> {Strings.week} {boxWeek + 1} </Tab>
                 })}
             </TabList>}
             <br/>

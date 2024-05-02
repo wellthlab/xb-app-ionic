@@ -302,7 +302,7 @@ const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscri
                     return <TextField {...commonProps} />;
                 })}
             </Stack>
-                : <Typography level="body1"> <br></br> Subscribe to this experiment to access the tasks in it! </Typography>}
+                : <Typography level="body1"> <br></br> {Strings.subscribe_to_access_tasks} </Typography>}
         </Modal>
     );
 };
