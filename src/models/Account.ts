@@ -15,6 +15,7 @@ export interface ISubscriptionSequence {
     nextUpdateTimeUTC: number,
     userId: string,
     experimentSequence: string[][],
+    orderedBoxWeeks: number[]
     nextSequenceIndex: number
 }
 
@@ -345,6 +346,7 @@ class Account extends BaseModel {
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: userId,
             experimentSequence: experimentSequence,
+            orderedBoxWeeks: orderedBoxWeeks,
             nextSequenceIndex: nextSequenceIndex,
        });
 
@@ -354,6 +356,7 @@ class Account extends BaseModel {
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: this.client.currentUser!.id,
             experimentSequence: experimentSequence as unknown as string[][],
+            orderedBoxWeeks: orderedBoxWeeks,
             nextSequenceIndex: nextSequenceIndex,
         } as ISubscriptionSequence;
     }

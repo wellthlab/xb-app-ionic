@@ -37,9 +37,10 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
         setTabIndex(value as number);
     };
 
-    const elements = boxWeeks.sort().map((boxWeek) => {
+    const elements = new Map<number, JSX.Element>();
+    boxWeeks.forEach((boxWeek) => {
         const boxWeekExperiments = experiments_.filter(e => !e.hidden && e.boxWeek === boxWeek);
-        return <Stack spacing={2}
+        const JSXElement = <Stack spacing={2}
         >
             {boxWeekExperiments
                 .map((experiment) => {
@@ -80,7 +81,7 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
                     );
                 })}
         </Stack>;
-
+        elements.set(boxWeek, JSXElement);
     });
 
     const { pathname } = useLocation();
@@ -90,12 +91,12 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
         <Tabs aria-label="week tabs" value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent', height: "100" }}>
             {onExperimentSelected && <TabList>
                 {boxWeeks.sort().map((boxWeek) => {
-                    return <Tab variant={tabIndex === boxWeek  ? 'solid' : 'plain'} color={tabIndex === boxWeek ? 'primary' : 'neutral'} key={boxWeek}> Week {boxWeek + 1} </Tab>
+                    return <Tab variant={tabIndex === boxWeeks.indexOf(boxWeek)  ? 'solid' : 'plain'} color={tabIndex === boxWeeks.indexOf(boxWeek) ? 'primary' : 'neutral'} key={boxWeek}> Week {boxWeek + 1} </Tab>
                 })}
             </TabList>}
             <br/>
             {boxWeeks.sort().map((boxWeek) => {
-                return <TabPanel value={boxWeek} key={boxWeek}> {elements[boxWeek]} </TabPanel>
+                return <TabPanel value={boxWeeks.indexOf(boxWeek)} key={boxWeek}> {elements.get(boxWeek)} </TabPanel>
             })}
         </Tabs>
     );

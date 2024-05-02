@@ -127,7 +127,7 @@ export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExper
     if (subscriptionSequence) {
         for(let i=0; i < subscriptionSequence.experimentSequence.length; i++) {
             const experimentsForBoxWeek = subscriptionSequence.experimentSequence[i].map(experimentId => experiments[experimentId]);
-            subSeqMap.set(i, experimentsForBoxWeek);
+            subSeqMap.set(subscriptionSequence.orderedBoxWeeks[i], experimentsForBoxWeek);
         }
     }
     return subSeqMap;
