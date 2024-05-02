@@ -73,11 +73,15 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
         const responses = selectResponses(state)[subscription.id];
 
         experiment.days.forEach((day, dayIndex) => {
-            day.tasks.forEach((task) => {
-                if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
-                    dayProgress[dayIndex] = false;
-                }
-            })
+            if (day.tasks.length === 0) {
+                dayProgress[dayIndex] = false;
+            } else {
+                day.tasks.forEach((task) => {
+                    if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
+                        dayProgress[dayIndex] = false;
+                    }
+                })
+            }
         });
         return dayProgress;
     } else {

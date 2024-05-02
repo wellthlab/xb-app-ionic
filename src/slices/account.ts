@@ -46,7 +46,7 @@ export const saveSubscriptionSequence = createAsyncThunk<
 
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
-    GenericExperiment[]>('account/subscriptions/parent', (experiments) => {
+    GenericExperiment[]>('account/subscriptions', (experiments) => {
     const subscribedAt = Date.now();
     const recordsForInsertion:  Omit <ISubscription, 'id'>[] = [];
 

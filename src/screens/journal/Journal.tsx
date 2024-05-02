@@ -184,7 +184,7 @@ const Journal = function () {
                             <ListDivider />
                             <ListItem sx={{ p: 2 }}>
                                 <Stack spacing={2}>
-                                    <Typography>{note || Strings.you_did_not_have_any_notes}</Typography>
+                                    <Typography>{displayedNote || Strings.you_did_not_have_any_notes}</Typography>
                                     <Button variant="outlined" onClick={handleAddNote}>
                                         {Strings.add_a_note}
                                     </Button>
