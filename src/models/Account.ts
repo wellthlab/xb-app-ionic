@@ -6,6 +6,7 @@ import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
 
 export interface ICohort {
     startDate: number,
+    name: string,
     id: string;
 }
 
@@ -218,8 +219,11 @@ class Account extends BaseModel {
     }
 
     static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
+        let cohortIdAsObjectId;
         if (!cohortId) {
-            cohortId = await this.createNewCohort();
+            cohortIdAsObjectId = await this.createNewCohort(payload.firstName, payload.lastName);
+        } else {
+            cohortIdAsObjectId = this.oid(cohortId);
         }
 
         const db = this.getDb();
@@ -229,7 +233,7 @@ class Account extends BaseModel {
         await db.collection<IAccountDocument>('accounts').updateOne(
             { _id: this.oid(id) },
             {
-                $set: { profile: { ...payload, email }, cohortId: cohortId },
+                $set: { profile: { ...payload, email }, cohortId: cohortIdAsObjectId },
                 $setOnInsert: { subscriptions: [] },
             },
             { upsert: true },
@@ -237,19 +241,19 @@ class Account extends BaseModel {
 
         return {
             profile: { email, ...payload },
-            cohortId,
+            cohortId: cohortIdAsObjectId.toString(),
         };
     }
 
-    static async createNewCohort() {
+    static async createNewCohort(firstName: string, lastName: string) {
         const db = this.getDb();
         const startDate = Date.now();
 
         const insertResult = (await db.collection('cohorts').insertOne(
-            { startDate: startDate },
+            { startDate: startDate, name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', firstName, '_', lastName) },
         ));
 
-        return insertResult.insertedId.toString() as string;
+        return insertResult.insertedId as BSON.ObjectId;
     }
 
     static async subscribeToExperiments(recordsForInsertion: Omit<ISubscription, 'id'>[]) {
