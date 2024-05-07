@@ -13,7 +13,6 @@ xbapp/node_modules
 # production
 build/
 ios/
-android/
 hosted_site/
 .gradle/
 
