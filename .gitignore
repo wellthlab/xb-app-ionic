@@ -12,7 +12,6 @@ xbapp/node_modules
 
 # production
 build/
-ios/
 hosted_site/
 .gradle/
 
