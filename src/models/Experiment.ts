@@ -28,6 +28,7 @@ export interface IExperiment extends IBaseExperiment {
     preconditions?: any[];
     parent?: string;
     instructions?: string[];
+    shouldSendReminders: boolean;
 }
 
 export interface IParentExperiment extends IBaseExperiment {

@@ -10,26 +10,31 @@ import Page from '../../components/foundation/Page';
 import ExerciseWarning from '../../components/ExerciseWarning';
 
 import { useDispatch, useSelector } from '../../slices/store';
-import { selectAllBoxes, selectExperimentByBoxName } from '../../slices/experiments';
+import { selectAllBoxes, selectAllExperiments, selectExperimentByBoxName } from '../../slices/experiments';
 import { GenericExperiment } from '../../models/Experiment';
 import Modal from '../../components/foundation/Modal';
 import {
+    selectResponses,
     selectSubscriptions,
-    selectSubscriptionSequenceByBoxId,
+    selectSubscriptionSequenceByBoxId, shouldContinueRemindersForAccount,
     subScribeToBox,
     unSubscribeFromBox,
 } from '../../slices/account';
 import { boot } from '../../slices/globalActions';
 import Strings from '../../utils/string_dict';
+import { ISubscription } from '../../models/Account';
 
 const ExperimentsListScreen = function() {
     const { type } = useParams<{ type: string }>();
     const dispatch = useDispatch();
 
-    const experiments = useSelector((state) => selectExperimentByBoxName(state, type));
+    const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
     const boxId = useSelector(selectAllBoxes).find(box => box.name === type)!.id;
     const existingSelections = useSelector((state) => selectSubscriptionSequenceByBoxId(state, boxId));
     const subscriptions = useSelector(selectSubscriptions);
+
+    const allExperiments = useSelector(selectAllExperiments);
+    const responses = useSelector(selectResponses);
 
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -73,15 +78,21 @@ const ExperimentsListScreen = function() {
 
     const handleUnsubscribeFromBox = async () => {
         const subscriptionIds: string[] = [];
+        const allExperimentsExcludingSelections  = JSON.parse(JSON.stringify(allExperiments)) as Record<string, GenericExperiment>;
+        const allSubscriptionsExcludingSelections  = JSON.parse(JSON.stringify(subscriptions)) as Record<string, ISubscription>;
+
         Array.from(experimentSelections.values()).flat().forEach(experiment => {
             if ('children' in experiment) {
                 experiment.children.forEach((childExperiment) => subscriptions[childExperiment] && subscriptionIds.push(subscriptions[childExperiment].id));
             } else {
                 subscriptions[experiment.id] && subscriptionIds.push(subscriptions[experiment.id].id);
             }
+            delete allExperimentsExcludingSelections[experiment.id];
+            delete allSubscriptionsExcludingSelections[experiment.id];
         });
 
-        await unSubscribeFromBox(subscriptionIds, boxId);
+        const continueRemindersForAccount = shouldContinueRemindersForAccount(allSubscriptionsExcludingSelections, allExperimentsExcludingSelections, responses);
+        await unSubscribeFromBox(subscriptionIds, boxId, continueRemindersForAccount);
         dispatch(boot());
         toggleSubscriptionModal();
     };
@@ -137,7 +148,7 @@ const ExperimentsListScreen = function() {
                 {type === 'move' && <ExerciseWarning />}
 
                 <ExperimentsList
-                    experiments={experiments.filter((item) => !('parent' in item) || !item.parent)}
+                    experiments={boxExperiments.filter((item) => !('parent' in item) || !item.parent)}
                     onExperimentSelected={handleExperimentSelected}
                     isCheckBoxSelected={isCheckBoxSelected}
                     isSubscribedToBox={isSubscribedToBox()}
