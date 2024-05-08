@@ -3,7 +3,7 @@ import * as Realm from 'realm-web';
 
 const isProd = process.env.NODE_ENV === 'production';
 const APP_ID = isProd ? 'xb-prod-mpzaf' : 'xb-dev-gwbln';
-const DATABASE = isProd ? 'PRODUCTION' : 'DEVELOPMENT';
+const DATABASE = isProd ? 'PRODUCTION' : 'DEVELOPMENT_NEW_SCHEMA';
 
 export class BaseModel {
     protected static client = Realm.getApp(APP_ID);

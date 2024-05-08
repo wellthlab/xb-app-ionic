@@ -388,6 +388,15 @@ class Account extends BaseModel {
         });
     }
 
+    static async deletePendingNotifications() {
+        const db = this.getDb();
+        const userId = this.oid(this.client.currentUser!.id);
+
+        await db.collection('pendingNotifications').deleteMany({
+            userId: userId,
+        });
+    }
+
     static confirmAccount(token: string, tokenId: string) {
         return this.client.emailPasswordAuth.confirmUser({ token, tokenId });
     }
