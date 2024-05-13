@@ -54,7 +54,7 @@
     },
     "devDependencies": {
         "@babel/preset-env": "^7.12.11",
-        "@capacitor/assets": "^3.0.4",
+        "@capacitor/assets": "^3.0.5",
         "@capacitor/cli": "^5.7.4",
         "@types/react-dom": "^18.0.6",
         "@types/react-router-dom": "^5.3.3",

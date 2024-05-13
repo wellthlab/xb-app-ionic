@@ -1,4 +1,4 @@
-package uk.ac.soton.ecs.xbapp;
+package com.uos.xb;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:601422797354:android:9d8d9035f6c39fa7ca0153",
+        "mobilesdk_app_id": "1:601422797354:android:9ce590b53447026dca0153",
         "android_client_info": {
-          "package_name": "uk.ac.soton.ecs.xbapp"
+          "package_name": "com.uos.xb"
         }
       },
       "oauth_client": [],

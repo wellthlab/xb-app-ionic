@@ -3,7 +3,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-    appId: 'uk.ac.soton.ecs.xbapp',
+    appId: 'com.uos.xb',
     appName: 'xbapp',
     webDir: 'build',
     bundledWebRuntime: false,
