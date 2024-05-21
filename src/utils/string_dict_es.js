@@ -1,5 +1,5 @@
 const Strings = {
-	today : "Today",
+	today : "lorem ipsum",
 	boxes : "Boxes",
 	journal : "Journal",
 	settings : "Settings",
