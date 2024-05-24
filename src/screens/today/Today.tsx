@@ -1,6 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { Stack, Typography } from '@mui/joy';
+import { useHistory } from 'react-router-dom';
+import { Button, Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
 import CollapsibleInstructions from './CollapsibleInstructions';
@@ -24,6 +25,11 @@ const Today = function () {
     const [dayNum, setDayNum] = React.useState<number>();
     const [taskNum, setTaskNum] = React.useState(0);
 
+    const history = useHistory();
+    const handleClickBoxesLink = function () {
+        history.push('/main/box')
+    };
+
     if (!tasksByExperiment.length) {
         return (
             <Page>
@@ -34,8 +40,11 @@ const Today = function () {
                         </Typography>
 
                         <Typography level="body2" textAlign="center">
-                            {Strings.explore_what_you_can_do_in}
+                            {Strings.explore_what_you_can_do_in}<br/><br/>
                         </Typography>
+
+                        <Button onClick={handleClickBoxesLink}>{Strings.click_here_to_find_some}</Button>
+
                     </Stack>
                 </Centre>
             </Page>

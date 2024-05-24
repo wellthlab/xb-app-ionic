@@ -112,8 +112,8 @@ const Strings = {
 	percent_completed : "% completed",
 	day_s_ : "Day(s)",
 	xb_app_logo : "XB App logo",
-	you_havent_got_any_task_today : "You haven't got any task today",
-	explore_what_you_can_do_in : "Explore what you can do in \"Boxes\"",
+	you_havent_got_any_task_today : "You haven't got any tasks today",
+	explore_what_you_can_do_in : "Tasks will appear here when you have started some experiments",
 	todays_experiments : "Today's Experiments",
 	read : "Read",
 	less : "less",
@@ -163,7 +163,8 @@ const Strings = {
     restart_subscription: "Restart subscription for this box",
     subscribe_to_box: "Subscribe to this box",
     confirm_subscription: "Confirm Subscription",
-    week: "Week"
+    week: "Week",
+	click_here_to_find_some: "Click Here to find some!"
 };
 
 export default Strings;

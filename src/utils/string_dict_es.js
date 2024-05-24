@@ -163,7 +163,8 @@ const Strings = {
     restart_subscription: "Restart subscription for this box",
     subscribe_to_box: "Subscribe to this box",
     confirm_subscription: "Confirm Subscription",
-    week: "Week"
+    week: "Week",
+	click_here_to_find_some: "Click Here to find some!"
 };
 
 export default Strings;
