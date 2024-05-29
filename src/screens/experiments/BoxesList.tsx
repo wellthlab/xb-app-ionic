@@ -38,19 +38,16 @@ const BoxesList = function () {
                                       }),
                             }}
                         >
-                            <Grid container spacing={2}>
-                                <Grid xs={3} key="leader" sx={{ borderRight: 0.5 }}>
-                                    <Grid container spacing={1}>
+                            <Grid container spacing={3}>
+                                <Grid xs={3} key="leader" sx={{ borderRight: 1, borderColor: 'divider'}}>
+                                    <Grid container textAlign='center' spacing={1}>
                                         <Grid xs={12} key="icon">
-                                            <center>
                                             <Box
                                                 component={Icon}
                                                 color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'}
                                             />
-                                            </center>
                                         </Grid>
                                         <Grid xs={12} key="name">
-                                            <center>
                                             <Link
                                                 overlay
                                                 textColor="inherit"
@@ -61,17 +58,22 @@ const BoxesList = function () {
                                                 sx={{
                                                     [`&.${linkClasses.disabled}`]: {
                                                         color: 'neutral.plainDisabledColor',
+                                                        align: 'center'
                                                     },
                                                 }}
                                             >
                                             {capitalise(box.name)}
                                             </Link>
-                                            </center>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                                 <Grid xs={8} key="body">
-                                    {box.name}
+                                    <Typography>
+                                        {box.description 
+                                            ? box.description
+                                            : Strings.box_description1 + capitalise(box.name) + Strings.box_description2
+                                        }
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </Card>
