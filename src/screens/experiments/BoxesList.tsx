@@ -50,6 +50,7 @@ const BoxesList = function () {
                                         <Grid xs={12} key="name">
                                             <Link
                                                 overlay
+                                                level="body1"
                                                 textColor="inherit"
                                                 underline="none"
                                                 component={RouterLink}
@@ -68,7 +69,7 @@ const BoxesList = function () {
                                     </Grid>
                                 </Grid>
                                 <Grid xs={8} key="body">
-                                    <Typography>
+                                    <Typography level="body2">
                                         {box.description 
                                             ? box.description
                                             : Strings.box_description1 + capitalise(box.name) + Strings.box_description2
