@@ -11,7 +11,7 @@ import {
     TimelineContent,
     timelineItemClasses,
 } from '@mui/lab';
-import { Lock, LockOpen, Check } from 'phosphor-react';
+import { Lock, LockOpen, Check, DotsThree } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
@@ -86,7 +86,7 @@ const ExperimentTimeline = function () {
                                     >
                                         {!unlocked ? <Lock /> : dayCompleted ? <Check /> : <LockOpen />}
                                     </TimelineDot>
-                                    {dayId !== experiment.days.length - 1 && <TimelineConnector />}
+                                    <TimelineConnector />
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="body2" sx={{ my: 2 }}>
@@ -111,6 +111,26 @@ const ExperimentTimeline = function () {
                             </TimelineItem>
                         );
                     })}
+
+                    <TimelineItem key={"next"}>
+                        <TimelineSeparator>
+                            <TimelineDot sx={{
+                                            bgcolor: !experimentCompleted
+                                                ? 'neutral.solidBg'
+                                                : 'success.solidBg'
+                                        }}>
+                                {<DotsThree />}
+                            </TimelineDot>
+                        </TimelineSeparator>
+                        <TimelineContent>
+                            <Typography level="body2" sx={{ my: 2 }}>
+                                "What's Next?"
+                            </Typography>
+                            {experimentCompleted && 
+                                "bim"
+                            }
+                        </TimelineContent>
+                    </TimelineItem>
                 </Timeline>
             </Box>
 
