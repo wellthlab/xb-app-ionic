@@ -164,7 +164,9 @@ const Strings = {
     subscribe_to_box: "Subscribe to this box",
     confirm_subscription: "Confirm Subscription",
     week: "Week",
-	click_here_to_find_some: "Click Here to find some!"
+	click_here_to_find_some: "Click Here to find some!",
+	box_description1: "A set of experiments to explore how you \"",
+	box_description2: "\"!",
 };
 
 export default Strings;
