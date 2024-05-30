@@ -124,11 +124,13 @@ const ExperimentTimeline = function () {
                         </TimelineSeparator>
                         <TimelineContent>
                             <Typography level="body2" sx={{ my: 2 }}>
-                                "What's Next?"
+                                What's Next?
                             </Typography>
-                            {experimentCompleted && 
-                                "bim"
-                            }
+                            {experimentCompleted && (
+                                <Stack spacing={2}>
+                                    "bim"
+                                </Stack>
+                            )}
                         </TimelineContent>
                     </TimelineItem>
                 </Timeline>
