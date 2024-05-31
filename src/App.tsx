@@ -42,6 +42,7 @@ import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/today/Today';
 import { AppDevice } from './models/Device';
+import BoxesSubMenu from './screens/experiments/BoxesSubMenu';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);

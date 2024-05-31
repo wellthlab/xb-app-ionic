@@ -23,6 +23,9 @@ import {
 import { boot } from '../../slices/globalActions';
 import Strings from '../../utils/string_dict';
 import { ISubscription } from '../../models/Account';
+import { IonLabel, IonTabBar, IonTabButton } from '@ionic/react';
+import { CalendarBlank, Cube, Gear, ListChecks, Users } from 'phosphor-react';
+import BoxesSubMenu from './BoxesSubMenu';
 
 const ExperimentsListScreen = function() {
     const { type } = useParams<{ type: string }>();
@@ -168,7 +171,7 @@ const ExperimentsListScreen = function() {
                 children={getModalChildren()}
                 className={isSubscribedToBox() ? 'ion-modal-small' : ''}
             />
-
+            <BoxesSubMenu></BoxesSubMenu>
         </Page>
     );
 };
