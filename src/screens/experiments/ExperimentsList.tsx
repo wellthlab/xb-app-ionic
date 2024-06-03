@@ -175,7 +175,7 @@ const ExperimentsListScreen = function() {
                 className={isSubscribedToBox() ? 'ion-modal-small' : ''}
             />
         </Page>
-);
+    );
 };
 
 export default ExperimentsListScreen;

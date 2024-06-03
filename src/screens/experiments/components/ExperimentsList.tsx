@@ -19,13 +19,9 @@ interface IExperimentsListProps {
     onExperimentSelected?: (experiment: GenericExperiment, isSelected: boolean) => void;
     isCheckBoxSelected?: (boxWeek: number, experimentId: string) => boolean;
     isSubscribedToBox?: boolean
-    type?: string
 }
 
-const ExperimentsList = function({ type, experiments, onExperimentSelected, isCheckBoxSelected, isSubscribedToBox }: IExperimentsListProps) {
-    React.useEffect(() => {
-        console.log("effect 2");
-    }, []);
+const ExperimentsList = function({experiments, onExperimentSelected, isCheckBoxSelected, isSubscribedToBox }: IExperimentsListProps) {
 
     const experiments_  = JSON.parse(JSON.stringify(experiments)) as GenericExperiment[];
     let boxWeeks = experiments_.map((e: { boxWeek: number; }) => {
