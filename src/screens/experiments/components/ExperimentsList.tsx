@@ -22,7 +22,6 @@ interface IExperimentsListProps {
 }
 
 const ExperimentsList = function({experiments, onExperimentSelected, isCheckBoxSelected, isSubscribedToBox }: IExperimentsListProps) {
-
     const experiments_  = JSON.parse(JSON.stringify(experiments)) as GenericExperiment[];
     let boxWeeks = experiments_.map((e: { boxWeek: number; }) => {
         if (!e.boxWeek) {
