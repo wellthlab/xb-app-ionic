@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link as RouterLink, useHistory} from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom';
 import { Box, Link, linkClasses } from '@mui/joy';
 
 import capitalise from './utils/capitalise';
@@ -11,7 +11,6 @@ import { Drawer } from '@mui/material';
 
 const BoxesSubMenu = function () {
     const boxes = useSelector(selectAllBoxes);
-    const history = useHistory();
 
     return (
             <Drawer variant="persistent" anchor="bottom" open={true}>
