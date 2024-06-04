@@ -162,9 +162,8 @@ const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscri
     });
 
     return (
-        <Modal headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}
-               className={isSubscribed ? '' : 'ion-modal-small'}>
-            {isSubscribed ? <Stack spacing={2}>
+        <Modal actionButtonDisabled = {!isSubscribed} actionButtonLabel={Strings.submit}  actionButtonDisabledToolTipTitle = {Strings.subscribe_to_complete_tasks} headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
+            <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => {
                     if (block.type === 'para' || block.type === 'title') {
                         return (
@@ -302,7 +301,7 @@ const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscri
                     return <TextField {...commonProps} />;
                 })}
             </Stack>
-                : <Typography level="body1"> {Strings.subscribe_to_access_tasks} </Typography>}
+
         </Modal>
     );
 };
