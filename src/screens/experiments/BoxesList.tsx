@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Typography, Card, Grid, Box, Stack, Link, linkClasses } from '@mui/joy';
+import { Typography, Card, Box, Stack, Link, linkClasses } from '@mui/joy';
 
 import capitalise from './utils/capitalise';
 

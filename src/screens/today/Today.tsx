@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
