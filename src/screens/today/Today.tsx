@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
@@ -25,11 +25,6 @@ const Today = function () {
     const [dayNum, setDayNum] = React.useState<number>();
     const [taskNum, setTaskNum] = React.useState(0);
 
-    const history = useHistory();
-    const handleClickBoxesLink = function () {
-        history.push('/main/box')
-    };
-
     if (!tasksByExperiment.length) {
         return (
             <Page>
@@ -39,12 +34,15 @@ const Today = function () {
                             {Strings.you_havent_got_any_task_today}
                         </Typography>
 
-                        <Typography level="body2" textAlign="center">
-                            {Strings.explore_what_you_can_do_in}<br/><br/>
+                        <Typography level="body2">
+                            {Strings.explore_what_you_can_do_in}
+                            <br />
+                            <br />
                         </Typography>
 
-                        <Button onClick={handleClickBoxesLink}>{Strings.click_here_to_find_some}</Button>
-
+                        <Button component={Link} to="/main/box">
+                            {Strings.click_here_to_find_some}
+                        </Button>
                     </Stack>
                 </Centre>
             </Page>
@@ -77,7 +75,9 @@ const Today = function () {
 
                             <div>
                                 <Typography level="h4">{entry.name}</Typography>
-                                <Typography level="body2">{Strings.day} {entry.day + 1}</Typography>
+                                <Typography level="body2">
+                                    {Strings.day} {entry.day + 1}
+                                </Typography>
                             </div>
                         </Stack>
 
