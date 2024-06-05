@@ -5,22 +5,23 @@ import { GenericExperiment } from './Experiment';
 import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
 
 export interface ICohort {
-    startDate: number,
-    name: string,
+    startDate: number;
+    name: string;
     id: string;
 }
 
 export interface ISubscriptionSequence {
     _id: string;
     boxId: string;
-    nextUpdateTimeUTC: number,
-    userId: string,
-    experimentSequence: string[][],
-    orderedBoxWeeks: number[]
-    nextSequenceIndex: number
+    nextUpdateTimeUTC: number;
+    userId: string;
+    experimentSequence: string[][];
+    orderedBoxWeeks: number[];
+    nextSequenceIndex: number;
 }
 
-export interface ISubscriptionSequenceDocument extends Omit<ISubscriptionSequence, '_id' | 'boxId' | 'userId' | 'experimentSequence'> {
+export interface ISubscriptionSequenceDocument
+    extends Omit<ISubscriptionSequence, '_id' | 'boxId' | 'userId' | 'experimentSequence'> {
     _id: ObjectId;
     boxId: ObjectId;
     userId: ObjectId;
@@ -44,9 +45,9 @@ export interface IProfile {
 export interface IAccount {
     id: string;
     profile: IProfile;
-    cohortId: string,
-    subscriptions: string[],
-    notes?: Record<number, string>
+    cohortId: string;
+    subscriptions: string[];
+    notes?: Record<number, string>;
     deleted?: boolean;
 }
 
@@ -184,7 +185,7 @@ class Account extends BaseModel {
         return {
             ...others,
             id: _id.toString(),
-            subscriptions: subscriptions.map(subscriptionId => subscriptionId.toString()),
+            subscriptions: subscriptions.map((subscriptionId) => subscriptionId.toString()),
         };
     }
 
@@ -199,26 +200,28 @@ class Account extends BaseModel {
         }
 
         convertObjectIdFieldsToString(result);
-        const asIAccount= result as unknown as IAccount;
-        asIAccount.id = result._id as unknown as string;
+        const asIAccount = (result as unknown) as IAccount;
+        asIAccount.id = (result._id as unknown) as string;
         return asIAccount;
     }
 
     static async getSubscriptions(subscriptionIds: string[]): Promise<ISubscription[]> {
         const db = this.getDb();
-        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
+        const subscriptionIdsAsObjectIds = subscriptionIds.map((subscriptionId) => this.oid(subscriptionId));
 
-        const records = await db.collection<ISubscriptionDocument>('subscriptions').find({ _id: { $in: subscriptionIdsAsObjectIds } });
-        records.forEach(record => convertObjectIdFieldsToString(record));
+        const records = await db
+            .collection<ISubscriptionDocument>('subscriptions')
+            .find({ _id: { $in: subscriptionIdsAsObjectIds } });
+        records.forEach((record) => convertObjectIdFieldsToString(record));
 
-        return records.map(record => {
-            const asISubscription = record as unknown as ISubscription;
-            asISubscription.id = record._id as unknown as string;
+        return records.map((record) => {
+            const asISubscription = (record as unknown) as ISubscription;
+            asISubscription.id = (record._id as unknown) as string;
             return asISubscription;
         });
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId?: string | null) {
         let cohortIdAsObjectId;
         if (!cohortId) {
             cohortIdAsObjectId = await this.createNewCohort(payload.firstName, payload.lastName);
@@ -249,9 +252,10 @@ class Account extends BaseModel {
         const db = this.getDb();
         const startDate = Date.now();
 
-        const insertResult = (await db.collection('cohorts').insertOne(
-            { startDate: startDate, name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', firstName, '_', lastName) },
-        ));
+        const insertResult = await db.collection('cohorts').insertOne({
+            startDate: startDate,
+            name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', firstName, '_', lastName),
+        });
 
         return insertResult.insertedId as BSON.ObjectId;
     }
@@ -259,7 +263,7 @@ class Account extends BaseModel {
     static async subscribeToExperiments(recordsForInsertion: Omit<ISubscription, 'id'>[]) {
         const db = this.getDb();
         const accountId = this.oid(this.client.currentUser!.id);
-        const records = recordsForInsertion.map(record => {
+        const records = recordsForInsertion.map((record) => {
             return {
                 _id: new BSON.ObjectId(),
                 experimentId: this.oid(record.experimentId),
@@ -274,7 +278,7 @@ class Account extends BaseModel {
             },
             {
                 $push: {
-                    subscriptions: { $each: records.map(record => record._id) },
+                    subscriptions: { $each: records.map((record) => record._id) },
                 },
             },
         );
@@ -306,19 +310,17 @@ class Account extends BaseModel {
         return notes;
     }
 
-    static deleteSubscriptions(subscriptionIds: string []) {
+    static deleteSubscriptions(subscriptionIds: string[]) {
         const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
 
-        return db
-            .collection('subscriptions')
-            .deleteMany({ _id: { $in: subscriptionIdsAsObjectId } });
+        return db.collection('subscriptions').deleteMany({ _id: { $in: subscriptionIdsAsObjectId } });
     }
 
     static async removeAccountSubscriptions(subscriptionIds: string[]) {
         const db = this.getDb();
         const accountId = this.oid(this.client.currentUser!.id);
-        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
 
         await db.collection<IAccountDocument>('accounts').updateOne(
             {
@@ -332,34 +334,38 @@ class Account extends BaseModel {
         );
     }
 
-    static async saveSubscriptionSequence(experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[]) {
+    static async saveSubscriptionSequence(
+        experimentsByBoxWeek: Map<number, GenericExperiment[]>,
+        boxId: string,
+        orderedBoxWeeks: number[],
+    ) {
         const db = this.getDb();
         const boxIdAsObjectId = this.oid(boxId);
         const userId = this.oid(this.client.currentUser!.id);
-        const nextUpdateTimeUTC = Date.now() + (7 * 24 * 60 * 60 * 1000);
+        const nextUpdateTimeUTC = Date.now() + 7 * 24 * 60 * 60 * 1000;
         const nextSequenceIndex = 1;
         const experimentSequence: ObjectId[][] = [];
 
         for (let i = 0; i < orderedBoxWeeks.length; i++) {
-            const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map(e => this.oid(e.id));
+            const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map((e) => this.oid(e.id));
             experimentSequence.push(experimentIdsForBoxWeek);
         }
 
-       await db.collection('subscriptionSequences').insertOne({
+        await db.collection('subscriptionSequences').insertOne({
             boxId: boxIdAsObjectId,
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: userId,
             experimentSequence: experimentSequence,
             orderedBoxWeeks: orderedBoxWeeks,
             nextSequenceIndex: nextSequenceIndex,
-       });
+        });
 
         convertObjectIdFieldsToString(experimentSequence);
         return {
             boxId: boxId,
             nextUpdateTimeUTC: nextUpdateTimeUTC,
             userId: this.client.currentUser!.id,
-            experimentSequence: experimentSequence as unknown as string[][],
+            experimentSequence: (experimentSequence as unknown) as string[][],
             orderedBoxWeeks: orderedBoxWeeks,
             nextSequenceIndex: nextSequenceIndex,
         } as ISubscriptionSequence;
@@ -374,7 +380,7 @@ class Account extends BaseModel {
         });
 
         convertObjectIdFieldsToString(result);
-        return result as unknown as ISubscriptionSequence[];
+        return (result as unknown) as ISubscriptionSequence[];
     }
 
     static async deleteSubscriptionSequence(boxId: string) {

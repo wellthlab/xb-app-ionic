@@ -4,12 +4,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import accountReducer from './account';
 import teamReducer from './team';
 import experimentsReducer from './experiments';
+import onboardingReducer from './onboarding';
 
 const store = configureStore({
     reducer: {
         account: accountReducer,
         team: teamReducer,
         experiments: experimentsReducer,
+        onboarding: onboardingReducer,
     },
 
     middleware: (getDefaultMiddleware) =>

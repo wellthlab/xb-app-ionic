@@ -17,7 +17,7 @@ import Slider from '../foundation/Slider';
 
 import { Block } from '../../models/Experiment';
 
-export interface BlockProps {
+export interface ITaskBlockProps {
     block: Block;
     inputs?: {
         getInputProps: (key: string) => any;
@@ -43,7 +43,7 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskBlock = function ({ block, inputs }: BlockProps) {
+const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
     // Non-input blocks
 
     if (block.type === 'para' || block.type === 'title') {

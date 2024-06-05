@@ -5,7 +5,12 @@ import { useParams, Link } from 'react-router-dom';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 import TaskBlock from '../../components/TaskBlock';
+
+import { useDispatch, useSelector } from '../../slices/store';
+
 import Strings from '../../utils/string_dict';
+import { updateUserProfile } from '../../slices/account';
+import { selectOnboardingState } from '../../slices/onboarding';
 
 // TODO: Schema-based configs, perhaps in these proposed formats
 // Content schema can re-use task block schema
@@ -35,6 +40,17 @@ const Welcome = function () {
 
     const lastStep = step === content.length - 1;
 
+    const [isPending, setIsPending] = React.useState(false);
+
+    const updateData = useSelector(selectOnboardingState);
+    const dispatch = useDispatch();
+
+    const handleEnroll = async function () {
+        setIsPending(true);
+        await dispatch(updateUserProfile({ payload: updateData.profile!, cohortId: updateData.cohortId })).unwrap();
+        setIsPending(false);
+    };
+
     return (
         <Page>
             <PageTitle>{Strings.welcome}</PageTitle>
@@ -45,9 +61,15 @@ const Welcome = function () {
                 ))}
             </Stack>
 
-            <Button component={Link} to={lastStep ? '/onboarding/profile' : `/onboarding/welcome/${step + 1}`}>
-                {lastStep ? "I'm ready!" : 'Next'}
-            </Button>
+            {lastStep ? (
+                <Button loading={isPending} onClick={handleEnroll}>
+                    {Strings.enroll}
+                </Button>
+            ) : (
+                <Button component={Link} to={`/onboarding/welcome/${step + 1}`}>
+                    {Strings.next}
+                </Button>
+            )}
         </Page>
     );
 };

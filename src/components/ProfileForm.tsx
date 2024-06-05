@@ -9,8 +9,8 @@ import useForm from './foundation/useForm';
 
 import Account from '../models/Account';
 
-import { selectCohortId, selectProfile, updateUserProfile } from '../slices/account';
-import { useDispatch, useSelector } from '../slices/store';
+import { selectProfile } from '../slices/account';
+import { useSelector } from '../slices/store';
 
 const schema = Yup.object().shape({
     firstName: Yup.string().required(Strings.your_first_name_is_missing),
@@ -20,23 +20,21 @@ const schema = Yup.object().shape({
     office: Yup.string(),
 });
 
-const ProfileForm = function () {
+export interface IProfileFormProps {
+    onSubmit: (data: Yup.InferType<typeof schema>) => void;
+}
+
+const ProfileForm = function ({ onSubmit }: IProfileFormProps) {
     const profile = useSelector(selectProfile);
-    const cohortId = useSelector(selectCohortId);
 
     const { getInputProps, createHandleSubmit, form } = useForm(
         { firstName: '', lastName: '', department: '', campus: '', office: '', ...profile },
         schema,
     );
 
-    const dispatch = useDispatch();
-    const handleSubmit = createHandleSubmit((data) => {
-        return dispatch(updateUserProfile({ payload: data, cohortId: cohortId })).unwrap();
-    });
-
     return (
         <React.Fragment>
-            <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={handleSubmit}>
+            <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={createHandleSubmit(onSubmit)}>
                 <TextField label={Strings.first_name} {...getInputProps('firstName')} />
                 <TextField label={Strings.last_name} {...getInputProps('lastName')} />
                 <Select label={Strings.department} options={Account.DEPARTMENTS} {...getInputProps('department')} />
