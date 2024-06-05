@@ -23,6 +23,7 @@ import {
 import { boot } from '../../slices/globalActions';
 import Strings from '../../utils/string_dict';
 import { ISubscription } from '../../models/Account';
+import BoxesSubMenu from './BoxesSubMenu';
 
 const ExperimentsListScreen = function() {
     const { type } = useParams<{ type: string }>();
@@ -39,6 +40,10 @@ const ExperimentsListScreen = function() {
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [experimentSelections, setExperimentSelections] = React.useState(existingSelections);
+
+    React.useEffect(() => {
+        setExperimentSelections(existingSelections);
+    }, [type]);
 
     const handleExperimentSelected = function(experiment: GenericExperiment, isSelected: boolean) {
         const newExperimentSelections = new Map(experimentSelections);
@@ -143,7 +148,7 @@ const ExperimentsListScreen = function() {
     };
 
     return (
-        <Page headerTitle={`${capitalise(type)} experiments`} sx={{ position: 'relative' }} ref={setPresentingElement}>
+        <Page footerComponent={BoxesSubMenu()} headerTitle={`${capitalise(type)} experiments`} ref={setPresentingElement}>
             <Stack spacing={2}>
                 {type === 'move' && <ExerciseWarning />}
 
@@ -152,6 +157,7 @@ const ExperimentsListScreen = function() {
                     onExperimentSelected={handleExperimentSelected}
                     isCheckBoxSelected={isCheckBoxSelected}
                     isSubscribedToBox={isSubscribedToBox()}
+                    key={type}
                 />
                 <br />
             </Stack>
@@ -168,7 +174,6 @@ const ExperimentsListScreen = function() {
                 children={getModalChildren()}
                 className={isSubscribedToBox() ? 'ion-modal-small' : ''}
             />
-
         </Page>
     );
 };

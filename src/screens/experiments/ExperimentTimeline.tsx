@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box, Stack, Alert, Button } from '@mui/joy';
+import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent } from '@mui/joy';
 import {
     Timeline,
     TimelineItem,
@@ -11,46 +11,85 @@ import {
     TimelineContent,
     timelineItemClasses,
 } from '@mui/lab';
-import { Lock, LockOpen, Check, DotsThree } from 'phosphor-react';
+
+import { Check, ArrowArcRight, DotsThree } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
 
-import { useSelector } from '../../slices/store';
-import { selectExperimentById, selectCurrentDay, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId } from '../../slices/account';
+import { useDispatch, useSelector } from '../../slices/store';
+import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
+import { selectSubscriptionByExperimentId, subscribeToExperiments } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
+import BoxesSubMenu from './BoxesSubMenu';
+import Modal from '../../components/foundation/Modal';
+import capitalise from './utils/capitalise';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
+    const { type } = useParams<{ type: string }>();
+
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
-    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
     const isSubscribedToExperiment = useSelector(state => {
        return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
     });
 
-    const [modalOpen, setModalOpen] = React.useState(false);
+    const [taskModalOpen, setTaskModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [dayNum, setDayNum] = React.useState(0);
     const [taskNum, setTaskNum] = React.useState(0);
+    const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
+    const dispatch = useDispatch();
+
+    const toggleSubscriptionModal = () => {
+        setSubscriptionModalOpen(!subscriptionModalOpen);
+    };
+
+    const handleSubscribeToExperiment = async () => {
+        await dispatch(subscribeToExperiments([experiment]));
+        toggleSubscriptionModal();
+    };
 
     const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
-        setModalOpen(true);
+        setTaskModalOpen(true);
         setDayNum(dayNum);
         setTaskNum(taskNum);
     };
 
-    const handleDismissModal = function () {
-        setModalOpen(false);
+    const handleDismissTaskModal = function () {
+        setTaskModalOpen(false);
+    };
+
+    const getModalChildren = () => {
+        return <div>
+            <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
+            <br />
+            <List >
+                <ListItem key={experiment.name} >
+                    <ListItemContent>
+                        <Typography style={{ fontStyle: 'italic' }}>
+                            {Strings.experiment_category}  - {capitalise(type)}
+                        </Typography>
+                    </ListItemContent>
+                </ListItem>
+                <ListItem key={experiment.days.length}>
+                    <ListItemContent>
+                        <Typography style={{ fontStyle: 'italic' }} >
+                            {Strings.experiment_duration}  - {experiment.days.length + " " + Strings.days}
+                        </Typography>
+                    </ListItemContent>
+                </ListItem>
+            </List>
+        </div>
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (
-        <Page sx={{ height: '100%' }} headerTitle={experiment.name} ref={setPresentingElement}>
+        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name} ref={setPresentingElement}>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
                 {experiment.instructions &&
                     experiment.instructions.map((p, i) => (
@@ -58,6 +97,10 @@ const ExperimentTimeline = function () {
                             {p}
                         </Typography>
                     ))}
+
+                <br/>
+                <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>
+                <br/>
 
                 <Timeline
                     sx={{
@@ -69,7 +112,6 @@ const ExperimentTimeline = function () {
                     }}
                 >
                     {experiment.days.map((day, dayId) => {
-                        const unlocked = dayId <= currentDay;
                         const dayCompleted = dayProgress[dayId];
 
                         return (
@@ -77,14 +119,12 @@ const ExperimentTimeline = function () {
                                 <TimelineSeparator>
                                     <TimelineDot
                                         sx={{
-                                            bgcolor: !unlocked
-                                                ? 'neutral.solidBg'
-                                                : dayCompleted
+                                            bgcolor: dayCompleted
                                                 ? 'success.solidBg'
-                                                : 'primary.solidBg',
+                                                : 'grey.solidBg',
                                         }}
                                     >
-                                        {!unlocked ? <Lock /> : dayCompleted ? <Check /> : <LockOpen />}
+                                        { dayCompleted ? <Check /> : <ArrowArcRight />}
                                     </TimelineDot>
                                     <TimelineConnector />
                                 </TimelineSeparator>
@@ -93,8 +133,7 @@ const ExperimentTimeline = function () {
                                         {Strings.day} {dayId + 1}
                                     </Typography>
                                     <Stack spacing={2}>
-                                        {unlocked &&
-                                            (day.tasks.length ? (
+                                        {day.tasks.length ? (
                                                 <TasksList
                                                     tasks={day.tasks}
                                                     experimentId={experimentId}
@@ -105,7 +144,7 @@ const ExperimentTimeline = function () {
                                                 <Typography level="body2">
                                                     {Strings.there_is_nothing_to_do_for}
                                                 </Typography>
-                                            ))}
+                                            )}
                                     </Stack>
                                 </TimelineContent>
                             </TimelineItem>
@@ -143,14 +182,24 @@ const ExperimentTimeline = function () {
             )}
 
             <TaskModal
-                isOpen={modalOpen}
-                onDismiss={handleDismissModal}
+                isOpen={taskModalOpen}
+                onDismiss={handleDismissTaskModal}
                 key={`${dayNum}.${taskNum}`}
                 experimentId={experimentId}
                 dayNum={dayNum}
                 taskNum={taskNum}
                 presentingElement={presentingElement}
                 isSubscribed={isSubscribedToExperiment}
+            />
+
+            <Modal
+                headerTitle={Strings.confirm_subscription}
+                isOpen={subscriptionModalOpen}
+                presentingElement={presentingElement}
+                onDismiss={toggleSubscriptionModal}
+                className={'ion-modal-small'}
+                onAction={handleSubscribeToExperiment}
+                children={getModalChildren()}
             />
         </Page>
     );

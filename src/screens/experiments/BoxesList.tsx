@@ -37,6 +37,7 @@ const BoxesList = function () {
                                           },
                                       }),
                             }}
+                            key={box.id}
                         >
                             <Grid container spacing={3}>
                                 <Grid xs={3} key="leader" sx={{ borderRight: 1, borderColor: 'divider'}}>
