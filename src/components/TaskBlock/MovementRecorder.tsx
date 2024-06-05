@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Button, Typography, Card, Stack, IconButton } from '@mui/joy';
 import { Collapse } from '@mui/material';
@@ -71,9 +71,7 @@ const MovementRecorder = function ({ max, movements, countdown }: IMovementRecor
 
     return (
         <React.Fragment>
-            <Typography>
-                {Strings.click_the_button_below_to_add}
-            </Typography>
+            <Typography>{Strings.click_the_button_below_to_add}</Typography>
 
             {movementsDone.map(([movement, id]) => (
                 <MovementCard key={id} movement={movement} countdown={countdown} />

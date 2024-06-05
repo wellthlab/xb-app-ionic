@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Stack, Typography, FormLabel, FormControl, FormControlProps, FormHelperText } from '@mui/joy';
 import { ClickAwayListener } from '@mui/material';

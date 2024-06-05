@@ -1,4 +1,4 @@
-import Strings from '../../../utils/string_dict.js';
+import Strings from '../../../utils/string_dict';
 import React from 'react';
 import { Alert, Stack, TextField, Typography } from '@mui/joy';
 import * as Yup from 'yup';
@@ -29,9 +29,7 @@ const CreateTeamModal = function ({ onDismiss, ...others }: ICreateTeamModal) {
     return (
         <Modal headerTitle={Strings.create_a_team} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
-                <Typography level="body2">
-                    {Strings.once_this_team_is_created_you}
-                </Typography>
+                <Typography level="body2">{Strings.once_this_team_is_created_you}</Typography>
                 {form.errors.$root && <Alert color="danger">{form.errors.$root}</Alert>}
                 <TextField label={Strings.name} placeholder={Strings.the_blueberries} {...getInputProps('name')} />
                 <Textarea

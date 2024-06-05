@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -27,33 +27,26 @@ const Consent = function () {
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
-        history.push('/onboarding/profile');
+        history.push('/onboarding/welcome/0');
     });
 
     return (
         <Page>
             <PageTitle>{Strings.just_a_few_things}</PageTitle>
 
-            <Form submitButtonColor="success" submitLabel={Strings.enroll} message={form.errors.$root} onSubmit={handleSubmit}>
-                <Checkbox
-                    label={Strings.i_have_read_the_provided}
-                    {...getCheckboxProps('c1')}
-                />
-                <Checkbox
-                    label={Strings.i_am_a_member_of_staff_or_a}
-                    {...getCheckboxProps('c2')}
-                />
-                <Checkbox
-                    label={Strings.i_understand_that_i_must_be}
-                    {...getCheckboxProps('c3')}
-                />
+            <Form
+                submitButtonColor="success"
+                submitLabel={Strings.enroll}
+                message={form.errors.$root}
+                onSubmit={handleSubmit}
+            >
+                <Checkbox label={Strings.i_have_read_the_provided} {...getCheckboxProps('c1')} />
+                <Checkbox label={Strings.i_am_a_member_of_staff_or_a} {...getCheckboxProps('c2')} />
+                <Checkbox label={Strings.i_understand_that_i_must_be} {...getCheckboxProps('c3')} />
 
                 <ExerciseWarning />
 
-                <Checkbox
-                    label={Strings.i_understand_that_physical}
-                    {...getCheckboxProps('c4')}
-                />
+                <Checkbox label={Strings.i_understand_that_physical} {...getCheckboxProps('c4')} />
             </Form>
         </Page>
     );

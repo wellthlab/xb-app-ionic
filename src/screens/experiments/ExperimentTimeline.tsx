@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent } from '@mui/joy';
@@ -30,11 +30,10 @@ const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
-
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const isSubscribedToExperiment = useSelector(state => {
-       return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
+    const isSubscribedToExperiment = useSelector((state) => {
+        return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
     });
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
@@ -64,32 +63,39 @@ const ExperimentTimeline = function () {
     };
 
     const getModalChildren = () => {
-        return <div>
-            <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
-            <br />
-            <List >
-                <ListItem key={experiment.name} >
-                    <ListItemContent>
-                        <Typography style={{ fontStyle: 'italic' }}>
-                            {Strings.experiment_category}  - {capitalise(type)}
-                        </Typography>
-                    </ListItemContent>
-                </ListItem>
-                <ListItem key={experiment.days.length}>
-                    <ListItemContent>
-                        <Typography style={{ fontStyle: 'italic' }} >
-                            {Strings.experiment_duration}  - {experiment.days.length + " " + Strings.days}
-                        </Typography>
-                    </ListItemContent>
-                </ListItem>
-            </List>
-        </div>
+        return (
+            <div>
+                <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
+                <br />
+                <List>
+                    <ListItem key={experiment.name}>
+                        <ListItemContent>
+                            <Typography style={{ fontStyle: 'italic' }}>
+                                {Strings.experiment_category} - {capitalise(type)}
+                            </Typography>
+                        </ListItemContent>
+                    </ListItem>
+                    <ListItem key={experiment.days.length}>
+                        <ListItemContent>
+                            <Typography style={{ fontStyle: 'italic' }}>
+                                {Strings.experiment_duration} - {experiment.days.length + ' ' + Strings.days}
+                            </Typography>
+                        </ListItemContent>
+                    </ListItem>
+                </List>
+            </div>
+        );
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (
-        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name} ref={setPresentingElement}>
+        <Page
+            sx={{ height: '100%' }}
+            footerComponent={BoxesSubMenu()}
+            headerTitle={experiment.name}
+            ref={setPresentingElement}
+        >
             <Box sx={{ flex: 1, overflow: 'auto' }}>
                 {experiment.instructions &&
                     experiment.instructions.map((p, i) => (
@@ -98,9 +104,16 @@ const ExperimentTimeline = function () {
                         </Typography>
                     ))}
 
-                <br/>
-                <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>
-                <br/>
+                <br />
+                <Button
+                    onClick={toggleSubscriptionModal}
+                    disabled={isSubscribedToExperiment}
+                    style={{ left: '25%', width: '50%' }}
+                >
+                    {' '}
+                    {Strings.subscribe_to_experiment}{' '}
+                </Button>
+                <br />
 
                 <Timeline
                     sx={{
@@ -119,12 +132,10 @@ const ExperimentTimeline = function () {
                                 <TimelineSeparator>
                                     <TimelineDot
                                         sx={{
-                                            bgcolor: dayCompleted
-                                                ? 'success.solidBg'
-                                                : 'grey.solidBg',
+                                            bgcolor: dayCompleted ? 'success.solidBg' : 'grey.solidBg',
                                         }}
                                     >
-                                        { dayCompleted ? <Check /> : <ArrowArcRight />}
+                                        {dayCompleted ? <Check /> : <ArrowArcRight />}
                                     </TimelineDot>
                                     <TimelineConnector />
                                 </TimelineSeparator>
@@ -134,17 +145,15 @@ const ExperimentTimeline = function () {
                                     </Typography>
                                     <Stack spacing={2}>
                                         {day.tasks.length ? (
-                                                <TasksList
-                                                    tasks={day.tasks}
-                                                    experimentId={experimentId}
-                                                    dayNum={dayId}
-                                                    onTaskClick={handleClickTask}
-                                                />
-                                            ) : (
-                                                <Typography level="body2">
-                                                    {Strings.there_is_nothing_to_do_for}
-                                                </Typography>
-                                            )}
+                                            <TasksList
+                                                tasks={day.tasks}
+                                                experimentId={experimentId}
+                                                dayNum={dayId}
+                                                onTaskClick={handleClickTask}
+                                            />
+                                        ) : (
+                                            <Typography level="body2">{Strings.there_is_nothing_to_do_for}</Typography>
+                                        )}
                                     </Stack>
                                 </TimelineContent>
                             </TimelineItem>

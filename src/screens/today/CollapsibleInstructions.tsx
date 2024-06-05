@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import { Link, Typography } from '@mui/joy';
 import { Collapse } from '@mui/material';
 import React from 'react';

@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useIonAlert } from '@ionic/react';
 import { Stack, Typography, Alert, useColorScheme, Box } from '@mui/joy';
@@ -99,11 +99,7 @@ const AllSettings = function () {
                         </ListItem>
                     </List>
 
-                    {isDeleted && (
-                        <Alert color="warning">
-                            {Strings.you_have_requested_your}
-                        </Alert>
-                    )}
+                    {isDeleted && <Alert color="warning">{Strings.you_have_requested_your}</Alert>}
 
                     {deleteFailed && <Alert color="danger">{Strings.sorry_your_account_cannot_be}</Alert>}
 

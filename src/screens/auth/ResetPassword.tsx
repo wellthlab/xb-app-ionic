@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';

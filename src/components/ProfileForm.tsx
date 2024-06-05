@@ -1,4 +1,4 @@
-import Strings from '../utils/string_dict.js';
+import Strings from '../utils/string_dict';
 import React from 'react';
 import { TextField } from '@mui/joy';
 import * as Yup from 'yup';

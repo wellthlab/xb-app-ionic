@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Box, FormHelperText, FormLabel, FormControl } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
