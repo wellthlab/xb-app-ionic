@@ -177,8 +177,6 @@ export const selectNotes = (state: ISelectorState) => (state.account.notes ? sta
 
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
-export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
-
 export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExperimentState, boxId: string) => {
     const experiments = selectAllExperiments(state);
     const subscriptionSequence = state.account.subscriptionSequence[boxId];
@@ -194,9 +192,6 @@ export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExper
     }
     return subSeqMap;
 };
-
-export const selectFullName = (state: ISelectorState) =>
-    state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
 export const selectResponses = (state: ISelectorState) => state.account.responses;
 

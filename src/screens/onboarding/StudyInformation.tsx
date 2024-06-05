@@ -4,7 +4,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button } from '@mui/joy';
 
 import Page from '../../components/foundation/Page';
-
 import AboutThisStudy from '../../components/AboutThisStudy';
 
 const StudyInformation = function () {

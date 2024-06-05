@@ -5,6 +5,7 @@ import accountReducer from './account';
 import teamReducer from './team';
 import experimentsReducer from './experiments';
 import onboardingReducer from './onboarding';
+import studyReducer from './study';
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         team: teamReducer,
         experiments: experimentsReducer,
         onboarding: onboardingReducer,
+        study: studyReducer,
     },
 
     middleware: (getDefaultMiddleware) =>

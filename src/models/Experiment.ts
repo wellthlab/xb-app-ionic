@@ -93,11 +93,11 @@ export interface IGenericInput {
     rk: string;
 }
 
-interface IMedia {
+export interface IMedia {
     src: string;
 }
 
-interface IText {
+export interface IText {
     content: string;
 }
 

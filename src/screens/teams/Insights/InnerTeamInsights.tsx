@@ -10,12 +10,11 @@ import Modal from '../../../components/foundation/Modal';
 import Centre from '../../../components/foundation/Centre';
 import SectionTitle from '../../../components/foundation/SectionTitle';
 
-import { selectFullName, selectUserId } from '../../../slices/account';
+import { selectUserId } from '../../../slices/account';
 import { leaveTeam, selectTeam } from '../../../slices/team';
 import { useSelector, useDispatch } from '../../../slices/store';
 
 const InnerTeamInsights = function () {
-    const fullName = useSelector(selectFullName);
     const userId = useSelector(selectUserId);
     const team = useSelector(selectTeam)!;
 
@@ -49,9 +48,7 @@ const InnerTeamInsights = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>
-                {Strings.welcome}, {fullName}
-            </PageTitle>
+            <PageTitle>{Strings.teams}</PageTitle>
             <Card sx={{ mb: 4 }}>
                 <Typography level="h5" sx={{ mb: 1 }}>
                     {team.name}
