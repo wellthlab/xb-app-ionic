@@ -1,4 +1,4 @@
-import { Block, IMedia, IText } from './Experiment';
+import { Block } from './Experiment';
 import { BaseModel, ObjectId } from './utils';
 
 export interface IStudy {
