@@ -154,22 +154,20 @@ const ExperimentTimeline = function () {
                     <TimelineItem key={"next"}>
                         <TimelineSeparator>
                             <TimelineDot sx={{
-                                            bgcolor: !experimentCompleted
-                                                ? 'neutral.solidBg'
-                                                : 'success.solidBg'
+                                            bgcolor: experimentCompleted
+                                                ? 'primary.solidBg'
+                                                : 'grey.solidBg'
                                         }}>
                                 {<DotsThree />}
                             </TimelineDot>
                         </TimelineSeparator>
                         <TimelineContent>
                             <Typography level="body2" sx={{ my: 2 }}>
-                                What's Next?
+                                {Strings.whats_next}
                             </Typography>
-                            {experimentCompleted && (
-                                <Stack spacing={2}>
-                                    "bim"
-                                </Stack>
-                            )}
+                            <Stack spacing={2}>
+                                "bim"
+                            </Stack>
                         </TimelineContent>
                     </TimelineItem>
                 </Timeline>

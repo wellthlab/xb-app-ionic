@@ -172,6 +172,7 @@ const Strings = {
 	box_description2: "\"!",
     experiment_category: "Experiment Category",
     experiment_duration: "Experiment Duration",
+	whats_next: "What's next?",
 };
 
 export default Strings;
