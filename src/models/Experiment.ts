@@ -21,7 +21,7 @@ interface IBaseExperiment {
     duration: number;
     hidden?: boolean;
     id: string;
-    boxWeek: number
+    boxWeek: number;
 }
 
 export interface IExperiment extends IBaseExperiment {
@@ -191,7 +191,7 @@ export interface IResponse {
     createdAt: number;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId' > {
+interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId'> {
     _id: ObjectId;
     subscriptionId: ObjectId;
     taskId: ObjectId;
@@ -201,12 +201,12 @@ class Experiment extends BaseModel {
     static async getExperiments(): Promise<GenericExperiment[]> {
         const db = this.getDb();
         const records = await db.collection<GenericExperimentDocument>('experiments').find();
-        records.forEach(record => convertObjectIdFieldsToString(record));
+        records.forEach((record) => convertObjectIdFieldsToString(record));
 
-        return records.map(record => {
-             const asGenericExperiment= record as unknown as GenericExperiment;
-             asGenericExperiment.id = record._id as unknown as string;
-             return asGenericExperiment;
+        return records.map((record) => {
+            const asGenericExperiment = (record as unknown) as GenericExperiment;
+            asGenericExperiment.id = (record._id as unknown) as string;
+            return asGenericExperiment;
         });
     }
 
@@ -218,49 +218,52 @@ class Experiment extends BaseModel {
         return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
     }
 
-    static saveResponse(response: Omit<IResponse, 'subscriptionId' |'createdAt' | 'id'>, subscriptionId: string) {
+    static saveResponse(response: Omit<IResponse, 'subscriptionId' | 'createdAt' | 'id'>, subscriptionId: string) {
         const db = this.getDb();
 
-        return db
-            .collection<IResponseDocument>('responses')
-            .insertOne({ ...response, taskId: this.oid(response.taskId), subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
+        return db.collection<IResponseDocument>('responses').insertOne({
+            ...response,
+            taskId: this.oid(response.taskId),
+            subscriptionId: this.oid(subscriptionId),
+            createdAt: Date.now(),
+        });
     }
 
-     static async getResponses(subscriptionIds: string[]) {
+    static async getResponses(subscriptionIds: string[]) {
         const db = this.getDb();
-        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
-        const responses = await db.collection<IResponseDocument>('responses')
+        const subscriptionIdsAsObjectIds = subscriptionIds.map((subscriptionId) => this.oid(subscriptionId));
+        const responses = await db
+            .collection<IResponseDocument>('responses')
             .find({ subscriptionId: { $in: subscriptionIdsAsObjectIds } });
         convertObjectIdFieldsToString(responses);
 
-        const responsesAsIResponse =  responses.map(record => {
-            const asIResponse= record as unknown as IResponse;
-            asIResponse.id = record._id as unknown as string;
+        const responsesAsIResponse = responses.map((record) => {
+            const asIResponse = (record as unknown) as IResponse;
+            asIResponse.id = (record._id as unknown) as string;
             return asIResponse;
         });
 
-        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce((records: Record<string, IResponse[]>, response) => {
-            if (records[response.subscriptionId]) {
-                records[response.subscriptionId].push(response);
-            } else {
-                records[response.subscriptionId] = [response];
-            }
-            return records;
-        }, {});
+        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce(
+            (records: Record<string, IResponse[]>, response) => {
+                if (records[response.subscriptionId]) {
+                    records[response.subscriptionId].push(response);
+                } else {
+                    records[response.subscriptionId] = [response];
+                }
+                return records;
+            },
+            {},
+        );
 
         return responsesGroupedBySubscriptionId;
     }
 
-
-    static deleteResponses(subscriptionIds: string []) {
+    static deleteResponses(subscriptionIds: string[]) {
         const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
 
-        return db
-            .collection('responses')
-            .deleteMany({ subscriptionId: { $in : subscriptionIdsAsObjectId } });
+        return db.collection('responses').deleteMany({ subscriptionId: { $in: subscriptionIdsAsObjectId } });
     }
-
 }
 
 export default Experiment;

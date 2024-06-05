@@ -1,7 +1,6 @@
 import Strings from '../../utils/string_dict';
 import React from 'react';
-import { Typography, IconButton, Stack } from '@mui/joy';
-import { Play, ClockCounterClockwise, Pause } from 'phosphor-react';
+import { Typography, Stack } from '@mui/joy';
 
 import TimeInput from './TimeInput';
 import TimerControls from './TimerControls';

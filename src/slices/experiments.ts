@@ -20,19 +20,19 @@ export const selectAllExperiments = (state: ISelectorState) => state.experiments
 
 export const selectExperimentByBoxName = (state: ISelectorState, boxName: string) => {
     const boxId = state.experiments.boxes[boxName].id;
-    const experiments =  Object.values(selectAllExperiments(state));
+    const experiments = Object.values(selectAllExperiments(state));
     return experiments.filter((experiment) => experiment.boxId === boxId);
-}
+};
 
-export const selectExperimentById = (state: ISelectorState, experimentId: string) => state.experiments.experiments[experimentId];
+export const selectExperimentById = (state: ISelectorState, experimentId: string) =>
+    state.experiments.experiments[experimentId];
 
 export const selectBoxByExperimentId = (state: ISelectorState, experimentId: string) => {
     const boxId = state.experiments.experiments[experimentId].boxId;
-    return Object
-            .entries(selectAllBoxes(state))
-            .filter(([boxName, box]) => box.id === boxId)
-            .map(([boxName, box]) => box)[0];
-}
+    return Object.entries(selectAllBoxes(state))
+        .filter(([boxName, box]) => box.id === boxId)
+        .map(([boxName, box]) => box)[0];
+};
 
 export const selectTask = (state: ISelectorState, experimentId: string, dayNum: number, taskNum: number) =>
     (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum];
@@ -51,16 +51,20 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
     return (startOfCurrentDayTs - startOfSubscriptionDayTs) / oneDay;
 };
 
-export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
+export const selectProgressByDayNumAndTasks = (
+    state: IAccountSelectorState & ISelectorState,
+    tasks: ITask[],
+    dayNum: number,
+) => {
     const responses = selectResponses(state);
     const progressByDayNumAndTaskIds: boolean[] = [];
 
-    tasks.forEach(task => {
-        const progress = Object
-            .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum));
+    tasks.forEach((task) => {
+        const progress = Object.values(responses).some((responseArr) =>
+            responseArr.some((response) => response.taskId === task.taskId && response.dayNum === dayNum),
+        );
         progressByDayNumAndTaskIds.push(progress);
-    })
+    });
     return progressByDayNumAndTaskIds;
 };
 
@@ -68,7 +72,7 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
     const experiment = selectExperimentById(state, experimentId) as IExperiment;
     const subscription = selectSubscriptions(state)[experimentId];
 
-    if (subscription &&  selectResponses(state)[subscription.id]) {
+    if (subscription && selectResponses(state)[subscription.id]) {
         const dayProgress: boolean[] = Array(experiment.days.length).fill(true);
         const responses = selectResponses(state)[subscription.id];
 
@@ -77,10 +81,12 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 dayProgress[dayIndex] = false;
             } else {
                 day.tasks.forEach((task) => {
-                    if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
+                    if (
+                        !responses.some((response) => response.taskId === task.taskId && response.dayNum === dayIndex)
+                    ) {
                         dayProgress[dayIndex] = false;
                     }
-                })
+                });
             }
         });
         return dayProgress;
@@ -89,14 +95,12 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
     }
 };
 
-
-
 export const selectCompletionForAllExperiments = (state: IAccountSelectorState & ISelectorState) => {
     const percentages: Record<string, number> = {};
     for (const [experimentId, experiment] of Object.entries(state.experiments.experiments)) {
         if (!('children' in experiment)) {
             const dayProgress = selectDayProgress(state, experimentId);
-            const daysCompleted =   dayProgress.filter(isComplete => isComplete).length;
+            const daysCompleted = dayProgress.filter((isComplete) => isComplete).length;
             percentages[experimentId] = (daysCompleted / (experiment as IExperiment).days.length) * 100;
         }
     }
@@ -184,7 +188,6 @@ export default createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(boot.fulfilled, (state, action) => {
-
                 for (const box of action.payload.boxes) {
                     state.boxes[box.name] = box;
                 }

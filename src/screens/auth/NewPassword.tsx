@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict';
 import React from 'react';
-import { Redirect, useLocation } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Alert, TextField } from '@mui/joy';
 
 import { newPasswordSchema } from './utils/schemas';

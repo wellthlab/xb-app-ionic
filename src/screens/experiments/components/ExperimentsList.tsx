@@ -6,7 +6,12 @@ import {
     Typography,
     Link,
     LinearProgress,
-    Checkbox, Tabs, TabList, Tab, TabPanel, TabsProps,
+    Checkbox,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanel,
+    TabsProps,
 } from '@mui/joy';
 
 import { GenericExperiment } from '../../../models/Experiment';
@@ -18,12 +23,17 @@ interface IExperimentsListProps {
     experiments: GenericExperiment[];
     onExperimentSelected?: (experiment: GenericExperiment, isSelected: boolean) => void;
     isCheckBoxSelected?: (boxWeek: number, experimentId: string) => boolean;
-    isSubscribedToBox?: boolean
+    isSubscribedToBox?: boolean;
 }
 
-const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBoxSelected, isSubscribedToBox }: IExperimentsListProps) {
-    const experiments_  = JSON.parse(JSON.stringify(experiments)) as GenericExperiment[];
-    let boxWeeks = experiments_.map((e: { boxWeek: number; }) => {
+const ExperimentsList = function ({
+    experiments,
+    onExperimentSelected,
+    isCheckBoxSelected,
+    isSubscribedToBox,
+}: IExperimentsListProps) {
+    const experiments_ = JSON.parse(JSON.stringify(experiments)) as GenericExperiment[];
+    let boxWeeks = experiments_.map((e: { boxWeek: number }) => {
         if (!e.boxWeek) {
             e.boxWeek = 0;
         }
@@ -40,11 +50,10 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
 
     const elements = new Map<number, JSX.Element>();
     boxWeeks.forEach((boxWeek) => {
-        const boxWeekExperiments = experiments_.filter(e => !e.hidden && e.boxWeek === boxWeek);
-        const JSXElement = <Stack spacing={2}
-        >
-            {boxWeekExperiments
-                .map((experiment) => {
+        const boxWeekExperiments = experiments_.filter((e) => !e.hidden && e.boxWeek === boxWeek);
+        const JSXElement = (
+            <Stack spacing={2}>
+                {boxWeekExperiments.map((experiment) => {
                     const completion = completionByExperimentId[experiment.id];
                     return (
                         <Card
@@ -56,7 +65,20 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
                         >
                             <div>
                                 {experiment.name}
-                                {onExperimentSelected && <span className="checkBox"> <Checkbox variant={isSubscribedToBox ? 'solid' : 'outlined'}  disabled ={isSubscribedToBox} checked = {isCheckBoxSelected ? isCheckBoxSelected(boxWeek, experiment.id) : false } size="sm" onChange={(event)  => onExperimentSelected(experiment, event.target.checked)}/> </span>}
+                                {onExperimentSelected && (
+                                    <span className="checkBox">
+                                        {' '}
+                                        <Checkbox
+                                            variant={isSubscribedToBox ? 'solid' : 'outlined'}
+                                            disabled={isSubscribedToBox}
+                                            checked={
+                                                isCheckBoxSelected ? isCheckBoxSelected(boxWeek, experiment.id) : false
+                                            }
+                                            size="sm"
+                                            onChange={(event) => onExperimentSelected(experiment, event.target.checked)}
+                                        />{' '}
+                                    </span>
+                                )}
                             </div>
 
                             <Stack spacing={1}>
@@ -64,24 +86,31 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
                                     overlay
                                     textColor="inherit"
                                     underline="none"
-                                    onClick={() => {history.push(`${pathname}/${experiment.id}`);}}
-                                >
-                                </Link>
+                                    onClick={() => {
+                                        history.push(`${pathname}/${experiment.id}`);
+                                    }}
+                                ></Link>
                                 {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography level="body3">{completion}{Strings.percent_completed}</Typography>
+                                        <Typography level="body3">
+                                            {completion}
+                                            {Strings.percent_completed}
+                                        </Typography>
                                         <LinearProgress determinate value={completion} />
                                     </Stack>
                                 ) : (
-                                    <Typography level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                    <Typography level="body3">
+                                        {experiment.duration}
+                                        {Strings.day_s_}
+                                    </Typography>
                                 )}
                             </Stack>
-
                         </Card>
                     );
                 })}
-        </Stack>;
+            </Stack>
+        );
         elements.set(boxWeek, JSXElement);
     });
 
@@ -89,15 +118,36 @@ const ExperimentsList = function({ experiments, onExperimentSelected, isCheckBox
     const history = useHistory();
 
     return (
-        <Tabs aria-label="week tabs" value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent', height: "100" }}>
-            {onExperimentSelected && <TabList>
-                {boxWeeks.sort().map((boxWeek) => {
-                    return <Tab variant={tabIndex === boxWeeks.indexOf(boxWeek)  ? 'solid' : 'plain'} color={tabIndex === boxWeeks.indexOf(boxWeek) ? 'primary' : 'neutral'} key={boxWeek}> {Strings.week} {boxWeek + 1} </Tab>
-                })}
-            </TabList>}
-            <br/>
+        <Tabs
+            aria-label="week tabs"
+            value={tabIndex}
+            onChange={handleTabChange}
+            sx={{ bgcolor: 'transparent', height: '100' }}
+        >
+            {onExperimentSelected && (
+                <TabList>
+                    {boxWeeks.sort().map((boxWeek) => {
+                        return (
+                            <Tab
+                                variant={tabIndex === boxWeeks.indexOf(boxWeek) ? 'solid' : 'plain'}
+                                color={tabIndex === boxWeeks.indexOf(boxWeek) ? 'primary' : 'neutral'}
+                                key={boxWeek}
+                            >
+                                {' '}
+                                {Strings.week} {boxWeek + 1}{' '}
+                            </Tab>
+                        );
+                    })}
+                </TabList>
+            )}
+            <br />
             {boxWeeks.sort().map((boxWeek) => {
-                return <TabPanel value={boxWeeks.indexOf(boxWeek)} key={boxWeek}> {elements.get(boxWeek)} </TabPanel>
+                return (
+                    <TabPanel value={boxWeeks.indexOf(boxWeek)} key={boxWeek}>
+                        {' '}
+                        {elements.get(boxWeek)}{' '}
+                    </TabPanel>
+                );
             })}
         </Tabs>
     );

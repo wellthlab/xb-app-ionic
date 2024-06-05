@@ -16,7 +16,8 @@ import Modal from '../../components/foundation/Modal';
 import {
     selectResponses,
     selectSubscriptions,
-    selectSubscriptionSequenceByBoxId, shouldContinueRemindersForAccount,
+    selectSubscriptionSequenceByBoxId,
+    shouldContinueRemindersForAccount,
     subScribeToBox,
     unSubscribeFromBox,
 } from '../../slices/account';
@@ -25,12 +26,12 @@ import Strings from '../../utils/string_dict';
 import { ISubscription } from '../../models/Account';
 import BoxesSubMenu from './BoxesSubMenu';
 
-const ExperimentsListScreen = function() {
+const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
     const dispatch = useDispatch();
 
     const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
-    const boxId = useSelector(selectAllBoxes).find(box => box.name === type)!.id;
+    const boxId = useSelector(selectAllBoxes).find((box) => box.name === type)!.id;
     const existingSelections = useSelector((state) => selectSubscriptionSequenceByBoxId(state, boxId));
     const subscriptions = useSelector(selectSubscriptions);
 
@@ -45,18 +46,20 @@ const ExperimentsListScreen = function() {
         setExperimentSelections(existingSelections);
     }, [type]);
 
-    const handleExperimentSelected = function(experiment: GenericExperiment, isSelected: boolean) {
+    const handleExperimentSelected = function (experiment: GenericExperiment, isSelected: boolean) {
         const newExperimentSelections = new Map(experimentSelections);
         if (isSelected) {
             if (newExperimentSelections.has(experiment.boxWeek)) {
-                if (!newExperimentSelections.get(experiment.boxWeek)!.some(e => e.id === experiment.id)) {
+                if (!newExperimentSelections.get(experiment.boxWeek)!.some((e) => e.id === experiment.id)) {
                     newExperimentSelections.get(experiment.boxWeek)!.push(experiment);
                 }
             } else {
                 newExperimentSelections.set(experiment.boxWeek, [experiment]);
             }
         } else if (newExperimentSelections.has(experiment.boxWeek)) {
-            const filterExperiments = newExperimentSelections.get(experiment.boxWeek)!.filter(e => !(e.id === experiment.id));
+            const filterExperiments = newExperimentSelections
+                .get(experiment.boxWeek)!
+                .filter((e) => !(e.id === experiment.id));
             if (filterExperiments.length === 0) {
                 newExperimentSelections.delete(experiment.boxWeek);
             } else {
@@ -68,12 +71,11 @@ const ExperimentsListScreen = function() {
 
     const isCheckBoxSelected = (boxWeek: number, experimentId: string) => {
         const experimentsForWeek = experimentSelections.get(boxWeek);
-        return !experimentsForWeek ? false : experimentsForWeek.some(experiment => experiment.id === experimentId);
+        return !experimentsForWeek ? false : experimentsForWeek.some((experiment) => experiment.id === experimentId);
     };
 
     const toggleSubscriptionModal = () => {
         setSubscriptionModalOpen(!subscriptionModalOpen);
-
     };
 
     const handleSubscribeToBox = () => {
@@ -83,20 +85,35 @@ const ExperimentsListScreen = function() {
 
     const handleUnsubscribeFromBox = async () => {
         const subscriptionIds: string[] = [];
-        const allExperimentsExcludingSelections  = JSON.parse(JSON.stringify(allExperiments)) as Record<string, GenericExperiment>;
-        const allSubscriptionsExcludingSelections  = JSON.parse(JSON.stringify(subscriptions)) as Record<string, ISubscription>;
+        const allExperimentsExcludingSelections = JSON.parse(JSON.stringify(allExperiments)) as Record<
+            string,
+            GenericExperiment
+        >;
+        const allSubscriptionsExcludingSelections = JSON.parse(JSON.stringify(subscriptions)) as Record<
+            string,
+            ISubscription
+        >;
 
-        Array.from(experimentSelections.values()).flat().forEach(experiment => {
-            if ('children' in experiment) {
-                experiment.children.forEach((childExperiment) => subscriptions[childExperiment] && subscriptionIds.push(subscriptions[childExperiment].id));
-            } else {
-                subscriptions[experiment.id] && subscriptionIds.push(subscriptions[experiment.id].id);
-            }
-            delete allExperimentsExcludingSelections[experiment.id];
-            delete allSubscriptionsExcludingSelections[experiment.id];
-        });
+        Array.from(experimentSelections.values())
+            .flat()
+            .forEach((experiment) => {
+                if ('children' in experiment) {
+                    experiment.children.forEach(
+                        (childExperiment) =>
+                            subscriptions[childExperiment] && subscriptionIds.push(subscriptions[childExperiment].id),
+                    );
+                } else {
+                    subscriptions[experiment.id] && subscriptionIds.push(subscriptions[experiment.id].id);
+                }
+                delete allExperimentsExcludingSelections[experiment.id];
+                delete allSubscriptionsExcludingSelections[experiment.id];
+            });
 
-        const continueRemindersForAccount = shouldContinueRemindersForAccount(allSubscriptionsExcludingSelections, allExperimentsExcludingSelections, responses);
+        const continueRemindersForAccount = shouldContinueRemindersForAccount(
+            allSubscriptionsExcludingSelections,
+            allExperimentsExcludingSelections,
+            responses,
+        );
         await unSubscribeFromBox(subscriptionIds, boxId, continueRemindersForAccount);
         dispatch(boot());
         toggleSubscriptionModal();
@@ -112,26 +129,35 @@ const ExperimentsListScreen = function() {
 
     const getModalChildren = () => {
         if (isSubscribedToBox()) {
-            return <Typography component="span" display="inline" level="body1"> {Strings.confirm_restart_subscription}</Typography>;
+            return (
+                <Typography component="span" display="inline" level="body1">
+                    {' '}
+                    {Strings.confirm_restart_subscription}
+                </Typography>
+            );
         } else {
-            return <div>
-                <Typography level="h6"> {Strings.confirm_experiment_selection} </Typography>
-                <br />
-                <br />
-                <List>
-                    {
-                        Array.from(experimentSelections.values()).flat().map((experiment) => {
-                            return <ListItem key={experiment.boxWeek + experiment.name}>
-                                <ListItemContent>
-                                    <Typography>
-                                        {Strings.week} {experiment.boxWeek + 1} - {experiment.name}
-                                    </Typography>
-                                </ListItemContent>
-                            </ListItem>;
-                        })
-                    }
-                </List>
-            </div>;
+            return (
+                <div>
+                    <Typography level="h6"> {Strings.confirm_experiment_selection} </Typography>
+                    <br />
+                    <br />
+                    <List>
+                        {Array.from(experimentSelections.values())
+                            .flat()
+                            .map((experiment) => {
+                                return (
+                                    <ListItem key={experiment.boxWeek + experiment.name}>
+                                        <ListItemContent>
+                                            <Typography>
+                                                {Strings.week} {experiment.boxWeek + 1} - {experiment.name}
+                                            </Typography>
+                                        </ListItemContent>
+                                    </ListItem>
+                                );
+                            })}
+                    </List>
+                </div>
+            );
         }
     };
 
@@ -148,7 +174,11 @@ const ExperimentsListScreen = function() {
     };
 
     return (
-        <Page footerComponent={BoxesSubMenu()} headerTitle={`${capitalise(type)} experiments`} ref={setPresentingElement}>
+        <Page
+            footerComponent={BoxesSubMenu()}
+            headerTitle={`${capitalise(type)} experiments`}
+            ref={setPresentingElement}
+        >
             <Stack spacing={2}>
                 {type === 'move' && <ExerciseWarning />}
 
@@ -163,7 +193,10 @@ const ExperimentsListScreen = function() {
             </Stack>
 
             <br />
-            <Button onClick={toggleSubscriptionModal} disabled={experimentSelections.size === 0}> {getConfirmationText()} </Button>
+            <Button onClick={toggleSubscriptionModal} disabled={experimentSelections.size === 0}>
+                {' '}
+                {getConfirmationText()}{' '}
+            </Button>
 
             <Modal
                 headerTitle={Strings.confirm_subscription}

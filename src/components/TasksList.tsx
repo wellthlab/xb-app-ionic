@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Stack, Typography } from '@mui/joy';
+import { Box } from '@mui/joy';
 import { Check, CaretRight } from 'phosphor-react';
 
 import List from './foundation/List';

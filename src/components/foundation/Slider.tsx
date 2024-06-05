@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, FormControl, FormHelperText, FormLabel, Slider as JoySlider, SliderProps } from '@mui/joy';
+import { FormControl, FormHelperText, FormLabel, Slider as JoySlider, SliderProps } from '@mui/joy';
 
 interface ISliderProps extends SliderProps {
     label?: string;

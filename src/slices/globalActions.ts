@@ -10,11 +10,12 @@ export const boot = createAsyncThunk('global/boot', async () => {
         Team.getCurrentTeam(),
         Experiment.getExperiments(),
         Experiment.getBoxes(),
-        Account.getSubscriptionSequence()
+        Account.getSubscriptionSequence(),
     ]);
 
-    const subscriptions = account && account.subscriptions.length > 0 ? await Account.getSubscriptions(account.subscriptions) : [];
-    const responses = subscriptions.length > 0 ? await Experiment.getResponses(subscriptions.map(s => s.id)) : {};
+    const subscriptions =
+        account && account.subscriptions.length > 0 ? await Account.getSubscriptions(account.subscriptions) : [];
+    const responses = subscriptions.length > 0 ? await Experiment.getResponses(subscriptions.map((s) => s.id)) : {};
     return {
         account,
         team,
@@ -22,7 +23,7 @@ export const boot = createAsyncThunk('global/boot', async () => {
         boxes,
         subscriptions,
         responses,
-        subscriptionSequences
+        subscriptionSequences,
     };
 });
 

@@ -30,9 +30,9 @@ import { Calendar, CaretDown } from 'phosphor-react';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import { IExperiment, IGenericInput, IResponse } from '../../models/Experiment';
+import { IExperiment, IGenericInput } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
-import { selectAllExperiments, selectExperimentById } from '../../slices/experiments';
+import { selectAllExperiments } from '../../slices/experiments';
 import List from '../../components/foundation/List';
 import ListItem from '../../components/foundation/ListItem';
 import Modal from '../../components/foundation/Modal';
