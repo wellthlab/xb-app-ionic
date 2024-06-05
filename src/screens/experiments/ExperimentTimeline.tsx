@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent } from '@mui/joy';
+import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent, } from '@mui/joy';
 import {
     Timeline,
     TimelineItem,
@@ -12,11 +12,14 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
+
+import FList from '../../components/foundation/List';
+import FListItem from '../../components/foundation/ListItem';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
@@ -166,7 +169,16 @@ const ExperimentTimeline = function () {
                                 {Strings.whats_next}
                             </Typography>
                             <Stack spacing={2}>
-                                "bim"
+                                <FList sx={{ mb: 2 }}>
+                                    <FListItem
+                                        key={taskNum}
+                                        startDecorator={<Repeat/>}
+                                        endDecorator={experimentCompleted && <CaretRight />}
+                                    >
+                                        {Strings.repeat_experiment}
+                                    </FListItem>
+
+                                </FList>
                             </Stack>
                         </TimelineContent>
                     </TimelineItem>

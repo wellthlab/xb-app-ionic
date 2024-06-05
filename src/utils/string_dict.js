@@ -173,6 +173,7 @@ const Strings = {
     experiment_category: "Experiment Category",
     experiment_duration: "Experiment Duration",
 	whats_next: "What's next?",
+	repeat_experiment: "Repeat Experiment",
 };
 
 export default Strings;
