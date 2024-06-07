@@ -12,7 +12,7 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, SkipForward } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
