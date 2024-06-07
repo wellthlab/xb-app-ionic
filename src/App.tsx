@@ -26,6 +26,7 @@ import ConfirmAccountScreen from './screens/auth/ConfirmAccount';
 import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
 import OnboardingConsentScreen from './screens/onboarding/Consent';
 import NewProfileScreen from './screens/onboarding/NewProfile';
+import WelcomeScreen from './screens/onboarding/Welcome';
 
 import AllSettingsTab from './screens/settings/AllSettings';
 import EditProfileScreen from './screens/settings/EditProfile';
@@ -131,6 +132,10 @@ const App = function () {
 
                                     <Route path="/onboarding/profile" exact>
                                         <NewProfileScreen />
+                                    </Route>
+
+                                    <Route path="/onboarding/welcome/:step" exact>
+                                        <WelcomeScreen />
                                     </Route>
 
                                     <Route path="/loading">
