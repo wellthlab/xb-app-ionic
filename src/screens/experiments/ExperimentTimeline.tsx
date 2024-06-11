@@ -71,7 +71,7 @@ const ExperimentTimeline = function () {
                 <ListItem key={experiment.name} >
                     <ListItemContent>
                         <Typography style={{ fontStyle: 'italic' }}>
-                            {Strings.experiment_category}  - {capitalise(type)}
+                            {Strings.experiment_type}  - {capitalise(type)}
                         </Typography>
                     </ListItemContent>
                 </ListItem>

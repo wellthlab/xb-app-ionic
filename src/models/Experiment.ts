@@ -24,6 +24,13 @@ interface IBaseExperiment {
     boxWeek: number
 }
 
+export enum ExperimentCategory {
+    ACTIVE = "ACTIVE",
+    SUGGESTED = "SUGGESTED",
+    AVAILABLE = "AVAILABLE",
+    COMPLETED = "COMPLETED"
+}
+
 export interface IExperiment extends IBaseExperiment {
     days: IDay[];
     preconditions?: any[];

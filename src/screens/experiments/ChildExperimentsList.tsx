@@ -23,7 +23,8 @@ const ChildExperimentsList = function () {
 
     return (
         <Page headerTitle={experiment.name}>
-            <ExperimentsList experiments={children} />
+            //TODO - Handle experiment groupings for child experiments
+            <ExperimentsList experimentsGroupedByCategory={new Map()}/>
         </Page>
     );
 };
