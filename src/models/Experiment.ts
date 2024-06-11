@@ -30,6 +30,8 @@ export interface IExperiment extends IBaseExperiment {
     parent?: string;
     instructions?: string[];
     shouldSendReminders: boolean;
+    next_experiment_id?: string;
+    also_experiment_id?: string;
 }
 
 export interface IParentExperiment extends IBaseExperiment {

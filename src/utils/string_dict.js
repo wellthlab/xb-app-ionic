@@ -166,6 +166,7 @@ const Strings = {
     subscribe_to_box: "Subscribe to this box",
     subscribe_to_experiment: "Start this Experiment",
     confirm_subscription: "Confirm Subscription",
+	confirm_resubscription: "Confirm Resubscription",
     week: "Week",
 	click_here_to_find_some: "Click Here to find some!",
 	box_description1: "A set of experiments to explore how you \"",
@@ -174,6 +175,8 @@ const Strings = {
     experiment_duration: "Experiment Duration",
 	whats_next: "What's next?",
 	repeat_experiment: "Repeat Experiment",
+	next_experiment: "Start the Next Experiment",
+	see_also: "Start Another Experiment",
 };
 
 export default Strings;

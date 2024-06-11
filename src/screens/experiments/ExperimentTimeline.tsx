@@ -12,7 +12,7 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, SkipForward } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, ArrowBendDownRight } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
@@ -45,15 +45,24 @@ const ExperimentTimeline = function () {
     const [dayNum, setDayNum] = React.useState(0);
     const [taskNum, setTaskNum] = React.useState(0);
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
+    const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
 
     const toggleSubscriptionModal = () => {
         setSubscriptionModalOpen(!subscriptionModalOpen);
     };
 
+    const toggleResubscriptionModal = () => {
+        setResubscriptionModalOpen(!resubscriptionModalOpen);
+    };
+
     const handleSubscribeToExperiment = async () => {
         await dispatch(subscribeToExperiments([experiment]));
         toggleSubscriptionModal();
+    };
+
+    const handleResubscribeToExperiment = async () => {
+        toggleResubscriptionModal();
     };
 
     const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
@@ -89,6 +98,25 @@ const ExperimentTimeline = function () {
         </div>
     };
 
+    const getResubModalChildren = () => {
+        return <div>
+            <Typography level="h6"> {Strings.confirm_restart_subscription} </Typography>
+            <br />
+        </div>
+    };
+
+    const GetSubNewExperimentListItem = (itemExperimentId : string, leadText : string) => {
+        const itemExperiment = useSelector((state) => selectExperimentById(state, itemExperimentId)) as IExperiment;
+        return <FListItem
+            key={taskNum}
+            startDecorator={<Repeat/>}
+            endDecorator={experimentCompleted && <CaretRight />}
+            href={experimentCompleted && '/main/box/move/'+itemExperimentId}
+        >
+            {leadText} &mdash; {itemExperiment.name}
+        </FListItem>
+    };
+
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (
@@ -102,7 +130,13 @@ const ExperimentTimeline = function () {
                     ))}
 
                 <br/>
-                <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>
+                <Button
+                    onClick={toggleSubscriptionModal}
+                    disabled={isSubscribedToExperiment}
+                    style={{left: "25%", width: "50%"}}
+                >
+                    {Strings.subscribe_to_experiment}
+                </Button>
                 <br/>
 
                 <Timeline
@@ -161,7 +195,7 @@ const ExperimentTimeline = function () {
                                                 ? 'primary.solidBg'
                                                 : 'grey.solidBg'
                                         }}>
-                                {<DotsThree />}
+                                {experimentCompleted ? <ArrowBendDownRight /> : <DotsThree />}
                             </TimelineDot>
                         </TimelineSeparator>
                         <TimelineContent>
@@ -174,10 +208,13 @@ const ExperimentTimeline = function () {
                                         key={taskNum}
                                         startDecorator={<Repeat/>}
                                         endDecorator={experimentCompleted && <CaretRight />}
+                                        onClick={toggleResubscriptionModal}
+                                        button={experimentCompleted}
                                     >
                                         {Strings.repeat_experiment}
                                     </FListItem>
-
+                                    {experiment.next_experiment_id && GetSubNewExperimentListItem(experiment.next_experiment_id, Strings.next_experiment)}
+                                    {experiment.also_experiment_id && GetSubNewExperimentListItem(experiment.also_experiment_id, Strings.see_also)}
                                 </FList>
                             </Stack>
                         </TimelineContent>
@@ -210,6 +247,16 @@ const ExperimentTimeline = function () {
                 className={'ion-modal-small'}
                 onAction={handleSubscribeToExperiment}
                 children={getModalChildren()}
+            />
+
+            <Modal
+                headerTitle={Strings.confirm_resubscription}
+                isOpen={resubscriptionModalOpen}
+                presentingElement={presentingElement}
+                onDismiss={toggleResubscriptionModal}
+                className={'ion-modal-small'}
+                onAction={handleResubscribeToExperiment}
+                children={getResubModalChildren()}
             />
         </Page>
     );
