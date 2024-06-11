@@ -10,23 +10,6 @@ export interface ICohort {
     id: string;
 }
 
-export interface ISubscriptionSequence {
-    _id: string;
-    boxId: string;
-    nextUpdateTimeUTC: number,
-    userId: string,
-    experimentSequence: string[][],
-    orderedBoxWeeks: number[]
-    nextSequenceIndex: number
-}
-
-export interface ISubscriptionSequenceDocument extends Omit<ISubscriptionSequence, '_id' | 'boxId' | 'userId' | 'experimentSequence'> {
-    _id: ObjectId;
-    boxId: ObjectId;
-    userId: ObjectId;
-    experimentSequence: ObjectId[][];
-}
-
 export interface ICredentials {
     email: string;
     password: string;
@@ -330,62 +313,6 @@ class Account extends BaseModel {
                 },
             },
         );
-    }
-
-    static async saveSubscriptionSequence(experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[]) {
-        const db = this.getDb();
-        const boxIdAsObjectId = this.oid(boxId);
-        const userId = this.oid(this.client.currentUser!.id);
-        const nextUpdateTimeUTC = Date.now() + (7 * 24 * 60 * 60 * 1000);
-        const nextSequenceIndex = 1;
-        const experimentSequence: ObjectId[][] = [];
-
-        for (let i = 0; i < orderedBoxWeeks.length; i++) {
-            const experimentIdsForBoxWeek = experimentsByBoxWeek.get(orderedBoxWeeks[i])!.map(e => this.oid(e.id));
-            experimentSequence.push(experimentIdsForBoxWeek);
-        }
-
-       await db.collection('subscriptionSequences').insertOne({
-            boxId: boxIdAsObjectId,
-            nextUpdateTimeUTC: nextUpdateTimeUTC,
-            userId: userId,
-            experimentSequence: experimentSequence,
-            orderedBoxWeeks: orderedBoxWeeks,
-            nextSequenceIndex: nextSequenceIndex,
-       });
-
-        convertObjectIdFieldsToString(experimentSequence);
-        return {
-            boxId: boxId,
-            nextUpdateTimeUTC: nextUpdateTimeUTC,
-            userId: this.client.currentUser!.id,
-            experimentSequence: experimentSequence as unknown as string[][],
-            orderedBoxWeeks: orderedBoxWeeks,
-            nextSequenceIndex: nextSequenceIndex,
-        } as ISubscriptionSequence;
-    }
-
-    static async getSubscriptionSequence() {
-        const db = this.getDb();
-        const userId = this.oid(this.client.currentUser!.id);
-
-        const result = await db.collection<ISubscriptionSequenceDocument>('subscriptionSequences').find({
-            userId: userId,
-        });
-
-        convertObjectIdFieldsToString(result);
-        return result as unknown as ISubscriptionSequence[];
-    }
-
-    static async deleteSubscriptionSequence(boxId: string) {
-        const db = this.getDb();
-        const userId = this.oid(this.client.currentUser!.id);
-        const boxIdAsObjectId = this.oid(boxId);
-
-        await db.collection('subscriptionSequences').deleteMany({
-            userId: userId,
-            boxId: boxIdAsObjectId,
-        });
     }
 
     static async deletePendingNotifications() {

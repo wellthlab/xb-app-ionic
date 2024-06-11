@@ -21,7 +21,6 @@ interface IBaseExperiment {
     duration: number;
     hidden?: boolean;
     id: string;
-    boxWeek: number
 }
 
 export enum ExperimentCategory {

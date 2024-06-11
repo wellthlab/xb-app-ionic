@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, ISubscription, ISubscriptionSequence } from '../models/Account';
-import Experiment, { IResponse, GenericExperiment, IExperiment } from '../models/Experiment';
-import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
+import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
+import Experiment, { IResponse, GenericExperiment } from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -36,14 +35,6 @@ export const saveNotes = createAsyncThunk(
     },
 );
 
-export const saveSubscriptionSequence = createAsyncThunk<
-       ISubscriptionSequence,
-    { experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[] }
->('account/saveSubscriptionSequence', async ({ boxId, experimentsByBoxWeek, orderedBoxWeeks }) => {
-        return Account.saveSubscriptionSequence(experimentsByBoxWeek, boxId, orderedBoxWeeks);
-    },
-);
-
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
     GenericExperiment[]>('account/subscriptions', (experiments) => {
@@ -70,65 +61,6 @@ export const subscribeToExperiments = createAsyncThunk<
     return Account.subscribeToExperiments(recordsForInsertion);
 });
 
-
-export const unSubscribeFromBox = async (subscriptionIds: string[], boxId: string, continueRemindersForAccount: boolean) => {
-    await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId),
-        Experiment.deleteResponses(subscriptionIds), Account.deleteSubscriptions(subscriptionIds), !continueRemindersForAccount ? Account.deletePendingNotifications() : Promise.resolve({})]);
-};
-
-export const shouldContinueRemindersForAccount = (allSubscriptions: Record<string, ISubscription>, allExperiments: Record<string, GenericExperiment>, allResponses: Record<string, IResponse[]>) => {
-    for (const [experimentId, subscription] of Object.entries(allSubscriptions)) {
-        const experiment = allExperiments[experimentId];
-        const responses = allResponses[subscription.id];
-        if(!responses && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-
-        if (!('children' in experiment)) {
-            const originalLength = experiment.days.length;
-            if (originalLength < experiment.duration) {
-                let day = 0;
-
-                for (let i = 0; i < experiment.duration - originalLength; i++) {
-                    experiment.days.push(experiment.days[day]);
-                    day++;
-
-                    if (day === originalLength) {
-                        day = 0;
-                    }
-                }
-            }
-        }
-
-        let isFinished = true;
-
-        taskLoop: // @ts-ignore
-            for (const [dayIndex, day] of (experiment as IExperiment).days.entries()) {
-                for (const task of day.tasks) {
-                    if (day.tasks.length === 0) {
-                        continue;
-                    }
-                    if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex))) {
-                        isFinished = false;
-                        break taskLoop;
-                    }
-                }
-            }
-
-        if (!isFinished && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-    }
-
-    return false;
-};
-export const subScribeToBox = (dispatch: ThunkDispatch<any, any, any>, experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string) => {
-    const orderedBoxWeeks = Array.from(experimentsByBoxWeek.keys()).sort();
-    const firstBoxWeekExperiments = experimentsByBoxWeek.get(orderedBoxWeeks[0]);
-    dispatch(subscribeToExperiments(firstBoxWeekExperiments!));
-    dispatch(saveSubscriptionSequence({ experimentsByBoxWeek, boxId, orderedBoxWeeks }));
-};
-
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
 });
@@ -139,7 +71,6 @@ interface IAccountState {
     cohortId?: string;
     subscriptions: Record<string, ISubscription>;
     responses: Record<string, IResponse[]>,
-    subscriptionSequence: Record<string, ISubscriptionSequence>,
     notes?: Record<number, string>,
     deleted?: boolean;
 }
@@ -167,20 +98,6 @@ export const selectUserId = (state: ISelectorState) => state.account.id;
 
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 
-export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExperimentState, boxId: string) => {
-    const experiments = selectAllExperiments(state);
-    const subscriptionSequence = state.account.subscriptionSequence[boxId];
-    const subSeqMap = new Map<number, GenericExperiment[]>();
-
-    if (subscriptionSequence) {
-        for(let i=0; i < subscriptionSequence.experimentSequence.length; i++) {
-            const experimentsForBoxWeek = subscriptionSequence.experimentSequence[i].map(experimentId => experiments[experimentId]);
-            subSeqMap.set(subscriptionSequence.orderedBoxWeeks[i], experimentsForBoxWeek);
-        }
-    }
-    return subSeqMap;
-}
-
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -188,7 +105,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, subscriptionSequence: {} } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -204,11 +121,7 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
                 state.subscriptions = {};
-                state.subscriptionSequence = {};
 
-                for (const subSeq of action.payload.subscriptionSequences) {
-                    state.subscriptionSequence[subSeq.boxId] = subSeq;
-                }
                 for (const sub of action.payload.subscriptions) {
                     state.subscriptions[sub.experimentId] = sub;
                 }
@@ -228,7 +141,6 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
-                state.subscriptionSequence = {};
                 delete state.cohortId;
                 delete state.id;
                 delete state.profile;
@@ -239,7 +151,6 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
-                state.subscriptionSequence = {};
                 delete state.cohortId;
                 delete state.id;
                 delete state.profile;
@@ -255,9 +166,6 @@ export default createSlice({
             })
             .addCase(saveNotes.fulfilled, (state, action) => {
                 state.notes = action.payload;
-            })
-            .addCase(saveSubscriptionSequence.fulfilled, (state, action) => {
-                state.subscriptionSequence[action.payload.boxId] = action.payload;
             })
             .addCase(reloadResponses.fulfilled, (state, action) => {
                 state.responses = action.payload;
