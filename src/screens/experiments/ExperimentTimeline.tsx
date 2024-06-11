@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent, } from '@mui/joy';
 import {
     Timeline,
@@ -33,6 +33,7 @@ const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
+    const history = useHistory();
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
@@ -111,7 +112,8 @@ const ExperimentTimeline = function () {
             key={taskNum}
             startDecorator={<Repeat/>}
             endDecorator={experimentCompleted && <CaretRight />}
-            href={experimentCompleted && '/main/box/move/'+itemExperimentId}
+            onClick={() => {history.push(`/main/box/move/${itemExperimentId}`);}}
+            button={experimentCompleted}
         >
             {leadText} &mdash; {itemExperiment.name}
         </FListItem>
