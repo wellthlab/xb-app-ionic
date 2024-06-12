@@ -49,6 +49,16 @@ const ExperimentTimeline = function () {
     const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
 
+    const nextExperiment = useSelector((state) => experiment.next_experiment_id
+        ?  selectExperimentById(state, experiment.next_experiment_id!) as IExperiment
+        :  null
+    );
+
+    const alsoExperiment = useSelector((state) => experiment.also_experiment_id
+        ?  selectExperimentById(state, experiment.also_experiment_id!) as IExperiment
+        :  null
+    );
+
     const toggleSubscriptionModal = () => {
         setSubscriptionModalOpen(!subscriptionModalOpen);
     };
@@ -106,13 +116,12 @@ const ExperimentTimeline = function () {
         </div>
     };
 
-    const GetSubNewExperimentListItem = (itemExperimentId : string, leadText : string) => {
-        const itemExperiment = useSelector((state) => selectExperimentById(state, itemExperimentId)) as IExperiment;
+    const getSubNewExperimentListItem = (itemExperiment : IExperiment, leadText : string) => {
         return <FListItem
             key={taskNum}
             startDecorator={<Repeat/>}
             endDecorator={experimentCompleted && <CaretRight />}
-            onClick={() => {history.push(`/main/box/move/${itemExperimentId}`);}}
+            onClick={() => {history.push(`/main/box/move/${itemExperiment.id}`);}}
             button={experimentCompleted}
         >
             {leadText} &mdash; {itemExperiment.name}
@@ -215,8 +224,8 @@ const ExperimentTimeline = function () {
                                     >
                                         {Strings.repeat_experiment}
                                     </FListItem>
-                                    {experiment.next_experiment_id && GetSubNewExperimentListItem(experiment.next_experiment_id, Strings.next_experiment)}
-                                    {experiment.also_experiment_id && GetSubNewExperimentListItem(experiment.also_experiment_id, Strings.see_also)}
+                                    {experiment.next_experiment_id && getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment)}
+                                    {experiment.also_experiment_id && getSubNewExperimentListItem(alsoExperiment!, Strings.see_also)}
                                 </FList>
                             </Stack>
                         </TimelineContent>
