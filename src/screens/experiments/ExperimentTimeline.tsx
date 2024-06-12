@@ -28,8 +28,6 @@ import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
 import capitalise from './utils/capitalise';
-import { bool } from 'yup';
-import { green } from '@mui/material/colors';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
