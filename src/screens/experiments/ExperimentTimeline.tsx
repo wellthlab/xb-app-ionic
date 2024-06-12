@@ -120,10 +120,10 @@ const ExperimentTimeline = function () {
 
     const getSubNewExperimentListItem = (itemExperiment : IExperiment, leadText : string, decorator : React.ReactNode) => {
         return <FListItem
-            key={taskNum}
+            key={`suggestion_${leadText}`}
             startDecorator={decorator}
             endDecorator={experimentCompleted && <CaretRight />}
-            onClick={() => {history.push(`/main/box/move/${itemExperiment.id}`);}}
+            onClick={() => {history.push(`/main/box/${itemExperiment.boxId}/${itemExperiment.id}`);}}
             button={experimentCompleted}
         >
             {leadText} &mdash; {itemExperiment.name}
@@ -134,7 +134,7 @@ const ExperimentTimeline = function () {
 
     const getResubBox = () => {
         return <FListItem
-            key={taskNum}
+            key={`suggestion_resubscribe`}
             startDecorator={<Repeat/>}
             endDecorator={experimentCompleted && <CaretRight />}
             onClick={toggleResubscriptionModal}
