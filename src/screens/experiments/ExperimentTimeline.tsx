@@ -12,7 +12,7 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, ArrowBendDownRight } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, ArrowBendDownRight, Icon, ArrowRight } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
@@ -28,6 +28,8 @@ import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
 import capitalise from './utils/capitalise';
+import { bool } from 'yup';
+import { green } from '@mui/material/colors';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
@@ -116,10 +118,10 @@ const ExperimentTimeline = function () {
         </div>
     };
 
-    const getSubNewExperimentListItem = (itemExperiment : IExperiment, leadText : string) => {
+    const getSubNewExperimentListItem = (itemExperiment : IExperiment, leadText : string, decorator : React.ReactNode) => {
         return <FListItem
             key={taskNum}
-            startDecorator={<Repeat/>}
+            startDecorator={decorator}
             endDecorator={experimentCompleted && <CaretRight />}
             onClick={() => {history.push(`/main/box/move/${itemExperiment.id}`);}}
             button={experimentCompleted}
@@ -129,6 +131,27 @@ const ExperimentTimeline = function () {
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
+
+    const getResubBox = () => {
+        return <FListItem
+            key={taskNum}
+            startDecorator={<Repeat/>}
+            endDecorator={experimentCompleted && <CaretRight />}
+            onClick={toggleResubscriptionModal}
+            button={experimentCompleted}
+        >
+            {Strings.repeat_experiment}
+        </FListItem>
+    };
+
+    var suggestedItems = [getResubBox()];
+    if (nextExperiment) {
+        suggestedItems.push(getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment, <ArrowRight/>))
+    };
+    if (alsoExperiment) {
+        suggestedItems.push(getSubNewExperimentListItem(alsoExperiment!, Strings.see_also, <ArrowRight/>))
+    };
+
 
     return (
         <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name} ref={setPresentingElement}>
@@ -215,17 +238,7 @@ const ExperimentTimeline = function () {
                             </Typography>
                             <Stack spacing={2}>
                                 <FList sx={{ mb: 2 }}>
-                                    <FListItem
-                                        key={taskNum}
-                                        startDecorator={<Repeat/>}
-                                        endDecorator={experimentCompleted && <CaretRight />}
-                                        onClick={toggleResubscriptionModal}
-                                        button={experimentCompleted}
-                                    >
-                                        {Strings.repeat_experiment}
-                                    </FListItem>
-                                    {experiment.next_experiment_id && getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment)}
-                                    {experiment.also_experiment_id && getSubNewExperimentListItem(alsoExperiment!, Strings.see_also)}
+                                    {suggestedItems}
                                 </FList>
                             </Stack>
                         </TimelineContent>
