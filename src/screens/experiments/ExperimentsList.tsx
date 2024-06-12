@@ -60,7 +60,7 @@ const ExperimentsListScreen = function() {
     }
 
     const isExperimentSuggested = (experiment: GenericExperiment) => {
-        return false;
+        return experiment.isSuggested;
     }
 
 

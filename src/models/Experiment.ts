@@ -20,6 +20,7 @@ interface IBaseExperiment {
     desc?: string;
     duration: number;
     hidden?: boolean;
+    isSuggested: boolean
     id: string;
 }
 
