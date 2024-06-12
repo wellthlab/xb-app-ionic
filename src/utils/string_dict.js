@@ -161,7 +161,9 @@ const Strings = {
 	password_can_only_have_at_2 : "characters",
     subscribe_to_complete_tasks: " Subscribe to this experiment to complete tasks ",
     confirm_experiment_subscription: "Do you want to subscribe to this experiment: ",
+    confirm_parent_experiment_subscription: "Do you want to subscribe to this parent experiment. You will be subscribed to the following sub-experiments:  ",
     subscribe_to_experiment: "Start this Experiment",
+    subscribe_to_parent_experiment: "Start Parent Experiment",
     confirm_subscription: "Confirm Subscription",
     week: "Week",
 	click_here_to_find_some: "Click Here to find some!",
@@ -173,7 +175,9 @@ const Strings = {
     suggested_experiments: "SUGGESTED EXPERIMENTS",
     available_experiments: "AVAILABLE EXPERIMENTS",
     completed_experiments: "COMPLETED EXPERIMENTS",
+    sub_experiments: "SUB EXPERIMENTS",
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
+    days_long: "days long",
 };
 
 export default Strings;

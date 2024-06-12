@@ -28,12 +28,12 @@ const ExperimentsListScreen = function() {
     const experimentsGroupedByCategory = () => {
       const experiments =  boxExperiments.filter((item) => !('parent' in item) || !item.parent);
       const result = new Map();
-      Object.keys(ExperimentCategory).forEach((key) => {
+      Object.keys(ExperimentCategory).filter(key => key != ExperimentCategory.SUB_EXPERIMENT.valueOf()).forEach((key) => {
           result.set(key, []);
       });
 
       experiments.reduce((map, experiment) => {
-          if (subscriptions[experiment.id]) {
+          if (iSubscribedToExperiment(experiment)) {
               if (isExperimentComplete(experiment)) {
                   result.get(ExperimentCategory.COMPLETED.valueOf()).push(experiment);
               } else {
@@ -52,7 +52,11 @@ const ExperimentsListScreen = function() {
     }
 
     const isExperimentComplete = (experiment: GenericExperiment) => {
-        return completionByExperimentId[experiment.id] === 100;
+        if ('children' in experiment) {
+            experiment.children.every(child => completionByExperimentId[child] === 100);
+        } else {
+            return completionByExperimentId[experiment.id] === 100;
+        }
     }
 
     const isExperimentAvailable = (experiment: GenericExperiment) => {
@@ -63,6 +67,9 @@ const ExperimentsListScreen = function() {
         return experiment.isSuggested;
     }
 
+    const iSubscribedToExperiment = (experiment: GenericExperiment) => {
+        return Object.keys(subscriptions).includes(experiment.id) || ('children' in experiment && experiment.children.every(child => Object.keys(subscriptions).includes(child)));
+    }
 
     return (
         <Page footerComponent={BoxesSubMenu()} headerTitle={`${capitalise(type)} experiments`} >

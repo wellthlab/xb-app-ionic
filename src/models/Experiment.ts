@@ -28,7 +28,8 @@ export enum ExperimentCategory {
     ACTIVE = "ACTIVE",
     SUGGESTED = "SUGGESTED",
     AVAILABLE = "AVAILABLE",
-    COMPLETED = "COMPLETED"
+    COMPLETED = "COMPLETED",
+    SUB_EXPERIMENT = "SUB_EXPERIMENT"
 }
 
 export interface IExperiment extends IBaseExperiment {
