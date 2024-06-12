@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent, } from '@mui/joy';
 import {
     Timeline,
@@ -12,14 +12,11 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree, CaretRight, Repeat, ArrowBendDownRight, Icon, ArrowRight } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, ArrowBendDownRight } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
-
-import FList from '../../components/foundation/List';
-import FListItem from '../../components/foundation/ListItem';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
@@ -27,13 +24,12 @@ import { selectSubscriptionByExperimentId, subscribeToExperiments } from '../../
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
+import SuggestionsList from './components/SuggestionsList';
 import capitalise from './utils/capitalise';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
-
-    const history = useHistory();
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
@@ -48,16 +44,6 @@ const ExperimentTimeline = function () {
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
     const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
-
-    const nextExperiment = useSelector((state) => experiment.next_experiment_id
-        ?  selectExperimentById(state, experiment.next_experiment_id!) as IExperiment
-        :  null
-    );
-
-    const alsoExperiment = useSelector((state) => experiment.also_experiment_id
-        ?  selectExperimentById(state, experiment.also_experiment_id!) as IExperiment
-        :  null
-    );
 
     const toggleSubscriptionModal = () => {
         setSubscriptionModalOpen(!subscriptionModalOpen);
@@ -116,39 +102,7 @@ const ExperimentTimeline = function () {
         </div>
     };
 
-    const getSubNewExperimentListItem = (itemExperiment : IExperiment, leadText : string, decorator : React.ReactNode) => {
-        return <FListItem
-            key={`suggestion_${leadText}`}
-            startDecorator={decorator}
-            endDecorator={experimentCompleted && <CaretRight />}
-            onClick={() => {history.push(`/main/box/${itemExperiment.boxId}/${itemExperiment.id}`);}}
-            button={experimentCompleted}
-        >
-            {leadText} &mdash; {itemExperiment.name}
-        </FListItem>
-    };
-
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
-
-    const getResubBox = () => {
-        return <FListItem
-            key={`suggestion_resubscribe`}
-            startDecorator={<Repeat/>}
-            endDecorator={experimentCompleted && <CaretRight />}
-            onClick={toggleResubscriptionModal}
-            button={experimentCompleted}
-        >
-            {Strings.repeat_experiment}
-        </FListItem>
-    };
-
-    var suggestedItems = [getResubBox()];
-    if (nextExperiment) {
-        suggestedItems.push(getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment, <ArrowRight/>))
-    };
-    if (alsoExperiment) {
-        suggestedItems.push(getSubNewExperimentListItem(alsoExperiment!, Strings.see_also, <ArrowRight/>))
-    };
 
 
     return (
@@ -235,9 +189,11 @@ const ExperimentTimeline = function () {
                                 {Strings.whats_next}
                             </Typography>
                             <Stack spacing={2}>
-                                <FList sx={{ mb: 2 }}>
-                                    {suggestedItems}
-                                </FList>
+                                <SuggestionsList 
+                                    experiment={experiment}
+                                    experimentCompleted={experimentCompleted}
+                                    resubOnClick={toggleResubscriptionModal}
+                                />
                             </Stack>
                         </TimelineContent>
                     </TimelineItem>
