@@ -58,9 +58,10 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
     tasks.forEach(task => {
         const progress = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum));
+            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum && !response.inactiveSubscription));
         progressByDayNumAndTaskIds.push(progress);
     })
+    console.log(progressByDayNumAndTaskIds)
     return progressByDayNumAndTaskIds;
 };
 

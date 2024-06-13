@@ -191,6 +191,7 @@ export interface IResponse {
     dayNum: number;
     payload: Record<string, string | number>;
     createdAt: number;
+    inactiveSubscription?: boolean;
 }
 
 interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId' > {

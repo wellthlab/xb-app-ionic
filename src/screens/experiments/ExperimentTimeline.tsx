@@ -54,11 +54,13 @@ const ExperimentTimeline = function () {
     };
 
     const handleSubscribeToExperiment = async () => {
+        //await dispatch(flagResponsesInactive([experiment]));
         await dispatch(subscribeToExperiments([experiment]));
         toggleSubscriptionModal();
     };
 
     const handleResubscribeToExperiment = async () => {
+        await dispatch(subscribeToExperiments([experiment]));
         toggleResubscriptionModal();
     };
 
@@ -76,7 +78,7 @@ const ExperimentTimeline = function () {
         return <div>
             <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
             <br />
-            <List >
+            <List>
                 <ListItem key={experiment.name} >
                     <ListItemContent>
                         <Typography style={{ fontStyle: 'italic' }}>

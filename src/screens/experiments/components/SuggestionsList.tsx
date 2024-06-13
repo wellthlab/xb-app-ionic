@@ -54,7 +54,7 @@ const SuggestionsList = function ({experiment, experimentCompleted, resubOnClick
         </ListItem>
     };
 
-    var suggestedItems = [getResubBox()];
+    const suggestedItems = [getResubBox()];
     if (nextExperiment) {
         suggestedItems.push(getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment, <ArrowRight/>))
     };
