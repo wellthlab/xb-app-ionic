@@ -70,6 +70,9 @@ export const subscribeToExperiments = createAsyncThunk<
     return Account.subscribeToExperiments(recordsForInsertion);
 });
 
+export const flagResponsesInactive = createAsyncThunk('subscriptions/flagged',(subscriptionIds: string[]) => {
+    return Experiment.flagResponsesInactive(subscriptionIds)
+});
 
 export const unSubscribeFromBox = async (subscriptionIds: string[], boxId: string, continueRemindersForAccount: boolean) => {
     await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId),

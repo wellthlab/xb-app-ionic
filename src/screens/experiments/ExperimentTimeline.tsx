@@ -20,7 +20,7 @@ import Page from '../../components/foundation/Page';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId, subscribeToExperiments } from '../../slices/account';
+import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
@@ -33,9 +33,11 @@ const ExperimentTimeline = function () {
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const isSubscribedToExperiment = useSelector(state => {
-       return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
+
+    const subscription = useSelector(state => {
+        return selectSubscriptionByExperimentId(state, experimentId);
     });
+    const isSubscribedToExperiment = subscription !== undefined;
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -54,12 +56,12 @@ const ExperimentTimeline = function () {
     };
 
     const handleSubscribeToExperiment = async () => {
-        //await dispatch(flagResponsesInactive([experiment]));
         await dispatch(subscribeToExperiments([experiment]));
         toggleSubscriptionModal();
     };
 
     const handleResubscribeToExperiment = async () => {
+        await dispatch(flagResponsesInactive([subscription.id]));
         await dispatch(subscribeToExperiments([experiment]));
         toggleResubscriptionModal();
     };

@@ -53,12 +53,18 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
 
 export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
     const responses = selectResponses(state);
+
+    console.log(responses);
     const progressByDayNumAndTaskIds: boolean[] = [];
 
     tasks.forEach(task => {
         const progress = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum && !response.inactiveSubscription));
+            .some((responseArr) => responseArr.some(
+                response => response.taskId ===  task.taskId &&
+                response.dayNum === dayNum &&
+                !response.inactiveSubscription
+            ));
         progressByDayNumAndTaskIds.push(progress);
     })
     return progressByDayNumAndTaskIds;
@@ -77,7 +83,11 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 dayProgress[dayIndex] = false;
             } else {
                 day.tasks.forEach((task) => {
-                    if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
+                    if (!(responses.some(response =>
+                        response.taskId === task.taskId &&
+                        response.dayNum === dayIndex &&
+                        !response.inactiveSubscription
+                    ))) {
                         dayProgress[dayIndex] = false;
                     }
                 })

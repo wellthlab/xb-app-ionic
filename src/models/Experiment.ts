@@ -229,7 +229,7 @@ class Experiment extends BaseModel {
             .insertOne({ ...response, taskId: this.oid(response.taskId), subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
     }
 
-     static async getResponses(subscriptionIds: string[]) {
+    static async getResponses(subscriptionIds: string[]) {
         const db = this.getDb();
         const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
         const responses = await db.collection<IResponseDocument>('responses')
@@ -262,6 +262,16 @@ class Experiment extends BaseModel {
         return db
             .collection('responses')
             .deleteMany({ subscriptionId: { $in : subscriptionIdsAsObjectId } });
+    }
+
+    
+    static flagResponsesInactive(subscriptionIds: string []) {
+        const db = this.getDb();
+        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+
+        return db
+            .collection('responses')
+            .updateMany({ subscriptionId: { $in : subscriptionIdsAsObjectId} }, { $set: { inactiveSubscription : true }});
     }
 
 }
