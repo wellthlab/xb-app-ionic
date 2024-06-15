@@ -7,18 +7,18 @@ import { useDispatch, useSelector } from '../../../slices/store';
 import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
-import { selectCohort, selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
+import { selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, GenericExperiment[]>;
+    scheduledExperimentsByStartTime?: Map<number, GenericExperiment[]>;
 }
 
 const ExperimentsList = function({
-                                     experimentsGroupedByCategory,
+                                     experimentsGroupedByCategory, scheduledExperimentsByStartTime
                                  }: IExperimentsListProps) {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
-    const cohort = useSelector(selectCohort);
     const { pathname } = useLocation();
     const history = useHistory();
     const [parentExperimentSubscriptionModalOpen, setParentExperimentSubscriptionModalOpen] = React.useState(false);
@@ -78,12 +78,13 @@ const ExperimentsList = function({
     };
 
     const getBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
-        if (experiments.length === 0) {
+        if (experimentCategory === ExperimentCategory.SCHEDULED) {
+            return scheduledExperimentsByStartTime && scheduledExperimentsByStartTime.size !== 0 ? getScheduledExperimentsBody(experimentCategory) :
+                getNoExperimentsInCategoryBody(experimentCategory);
+        } else if (experiments.length === 0) {
             return getNoExperimentsInCategoryBody(experimentCategory);
-        } else if (experimentCategory === ExperimentCategory.SCHEDULED) {
-            return getScheduledExperimentsBody(experimentCategory,experiments);
         } else {
-            return getNonScheduledExperimentsBody(experimentCategory,experiments);
+            return getNonScheduledExperimentsBody(experimentCategory, experiments);
         }
     }
     const getNoExperimentsInCategoryBody = (experimentCategory: ExperimentCategory) => {
@@ -99,43 +100,38 @@ const ExperimentsList = function({
         </Stack>
     }
 
-    const getTestExp = () => {
-        // @ts-ignore
-        return experimentsGroupedByCategory.get(ExperimentCategory.AVAILABLE)[0];
-    }
-    const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
+    const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <Stack spacing={2}>
             <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
                 {getCategoryTitle(experimentCategory)}
             </Typography>
             <Card variant="outlined">
-                {cohort!.experimentSchedule.map(experimentSchedule => {
+                {Array.from(scheduledExperimentsByStartTime!).map(([startUTCTime, scheduledExperiments]) => {
                         return (
                             <Stack spacing={2}>
-                                <Typography level="body1" sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic' }} > {Strings.starting_on} {new Date(experimentSchedule.startTimeUTC).toDateString()} </Typography>
-                                {experimentSchedule.experiments.map(experiment => {
-                                    const t = getTestExp();
+                                <Typography level="body1" sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
+                                {scheduledExperiments.map(experiment => {
                                     return (
                                         <Card
-                                            key={t.id}
+                                            key={experiment.id}
                                             variant="outlined"
                                             sx={{
                                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                                             }}
                                         >
-                                            {t.name}
+                                            {experiment.name}
                                             <Stack spacing={1}>
                                                 <Link
                                                     overlay
                                                     textColor="inherit"
                                                     underline="none"
                                                     onClick={() => {
-                                                        history.push(`${pathname}/${t.id}`);
+                                                        history.push(`${pathname}/${experiment.id}`);
                                                     }}
                                                 >
                                                 </Link>
-                                                {t.desc && <Typography level="body2"> {t.desc} </Typography>}
-                                                <Typography level="body3">{t.duration}{Strings.day_s_}</Typography>
+                                                {experiment.desc && <Typography level="body2"> {experiment.desc} </Typography>}
+                                                <Typography level="body3">{experiment.duration}{Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
                                     );

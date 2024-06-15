@@ -26,32 +26,35 @@ const ExperimentsListScreen = function() {
     const subscriptions = useSelector(selectSubscriptions);
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const cohort = useSelector(selectCohort);
-    const experimentsGroupedByCategory = () => {
-      const experiments =  boxExperiments.filter((item) => !('parent' in item) || !item.parent);
-      const result = new Map();
-      Object.keys(ExperimentCategory).filter(key => key != ExperimentCategory.SUB_EXPERIMENT.valueOf()).forEach((key) => {
-          result.set(key, []);
-      });
+    const scheduledExperimentsByStartTime = new Map<number, GenericExperiment[]>;
+    const getExperimentsGroupedByCategory = () => {
+        const experiments = boxExperiments.filter((item) => !('parent' in item) || !item.parent);
+        const result = new Map();
+        Object.keys(ExperimentCategory).filter(key => key != ExperimentCategory.SUB_EXPERIMENT.valueOf()).forEach((key) => {
+            result.set(key, []);
+        });
 
-      experiments.reduce((map, experiment) => {
-          if (iSubscribedToExperiment(experiment)) {
-              if (isExperimentComplete(experiment)) {
-                  result.get(ExperimentCategory.COMPLETED.valueOf()).push(experiment);
-              } else {
-                  result.get(ExperimentCategory.ACTIVE.valueOf()).push(experiment);
-              }
-          } else if (isExperimentAvailable(experiment)) {
-              if (isExperimentScheduled(experiment)) {
-                  result.get(ExperimentCategory.SCHEDULED.valueOf()).push(experiment);
-              } else if (isExperimentSuggested(experiment)) {
-                  result.get(ExperimentCategory.SUGGESTED.valueOf()).push(experiment);
-              } else {
-                  result.get(ExperimentCategory.AVAILABLE.valueOf()).push(experiment);
-              }
-          }
-          return map;
-      }, result);
-      return result;
+        experiments.reduce((map, experiment) => {
+            if (iSubscribedToExperiment(experiment)) {
+                if (isExperimentComplete(experiment)) {
+                    result.get(ExperimentCategory.COMPLETED.valueOf()).push(experiment);
+                } else {
+                    result.get(ExperimentCategory.ACTIVE.valueOf()).push(experiment);
+                }
+            } else if (isExperimentAvailable(experiment)) {
+                const scheduledStartTime = getScheduledStartTime(experiment);
+                if (scheduledStartTime) {
+                    scheduledExperimentsByStartTime.has(scheduledStartTime)
+                        ? scheduledExperimentsByStartTime.get(scheduledStartTime)!.push(experiment) : scheduledExperimentsByStartTime.set(scheduledStartTime, [experiment]);
+                } else if (isExperimentSuggested(experiment)) {
+                    result.get(ExperimentCategory.SUGGESTED.valueOf()).push(experiment);
+                } else {
+                    result.get(ExperimentCategory.AVAILABLE.valueOf()).push(experiment);
+                }
+            }
+            return map;
+        }, result);
+        return result;
     }
 
     const isExperimentComplete = (experiment: GenericExperiment) => {
@@ -70,24 +73,24 @@ const ExperimentsListScreen = function() {
         return experiment.isSuggested;
     }
 
-    const isExperimentScheduled = (experiment: GenericExperiment) => {
-       return cohort && cohort.experimentSchedule
-                        .flatMap(schedule => schedule.experiments)
-                        .some(scheduledExperimentId => scheduledExperimentId === experiment.id);
-
+    const getScheduledStartTime = (experiment: GenericExperiment) => {
+        return cohort?.experimentSchedule
+            .find(schedule => schedule.experiments.includes(experiment.id))?.startTimeUTC;
     }
 
     const iSubscribedToExperiment = (experiment: GenericExperiment) => {
         return Object.keys(subscriptions).includes(experiment.id) || ('children' in experiment && experiment.children.every(child => Object.keys(subscriptions).includes(child)));
     }
 
+    const experimentsGroupedByCategory=getExperimentsGroupedByCategory();
     return (
         <Page footerComponent={BoxesSubMenu()} headerTitle={`${capitalise(type)} experiments`} >
             <Stack spacing={2}>
                 {type === 'move' && <ExerciseWarning />}
                 <ExperimentsList
                     key={type}
-                    experimentsGroupedByCategory={experimentsGroupedByCategory()}
+                    experimentsGroupedByCategory={experimentsGroupedByCategory}
+                    scheduledExperimentsByStartTime ={scheduledExperimentsByStartTime}
                 />
                 <br />
             </Stack>
