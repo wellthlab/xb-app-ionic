@@ -19,8 +19,8 @@ export const boot = createAsyncThunk('global/boot', async () => {
     const cohortExperimentsForSubscription = cohort ? getCohortExperimentsForSubscription(cohort, subscriptions, experiments) : [];
 
     if (cohortExperimentsForSubscription.length > 0) {
-        // const newSubs = await Account.subscribeToExperiments(cohortExperimentsForSubscription) as ISubscription[];
-        // subscriptions.push(...newSubs);
+        const newSubs = await Account.subscribeToExperiments(cohortExperimentsForSubscription) as ISubscription[];
+        subscriptions.push(...newSubs);
     }
 
     return {
