@@ -176,8 +176,10 @@ const Strings = {
     available_experiments: "AVAILABLE EXPERIMENTS",
     completed_experiments: "COMPLETED EXPERIMENTS",
     sub_experiments: "SUB EXPERIMENTS",
+    scheduled_experiments: "SCHEDULED EXPERIMENTS",
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
     days_long: "days long",
+    starting_on: "Starting On",
 };
 
 export default Strings;

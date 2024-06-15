@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from '../../../slices/store';
 import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
-import { selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
+import { selectCohort, selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, GenericExperiment[]>;
@@ -18,6 +18,7 @@ const ExperimentsList = function({
                                  }: IExperimentsListProps) {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
+    const cohort = useSelector(selectCohort);
     const { pathname } = useLocation();
     const history = useHistory();
     const [parentExperimentSubscriptionModalOpen, setParentExperimentSubscriptionModalOpen] = React.useState(false);
@@ -49,6 +50,8 @@ const ExperimentsList = function({
                 return Strings.completed_experiments;
             case ExperimentCategory.SUB_EXPERIMENT:
                 return Strings.sub_experiments;
+            case ExperimentCategory.SCHEDULED:
+                return Strings.scheduled_experiments;
         }
     };
 
@@ -74,66 +77,133 @@ const ExperimentsList = function({
         </div>
     };
 
-    return (
-        <div>
-            <Stack spacing={5}>
-                {Array.from(experimentsGroupedByCategory).map(([experimentCategory, experiments]) => {
-                    return experiments.length === 0 ?
-                        <Stack>
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
-                                {getCategoryTitle(experimentCategory)}
-                            </Typography>
-                            <Card key={experimentCategory} variant="outlined">
-                                <Typography level="body2" textAlign="center">
-                                    <br /> {Strings.no_experiments_in_category}<br /><br />
-                                </Typography>
-                            </Card>
-                        </Stack>
-                        : <Stack spacing={2}>
-                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
-                                {getCategoryTitle(experimentCategory)}
-                            </Typography>
-                            {experiments
-                                .map((experiment) => {
-                                    const completion = completionByExperimentId[experiment.id];
+    const getBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
+        if (experiments.length === 0) {
+            return getNoExperimentsInCategoryBody(experimentCategory);
+        } else if (experimentCategory === ExperimentCategory.SCHEDULED) {
+            return getScheduledExperimentsBody(experimentCategory,experiments);
+        } else {
+            return getNonScheduledExperimentsBody(experimentCategory,experiments);
+        }
+    }
+    const getNoExperimentsInCategoryBody = (experimentCategory: ExperimentCategory) => {
+       return <Stack>
+            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
+                {getCategoryTitle(experimentCategory)}
+            </Typography>
+            <Card key={experimentCategory} variant="outlined">
+                <Typography level="body2" textAlign="center">
+                    <br /> {Strings.no_experiments_in_category}<br /><br />
+                </Typography>
+            </Card>
+        </Stack>
+    }
+
+    const getTestExp = () => {
+        // @ts-ignore
+        return experimentsGroupedByCategory.get(ExperimentCategory.AVAILABLE)[0];
+    }
+    const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
+        return <Stack spacing={2}>
+            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
+                {getCategoryTitle(experimentCategory)}
+            </Typography>
+            <Card variant="outlined">
+                {cohort!.experimentSchedule.map(experimentSchedule => {
+                        return (
+                            <Stack spacing={2}>
+                                <Typography level="body1" sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic' }} > {Strings.starting_on} {new Date(experimentSchedule.startTimeUTC).toDateString()} </Typography>
+                                {experimentSchedule.experiments.map(experiment => {
+                                    const t = getTestExp();
                                     return (
                                         <Card
-                                            key={experiment.id}
+                                            key={t.id}
                                             variant="outlined"
                                             sx={{
                                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                                             }}
                                         >
-                                            {experiment.name}
+                                            {t.name}
                                             <Stack spacing={1}>
                                                 <Link
                                                     overlay
                                                     textColor="inherit"
                                                     underline="none"
                                                     onClick={() => {
-                                                        history.push(`${pathname}/${experiment.id}`);
+                                                        history.push(`${pathname}/${t.id}`);
                                                     }}
                                                 >
                                                 </Link>
-                                                {experiment.desc &&
-                                                    <Typography level="body2">
-                                                        {experiment.desc}
-                                                    </Typography>}
-                                                {completion !== undefined ? (
-                                                    <Stack direction="row" spacing={2} alignItems="center">
-                                                        <Typography
-                                                            level="body3">{completion}{Strings.percent_completed}</Typography>
-                                                        <LinearProgress determinate value={completion} />
-                                                    </Stack>
-                                                ) : (
-                                                    <Typography
-                                                        level="body3">{experiment.duration}{Strings.day_s_}</Typography>
-                                                )}
+                                                {t.desc && <Typography level="body2"> {t.desc} </Typography>}
+                                                <Typography level="body3">{t.duration}{Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
                                     );
                                 })}
-                        </Stack>;
+                            </Stack>
+                        );
+                    })
+                }
+            </Card>
+
+        </Stack>;
+    }
+
+    const getNonScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
+        return <Stack spacing={2}>
+            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
+                {getCategoryTitle(experimentCategory)}
+            </Typography>
+            {experiments
+                .map((experiment) => {
+                    const completion = completionByExperimentId[experiment.id];
+                    return (
+                        <Card
+                            key={experiment.id}
+                            variant="outlined"
+                            sx={{
+                                '&:hover, &:focus-within': { bgcolor: 'background.level2' },
+                            }}
+                        >
+                            {experiment.name}
+                            <Stack spacing={1}>
+                                <Link
+                                    overlay
+                                    textColor="inherit"
+                                    underline="none"
+                                    onClick={() => {
+                                        history.push(`${pathname}/${experiment.id}`);
+                                    }}
+                                >
+                                </Link>
+                                {experiment.desc &&
+                                    <Typography level="body2">
+                                        {experiment.desc}
+                                    </Typography>}
+                                {completion !== undefined ? (
+                                    <Stack direction="row" spacing={2} alignItems="center">
+                                        <Typography
+                                            level="body3">{completion}{Strings.percent_completed}</Typography>
+                                        <LinearProgress determinate value={completion} />
+                                    </Stack>
+                                ) : (
+                                    <Typography
+                                        level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                )}
+                            </Stack>
+                        </Card>
+                    );
+                })}
+        </Stack>;
+    }
+
+
+
+    return (
+        <div>
+            <Stack spacing={5}>
+                {Array.from(experimentsGroupedByCategory).map(([experimentCategory, experiments]) => {
+                    return getBody(experimentCategory, experiments);
                 })}
             </Stack>
             {isSubExperiments() && <Button onClick={toggleParentExperimentSubscriptionModal} disabled={isSubscribedToParentExperiment()} style={{left: "25%", width: "50%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}> {Strings.subscribe_to_parent_experiment} </Button>}

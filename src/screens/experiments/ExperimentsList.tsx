@@ -14,6 +14,7 @@ import {
 } from '../../slices/experiments';
 import { ExperimentCategory, GenericExperiment } from '../../models/Experiment';
 import {
+    selectCohort,
     selectSubscriptions,
 } from '../../slices/account';
 import BoxesSubMenu from './BoxesSubMenu';
@@ -24,7 +25,7 @@ const ExperimentsListScreen = function() {
     const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
     const subscriptions = useSelector(selectSubscriptions);
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
-
+    const cohort = useSelector(selectCohort);
     const experimentsGroupedByCategory = () => {
       const experiments =  boxExperiments.filter((item) => !('parent' in item) || !item.parent);
       const result = new Map();
@@ -40,7 +41,9 @@ const ExperimentsListScreen = function() {
                   result.get(ExperimentCategory.ACTIVE.valueOf()).push(experiment);
               }
           } else if (isExperimentAvailable(experiment)) {
-              if (isExperimentSuggested(experiment)) {
+              if (isExperimentScheduled(experiment)) {
+                  result.get(ExperimentCategory.SCHEDULED.valueOf()).push(experiment);
+              } else if (isExperimentSuggested(experiment)) {
                   result.get(ExperimentCategory.SUGGESTED.valueOf()).push(experiment);
               } else {
                   result.get(ExperimentCategory.AVAILABLE.valueOf()).push(experiment);
@@ -65,6 +68,13 @@ const ExperimentsListScreen = function() {
 
     const isExperimentSuggested = (experiment: GenericExperiment) => {
         return experiment.isSuggested;
+    }
+
+    const isExperimentScheduled = (experiment: GenericExperiment) => {
+       return cohort && cohort.experimentSchedule
+                        .flatMap(schedule => schedule.experiments)
+                        .some(scheduledExperimentId => scheduledExperimentId === experiment.id);
+
     }
 
     const iSubscribedToExperiment = (experiment: GenericExperiment) => {

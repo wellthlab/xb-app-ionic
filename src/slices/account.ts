@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, ISubscription } from '../models/Account';
+import Account, { ICredentials, IProfile, ISubscription, ICohort } from '../models/Account';
 import Experiment, { IResponse, GenericExperiment } from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
@@ -13,8 +13,8 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
 });
 
 export const updateUserProfile = createAsyncThunk<
-    Omit <IAccount, 'id' | 'subscriptions'| 'notes'>,
-    { payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined }> (
+    { profile: IProfile, cohort: ICohort },
+    { payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined}> (
     'account/profile/updated',
     ({ payload, cohortId }) => {
         return Account.updateProfile(payload, cohortId);
@@ -38,28 +38,32 @@ export const saveNotes = createAsyncThunk(
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
     GenericExperiment[]>('account/subscriptions', (experiments) => {
-    const subscribedAt = Date.now();
-    const recordsForInsertion:  Omit <ISubscription, 'id'>[] = [];
+    const newSubscriptions  = getNewSubscriptions(experiments, Date.now());
+    return Account.subscribeToExperiments(newSubscriptions);
+});
 
-    for (const experiment of experiments) {
+export const getNewSubscriptions = (experimentsForSubscription: GenericExperiment[], currTimeUTC: number) => {
+    const newSubscriptions:  Omit <ISubscription, 'id'>[] = [];
+
+    for (const experiment of experimentsForSubscription) {
         if ('children' in experiment) {
             experiment
                 .children
                 .forEach((child) => {
-                    recordsForInsertion.push({
+                    newSubscriptions.push({
                         experimentId: child,
-                        subscribedAt: subscribedAt
+                        subscribedAt: currTimeUTC
                     });
                 })
         } else {
-            recordsForInsertion.push({
+            newSubscriptions.push({
                 experimentId: experiment.id,
-                subscribedAt: subscribedAt
+                subscribedAt: currTimeUTC
             });
         }
     }
-    return Account.subscribeToExperiments(recordsForInsertion);
-});
+    return newSubscriptions;
+}
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
@@ -68,11 +72,11 @@ export const markAccountAsDeleted = createAsyncThunk('account/deleted', async ()
 interface IAccountState {
     id?: string;
     profile?: IProfile;
-    cohortId?: string;
     subscriptions: Record<string, ISubscription>;
     responses: Record<string, IResponse[]>,
     notes?: Record<number, string>,
     deleted?: boolean;
+    cohort?: ICohort
 }
 
 export interface ISelectorState {
@@ -85,7 +89,8 @@ export const selectIsEnrolled = (state: ISelectorState) => !!state.account.profi
 
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 
-export const selectCohortId = (state: ISelectorState) => state.account.cohortId;
+export const selectCohortId = (state: ISelectorState) => state.account.cohort?.id;
+export const selectCohort = (state: ISelectorState) => state.account.cohort;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
 
 export const selectSubscriptions = (state: ISelectorState) => state.account.subscriptions;
@@ -105,7 +110,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {} } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, cohort: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -128,20 +133,23 @@ export default createSlice({
 
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
-                    state.cohortId = action.payload.account.cohortId;
                     state.notes = action.payload.account.notes;
+                }
+
+                if (action.payload.cohort) {
+                    state.cohort = action.payload.cohort;
                 }
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.profile = action.payload.profile;
-                state.cohortId = action.payload.cohortId;
+                state.cohort = action.payload.cohort;
             })
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false
 
                 state.subscriptions = {};
                 state.responses = {};
-                delete state.cohortId;
+                delete state.cohort;
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
@@ -151,7 +159,7 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
-                delete state.cohortId;
+                delete state.cohort;
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
