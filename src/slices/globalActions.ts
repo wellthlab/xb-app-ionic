@@ -39,16 +39,22 @@ export const logOut = createAsyncThunk('global/loggedOut', async () => {
 });
 
 const getCohortExperimentsForSubscription = (cohort: ICohort, existingSubscriptions: ISubscription[], experiments: GenericExperiment[] ) => {
+    const cohortExperimentsForSubscription: Omit<ISubscription, "id">[] = [];
     const currTimeUTC = Date.now();
 
-    const experimentsForSubscription = cohort
+    cohort
         .experimentSchedule
         .filter(schedule => schedule.startTimeUTC <= currTimeUTC)
-        .flatMap(schedule => schedule.experiments)
-        .map(experimentId =>  experiments.find(e => e.id === experimentId))
-        .filter(experiment => experiment && !iSubscribedToExperiment(experiment, existingSubscriptions));
+        .forEach(schedule => {
+            const experimentsForSubscription = schedule.experiments
+                .map(experimentId =>  experiments.find(e => e.id === experimentId))
+                .filter(experiment => experiment && !iSubscribedToExperiment(experiment, existingSubscriptions));
+            if (experimentsForSubscription.length > 0) {
+                cohortExperimentsForSubscription.push(...getNewSubscriptions(experimentsForSubscription as GenericExperiment[], schedule.startTimeUTC));
+            }
+        });
 
-    return getNewSubscriptions(experimentsForSubscription as GenericExperiment[], currTimeUTC);
+    return cohortExperimentsForSubscription;
 }
 
 const iSubscribedToExperiment = (experiment: GenericExperiment, subscriptions: ISubscription[]) => {
