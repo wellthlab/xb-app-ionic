@@ -1,9 +1,8 @@
-import { createSlice, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, { ICredentials, IProfile, IAccount, ISubscription, ISubscriptionSequence } from '../models/Account';
-import Experiment, { IResponse, GenericExperiment, IExperiment } from '../models/Experiment';
-import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
+import Account, { ICredentials, IProfile, ISubscription, ICohort } from '../models/Account';
+import Experiment, { IResponse, GenericExperiment } from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -14,8 +13,8 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
 });
 
 export const updateUserProfile = createAsyncThunk<
-    Omit <IAccount, 'id' | 'subscriptions'| 'notes'>,
-    { payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined }> (
+    { profile: IProfile, cohort: ICohort },
+    { payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined}> (
     'account/profile/updated',
     ({ payload, cohortId }) => {
         return Account.updateProfile(payload, cohortId);
@@ -36,98 +35,35 @@ export const saveNotes = createAsyncThunk(
     },
 );
 
-export const saveSubscriptionSequence = createAsyncThunk<
-       ISubscriptionSequence,
-    { experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string, orderedBoxWeeks: number[] }
->('account/saveSubscriptionSequence', async ({ boxId, experimentsByBoxWeek, orderedBoxWeeks }) => {
-        return Account.saveSubscriptionSequence(experimentsByBoxWeek, boxId, orderedBoxWeeks);
-    },
-);
-
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
     GenericExperiment[]>('account/subscriptions', (experiments) => {
-    const subscribedAt = Date.now();
-    const recordsForInsertion:  Omit <ISubscription, 'id'>[] = [];
+    const newSubscriptions  = getNewSubscriptions(experiments, Date.now());
+    return Account.subscribeToExperiments(newSubscriptions);
+});
 
-    for (const experiment of experiments) {
+export const getNewSubscriptions = (experimentsForSubscription: GenericExperiment[], currTimeUTC: number) => {
+    const newSubscriptions:  Omit <ISubscription, 'id'>[] = [];
+
+    for (const experiment of experimentsForSubscription) {
         if ('children' in experiment) {
             experiment
                 .children
                 .forEach((child) => {
-                    recordsForInsertion.push({
+                    newSubscriptions.push({
                         experimentId: child,
-                        subscribedAt: subscribedAt
+                        subscribedAt: currTimeUTC
                     });
                 })
         } else {
-            recordsForInsertion.push({
+            newSubscriptions.push({
                 experimentId: experiment.id,
-                subscribedAt: subscribedAt
+                subscribedAt: currTimeUTC
             });
         }
     }
-    return Account.subscribeToExperiments(recordsForInsertion);
-});
-
-
-export const unSubscribeFromBox = async (subscriptionIds: string[], boxId: string, continueRemindersForAccount: boolean) => {
-    await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId),
-        Experiment.deleteResponses(subscriptionIds), Account.deleteSubscriptions(subscriptionIds), !continueRemindersForAccount ? Account.deletePendingNotifications() : Promise.resolve({})]);
-};
-
-export const shouldContinueRemindersForAccount = (allSubscriptions: Record<string, ISubscription>, allExperiments: Record<string, GenericExperiment>, allResponses: Record<string, IResponse[]>) => {
-    for (const [experimentId, subscription] of Object.entries(allSubscriptions)) {
-        const experiment = allExperiments[experimentId];
-        const responses = allResponses[subscription.id];
-        if(!responses && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-
-        if (!('children' in experiment)) {
-            const originalLength = experiment.days.length;
-            if (originalLength < experiment.duration) {
-                let day = 0;
-
-                for (let i = 0; i < experiment.duration - originalLength; i++) {
-                    experiment.days.push(experiment.days[day]);
-                    day++;
-
-                    if (day === originalLength) {
-                        day = 0;
-                    }
-                }
-            }
-        }
-
-        let isFinished = true;
-
-        taskLoop: // @ts-ignore
-            for (const [dayIndex, day] of (experiment as IExperiment).days.entries()) {
-                for (const task of day.tasks) {
-                    if (day.tasks.length === 0) {
-                        continue;
-                    }
-                    if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex))) {
-                        isFinished = false;
-                        break taskLoop;
-                    }
-                }
-            }
-
-        if (!isFinished && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-    }
-
-    return false;
-};
-export const subScribeToBox = (dispatch: ThunkDispatch<any, any, any>, experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string) => {
-    const orderedBoxWeeks = Array.from(experimentsByBoxWeek.keys()).sort();
-    const firstBoxWeekExperiments = experimentsByBoxWeek.get(orderedBoxWeeks[0]);
-    dispatch(subscribeToExperiments(firstBoxWeekExperiments!));
-    dispatch(saveSubscriptionSequence({ experimentsByBoxWeek, boxId, orderedBoxWeeks }));
-};
+    return newSubscriptions;
+}
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
@@ -136,12 +72,11 @@ export const markAccountAsDeleted = createAsyncThunk('account/deleted', async ()
 interface IAccountState {
     id?: string;
     profile?: IProfile;
-    cohortId?: string;
     subscriptions: Record<string, ISubscription>;
     responses: Record<string, IResponse[]>,
-    subscriptionSequence: Record<string, ISubscriptionSequence>,
     notes?: Record<number, string>,
     deleted?: boolean;
+    cohort?: ICohort
 }
 
 export interface ISelectorState {
@@ -154,7 +89,8 @@ export const selectIsEnrolled = (state: ISelectorState) => !!state.account.profi
 
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 
-export const selectCohortId = (state: ISelectorState) => state.account.cohortId;
+export const selectCohortId = (state: ISelectorState) => state.account.cohort?.id;
+export const selectCohort = (state: ISelectorState) => state.account.cohort;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;
 
 export const selectSubscriptions = (state: ISelectorState) => state.account.subscriptions;
@@ -167,20 +103,6 @@ export const selectUserId = (state: ISelectorState) => state.account.id;
 
 export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
 
-export const selectSubscriptionSequenceByBoxId = (state: ISelectorState & IExperimentState, boxId: string) => {
-    const experiments = selectAllExperiments(state);
-    const subscriptionSequence = state.account.subscriptionSequence[boxId];
-    const subSeqMap = new Map<number, GenericExperiment[]>();
-
-    if (subscriptionSequence) {
-        for(let i=0; i < subscriptionSequence.experimentSequence.length; i++) {
-            const experimentsForBoxWeek = subscriptionSequence.experimentSequence[i].map(experimentId => experiments[experimentId]);
-            subSeqMap.set(subscriptionSequence.orderedBoxWeeks[i], experimentsForBoxWeek);
-        }
-    }
-    return subSeqMap;
-}
-
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -188,7 +110,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, subscriptionSequence: {} } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, cohort: {} } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -204,32 +126,30 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
                 state.subscriptions = {};
-                state.subscriptionSequence = {};
 
-                for (const subSeq of action.payload.subscriptionSequences) {
-                    state.subscriptionSequence[subSeq.boxId] = subSeq;
-                }
                 for (const sub of action.payload.subscriptions) {
                     state.subscriptions[sub.experimentId] = sub;
                 }
 
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
-                    state.cohortId = action.payload.account.cohortId;
                     state.notes = action.payload.account.notes;
+                }
+
+                if (action.payload.cohort) {
+                    state.cohort = action.payload.cohort;
                 }
             })
             .addCase(updateUserProfile.fulfilled, (state, action) => {
                 state.profile = action.payload.profile;
-                state.cohortId = action.payload.cohortId;
+                state.cohort = action.payload.cohort;
             })
             .addCase(boot.rejected, (state) => {
                 // Failed to boot for whatever reason, we set authenticated to false
 
                 state.subscriptions = {};
                 state.responses = {};
-                state.subscriptionSequence = {};
-                delete state.cohortId;
+                delete state.cohort;
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
@@ -239,8 +159,7 @@ export default createSlice({
 
                 state.subscriptions = {};
                 state.responses = {};
-                state.subscriptionSequence = {};
-                delete state.cohortId;
+                delete state.cohort;
                 delete state.id;
                 delete state.profile;
                 delete state.deleted;
@@ -255,9 +174,6 @@ export default createSlice({
             })
             .addCase(saveNotes.fulfilled, (state, action) => {
                 state.notes = action.payload;
-            })
-            .addCase(saveSubscriptionSequence.fulfilled, (state, action) => {
-                state.subscriptionSequence[action.payload.boxId] = action.payload;
             })
             .addCase(reloadResponses.fulfilled, (state, action) => {
                 state.responses = action.payload;

@@ -69,7 +69,7 @@ const AppFlowController = function () {
 
         hydrate();
         AppDevice.updateDeviceInfo();
-    }, [isAuthenticated]);
+    }, [isAuthenticated, isEnrolled]);
 
     if (!isAuthenticated) {
         if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {

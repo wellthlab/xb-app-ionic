@@ -8,6 +8,7 @@ import Page from '../../components/foundation/Page';
 
 import { useSelector } from '../../slices/store';
 import { selectAllExperiments, selectExperimentById } from '../../slices/experiments';
+import { ExperimentCategory } from '../../models/Experiment';
 
 const ChildExperimentsList = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
@@ -20,10 +21,12 @@ const ChildExperimentsList = function () {
     }
 
     const children = experiment.children.map((item) => experiments[item]);
+    const experimentsGroupedByCategory = new Map();
+    experimentsGroupedByCategory.set(ExperimentCategory.SUB_EXPERIMENT.valueOf(), children)
 
     return (
         <Page headerTitle={experiment.name}>
-            <ExperimentsList experiments={children} />
+            <ExperimentsList experimentsGroupedByCategory={experimentsGroupedByCategory}/>
         </Page>
     );
 };
