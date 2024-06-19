@@ -71,64 +71,6 @@ export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
     await Experiment.flagResponsesInactive(subscriptionIds);
 }
 
-export const unSubscribeFromBox = async (subscriptionIds: string[], boxId: string, continueRemindersForAccount: boolean) => {
-    await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId),
-        Experiment.deleteResponses(subscriptionIds), Account.deleteSubscriptions(subscriptionIds), !continueRemindersForAccount ? Account.deletePendingNotifications() : Promise.resolve({})]);
-};
-
-export const shouldContinueRemindersForAccount = (allSubscriptions: Record<string, ISubscription>, allExperiments: Record<string, GenericExperiment>, allResponses: Record<string, IResponse[]>) => {
-    for (const [experimentId, subscription] of Object.entries(allSubscriptions)) {
-        const experiment = allExperiments[experimentId];
-        const responses = allResponses[subscription.id];
-        if(!responses && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-
-        if (!('children' in experiment)) {
-            const originalLength = experiment.days.length;
-            if (originalLength < experiment.duration) {
-                let day = 0;
-
-                for (let i = 0; i < experiment.duration - originalLength; i++) {
-                    experiment.days.push(experiment.days[day]);
-                    day++;
-
-                    if (day === originalLength) {
-                        day = 0;
-                    }
-                }
-            }
-        }
-
-        let isFinished = true;
-
-        taskLoop: // @ts-ignore
-            for (const [dayIndex, day] of (experiment as IExperiment).days.entries()) {
-                for (const task of day.tasks) {
-                    if (day.tasks.length === 0) {
-                        continue;
-                    }
-                    if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex))) {
-                        isFinished = false;
-                        break taskLoop;
-                    }
-                }
-            }
-
-        if (!isFinished && (experiment as IExperiment).shouldSendReminders) {
-            return true;
-        }
-    }
-
-    return false;
-};
-export const subScribeToBox = (dispatch: ThunkDispatch<any, any, any>, experimentsByBoxWeek: Map<number, GenericExperiment[]>, boxId: string) => {
-    const orderedBoxWeeks = Array.from(experimentsByBoxWeek.keys()).sort();
-    const firstBoxWeekExperiments = experimentsByBoxWeek.get(orderedBoxWeeks[0]);
-    dispatch(subscribeToExperiments(firstBoxWeekExperiments!));
-    dispatch(saveSubscriptionSequence({ experimentsByBoxWeek, boxId, orderedBoxWeeks }));
-};
-
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
     return Account.markAsDeleted();
 });
