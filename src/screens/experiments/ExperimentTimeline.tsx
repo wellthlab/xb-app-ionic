@@ -20,7 +20,7 @@ import Page from '../../components/foundation/Page';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive } from '../../slices/account';
+import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive, reloadResponses } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
@@ -61,7 +61,8 @@ const ExperimentTimeline = function () {
     };
 
     const handleResubscribeToExperiment = async () => {
-        await dispatch(flagResponsesInactive([subscription.id]));
+        await flagResponsesInactive([subscription]);
+        await dispatch(reloadResponses(Object.values([subscription.id])));
         await dispatch(subscribeToExperiments([experiment]));
         toggleResubscriptionModal();
     };

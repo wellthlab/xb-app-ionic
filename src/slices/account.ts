@@ -5,6 +5,7 @@ import Account, { ICredentials, IProfile, IAccount, ISubscription, ISubscription
 import Experiment, { IResponse, GenericExperiment, IExperiment } from '../models/Experiment';
 import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
 
+
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
 });
@@ -70,9 +71,11 @@ export const subscribeToExperiments = createAsyncThunk<
     return Account.subscribeToExperiments(recordsForInsertion);
 });
 
-export const flagResponsesInactive = createAsyncThunk('subscriptions/flagged',(subscriptionIds: string[]) => {
-    return Experiment.flagResponsesInactive(subscriptionIds)
-});
+export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
+
+    const subscriptionIds = Object.values(subscriptions).map(subscription => subscription.id);
+    await Experiment.flagResponsesInactive(subscriptionIds);
+}
 
 export const unSubscribeFromBox = async (subscriptionIds: string[], boxId: string, continueRemindersForAccount: boolean) => {
     await Promise.all([Account.removeAccountSubscriptions(subscriptionIds), Account.deleteSubscriptionSequence(boxId),

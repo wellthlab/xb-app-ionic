@@ -54,7 +54,6 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
 export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
     const responses = selectResponses(state);
 
-    console.log(responses);
     const progressByDayNumAndTaskIds: boolean[] = [];
 
     tasks.forEach(task => {
