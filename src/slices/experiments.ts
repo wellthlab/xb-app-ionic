@@ -58,7 +58,11 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
     tasks.forEach(task => {
         const progress = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum));
+            .some((responseArr) => responseArr.some(
+                response => response.taskId ===  task.taskId &&
+                response.dayNum === dayNum &&
+                !response.inactiveSubscription
+            ));
         progressByDayNumAndTaskIds.push(progress);
     })
     return progressByDayNumAndTaskIds;
@@ -77,7 +81,11 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 dayProgress[dayIndex] = false;
             } else {
                 day.tasks.forEach((task) => {
-                    if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
+                    if (!(responses.some(response =>
+                        response.taskId === task.taskId &&
+                        response.dayNum === dayIndex &&
+                        !response.inactiveSubscription
+                    ))) {
                         dayProgress[dayIndex] = false;
                     }
                 })
@@ -88,8 +96,6 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
         return Array(experiment.days.length).fill(false);
     }
 };
-
-
 
 export const selectCompletionForAllExperiments = (state: IAccountSelectorState & ISelectorState) => {
     const percentages: Record<string, number> = {};

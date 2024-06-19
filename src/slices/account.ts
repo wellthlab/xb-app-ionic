@@ -63,6 +63,12 @@ export const getNewSubscriptions = (experimentsForSubscription: GenericExperimen
         }
     }
     return newSubscriptions;
+});
+
+export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
+
+    const subscriptionIds = Object.values(subscriptions).map(subscription => subscription.id);
+    await Experiment.flagResponsesInactive(subscriptionIds);
 }
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {

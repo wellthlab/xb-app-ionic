@@ -12,7 +12,7 @@ import {
     timelineItemClasses,
 } from '@mui/lab';
 
-import { Check, ArrowArcRight, DotsThree } from 'phosphor-react';
+import { Check, ArrowArcRight, DotsThree, ArrowBendDownRight } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
@@ -20,37 +20,51 @@ import Page from '../../components/foundation/Page';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId, subscribeToExperiments } from '../../slices/account';
+import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive, reloadResponses } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
+import SuggestionsList from './components/SuggestionsList';
 import capitalise from './utils/capitalise';
 
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
-
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const isSubscribedToExperiment = useSelector(state => {
-       return selectSubscriptionByExperimentId(state, experimentId) !== undefined;
+
+    const subscription = useSelector(state => {
+        return selectSubscriptionByExperimentId(state, experimentId);
     });
+    const isSubscribedToExperiment = subscription !== undefined;
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [dayNum, setDayNum] = React.useState(0);
     const [taskNum, setTaskNum] = React.useState(0);
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
+    const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
 
     const toggleSubscriptionModal = () => {
         setSubscriptionModalOpen(!subscriptionModalOpen);
     };
 
+    const toggleResubscriptionModal = () => {
+        setResubscriptionModalOpen(!resubscriptionModalOpen);
+    };
+
     const handleSubscribeToExperiment = async () => {
         await dispatch(subscribeToExperiments([experiment]));
         toggleSubscriptionModal();
+    };
+
+    const handleResubscribeToExperiment = async () => {
+        await flagResponsesInactive([subscription]);
+        await dispatch(reloadResponses(Object.values([subscription.id])));
+        await dispatch(subscribeToExperiments([experiment]));
+        toggleResubscriptionModal();
     };
 
     const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
@@ -67,7 +81,7 @@ const ExperimentTimeline = function () {
         return <div>
             <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
             <br />
-            <List >
+            <List>
                 <ListItem key={experiment.name} >
                     <ListItemContent>
                         <Typography style={{ fontStyle: 'italic' }}>
@@ -86,6 +100,13 @@ const ExperimentTimeline = function () {
         </div>
     };
 
+    const getResubModalChildren = () => {
+        return <div>
+            <Typography level="h6"> {Strings.confirm_restart_subscription} </Typography>
+            <br />
+        </div>
+    };
+
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
 
     return (
@@ -99,6 +120,13 @@ const ExperimentTimeline = function () {
                     ))}
 
                 <br/>
+                <Button
+                    onClick={toggleSubscriptionModal}
+                    disabled={isSubscribedToExperiment}
+                    style={{left: "25%", width: "50%"}}
+                >
+                    {Strings.subscribe_to_experiment}
+                </Button>
                 {!('parent' in experiment) &&  <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>}
                 <br/>
 
@@ -154,22 +182,24 @@ const ExperimentTimeline = function () {
                     <TimelineItem key={"next"}>
                         <TimelineSeparator>
                             <TimelineDot sx={{
-                                            bgcolor: !experimentCompleted
-                                                ? 'neutral.solidBg'
-                                                : 'success.solidBg'
+                                            bgcolor: experimentCompleted
+                                                ? 'primary.solidBg'
+                                                : 'grey.solidBg'
                                         }}>
-                                {<DotsThree />}
+                                {experimentCompleted ? <ArrowBendDownRight /> : <DotsThree />}
                             </TimelineDot>
                         </TimelineSeparator>
                         <TimelineContent>
                             <Typography level="body2" sx={{ my: 2 }}>
-                                What's Next?
+                                {Strings.whats_next}
                             </Typography>
-                            {experimentCompleted && (
-                                <Stack spacing={2}>
-                                    "bim"
-                                </Stack>
-                            )}
+                            <Stack spacing={2}>
+                                <SuggestionsList 
+                                    experiment={experiment}
+                                    experimentCompleted={experimentCompleted}
+                                    resubOnClick={toggleResubscriptionModal}
+                                />
+                            </Stack>
                         </TimelineContent>
                     </TimelineItem>
                 </Timeline>
@@ -200,6 +230,16 @@ const ExperimentTimeline = function () {
                 className={'ion-modal-small'}
                 onAction={handleSubscribeToExperiment}
                 children={getModalChildren()}
+            />
+
+            <Modal
+                headerTitle={Strings.confirm_resubscription}
+                isOpen={resubscriptionModalOpen}
+                presentingElement={presentingElement}
+                onDismiss={toggleResubscriptionModal}
+                className={'ion-modal-small'}
+                onAction={handleResubscribeToExperiment}
+                children={getResubModalChildren()}
             />
         </Page>
     );
