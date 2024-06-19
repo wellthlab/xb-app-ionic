@@ -160,6 +160,8 @@ const Strings = {
 	password_can_only_have_at : "Password can only have at most",
 	password_can_only_have_at_2 : "characters",
     subscribe_to_complete_tasks: " Subscribe to this experiment to complete tasks ",
+    confirm_restart_subscription: "Are you sure you want to restart this subscription?. You will lose all progress with your current subscription!",
+    confirm_experiment_selection: "Do you want to subscribe to these selected experiments: ",
     confirm_experiment_subscription: "Do you want to subscribe to this experiment: ",
     confirm_parent_experiment_subscription: "Do you want to subscribe to this parent experiment. You will be subscribed to the following sub-experiments:  ",
     subscribe_to_experiment: "Start this Experiment",

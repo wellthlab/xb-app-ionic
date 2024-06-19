@@ -63,7 +63,7 @@ export const getNewSubscriptions = (experimentsForSubscription: GenericExperimen
         }
     }
     return newSubscriptions;
-});
+}
 
 export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
 
