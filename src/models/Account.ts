@@ -21,16 +21,20 @@ export interface ICredentials {
 }
 
 export interface IProfile {
+    firstName: string;
+    lastName: string;
     email: string;
-    [K: string]: string | boolean | number;
+    department?: string;
+    campus?: string;
+    office?: string;
 }
 
 export interface IAccount {
     id: string;
     profile: IProfile;
-    cohortId: string;
-    subscriptions: string[];
-    notes?: Record<number, string>;
+    cohortId: string,
+    subscriptions: string[],
+    notes?: Record<number, string>
     deleted?: boolean;
 }
 
@@ -202,10 +206,10 @@ class Account extends BaseModel {
         });
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'email'>,  cohortId?: string | null) {
+    static async updateProfile(payload: Omit<IProfile, 'id' | 'email'>, cohortId: string | undefined) {
         let cohort;
         if (!cohortId) {
-            cohort = await this.createDefaultCohort();
+            cohort = await this.createDefaultCohort(payload.firstName, payload.lastName);
         } else {
             cohort = await this.getCohortDetails(cohortId);
         }
@@ -229,9 +233,9 @@ class Account extends BaseModel {
         };
     }
 
-    static async createDefaultCohort() {
+    static async createDefaultCohort(firstName: string, lastName: string) {
         const db = this.getDb();
-        const newCohort = { startDate: Date.now(), name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', this.client.currentUser!.id.toString()), experimentSchedule: [] };
+        const newCohort = { startDate: Date.now(), name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', firstName, '_', lastName), experimentSchedule: [] };
 
         const insertResult = (await db.collection('cohorts').insertOne(
             newCohort,

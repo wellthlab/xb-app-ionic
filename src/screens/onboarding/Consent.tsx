@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict';
+import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -8,44 +8,22 @@ import PageTitle from '../../components/foundation/PageTitle';
 import Form from '../../components/foundation/Form';
 import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
-
-import useStudy from '../../hooks/useStudy';
+import ExerciseWarning from '../../components/ExerciseWarning';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
+const schema = Yup.object().shape({
+    c1: checkboxSchema,
+    c2: checkboxSchema,
+    c3: checkboxSchema,
+    c4: checkboxSchema,
+});
+
 const Consent = function () {
-    const { isPending } = useStudy();
-
-    return (
-        <Page>
-            <PageTitle>{Strings.just_a_few_things}</PageTitle>
-            {isPending ? 'Loading...' : <ConsentForm />}
-        </Page>
+    const { getCheckboxProps, createHandleSubmit, form } = useForm(
+        { c1: false, c2: false, c3: false, c4: false },
+        schema,
     );
-};
-
-const ConsentForm = function () {
-    const { study } = useStudy();
-
-    const initialFormState = React.useMemo(
-        () =>
-            study!.consent.reduce((acc, v, i) => {
-                acc[`c${i}`] = false;
-                return acc;
-            }, {} as Record<string, boolean>),
-        [study],
-    );
-
-    const initialSchema = React.useMemo(() => {
-        const schemaKeys = study!.consent.reduce((acc, v, i) => {
-            acc[`c${i}`] = checkboxSchema;
-            return acc;
-        }, {} as Record<string, Yup.AnySchema>);
-
-        return Yup.object().shape(schemaKeys);
-    }, [study]);
-
-    const { getCheckboxProps, createHandleSubmit, form } = useForm(initialFormState, initialSchema);
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
@@ -53,11 +31,31 @@ const ConsentForm = function () {
     });
 
     return (
-        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
-            {study!.consent.map((statement, i) => (
-                <Checkbox key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
-            ))}
-        </Form>
+        <Page>
+            <PageTitle>{Strings.just_a_few_things}</PageTitle>
+
+            <Form submitButtonColor="success" submitLabel={Strings.enroll} message={form.errors.$root} onSubmit={handleSubmit}>
+                <Checkbox
+                    label={Strings.i_have_read_the_provided}
+                    {...getCheckboxProps('c1')}
+                />
+                <Checkbox
+                    label={Strings.i_am_a_member_of_staff_or_a}
+                    {...getCheckboxProps('c2')}
+                />
+                <Checkbox
+                    label={Strings.i_understand_that_i_must_be}
+                    {...getCheckboxProps('c3')}
+                />
+
+                <ExerciseWarning />
+
+                <Checkbox
+                    label={Strings.i_understand_that_physical}
+                    {...getCheckboxProps('c4')}
+                />
+            </Form>
+        </Page>
     );
 };
 
