@@ -1,7 +1,7 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useIonAlert } from '@ionic/react';
-import { Stack, Typography, Alert, useColorScheme, Box } from '@mui/joy';
+import { Stack, Alert, useColorScheme, Box } from '@mui/joy';
 import { IconContext, Info, Palette, User, SignOut, TrashSimple } from 'phosphor-react';
 
 import List from '../../components/foundation/List';
@@ -11,12 +11,10 @@ import PageTitle from '../../components/foundation/PageTitle';
 import Select from '../../components/foundation/Select';
 
 import { logOut } from '../../slices/globalActions';
-import { selectDepartment, selectFullName, markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
+import { markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
 import { useSelector, useDispatch } from '../../slices/store';
 
 const AllSettings = function () {
-    const fullName = useSelector(selectFullName);
-    const department = useSelector(selectDepartment);
     const isDeleted = useSelector(selectIsDeleted);
 
     // Set dark mode option
@@ -71,10 +69,7 @@ const AllSettings = function () {
                 <Stack spacing={2}>
                     <List>
                         <ListItem href="/main/settings/profile" startDecorator={<User />}>
-                            {fullName}
-                            <Typography level="body3" noWrap>
-                                {department}
-                            </Typography>
+                            Your profile
                         </ListItem>
                     </List>
 
@@ -99,11 +94,7 @@ const AllSettings = function () {
                         </ListItem>
                     </List>
 
-                    {isDeleted && (
-                        <Alert color="warning">
-                            {Strings.you_have_requested_your}
-                        </Alert>
-                    )}
+                    {isDeleted && <Alert color="warning">{Strings.you_have_requested_your}</Alert>}
 
                     {deleteFailed && <Alert color="danger">{Strings.sorry_your_account_cannot_be}</Alert>}
 
