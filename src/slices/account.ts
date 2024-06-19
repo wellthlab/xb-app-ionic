@@ -5,7 +5,6 @@ import Account, { ICredentials, IProfile, IAccount, ISubscription, ISubscription
 import Experiment, { IResponse, GenericExperiment, IExperiment } from '../models/Experiment';
 import { selectAllExperiments, ISelectorState as IExperimentState } from './experiments';
 
-
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
 });

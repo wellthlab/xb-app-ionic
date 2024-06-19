@@ -16,7 +16,7 @@ const Strings = {
 	welcome_to_spring_2023_xb : "Welcome to Spring 2023 XB demo! Please choose a box below to get started.",
 	pick_an_experiment : "Pick an Experiment",
 	day: "Day",
-	days: "Days",
+    days: "Days",
 	there_is_nothing_to_do_for : "There is nothing to do for this day",
 	congratulations_you_have : "Congratulations! You have completed this experiment.",
 	redo_experiment : "Redo experiment",
@@ -113,8 +113,8 @@ const Strings = {
 	percent_completed : "% completed",
 	day_s_ : "Day(s)",
 	xb_app_logo : "XB App logo",
-	you_havent_got_any_task_today : "You haven't got any task today",
-	explore_what_you_can_do_in : "Explore what you can do in \"Boxes\"",
+	you_havent_got_any_task_today : "You haven't got any tasks today",
+	explore_what_you_can_do_in : "Tasks will appear here when you have started some experiments",
 	todays_experiments : "Today's Experiments",
 	read : "Read",
 	less : "less",
@@ -166,6 +166,7 @@ const Strings = {
     subscribe_to_box: "Subscribe to this box",
     subscribe_to_experiment: "Start this Experiment",
     confirm_subscription: "Confirm Subscription",
+	confirm_resubscription: "Confirm Resubscription",
     week: "Week",
 	click_here_to_find_some: "Click Here to find some!",
 	box_description1: "A set of experiments to explore how you \"",
@@ -174,6 +175,8 @@ const Strings = {
     experiment_duration: "Experiment Duration",
 	whats_next: "What's next?",
 	repeat_experiment: "Repeat Experiment",
+	next_experiment: "Start the Next Experiment",
+	see_also: "Start Another Experiment",
 };
 
 export default Strings;

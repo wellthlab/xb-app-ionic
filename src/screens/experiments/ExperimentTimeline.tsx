@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent, } from '@mui/joy';
+import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent } from '@mui/joy';
 import {
     Timeline,
     TimelineItem,
@@ -108,7 +108,6 @@ const ExperimentTimeline = function () {
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
-
 
     return (
         <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name} ref={setPresentingElement}>
