@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Typography, Card, Grid, Box, Stack, Link, linkClasses } from '@mui/joy';
+import { Typography, Card, Box, Stack, Link, linkClasses } from '@mui/joy';
 
 import capitalise from './utils/capitalise';
 
@@ -28,7 +28,8 @@ const BoxesList = function () {
                     return (
                         <Card
                             sx={{
-                                alignItems: 'left',
+                                flexDirection: 'row',
+                                gap: 3,
                                 ...(box.disabled
                                     ? {}
                                     : {
@@ -39,45 +40,39 @@ const BoxesList = function () {
                             }}
                             key={box.id}
                         >
-                            <Grid container spacing={3}>
-                                <Grid xs={3} key="leader" sx={{ borderRight: 1, borderColor: 'divider'}}>
-                                    <Grid container textAlign='center' spacing={1}>
-                                        <Grid xs={12} key="icon">
-                                            <Box
-                                                component={Icon}
-                                                color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'}
-                                            />
-                                        </Grid>
-                                        <Grid xs={12} key="name">
-                                            <Link
-                                                overlay
-                                                level="body1"
-                                                textColor="inherit"
-                                                underline="none"
-                                                component={RouterLink}
-                                                to={`/main/box/${box.name}`}
-                                                disabled={box.disabled}
-                                                sx={{
-                                                    [`&.${linkClasses.disabled}`]: {
-                                                        color: 'neutral.plainDisabledColor',
-                                                        align: 'center'
-                                                    },
-                                                }}
-                                            >
-                                            {capitalise(box.name)}
-                                            </Link>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                <Grid xs={8} key="body">
-                                    <Typography level="body2">
-                                        {box.description 
-                                            ? box.description
-                                            : Strings.box_description1 + capitalise(box.name) + Strings.box_description2
-                                        }
-                                    </Typography>
-                                </Grid>
-                            </Grid>
+                            <Stack
+                                alignItems="center"
+                                minWidth={100}
+                                flex={1 / 4}
+                                borderRight={1}
+                                gap={0.5}
+                                borderColor="divider"
+                            >
+                                <Box component={Icon} color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'} />
+                                <Link
+                                    overlay
+                                    level="body1"
+                                    textColor="inherit"
+                                    underline="none"
+                                    component={RouterLink}
+                                    to={`/main/box/${box.name}`}
+                                    disabled={box.disabled}
+                                    sx={{
+                                        [`&.${linkClasses.disabled}`]: {
+                                            color: 'neutral.plainDisabledColor',
+                                            align: 'center',
+                                        },
+                                    }}
+                                >
+                                    {capitalise(box.name)}
+                                </Link>
+                            </Stack>
+
+                            <Typography level="body2" flex={1}>
+                                {box.description
+                                    ? box.description
+                                    : Strings.box_description1 + capitalise(box.name) + Strings.box_description2}
+                            </Typography>
                         </Card>
                     );
                 })}

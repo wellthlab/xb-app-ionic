@@ -11,7 +11,8 @@ import {
     TimelineContent,
     timelineItemClasses,
 } from '@mui/lab';
-import { Check, ArrowArcRight } from 'phosphor-react';
+
+import { Check, ArrowArcRight, DotsThree } from 'phosphor-react';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
@@ -70,7 +71,7 @@ const ExperimentTimeline = function () {
                 <ListItem key={experiment.name} >
                     <ListItemContent>
                         <Typography style={{ fontStyle: 'italic' }}>
-                            {Strings.experiment_category}  - {capitalise(type)}
+                            {Strings.experiment_type}  - {capitalise(type)}
                         </Typography>
                     </ListItemContent>
                 </ListItem>
@@ -98,7 +99,7 @@ const ExperimentTimeline = function () {
                     ))}
 
                 <br/>
-                <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>
+                {!('parent' in experiment) &&  <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>}
                 <br/>
 
                 <Timeline
@@ -125,7 +126,7 @@ const ExperimentTimeline = function () {
                                     >
                                         { dayCompleted ? <Check /> : <ArrowArcRight />}
                                     </TimelineDot>
-                                    {dayId !== experiment.days.length - 1 && <TimelineConnector />}
+                                    <TimelineConnector />
                                 </TimelineSeparator>
                                 <TimelineContent>
                                     <Typography level="body2" sx={{ my: 2 }}>
@@ -149,6 +150,28 @@ const ExperimentTimeline = function () {
                             </TimelineItem>
                         );
                     })}
+
+                    <TimelineItem key={"next"}>
+                        <TimelineSeparator>
+                            <TimelineDot sx={{
+                                            bgcolor: !experimentCompleted
+                                                ? 'neutral.solidBg'
+                                                : 'success.solidBg'
+                                        }}>
+                                {<DotsThree />}
+                            </TimelineDot>
+                        </TimelineSeparator>
+                        <TimelineContent>
+                            <Typography level="body2" sx={{ my: 2 }}>
+                                What's Next?
+                            </Typography>
+                            {experimentCompleted && (
+                                <Stack spacing={2}>
+                                    "bim"
+                                </Stack>
+                            )}
+                        </TimelineContent>
+                    </TimelineItem>
                 </Timeline>
             </Box>
 

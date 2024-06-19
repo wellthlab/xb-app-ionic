@@ -20,8 +20,22 @@ interface IBaseExperiment {
     desc?: string;
     duration: number;
     hidden?: boolean;
+    isSuggested: boolean
     id: string;
-    boxWeek: number
+}
+
+export enum ExperimentCategory {
+    ACTIVE = "ACTIVE",
+    SUGGESTED = "SUGGESTED",
+    AVAILABLE = "AVAILABLE",
+    COMPLETED = "COMPLETED",
+    SUB_EXPERIMENT = "SUB_EXPERIMENT",
+    SCHEDULED = "SCHEDULED"
+}
+
+export interface IExperimentSchedule {
+    startTimeUTC: number,
+    experiments: string[],
 }
 
 export interface IExperiment extends IBaseExperiment {
