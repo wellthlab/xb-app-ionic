@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
 
 export const updateUserProfile = createAsyncThunk<
     { profile: IProfile, cohort: ICohort },
-    { payload: Omit<IProfile, 'email'>, cohortId: string | undefined}> (
+    { payload: Omit<IProfile, 'email'>,  cohortId?: string | null}> (
     'account/profile/updated',
     ({ payload, cohortId }) => {
         return Account.updateProfile(payload, cohortId);
