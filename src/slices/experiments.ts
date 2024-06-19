@@ -26,6 +26,8 @@ export const selectExperimentByBoxName = (state: ISelectorState, boxName: string
 
 export const selectExperimentById = (state: ISelectorState, experimentId: string) => state.experiments.experiments[experimentId];
 
+export const selectBoxByType = (state: ISelectorState, type: string) => state.experiments.boxes[type];
+
 export const selectBoxByExperimentId = (state: ISelectorState, experimentId: string) => {
     const boxId = state.experiments.experiments[experimentId].boxId;
     return Object
