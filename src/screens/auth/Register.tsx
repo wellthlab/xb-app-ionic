@@ -17,6 +17,8 @@ const schema = newPasswordSchema.shape({
     email: emailSchema.lowercase(),
 });
 
+const emailDomain = 'soton.ac.uk'
+
 const Register = function () {
     const { createHandleSubmit, getInputProps, form } = useForm(
         { email: '', password: '', repeatPassword: '' },
@@ -27,8 +29,8 @@ const Register = function () {
 
     const dispatch = useDispatch();
     const handleSubmit = createHandleSubmit(async (data) => {
-        if (!data.email.includes('@soton.ac.uk')) {
-            throw new Error(Strings.you_must_register_with_a);
+        if (!data.email.includes('@'+emailDomain)) {
+            throw new Error(Strings.you_must_register_with_a+emailDomain+Strings.you_must_register_with_a_2);
         }
 
         const result = await dispatch(registerUser(data));

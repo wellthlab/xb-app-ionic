@@ -85,7 +85,7 @@ const ExperimentTimeline = function () {
                 <ListItem key={experiment.name} >
                     <ListItemContent>
                         <Typography style={{ fontStyle: 'italic' }}>
-                            {Strings.experiment_category}  - {capitalise(type)}
+                            {Strings.experiment_type}  - {capitalise(type)}
                         </Typography>
                     </ListItemContent>
                 </ListItem>
@@ -127,6 +127,7 @@ const ExperimentTimeline = function () {
                 >
                     {Strings.subscribe_to_experiment}
                 </Button>
+                {!('parent' in experiment) &&  <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>}
                 <br/>
 
                 <Timeline
