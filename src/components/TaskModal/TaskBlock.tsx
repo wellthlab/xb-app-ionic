@@ -81,7 +81,7 @@ const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
     }
 
     if (!block.rk) {
-        throw new Error('All input block must have the key "rk". Please ensure that the database entry is correct');
+        throw new Error('All input block must have the key "rk". Please ensure that the database entry is correct. (Block ' + (block as any).blockId + ' )');
     }
 
     if (block.type === 'green-detector') {
