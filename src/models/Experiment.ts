@@ -5,7 +5,8 @@ import { Record } from 'phosphor-react';
 export interface IBox {
     id: string;
     name: string;
-    description: string;
+    description?: string;
+    heroImageSrc?: string;
     icon: string;
     disabled?: boolean;
 }

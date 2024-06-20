@@ -6,13 +6,13 @@ import { Box, Typography } from '@mui/joy';
 
 import HeaderButton from './HeaderButton';
 
-interface IHeaderProps {
+export interface IHeaderProps extends React.ComponentPropsWithoutRef<typeof IonHeader> {
     title?: string;
     leftButton?: React.ReactNode;
     rightButton?: React.ReactNode;
 }
 
-const Header = function ({ title, leftButton, rightButton }: IHeaderProps) {
+const Header = function ({ title, leftButton, rightButton, ...others }: IHeaderProps) {
     const history = useHistory();
 
     const handleGoBack = function () {
@@ -20,7 +20,7 @@ const Header = function ({ title, leftButton, rightButton }: IHeaderProps) {
     };
 
     return (
-        <IonHeader>
+        <IonHeader translucent {...others}>
             <Box component={IonToolbar} sx={{ paddingInline: 1 }}>
                 <IonButtons slot="start">
                     {leftButton || <HeaderButton onClick={handleGoBack}>{Strings.back}</HeaderButton>}
