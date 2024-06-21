@@ -53,15 +53,16 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
 
 export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
     const responses = selectResponses(state);
-    const progressByDayNumAndTaskIds: boolean[] = [];
+    const responseCountByDayNumAndTaskIds: number[] = [];
 
     tasks.forEach(task => {
-        const progress = Object
+        const responseCount = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(response => response.taskId ===  task.taskId && response.dayNum === dayNum));
-        progressByDayNumAndTaskIds.push(progress);
+            .flat()
+            .filter(response => response.taskId ===  task.taskId && response.dayNum === dayNum).length;
+        responseCountByDayNumAndTaskIds.push(responseCount);
     })
-    return progressByDayNumAndTaskIds;
+    return responseCountByDayNumAndTaskIds;
 };
 
 export const selectDayProgress = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
