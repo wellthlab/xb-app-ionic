@@ -23,14 +23,16 @@ interface ITasksListProps {
 
 const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasksListProps) {
     const responseCountByDayNumAndTaskIds: number[] = useSelector((state) => selectProgressByDayNumAndTasks(state, tasks, dayNum));
-    const tasksGroupedById: Map<string, ITask[]>  = tasks.reduce((map, task) => {
-        if (map.has(task.taskId)) {
-            map.get(task.taskId).push(task);
-        } else {
-            map.set(task.taskId, [task]);
+
+    const tasksGroupedById = new Map();
+    tasks.forEach((task, index) => {
+        const allTaskOccurrences = [];
+        const numTaskOccurrences = Math.max(1, responseCountByDayNumAndTaskIds[index]);
+        for (let i = 0; i < numTaskOccurrences; i++) {
+            allTaskOccurrences.push(task);
         }
-        return map;
-    }, new Map());
+        tasksGroupedById.set(task.taskId, allTaskOccurrences);
+    })
     const [groupedTasks, setGroupedTasks] = React.useState(tasksGroupedById);
 
     const createHandleClickTask = function (taskNum: number) {

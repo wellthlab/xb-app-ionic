@@ -78,9 +78,11 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 dayProgress[dayIndex] = false;
             } else {
                 day.tasks.forEach((task) => {
-                    if (!(responses.some(response => response.taskId === task.taskId && response.dayNum === dayIndex))) {
-                        dayProgress[dayIndex] = false;
-                    }
+                    const responseCount = responses
+                        .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex).length;
+                     const taskCompleted = task.isRepeatable && task.minRepeats &&  responseCount >= task.minRepeats
+                         || responseCount === 1 ;
+                    dayProgress[dayIndex] = taskCompleted;
                 })
             }
         });
