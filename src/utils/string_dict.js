@@ -182,6 +182,7 @@ const Strings = {
     starting_on: "Starting On",
     add_another_submission: "Add another submission",
     remove_submission: "Remove Submission",
+    of: "of"
 };
 
 export default Strings;
