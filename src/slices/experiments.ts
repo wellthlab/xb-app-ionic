@@ -62,7 +62,7 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
             .values(responses)
             .flat()
             .filter(response => response.taskId ===  task.taskId && response.dayNum === dayNum &&
-                (response.inactiveSubscription !== undefined && !response.inactiveSubscription)).length;
+                !response.inactiveSubscription).length;
         responseCountByDayNumAndTaskIds.push(responseCount);
     })
     return responseCountByDayNumAndTaskIds;
@@ -83,7 +83,7 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 day.tasks.forEach((task) => {
                     const responseCount = responses
                         .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex &&
-                            (response.inactiveSubscription !== undefined && !response.inactiveSubscription)).length;
+                             !response.inactiveSubscription).length;
                      const taskCompleted = task.isRepeatable && task.minRepeats &&  responseCount >= task.minRepeats
                          || responseCount === 1 ;
                     dayProgress[dayIndex] = taskCompleted;
