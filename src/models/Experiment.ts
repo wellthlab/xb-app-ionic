@@ -83,6 +83,8 @@ export interface ITask {
     blocks: Block[];
     disabled?: boolean;
     preconditions?: any[];
+    isRepeatable?:boolean;
+    minOccurences?: number;
 }
 
 export type Block =

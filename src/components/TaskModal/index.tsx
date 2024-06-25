@@ -26,7 +26,7 @@ import {
     selectSubscriptionByExperimentId,
     selectSubscriptions,
 } from '../../slices/account';
-import { selectTask } from '../../slices/experiments';
+import { selectCurrentDay, selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
@@ -147,6 +147,8 @@ const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscri
     const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
     const accountSubscriptions = useSelector(selectSubscriptions);
     const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
+    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
+    const actionButtonDisabled = !isSubscribed || currentDay < dayNum;
 
     const schema = React.useMemo(() => getSchema(task.blocks), [task.blocks]);
     const initialValues = React.useMemo(() => getInitialValues(task.blocks), [task.blocks]);
@@ -162,7 +164,7 @@ const TaskModal = function({ experimentId, onDismiss, dayNum, taskNum, isSubscri
     });
 
     return (
-        <Modal actionButtonDisabled = {!isSubscribed} actionButtonLabel={Strings.submit}  actionButtonDisabledToolTipTitle = {Strings.subscribe_to_complete_tasks} headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
+        <Modal actionButtonDisabled = {actionButtonDisabled} actionButtonLabel={Strings.submit}  actionButtonDisabledToolTipTitle = {Strings.subscribe_to_complete_tasks} headerTitle={task.name} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => {
                     if (block.type === 'para' || block.type === 'title') {

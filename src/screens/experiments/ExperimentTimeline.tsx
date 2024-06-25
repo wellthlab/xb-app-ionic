@@ -136,7 +136,7 @@ const ExperimentTimeline = function () {
                         const dayCompleted = dayProgress[dayId];
 
                         return (
-                            <TimelineItem key={dayId}>
+                            <TimelineItem key={dayId.toString() + type}>
                                 <TimelineSeparator>
                                     <TimelineDot
                                         sx={{
