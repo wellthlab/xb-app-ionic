@@ -26,6 +26,8 @@ export const selectExperimentByBoxName = (state: ISelectorState, boxName: string
 
 export const selectExperimentById = (state: ISelectorState, experimentId: string) => state.experiments.experiments[experimentId];
 
+export const selectBoxByType = (state: ISelectorState, type: string) => state.experiments.boxes[type];
+
 export const selectBoxByExperimentId = (state: ISelectorState, experimentId: string) => {
     const boxId = state.experiments.experiments[experimentId].boxId;
     return Object
@@ -59,7 +61,8 @@ export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & IS
         const responseCount = Object
             .values(responses)
             .flat()
-            .filter(response => response.taskId ===  task.taskId && response.dayNum === dayNum).length;
+            .filter(response => response.taskId ===  task.taskId && response.dayNum === dayNum &&
+                !response.inactiveSubscription).length;
         responseCountByDayNumAndTaskIds.push(responseCount);
     })
     return responseCountByDayNumAndTaskIds;
@@ -79,7 +82,8 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
             } else {
                 day.tasks.forEach((task) => {
                     const responseCount = responses
-                        .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex).length;
+                        .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex &&
+                            !response.inactiveSubscription).length;
                      const taskCompleted = task.isRepeatable && task.minRepeats &&  responseCount >= task.minRepeats
                          || responseCount === 1 ;
                     dayProgress[dayIndex] = taskCompleted;
@@ -91,8 +95,6 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
         return Array(experiment.days.length).fill(false);
     }
 };
-
-
 
 export const selectCompletionForAllExperiments = (state: IAccountSelectorState & ISelectorState) => {
     const percentages: Record<string, number> = {};
