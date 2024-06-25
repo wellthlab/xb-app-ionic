@@ -84,16 +84,12 @@ const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasks
                 onClickAmendTasksButton(event, "add", task);
             }}>
                 <PlusCircle/>
-                &nbsp;
-                <Typography level="body3"> {Strings.add_another_submission}</Typography>
             </Fab>
         } else if (isUncompletedRepeatableTask(task, taskCount, taskNum)) {
             return  <Fab variant="extended" size="small" aria-label="add"  onClick={(event: MouseEvent) => {
                 onClickAmendTasksButton(event, "remove", task);
             }}>
                 <MinusCircle/>
-                &nbsp;
-                <Typography level="body3">{Strings.remove_submission}</Typography>
             </Fab>
         } else if (!taskCompleted) {
             return <CaretRight />;
