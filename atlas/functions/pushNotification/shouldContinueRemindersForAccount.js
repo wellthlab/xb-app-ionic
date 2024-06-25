@@ -30,7 +30,7 @@ exports = async function(account, mongodb) {
 
         taskLoop: for (const [dayIndex, day] of experiment.days.entries()) {
             for (const task of day.tasks) {
-                if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex))) {
+                if (!(responses.some(response => response.taskId.toString() === task.taskId.toString() && response.dayNum === dayIndex && (response.inactiveSubscription !== undefined && !response.inactiveSubscription)))) {
                     isFinished = false;
                     break taskLoop;
                 }
