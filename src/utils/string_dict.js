@@ -187,6 +187,7 @@ const Strings = {
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
     days_long: "days long",
     starting_on: "Starting On",
+    of: "of"
 };
 
 export default Strings;

@@ -55,19 +55,17 @@ export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, 
 
 export const selectProgressByDayNumAndTasks = (state: IAccountSelectorState & ISelectorState, tasks: ITask[], dayNum: number) => {
     const responses = selectResponses(state);
-    const progressByDayNumAndTaskIds: boolean[] = [];
+    const responseCountByDayNumAndTaskIds: number[] = [];
 
     tasks.forEach(task => {
-        const progress = Object
+        const responseCount = Object
             .values(responses)
-            .some((responseArr) => responseArr.some(
-                response => response.taskId ===  task.taskId &&
-                response.dayNum === dayNum &&
-                !response.inactiveSubscription
-            ));
-        progressByDayNumAndTaskIds.push(progress);
+            .flat()
+            .filter(response => response.taskId ===  task.taskId && response.dayNum === dayNum &&
+                !response.inactiveSubscription).length;
+        responseCountByDayNumAndTaskIds.push(responseCount);
     })
-    return progressByDayNumAndTaskIds;
+    return responseCountByDayNumAndTaskIds;
 };
 
 export const selectDayProgress = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
@@ -83,13 +81,12 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                 dayProgress[dayIndex] = false;
             } else {
                 day.tasks.forEach((task) => {
-                    if (!(responses.some(response =>
-                        response.taskId === task.taskId &&
-                        response.dayNum === dayIndex &&
-                        !response.inactiveSubscription
-                    ))) {
-                        dayProgress[dayIndex] = false;
-                    }
+                    const responseCount = responses
+                        .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex &&
+                             !response.inactiveSubscription).length;
+                     const taskCompleted = task.isRepeatable && task.minOccurences &&  responseCount >= task.minOccurences
+                         || responseCount === 1 ;
+                    dayProgress[dayIndex] = taskCompleted;
                 })
             }
         });

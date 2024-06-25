@@ -9,7 +9,7 @@ import { useFormFromBlocks } from '../foundation/useForm';
 import Experiment from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
 import { reloadResponses, selectSubscriptionByExperimentId, selectSubscriptions } from '../../slices/account';
-import { selectTask } from '../../slices/experiments';
+import { selectCurrentDay, selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
@@ -22,6 +22,8 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
     const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
     const accountSubscriptions = useSelector(selectSubscriptions);
     const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
+    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
+    const actionButtonDisabled = !isSubscribed || currentDay < dayNum;
 
     const { createHandleSubmit, getCheckboxProps, getInputProps } = useFormFromBlocks(task.blocks);
 
@@ -35,7 +37,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
 
     return (
         <Modal
-            actionButtonDisabled={!isSubscribed}
+            actionButtonDisabled={actionButtonDisabled}
             actionButtonLabel={Strings.submit}
             actionButtonDisabledToolTipTitle={Strings.subscribe_to_complete_tasks}
             headerTitle={task.name}
