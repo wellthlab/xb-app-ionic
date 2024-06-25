@@ -85,7 +85,7 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                         .filter(response => response.taskId === task.taskId && response.dayNum === dayIndex &&
                              !response.inactiveSubscription).length;
                      const taskCompleted = task.isRepeatable && task.minOccurences &&  responseCount >= task.minOccurences
-                         || responseCount === 1 ;
+                         || (!task.isRepeatable && responseCount === 1) ;
                     dayProgress[dayIndex] = taskCompleted;
                 })
             }
