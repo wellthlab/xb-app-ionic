@@ -1,47 +1,40 @@
-import Strings from '../utils/string_dict.js';
+import Strings from '../utils/string_dict';
 import React from 'react';
-import { TextField } from '@mui/joy';
-import * as Yup from 'yup';
 
 import Form from './foundation/Form';
-import Select from './foundation/Select';
-import useForm from './foundation/useForm';
+import { useFormFromBlocks } from './foundation/useForm';
 
-import Account from '../models/Account';
+import { selectProfile } from '../slices/account';
+import { useSelector } from '../slices/store';
+import useStudy from '../hooks/useStudy';
+import TaskBlock from './TaskModal/TaskBlock';
 
-import { selectCohortId, selectProfile, updateUserProfile } from '../slices/account';
-import { useDispatch, useSelector } from '../slices/store';
+export interface IProfileFormProps {
+    onSubmit: (data: Record<string, string | boolean | number>) => void;
+}
 
-const schema = Yup.object().shape({
-    firstName: Yup.string().required(Strings.your_first_name_is_missing),
-    lastName: Yup.string().required(Strings.your_last_name_is_missing),
-    department: Yup.string().required(Strings.department_is_missing),
-    campus: Yup.string(),
-    office: Yup.string(),
-});
+const ProfileForm = function ({ onSubmit }: IProfileFormProps) {
+    const { isPending } = useStudy();
 
-const ProfileForm = function () {
+    if (isPending) {
+        return <div>Loading...</div>;
+    }
+
+    return <InnerForm onSubmit={onSubmit} />;
+};
+
+const InnerForm = function ({ onSubmit }: IProfileFormProps) {
+    const { study } = useStudy();
     const profile = useSelector(selectProfile);
-    const cohortId = useSelector(selectCohortId);
 
-    const { getInputProps, createHandleSubmit, form } = useForm(
-        { firstName: '', lastName: '', department: '', campus: '', office: '', ...profile },
-        schema,
-    );
-
-    const dispatch = useDispatch();
-    const handleSubmit = createHandleSubmit((data) => {
-        return dispatch(updateUserProfile({ payload: data, cohortId: cohortId })).unwrap();
-    });
+    const { getInputProps, getCheckboxProps, createHandleSubmit, form } = useFormFromBlocks(study!.profile, profile);
 
     return (
         <React.Fragment>
-            <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={handleSubmit}>
-                <TextField label={Strings.first_name} {...getInputProps('firstName')} />
-                <TextField label={Strings.last_name} {...getInputProps('lastName')} />
-                <Select label={Strings.department} options={Account.DEPARTMENTS} {...getInputProps('department')} />
-                <Select label={Strings.campus} options={Account.CAMPUS} {...getInputProps('campus')} />
-                <TextField label={Strings.office} {...getInputProps('office')} />
+            <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={createHandleSubmit(onSubmit)}>
+                {study!.profile.map((block, blockId) => (
+                    <TaskBlock block={block} key={blockId} inputs={{ getInputProps, getCheckboxProps }} />
+                ))}
             </Form>
         </React.Fragment>
     );
