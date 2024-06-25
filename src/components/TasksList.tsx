@@ -119,7 +119,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasks
                             onClick={createHandleClickTask(taskNum)}
                         >
 
-                            {task.isRepeatable ? task.name + `  - ( ${index + 1} ${Strings.of} ${task.minRepeats} )` : task.name}
+                            {task.isRepeatable ? task.name + `  - ( ${index + 1} ${Strings.of} ${task.minOccurences} )` : task.name}
 
                         </ListItem>
 
