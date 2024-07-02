@@ -20,7 +20,7 @@ import Page from '../../components/foundation/Page';
 
 import { useDispatch, useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive, reloadResponses } from '../../slices/account';
+import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive, reloadResponses, isUserInCohort } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import Modal from '../../components/foundation/Modal';
@@ -38,6 +38,7 @@ const ExperimentTimeline = function () {
         return selectSubscriptionByExperimentId(state, experimentId);
     });
     const isSubscribedToExperiment = subscription !== undefined;
+    const userInCohort = useSelector((state) => isUserInCohort(state));
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -120,7 +121,15 @@ const ExperimentTimeline = function () {
                     ))}
 
                 <br/>
-                {!('parent' in experiment) &&  <Button onClick={toggleSubscriptionModal} disabled={isSubscribedToExperiment} style={{left: "25%", width: "50%"}}> {Strings.subscribe_to_experiment} </Button>}
+                {(!('parent' in experiment) && !userInCohort ) && 
+                    <Button
+                        onClick={toggleSubscriptionModal}
+                        disabled={isSubscribedToExperiment}
+                        style={{left: "25%", width: "50%"}}
+                    >
+                         {Strings.subscribe_to_experiment}
+                    </Button>
+                }
                 <br/>
 
                 <Timeline
