@@ -187,7 +187,11 @@ const Strings = {
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
     days_long: "days long",
     starting_on: "Starting On",
-    of: "of"
+    of: "of",
+    has_cohort_code: "Do you have a cohort code ?",
+    cohort_code: "Cohort code",
+    cohort_code_required: "You have indicated that you have a cohort code. Please enter it before you can proceed.",
+    cohort_code_invalid: "A cohort does not exist for the code you have provided. Please check the code and try again.",
 };
 
 export default Strings;

@@ -11,6 +11,14 @@ export interface ICohort {
     experimentSchedule: IExperimentSchedule[]
 }
 
+export interface IScheduledExperiment extends IExperimentSchedule {
+    id: string;
+    userId: string,
+}
+
+export interface IScheduledExperimentDocument extends Omit<IScheduledExperiment, '_id'> {
+    _id: ObjectId;
+}
 interface ICohortDocument extends ICohort {
     _id: ObjectId;
 }
@@ -254,6 +262,62 @@ class Account extends BaseModel {
         const asICohort= result as unknown as ICohort;
         asICohort.id = result._id as unknown as string;
         return asICohort;
+    }
+
+    static async getCohortByName(cohortName: string): Promise<ICohort | null> {
+        const db = this.getDb();
+        const result = await db.collection<ICohortDocument>('cohorts').findOne({
+            name: cohortName,
+        });
+
+        if (!result) {
+            return null;
+        }
+
+        convertObjectIdFieldsToString(result);
+        const asICohort= result as unknown as ICohort;
+        asICohort.id = result._id as unknown as string;
+        return asICohort;
+    }
+
+    static async getAllCohortNames(): Promise<string[]> {
+        const db = this.getDb();
+        const result = await db.collection('cohorts').find({}, {projection:{"_id": 0 , "name": 1}});
+        return result.map(elem => elem.name);
+    }
+
+    static async saveScheduledExperiments(scheduledExperiments: IExperimentSchedule[]): Promise<IScheduledExperiment[]> {
+        const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
+        const records = scheduledExperiments.map(scheduledExperiment => {
+            return {
+                _id: new BSON.ObjectId(),
+                userId: accountId,
+               ...scheduledExperiment
+            };
+        });
+
+        await db.collection('scheduledExperiments').insertMany(records);
+        return records.map((record) => {
+            return {
+                startTimeUTC: record.startTimeUTC,
+                experiments: record.experiments,
+                id: record._id.toString(),
+                userId: record.userId.toString(),
+            };
+        });
+    }
+
+    static async getScheduledExperiments() {
+        const db = this.getDb();
+        const userId = this.oid(this.client.currentUser!.id);
+
+        const result = await db.collection<IScheduledExperimentDocument>('scheduledExperiments').find({
+            userId: userId,
+        });
+
+        convertObjectIdFieldsToString(result);
+        return result as unknown as IScheduledExperiment[];
     }
 
     static async subscribeToExperiments(newSubscriptions: Omit<ISubscription, 'id'>[]) {
