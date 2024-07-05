@@ -255,23 +255,6 @@ class Account extends BaseModel {
         return asICohort;
     }
 
-    static async getCohortByName(cohortName: string): Promise<ICohort | null> {
-        const db = this.getDb();
-        const result = await db.collection<ICohortDocument>('cohorts').findOne({
-            name: cohortName,
-        });
-
-        if (!result) {
-            return null;
-        }
-
-        convertObjectIdFieldsToString(result);
-        const asICohort= result as unknown as ICohort;
-        asICohort.id = result._id as unknown as string;
-        return asICohort;
-    }
-
-
     static async getAllCohortNames(): Promise<Omit<ICohort | 'experimentSchedule', 'startDate' >[]> {
         const db = this.getDb();
         const result = await db.collection('cohorts').find({}, { projection: { "name": 1 } });

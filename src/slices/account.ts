@@ -79,7 +79,7 @@ export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
 }
 
 export const getScheduledCohortExperiments = async (cohortCode: string, experiments: GenericExperiment[]) => {
-    const cohort = await Account.getCohortByName(cohortCode);
+    const cohort = await Account.getCohortDetails(cohortCode);
     const cohortExperimentSequence = cohort!.experimentSchedule;
     const currTimeUTC = Date.now();
 
@@ -198,6 +198,7 @@ export default createSlice({
                 state.subscriptions = {};
                 state.responses = {};
                 state.allCohortNames = [];
+                state.scheduledExperiments = [];
                 delete state.id;
                 delete state.profile;
                 delete state.cohortId;
