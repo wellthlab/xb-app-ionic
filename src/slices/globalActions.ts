@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import Account, { ICohort, ISubscription } from '../models/Account';
+import Account from '../models/Account';
 import Team from '../models/Team';
-import Experiment, { GenericExperiment } from '../models/Experiment';
-import { getNewSubscriptions } from './account';
+import Experiment from '../models/Experiment';
 
 export const boot = createAsyncThunk('global/boot', async () => {
-    const [account, team, experiments, boxes, allCohortNames, scheduleExperiments] = await Promise.all([
+    const [account, team, experiments, boxes, allCohortNames, scheduledExperiments] = await Promise.all([
         Account.getDetails(),
         Team.getCurrentTeam(),
         Experiment.getExperiments(),
@@ -26,7 +25,7 @@ export const boot = createAsyncThunk('global/boot', async () => {
         subscriptions,
         responses,
         allCohortNames,
-        scheduleExperiments
+        scheduledExperiments
     };
 });
 

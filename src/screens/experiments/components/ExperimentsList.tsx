@@ -34,7 +34,7 @@ const ExperimentsList = function({
     };
 
     const handleSubscribeToParentExperiment = async () => {
-        await dispatch(subscribeToExperiments(experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)!));
+        await dispatch(subscribeToExperiments({experiments: experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)!, subscriptionStartTime: Date.now()}));
         toggleParentExperimentSubscriptionModal();
     };
 

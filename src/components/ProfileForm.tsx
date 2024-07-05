@@ -3,9 +3,14 @@ import React from 'react';
 
 import Form from './foundation/Form';
 import { useFormFromBlocks } from './foundation/useForm';
+import { setExperimentsDueForSubscription, setFutureExperiments } from '../slices/onboarding';
 
-import {selectCohortNames, selectProfile} from '../slices/account';
-import { useSelector } from '../slices/store';
+import {
+    getScheduledCohortExperiments, selectCohortId,
+    selectCohortNames,
+    selectProfile,
+} from '../slices/account';
+import { useDispatch, useSelector } from '../slices/store';
 import useStudy from '../hooks/useStudy';
 import TaskBlock from './TaskModal/TaskBlock';
 import {
@@ -15,27 +20,36 @@ import {
    Input,
     Stack,
 } from "@mui/joy";
+import { selectAllExperiments } from '../slices/experiments';
+import { ICohort } from '../models/Account';
 
 export interface IProfileFormProps {
     onSubmit: (data: Record<string, string | boolean | number>) => void;
+    cohortIdRef: React.MutableRefObject<string | undefined>
+    isNewProfile?: boolean
 }
 
-const ProfileForm = function ({ onSubmit }: IProfileFormProps) {
+const ProfileForm = function ({ onSubmit, cohortIdRef, isNewProfile = true }: IProfileFormProps ) {
     const { isPending } = useStudy();
 
     if (isPending) {
         return <div>Loading...</div>;
     }
 
-    return <InnerForm onSubmit={onSubmit} />;
+    return <InnerForm onSubmit={onSubmit} cohortIdRef ={cohortIdRef} isNewProfile={isNewProfile} />;
 };
 
-const InnerForm = function ({ onSubmit }: IProfileFormProps) {
+const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFormProps) {
     const { study } = useStudy();
     const profile = useSelector(selectProfile);
+    const cohortId = useSelector(selectCohortId);
     const allCohortNames = useSelector(selectCohortNames);
+    const existingCohortName = allCohortNames
+        .find(elem => (elem as ICohort).id === cohortId);
+    const allExperiments = useSelector(selectAllExperiments);
+    const dispatch = useDispatch();
 
-    const [cohortCode, setCohortCode] = React.useState("");
+    const [cohortCode, setCohortCode] = React.useState( existingCohortName ? (existingCohortName as ICohort).name : "");
     const [hasCohortCode, setHasCohortCode] = React.useState(true);
     const [missingCohortCodeAlert, setMissingCohortCodeAlert] = React.useState(false);
     const [invalidCohortCodeAlert, setInvalidCohortCodeAlert] = React.useState(false);
@@ -43,13 +57,21 @@ const InnerForm = function ({ onSubmit }: IProfileFormProps) {
 
     const { getInputProps, getCheckboxProps, createHandleSubmit, form } = useFormFromBlocks(study!.profile, profile);
 
-    const onFormSubmit = () => {
-        if (hasCohortCode && !cohortCode) {
-            setInvalidCohortCodeAlert(false);
-            setMissingCohortCodeAlert(true);
-        } else if (hasCohortCode && !allCohortNames.includes(cohortCode)) {
-            setMissingCohortCodeAlert(false);
-            setInvalidCohortCodeAlert(true);
+    const onFormSubmit = async () => {
+        if (hasCohortCode) {
+            if (!cohortCode) {
+                setInvalidCohortCodeAlert(false);
+                setMissingCohortCodeAlert(true);
+            } else if (!allCohortNames.some(elem => (elem as ICohort).name === cohortCode)) {
+                setMissingCohortCodeAlert(false);
+                setInvalidCohortCodeAlert(true);
+            } else {
+                const [experimentsDueForSubscription, futureExperiments] = await getScheduledCohortExperiments(cohortCode, Object.values(allExperiments));
+                dispatch(setExperimentsDueForSubscription(experimentsDueForSubscription));
+                dispatch(setFutureExperiments(futureExperiments));
+                cohortIdRef.current = cohortCode;
+                createHandleSubmit(onSubmit)();
+            }
         } else {
             createHandleSubmit(onSubmit)();
         }
@@ -62,12 +84,12 @@ const InnerForm = function ({ onSubmit }: IProfileFormProps) {
                     <TaskBlock block={block} key={blockId} inputs={{ getInputProps, getCheckboxProps }} />
                 ))}
 
-                <Stack direction="row" spacing={4} alignItems="center">
-                    <FormControl>
-                        <Checkbox overlay defaultChecked label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)}
+                <Stack spacing={2} alignItems="center">
+                    <FormControl >
+                        <Checkbox overlay defaultChecked label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
                         />
                     </FormControl>
-                    <Input value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!hasCohortCode} />
+                    <Input fullWidth={true} value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!isNewProfile || !hasCohortCode} />
                 </Stack>
                 {missingCohortCodeAlert && <Alert color="danger">
                     {Strings.cohort_code_required}

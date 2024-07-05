@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk, ThunkDispatch} from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
-import Account, {ICredentials, IProfile, ISubscription, ICohort, IScheduledExperiment} from '../models/Account';
+import Account, {ICredentials, IProfile, ISubscription, ICohort, IScheduledExperimentSubscription} from '../models/Account';
 import Experiment, {IResponse, GenericExperiment, IExperimentSchedule} from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk('account/registered', (credentials:
 
 export const updateUserProfile = createAsyncThunk<
     { profile: IProfile, cohort: ICohort },
-    { payload: Omit<IProfile, 'email'>,  cohortId?: string | null}> (
+    { payload: Omit<IProfile, 'email'>,  cohortId?: string }> (
     'account/profile/updated',
     ({ payload, cohortId }) => {
         return Account.updateProfile(payload, cohortId);
@@ -37,13 +37,13 @@ export const saveNotes = createAsyncThunk(
 
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
-    GenericExperiment[]>('account/subscriptions', (experiments) => {
-    const newSubscriptions  = getNewSubscriptions(experiments, Date.now());
+    { experiments: GenericExperiment[], subscriptionStartTime: number }>('account/subscriptions', ({ experiments, subscriptionStartTime }) => {
+    const newSubscriptions  = getNewSubscriptions(experiments, subscriptionStartTime);
     return Account.subscribeToExperiments(newSubscriptions);
 });
 
 export const saveScheduledExperiments = createAsyncThunk<
-    IScheduledExperiment[],
+    IScheduledExperimentSubscription[],
     IExperimentSchedule[]>('account/saveScheduledExperiments', (experimentSchedule) => {
     return Account.saveScheduledExperiments(experimentSchedule);
 });
@@ -78,12 +78,12 @@ export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
     await Experiment.flagResponsesInactive(subscriptionIds);
 }
 
-export const updateSubscriptionsForCohort = async (dispatch: ThunkDispatch<any, any, any>, cohortCode: string, experiments: GenericExperiment[], existingSubscriptions: ISubscription[],) => {
+export const getScheduledCohortExperiments = async (cohortCode: string, experiments: GenericExperiment[]) => {
     const cohort = await Account.getCohortByName(cohortCode);
     const cohortExperimentSequence = cohort!.experimentSchedule;
     const currTimeUTC = Date.now();
 
-    const experimentsDueForSubscription: GenericExperiment[] = []
+    const experimentsDueForSubscription: Record<number, GenericExperiment[]>= {};
     cohortExperimentSequence.filter(schedule => schedule.startTimeUTC <= currTimeUTC).forEach(schedule => {
         const experimentsForSubscription = schedule.experiments
             .map(experimentId =>  experiments.find(e => e.id === experimentId))
@@ -91,10 +91,9 @@ export const updateSubscriptionsForCohort = async (dispatch: ThunkDispatch<any, 
         // @ts-ignore
         experimentsDueForSubscription.push(...experimentsForSubscription)
     });
-
-    dispatch(subscribeToExperiments(experimentsDueForSubscription));
     const futureExperiments = cohortExperimentSequence.filter(schedule => schedule.startTimeUTC > currTimeUTC);
-    dispatch(saveScheduledExperiments(futureExperiments));
+
+    return [experimentsDueForSubscription, futureExperiments];
 };
 
 export const markAccountAsDeleted = createAsyncThunk('account/deleted', async () => {
@@ -108,7 +107,9 @@ interface IAccountState {
     responses: Record<string, IResponse[]>,
     notes?: Record<number, string>,
     deleted?: boolean;
-    allCohortNames: string[]
+    allCohortNames: Omit<ICohort | 'experimentSchedule', 'startDate' >[],
+    scheduledExperiments: IScheduledExperimentSubscription[],
+    cohortId?: string
 }
 
 export interface ISelectorState {
@@ -129,6 +130,8 @@ export const selectSubscriptionByExperimentId = (state: ISelectorState,  experim
 export const selectNotes = (state: ISelectorState) => state.account.notes ? state.account.notes: {};
 
 export const selectCohortNames = (state: ISelectorState) => state.account.allCohortNames;
+export const selectCohortId = (state: ISelectorState) => state.account.cohortId;
+export const selectScheduledExperiments = (state: ISelectorState) => state.account.scheduledExperiments;
 
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
@@ -141,7 +144,7 @@ export const selectResponses = (state: ISelectorState) => state.account.response
 
 export default createSlice({
     name: 'account',
-    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, cohort: {}, allCohortNames: [] as string[] } as IAccountState,
+    initialState: { id: Account.persistedId, subscriptions: {}, responses: {}, notes: {}, allCohortNames: [] , scheduledExperiments: [] } as IAccountState,
     reducers: {},
 
     extraReducers: (builder) => {
@@ -157,6 +160,7 @@ export default createSlice({
             .addCase(boot.fulfilled, (state, action) => {
                 state.responses = action.payload.responses;
                 state.allCohortNames = action.payload.allCohortNames;
+                state.scheduledExperiments = action.payload.scheduledExperiments;
                 state.subscriptions = {};
 
                 for (const sub of action.payload.subscriptions) {
@@ -166,6 +170,7 @@ export default createSlice({
                 if (action.payload.account) {
                     state.profile = action.payload.account.profile;
                     state.notes = action.payload.account.notes;
+                    state.cohortId = action.payload.account.cohortId;
                 }
 
             })
@@ -178,7 +183,9 @@ export default createSlice({
                 state.subscriptions = {};
                 state.responses = {};
                 state.allCohortNames = [];
+                state.scheduledExperiments = [];
                 delete state.id;
+                delete state.cohortId;
                 delete state.profile;
                 delete state.deleted;
                 delete state.notes;
@@ -190,6 +197,7 @@ export default createSlice({
                 state.allCohortNames = [];
                 delete state.id;
                 delete state.profile;
+                delete state.cohortId;
                 delete state.deleted;
                 delete state.notes;
             })

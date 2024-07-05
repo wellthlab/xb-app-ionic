@@ -56,14 +56,14 @@ const ExperimentTimeline = function () {
     };
 
     const handleSubscribeToExperiment = async () => {
-        await dispatch(subscribeToExperiments([experiment]));
+        await dispatch(subscribeToExperiments({experiments: [experiment], subscriptionStartTime: Date.now()}));
         toggleSubscriptionModal();
     };
 
     const handleResubscribeToExperiment = async () => {
         await flagResponsesInactive([subscription]);
         await dispatch(reloadResponses(Object.values([subscription.id])));
-        await dispatch(subscribeToExperiments([experiment]));
+        await dispatch(subscribeToExperiments({experiments: [experiment], subscriptionStartTime: Date.now()}));
         toggleResubscriptionModal();
     };
 
