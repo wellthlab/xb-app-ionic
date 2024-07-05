@@ -87,9 +87,12 @@ export const getScheduledCohortExperiments = async (cohortCode: string, experime
     cohortExperimentSequence.filter(schedule => schedule.startTimeUTC <= currTimeUTC).forEach(schedule => {
         const experimentsForSubscription = schedule.experiments
             .map(experimentId =>  experiments.find(e => e.id === experimentId))
-            .filter(experiment => experiment !== undefined);
-        // @ts-ignore
-        experimentsDueForSubscription.push(...experimentsForSubscription)
+            .filter(experiment => experiment !== undefined)
+            .map(e => e as GenericExperiment)
+
+        if (experimentsForSubscription.length > 0) {
+            experimentsDueForSubscription[schedule.startTimeUTC] = experimentsForSubscription;
+        }
     });
     const futureExperiments = cohortExperimentSequence.filter(schedule => schedule.startTimeUTC > currTimeUTC);
 
