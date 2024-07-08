@@ -95,6 +95,7 @@ export const selectIsEnrolled = (state: ISelectorState) => !!state.account.profi
 
 export const selectProfile = (state: ISelectorState) => state.account.profile;
 
+export const isUserInCohort = (state: ISelectorState) => !(state.account.cohort == null);
 export const selectCohortId = (state: ISelectorState) => state.account.cohort?.id;
 export const selectCohort = (state: ISelectorState) => state.account.cohort;
 export const selectIsDeleted = (state: ISelectorState) => state.account.deleted;

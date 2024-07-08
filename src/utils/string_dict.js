@@ -177,7 +177,9 @@ const Strings = {
 	whats_next: "What's next?",
 	repeat_experiment: "Repeat Experiment",
 	next_experiment: "Start the Next Experiment",
-	see_also: "Start Another Experiment",
+	also_experiment: "Start Another Experiment",
+	next_experiment_cohort: "See the Next Experiment",
+	also_experiment_cohort: "See Another Experiment",
     active_experiments: "ACTIVE EXPERIMENTS",
     suggested_experiments: "SUGGESTED EXPERIMENTS",
     available_experiments: "AVAILABLE EXPERIMENTS",
@@ -187,7 +189,9 @@ const Strings = {
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
     days_long: "days long",
     starting_on: "Starting On",
-    of: "of"
+    of: "of",
+	no_suggestions: "No suggestions at present.  Keep exploring XB!",
+	not_subscribed_to_experiment: "You are not currently subscribed to this experiment.",
 };
 
 export default Strings;
