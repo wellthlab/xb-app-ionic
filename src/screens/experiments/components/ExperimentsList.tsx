@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from '../../../slices/store';
 import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
-import { selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
+import { isUserInCohort, selectSubscriptions, subscribeToExperiments } from '../../../slices/account';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, GenericExperiment[]>;
@@ -23,7 +23,7 @@ const ExperimentsList = function({
     const history = useHistory();
     const [parentExperimentSubscriptionModalOpen, setParentExperimentSubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
-
+    const userInCohort = useSelector((state) => isUserInCohort(state));
     const isSubscribedToParentExperiment = () => {
         return experimentsGroupedByCategory
             .get(ExperimentCategory.SUB_EXPERIMENT)
@@ -202,7 +202,7 @@ const ExperimentsList = function({
                     return getBody(experimentCategory, experiments);
                 })}
             </Stack>
-            {isSubExperiments() && <Button onClick={toggleParentExperimentSubscriptionModal} disabled={isSubscribedToParentExperiment()} style={{left: "25%", width: "50%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}> {Strings.subscribe_to_parent_experiment} </Button>}
+            {isSubExperiments() && !userInCohort && <Button onClick={toggleParentExperimentSubscriptionModal} disabled={isSubscribedToParentExperiment()} style={{left: "25%", width: "50%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}> {Strings.subscribe_to_parent_experiment} </Button>}
 
 
             <Modal

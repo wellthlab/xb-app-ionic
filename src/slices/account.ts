@@ -139,8 +139,6 @@ export const isUserInCohort = (state: ISelectorState) => !(state.account.cohortI
 
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
-export const selectDepartment = (state: ISelectorState) => state.account.profile?.department;
-
 export const selectFullName = (state: ISelectorState) =>
     state.account.profile ? state.account.profile.firstName + ' ' + state.account.profile.lastName : null;
 
@@ -215,6 +213,9 @@ export default createSlice({
             })
             .addCase(saveNotes.fulfilled, (state, action) => {
                 state.notes = action.payload;
+            })
+            .addCase(saveScheduledExperiments.fulfilled, (state, action) => {
+                state.scheduledExperiments = action.payload;
             })
             .addCase(reloadResponses.fulfilled, (state, action) => {
                 state.responses = action.payload;
