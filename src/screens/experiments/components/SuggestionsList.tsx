@@ -6,6 +6,7 @@ import { IExperiment } from '../../../models/Experiment';
 
 import { useSelector } from '../../../slices/store';
 import { selectExperimentById } from '../../../slices/experiments';
+import { isUserInCohort } from '../../../slices/account';
 import List from '../../../components/foundation/List';
 import ListItem from '../../../components/foundation/ListItem';
 import Strings from '../../../utils/string_dict';
@@ -29,6 +30,8 @@ const SuggestionsList = function ({experiment, experimentCompleted, resubOnClick
         ?  selectExperimentById(state, experiment.also_experiment_id!) as IExperiment
         :  null
     );
+
+    const userInCohort = useSelector((state) => isUserInCohort(state));
 
     const getResubBox = () => {
         return <ListItem
@@ -54,17 +57,31 @@ const SuggestionsList = function ({experiment, experimentCompleted, resubOnClick
         </ListItem>
     };
 
-    const suggestedItems = [getResubBox()];
+    const suggestedItems = [];
+    if (!userInCohort) {
+        suggestedItems.push(getResubBox());
+    };
     if (nextExperiment) {
-        suggestedItems.push(getSubNewExperimentListItem(nextExperiment!, Strings.next_experiment, <ArrowRight/>))
+        suggestedItems.push(getSubNewExperimentListItem(
+            nextExperiment!,
+            userInCohort ? Strings.next_experiment_cohort : Strings.next_experiment,
+            <ArrowRight/>
+        ))
     };
     if (alsoExperiment) {
-        suggestedItems.push(getSubNewExperimentListItem(alsoExperiment!, Strings.see_also, <ArrowRight/>))
+        suggestedItems.push(getSubNewExperimentListItem(
+            alsoExperiment!,
+            userInCohort ? Strings.also_experiment_cohort : Strings.also_experiment,
+            <ArrowRight/>
+        ))
     };
 
-    return <List sx={{ mb: 2 }}>
-        {suggestedItems}
-    </List>
+    if (suggestedItems.length !== 0) {
+        return <List sx={{ mb: 2 }}>{suggestedItems}</List>
+    } else {
+        return <p>{Strings.no_suggestions}</p>
+    };
+
 };
 
 export default SuggestionsList;

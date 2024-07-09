@@ -135,6 +135,7 @@ export const selectNotes = (state: ISelectorState) => state.account.notes ? stat
 export const selectCohortNames = (state: ISelectorState) => state.account.allCohortNames;
 export const selectCohortId = (state: ISelectorState) => state.account.cohortId;
 export const selectScheduledExperiments = (state: ISelectorState) => state.account.scheduledExperiments;
+export const isUserInCohort = (state: ISelectorState) => !(state.account.cohortId == null);
 
 export const selectUserId = (state: ISelectorState) => state.account.id;
 
