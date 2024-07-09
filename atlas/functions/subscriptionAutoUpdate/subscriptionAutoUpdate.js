@@ -1,3 +1,8 @@
+/**
+ * Is invoked by a scheduled MongoDB Atlas trigger. It looks in the scheduledExperiments collections for scheduled experiments with a start-time
+ * on or before the current time and subscribes the specified user to those experiments
+ **/
+
 exports = async function() {
     const mongodb = context.services.get('mongodb-atlas').db('PRODUCTION');
     const scheduledExperiments =  await mongodb.collection('scheduledExperiments').find({ startTimeUTC: { $lte: Date.now()}}).toArray();
