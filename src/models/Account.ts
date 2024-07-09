@@ -11,6 +11,14 @@ export interface ICohort {
     experimentSchedule: IExperimentSchedule[]
 }
 
+export interface IScheduledExperimentSubscription extends IExperimentSchedule {
+    id: string;
+    userId: string,
+}
+
+export interface IScheduledExperimentSubscriptionDocument extends Omit<IScheduledExperimentSubscription, '_id'> {
+    _id: ObjectId;
+}
 interface ICohortDocument extends ICohort {
     _id: ObjectId;
 }
@@ -202,22 +210,24 @@ class Account extends BaseModel {
         });
     }
 
-    static async updateProfile(payload: Omit<IProfile, 'email'>,  cohortId?: string | null) {
-        let cohort;
-        if (!cohortId) {
-            cohort = await this.createDefaultCohort();
-        } else {
-            cohort = await this.getCohortDetails(cohortId);
-        }
-
+    static async updateProfile(payload: Omit<IProfile, 'email'>,  cohortName?: string ) {
+        const cohort = cohortName ? await this.getCohortDetails(cohortName) : undefined;
         const db = this.getDb();
         const email = this.client.currentUser!.profile.email!;
         const id = this.client.currentUser!.id;
 
+        const objForUpdate = {
+            profile:  { ...payload, email }
+        };
+        if (cohort) {
+            // @ts-ignore
+            objForUpdate['cohortId'] = this.oid(cohort!.id);
+        }
+
         await db.collection<IAccountDocument>('accounts').updateOne(
             { _id: this.oid(id) },
             {
-                $set: { profile: { ...payload, email }, cohortId: this.oid(cohort!.id) },
+                $set: objForUpdate,
                 $setOnInsert: { subscriptions: [] },
             },
             { upsert: true },
@@ -229,21 +239,10 @@ class Account extends BaseModel {
         };
     }
 
-    static async createDefaultCohort() {
-        const db = this.getDb();
-        const newCohort = { startDate: Date.now(), name: 'DEFAULT_INDIVIDUAL_COHORT'.concat('_', this.client.currentUser!.id.toString()), experimentSchedule: [] };
-
-        const insertResult = (await db.collection('cohorts').insertOne(
-            newCohort,
-        ));
-
-        return {...newCohort, id: insertResult.insertedId.toString()} as ICohort;
-    }
-
-    static async getCohortDetails(cohortId: string): Promise<ICohort | null> {
+    static async getCohortDetails(cohortName: string): Promise<ICohort | null> {
         const db = this.getDb();
         const result = await db.collection<ICohortDocument>('cohorts').findOne({
-            _id: this.oid(cohortId),
+            name: cohortName,
         });
 
         if (!result) {
@@ -254,6 +253,53 @@ class Account extends BaseModel {
         const asICohort= result as unknown as ICohort;
         asICohort.id = result._id as unknown as string;
         return asICohort;
+    }
+
+    static async getAllCohortNames(): Promise<Omit<ICohort | 'experimentSchedule', 'startDate' >[]> {
+        const db = this.getDb();
+        const result = await db.collection('cohorts').find({}, { projection: { "name": 1 } });
+
+        result.forEach(record => convertObjectIdFieldsToString(record));
+
+        return result.map(record => {
+            const asICohort = record as unknown as ICohort;
+            asICohort.id = record._id as unknown as string;
+            return asICohort;
+        });
+    }
+
+    static async saveScheduledExperiments(scheduledExperiments: IExperimentSchedule[]): Promise<IScheduledExperimentSubscription[]> {
+        const db = this.getDb();
+        const accountId = this.oid(this.client.currentUser!.id);
+        const records = scheduledExperiments.map(scheduledExperiment => {
+            return {
+                _id: new BSON.ObjectId(),
+                userId: accountId,
+               ...scheduledExperiment
+            };
+        });
+
+        await db.collection('scheduledExperiments').insertMany(records);
+        return records.map((record) => {
+            return {
+                startTimeUTC: record.startTimeUTC,
+                experiments: record.experiments,
+                id: record._id.toString(),
+                userId: record.userId.toString(),
+            };
+        });
+    }
+
+    static async getScheduledExperiments() {
+        const db = this.getDb();
+        const userId = this.oid(this.client.currentUser!.id);
+
+        const result = await db.collection<IScheduledExperimentSubscriptionDocument>('scheduledExperiments').find({
+            userId: userId,
+        });
+
+        convertObjectIdFieldsToString(result);
+        return result as unknown as IScheduledExperimentSubscription[];
     }
 
     static async subscribeToExperiments(newSubscriptions: Omit<ISubscription, 'id'>[]) {

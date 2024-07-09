@@ -9,7 +9,7 @@ import TaskBlock from '../../components/TaskModal/TaskBlock';
 import { useDispatch, useSelector } from '../../slices/store';
 
 import Strings from '../../utils/string_dict';
-import { updateUserProfile } from '../../slices/account';
+import { saveScheduledExperiments, subscribeToExperiments, updateUserProfile } from '../../slices/account';
 import { selectOnboardingState } from '../../slices/onboarding';
 import useStudy from '../../hooks/useStudy';
 
@@ -26,6 +26,11 @@ const Welcome = function () {
     const handleEnroll = async function () {
         setIsPending(true);
         await dispatch(updateUserProfile({ payload: updateData.profile!, cohortId: updateData.cohortId })).unwrap();
+
+        for (const [subscriptionStartTime, experiments] of Object.entries(updateData.experimentsDueForSubscription)) {
+            await dispatch(subscribeToExperiments({ experiments: experiments, subscriptionStartTime: Number(subscriptionStartTime) }));
+        }
+        dispatch(saveScheduledExperiments(updateData.futureExperiments));
         setIsPending(false);
     };
 

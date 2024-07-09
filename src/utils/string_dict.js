@@ -190,8 +190,12 @@ const Strings = {
     days_long: "days long",
     starting_on: "Starting On",
     of: "of",
-	no_suggestions: "No suggestions at present.  Keep exploring XB!",
-	not_subscribed_to_experiment: "You are not currently subscribed to this experiment.",
+    no_suggestions: "No suggestions at present.  Keep exploring XB!",
+    not_subscribed_to_experiment: "You are not currently subscribed to this experiment.",
+    has_cohort_code: "Do you have a cohort code ?",
+    cohort_code: "Cohort code",
+    cohort_code_required: "You have indicated that you have a cohort code. Please enter it before you can proceed.",
+    cohort_code_invalid: "A cohort does not exist for the code you have provided. Please check the code and try again.",
 };
 
 export default Strings;

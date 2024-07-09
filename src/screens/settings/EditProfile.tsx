@@ -5,20 +5,19 @@ import Page from '../../components/foundation/Page';
 
 import ProfileForm, { IProfileFormProps } from '../../components/ProfileForm';
 
-import { useSelector, useDispatch } from '../../slices/store';
-import { selectCohortId, updateUserProfile } from '../../slices/account';
+import { useDispatch } from '../../slices/store';
+import { updateUserProfile } from '../../slices/account';
 
 const EditProfile = function () {
-    const cohortId = useSelector(selectCohortId);
     const dispatch = useDispatch();
-
+    const cohortIdRef = React.useRef(undefined)
     const handleSubmit: IProfileFormProps['onSubmit'] = async (data) => {
-        await dispatch(updateUserProfile({ payload: data, cohortId })).unwrap();
+        await dispatch(updateUserProfile({ payload: data, cohortId: cohortIdRef.current })).unwrap();
     };
 
     return (
         <Page headerTitle={Strings.your_profile}>
-            <ProfileForm onSubmit={handleSubmit} />
+            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef} isNewProfile={false} />
         </Page>
     );
 };

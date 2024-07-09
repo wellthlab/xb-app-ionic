@@ -14,7 +14,7 @@ import {
     selectExperimentByBoxName,
 } from '../../slices/experiments';
 import { ExperimentCategory, GenericExperiment } from '../../models/Experiment';
-import { selectCohort, selectSubscriptions } from '../../slices/account';
+import { selectScheduledExperiments, selectSubscriptions } from '../../slices/account';
 import BoxesSubMenu from './BoxesSubMenu';
 import PageTitle from '../../components/foundation/PageTitle';
 import { IonContent, IonFooter, IonPage, IonToolbar, ScrollDetail } from '@ionic/react';
@@ -30,7 +30,7 @@ const ExperimentsListScreen = function () {
     const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
     const subscriptions = useSelector(selectSubscriptions);
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
-    const cohort = useSelector(selectCohort);
+    const scheduledExperiments = useSelector(selectScheduledExperiments);
     const scheduledExperimentsByStartTime = new Map<number, GenericExperiment[]>();
     const getExperimentsGroupedByCategory = () => {
         const experiments = boxExperiments.filter((item) => !('parent' in item) || !item.parent);
@@ -82,7 +82,7 @@ const ExperimentsListScreen = function () {
     };
 
     const getScheduledStartTime = (experiment: GenericExperiment) => {
-        return cohort?.experimentSchedule.find((schedule) => schedule.experiments.includes(experiment.id))
+        return scheduledExperiments.find((schedule) => schedule.experiments.includes(experiment.id))
             ?.startTimeUTC;
     };
 
