@@ -112,7 +112,7 @@ class Account extends BaseModel {
         try {
             return await this.client.logIn(Credentials.emailPassword(credentials.email, credentials.password));
         } catch (error) {
-            if (error instanceof Error && error.message.includes('invalid') && !retried) {
+            if (error instanceof Error && !retried) {
                 console.log('Failed authentication, retrying with lowercase email');
                 return this.authenticate(
                     { email: credentials.email.toLowerCase(), password: credentials.password },
