@@ -58,18 +58,19 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
     const { getInputProps, getCheckboxProps, createHandleSubmit, form } = useFormFromBlocks(study!.profile, profile);
 
     const onFormSubmit = async () => {
+        const trimmedCohortCode = cohortCode.trim();
         if (hasCohortCode) {
-            if (!cohortCode) {
+            if (!trimmedCohortCode) {
                 setInvalidCohortCodeAlert(false);
                 setMissingCohortCodeAlert(true);
-            } else if (!allCohortNames.some(elem => (elem as ICohort).name === cohortCode)) {
+            } else if (!allCohortNames.some(elem => (elem as ICohort).name === trimmedCohortCode)) {
                 setMissingCohortCodeAlert(false);
                 setInvalidCohortCodeAlert(true);
             } else {
-                const [experimentsDueForSubscription, futureExperiments] = await getScheduledCohortExperiments(cohortCode, Object.values(allExperiments));
+                const [experimentsDueForSubscription, futureExperiments] = await getScheduledCohortExperiments(trimmedCohortCode, Object.values(allExperiments));
                 dispatch(setExperimentsDueForSubscription(experimentsDueForSubscription));
                 dispatch(setFutureExperiments(futureExperiments));
-                cohortIdRef.current = cohortCode;
+                cohortIdRef.current = trimmedCohortCode;
                 createHandleSubmit(onSubmit)();
             }
         } else {
