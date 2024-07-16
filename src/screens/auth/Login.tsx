@@ -42,8 +42,7 @@ const Login = function () {
             setConfirmationRequired(true);
             return;
         }
-
-        throw new Error(result.error.message);
+        throw new Error(Strings.login_error);
     });
 
     const handleClickLoginLink = function () {
