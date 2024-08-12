@@ -25,6 +25,7 @@ class experiment_creator(object):
    def __init__(self,name,boxid,boxweek=0,desc=[],steps=[],tips=[]):
 
       self.uri = None
+
       self.doc = {
          'name' : name,
          'days' : [
@@ -46,6 +47,16 @@ class experiment_creator(object):
          'tips' : tips,
       }
 
+   def set_boxweek(self,boxweek):
+      self.doc['boxweek']=boxweek
+
+   def add_step(self,step):
+      i=str(len(self.doc['steps'])+1)+'. '
+      self.doc['steps'].append(i+step)
+
+   def add_tip(self,tip):
+      self.doc['tips'].append(tip)
+
    def add_task(self,name,icon='list-checks',typ='normal'):
       task = {
          'name' : name,
@@ -59,7 +70,7 @@ class experiment_creator(object):
 
       self.doc['days'][0]['tasks'].append(task)
 
-   def add_block(self,typ='para',task_ind=-1,**kwargs):
+   def add_block(self, typ='para', task_ind=-1, in_expandable=False, in_description=False, **kwargs):
 
       block = {
          'blockId' : ObjectId(),
@@ -70,7 +81,37 @@ class experiment_creator(object):
       if typ in input_types:
          block['rk'] = 'rk'+str(len(self.doc['days'][0]['tasks'][task_ind]['blocks']))
 
-      self.doc['days'][0]['tasks'][task_ind]['blocks'].append(block)
+      # in_expandable overrides everything; attempts to add the block as a child of the last instanced expandable
+      if in_expandable:
+         try:
+            self.doc['desc'][self.expandable_cursor]['contents'].append(block)
+         except NameError:
+            raise ValueError('No expandable defined!')
+
+      # Add the block to the description if no tasks are yet defined
+      elif in_description or len(self.doc['days'][0]['tasks'])<1:
+         self.doc['desc'].append(block)
+      else:
+         self.doc['days'][0]['tasks'][task_ind]['blocks'].append(block)
+
+
+   def add_subblock(self, **kwargs):
+      self.add_block(in_expandable=True, **kwargs)
+
+
+   def add_expandable_description_block(self, title):
+
+      block = {
+         'blockId' : ObjectId(),
+         'type' : 'expandable',
+         'title' : title,
+         'contents' : [],
+      }
+
+      self.expandable_cursor = len(self.doc['desc'])
+      self.doc['desc'].append(block)
+
+
 
    def add_context_to_task(self, task_ind=-1):
       self.add_block('title',task_ind=task_ind, content='For context...')
