@@ -22,11 +22,12 @@ input_types=[
 
 class experiment_creator(object):
 
-   def __init__(self,name,boxid,boxweek=0,desc=[],steps=[],tips=[]):
+   def __init__(self,name,boxid,boxweek=0,**kwargs):
 
       self.uri = None
 
       self.doc = {
+         '_id' : ObjectId(),
          'name' : name,
          'days' : [
             {
@@ -42,22 +43,32 @@ class experiment_creator(object):
          'hidden' : False,
          'shouldSendReminders' : True,
          'boxweek' : boxweek,
-         'desc' : desc,
-         'steps' : steps,
-         'tips' : tips,
+         'desc' : [],
+         'steps' : [],
+         'tips' : [],
+         **kwargs
       }
+
+   def get_id(self):
+      return self.doc['_id']
 
    def set_boxweek(self,boxweek):
       self.doc['boxweek']=boxweek
 
-   def add_step(self,step):
+   def add_step(self,step,indexed=True,prepend=False):
       i=str(len(self.doc['steps'])+1)+'. '
-      self.doc['steps'].append(i+step)
+      if indexed:
+         step=i+step
+
+      if prepend:
+         self.doc['steps']=[step]+self.doc['steps']
+      else:
+         self.doc['steps'].append(step)
 
    def add_tip(self,tip):
       self.doc['tips'].append(tip)
 
-   def add_task(self,name,icon='list-checks',typ='normal'):
+   def add_task(self,name,icon='list-checks',typ='normal', **kwargs):
       task = {
          'name' : name,
          'icon' : icon,
@@ -66,6 +77,7 @@ class experiment_creator(object):
          'disabled' : False,
          'preconditions' : [],
          'type' : typ,
+         **kwargs
       }
 
       self.doc['days'][0]['tasks'].append(task)
@@ -119,10 +131,10 @@ class experiment_creator(object):
       self.add_block('select-input', task_ind=task_ind, label='Where did you do this experiment today?', options=['At home', 'At work / uni', 'Somewhere else'])
       self.add_block('select-input', task_ind=task_ind, label='Who did you do this experiment with today?', options=['With myself only', 'With someone else'], help='We encourage you to do experiments with someone you know')
       self.add_block('select-input', task_ind=task_ind, label='Did you do this experiment indoors or outdoors today?', options=['Indoors','Outdoors'])
-      self.add_block('text-input', label='Notes')
+      self.add_block('text-input', label='Notes', optional=True)
 
    def add_reflection_task(self, reflection_text):
-      self.add_task('Daily REFLECTion',typ='reflection')
+      self.add_task('Daily REFLECTion',typ='reflection',optional=True)
       self.add_block('text-input', label=reflection_text)
 
    def copy_days(self, seed_day=0, n_copies=1):
@@ -139,11 +151,12 @@ class experiment_creator(object):
 
          self.doc['days'].append(new_day)
 
-   def autocomplete(self, reflection_text=''):
+   def autocomplete(self, reflection_text='', add_context=True):
       # Automatically adds context to all currently defined tasks, then adds a reflection task and make 4 copies of the day to fill out the week
 
-      for t in range(len(self.doc['days'][0]['tasks'])):
-         self.add_context_to_task(task_ind=t)
+      if add_context:
+         for t in range(len(self.doc['days'][0]['tasks'])):
+            self.add_context_to_task(task_ind=t)
       self.add_reflection_task(reflection_text)
       self.copy_days(seed_day=0, n_copies=4)
 
