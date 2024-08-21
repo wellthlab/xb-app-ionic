@@ -12,11 +12,14 @@ import { isUserInCohort, selectSubscriptions, subscribeToExperiments } from '../
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, GenericExperiment[]>;
     scheduledExperimentsByStartTime?: Map<number, GenericExperiment[]>;
+    color?: string;
 }
 
-const ExperimentsList = function({
-                                     experimentsGroupedByCategory, scheduledExperimentsByStartTime
-                                 }: IExperimentsListProps) {
+const ExperimentsList = function ({
+    experimentsGroupedByCategory,
+    scheduledExperimentsByStartTime,
+    color,
+}: IExperimentsListProps) {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
     const { pathname } = useLocation();
@@ -27,14 +30,19 @@ const ExperimentsList = function({
     const isSubscribedToParentExperiment = () => {
         return experimentsGroupedByCategory
             .get(ExperimentCategory.SUB_EXPERIMENT)
-            ?.every(experiment =>  Object.keys(subscriptions).includes(experiment.id));
-    }
+            ?.every((experiment) => Object.keys(subscriptions).includes(experiment.id));
+    };
     const toggleParentExperimentSubscriptionModal = () => {
         setParentExperimentSubscriptionModalOpen(!parentExperimentSubscriptionModalOpen);
     };
 
     const handleSubscribeToParentExperiment = async () => {
-        await dispatch(subscribeToExperiments({experiments: experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)!, subscriptionStartTime: Date.now()}));
+        await dispatch(
+            subscribeToExperiments({
+                experiments: experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)!,
+                subscriptionStartTime: Date.now(),
+            }),
+        );
         toggleParentExperimentSubscriptionModal();
     };
 
@@ -55,62 +63,78 @@ const ExperimentsList = function({
         }
     };
 
-    const isSubExperiments  = () => {
+    const isSubExperiments = () => {
         return experimentsGroupedByCategory.has(ExperimentCategory.SUB_EXPERIMENT);
-    }
+    };
 
     const getParentExperimentSubscriptionModal = () => {
-        return <div>
-            <Typography level="h6"> {Strings.confirm_parent_experiment_subscription} </Typography>
-            <br />
-            {experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)?.map((experiment, _) => {
-                return <List >
-                    <ListItem key={experiment.name}  sx={{ mb: 2}}>
-                        <ListItemContent>
-                            <Typography style={{ fontStyle: 'italic' }}>
-                                {experiment.name} - {experiment.duration} {Strings.days_long}
-                            </Typography>
-                        </ListItemContent>
-                    </ListItem>
-                </List>
-            })}
-        </div>
+        return (
+            <div>
+                <Typography level="h6"> {Strings.confirm_parent_experiment_subscription} </Typography>
+                <br />
+                {experimentsGroupedByCategory.get(ExperimentCategory.SUB_EXPERIMENT)?.map((experiment, _) => {
+                    return (
+                        <List>
+                            <ListItem key={experiment.name} sx={{ mb: 2 }}>
+                                <ListItemContent>
+                                    <Typography style={{ fontStyle: 'italic' }}>
+                                        {experiment.name} - {experiment.duration} {Strings.days_long}
+                                    </Typography>
+                                </ListItemContent>
+                            </ListItem>
+                        </List>
+                    );
+                })}
+            </div>
+        );
     };
 
     const getBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
         if (experimentCategory === ExperimentCategory.SCHEDULED) {
-            return scheduledExperimentsByStartTime && scheduledExperimentsByStartTime.size !== 0 ? getScheduledExperimentsBody(experimentCategory) :
-                getNoExperimentsInCategoryBody(experimentCategory);
+            return scheduledExperimentsByStartTime && scheduledExperimentsByStartTime.size !== 0
+                ? getScheduledExperimentsBody(experimentCategory)
+                : getNoExperimentsInCategoryBody(experimentCategory);
         } else if (experiments.length === 0) {
             return getNoExperimentsInCategoryBody(experimentCategory);
         } else {
             return getNonScheduledExperimentsBody(experimentCategory, experiments);
         }
-    }
+    };
     const getNoExperimentsInCategoryBody = (experimentCategory: ExperimentCategory) => {
-       return <Stack>
-            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
-                {getCategoryTitle(experimentCategory)}
-            </Typography>
-            <Card key={experimentCategory} variant="outlined">
-                <Typography level="body2" textAlign="center">
-                    <br /> {Strings.no_experiments_in_category}<br /><br />
+        return (
+            <Stack>
+                <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {getCategoryTitle(experimentCategory)}
                 </Typography>
-            </Card>
-        </Stack>
-    }
+                <Card key={experimentCategory} variant="outlined">
+                    <Typography level="body2" textAlign="center">
+                        <br /> {Strings.no_experiments_in_category}
+                        <br />
+                        <br />
+                    </Typography>
+                </Card>
+            </Stack>
+        );
+    };
 
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
-        return <Stack spacing={2}>
-            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
-                {getCategoryTitle(experimentCategory)}
-            </Typography>
-            <Card variant="outlined">
-                {Array.from(scheduledExperimentsByStartTime!).map(([startUTCTime, scheduledExperiments]) => {
+        return (
+            <Stack spacing={2}>
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {getCategoryTitle(experimentCategory)}
+                </Typography>
+                <Card variant="outlined">
+                    {Array.from(scheduledExperimentsByStartTime!).map(([startUTCTime, scheduledExperiments]) => {
                         return (
                             <Stack spacing={2}>
-                                <Typography level="body1" sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
-                                {scheduledExperiments.map(experiment => {
+                                <Typography
+                                    level="body1"
+                                    sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign: 'center', fontStyle: 'italic' }}
+                                >
+                                    {' '}
+                                    {Strings.starting_on} {new Date(startUTCTime).toDateString()}{' '}
+                                </Typography>
+                                {scheduledExperiments.map((experiment) => {
                                     return (
                                         <Card
                                             key={experiment.id}
@@ -128,36 +152,43 @@ const ExperimentsList = function({
                                                     onClick={() => {
                                                         history.push(`${pathname}/${experiment.id}`);
                                                     }}
-                                                >
-                                                </Link>
-                                                {experiment.desc && <Typography level="body2"> {experiment.desc} </Typography>}
-                                                <Typography level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                                ></Link>
+                                                {experiment.desc && (
+                                                    <Typography level="body2"> {experiment.desc} </Typography>
+                                                )}
+                                                <Typography level="body3">
+                                                    {experiment.duration}
+                                                    {Strings.day_s_}
+                                                </Typography>
                                             </Stack>
                                         </Card>
                                     );
                                 })}
                             </Stack>
                         );
-                    })
-                }
-            </Card>
+                    })}
+                </Card>
+            </Stack>
+        );
+    };
 
-        </Stack>;
-    }
-
-    const getNonScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: GenericExperiment[]) => {
-        return <Stack spacing={2}>
-            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
-                {getCategoryTitle(experimentCategory)}
-            </Typography>
-            {experiments
-                .map((experiment) => {
+    const getNonScheduledExperimentsBody = (
+        experimentCategory: ExperimentCategory,
+        experiments: GenericExperiment[],
+    ) => {
+        return (
+            <Stack spacing={2}>
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {getCategoryTitle(experimentCategory)}
+                </Typography>
+                {experiments.map((experiment) => {
                     const completion = completionByExperimentId[experiment.id];
                     return (
                         <Card
                             key={experiment.id}
                             variant="outlined"
                             sx={{
+                                backgroundColor: color || undefined,
                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                             }}
                         >
@@ -170,30 +201,29 @@ const ExperimentsList = function({
                                     onClick={() => {
                                         history.push(`${pathname}/${experiment.id}`);
                                     }}
-                                >
-                                </Link>
-                                {experiment.desc &&
-                                    <Typography level="body2">
-                                        {experiment.desc}
-                                    </Typography>}
+                                ></Link>
+                                {experiment.desc && <Typography level="body2">{experiment.desc}</Typography>}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography
-                                            level="body3">{completion}{Strings.percent_completed}</Typography>
+                                        <Typography level="body3">
+                                            {completion}
+                                            {Strings.percent_completed}
+                                        </Typography>
                                         <LinearProgress determinate value={completion} />
                                     </Stack>
                                 ) : (
-                                    <Typography
-                                        level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                    <Typography level="body3">
+                                        {experiment.duration}
+                                        {Strings.day_s_}
+                                    </Typography>
                                 )}
                             </Stack>
                         </Card>
                     );
                 })}
-        </Stack>;
-    }
-
-
+            </Stack>
+        );
+    };
 
     return (
         <div>
@@ -202,8 +232,17 @@ const ExperimentsList = function({
                     return getBody(experimentCategory, experiments);
                 })}
             </Stack>
-            {isSubExperiments() && !userInCohort && <Button onClick={toggleParentExperimentSubscriptionModal} disabled={isSubscribedToParentExperiment()} style={{left: "25%", width: "50%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}> {Strings.subscribe_to_parent_experiment} </Button>}
-
+            {isSubExperiments() && !userInCohort && (
+                <Button
+                    onClick={toggleParentExperimentSubscriptionModal}
+                    disabled={isSubscribedToParentExperiment()}
+                    style={{ left: '25%', width: '50%' }}
+                    sx={{ mb: 2, mt: 4, fontWeight: 'lg' }}
+                >
+                    {' '}
+                    {Strings.subscribe_to_parent_experiment}{' '}
+                </Button>
+            )}
 
             <Modal
                 headerTitle={Strings.confirm_subscription}
