@@ -157,8 +157,8 @@ const ExperimentsListScreen = function () {
                         sx={{
                             height: 'calc(100dvh - 100px)',
                             backgroundImage: `linear-gradient(${
-                                colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45)' : 'rgba(0, 0, 0, 0)'
-                            } 0%, var(--ion-background-color) 100%), url(${thisBox.heroImageSrc})`,
+                                colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45) 0%' : 'rgba(0, 0, 0, 0) 50%'
+                            }, var(--ion-background-color) 95%), url(${thisBox.heroImageSrc})`,
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
@@ -247,7 +247,6 @@ const ExperimentsListScreen = function () {
                         {type === 'move' && <ExerciseWarning />}
                         <ExperimentsList
                             key={type}
-                            color={thisBox.color}
                             experimentsGroupedByCategory={experimentsGroupedByCategory}
                             scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
                         />
