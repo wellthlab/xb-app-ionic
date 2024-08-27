@@ -147,7 +147,7 @@ const ExperimentsList = function({
                                                 </Link>
                                                 {firstDescPara && <Typography level="body2"> {firstDescPara} </Typography>}
                                                 <Typography
-                                                    level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                                    level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
                                     );
@@ -200,7 +200,7 @@ const ExperimentsList = function({
                                     </Stack>
                                 ) : (
                                     <Typography
-                                        level="body3">{experiment.duration}{Strings.day_s_}</Typography>
+                                        level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                 )}
                             </Stack>
                         </Card>
