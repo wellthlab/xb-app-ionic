@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Container, Stack, Typography } from '@mui/joy';
+import { Box, Button, Container, Stack, Typography, Divider, Card } from '@mui/joy';
 import { CaretDoubleDown } from 'phosphor-react';
 
 import capitalise from './utils/capitalise';
@@ -13,13 +13,18 @@ import {
     selectCompletionForAllExperiments,
     selectExperimentByBoxName,
 } from '../../slices/experiments';
-import { ExperimentCategory, GenericExperiment } from '../../models/Experiment';
+import { ExperimentCategory, IExperiment } from '../../models/Experiment';
 import { selectScheduledExperiments, selectSubscriptions } from '../../slices/account';
 import BoxesSubMenu from './BoxesSubMenu';
 import PageTitle from '../../components/foundation/PageTitle';
 import { IonContent, IonFooter, IonPage, IonToolbar, ScrollDetail } from '@ionic/react';
 import Header from '../../components/foundation/Header';
 import HeaderButton from '../../components/foundation/HeaderButton';
+import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AddIcon from '@mui/icons-material/Add';
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
@@ -31,17 +36,80 @@ const ExperimentsListScreen = function () {
     const subscriptions = useSelector(selectSubscriptions);
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const scheduledExperiments = useSelector(selectScheduledExperiments);
-    const scheduledExperimentsByStartTime = new Map<number, GenericExperiment[]>();
+    const scheduledExperimentsByStartTime = new Map<number, IExperiment[]>();
+    const getExperimentDescFirstParagraph = () => {
+        const paragraphs = thisBox.description!.filter(d => d['type'] === 'para');
+        if (paragraphs.length > 0) {
+            return paragraphs[0]['content']
+        } else {
+            return null;
+        }
+    }
+    const getBoxDescription = () => {
+        return <Stack spacing={2}>
+            {thisBox.description!.map((element) => (
+                <div>
+                    {getContent(element)}
+                </div>
+            ))}
+        </Stack>;
+    }
+    const getContent = (block: any) => {
+        if (block.type === 'para') {
+            return (
+                <Typography level="body1">
+                    {block['content']}
+                </Typography>
+            );
+        }
+
+        if (block.type === 'title') {
+            return (
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {block['content']}
+                </Typography>
+            );
+        }
+
+        if (block.type === 'video') {
+            return <YouTubeVideo src={block.src} />;
+        }
+
+        if (block.type === 'image') {
+            return <img src={block.src} alt={block.alt} style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
+        }
+
+        if (block.type === 'expandable') {
+            return <Accordion>
+                <AccordionSummary expandIcon={<AddIcon />}>
+                    <Typography
+                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                        {block.title}
+                    </Typography>
+                </AccordionSummary>
+
+                <Divider />
+
+                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                    <br />
+                    <Stack spacing={2}>
+                        {block.contents.map((element: any) => (
+                            getContent(element)
+                        ))}
+                    </Stack>
+                </AccordionDetails>
+            </Accordion>;
+        }
+    };
+
     const getExperimentsGroupedByCategory = () => {
-        const experiments = boxExperiments.filter((item) => !('parent' in item) || !item.parent);
         const result = new Map();
         Object.keys(ExperimentCategory)
-            .filter((key) => key !== ExperimentCategory.SUB_EXPERIMENT.valueOf())
             .forEach((key) => {
                 result.set(key, []);
             });
 
-        experiments.reduce((map, experiment) => {
+        boxExperiments.reduce((map, experiment) => {
             if (iSubscribedToExperiment(experiment)) {
                 if (isExperimentComplete(experiment)) {
                     result.get(ExperimentCategory.COMPLETED.valueOf()).push(experiment);
@@ -65,33 +133,25 @@ const ExperimentsListScreen = function () {
         return result;
     };
 
-    const isExperimentComplete = (experiment: GenericExperiment) => {
-        if ('children' in experiment) {
-            experiment.children.every((child) => completionByExperimentId[child] === 100);
-        } else {
-            return completionByExperimentId[experiment.id] === 100;
-        }
+    const isExperimentComplete = (experiment: IExperiment) => {
+        return completionByExperimentId[experiment.id] === 100;
     };
 
-    const isExperimentAvailable = (experiment: GenericExperiment) => {
+    const isExperimentAvailable = (experiment: IExperiment) => {
         return !experiment.hidden;
     };
 
-    const isExperimentSuggested = (experiment: GenericExperiment) => {
+    const isExperimentSuggested = (experiment: IExperiment) => {
         return experiment.isSuggested;
     };
 
-    const getScheduledStartTime = (experiment: GenericExperiment) => {
+    const getScheduledStartTime = (experiment: IExperiment) => {
         return scheduledExperiments.find((schedule) => schedule.experiments.includes(experiment.id))
             ?.startTimeUTC;
     };
 
-    const iSubscribedToExperiment = (experiment: GenericExperiment) => {
-        return (
-            Object.keys(subscriptions).includes(experiment.id) ||
-            ('children' in experiment &&
-                experiment.children.every((child) => Object.keys(subscriptions).includes(child)))
-        );
+    const iSubscribedToExperiment = (experiment: IExperiment) => {
+        return Object.keys(subscriptions).includes(experiment.id);
     };
 
     const experimentsGroupedByCategory = getExperimentsGroupedByCategory();
@@ -102,7 +162,7 @@ const ExperimentsListScreen = function () {
     const handleClickScroll = function() {
         if (ionContentRef.current && mainSectionRef.current) {
             const offsetTop = mainSectionRef.current.offsetTop;
-            ionContentRef.current.scrollToPoint(0, offsetTop, 500);
+            ionContentRef.current.scrollToPoint(0, offsetTop - 50, 500);
         }
     }
 
@@ -146,9 +206,9 @@ const ExperimentsListScreen = function () {
                     <Box
                         sx={{
                             height: 'calc(100dvh - 100px)',
-                            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), var(--ion-background-color)), url(${thisBox.heroImageSrc})`,
+                            backgroundImage: `linear-gradient(rgb(0, 0, 0, 0.3), var(--ion-background-color)), url(${thisBox.heroImageSrc})`,
                             backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover',
+                            backgroundSize: 'auto',
                             backgroundPosition: 'center',
                             display: 'flex',
                             flexDirection: 'column',
@@ -160,13 +220,12 @@ const ExperimentsListScreen = function () {
                         <div ref={titlesRef}>
                             <HeaderButton onClick={handleGoBack}>Back</HeaderButton>
                             <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
-                            {thisBox.description && <Typography level="h6">{thisBox.description}</Typography>}
                         </div>
-
-                        <Button 
-                            variant="plain" 
-                            color="neutral" 
-                            startDecorator={<CaretDoubleDown />} 
+                        <br />
+                        <Button
+                            variant="plain"
+                            color="neutral"
+                            startDecorator={<CaretDoubleDown />}
                             sx={{ flexDirection: 'column', gap: 1, alignSelf: 'center' }}
                             onClick={handleClickScroll}
                         >
@@ -174,16 +233,27 @@ const ExperimentsListScreen = function () {
                         </Button>
                     </Box>
                 )}
+                <br />
                 {thisBox.description && !thisBox.heroImageSrc && (
                     <React.Fragment>
                         <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
                         <Typography level="h6" sx={{ mb: 4 }}>
-                            {thisBox.description}
+                            {getExperimentDescFirstParagraph()}
                         </Typography>
                     </React.Fragment>
                 )}
+                {thisBox.description &&
+                    <Card variant="plain" ref={mainSectionRef}
+                          sx={{
+                              alignSelf: 'center',
+                              ml: 10,
+                              mr: 10,
+                          }}>{getBoxDescription()}</Card>}
 
-                <Container ref={mainSectionRef}>
+                <br />
+                <br />
+
+                <Container >
                     <Stack spacing={2}>
                         {type === 'move' && <ExerciseWarning />}
                         <ExperimentsList
@@ -197,7 +267,7 @@ const ExperimentsListScreen = function () {
             </IonContent>
             <IonFooter>
                 <IonToolbar>
-                    <BoxesSubMenu />
+                <BoxesSubMenu />
                 </IonToolbar>
             </IonFooter>
         </IonPage>

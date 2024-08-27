@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk, ThunkDispatch} from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 import Account, {ICredentials, IProfile, ISubscription, ICohort, IScheduledExperimentSubscription} from '../models/Account';
-import Experiment, {IResponse, GenericExperiment, IExperimentSchedule} from '../models/Experiment';
+import Experiment, {IResponse, IExperiment, IExperimentSchedule} from '../models/Experiment';
 
 export const authenticateUser = createAsyncThunk('account/authenticated', (credentials: ICredentials) => {
     return Account.authenticate(credentials);
@@ -37,7 +37,7 @@ export const saveNotes = createAsyncThunk(
 
 export const subscribeToExperiments = createAsyncThunk<
     ISubscription[],
-    { experiments: GenericExperiment[], subscriptionStartTime: number }>('account/subscriptions', ({ experiments, subscriptionStartTime }) => {
+    { experiments: IExperiment[], subscriptionStartTime: number }>('account/subscriptions', ({ experiments, subscriptionStartTime }) => {
     const newSubscriptions  = getNewSubscriptions(experiments, subscriptionStartTime);
     return Account.subscribeToExperiments(newSubscriptions);
 });
@@ -49,25 +49,14 @@ export const saveScheduledExperiments = createAsyncThunk<
 });
 
 
-export const getNewSubscriptions = (experimentsForSubscription: GenericExperiment[], currTimeUTC: number) => {
+export const getNewSubscriptions = (experimentsForSubscription: IExperiment[], currTimeUTC: number) => {
     const newSubscriptions:  Omit <ISubscription, 'id'>[] = [];
 
     for (const experiment of experimentsForSubscription) {
-        if ('children' in experiment) {
-            experiment
-                .children
-                .forEach((child) => {
-                    newSubscriptions.push({
-                        experimentId: child,
-                        subscribedAt: currTimeUTC
-                    });
-                })
-        } else {
-            newSubscriptions.push({
-                experimentId: experiment.id,
-                subscribedAt: currTimeUTC
-            });
-        }
+        newSubscriptions.push({
+            experimentId: experiment.id,
+            subscribedAt: currTimeUTC
+        });
     }
     return newSubscriptions;
 }
@@ -78,17 +67,17 @@ export const flagResponsesInactive = async (subscriptions: ISubscription[]) => {
     await Experiment.flagResponsesInactive(subscriptionIds);
 }
 
-export const getScheduledCohortExperiments = async (cohortCode: string, experiments: GenericExperiment[]) => {
+export const getScheduledCohortExperiments = async (cohortCode: string, experiments: IExperiment[]) => {
     const cohort = await Account.getCohortDetails(cohortCode);
     const cohortExperimentSequence = cohort!.experimentSchedule;
     const currTimeUTC = Date.now();
 
-    const experimentsDueForSubscription: Record<number, GenericExperiment[]>= {};
+    const experimentsDueForSubscription: Record<number, IExperiment[]>= {};
     cohortExperimentSequence.filter(schedule => schedule.startTimeUTC <= currTimeUTC).forEach(schedule => {
         const experimentsForSubscription = schedule.experiments
             .map(experimentId =>  experiments.find(e => e.id === experimentId))
             .filter(experiment => experiment !== undefined)
-            .map(e => e as GenericExperiment)
+            .map(e => e as IExperiment)
 
         if (experimentsForSubscription.length > 0) {
             experimentsDueForSubscription[schedule.startTimeUTC] = experimentsForSubscription;

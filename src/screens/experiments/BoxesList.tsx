@@ -10,9 +10,19 @@ import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 import { useSelector } from '../../slices/store';
 import { selectAllBoxes } from '../../slices/experiments';
+import { IBox } from '../../models/Experiment';
 
 const BoxesList = function () {
     const boxes = useSelector(selectAllBoxes);
+
+    const getBoxDescriptionFirstParagraph = (box: IBox) => {
+        const paragraphs = box.description!.filter(d => d['type'] === 'para');
+        if (paragraphs.length > 0) {
+            return paragraphs[0]['content']
+        } else {
+            return null;
+        }
+    }
 
     return (
         <Page>
@@ -70,7 +80,7 @@ const BoxesList = function () {
 
                             <Typography level="body2" flex={1}>
                                 {box.description
-                                    ? box.description
+                                    ? getBoxDescriptionFirstParagraph(box)
                                     : Strings.box_description1 + capitalise(box.name) + Strings.box_description2}
                             </Typography>
                         </Card>

@@ -2,12 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { updateUserProfile } from './account';
 import { IProfile } from '../models/Account';
-import { GenericExperiment, IExperimentSchedule } from '../models/Experiment';
+import { IExperiment, IExperimentSchedule } from '../models/Experiment';
 
 interface IOnboardingState {
     cohortId: string | undefined;
     profile: Omit<IProfile, 'id' | 'email'> | null;
-    experimentsDueForSubscription: Record<number, GenericExperiment[]>;
+    experimentsDueForSubscription: Record<number, IExperiment[]>;
     futureExperiments: IExperimentSchedule[]
 }
 

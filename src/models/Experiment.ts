@@ -1,11 +1,10 @@
 import { BaseModel, ObjectId } from './utils';
 import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
-import { Record } from 'phosphor-react';
 
 export interface IBox {
     id: string;
     name: string;
-    description?: string;
+    description?:  any[];
     heroImageSrc?: string;
     icon: string;
     disabled?: boolean;
@@ -18,7 +17,7 @@ interface IBoxDocument extends IBox {
 interface IBaseExperiment {
     name: string;
     boxId: string;
-    desc?: string;
+    desc: any[];
     duration: number;
     hidden?: boolean;
     isSuggested: boolean
@@ -30,7 +29,6 @@ export enum ExperimentCategory {
     SUGGESTED = "SUGGESTED",
     AVAILABLE = "AVAILABLE",
     COMPLETED = "COMPLETED",
-    SUB_EXPERIMENT = "SUB_EXPERIMENT",
     SCHEDULED = "SCHEDULED"
 }
 
@@ -41,31 +39,21 @@ export interface IExperimentSchedule {
 
 export interface IExperiment extends IBaseExperiment {
     days: IDay[];
+    steps: string[];
+    tips: string[];
     preconditions?: any[];
-    parent?: string;
     instructions?: string[];
     shouldSendReminders: boolean;
-    next_experiment_id?: string;
-    also_experiment_id?: string;
+    // next_experiment_id?: string; // redundant - to be removed
+    // also_experiment_id?: string; // redundant - to be removed
+    prepExperiment: string;
+    nextExperiment?: string;
+    boxweek: number;
 }
 
-export interface IParentExperiment extends IBaseExperiment {
-    children: string[];
-}
-
-export type GenericExperiment = IExperiment | IParentExperiment;
-
-interface IExperimentDocument extends Omit<IExperiment, 'id' | 'parent'> {
+interface IExperimentDocument extends Omit<IExperiment, 'id'> {
     _id: ObjectId;
-    parent?: ObjectId;
 }
-
-interface IParentExperimentDocument extends Omit<IParentExperiment, 'id' | 'children'> {
-    _id: ObjectId;
-    children: ObjectId[];
-}
-
-type GenericExperimentDocument = IExperimentDocument | IParentExperimentDocument;
 
 export interface IDay {
     id: string;
@@ -85,6 +73,7 @@ export interface ITask {
     preconditions?: any[];
     isRepeatable?:boolean;
     minOccurences?: number;
+    type: string;
 }
 
 export type Block =
@@ -218,13 +207,13 @@ interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 't
 }
 
 class Experiment extends BaseModel {
-    static async getExperiments(): Promise<GenericExperiment[]> {
+    static async getExperiments(): Promise<IExperiment[]> {
         const db = this.getDb();
-        const records = await db.collection<GenericExperimentDocument>('experiments').find();
+        const records = await db.collection<IExperimentDocument>('experiments').find();
         records.forEach(record => convertObjectIdFieldsToString(record));
 
         return records.map(record => {
-             const asGenericExperiment= record as unknown as GenericExperiment;
+             const asGenericExperiment= record as unknown as IExperiment;
              asGenericExperiment.id = record._id as unknown as string;
              return asGenericExperiment;
         });

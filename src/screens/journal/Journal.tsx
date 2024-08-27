@@ -215,7 +215,7 @@ const Journal = function () {
                                         {responses.map((response, responseIndex) => {
 
                                             const correspondingSubcription = Object.values(subscriptions).find(subscription => subscription.id === response.subscriptionId);
-                                            const experiment = experiments[correspondingSubcription!.experimentId] as IExperiment; // Parent experiment cannot have responses, so we can safely cast here
+                                            const experiment = experiments[correspondingSubcription!.experimentId] as IExperiment;
                                             const day = experiment.days[response.dayNum];
                                             const task = day.tasks.find(task => task.taskId === response.taskId);
                                             const payloadEntries = Object.entries(response.payload);
