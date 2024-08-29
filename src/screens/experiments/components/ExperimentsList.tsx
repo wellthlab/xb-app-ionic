@@ -18,11 +18,14 @@ import {
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
     scheduledExperimentsByStartTime?: Map<number, IExperiment[]>;
+    color?: string;
 }
 
-const ExperimentsList = function({
-                                     experimentsGroupedByCategory, scheduledExperimentsByStartTime
-                                 }: IExperimentsListProps) {
+const ExperimentsList = function ({
+    experimentsGroupedByCategory,
+    scheduledExperimentsByStartTime,
+    color,
+}: IExperimentsListProps) {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
     const { pathname } = useLocation();
@@ -176,6 +179,7 @@ const ExperimentsList = function({
                             key={experiment.id}
                             variant="outlined"
                             sx={{
+                                backgroundColor: color || undefined,
                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                             }}
                         >
@@ -194,8 +198,10 @@ const ExperimentsList = function({
 
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography
-                                            level="body3">{completion}{Strings.percent_completed}</Typography>
+                                        <Typography level="body3">
+                                            {completion}
+                                            {Strings.percent_completed}
+                                        </Typography>
                                         <LinearProgress determinate value={completion} />
                                     </Stack>
                                 ) : (

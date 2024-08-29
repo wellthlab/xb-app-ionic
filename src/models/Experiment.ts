@@ -1,5 +1,6 @@
 import { BaseModel, ObjectId } from './utils';
 import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
+import { Record } from 'phosphor-react';
 
 export interface IBox {
     id: string;
@@ -8,6 +9,7 @@ export interface IBox {
     heroImageSrc?: string;
     icon: string;
     disabled?: boolean;
+    color?: string;
 }
 
 interface IBoxDocument extends IBox {
@@ -20,7 +22,7 @@ interface IBaseExperiment {
     desc: any[];
     duration: number;
     hidden?: boolean;
-    isSuggested: boolean
+    isSuggested: boolean;
     id: string;
 }
 
@@ -33,8 +35,8 @@ export enum ExperimentCategory {
 }
 
 export interface IExperimentSchedule {
-    startTimeUTC: number,
-    experiments: string[],
+    startTimeUTC: number;
+    experiments: string[];
 }
 
 export interface IExperiment extends IBaseExperiment {
@@ -71,7 +73,7 @@ export interface ITask {
     blocks: Block[];
     disabled?: boolean;
     preconditions?: any[];
-    isRepeatable?:boolean;
+    isRepeatable?: boolean;
     minOccurences?: number;
     type: string;
 }
@@ -200,7 +202,7 @@ export interface IResponse {
     inactiveSubscription?: boolean;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId' > {
+interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId'> {
     _id: ObjectId;
     subscriptionId: ObjectId;
     taskId: ObjectId;
@@ -227,59 +229,64 @@ class Experiment extends BaseModel {
         return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
     }
 
-    static saveResponse(response: Omit<IResponse, 'subscriptionId' |'createdAt' | 'id'>, subscriptionId: string) {
+    static saveResponse(response: Omit<IResponse, 'subscriptionId' | 'createdAt' | 'id'>, subscriptionId: string) {
         const db = this.getDb();
 
-        return db
-            .collection<IResponseDocument>('responses')
-            .insertOne({ ...response, taskId: this.oid(response.taskId), subscriptionId: this.oid(subscriptionId), createdAt: Date.now() });
+        return db.collection<IResponseDocument>('responses').insertOne({
+            ...response,
+            taskId: this.oid(response.taskId),
+            subscriptionId: this.oid(subscriptionId),
+            createdAt: Date.now(),
+        });
     }
 
     static async getResponses(subscriptionIds: string[]) {
         const db = this.getDb();
-        const subscriptionIdsAsObjectIds = subscriptionIds.map(subscriptionId => this.oid(subscriptionId));
-        const responses = await db.collection<IResponseDocument>('responses')
+        const subscriptionIdsAsObjectIds = subscriptionIds.map((subscriptionId) => this.oid(subscriptionId));
+        const responses = await db
+            .collection<IResponseDocument>('responses')
             .find({ subscriptionId: { $in: subscriptionIdsAsObjectIds } });
         convertObjectIdFieldsToString(responses);
 
-        const responsesAsIResponse =  responses.map(record => {
-            const asIResponse= record as unknown as IResponse;
-            asIResponse.id = record._id as unknown as string;
+        const responsesAsIResponse = responses.map((record) => {
+            const asIResponse = (record as unknown) as IResponse;
+            asIResponse.id = (record._id as unknown) as string;
             return asIResponse;
         });
 
-        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce((records: Record<string, IResponse[]>, response) => {
-            if (records[response.subscriptionId]) {
-                records[response.subscriptionId].push(response);
-            } else {
-                records[response.subscriptionId] = [response];
-            }
-            return records;
-        }, {});
+        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce(
+            (records: Record<string, IResponse[]>, response) => {
+                if (records[response.subscriptionId]) {
+                    records[response.subscriptionId].push(response);
+                } else {
+                    records[response.subscriptionId] = [response];
+                }
+                return records;
+            },
+            {},
+        );
 
         return responsesGroupedBySubscriptionId;
     }
 
-
-    static deleteResponses(subscriptionIds: string []) {
+    static deleteResponses(subscriptionIds: string[]) {
         const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
+        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
+
+        return db.collection('responses').deleteMany({ subscriptionId: { $in: subscriptionIdsAsObjectId } });
+    }
+
+    static flagResponsesInactive(subscriptionIds: string[]) {
+        const db = this.getDb();
+        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
 
         return db
             .collection('responses')
-            .deleteMany({ subscriptionId: { $in : subscriptionIdsAsObjectId } });
+            .updateMany(
+                { subscriptionId: { $in: subscriptionIdsAsObjectId } },
+                { $set: { inactiveSubscription: true } },
+            );
     }
-
-    
-    static flagResponsesInactive(subscriptionIds: string []) {
-        const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map(s => this.oid(s));
-
-        return db
-            .collection('responses')
-            .updateMany({ subscriptionId: { $in : subscriptionIdsAsObjectId} }, { $set: { inactiveSubscription : true }});
-    }
-
 }
 
 export default Experiment;
