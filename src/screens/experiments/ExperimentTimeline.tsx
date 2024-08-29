@@ -1,7 +1,29 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Box, Stack, Alert, Button, List, ListItem, ListItemContent } from '@mui/joy';
+import { useTheme } from '@mui/material/styles';
+import _ from 'lodash';
+import {
+    Typography,
+    Box,
+    Stack,
+    Alert,
+    Divider,
+    ListDivider,
+    Card,
+    List, Button,
+    ListItem,
+    ListItemContent,
+} from '@mui/joy';
+import Accordion from '@mui/material/Accordion';
+import MobileStepper from '@mui/material/MobileStepper';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AddIcon from '@mui/icons-material/Add';
+
 import {
     Timeline,
     TimelineItem,
@@ -11,201 +33,313 @@ import {
     TimelineContent,
     timelineItemClasses,
 } from '@mui/lab';
-
-import { Check, ArrowArcRight, DotsThree, ArrowBendDownRight } from 'phosphor-react';
-
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';
 import Page from '../../components/foundation/Page';
 
-import { useDispatch, useSelector } from '../../slices/store';
-import { selectExperimentById, selectDayProgress } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId, subscribeToExperiments, flagResponsesInactive, reloadResponses, isUserInCohort } from '../../slices/account';
+import { useSelector } from '../../slices/store';
+import { selectExperimentById, selectDayProgress, selectCurrentDay } from '../../slices/experiments';
+import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
-import Modal from '../../components/foundation/Modal';
-import SuggestionsList from './components/SuggestionsList';
-import capitalise from './utils/capitalise';
+import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
 
-const ExperimentTimeline = function () {
+const ExperimentTimeline = function() {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
+    const prepExperiment = useSelector((state) => selectExperimentById(state, experiment.prepExperiment)) as IExperiment;
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-
     const subscription = useSelector(state => {
         return selectSubscriptionByExperimentId(state, experimentId);
     });
     const isSubscribedToExperiment = subscription !== undefined;
-    const userInCohort = useSelector((state) => isUserInCohort(state));
+    const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
-    const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [dayNum, setDayNum] = React.useState(0);
     const [taskNum, setTaskNum] = React.useState(0);
-    const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
-    const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
-    const dispatch = useDispatch();
 
-    const toggleSubscriptionModal = () => {
-        setSubscriptionModalOpen(!subscriptionModalOpen);
+    const [prepModalOpen, setPrepModalOpen] = React.useState(false);
+    const [prepDayNum, setPrepDayNum] = React.useState<number>(0);
+    const [prepTaskNum, setPrepTaskNum] = React.useState(0);
+
+    const [reflectionModalOpen, setReflectionModalOpen] = React.useState(false);
+    const [reflectionDayNum, setReflectionDayNum] = React.useState<number>(0);
+    const [reflectionTaskNum, setReflectionTaskNum] = React.useState(0);
+
+    const theme = useTheme();
+
+    const handleDismissModal = function(type: string) {
+        if (type === 'normal') {
+            setTaskModalOpen(false);
+        } else if (type === 'reflection') {
+            setReflectionModalOpen(false);
+        } else {
+            setPrepModalOpen(false);
+        }
     };
 
-    const toggleResubscriptionModal = () => {
-        setResubscriptionModalOpen(!resubscriptionModalOpen);
+    const handleClickTask = function(experimentId: string, dayNum: number, taskNum: number, type: string) {
+        if (type === 'normal') {
+            setTaskModalOpen(true);
+            setDayNum(dayNum);
+            setTaskNum(taskNum);
+        } else if (type === 'reflection') {
+            setReflectionModalOpen(true);
+            setReflectionDayNum(dayNum);
+            setReflectionTaskNum(taskNum);
+        } else {
+            setPrepModalOpen(true);
+            setPrepDayNum(dayNum);
+            setPrepTaskNum(taskNum);
+        }
     };
 
-    const handleSubscribeToExperiment = async () => {
-        await dispatch(subscribeToExperiments({experiments: [experiment], subscriptionStartTime: Date.now()}));
-        toggleSubscriptionModal();
+    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
+    const maxDays = experiment.days.length;
+    const [activeDay, setActiveDay] = React.useState(0);
+
+    const handleNext = () => {
+        setActiveDay((prevActiveDay) => prevActiveDay + 1);
     };
 
-    const handleResubscribeToExperiment = async () => {
-        await flagResponsesInactive([subscription]);
-        await dispatch(reloadResponses(Object.values([subscription.id])));
-        await dispatch(subscribeToExperiments({experiments: [experiment], subscriptionStartTime: Date.now()}));
-        toggleResubscriptionModal();
+    const handleBack = () => {
+        setActiveDay((prevActiveDay) => prevActiveDay - 1);
     };
 
-    const handleClickTask = function (_: string, dayNum: number, taskNum: number) {
-        setTaskModalOpen(true);
-        setDayNum(dayNum);
-        setTaskNum(taskNum);
+    const getExperimentDescription = (experiment: IExperiment) => {
+        const sorted = _.sortBy(experiment.desc, ['index']);
+        return <Stack spacing={2}>
+            {sorted.map((element) => (
+                <div>
+                    {getContent(element)}
+                </div>
+            ))}
+        </Stack>;
     };
 
-    const handleDismissTaskModal = function () {
-        setTaskModalOpen(false);
-    };
+    const getContent = (block: any) => {
 
-    const getModalChildren = () => {
-        return <div>
-            <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
-            <br />
-            <List>
-                <ListItem key={experiment.name} >
-                    <ListItemContent>
-                        <Typography style={{ fontStyle: 'italic' }}>
-                            {Strings.experiment_type}  - {capitalise(type)}
-                        </Typography>
-                    </ListItemContent>
-                </ListItem>
-                <ListItem key={experiment.days.length}>
-                    <ListItemContent>
-                        <Typography style={{ fontStyle: 'italic' }} >
-                            {Strings.experiment_duration}  - {experiment.days.length + " " + Strings.days}
-                        </Typography>
-                    </ListItemContent>
-                </ListItem>
-            </List>
-        </div>
-    };
+        if (block.type === 'para') {
+            return (
+                <Typography level="body1">
+                    {block['content']}
+                </Typography>
+            );
+        }
 
-    const getResubModalChildren = () => {
-        return <div>
-            <Typography level="h6"> {Strings.confirm_restart_subscription} </Typography>
-            <br />
-        </div>
+        if (block.type === 'title') {
+            return (
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {block['content']}
+                </Typography>
+            );
+        }
+
+        if (block.type === 'video') {
+            return <YouTubeVideo src={block.src} />;
+        }
+
+        if (block.type === 'image') {
+            return <img src={block.src} alt={block.alt}
+                        style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
+        }
+
+        if (block.type === 'expandable') {
+            return <Accordion>
+                <AccordionSummary expandIcon={<AddIcon />}>
+                    <Typography
+                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                        {block.title}
+                    </Typography>
+                </AccordionSummary>
+
+                <Divider />
+
+                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                    <br />
+                    <Stack spacing={2}>
+                        {block.contents.map((element: any) => (
+                            getContent(element)
+                        ))}
+                    </Stack>
+                </AccordionDetails>
+            </Accordion>;
+        }
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
+    const reflectionTasks = experiment.days[0].tasks.filter(task => task.type === 'reflection');
+    const prepExperimentTasks = prepExperiment ? prepExperiment.days[0].tasks : [];
 
     return (
-        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name} ref={setPresentingElement}>
+        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name}
+              ref={setPresentingElement}>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
-                {experiment.instructions &&
-                    experiment.instructions.map((p, i) => (
-                        <Typography key={i} sx={{ mt: 2 }}>
-                            {p}
-                        </Typography>
-                    ))}
+                <Card>
+                    <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                        {'OVERVIEW'}
+                    </Typography>
+                    {getExperimentDescription(experiment)}
 
-                <br/>
-                {(!('parent' in experiment) && !userInCohort ) && 
-                    <Button
-                        onClick={toggleSubscriptionModal}
-                        disabled={isSubscribedToExperiment}
-                        style={{left: "25%", width: "50%"}}
-                    >
-                         {Strings.subscribe_to_experiment}
-                    </Button>
-                }
-                <br/>
+                </Card>
+                <br />
 
-                <Timeline
-                    sx={{
-                        padding: 0,
-                        [`& .${timelineItemClasses.root}:before`]: {
-                            flex: 0,
-                            padding: 0,
-                        },
-                    }}
-                >
-                    {experiment.days.map((day, dayId) => {
-                        const dayCompleted = dayProgress[dayId];
 
-                        return (
-                            <TimelineItem key={dayId.toString() + type}>
-                                <TimelineSeparator>
-                                    <TimelineDot
-                                        sx={{
-                                            bgcolor: dayCompleted
-                                                ? 'success.solidBg'
-                                                : 'grey.solidBg',
-                                        }}
-                                    >
-                                        { dayCompleted ? <Check /> : <ArrowArcRight />}
-                                    </TimelineDot>
-                                    <TimelineConnector />
-                                </TimelineSeparator>
-                                <TimelineContent>
-                                    <Typography level="body2" sx={{ my: 2 }}>
-                                        {Strings.day} {dayId + 1}
-                                    </Typography>
-                                    <Stack spacing={2}>
-                                        {day.tasks.length ? (
-                                                <TasksList
-                                                    tasks={day.tasks}
-                                                    experimentId={experimentId}
-                                                    dayNum={dayId}
-                                                    onTaskClick={handleClickTask}
-                                                />
-                                            ) : (
-                                                <Typography level="body2">
-                                                    {Strings.there_is_nothing_to_do_for}
-                                                </Typography>
-                                            )}
-                                    </Stack>
-                                </TimelineContent>
-                            </TimelineItem>
-                        );
-                    })}
-
-                    <TimelineItem key={"next"}>
-                        <TimelineSeparator>
-                            <TimelineDot sx={{
-                                            bgcolor: experimentCompleted
-                                                ? 'primary.solidBg'
-                                                : 'grey.solidBg'
-                                        }}>
-                                {experimentCompleted ? <ArrowBendDownRight /> : <DotsThree />}
-                            </TimelineDot>
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography level="body2" sx={{ my: 2 }}>
-                                {Strings.whats_next}
+                <Stack spacing={3}>
+                    {prepExperimentTasks.length !== 0 && <Accordion variant="outlined">
+                        <AccordionSummary expandIcon={<AddIcon />}>
+                            <Typography level="h5"
+                                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                {Strings.prep}
                             </Typography>
+                        </AccordionSummary>
+                        <Divider />
+
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
                             <Stack spacing={2}>
-                                <SuggestionsList 
-                                    experiment={experiment}
-                                    experimentCompleted={experimentCompleted}
-                                    resubOnClick={toggleResubscriptionModal}
+                                <TasksList
+                                    tasks={prepExperimentTasks}
+                                    experimentId={prepExperiment.id}
+                                    type={'prep'}
+                                    dayNum={activeDay}
+                                    onTaskClick={handleClickTask}
                                 />
                             </Stack>
-                        </TimelineContent>
-                    </TimelineItem>
-                </Timeline>
+                        </AccordionDetails>
+                    </Accordion>}
+
+                    {experiment.steps.length !== 0 && <Accordion variant="outlined">
+                        <AccordionSummary expandIcon={<AddIcon />}
+                        >
+                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                {Strings.steps}
+                            </Typography>
+                        </AccordionSummary>
+                        <Divider />
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
+                            <List sx={{ ml: 2 }}>
+                                {experiment.steps.map(step => {
+                                    return <div>
+                                        <ListItem sx={{ display: 'list-item' }}>
+                                            <ListItemContent>
+                                                <Typography>
+                                                    {step}
+                                                </Typography>
+                                            </ListItemContent>
+                                        </ListItem>
+                                        <ListDivider />
+                                        <br />
+                                    </div>;
+                                })}
+                            </List>
+                        </AccordionDetails>
+                    </Accordion>}
+
+                    <Accordion variant="outlined">
+                        <AccordionSummary expandIcon={<AddIcon />}
+                        >
+                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                {Strings.checks}
+                            </Typography>
+                        </AccordionSummary>
+                        <Divider />
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                            <Stack spacing={2} key={activeDay}>
+                                <TasksList
+                                    tasks={experiment.days[activeDay].tasks}
+                                    experimentId={experimentId}
+                                    dayNum={activeDay}
+                                    type={'normal'}
+                                    onTaskClick={handleClickTask}
+                                />
+                            </Stack>
+                        </AccordionDetails>
+                    </Accordion>
+
+                    {reflectionTasks.length !== 0 && <Accordion variant="outlined">
+                        <AccordionSummary expandIcon={<AddIcon />}
+                        >
+                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                {Strings.reflections}
+                            </Typography>
+                        </AccordionSummary>
+                        <Divider />
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                            <Stack spacing={2} key={activeDay}>
+                                <TasksList
+                                    tasks={experiment.days[activeDay].tasks}
+                                    experimentId={experimentId}
+                                    dayNum={activeDay}
+                                    type={'reflection'}
+                                    onTaskClick={handleClickTask}
+                                />
+                            </Stack> </AccordionDetails>
+                    </Accordion>}
+
+                    {experiment.tips.length !== 0 && <Accordion variant="outlined">
+                        <AccordionSummary expandIcon={<AddIcon />}
+                        >
+                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                {Strings.tips}
+                            </Typography>
+                        </AccordionSummary>
+                        <Divider />
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
+                            <List sx={{ ml: 2 }}>
+                                {experiment.tips.map(tip => {
+                                    return <div>
+                                        <ListItem sx={{ display: 'list-item' }}>
+                                            <ListItemContent>
+                                                <Typography>
+                                                    {tip}
+                                                </Typography>
+                                            </ListItemContent>
+                                        </ListItem>
+                                        <ListDivider />
+                                        <br />
+                                    </div>;
+                                })}
+                            </List>
+                        </AccordionDetails>
+                    </Accordion>}
+                </Stack>
+
+                <MobileStepper
+                    sx={{ mb: 2, mt: 2 }}
+                    variant="text"
+                    steps={maxDays}
+                    position="static"
+                    activeStep={activeDay}
+                    nextButton={
+                        <Button
+                            size="sm"
+                            onClick={handleNext}
+                            disabled={activeDay === maxDays - 1 || activeDay === currentDay}
+                        >
+                            Next
+                            {theme.direction === 'rtl' ? (
+                                <KeyboardArrowLeft />
+                            ) : (
+                                <KeyboardArrowRight />
+                            )}
+                        </Button>
+                    }
+                    backButton={
+                        <Button size="sm" onClick={handleBack} disabled={activeDay === 0}>
+                            {theme.direction === 'rtl' ? (
+                                <KeyboardArrowRight />
+                            ) : (
+                                <KeyboardArrowLeft />
+                            )}
+                            Back
+                        </Button>
+                    }
+                />
             </Box>
+
 
             {experimentCompleted && (
                 <Stack spacing={2}>
@@ -215,8 +349,8 @@ const ExperimentTimeline = function () {
 
             <TaskModal
                 isOpen={taskModalOpen}
-                onDismiss={handleDismissTaskModal}
-                key={`${dayNum}.${taskNum}`}
+                onDismiss={() => handleDismissModal('normal')}
+                key={`${experimentId}.${dayNum}.${taskNum}`}
                 experimentId={experimentId}
                 dayNum={dayNum}
                 taskNum={taskNum}
@@ -224,25 +358,27 @@ const ExperimentTimeline = function () {
                 isSubscribed={isSubscribedToExperiment}
             />
 
-            <Modal
-                headerTitle={Strings.confirm_subscription}
-                isOpen={subscriptionModalOpen}
+            {prepExperiment && prepExperimentTasks.length !== 0 && <TaskModal
+                isOpen={prepModalOpen}
+                onDismiss={() => handleDismissModal('prep')}
+                key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}`}
+                experimentId={prepExperiment.id}
+                dayNum={prepDayNum}
+                taskNum={prepTaskNum}
                 presentingElement={presentingElement}
-                onDismiss={toggleSubscriptionModal}
-                className={'ion-modal-small'}
-                onAction={handleSubscribeToExperiment}
-                children={getModalChildren()}
-            />
+                isSubscribed={true}
+            />}
 
-            <Modal
-                headerTitle={Strings.confirm_resubscription}
-                isOpen={resubscriptionModalOpen}
+            {reflectionTasks.length !== 0 && <TaskModal
+                isOpen={reflectionModalOpen}
+                onDismiss={() => handleDismissModal('reflection')}
+                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}`}
+                experimentId={experimentId}
+                dayNum={reflectionDayNum}
+                taskNum={reflectionTaskNum}
                 presentingElement={presentingElement}
-                onDismiss={toggleResubscriptionModal}
-                className={'ion-modal-small'}
-                onAction={handleResubscribeToExperiment}
-                children={getResubModalChildren()}
-            />
+                isSubscribed={true}
+            />}
         </Page>
     );
 };

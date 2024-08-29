@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { boot, logOut } from './globalActions';
 
-import { GenericExperiment, IBox, IDay, IExperiment, IParentExperiment, ITask } from '../models/Experiment';
+import { IExperiment, IBox, ITask } from '../models/Experiment';
 import { selectSubscriptions, ISelectorState as IAccountSelectorState, selectResponses } from './account';
 
 export interface ISelectorState {
@@ -10,11 +10,13 @@ export interface ISelectorState {
 }
 
 interface IExperimentState {
-    experiments: Record<string, GenericExperiment>;
+    experiments: Record<string, IExperiment>;
     boxes: Record<string, IBox>;
 }
 
-export const selectAllBoxes = (state: ISelectorState) => Object.values(state.experiments.boxes);
+// Content from the prep box displayed within the experiments in other boxes as preparation content. So the
+// prep box doesn't need to be displayed in the boxlist
+export const selectAllBoxes = (state: ISelectorState) => Object.values(state.experiments.boxes).filter(box => box.name !== 'prep');
 
 export const selectAllExperiments = (state: ISelectorState) => state.experiments.experiments;
 
@@ -30,14 +32,13 @@ export const selectBoxByType = (state: ISelectorState, type: string) => state.ex
 
 export const selectBoxByExperimentId = (state: ISelectorState, experimentId: string) => {
     const boxId = state.experiments.experiments[experimentId].boxId;
-    return Object
-            .entries(selectAllBoxes(state))
-            .filter(([boxName, box]) => box.id === boxId)
-            .map(([boxName, box]) => box)[0];
+    return Object.values(state.experiments.boxes).filter(box => box.id === boxId)[0];
 }
 
-export const selectTask = (state: ISelectorState, experimentId: string, dayNum: number, taskNum: number) =>
-    (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum];
+export const selectTask = (state: ISelectorState, experimentId: string, dayNum: number, taskNum: number) => {
+    return (state.experiments.experiments[experimentId] as IExperiment).days[dayNum].tasks[taskNum];
+}
+
 
 export const selectCurrentDay = (state: IAccountSelectorState & ISelectorState, experimentId: string) => {
     const subscriptions = selectSubscriptions(state);
@@ -86,7 +87,10 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
                              !response.inactiveSubscription).length;
                      const taskCompleted = task.isRepeatable && task.minOccurences &&  responseCount >= task.minOccurences
                          || (!task.isRepeatable && responseCount === 1) ;
-                    dayProgress[dayIndex] = taskCompleted;
+
+                     if (!taskCompleted) {
+                         dayProgress[dayIndex] = false;
+                     }
                 })
             }
         });
@@ -109,19 +113,13 @@ export const selectCompletionForAllExperiments = (state: IAccountSelectorState &
 };
 
 interface ITodayTasks {
-    id: string;
-    name: string;
+    experiment: IExperiment;
     day: number;
-    content: IDay;
-    instructions?: string[];
 }
 
 export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState) => {
     const subscriptions = selectSubscriptions(state);
-
     const tasksByExperiment: ITodayTasks[] = [];
-    const experimentsByParent: Record<string, ITodayTasks[]> = {};
-
     for (const experimentId of Object.keys(subscriptions)) {
         const currentDay = selectCurrentDay(state, experimentId);
         const experiment = selectExperimentById(state, experimentId) as IExperiment;
@@ -130,52 +128,20 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
             continue;
         }
 
-        // Skip if the day is empty
-
-        if (!experiment.days[currentDay].tasks.length) {
-            continue;
-        }
-
-        // Deal with children experiments
-
-        if (experiment.parent) {
-            // First find the corresponding parent experiment
-
-            const parent = selectExperimentById(state, experiment.parent) as IParentExperiment;
-
-            // Find the accummulated children array
-
-            let children = experimentsByParent[experiment.parent];
-            if (!children) {
-                children = experimentsByParent[experiment.parent] = [];
-            }
-
-            // Insert to the correct position to preserve order of children experiments
-
-            children[parent.children.indexOf(experiment.id)] = {
-                id: experiment.id,
-                name: experiment.name,
-                day: currentDay,
-                content: experiment.days[currentDay],
-                instructions: experiment.instructions,
-            };
-
-            continue;
-        }
-
         tasksByExperiment.push({
-            id: experiment.id,
-            name: experiment.name,
-            day: currentDay,
-            content: experiment.days[currentDay],
-            instructions: experiment.instructions,
+            experiment: experiment,
+            day: currentDay
         });
-    }
 
-    // Deal with children experiments
-
-    for (const children of Object.values(experimentsByParent)) {
-        tasksByExperiment.unshift(...children.filter((child) => child));
+        // on the penultimate day of an experiment users should see the prep experiment for the next experiment
+        if (currentDay === experiment.days.length - 2 && experiment.nextExperiment) {
+            const nextExperiment = selectExperimentById(state, experiment.nextExperiment);
+            const nextExperimentPrep = selectExperimentById(state, nextExperiment.prepExperiment);
+            tasksByExperiment.push({
+                experiment: nextExperimentPrep,
+                day: 0
+            });
+        }
     }
 
     return tasksByExperiment;

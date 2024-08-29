@@ -22,21 +22,11 @@ exports = async function() {
             for (const entry of entries) {
                 const subscribedAt = entry.startTimeUTC;
                 for (const experimentId of entry.experiments) {
-                    const experiment = await mongodb.collection('experiments').findOne({_id: new BSON.ObjectId(experimentId)}, {children: 1});
 
-                    if (experiment.children) {
-                        experiment.children.forEach((child) => {
-                            newSubscriptions.push({
-                                experimentId: child,
-                                subscribedAt: subscribedAt
-                            });
-                        })
-                    } else {
-                        newSubscriptions.push({
-                            experimentId: experimentId,
-                            subscribedAt: subscribedAt
-                        });
-                    }
+                    newSubscriptions.push({
+                        experimentId: experimentId,
+                        subscribedAt: subscribedAt
+                    });
                 }
             }
 

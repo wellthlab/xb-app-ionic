@@ -36,7 +36,6 @@ import TeamInsightsTab from './screens/teams/Insights';
 
 import BoxesListTab from './screens/experiments/BoxesList';
 import ExperimentsListScreen from './screens/experiments/ExperimentsList';
-import ChildExperimentsListScreen from './screens/experiments/ChildExperimentsList';
 import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
 
 import JournalTab from './screens/journal/Journal';
@@ -166,10 +165,6 @@ const App = function () {
                                                 </Route>
 
                                                 <Route path="/main/box/:type/:experimentId" exact>
-                                                    <ChildExperimentsListScreen />
-                                                </Route>
-
-                                                <Route path="/main/box/:type/:parentId/:experimentId" exact>
                                                     <ExperimentTimelineScreen />
                                                 </Route>
 

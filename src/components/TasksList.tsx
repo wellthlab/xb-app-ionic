@@ -1,9 +1,7 @@
 import React, { MouseEvent } from 'react';
-import { Box, Stack, Typography } from '@mui/joy';
+import { Box } from '@mui/joy';
 import { Check, CaretRight, PlusCircle, MinusCircle } from 'phosphor-react';
 import { Fab } from '@mui/material';
-// import Dropdown from '@mui/joy/Dropdown';
-
 
 import List from './foundation/List';
 import ListItem from './foundation/ListItem';
@@ -11,33 +9,37 @@ import ListItem from './foundation/ListItem';
 import { ITask } from '../models/Experiment';
 import getIcon from '../utils/getIcon';
 import { useSelector } from '../slices/store';
-import { selectProgressByDayNumAndTasks } from '../slices/experiments';
+import { selectCurrentDay, selectProgressByDayNumAndTasks } from '../slices/experiments';
 import Strings from '../utils/string_dict';
 
 interface ITasksListProps {
     tasks: ITask[];
     experimentId: string;
     dayNum: number;
-    onTaskClick: (experimentId: string, dayNum: number, taskNum: number) => void;
+    type: string;
+    onTaskClick: (experimentId: string, dayNum: number, taskNum: number, type: string) => void;
 }
 
-const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasksListProps) {
+const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: ITasksListProps) {
     const responseCountByDayNumAndTaskIds: number[] = useSelector((state) => selectProgressByDayNumAndTasks(state, tasks, dayNum));
+    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
 
     const tasksGroupedById = new Map();
     tasks.forEach((task, index) => {
-        const allTaskOccurrences = [];
-        const numTaskOccurrences = Math.max(1, responseCountByDayNumAndTaskIds[index]);
-        for (let i = 0; i < numTaskOccurrences; i++) {
-            allTaskOccurrences.push(task);
+        if (task.type === type || type === 'prep') {
+            const allTaskOccurrences = [];
+            const numTaskOccurrences = Math.max(1, responseCountByDayNumAndTaskIds[index]);
+            for (let i = 0; i < numTaskOccurrences; i++) {
+                allTaskOccurrences.push(task);
+            }
+            tasksGroupedById.set(task.taskId, allTaskOccurrences);
         }
-        tasksGroupedById.set(task.taskId, allTaskOccurrences);
     })
     const [groupedTasks, setGroupedTasks] = React.useState(tasksGroupedById);
 
     const createHandleClickTask = function (taskNum: number) {
         return () => {
-            onTaskClick(experimentId, dayNum, taskNum);
+            onTaskClick(experimentId, dayNum, taskNum, type);
         };
     };
 
@@ -66,7 +68,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasks
     }
 
     const addAnotherSubmissionDisabled = (task: ITask, taskNum: number) => {
-        return groupedTasks.get(task.taskId)!.length > Math.max(1, responseCountByDayNumAndTaskIds[taskNum]);
+        return currentDay > dayNum || groupedTasks.get(task.taskId)!.length > Math.max(1, responseCountByDayNumAndTaskIds[taskNum]);
     }
 
     const onClickAmendTasksButton =  (event: MouseEvent, action: string, task: ITask) => {
@@ -107,7 +109,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, onTaskClick }: ITasks
                 const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
 
                 return (
-                    <div>
+                    <div key={taskNum}>
                         <ListItem
                             button={!taskCompleted}
                             key={taskNum}
