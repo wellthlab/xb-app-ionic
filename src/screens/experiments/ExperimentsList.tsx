@@ -26,17 +26,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 
-function hexToRgb(hex: string) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-        ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16),
-        }
-        : null;
-}
-
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
 const ExperimentsListScreen = function () {
@@ -175,7 +164,7 @@ const ExperimentsListScreen = function () {
     const handleClickScroll = function () {
         if (ionContentRef.current && mainSectionRef.current) {
             const offsetTop = mainSectionRef.current.offsetTop;
-            ionContentRef.current.scrollToPoint(0, offsetTop - 50, 500);
+            ionContentRef.current.scrollToPoint(0, offsetTop - 100, 500);
         }
     };
 
@@ -218,7 +207,7 @@ const ExperimentsListScreen = function () {
                                 colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45) 0%' : 'rgba(0, 0, 0, 0) 50%'
                             }, var(--ion-background-color) 95%), url(${thisBox.heroImageSrc})`,
                             backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'auto',
+                            backgroundSize: 'cover',
                             backgroundPosition: 'center',
                             display: 'flex',
                             flexDirection: 'column',
@@ -269,13 +258,6 @@ const ExperimentsListScreen = function () {
                                     }}
                                 />
                             </Box>
-                            {thisBox.longDesc && (
-                                <Collapse in={!showHeader}>
-                                    <Typography level="h6" sx={{ mt: 2 }}>
-                                        {thisBox.longDesc}
-                                    </Typography>
-                                </Collapse>
-                            )}
                         </Box>
 
                         <div></div>
