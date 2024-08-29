@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Container, Stack, Typography, Divider, Card } from '@mui/joy';
+import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme } from '@mui/joy';
 import { CaretDoubleDown } from 'phosphor-react';
 
 import capitalise from './utils/capitalise';
@@ -26,10 +26,23 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 
+function hexToRgb(hex: string) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16),
+        }
+        : null;
+}
+
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
 const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
+    const colorScheme = useColorScheme();
+    const theme = useTheme();
 
     const thisBox = useSelector((state) => selectBoxByType(state, type));
     const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
@@ -159,12 +172,12 @@ const ExperimentsListScreen = function () {
     const ionContentRef = React.useRef<HTMLIonContentElement>(null);
     const mainSectionRef = React.useRef<HTMLDivElement>(null);
 
-    const handleClickScroll = function() {
+    const handleClickScroll = function () {
         if (ionContentRef.current && mainSectionRef.current) {
             const offsetTop = mainSectionRef.current.offsetTop;
             ionContentRef.current.scrollToPoint(0, offsetTop - 50, 500);
         }
-    }
+    };
 
     const [showHeader, setShowHeader] = React.useState(false);
     const titlesRef = React.useRef<HTMLDivElement>(null);
@@ -172,18 +185,21 @@ const ExperimentsListScreen = function () {
     const handleScrollAnimation = function (e: CustomEvent<ScrollDetail>) {
         if (e.detail.scrollTop > SHOW_HEADER_SCROLL_THRESHOLD) {
             setShowHeader(true);
-        }
-        else {
+        } else {
             setShowHeader(false);
         }
 
         // Animate titles imperatively using DOM manipulations to avoid excessive React re-renders
 
         if (titlesRef.current) {
-            const opacity = Math.max((SHOW_HEADER_SCROLL_THRESHOLD - e.detail.scrollTop) / SHOW_HEADER_SCROLL_THRESHOLD, 0);
-            titlesRef.current.style.opacity = `${opacity}`;
+            const opacity = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 0.9);
+            const blur = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 1) * 8;
+            titlesRef.current.style.backgroundColor = `rgb(${
+                colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
+            } / ${opacity})`;
+            titlesRef.current.style.backdropFilter = `blur(${blur}px)`;
         }
-    }
+    };
 
     const history = useHistory();
     const handleGoBack = function () {
@@ -192,36 +208,78 @@ const ExperimentsListScreen = function () {
 
     return (
         <IonPage>
-            <Header 
-                title={`${capitalise(type) }`} 
-                style={{ 
-                    position: thisBox.heroImageSrc ? 'fixed' : undefined, 
-                    visibility: !thisBox.heroImageSrc || showHeader ? 'visible' : 'hidden', 
-                    opacity: !thisBox.heroImageSrc || showHeader ? 1 : 0, 
-                    transition: 'visibility 0.3s, opacity 0.3s ease-in-out' 
-                }} 
-            />
+            {!thisBox.heroImageSrc && <Header title={`${capitalise(type)}`} />}
             <IonContent ref={ionContentRef} scrollEvents={!!thisBox.heroImageSrc} onIonScroll={handleScrollAnimation}>
                 {thisBox.heroImageSrc && (
                     <Box
                         sx={{
                             height: 'calc(100dvh - 100px)',
-                            backgroundImage: `linear-gradient(rgb(0, 0, 0, 0.3), var(--ion-background-color)), url(${thisBox.heroImageSrc})`,
+                            backgroundImage: `linear-gradient(${
+                                colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45) 0%' : 'rgba(0, 0, 0, 0) 50%'
+                            }, var(--ion-background-color) 95%), url(${thisBox.heroImageSrc})`,
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'auto',
                             backgroundPosition: 'center',
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-between',
-                            py: 4,
-                            px: 2,
+                            pb: 2,
                         }}
                     >
-                        <div ref={titlesRef}>
-                            <HeaderButton onClick={handleGoBack}>Back</HeaderButton>
-                            <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
-                        </div>
-                        <br />
+                        <Box
+                            ref={titlesRef}
+                            sx={{
+                                position: 'fixed',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                zIndex: 10,
+                                pt: 1,
+                                pb: 1.5,
+                                px: 2,
+                                borderBottomWidth: showHeader ? 1 : 0,
+                                borderBottomStyle: 'solid',
+                                borderColor: 'divider',
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Box sx={{ flex: 1 }}>
+                                    <HeaderButton onClick={handleGoBack}>Back</HeaderButton>
+                                    <PageTitle
+                                        sx={{ mb: 0, transition: 'font-size 0.2s', fontWeight: 'lg' }}
+                                        level={showHeader ? 'h3' : 'h2'}
+                                    >
+                                        {capitalise(type)}
+                                    </PageTitle>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        // display: showHeader ? 'block' : 'none',
+                                        height: 44,
+                                        width: 44,
+                                        borderRadius: '50%',
+                                        backgroundImage: `url(${thisBox.heroImageSrc})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        transition: `transform 0.3s, opacity 0.2s`,
+                                        transform: showHeader ? `translate3d(0, 0, 0)` : `translate3d(0, 150%, 0)`,
+                                        opacity: showHeader ? 1 : 0,
+                                    }}
+                                />
+                            </Box>
+                            {thisBox.longDesc && (
+                                <Collapse in={!showHeader}>
+                                    <Typography level="h6" sx={{ mt: 2 }}>
+                                        {thisBox.longDesc}
+                                    </Typography>
+                                </Collapse>
+                            )}
+                        </Box>
+
+                        <div></div>
+
                         <Button
                             variant="plain"
                             color="neutral"

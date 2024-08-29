@@ -28,7 +28,12 @@ const Welcome = function () {
         await dispatch(updateUserProfile({ payload: updateData.profile!, cohortId: updateData.cohortId })).unwrap();
 
         for (const [subscriptionStartTime, experiments] of Object.entries(updateData.experimentsDueForSubscription)) {
-            await dispatch(subscribeToExperiments({ experiments: experiments, subscriptionStartTime: Number(subscriptionStartTime) }));
+            await dispatch(
+                subscribeToExperiments({
+                    experiments: experiments,
+                    subscriptionStartTime: Number(subscriptionStartTime),
+                }),
+            );
         }
         dispatch(saveScheduledExperiments(updateData.futureExperiments));
         setIsPending(false);
@@ -36,14 +41,14 @@ const Welcome = function () {
 
     return (
         <Page>
-            <PageTitle>{Strings.welcome}</PageTitle>
+            <PageTitle>{study!.welcome[step].title}</PageTitle>
 
             {isStudyPending ? (
                 'Loading...'
             ) : (
                 <React.Fragment>
                     <Stack spacing={2} flex={1} mb={2}>
-                        {study!.welcome[step].map((block, blockId) => (
+                        {study!.welcome[step].blocks.map((block, blockId) => (
                             <TaskBlock block={block} key={blockId} />
                         ))}
                     </Stack>
