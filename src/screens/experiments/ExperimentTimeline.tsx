@@ -350,7 +350,7 @@ const ExperimentTimeline = function() {
             <TaskModal
                 isOpen={taskModalOpen}
                 onDismiss={() => handleDismissModal('normal')}
-                key={`${experimentId}.${dayNum}.${taskNum}`}
+                key={`${experimentId}.${dayNum}.${taskNum}.normal`}
                 experimentId={experimentId}
                 dayNum={dayNum}
                 taskNum={taskNum}
@@ -361,23 +361,23 @@ const ExperimentTimeline = function() {
             {prepExperiment && prepExperimentTasks.length !== 0 && <TaskModal
                 isOpen={prepModalOpen}
                 onDismiss={() => handleDismissModal('prep')}
-                key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}`}
+                key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}.prep`}
                 experimentId={prepExperiment.id}
                 dayNum={prepDayNum}
                 taskNum={prepTaskNum}
                 presentingElement={presentingElement}
-                isSubscribed={true}
+                isSubscribed={isSubscribedToExperiment}
             />}
 
             {reflectionTasks.length !== 0 && <TaskModal
                 isOpen={reflectionModalOpen}
                 onDismiss={() => handleDismissModal('reflection')}
-                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}`}
+                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
                 experimentId={experimentId}
                 dayNum={reflectionDayNum}
                 taskNum={reflectionTaskNum}
                 presentingElement={presentingElement}
-                isSubscribed={true}
+                isSubscribed={isSubscribedToExperiment}
             />}
         </Page>
     );
