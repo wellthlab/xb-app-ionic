@@ -50,7 +50,7 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
     const dispatch = useDispatch();
 
     const [cohortCode, setCohortCode] = React.useState( existingCohortName ? (existingCohortName as ICohort).name : "");
-    const [hasCohortCode, setHasCohortCode] = React.useState(true);
+    const [hasCohortCode, setHasCohortCode] = React.useState(isNewProfile || !!cohortId);
     const [missingCohortCodeAlert, setMissingCohortCodeAlert] = React.useState(false);
     const [invalidCohortCodeAlert, setInvalidCohortCodeAlert] = React.useState(false);
 
@@ -87,7 +87,7 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
 
                 <Stack spacing={2} alignItems="center">
                     <FormControl >
-                        <Checkbox overlay defaultChecked label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
+                        <Checkbox overlay defaultChecked={isNewProfile || !!cohortId} label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
                         />
                     </FormControl>
                     <Input fullWidth={true} value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!isNewProfile || !hasCohortCode} />
