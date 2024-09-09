@@ -14,11 +14,12 @@ import { DayOfWeek } from '../../models/Account';
 const NewProfile = function () {
     const dispatch = useDispatch();
     const cohortIdRef = React.useRef(undefined)
+    const startOfWeekRef = React.useRef(undefined);
 
     const history = useHistory();
     const handleSubmit: IProfileFormProps['onSubmit'] = function (data) {
-        if (!data['startOfWeek']) {
-            data['startOfWeek'] = DayOfWeek.MONDAY;
+        if (startOfWeekRef.current) {
+            data['startOfWeek'] = startOfWeekRef.current;
         }
         dispatch(setProfile(data));
         dispatch(setCohortId(cohortIdRef.current));
@@ -28,7 +29,7 @@ const NewProfile = function () {
     return (
         <Page>
             <PageTitle>{Strings.your_profile}</PageTitle>
-            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef}  />
+            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef} startOfWeekRef={startOfWeekRef} />
         </Page>
     );
 };

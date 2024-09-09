@@ -11,13 +11,18 @@ import { updateUserProfile } from '../../slices/account';
 const EditProfile = function () {
     const dispatch = useDispatch();
     const cohortIdRef = React.useRef(undefined)
+    const startOfWeekRef = React.useRef(undefined)
+
     const handleSubmit: IProfileFormProps['onSubmit'] = async (data) => {
+        if (startOfWeekRef.current) {
+            data['startOfWeek'] = startOfWeekRef.current;
+        }
         await dispatch(updateUserProfile({ payload: data, cohortId: cohortIdRef.current })).unwrap();
     };
 
     return (
         <Page headerTitle={Strings.your_profile}>
-            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef} isNewProfile={false} />
+            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef} startOfWeekRef={startOfWeekRef}  isNewProfile={false} />
         </Page>
     );
 };
