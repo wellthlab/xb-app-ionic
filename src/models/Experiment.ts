@@ -10,6 +10,7 @@ export interface IBox {
     icon: string;
     disabled?: boolean;
     color?: string;
+    beginAtUserStartOfWeek?: boolean;
 }
 
 interface IBoxDocument extends IBox {

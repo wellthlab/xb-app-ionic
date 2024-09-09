@@ -91,7 +91,7 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile, startOfWeekRe
                 ))}
 
 
-                {!hasCohortCode && <Select label={'Start of Week'} options={Object.values(DayOfWeek)} value={startOfWeek} onChange={(event) => {setStartOfWeek(event.target.value)}}/>}
+                {!hasCohortCode && <Select disabled={!isNewProfile} label={'Start of Week'} options={Object.values(DayOfWeek).filter(item => typeof item === 'string') as string[]} value={startOfWeek} onChange={(event) => {setStartOfWeek(event.target.value)}}/>}
 
                 <Stack spacing={2} alignItems="center">
                     <FormControl >

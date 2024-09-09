@@ -15,6 +15,7 @@ export interface ISelectProps {
     onBlur?: () => void;
     required?: boolean;
     sx?: SxProps;
+    disabled?: boolean
 }
 
 const Select = function ({
@@ -28,6 +29,7 @@ const Select = function ({
     onBlur,
     sx,
     required,
+    disabled,
 }: ISelectProps) {
     const color = error ? 'danger' : 'neutral';
 
@@ -75,6 +77,7 @@ const Select = function ({
                     onChange={onChange}
                     onFocus={onFocus}
                     onBlur={onBlur}
+                    disabled = {disabled}
                 >
                     <option value="" disabled hidden>
                         {Strings.please_select}

@@ -59,13 +59,13 @@ export interface IAccountDocument extends Omit<IAccount, 'subscriptions'> {
 }
 
 export enum DayOfWeek {
-    MONDAY = "Monday",
-    TUESDAY = "Tuesday",
-    WEDNESDAY = "Wednesday",
-    THURSDAY = "Thursday",
-    FRIDAY = "Friday",
-    SATURDAY = "Saturday",
-    SUNDAY = "Sunday"
+    Monday ,
+    Tuesday,
+    Wednesday ,
+    Thursday ,
+    Friday ,
+    Saturday,
+    Sunday
 }
 class Account extends BaseModel {
     static DEPARTMENTS = [

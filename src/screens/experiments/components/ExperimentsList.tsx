@@ -10,21 +10,23 @@ import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
 import {
     flagResponsesInactive,
-    isUserInCohort, reloadResponses, saveScheduledExperiments,
+    isUserInCohort, reloadResponses, saveScheduledExperiments, selectProfile,
     selectSubscriptions,
     subscribeToExperiments,
 } from '../../../slices/account';
+import { DayOfWeek } from '../../../models/Account';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
     scheduledExperimentsByStartTime?: Map<number, IExperiment[]>;
     color?: string;
+    beginAtUserStartOfWeek: undefined|boolean;
 }
 
 const ExperimentsList = function ({
     experimentsGroupedByCategory,
     scheduledExperimentsByStartTime,
-    color,
+    color, beginAtUserStartOfWeek
 }: IExperimentsListProps) {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const subscriptions = useSelector(selectSubscriptions);
@@ -34,6 +36,8 @@ const ExperimentsList = function ({
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
     const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
+    const profile = useSelector(selectProfile);
+
 
     const isSubscribedToBox = () => {
         const subscribedExperimentIds = Object.keys(subscriptions);
@@ -52,15 +56,33 @@ const ExperimentsList = function ({
     };
 
     const handleSubscribeToExperiment = async () => {
-        const experiments = experimentsGroupedByCategory.get(ExperimentCategory.AVAILABLE);
-        const subscriptionStartTime = Date.now();
+        const dayOfWeek = new Date().getUTCDay();
+        const userStartOfWeekDay = DayOfWeek[profile!['startOfWeek'] as keyof typeof DayOfWeek].valueOf() + 1;
+        const oneDayInMilliSecs = 24 * 60 * 60 * 1000;
 
+        let subscriptionStartTime: number;
+        let subscribeToFirstWeekExperiments = false;
+
+        if (!beginAtUserStartOfWeek || dayOfWeek === userStartOfWeekDay) {
+            subscriptionStartTime = Date.now();
+            subscribeToFirstWeekExperiments = true;
+        } else if (dayOfWeek < userStartOfWeekDay) {
+            subscriptionStartTime = Date.now() + ((userStartOfWeekDay - dayOfWeek) * oneDayInMilliSecs);
+        } else {
+            subscriptionStartTime = Date.now() + ((7 - (dayOfWeek - userStartOfWeekDay)) * oneDayInMilliSecs);
+        }
+
+        const experiments = experimentsGroupedByCategory.get(ExperimentCategory.AVAILABLE);
         if (experiments) {
             const firstBoxExperiments = experiments.filter(e => e.boxweek === 0);
-            await dispatch(subscribeToExperiments({experiments: firstBoxExperiments, subscriptionStartTime: subscriptionStartTime}));
 
-            const oneWeekInMilliSecs = 7 * 24 * 60 * 60 * 1000;
-            const scheduledExperiments = experiments.filter(e => e.boxweek !== 0).map(e => {
+            if (subscribeToFirstWeekExperiments) {
+                await dispatch(subscribeToExperiments({experiments: firstBoxExperiments, subscriptionStartTime: subscriptionStartTime}));
+            }
+
+            const oneWeekInMilliSecs = 7 * oneDayInMilliSecs;
+            const filteredExperiments = subscribeToFirstWeekExperiments ? experiments.filter(e => e.boxweek !== 0) : experiments;
+            const scheduledExperiments = filteredExperiments.map(e => {
                return {startTimeUTC: subscriptionStartTime + (e.boxweek * oneWeekInMilliSecs), experiments: [e.id]} as IExperimentSchedule;
             });
 
