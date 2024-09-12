@@ -10,6 +10,7 @@ export interface IBox {
     icon: string;
     disabled?: boolean;
     color?: string;
+    beginAtUserStartOfWeek?: boolean;
 }
 
 interface IBoxDocument extends IBox {
@@ -94,7 +95,8 @@ export type Block =
     | IGreenDetector
     | ICountdownTimer
     | IMovementRecorder
-    | IMovementPicker;
+    | IMovementPicker
+    | ISelectSubscription;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -126,6 +128,16 @@ interface INumberInput extends IGenericInput {
 interface ISelectInput extends IGenericInput {
     type: 'select-input';
     options: string[];
+}
+
+export interface ISelectSubscription extends IGenericInput {
+    type: 'select-subscription';
+    options: ISelectSubscriptionOption[];
+}
+
+interface ISelectSubscriptionOption {
+    label: string;
+    experimentId: string;
 }
 
 interface ISliderInput extends IGenericInput {

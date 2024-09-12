@@ -13,9 +13,13 @@ import Strings from '../../utils/string_dict';
 const NewProfile = function () {
     const dispatch = useDispatch();
     const cohortIdRef = React.useRef(undefined)
+    const startOfWeekRef = React.useRef(undefined);
 
     const history = useHistory();
     const handleSubmit: IProfileFormProps['onSubmit'] = function (data) {
+        if (startOfWeekRef.current) {
+            data['startOfWeek'] = startOfWeekRef.current;
+        }
         dispatch(setProfile(data));
         dispatch(setCohortId(cohortIdRef.current));
         history.push('/onboarding/welcome/0');
@@ -24,7 +28,7 @@ const NewProfile = function () {
     return (
         <Page>
             <PageTitle>{Strings.your_profile}</PageTitle>
-            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef}  />
+            <ProfileForm onSubmit={handleSubmit} cohortIdRef ={cohortIdRef} startOfWeekRef={startOfWeekRef} />
         </Page>
     );
 };

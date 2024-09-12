@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, TextField, Link, sliderClasses } from '@mui/joy';
+import { Typography, TextField, Link, sliderClasses, Divider, Stack } from '@mui/joy';
 import { ArrowSquareOut } from 'phosphor-react';
 
 import YouTubeVideo from './YoutubeVideo';
@@ -16,9 +16,16 @@ import Checkbox from '../foundation/Checkbox';
 import Slider from '../foundation/Slider';
 
 import { Block } from '../../models/Experiment';
+import Accordion from '@mui/material/Accordion';
+import AddIcon from '@mui/icons-material/Add';
+
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Textarea from '../foundation/Textarea';
 
 export interface ITaskBlockProps {
     block: Block;
+    type?: string
     inputs?: {
         getInputProps: (key: string) => any;
         getCheckboxProps: (key: string) => any;
@@ -43,7 +50,7 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
+const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     // Non-input blocks
 
     if (block.type === 'para' || block.type === 'title') {
@@ -70,6 +77,28 @@ const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
         return (
             <CountdownTimer initialDuration={block.duration} fixed={block.fixed} notifications={block.notifications} />
         );
+    }
+
+    if ((block as any)['type'] === 'expandable') {
+        return <Accordion>
+            <AccordionSummary expandIcon={<AddIcon />}>
+                <Typography
+                    sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    {(block as any)['title']}
+                </Typography>
+            </AccordionSummary>
+
+            <Divider />
+
+            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                <br />
+                <Stack spacing={2}>
+                    {(block as any)['contents'].map((element: any) => (
+                        <TaskBlock block={element}></TaskBlock>
+                    ))}
+                </Stack>
+            </AccordionDetails>
+        </Accordion>;
     }
 
     // Input blocks
@@ -105,6 +134,10 @@ const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
 
     if (block.type === 'select-input') {
         return <Select options={block.options} {...commonProps} />;
+    }
+
+    if (block.type === 'select-subscription') {
+        return <Select options={block.options.map(option => option.label)} {...commonProps} />;
     }
 
     if (block.type === 'slider-input') {
@@ -177,7 +210,11 @@ const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
         return <MovementPicker movements={block.movements} {...commonProps} />;
     }
 
-    return <TextField {...commonProps} />;
+    if (type === 'reflection') {
+        return <Textarea {...commonProps} minRows={7}/>
+    } else {
+        return <TextField {...commonProps} />;
+    }
 };
 
 export default TaskBlock;

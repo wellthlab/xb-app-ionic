@@ -21,25 +21,27 @@ import {
     Stack,
 } from "@mui/joy";
 import { selectAllExperiments } from '../slices/experiments';
-import { ICohort } from '../models/Account';
+import { DayOfWeek, ICohort } from '../models/Account';
+import Select from './foundation/Select';
 
 export interface IProfileFormProps {
     onSubmit: (data: Record<string, string | boolean | number>) => void;
     cohortIdRef: React.MutableRefObject<string | undefined>
+    startOfWeekRef: React.MutableRefObject<string | undefined>
     isNewProfile?: boolean
 }
 
-const ProfileForm = function ({ onSubmit, cohortIdRef, isNewProfile = true }: IProfileFormProps ) {
+const ProfileForm = function ({ onSubmit, cohortIdRef, startOfWeekRef, isNewProfile = true }: IProfileFormProps ) {
     const { isPending } = useStudy();
 
     if (isPending) {
         return <div>Loading...</div>;
     }
 
-    return <InnerForm onSubmit={onSubmit} cohortIdRef ={cohortIdRef} isNewProfile={isNewProfile} />;
+    return <InnerForm onSubmit={onSubmit} cohortIdRef ={cohortIdRef} isNewProfile={isNewProfile} startOfWeekRef={startOfWeekRef}/>;
 };
 
-const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFormProps) {
+const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile, startOfWeekRef }: IProfileFormProps) {
     const { study } = useStudy();
     const profile = useSelector(selectProfile);
     const cohortId = useSelector(selectCohortId);
@@ -50,7 +52,9 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
     const dispatch = useDispatch();
 
     const [cohortCode, setCohortCode] = React.useState( existingCohortName ? (existingCohortName as ICohort).name : "");
-    const [hasCohortCode, setHasCohortCode] = React.useState(true);
+    const [startOfWeek, setStartOfWeek] = React.useState('Monday');
+
+    const [hasCohortCode, setHasCohortCode] = React.useState(isNewProfile || !!cohortId);
     const [missingCohortCodeAlert, setMissingCohortCodeAlert] = React.useState(false);
     const [invalidCohortCodeAlert, setInvalidCohortCodeAlert] = React.useState(false);
 
@@ -74,6 +78,7 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
                 createHandleSubmit(onSubmit)();
             }
         } else {
+            startOfWeekRef.current = startOfWeek;
             createHandleSubmit(onSubmit)();
         }
     }
@@ -82,12 +87,15 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile }: IProfileFor
         <React.Fragment>
             <Form submitLabel={Strings.lets_roll} message={form.errors.$root} onSubmit={onFormSubmit}>
                 {study!.profile.map((block, blockId) => (
-                    <TaskBlock block={block} key={blockId} inputs={{ getInputProps, getCheckboxProps }} />
+                    <TaskBlock block={block} key={blockId + Number(hasCohortCode)} inputs={{ getInputProps, getCheckboxProps }} />
                 ))}
+
+
+                {!hasCohortCode && <Select disabled={!isNewProfile} label={'Start of Week'} options={Object.values(DayOfWeek).filter(item => typeof item === 'string') as string[]} value={startOfWeek} onChange={(event) => {setStartOfWeek(event.target.value)}}/>}
 
                 <Stack spacing={2} alignItems="center">
                     <FormControl >
-                        <Checkbox overlay defaultChecked label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
+                        <Checkbox overlay defaultChecked={isNewProfile || !!cohortId} label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
                         />
                     </FormControl>
                     <Input fullWidth={true} value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!isNewProfile || !hasCohortCode} />

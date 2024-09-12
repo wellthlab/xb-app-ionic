@@ -123,8 +123,17 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
     for (const experimentId of Object.keys(subscriptions)) {
         const currentDay = selectCurrentDay(state, experimentId);
         const experiment = selectExperimentById(state, experimentId) as IExperiment;
+        const isSelectSubscriptionTask = experiment.days[0].tasks[0].blocks.some(block => block.type === 'select-subscription');
+        const firstDayComplete  = selectDayProgress(state, experimentId)[0];
 
         if (currentDay > experiment.days.length - 1) {
+            // This is to make sure a selectSubscription task will show up on the today screen as long as it isn't completed
+            if (isSelectSubscriptionTask && !firstDayComplete) {
+                tasksByExperiment.push({
+                    experiment: experiment,
+                    day: 0
+                });
+            }
             continue;
         }
 

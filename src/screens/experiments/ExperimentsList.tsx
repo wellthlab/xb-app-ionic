@@ -300,6 +300,7 @@ const ExperimentsListScreen = function () {
                             key={type}
                             experimentsGroupedByCategory={experimentsGroupedByCategory}
                             scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
+                            beginAtUserStartOfWeek={thisBox.beginAtUserStartOfWeek}
                         />
                         <br />
                     </Stack>

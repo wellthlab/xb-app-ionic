@@ -10,6 +10,7 @@ const Textarea = function ({ label, helperText, error, ...props }: ITextareaProp
     return (
         <FormControl error={error}>
             {label && <FormLabel>{label}</FormLabel>}
+            <br/>
             <MuiTextarea {...props} />
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
         </FormControl>
