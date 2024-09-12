@@ -76,7 +76,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
         >
             <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => (
-                    <TaskBlock key={blockId} block={block} inputs={{ getCheckboxProps, getInputProps }} />
+                    <TaskBlock type={task.type} key={blockId} block={block} inputs={{ getCheckboxProps, getInputProps }} />
                 ))}
             </Stack>
         </Modal>

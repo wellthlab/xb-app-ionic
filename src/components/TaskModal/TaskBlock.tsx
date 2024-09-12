@@ -21,9 +21,11 @@ import AddIcon from '@mui/icons-material/Add';
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Textarea from '../foundation/Textarea';
 
 export interface ITaskBlockProps {
     block: Block;
+    type?: string
     inputs?: {
         getInputProps: (key: string) => any;
         getCheckboxProps: (key: string) => any;
@@ -48,7 +50,7 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
-const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
+const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     // Non-input blocks
 
     if (block.type === 'para' || block.type === 'title') {
@@ -208,7 +210,11 @@ const TaskBlock = function ({ block, inputs }: ITaskBlockProps) {
         return <MovementPicker movements={block.movements} {...commonProps} />;
     }
 
-    return <TextField {...commonProps} />;
+    if (type === 'reflection') {
+        return <Textarea {...commonProps} minRows={7}/>
+    } else {
+        return <TextField {...commonProps} />;
+    }
 };
 
 export default TaskBlock;

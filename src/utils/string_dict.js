@@ -163,7 +163,7 @@ const Strings = {
     subscribe_to_complete_tasks: " Subscribe to this experiment to complete tasks ",
     confirm_restart_subscription: "Are you sure you want to restart this subscription?. You will lose all progress with your current subscription!",
     confirm_experiment_selection: "Do you want to subscribe to these selected experiments: ",
-    confirm_experiment_subscription: "Do you want to subscribe to this box: ",
+    confirm_experiment_subscription: "Do you want to subscribe to this box ?",
     subscribe_to_box: "Subscribe to this box",
     already_subscribed: "You are subscribed to this box",
     confirm_subscription: "Confirm Subscription",
