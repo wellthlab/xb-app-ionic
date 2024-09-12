@@ -111,7 +111,7 @@ const ExperimentTimeline = function() {
 
     const getExperimentDescription = (experiment: IExperiment) => {
         const sorted = _.sortBy(experiment.desc, ['index']);
-        return <Stack spacing={2}>
+        return <Stack spacing={0.5}>
             {sorted.map((element) => (
                 <div>
                     {getContent(element)}
@@ -124,7 +124,7 @@ const ExperimentTimeline = function() {
 
         if (block.type === 'para') {
             return (
-                <Typography level="body1">
+                <Typography level="body1" sx = {{fontSize: '0.8rem'}}>
                     {block['content']}
                 </Typography>
             );
@@ -132,7 +132,7 @@ const ExperimentTimeline = function() {
 
         if (block.type === 'title') {
             return (
-                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
                     {block['content']}
                 </Typography>
             );
@@ -158,7 +158,7 @@ const ExperimentTimeline = function() {
 
                 <Divider />
 
-                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
                     <br />
                     <Stack spacing={2}>
                         {block.contents.map((element: any) => (
@@ -179,7 +179,7 @@ const ExperimentTimeline = function() {
               ref={setPresentingElement}>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
                 <Card>
-                    <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
                         {'OVERVIEW'}
                     </Typography>
                     {getExperimentDescription(experiment)}
@@ -188,17 +188,17 @@ const ExperimentTimeline = function() {
                 <br />
 
 
-                <Stack spacing={3}>
+                <Stack spacing={2}>
                     {prepExperimentTasks.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}>
-                            <Typography level="h5"
-                                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                            <Typography level="h6"
+                                        sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                 {Strings.prep}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
 
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
                             <Stack spacing={2}>
                                 <TasksList
                                     tasks={prepExperimentTasks}
@@ -214,24 +214,29 @@ const ExperimentTimeline = function() {
                     {experiment.steps.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                 {Strings.steps}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
-                            <List sx={{ ml: 2 }}>
-                                {experiment.steps.map(step => {
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}   sx={{padding: 0}}> <br />
+                            <List sx={{marginBlockStart: -2}}>
+                                {experiment.steps.map((step, index)  => {
                                     return <div>
                                         <ListItem sx={{ display: 'list-item' }}>
                                             <ListItemContent>
-                                                <Typography>
+                                                <Typography sx={{fontSize: '0.8rem'}}>
                                                     {step}
                                                 </Typography>
                                             </ListItemContent>
                                         </ListItem>
-                                        <ListDivider />
-                                        <br />
+
+                                        {index !== experiment.steps.length -1 &&
+                                            <div>
+                                                <ListDivider />
+                                                <br />
+                                            </div>
+                                        }
                                     </div>;
                                 })}
                             </List>
@@ -241,12 +246,12 @@ const ExperimentTimeline = function() {
                     <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                 {Strings.checks}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
                             <Stack spacing={2} key={activeDay}>
                                 <TasksList
                                     tasks={experiment.days[activeDay].tasks}
@@ -262,12 +267,12 @@ const ExperimentTimeline = function() {
                     {reflectionTasks.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg' , fontSize: '0.7rem' }}>
                                 {Strings.reflections}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
                             <Stack spacing={2} key={activeDay}>
                                 <TasksList
                                     tasks={experiment.days[activeDay].tasks}
@@ -282,24 +287,29 @@ const ExperimentTimeline = function() {
                     {experiment.tips.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem'  }}>
                                 {Strings.tips}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
-                            <List sx={{ ml: 2 }}>
-                                {experiment.tips.map(tip => {
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}> <br />
+                            <List sx={{marginBlockStart: -2}}>
+                                {experiment.tips.map((tip, index) => {
                                     return <div>
                                         <ListItem sx={{ display: 'list-item' }}>
                                             <ListItemContent>
-                                                <Typography>
+                                                <Typography sx={{fontSize: '0.8rem'}}>
                                                     {tip}
                                                 </Typography>
                                             </ListItemContent>
                                         </ListItem>
-                                        <ListDivider />
-                                        <br />
+
+                                        {index !== experiment.tips.length -1 &&
+                                            <div>
+                                                <ListDivider />
+                                                <br />
+                                            </div>
+                                        }
                                     </div>;
                                 })}
                             </List>

@@ -39,7 +39,7 @@ const BoxesList = function () {
                         <Card
                             sx={{
                                 flexDirection: 'row',
-                                gap: 3,
+                                gap: 2,
                                 ...(box.disabled
                                     ? {}
                                     : {
@@ -52,13 +52,13 @@ const BoxesList = function () {
                         >
                             <Stack
                                 alignItems="center"
-                                minWidth={100}
+                                minWidth={20}
                                 flex={1 / 4}
                                 borderRight={1}
                                 gap={0.5}
                                 borderColor="divider"
                             >
-                                <Box component={Icon} color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'} />
+                                <Box component={Icon} color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'} sx={{width:'30%'}}/>
                                 <Link
                                     overlay
                                     level="body1"

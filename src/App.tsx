@@ -97,7 +97,7 @@ const App = function () {
                 <IonReactRouter>
                     <ThemeProvider>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <IconContext.Provider value={{ weight: 'light', size: 24 }}>
+                            <IconContext.Provider value={{ weight: 'light', size: 18 }}>
                                 <ColorModeController />
                                 <AppFlowController />
                                 <IonRouterOutlet>

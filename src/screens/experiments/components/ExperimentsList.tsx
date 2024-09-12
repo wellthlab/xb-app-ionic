@@ -139,7 +139,7 @@ const ExperimentsList = function ({
     }
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <Stack spacing={2}>
-            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
+            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg',fontSize: '0.9rem'}}>
                 {getCategoryTitle(experimentCategory)}
             </Typography>
             <Card variant="outlined">
@@ -147,19 +147,21 @@ const ExperimentsList = function ({
                     .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2 ).map(([startUTCTime, scheduledExperiments]) => {
                         return (
                             <Stack spacing={2}>
-                                <Typography level="body1" sx={{ mb: 2, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
+                                <Typography level="body1" sx={{ mb: 1, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic', fontSize: '0.8rem' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
                                 {scheduledExperiments.map(experiment => {
                                     let firstDescPara = getExperimentDescFirstParagraph(experiment);
 
                                     return (
                                         <Card
                                             key={experiment.id}
-                                            variant="outlined"
+                                            variant="soft"
                                             sx={{
                                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                                             }}
                                         >
-                                            {experiment.name}
+                                            <Typography sx={{ fontSize: '0.9rem'}}>
+                                                {experiment.name}
+                                            </Typography>
                                             <Stack spacing={1}>
                                                 <Link
                                                     overlay
@@ -170,7 +172,7 @@ const ExperimentsList = function ({
                                                     }}
                                                 >
                                                 </Link>
-                                                {firstDescPara && <Typography level="body2"> {firstDescPara} </Typography>}
+                                                {firstDescPara && <Typography level="body2" sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
                                                 <Typography
                                                     level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                             </Stack>
@@ -188,7 +190,7 @@ const ExperimentsList = function ({
 
     const getNonScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: IExperiment[]) => {
         return <Stack spacing={2}>
-            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', }}>
+            <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.9rem'}}>
                 {getCategoryTitle(experimentCategory)}
             </Typography>
             {experiments
@@ -205,7 +207,9 @@ const ExperimentsList = function ({
                                 '&:hover, &:focus-within': { bgcolor: 'background.level2' },
                             }}
                         >
-                            {experiment.name}
+                            <Typography sx={{ fontSize: '0.9rem'}}>
+                                {experiment.name}
+                            </Typography>
                             <Stack spacing={1}>
                                 <Link
                                     overlay
@@ -216,7 +220,7 @@ const ExperimentsList = function ({
                                     }}
                                 >
                                 </Link>
-                                {firstDescPara && <Typography level="body2"> {firstDescPara} </Typography>}
+                                {firstDescPara && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
 
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
@@ -260,7 +264,7 @@ const ExperimentsList = function ({
 
             {!userInCohort && <Button
                 onClick={toggleSubscriptionModal}
-                style={{left: "25%", width: "50%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
+                style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
                 disabled={isSubscribedToBox()}
             >
                 {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}

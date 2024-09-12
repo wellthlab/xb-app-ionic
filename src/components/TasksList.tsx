@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import { Box } from '@mui/joy';
+import { Box, Typography } from '@mui/joy';
 import { Check, CaretRight, PlusCircle, MinusCircle } from 'phosphor-react';
 import { Fab } from '@mui/material';
 
@@ -102,7 +102,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
 
 
     return (
-        <List sx={{ mb: 2 }}>
+        <List>
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
                 const taskNum = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
                 const taskCompleted = responseCountByDayNumAndTaskIds[taskNum] > index;
@@ -120,12 +120,10 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
                             endDecorator={getEndDecorator(task, index + 1, taskCompleted, taskNum)}
                             onClick={createHandleClickTask(taskNum)}
                         >
-
-                            {task.isRepeatable ? task.name + `  (${index + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}
-
+                            <Typography sx = {{fontSize: '0.75rem', ml: -1.5}} >
+                                {task.isRepeatable ? task.name + `  (${index + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}
+                            </Typography>
                         </ListItem>
-
-
                     </div>
 
                 );
