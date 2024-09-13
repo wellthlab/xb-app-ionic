@@ -59,7 +59,7 @@ const ExperimentsListScreen = function () {
     const getContent = (block: any) => {
         if (block.type === 'para') {
             return (
-                <Typography level="body1">
+                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
                     {block['content']}
                 </Typography>
             );
@@ -67,7 +67,7 @@ const ExperimentsListScreen = function () {
 
         if (block.type === 'title') {
             return (
-                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
                     {block['content']}
                 </Typography>
             );
@@ -85,7 +85,7 @@ const ExperimentsListScreen = function () {
             return <Accordion>
                 <AccordionSummary expandIcon={<AddIcon />}>
                     <Typography
-                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                        sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
                         {block.title}
                     </Typography>
                 </AccordionSummary>
@@ -277,7 +277,7 @@ const ExperimentsListScreen = function () {
                 {thisBox.description && !thisBox.heroImageSrc && (
                     <React.Fragment>
                         <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
-                        <Typography level="h6" sx={{ mb: 4 }}>
+                        <Typography level="h6" sx={{ mb: 4, fontSize: '0.8rem'  }}>
                             {getExperimentDescFirstParagraph()}
                         </Typography>
                     </React.Fragment>
@@ -286,12 +286,9 @@ const ExperimentsListScreen = function () {
                     <Card variant="plain" ref={mainSectionRef}
                           sx={{
                               alignSelf: 'center',
-                              ml: 10,
-                              mr: 10,
+                              ml: 1,
+                              mr: 1,
                           }}>{getBoxDescription()}</Card>}
-
-                <br />
-                <br />
 
                 <Container >
                     <Stack spacing={2}>

@@ -55,7 +55,7 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
 
     if (block.type === 'para' || block.type === 'title') {
         return (
-            <Typography level={block.type === 'para' ? 'body1' : 'h6'}>
+            <Typography level={block.type === 'para' ? 'body1' : 'h6'} sx = {{fontSize: '0.8rem'}}>
                 {renderParagraphWithLinks(block.content)}
             </Typography>
         );

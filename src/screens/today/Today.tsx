@@ -93,18 +93,18 @@ const Today = function() {
     };
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>{Strings.todays_experiments}</PageTitle>
+            <PageTitle sx={{fontSize: '1.5rem'}}>{Strings.todays_experiments}</PageTitle>
 
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
-                    <Card>
-                        <Stack spacing={2} key={entry.experiment.id}>
-                            <Stack spacing={2} direction="row" alignItems="center">
+                    <Card >
+                        <Stack spacing={2}  key={entry.experiment.id}>
+                            <Stack spacing={2} direction="row" alignItems="left">
                                 <EntryIcon experimentId={entry.experiment.id} dayNum={entry.day} />
 
                                 <div>
-                                    <Typography level="h4">{entry.experiment.name}</Typography>
+                                    <Typography sx={{fontSize: '1rem'}} level="h6">{entry.experiment.name}</Typography>
                                     <Typography level="body2">
                                         {Strings.day} {entry.day + 1}
                                     </Typography>
@@ -115,24 +115,29 @@ const Today = function() {
                                 {entry.experiment.steps.length !== 0 && <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >
-                                        <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                             {Strings.steps}
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
-                                        <List sx={{ ml: 2 }}>
-                                            {entry.experiment.steps.map(step => {
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}> <br />
+                                        <List sx={{marginBlockStart: -2}}>
+                                            {entry.experiment.steps.map((step, index) => {
                                                 return <div>
                                                     <ListItem sx={{ display: 'list-item' }}>
-                                                        <ListItemContent>
-                                                            <Typography>
+                                                        <ListItemContent >
+                                                            <Typography sx={{fontSize: '0.8rem'}}>
                                                                 {step}
                                                             </Typography>
                                                         </ListItemContent>
                                                     </ListItem>
-                                                    <ListDivider />
-                                                    <br />
+
+                                                    {index !== entry.experiment.steps.length -1 &&
+                                                        <div>
+                                                            <ListDivider />
+                                                            <br />
+                                                        </div>
+                                                    }
                                                 </div>;
                                             })}
                                         </List>
@@ -142,12 +147,12 @@ const Today = function() {
                                 <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >
-                                        <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                             {Strings.checks}
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}>
                                         <Stack spacing={2}>
                                             <TasksList
                                                 tasks={entry.experiment.days[entry.day].tasks}
@@ -163,12 +168,12 @@ const Today = function() {
                                 {getReflectionTasks(entry.experiment).length !== 0 && <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >
-                                        <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                             {Strings.reflections}
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}>
                                         <Stack spacing={2}>
                                             <TasksList
                                                 tasks={entry.experiment.days[entry.day].tasks}
@@ -183,24 +188,29 @@ const Today = function() {
                                 {entry.experiment.tips.length !== 0 && <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >
-                                        <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
+                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                             {Strings.tips}
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}> <br />
-                                        <List sx={{ ml: 2 }}>
-                                            {entry.experiment.tips.map(tip => {
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}> <br />
+                                        <List sx={{marginBlockStart: -2}}>
+                                            {entry.experiment.tips.map((tip, index) => {
                                                 return <div>
                                                     <ListItem sx={{ display: 'list-item' }}>
                                                         <ListItemContent>
-                                                            <Typography>
+                                                            <Typography sx={{fontSize: '0.8rem'}}>
                                                                 {tip}
                                                             </Typography>
                                                         </ListItemContent>
                                                     </ListItem>
-                                                    <ListDivider />
-                                                    <br />
+
+                                                    {index !== entry.experiment.tips.length -1 &&
+                                                        <div>
+                                                            <ListDivider />
+                                                            <br />
+                                                        </div>
+                                                    }
                                                 </div>;
                                             })}
                                         </List>

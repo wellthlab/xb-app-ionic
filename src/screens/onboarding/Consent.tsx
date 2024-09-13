@@ -18,7 +18,7 @@ const Consent = function () {
 
     return (
         <Page>
-            <PageTitle>{Strings.just_a_few_things}</PageTitle>
+            <PageTitle sx = {{fontSize: '1.5rem'}}>{Strings.just_a_few_things}</PageTitle>
             {isPending ? 'Loading...' : <ConsentForm />}
         </Page>
     );
@@ -55,7 +55,7 @@ const ConsentForm = function () {
     return (
         <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
             {study!.consent.map((statement, i) => (
-                <Checkbox key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                <Checkbox sx = {{fontSize: '0.8rem'}} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
             ))}
         </Form>
     );
