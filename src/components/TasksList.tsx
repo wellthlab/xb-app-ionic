@@ -104,6 +104,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
     return (
         <List>
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
+
                 const taskIndex = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
                 const taskCount= (index-taskIndex) + 1;
                 const taskCompleted = responseCountByDayNumAndTaskIds[taskIndex] >= Math.max(1,taskCount);
