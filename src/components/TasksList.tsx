@@ -104,24 +104,25 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
     return (
         <List>
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
-                const taskNum = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
-                const taskCompleted = responseCountByDayNumAndTaskIds[taskNum] > index;
+                const taskIndex = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
+                const taskCount= (index-taskIndex) + 1;
+                const taskCompleted = responseCountByDayNumAndTaskIds[taskIndex] >= Math.max(1,taskCount);
                 const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
 
                 return (
-                    <div key={taskNum}>
+                    <div key={taskIndex}>
                         <ListItem
                             button={!taskCompleted}
-                            key={taskNum}
+                            key={taskIndex}
                             startDecorator={
                                 Icon &&
                                 (taskCompleted ? <Box component={Icon} sx={{ color: 'success.plainColor' }} /> : <Icon />)
                             }
-                            endDecorator={getEndDecorator(task, index + 1, taskCompleted, taskNum)}
-                            onClick={createHandleClickTask(taskNum)}
+                            endDecorator={getEndDecorator(task, taskCount, taskCompleted, taskIndex)}
+                            onClick={createHandleClickTask(taskIndex)}
                         >
                             <Typography sx = {{fontSize: '0.75rem', ml: -1.5}} >
-                                {task.isRepeatable ? task.name + `  (${index + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}
+                                {task.isRepeatable ? task.name + `  (${taskCount} ${Strings.of} ${task.minOccurences}) ` : task.name}
                             </Typography>
                         </ListItem>
                     </div>
