@@ -75,7 +75,7 @@ export const getScheduledCohortExperiments = async (cohortCode: string, experime
     const experimentsDueForSubscription: Record<number, IExperiment[]>= {};
     cohortExperimentSequence.filter(schedule => schedule.startTimeUTC <= currTimeUTC).forEach(schedule => {
         const experimentsForSubscription = schedule.experiments
-            .map(experimentId =>  experiments.find(e => e.id === experimentId))
+            .map(experimentId =>  experiments.find(e => e.id === experimentId.toString()))
             .filter(experiment => experiment !== undefined)
             .map(e => e as IExperiment)
 

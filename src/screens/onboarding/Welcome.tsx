@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Stack } from '@mui/joy';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
@@ -22,6 +22,8 @@ const Welcome = function () {
 
     const updateData = useSelector(selectOnboardingState);
     const dispatch = useDispatch();
+    const history = useHistory();
+
 
     const handleEnroll = async function () {
         setIsPending(true);
@@ -41,7 +43,7 @@ const Welcome = function () {
 
     return (
         <Page>
-            <PageTitle>{study!.welcome[step].title}</PageTitle>
+            {isStudyPending ? ('') : (<PageTitle>{study!.welcome[step].title}</PageTitle>)}
 
             {isStudyPending ? (
                 'Loading...'
@@ -58,7 +60,7 @@ const Welcome = function () {
                             {Strings.enroll}
                         </Button>
                     ) : (
-                        <Button component={Link} to={`/onboarding/welcome/${step + 1}`}>
+                        <Button onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>
                             {Strings.next}
                         </Button>
                     )}

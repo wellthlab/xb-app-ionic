@@ -104,9 +104,9 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
     return (
         <List>
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
+                const taskGroup = groupedTasks.get(task.taskId);
                 const taskIndex = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
-                const taskCount= (index-taskIndex) + 1;
-                const taskCompleted = responseCountByDayNumAndTaskIds[taskIndex] >= Math.max(1,taskCount);
+                const taskCompleted = responseCountByDayNumAndTaskIds[taskIndex] >= Math.max(1, index - taskIndex + 1);
                 const Icon = taskCompleted ? Check : task.icon ? getIcon(task.icon) : undefined;
 
 
@@ -119,11 +119,11 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
                                 Icon &&
                                 (taskCompleted ? <Box component={Icon} sx={{ color: 'success.plainColor' }} /> : <Icon />)
                             }
-                            endDecorator={getEndDecorator(task, taskCount, taskCompleted, taskIndex)}
+                            endDecorator={getEndDecorator(task, taskGroup.length, taskCompleted, taskIndex)}
                             onClick={createHandleClickTask(taskIndex)}
                         >
                             <Typography sx = {{fontSize: '0.75rem', ml: -1.5}} >
-                                {task.isRepeatable ? task.name + `  (${taskCount} ${Strings.of} ${task.minOccurences}) ` : task.name}
+                                {task.isRepeatable ? task.name + `  (${index - taskIndex + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}
                             </Typography>
                         </ListItem>
                     </div>

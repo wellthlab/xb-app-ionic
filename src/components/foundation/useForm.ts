@@ -142,6 +142,7 @@ const useForm = function <T extends Record<string, string | boolean | number | n
                     finalValues = schema.validateSync(values, { abortEarly: false });
                 } catch (error) {
                     if (error instanceof Yup.ValidationError) {
+                        console.log(error.inner);
                         setErrors(processErrors(error.inner));
                     }
 

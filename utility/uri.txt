@@ -1,0 +1,1 @@
+mongodb+srv://<username>:<password>@xbframework.oybpu.mongodb.net/?retryWrites=true&w=majority&appName=XBFramework
