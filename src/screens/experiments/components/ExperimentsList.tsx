@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Realm from 'realm-web';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Button, Card, LinearProgress, Link, Stack, Typography } from '@mui/joy';
 
@@ -83,7 +84,7 @@ const ExperimentsList = function ({
             const oneWeekInMilliSecs = 7 * oneDayInMilliSecs;
             const filteredExperiments = subscribeToFirstWeekExperiments ? experiments.filter(e => e.boxweek !== 0) : experiments;
             const scheduledExperiments = filteredExperiments.map(e => {
-               return {startTimeUTC: subscriptionStartTime + (e.boxweek * oneWeekInMilliSecs), experiments: [e.id]} as IExperimentSchedule;
+               return {startTimeUTC: subscriptionStartTime + (e.boxweek * oneWeekInMilliSecs), experiments: [new Realm.BSON.ObjectId(e.id)]} as IExperimentSchedule;
             });
 
             await dispatch(saveScheduledExperiments(scheduledExperiments));

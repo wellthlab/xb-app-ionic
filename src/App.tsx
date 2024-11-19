@@ -50,6 +50,8 @@ const AppFlowController = function () {
 
     const [hydrating, setHydrating] = React.useState(true);
     const dispatch = useDispatch();
+    const [initPath, setInitPath] = React.useState(location.pathname);
+
     React.useEffect(() => {
         // Call boot only if authenticated
 
@@ -87,7 +89,11 @@ const AppFlowController = function () {
         return <Redirect to="/onboarding" />;
     }
 
-    return <Redirect to="/main" />;
+    if (initPath === "/" || initPath === "/onboarding") {
+        return <Redirect to="/main" />;
+    } else {
+        return <Redirect to={initPath} />;
+    }
 };
 
 const App = function () {

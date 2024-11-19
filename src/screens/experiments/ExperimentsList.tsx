@@ -148,7 +148,7 @@ const ExperimentsListScreen = function () {
     };
 
     const getScheduledStartTime = (experiment: IExperiment) => {
-        return scheduledExperiments.find((schedule) => schedule.experiments.includes(experiment.id))
+        return scheduledExperiments.find((schedule) => schedule.experiments.map(e => e.toString()).includes(experiment.id))
             ?.startTimeUTC;
     };
 

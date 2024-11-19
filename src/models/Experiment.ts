@@ -37,7 +37,7 @@ export enum ExperimentCategory {
 
 export interface IExperimentSchedule {
     startTimeUTC: number;
-    experiments: string[];
+    experiments: ObjectId[];
 }
 
 export interface IExperiment extends IBaseExperiment {
