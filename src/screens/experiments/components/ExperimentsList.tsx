@@ -257,19 +257,26 @@ const ExperimentsList = function ({
 
     return (
         <div>
+            {!userInCohort &&
+                <div>
+                    <Button
+                        onClick={toggleSubscriptionModal}
+                        style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
+                        disabled={isSubscribedToBox()}
+                    >
+                        {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
+                    </Button>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+            }
+
             <Stack spacing={5}>
                 {Array.from(experimentsGroupedByCategory).map(([experimentCategory, experiments]) => {
                     return getBody(experimentCategory, experiments);
                 })}
             </Stack>
-
-            {!userInCohort && <Button
-                onClick={toggleSubscriptionModal}
-                style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
-                disabled={isSubscribedToBox()}
-            >
-                {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
-            </Button>}
 
             <Modal
                 headerTitle={Strings.confirm_subscription}

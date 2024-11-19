@@ -212,10 +212,11 @@ const App = function () {
                                                     <Gear />
                                                     <IonLabel>{Strings.settings}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="team" href="/main/team">
-                                                    <Users />
-                                                    <IonLabel>{Strings.teams}</IonLabel>
-                                                </IonTabButton>
+                                                {/*This is hidden because the teams functionality is not fully built out yet*/}
+                                                {/*<IonTabButton tab="team" href="/main/team">*/}
+                                                {/*    <Users />*/}
+                                                {/*    <IonLabel>{Strings.teams}</IonLabel>*/}
+                                                {/*</IonTabButton>*/}
                                             </IonTabBar>
                                         </IonTabs>
                                     </Route>

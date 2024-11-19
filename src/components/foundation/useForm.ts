@@ -62,6 +62,8 @@ const useForm = function <T extends Record<string, string | boolean | number | n
             error: !!errors[name],
 
             onChange: (e) => {
+                console.log(typeof e);
+                console.log(name);
                 // Use callback here because sometimes multiple onChange will be called
                 setValues((prevValues) => ({
                     ...prevValues,

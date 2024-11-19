@@ -22,6 +22,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Textarea from '../foundation/Textarea';
+import SelectDate from "../foundation/DatePicker";
 
 export interface ITaskBlockProps {
     block: Block;
@@ -208,6 +209,10 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
 
     if (block.type === 'movement-picker') {
         return <MovementPicker movements={block.movements} {...commonProps} />;
+    }
+
+    if (block.type === 'date-input') {
+        return <SelectDate {...commonProps}/>;
     }
 
     if (type === 'reflection') {

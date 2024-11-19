@@ -96,7 +96,8 @@ export type Block =
     | ICountdownTimer
     | IMovementRecorder
     | IMovementPicker
-    | ISelectSubscription;
+    | ISelectSubscription
+    | IDateInput;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -115,6 +116,10 @@ interface IText {
 
 interface ITextInput extends IGenericInput {
     type: 'text-input';
+}
+
+interface IDateInput extends IGenericInput {
+    type: 'date-input';
 }
 
 interface ICheckbox extends IGenericInput {
