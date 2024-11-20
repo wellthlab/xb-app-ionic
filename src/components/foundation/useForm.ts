@@ -1,6 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 
 import { ITask } from '../../models/Experiment';
 
@@ -49,7 +50,7 @@ const processErrors = function (errors: Yup.ValidationError[]) {
     return result;
 };
 
-const useForm = function <T extends Record<string, string | boolean | number | null>, TS extends Yup.ObjectSchema<any>>(
+const useForm = function <T extends Record<string, string | boolean | number | null| dayjs.Dayjs>, TS extends Yup.ObjectSchema<any>>(
     initial: T,
     schema: TS,
 ): IUseFormReturns<T, TS> {
@@ -62,8 +63,6 @@ const useForm = function <T extends Record<string, string | boolean | number | n
             error: !!errors[name],
 
             onChange: (e) => {
-                console.log(typeof e);
-                console.log(name);
                 // Use callback here because sometimes multiple onChange will be called
                 setValues((prevValues) => ({
                     ...prevValues,
@@ -229,7 +228,7 @@ const getSchema = function (blocks: ITask['blocks']) {
 };
 
 const getInitialValues = function (blocks: ITask['blocks'], lookup?: Record<string, string | boolean | number>) {
-    const values: Record<string, string | boolean | number> = {};
+    const values: Record<string, string | boolean | number | dayjs.Dayjs> = {};
 
     for (const block of blocks) {
         if (!('rk' in block)) {
@@ -237,7 +236,11 @@ const getInitialValues = function (blocks: ITask['blocks'], lookup?: Record<stri
         }
 
         if (lookup?.[block.rk]) {
-            values[block.rk] = lookup[block.rk];
+            if (block.type === 'date-input') {
+                values[block.rk] = dayjs(lookup[block.rk] as string);
+            } else {
+                values[block.rk] = lookup[block.rk];
+            }
             continue;
         }
 
