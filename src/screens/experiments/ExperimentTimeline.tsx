@@ -19,6 +19,13 @@ import Accordion from '@mui/material/Accordion';
 import MobileStepper from '@mui/material/MobileStepper';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import dead_hang_prep_1 from '../../experiments/dead_hang_prep_1.jpg';
+import dead_hang_prep_2 from '../../experiments/dead_hang_prep_2.jpg';
+import dead_hang_prep_3 from '../../experiments/dead_hang_prep_3.jpg';
+import muscle_contraction from '../../experiments/muscle_contraction.jpg';
+import prep_hanging from '../../experiments/prep_hanging.jpg';
+import sit_stand_1 from '../../experiments/sit_stand_1.jpg';
+import sit_stand_2 from '../../experiments/sit_stand_2.jpg';
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -44,6 +51,24 @@ import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
 
+const getImage = (imageName: string) => {
+    switch (imageName) {
+        case "dead_hang_prep_1":
+            return dead_hang_prep_1;
+        case "dead_hang_prep_2":
+            return dead_hang_prep_2;
+        case "dead_hang_prep_3":
+            return dead_hang_prep_3;
+        case "muscle_contraction":
+            return muscle_contraction;
+        case "prep_hanging":
+            return prep_hanging;
+        case "sit_stand_1":
+            return sit_stand_1;
+        case "sit_stand_2":
+            return sit_stand_2;
+    }
+}
 const ExperimentTimeline = function() {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
@@ -143,22 +168,30 @@ const ExperimentTimeline = function() {
         }
 
         if (block.type === 'image') {
-            return <img src={block.src} alt={block.alt}
+            return <img src={getImage(block.src)} alt={block.alt}
                         style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
         }
 
         if (block.type === 'expandable') {
             return <Accordion>
                 <AccordionSummary expandIcon={<AddIcon />}>
-                    <Typography
-                        sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
-                        {block.title}
-                    </Typography>
+                    <Stack spacing={2}>
+                        <Typography
+                            sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
+                            {block.title}
+                        </Typography>
+                        {block['summary'] &&
+                            <Typography level="body1" sx = {{fontSize: '0.8rem'}}>
+                                {block['summary']}
+                            </Typography>}
+                    </Stack>
+
                 </AccordionSummary>
+
 
                 <Divider />
 
-                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
+                <AccordionDetails style={{ backgroundColor: '#eeeeee' }} >
                     <br />
                     <Stack spacing={2}>
                         {block.contents.map((element: any) => (
@@ -186,6 +219,16 @@ const ExperimentTimeline = function() {
 
                 </Card>
                 <br />
+                <br />
+
+                <Card>
+                    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
+                        {'PREPARATIONS FOR THIS EXPERIMENT'}
+                    </Typography>
+                    {getExperimentDescription(prepExperiment)}
+
+                </Card>
+                <br />
 
 
                 <Stack spacing={2}>
@@ -198,7 +241,7 @@ const ExperimentTimeline = function() {
                         </AccordionSummary>
                         <Divider />
 
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
                             <Stack spacing={2}>
                                 <TasksList
                                     tasks={prepExperimentTasks}
@@ -219,19 +262,19 @@ const ExperimentTimeline = function() {
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}   sx={{padding: 0}}> <br />
-                            <List sx={{marginBlockStart: -2}}>
-                                {experiment.steps.map((step, index)  => {
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}> <br />
+                            <List sx={{ marginBlockStart: -2 }}>
+                                {experiment.steps.map((step, index) => {
                                     return <div>
                                         <ListItem sx={{ display: 'list-item' }}>
                                             <ListItemContent>
-                                                <Typography sx={{fontSize: '0.8rem'}}>
+                                                <Typography sx={{ fontSize: '0.8rem' }}>
                                                     {step}
                                                 </Typography>
                                             </ListItemContent>
                                         </ListItem>
 
-                                        {index !== experiment.steps.length -1 &&
+                                        {index !== experiment.steps.length - 1 &&
                                             <div>
                                                 <ListDivider />
                                                 <br />
@@ -243,36 +286,36 @@ const ExperimentTimeline = function() {
                         </AccordionDetails>
                     </Accordion>}
 
-                    <Accordion variant="outlined">
-                        <AccordionSummary expandIcon={<AddIcon />}
-                        >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                {Strings.checks}
-                            </Typography>
-                        </AccordionSummary>
-                        <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
-                            <Stack spacing={2} key={activeDay}>
-                                <TasksList
-                                    tasks={experiment.days[activeDay].tasks}
-                                    experimentId={experimentId}
-                                    dayNum={activeDay}
-                                    type={'normal'}
-                                    onTaskClick={handleClickTask}
-                                />
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
+                    {/*<Accordion variant="outlined">*/}
+                    {/*    <AccordionSummary expandIcon={<AddIcon />}*/}
+                    {/*    >*/}
+                    {/*        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>*/}
+                    {/*            {Strings.checks}*/}
+                    {/*        </Typography>*/}
+                    {/*    </AccordionSummary>*/}
+                    {/*    <Divider />*/}
+                    {/*    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>*/}
+                    {/*        <Stack spacing={2} key={activeDay}>*/}
+                    {/*            <TasksList*/}
+                    {/*                tasks={experiment.days[activeDay].tasks}*/}
+                    {/*                experimentId={experimentId}*/}
+                    {/*                dayNum={activeDay}*/}
+                    {/*                type={'normal'}*/}
+                    {/*                onTaskClick={handleClickTask}*/}
+                    {/*            />*/}
+                    {/*        </Stack>*/}
+                    {/*    </AccordionDetails>*/}
+                    {/*</Accordion>*/}
 
                     {reflectionTasks.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg' , fontSize: '0.7rem' }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                 {Strings.reflections}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
                             <Stack spacing={2} key={activeDay}>
                                 <TasksList
                                     tasks={experiment.days[activeDay].tasks}
@@ -287,24 +330,24 @@ const ExperimentTimeline = function() {
                     {experiment.tips.length !== 0 && <Accordion variant="outlined">
                         <AccordionSummary expandIcon={<AddIcon />}
                         >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem'  }}>
+                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
                                 {Strings.tips}
                             </Typography>
                         </AccordionSummary>
                         <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}> <br />
-                            <List sx={{marginBlockStart: -2}}>
+                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}> <br />
+                            <List sx={{ marginBlockStart: -2 }}>
                                 {experiment.tips.map((tip, index) => {
                                     return <div>
                                         <ListItem sx={{ display: 'list-item' }}>
                                             <ListItemContent>
-                                                <Typography sx={{fontSize: '0.8rem'}}>
+                                                <Typography sx={{ fontSize: '0.8rem' }}>
                                                     {tip}
                                                 </Typography>
                                             </ListItemContent>
                                         </ListItem>
 
-                                        {index !== experiment.tips.length -1 &&
+                                        {index !== experiment.tips.length - 1 &&
                                             <div>
                                                 <ListDivider />
                                                 <br />
@@ -317,7 +360,7 @@ const ExperimentTimeline = function() {
                     </Accordion>}
                 </Stack>
 
-                <MobileStepper
+                {isSubscribedToExperiment && <MobileStepper
                     sx={{ mb: 2, mt: 2 }}
                     variant="text"
                     steps={maxDays}
@@ -347,7 +390,7 @@ const ExperimentTimeline = function() {
                             Back
                         </Button>
                     }
-                />
+                />}
             </Box>
 
 
@@ -357,38 +400,38 @@ const ExperimentTimeline = function() {
                 </Stack>
             )}
 
-            <TaskModal
-                isOpen={taskModalOpen}
-                onDismiss={() => handleDismissModal('normal')}
-                key={`${experimentId}.${dayNum}.${taskNum}.normal`}
-                experimentId={experimentId}
-                dayNum={dayNum}
-                taskNum={taskNum}
-                presentingElement={presentingElement}
-                isSubscribed={isSubscribedToExperiment}
-            />
+            {/*<TaskModal*/}
+            {/*    isOpen={taskModalOpen}*/}
+            {/*    onDismiss={() => handleDismissModal('normal')}*/}
+            {/*    key={`${experimentId}.${dayNum}.${taskNum}.normal`}*/}
+            {/*    experimentId={experimentId}*/}
+            {/*    dayNum={dayNum}*/}
+            {/*    taskNum={taskNum}*/}
+            {/*    presentingElement={presentingElement}*/}
+            {/*    isSubscribed={isSubscribedToExperiment}*/}
+            {/*/>*/}
 
-            {prepExperiment && prepExperimentTasks.length !== 0 && <TaskModal
-                isOpen={prepModalOpen}
-                onDismiss={() => handleDismissModal('prep')}
-                key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}.prep`}
-                experimentId={prepExperiment.id}
-                dayNum={prepDayNum}
-                taskNum={prepTaskNum}
-                presentingElement={presentingElement}
-                isSubscribed={isSubscribedToExperiment}
-            />}
+            {/*{prepExperiment && prepExperimentTasks.length !== 0 && <TaskModal*/}
+            {/*    isOpen={prepModalOpen}*/}
+            {/*    onDismiss={() => handleDismissModal('prep')}*/}
+            {/*    key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}.prep`}*/}
+            {/*    experimentId={prepExperiment.id}*/}
+            {/*    dayNum={prepDayNum}*/}
+            {/*    taskNum={prepTaskNum}*/}
+            {/*    presentingElement={presentingElement}*/}
+            {/*    isSubscribed={isSubscribedToExperiment}*/}
+            {/*/>}*/}
 
-            {reflectionTasks.length !== 0 && <TaskModal
-                isOpen={reflectionModalOpen}
-                onDismiss={() => handleDismissModal('reflection')}
-                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
-                experimentId={experimentId}
-                dayNum={reflectionDayNum}
-                taskNum={reflectionTaskNum}
-                presentingElement={presentingElement}
-                isSubscribed={isSubscribedToExperiment}
-            />}
+            {/*{reflectionTasks.length !== 0 && <TaskModal*/}
+            {/*    isOpen={reflectionModalOpen}*/}
+            {/*    onDismiss={() => handleDismissModal('reflection')}*/}
+            {/*    key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}*/}
+            {/*    experimentId={experimentId}*/}
+            {/*    dayNum={reflectionDayNum}*/}
+            {/*    taskNum={reflectionTaskNum}*/}
+            {/*    presentingElement={presentingElement}*/}
+            {/*    isSubscribed={isSubscribedToExperiment}*/}
+            {/*/>}*/}
         </Page>
     );
 };

@@ -261,7 +261,7 @@ const ExperimentsList = function ({
                 <div>
                     <Button
                         onClick={toggleSubscriptionModal}
-                        style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
+                        style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', fontSize: '0.8rem'}}
                         disabled={isSubscribedToBox()}
                     >
                         {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}

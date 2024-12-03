@@ -111,13 +111,14 @@ class experiment_creator(object):
       self.add_block(in_expandable=True, **kwargs)
 
 
-   def add_expandable_description_block(self, title):
+   def add_expandable_description_block(self, title, summary):
 
       block = {
          'blockId' : ObjectId(),
          'type' : 'expandable',
          'title' : title,
          'contents' : [],
+        'summary': summary
       }
 
       self.expandable_cursor = len(self.doc['desc'])

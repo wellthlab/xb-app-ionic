@@ -58,6 +58,13 @@ exp.add_block(content='is there someone you might invite to share any of these l
 prepsleep1=exp.get_id()
 exp.upload()
 
+# PREP SLEEP 4
+exp=experiment_creator('SLEEP week 4: PREP',box['prep'], boxweek=0)
+exp.add_task('HAVING A PLAN')
+exp.add_block(content='Sometimes people running this experiment need to talk with their managers or teachers or partners to work out how to enable you to have this time for just this week.')
+exp.add_block(content='What do you need to do to make this space safe from everyone involved with you to support it?')
+prepsleep4=exp.get_id()
+exp.upload()
 
 # PREP EAT GENERAL
 
@@ -316,6 +323,42 @@ eat1=exp.get_id()
 exp.upload()
 
 
+# SLEEP 4
+exp=experiment_creator('Sleep Week 4: Kill the Alarm',box['sleep'], boxweek=3, prepExperiment=prepsleep4)
+exp.add_block(content='This week\'s experiment is all about exploring what you need to do for your environment - including work and home realities - that for this one period you can sleep until you wake up. That is: for this week, you kill the alarm - no alarms - only waking when ready to wake up.')
+exp.add_block(content='That\'s right: just sleep till you wake up')
+exp.add_block(typ='title',content='Why KILL THE ALARM')
+exp.add_block(content='The heuristic for healthful sleep is: if we need an alarm to wake us up - we\'re underslept.')
+exp.add_block(content='Being underslept has all sorts of harms. We\'re less able to see positive things; we\'re less creative; we feel stress more and options less; we\'re not as productive.')
+exp.add_block(content='The heuristic for healthful sleep is: if we need an alarm to wake us up - we\'re underslept.')
+exp.add_block(content='Fun Fact from as far back as the nineties, researchers found that people with just ONE hour less sleep a night than needed meant they were performing as if they were over the legal drink limit to drive. If folks regularly came into work drunk, quite often they\'d be fired; if we come into work underslept, its "normal."')
+exp.add_block(content='An alarm disrupts the sleep we need. IT\'s that simple: if we need an alarm to get up, we\'re under-slept.')
+exp.add_block(content='It\'s very hard for us to oversleep. So when we get up without an alarm, we\'re getting the sleep we need.')
+exp.add_block(content='Earlier Start to the Day? If we need to get up early in the morning regularly, and we want to do this without an alarm, that means starting to sleep earlier - to get those 5, 90\'ish minute sleep cycles in - with at least one of those cycles before midnight as per last week\'s experiment.')
+exp.add_step('REGULAR Sleep times: Our bodies really like patterns. Getting to sleep at the same time; waking at the same time is a big win. Our bodies will start to get familiar with these patterns - especially when they are (1) aligned with the day/night cycles (2) connect with our eat/stop eat regular cycles, too.')
+exp.add_step('STACK Hours before Midnight with Kill the Alarm. One of the easiest ways to get aligned with night/day cycles is to get consistent with the hours b4 midnight pattern. ')
+exp.add_task('Kill the Alarm')
+exp.add_block(typ='select-input',label='Did you wake up without an alarm?',options=['Yes','No'])
+exp.add_block(typ='time-input',label='What time did you get into Bed')
+exp.add_block(typ='time-input',label='What time did you get to sleep?')
+exp.add_block(typ='select-input',label='Did you do a morning light dose?',options=['Yes','No'])
+exp.add_block(typ='select-input',label='Did you do evening darkness dose?',options=['Yes','No'])
+exp.add_block(typ='select-input',label='Did you get some movement in today to help getting to sleep?',options=['Yes','No'])
+exp.add_block(typ='select-input',label='Did you have any difficulty getting to sleep?',options=['Yes, it was challenging','Somewhat difficult', 'No problem','Easier than I thought', 'Do that all the time'])
+exp.add_task('Sleep Experience')
+exp.add_block(typ='select-input',label='You slept last night:',options=['At home','Away from home'])
+exp.add_block(typ='select-input',label='You slept:',options=['By yourself','With others - human/non-human'])
+exp.add_block(typ='select-input',label='While trying to fall asleep, you were:',options=['Doing nothing but falling asleep','Reading from paper with a dim light', 'Reading on screen turned down as low as it goes to be legible','Listening to something','Watching something on a screen - no brightness control'])
+exp.add_block(typ='select-input',label='How many times do you recall waking up before it was time to get up:',options=['Once','Twice', 'More than twice'])
+exp.add_block(typ='select-input',label='If you get up at night do you have any lights come on for whatever you do?',options=['No','Yes'])
+exp.add_block(typ='select-input',label='If yes, where?',options=['bathroom','bedroom','kitchen','phone screen'],optional=True)
+exp.add_block(typ='select-input',label='Was this an unusal day that caused a change in sleep pattern (someone sick, going on a trip, etc)',options=['No', 'Yes'])
+exp.add_block(typ='select-input',label='Your dreams were:',options=['Stressful','Positive','Nothing one way or the other'])
+exp.add_block(typ='select-input',label='How restful was your sleep compared to yesterday?',options=['Less','Somewhat less','The same','A little more','A lot more'])
+exp.add_block(typ='select-input',label='How do you feel on waking up compared to yesterday?',options=['A little worse','Worse','Same', 'Better', 'Much better'])
+exp.autocomplete(reflection_text='Some questions that might help your reflecting: What were any insights or ah ha\'s from this day\'s deliberate Kill the Alarm?. How did any prep you needed for this work out? What worked? What might you try differently? What are some of the challenges you need solutions for or have found solutions for? What was positive about this practice today? What was challenging? You can of course note anything you wish here - these questions are just to help food for thought.',add_context=False)
+sleep4=exp.get_id()
+exp.upload()
 
 
 # SLEEP 2

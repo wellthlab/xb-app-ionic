@@ -23,6 +23,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Textarea from '../foundation/Textarea';
 import SelectDate from "../foundation/DatePicker";
+import RadioGroupXB from './RadioGroup';
 
 export interface ITaskBlockProps {
     block: Block;
@@ -134,6 +135,9 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     };
 
     if (block.type === 'select-input') {
+        if (block.options.length < 6) {
+            return <RadioGroupXB options={block.options} {...commonProps} />
+        }
         return <Select options={block.options} {...commonProps} />;
     }
 

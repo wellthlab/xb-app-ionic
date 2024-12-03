@@ -197,6 +197,7 @@ const Strings = {
     reflections: 'REFLECTIONS',
     checks: 'CHECKS',
     tips: 'TIPS',
+    preview: 'PREVIEW of '
 };
 
 export default Strings;

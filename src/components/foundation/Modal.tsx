@@ -66,8 +66,8 @@ const Modal = function({
                 leftButton={<HeaderButton onClick={handleCancel}>{Strings.close}</HeaderButton>}
             />
 
-            <IonContent>
-                <Container>{children}</Container>
+            <IonContent >
+                <Container style={{ backgroundColor: actionButtonDisabled ? '#eeeeee' : undefined }}>{children}</Container>
             </IonContent>
         </IonModal>
     );

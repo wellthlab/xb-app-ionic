@@ -37,7 +37,9 @@ const Welcome = function () {
                 }),
             );
         }
-        dispatch(saveScheduledExperiments(updateData.futureExperiments));
+        if (updateData.futureExperiments.length > 0) {
+            dispatch(saveScheduledExperiments(updateData.futureExperiments));
+        }
         setIsPending(false);
     };
 

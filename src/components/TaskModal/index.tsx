@@ -28,7 +28,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
     const accountSubscriptions = useSelector(selectSubscriptions);
     const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
     const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
-    const actionButtonDisabled = !isSubscribed || currentDay < dayNum;
+    const actionDisabled = !isSubscribed || currentDay < dayNum;
     const allExperiments = useSelector(selectAllExperiments);
 
     const userInCohort = useSelector((state) => isUserInCohort(state));
@@ -66,15 +66,15 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
 
     return (
         <Modal
-            actionButtonDisabled={actionButtonDisabled}
+            actionButtonDisabled={actionDisabled}
             actionButtonLabel={Strings.submit}
             actionButtonDisabledToolTipTitle={userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks}
-            headerTitle={task.name}
+            headerTitle= { actionDisabled ? Strings.preview + task.name : task.name}
             onAction={handleSubmit}
             onDismiss={onDismiss}
             {...others}
         >
-            <Stack spacing={2}>
+            <Stack style={{ pointerEvents: actionDisabled ? 'none' : undefined }} spacing={2}>
                 {task.blocks.map((block, blockId) => (
                     <TaskBlock type={task.type} key={blockId} block={block} inputs={{ getCheckboxProps, getInputProps }} />
                 ))}
