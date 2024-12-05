@@ -16,6 +16,8 @@ import {
     subscribeToExperiments,
 } from '../../../slices/account';
 import { DayOfWeek } from '../../../models/Account';
+import PageTitle from "../../../components/foundation/PageTitle";
+import ReactMarkdown from "react-markdown";
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
@@ -131,9 +133,9 @@ const ExperimentsList = function ({
     }
 
     const getExperimentDescFirstParagraph = (experiment: IExperiment) => {
-        const sorted = _.sortBy(experiment.desc.filter(d => d['type'] === 'para'), ['index']);
+        const sorted = _.sortBy(experiment.desc.filter(d => d['type'] === 'para' || d['type'] === 'markdown'), ['index']);
         if (sorted.length > 0) {
-            return sorted[0]['content']
+            return {type: sorted[0]['type'], content: sorted[0]['content'] }
         } else {
             return null;
         }
@@ -173,8 +175,25 @@ const ExperimentsList = function ({
                                                     }}
                                                 >
                                                 </Link>
-                                                {firstDescPara && <Typography level="body2" sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
-                                                <Typography
+                                                {firstDescPara && firstDescPara['type'] === 'para' && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara["content"]} </Typography>}
+                                                {firstDescPara && firstDescPara['type'] === 'markdown' &&
+                                                    <ReactMarkdown
+                                                        children={firstDescPara["content"]}
+                                                        components={{
+                                                            h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+
+                                                            h2: ({ children }) => (
+                                                                <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                                                                    {children}
+                                                                </Typography>
+                                                            ),
+                                                            li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+
+                                                            p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem'  }}>{children}</Typography>,
+
+                                                            a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                                                        }}
+                                                    />}                                                <Typography
                                                     level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
@@ -221,8 +240,25 @@ const ExperimentsList = function ({
                                     }}
                                 >
                                 </Link>
-                                {firstDescPara && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
+                                {firstDescPara && firstDescPara['type'] === 'para' && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara["content"]} </Typography>}
+                                {firstDescPara && firstDescPara['type'] === 'markdown' &&
+                                    <ReactMarkdown
+                                    children={firstDescPara["content"]}
+                                    components={{
+                                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
+                                        h2: ({ children }) => (
+                                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                                                {children}
+                                            </Typography>
+                                        ),
+                                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+
+                                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+
+                                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                                    }}
+                                />}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
                                         <Typography level="body3">

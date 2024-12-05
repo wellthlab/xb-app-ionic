@@ -13,12 +13,9 @@ import {
     Card,
     List, Button,
     ListItem,
-    ListItemContent,
+    ListItemContent, Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
-import MobileStepper from '@mui/material/MobileStepper';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import dead_hang_prep_1 from '../../experiments/dead_hang_prep_1.jpg';
 import dead_hang_prep_2 from '../../experiments/dead_hang_prep_2.jpg';
 import dead_hang_prep_3 from '../../experiments/dead_hang_prep_3.jpg';
@@ -26,6 +23,20 @@ import muscle_contraction from '../../experiments/muscle_contraction.jpg';
 import prep_hanging from '../../experiments/prep_hanging.jpg';
 import sit_stand_1 from '../../experiments/sit_stand_1.jpg';
 import sit_stand_2 from '../../experiments/sit_stand_2.jpg';
+import eat_week1_1 from '../../experiments/eat_week1_1.jpg';
+import eat_week1_2 from '../../experiments/eat_week1_2.jpg';
+import eat_week1_3 from '../../experiments/eat_week1_3.jpg';
+import eat_week1_4 from '../../experiments/eat_week1_4.jpg';
+import eat_week2_1 from '../../experiments/eat_week2_1.jpg';
+import eat_week2_2 from '../../experiments/eat_week2_2.jpg';
+import eat_week2_3 from '../../experiments/eat_week2_3.jpg';
+import eat_week4_1 from '../../experiments/eat_week4_1.jpg';
+import sleep_week1_1 from '../../experiments/sleep_week1_1.jpg';
+import sleep_week1_2 from '../../experiments/sleep_week1_2.jpg';
+import sleep_week2_1 from '../../experiments/sleep_week2_1.jpg';
+import sleep_week2_2 from '../../experiments/sleep_week2_2.jpg';
+import sleep_week3_1 from '../../experiments/sleep_week3_1.jpg';
+import sleep_week4_1 from '../../experiments/sleep_week4_1.jpg';
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -50,6 +61,8 @@ import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
+import ReactMarkdown from "react-markdown";
+import PageTitle from "../../components/foundation/PageTitle";
 
 const getImage = (imageName: string) => {
     switch (imageName) {
@@ -67,6 +80,35 @@ const getImage = (imageName: string) => {
             return sit_stand_1;
         case "sit_stand_2":
             return sit_stand_2;
+        case "eat_week1_1":
+            return eat_week1_1;
+        case "eat_week1_2":
+            return eat_week1_2;
+        case "eat_week1_3":
+            return eat_week1_3;
+        case "eat_week1_4":
+            return eat_week1_4;
+        case "eat_week2_1":
+            return eat_week2_1;
+        case "eat_week2_2":
+            return eat_week2_2;
+        case "eat_week2_3":
+            return eat_week2_3;
+        case "eat_week4_1":
+            return eat_week4_1;
+
+        case "sleep_week1_1":
+            return sleep_week1_1;
+        case "sleep_week1_2":
+            return sleep_week1_2;
+        case "sleep_week2_1":
+            return sleep_week2_1;
+        case "sleep_week2_2":
+            return sleep_week2_2;
+        case "sleep_week3_1":
+            return sleep_week3_1;
+        case "sleep_week4_1":
+            return sleep_week4_1;
     }
 }
 const ExperimentTimeline = function() {
@@ -135,9 +177,8 @@ const ExperimentTimeline = function() {
     };
 
     const getExperimentDescription = (experiment: IExperiment) => {
-        const sorted = _.sortBy(experiment.desc, ['index']);
-        return <Stack spacing={0.5}>
-            {sorted.map((element) => (
+          return <Stack spacing={0.5}>
+            {experiment.desc.map((element) => (
                 <div>
                     {getContent(element)}
                 </div>
@@ -172,6 +213,24 @@ const ExperimentTimeline = function() {
                         style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
         }
 
+        if (block.type === 'markdown') {
+            return  <ReactMarkdown
+                children={block['content']}
+                components={{
+                    h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+
+                    h2: ({ children }) => (
+                        <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                            {children}
+                        </Typography>
+                    ),
+                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+
+                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                }}
+            />
+        }
         if (block.type === 'expandable') {
             return <Accordion>
                 <AccordionSummary expandIcon={<AddIcon />}>
@@ -221,176 +280,14 @@ const ExperimentTimeline = function() {
                 <br />
                 <br />
 
-                <Card>
+                {prepExperiment && <Card>
                     <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
                         {'PREPARATIONS FOR THIS EXPERIMENT'}
                     </Typography>
                     {getExperimentDescription(prepExperiment)}
 
-                </Card>
+                </Card>}
                 <br />
-
-
-                <Stack spacing={2}>
-                    {prepExperimentTasks.length !== 0 && <Accordion variant="outlined">
-                        <AccordionSummary expandIcon={<AddIcon />}>
-                            <Typography level="h6"
-                                        sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                {Strings.prep}
-                            </Typography>
-                        </AccordionSummary>
-                        <Divider />
-
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
-                            <Stack spacing={2}>
-                                <TasksList
-                                    tasks={prepExperimentTasks}
-                                    experimentId={prepExperiment.id}
-                                    type={'prep'}
-                                    dayNum={activeDay}
-                                    onTaskClick={handleClickTask}
-                                />
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>}
-
-                    {experiment.steps.length !== 0 && <Accordion variant="outlined">
-                        <AccordionSummary expandIcon={<AddIcon />}
-                        >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                {Strings.steps}
-                            </Typography>
-                        </AccordionSummary>
-                        <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}> <br />
-                            <List sx={{ marginBlockStart: -2 }}>
-                                {experiment.steps.map((step, index) => {
-                                    return <div>
-                                        <ListItem sx={{ display: 'list-item' }}>
-                                            <ListItemContent>
-                                                <Typography sx={{ fontSize: '0.8rem' }}>
-                                                    {step}
-                                                </Typography>
-                                            </ListItemContent>
-                                        </ListItem>
-
-                                        {index !== experiment.steps.length - 1 &&
-                                            <div>
-                                                <ListDivider />
-                                                <br />
-                                            </div>
-                                        }
-                                    </div>;
-                                })}
-                            </List>
-                        </AccordionDetails>
-                    </Accordion>}
-
-                    {/*<Accordion variant="outlined">*/}
-                    {/*    <AccordionSummary expandIcon={<AddIcon />}*/}
-                    {/*    >*/}
-                    {/*        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>*/}
-                    {/*            {Strings.checks}*/}
-                    {/*        </Typography>*/}
-                    {/*    </AccordionSummary>*/}
-                    {/*    <Divider />*/}
-                    {/*    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>*/}
-                    {/*        <Stack spacing={2} key={activeDay}>*/}
-                    {/*            <TasksList*/}
-                    {/*                tasks={experiment.days[activeDay].tasks}*/}
-                    {/*                experimentId={experimentId}*/}
-                    {/*                dayNum={activeDay}*/}
-                    {/*                type={'normal'}*/}
-                    {/*                onTaskClick={handleClickTask}*/}
-                    {/*            />*/}
-                    {/*        </Stack>*/}
-                    {/*    </AccordionDetails>*/}
-                    {/*</Accordion>*/}
-
-                    {reflectionTasks.length !== 0 && <Accordion variant="outlined">
-                        <AccordionSummary expandIcon={<AddIcon />}
-                        >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                {Strings.reflections}
-                            </Typography>
-                        </AccordionSummary>
-                        <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
-                            <Stack spacing={2} key={activeDay}>
-                                <TasksList
-                                    tasks={experiment.days[activeDay].tasks}
-                                    experimentId={experimentId}
-                                    dayNum={activeDay}
-                                    type={'reflection'}
-                                    onTaskClick={handleClickTask}
-                                />
-                            </Stack> </AccordionDetails>
-                    </Accordion>}
-
-                    {experiment.tips.length !== 0 && <Accordion variant="outlined">
-                        <AccordionSummary expandIcon={<AddIcon />}
-                        >
-                            <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                {Strings.tips}
-                            </Typography>
-                        </AccordionSummary>
-                        <Divider />
-                        <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}> <br />
-                            <List sx={{ marginBlockStart: -2 }}>
-                                {experiment.tips.map((tip, index) => {
-                                    return <div>
-                                        <ListItem sx={{ display: 'list-item' }}>
-                                            <ListItemContent>
-                                                <Typography sx={{ fontSize: '0.8rem' }}>
-                                                    {tip}
-                                                </Typography>
-                                            </ListItemContent>
-                                        </ListItem>
-
-                                        {index !== experiment.tips.length - 1 &&
-                                            <div>
-                                                <ListDivider />
-                                                <br />
-                                            </div>
-                                        }
-                                    </div>;
-                                })}
-                            </List>
-                        </AccordionDetails>
-                    </Accordion>}
-                </Stack>
-
-                {isSubscribedToExperiment && <MobileStepper
-                    sx={{ mb: 2, mt: 2 }}
-                    variant="text"
-                    steps={maxDays}
-                    position="static"
-                    activeStep={activeDay}
-                    nextButton={
-                        <Button
-                            size="sm"
-                            onClick={handleNext}
-                            disabled={activeDay === maxDays - 1 || activeDay === currentDay}
-                        >
-                            Next
-                            {theme.direction === 'rtl' ? (
-                                <KeyboardArrowLeft />
-                            ) : (
-                                <KeyboardArrowRight />
-                            )}
-                        </Button>
-                    }
-                    backButton={
-                        <Button size="sm" onClick={handleBack} disabled={activeDay === 0}>
-                            {theme.direction === 'rtl' ? (
-                                <KeyboardArrowRight />
-                            ) : (
-                                <KeyboardArrowLeft />
-                            )}
-                            Back
-                        </Button>
-                    }
-                />}
             </Box>
 
 
@@ -399,39 +296,6 @@ const ExperimentTimeline = function() {
                     <Alert color="success">{Strings.congratulations_you_have}</Alert>
                 </Stack>
             )}
-
-            {/*<TaskModal*/}
-            {/*    isOpen={taskModalOpen}*/}
-            {/*    onDismiss={() => handleDismissModal('normal')}*/}
-            {/*    key={`${experimentId}.${dayNum}.${taskNum}.normal`}*/}
-            {/*    experimentId={experimentId}*/}
-            {/*    dayNum={dayNum}*/}
-            {/*    taskNum={taskNum}*/}
-            {/*    presentingElement={presentingElement}*/}
-            {/*    isSubscribed={isSubscribedToExperiment}*/}
-            {/*/>*/}
-
-            {/*{prepExperiment && prepExperimentTasks.length !== 0 && <TaskModal*/}
-            {/*    isOpen={prepModalOpen}*/}
-            {/*    onDismiss={() => handleDismissModal('prep')}*/}
-            {/*    key={`${prepExperiment.id}.${prepDayNum}.${prepTaskNum}.prep`}*/}
-            {/*    experimentId={prepExperiment.id}*/}
-            {/*    dayNum={prepDayNum}*/}
-            {/*    taskNum={prepTaskNum}*/}
-            {/*    presentingElement={presentingElement}*/}
-            {/*    isSubscribed={isSubscribedToExperiment}*/}
-            {/*/>}*/}
-
-            {/*{reflectionTasks.length !== 0 && <TaskModal*/}
-            {/*    isOpen={reflectionModalOpen}*/}
-            {/*    onDismiss={() => handleDismissModal('reflection')}*/}
-            {/*    key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}*/}
-            {/*    experimentId={experimentId}*/}
-            {/*    dayNum={reflectionDayNum}*/}
-            {/*    taskNum={reflectionTaskNum}*/}
-            {/*    presentingElement={presentingElement}*/}
-            {/*    isSubscribed={isSubscribedToExperiment}*/}
-            {/*/>}*/}
         </Page>
     );
 };

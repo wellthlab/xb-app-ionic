@@ -13,17 +13,6 @@ import useStudy from '../../hooks/useStudy';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
-const Consent = function () {
-    const { isPending } = useStudy();
-
-    return (
-        <Page>
-            <PageTitle sx = {{fontSize: '1.5rem'}}>{Strings.just_a_few_things}</PageTitle>
-            {isPending ? 'Loading...' : <ConsentForm />}
-        </Page>
-    );
-};
-
 const ConsentForm = function () {
     const { study } = useStudy();
 
@@ -55,10 +44,10 @@ const ConsentForm = function () {
     return (
         <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
             {study!.consent.map((statement, i) => (
-                <Checkbox sx = {{fontSize: '0.8rem'}} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                <Checkbox key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
             ))}
         </Form>
     );
 };
 
-export default Consent;
+export default  ConsentForm;

@@ -24,7 +24,6 @@ import NewPasswordScreen from './screens/auth/NewPassword';
 import ConfirmAccountScreen from './screens/auth/ConfirmAccount';
 
 import OnboardingStudyInformationScreen from './screens/onboarding/StudyInformation';
-import OnboardingConsentScreen from './screens/onboarding/Consent';
 import NewProfileScreen from './screens/onboarding/NewProfile';
 import WelcomeScreen from './screens/onboarding/Welcome';
 
@@ -129,10 +128,6 @@ const App = function () {
 
                                     <Route path="/onboarding" exact>
                                         <OnboardingStudyInformationScreen />
-                                    </Route>
-
-                                    <Route path="/onboarding/consent" exact>
-                                        <OnboardingConsentScreen />
                                     </Route>
 
                                     <Route path="/onboarding/profile" exact>

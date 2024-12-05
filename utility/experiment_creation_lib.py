@@ -111,7 +111,7 @@ class experiment_creator(object):
       self.add_block(in_expandable=True, **kwargs)
 
 
-   def add_expandable_description_block(self, title, summary):
+   def add_expandable_description_block(self, title, summary=None):
 
       block = {
          'blockId' : ObjectId(),
