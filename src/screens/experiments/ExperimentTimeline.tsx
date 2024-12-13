@@ -11,9 +11,11 @@ import {
     Divider,
     ListDivider,
     Card,
-    List, Button,
+    List,
+    Button,
     ListItem,
-    ListItemContent, Link,
+    ListItemContent,
+    Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
 import dead_hang_prep_1 from '../../experiments/dead_hang_prep_1.jpg';
@@ -36,7 +38,7 @@ import sleep_week1_2 from '../../experiments/sleep_week1_2.jpg';
 import sleep_week2_1 from '../../experiments/sleep_week2_1.jpg';
 import sleep_week2_2 from '../../experiments/sleep_week2_2.jpg';
 import sleep_week3_1 from '../../experiments/sleep_week3_1.jpg';
-import sleep_week4_1 from '../../experiments/sleep_week4_1.jpg';
+import sleep_week4_1 from '../../experiments/sleep_week4_1.png';
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -61,64 +63,66 @@ import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
-import ReactMarkdown from "react-markdown";
-import PageTitle from "../../components/foundation/PageTitle";
+import ReactMarkdown from 'react-markdown';
+import PageTitle from '../../components/foundation/PageTitle';
 
 const getImage = (imageName: string) => {
     switch (imageName) {
-        case "dead_hang_prep_1":
+        case 'dead_hang_prep_1':
             return dead_hang_prep_1;
-        case "dead_hang_prep_2":
+        case 'dead_hang_prep_2':
             return dead_hang_prep_2;
-        case "dead_hang_prep_3":
+        case 'dead_hang_prep_3':
             return dead_hang_prep_3;
-        case "muscle_contraction":
+        case 'muscle_contraction':
             return muscle_contraction;
-        case "prep_hanging":
+        case 'prep_hanging':
             return prep_hanging;
-        case "sit_stand_1":
+        case 'sit_stand_1':
             return sit_stand_1;
-        case "sit_stand_2":
+        case 'sit_stand_2':
             return sit_stand_2;
-        case "eat_week1_1":
+        case 'eat_week1_1':
             return eat_week1_1;
-        case "eat_week1_2":
+        case 'eat_week1_2':
             return eat_week1_2;
-        case "eat_week1_3":
+        case 'eat_week1_3':
             return eat_week1_3;
-        case "eat_week1_4":
+        case 'eat_week1_4':
             return eat_week1_4;
-        case "eat_week2_1":
+        case 'eat_week2_1':
             return eat_week2_1;
-        case "eat_week2_2":
+        case 'eat_week2_2':
             return eat_week2_2;
-        case "eat_week2_3":
+        case 'eat_week2_3':
             return eat_week2_3;
-        case "eat_week4_1":
+        case 'eat_week4_1':
             return eat_week4_1;
 
-        case "sleep_week1_1":
+        case 'sleep_week1_1':
             return sleep_week1_1;
-        case "sleep_week1_2":
+        case 'sleep_week1_2':
             return sleep_week1_2;
-        case "sleep_week2_1":
+        case 'sleep_week2_1':
             return sleep_week2_1;
-        case "sleep_week2_2":
+        case 'sleep_week2_2':
             return sleep_week2_2;
-        case "sleep_week3_1":
+        case 'sleep_week3_1':
             return sleep_week3_1;
-        case "sleep_week4_1":
+        case 'sleep_week4_1':
             return sleep_week4_1;
     }
-}
-const ExperimentTimeline = function() {
+};
+const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
-    const prepExperiment = useSelector((state) => selectExperimentById(state, experiment.prepExperiment)) as IExperiment;
+    const prepExperiment = useSelector((state) =>
+        selectExperimentById(state, experiment.prepExperiment),
+    ) as IExperiment;
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const subscription = useSelector(state => {
+    const subscription = useSelector((state) => {
         return selectSubscriptionByExperimentId(state, experimentId);
     });
     const isSubscribedToExperiment = subscription !== undefined;
@@ -138,7 +142,7 @@ const ExperimentTimeline = function() {
 
     const theme = useTheme();
 
-    const handleDismissModal = function(type: string) {
+    const handleDismissModal = function (type: string) {
         if (type === 'normal') {
             setTaskModalOpen(false);
         } else if (type === 'reflection') {
@@ -148,7 +152,7 @@ const ExperimentTimeline = function() {
         }
     };
 
-    const handleClickTask = function(experimentId: string, dayNum: number, taskNum: number, type: string) {
+    const handleClickTask = function (experimentId: string, dayNum: number, taskNum: number, type: string) {
         if (type === 'normal') {
             setTaskModalOpen(true);
             setDayNum(dayNum);
@@ -177,20 +181,19 @@ const ExperimentTimeline = function() {
     };
 
     const getExperimentDescription = (experiment: IExperiment) => {
-          return <Stack spacing={0.5}>
-            {experiment.desc.map((element) => (
-                <div>
-                    {getContent(element)}
-                </div>
-            ))}
-        </Stack>;
+        return (
+            <Stack spacing={0.5}>
+                {experiment.desc.map((element) => (
+                    <div>{getContent(element)}</div>
+                ))}
+            </Stack>
+        );
     };
 
     const getContent = (block: any) => {
-
         if (block.type === 'para') {
             return (
-                <Typography level="body1" sx = {{fontSize: '0.8rem'}}>
+                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
                     {block['content']}
                 </Typography>
             );
@@ -209,87 +212,93 @@ const ExperimentTimeline = function() {
         }
 
         if (block.type === 'image') {
-            return <img src={getImage(block.src)} alt={block.alt}
-                        style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
+            return (
+                <img
+                    src={getImage(block.src)}
+                    alt={block.alt}
+                    style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+                />
+            );
         }
 
         if (block.type === 'markdown') {
-            return  <ReactMarkdown
-                children={block['content']}
-                components={{
-                    h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+            return (
+                <ReactMarkdown
+                    children={block['content']}
+                    components={{
+                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
-                    h2: ({ children }) => (
-                        <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                            {children}
-                        </Typography>
-                    ),
-                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+                        h2: ({ children }) => (
+                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                                {children}
+                            </Typography>
+                        ),
+                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
 
-                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
-                }}
-            />
+                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                    }}
+                />
+            );
         }
         if (block.type === 'expandable') {
-            return <Accordion>
-                <AccordionSummary expandIcon={<AddIcon />}>
-                    <Stack spacing={2}>
-                        <Typography
-                            sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                            {block.title}
-                        </Typography>
-                        {block['summary'] &&
-                            <Typography level="body1" sx = {{fontSize: '0.8rem'}}>
-                                {block['summary']}
-                            </Typography>}
-                    </Stack>
+            return (
+                <Accordion>
+                    <AccordionSummary expandIcon={<AddIcon />}>
+                        <Stack spacing={2}>
+                            <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                {block.title}
+                            </Typography>
+                            {block['summary'] && (
+                                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
+                                    {block['summary']}
+                                </Typography>
+                            )}
+                        </Stack>
+                    </AccordionSummary>
 
-                </AccordionSummary>
+                    <Divider />
 
-
-                <Divider />
-
-                <AccordionDetails style={{ backgroundColor: '#eeeeee' }} >
-                    <br />
-                    <Stack spacing={2}>
-                        {block.contents.map((element: any) => (
-                            getContent(element)
-                        ))}
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>;
+                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                        <br />
+                        <Stack spacing={2}>{block.contents.map((element: any) => getContent(element))}</Stack>
+                    </AccordionDetails>
+                </Accordion>
+            );
         }
     };
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
-    const reflectionTasks = experiment.days[0].tasks.filter(task => task.type === 'reflection');
+    const reflectionTasks = experiment.days[0].tasks.filter((task) => task.type === 'reflection');
     const prepExperimentTasks = prepExperiment ? prepExperiment.days[0].tasks : [];
 
     return (
-        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name}
-              ref={setPresentingElement}>
+        <Page
+            sx={{ height: '100%' }}
+            footerComponent={BoxesSubMenu()}
+            headerTitle={experiment.name}
+            ref={setPresentingElement}
+        >
             <Box sx={{ flex: 1, overflow: 'auto' }}>
                 <Card>
                     <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
                         {'OVERVIEW'}
                     </Typography>
                     {getExperimentDescription(experiment)}
-
                 </Card>
                 <br />
                 <br />
 
-                {prepExperiment && <Card>
-                    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
-                        {'PREPARATIONS FOR THIS EXPERIMENT'}
-                    </Typography>
-                    {getExperimentDescription(prepExperiment)}
-
-                </Card>}
+                {prepExperiment && (
+                    <Card>
+                        <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
+                            {'PREPARATIONS FOR THIS EXPERIMENT'}
+                        </Typography>
+                        {getExperimentDescription(prepExperiment)}
+                    </Card>
+                )}
                 <br />
             </Box>
-
 
             {experimentCompleted && (
                 <Stack spacing={2}>
