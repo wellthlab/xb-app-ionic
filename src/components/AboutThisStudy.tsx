@@ -39,6 +39,14 @@ const AboutThisStudy = function () {
                     </Accordion>
                 </div>
             );
+        }
+
+        if (block.type === 'image') {
+            return (
+                <div key={block}>
+                    <img src={block.src} alt={block.alt} />
+                </div>
+            );
         } else {
             return (
                 <ReactMarkdown
