@@ -38,10 +38,10 @@ import sleep_week2_2 from '../../experiments/sleep_week2_2.jpg';
 import sleep_week3_1 from '../../experiments/sleep_week3_1.jpg';
 import sleep_week4_1 from '../../experiments/sleep_week4_1.jpg';
 import move_week1_1 from '../../experiments/move_week1_1.jpg';
-import move_week1_2 from '../../experiments/move_week1_2.jpg';
-import move_week1_3 from '../../experiments/move_week1_3.jpg';
-import move_week4_1 from '../../experiments/move_week4_1.jpg';
-import move_week4_2 from '../../experiments/move_week4_2.jpg';
+import move_week1_2 from '../../assets/experiments/move_week1_2.jpg';
+import move_week1_3 from '../../assets/experiments/move_week1_3.jpg';
+import move_week4_1 from '../../assets/experiments/move_week4_1.jpg';
+import move_week4_2 from '../../assets/experiments/move_week4_2.jpg';
 
 
 import AccordionDetails from '@mui/material/AccordionDetails';
