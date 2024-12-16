@@ -11,9 +11,11 @@ import {
     Divider,
     ListDivider,
     Card,
-    List, Button,
+    List,
+    Button,
     ListItem,
-    ListItemContent, Link,
+    ListItemContent,
+    Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
 import dead_hang_prep_1 from '../../assets/experiments/dead_hang_prep_1.jpg';
@@ -36,7 +38,7 @@ import sleep_week1_2 from '../../assets/experiments/sleep_week1_2.jpg';
 import sleep_week2_1 from '../../assets/experiments/sleep_week2_1.jpg';
 import sleep_week2_2 from '../../assets/experiments/sleep_week2_2.jpg';
 import sleep_week3_1 from '../../assets/experiments/sleep_week3_1.jpg';
-import sleep_week4_1 from '../../assets/experiments/sleep_week4_1.jpg';
+import sleep_week4_1 from '../../assets/experiments/sleep_week4_1.png';
 import move_week1_1 from '../../assets/experiments/move_week1_1.jpg';
 import move_week1_2 from '../../assets/experiments/move_week1_2.jpg';
 import move_week1_3 from '../../assets/experiments/move_week1_3.jpg';
@@ -67,8 +69,8 @@ import { selectSubscriptionByExperimentId } from '../../slices/account';
 import { IExperiment } from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
-import ReactMarkdown from "react-markdown";
-import PageTitle from "../../components/foundation/PageTitle";
+import ReactMarkdown from 'react-markdown';
+import PageTitle from '../../components/foundation/PageTitle';
 
 const getImage = (imageName: string) => {
     switch (imageName) {
@@ -125,8 +127,8 @@ const getImage = (imageName: string) => {
         case "move_week4_2":
             return move_week4_2;
     }
-}
-const ExperimentTimeline = function() {
+};
+const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
 
