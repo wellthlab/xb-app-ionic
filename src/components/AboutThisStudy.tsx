@@ -71,11 +71,11 @@ const AboutThisStudy = function () {
     };
 
     return (
-        <div>
+        <Page>
             {study?.studyInfo.map((block, blockId) => getContent(block, blockId))}
             <br />
             <ConsentForm />
-        </div>
+        </Page>
     );
 };
 
