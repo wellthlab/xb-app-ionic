@@ -152,7 +152,7 @@ class experiment_creator(object):
 
          self.doc['days'].append(new_day)
 
-   def autocomplete(self, reflection_text='', add_context=True):
+   def autocomplete(self, reflection_text='', add_context=False):
       # Automatically adds context to all currently defined tasks, then adds a reflection task and make 4 copies of the day to fill out the week
 
       if add_context:

@@ -10,8 +10,11 @@ import AddIcon from "@mui/icons-material/Add";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Page from "./foundation/Page";
 import ConsentForm from "../screens/onboarding/Consent";
+import { useLocation } from 'react-router-dom';
 
 const AboutThisStudy = function () {
+    const location = useLocation();
+    const isAboutPage = location.pathname.includes('about');
     const { study, isPending } = useStudy();
 
     if (isPending) {
@@ -67,7 +70,7 @@ const AboutThisStudy = function () {
         <Page>
             {study?.studyInfo.map(block => getContent(block))}
             <br/>
-            <ConsentForm />
+            <ConsentForm isAboutPage={isAboutPage}/>
         </Page>
     );
 };

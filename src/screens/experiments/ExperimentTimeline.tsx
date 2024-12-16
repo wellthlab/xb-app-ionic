@@ -37,6 +37,12 @@ import sleep_week2_1 from '../../experiments/sleep_week2_1.jpg';
 import sleep_week2_2 from '../../experiments/sleep_week2_2.jpg';
 import sleep_week3_1 from '../../experiments/sleep_week3_1.jpg';
 import sleep_week4_1 from '../../experiments/sleep_week4_1.jpg';
+import move_week1_1 from '../../experiments/move_week1_1.jpg';
+import move_week1_2 from '../../experiments/move_week1_2.jpg';
+import move_week1_3 from '../../experiments/move_week1_3.jpg';
+import move_week4_1 from '../../experiments/move_week4_1.jpg';
+import move_week4_2 from '../../experiments/move_week4_2.jpg';
+
 
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -109,6 +115,17 @@ const getImage = (imageName: string) => {
             return sleep_week3_1;
         case "sleep_week4_1":
             return sleep_week4_1;
+
+        case "move_week1_1":
+            return move_week1_1;
+        case "move_week1_2":
+            return move_week1_2;
+        case "move_week1_3":
+            return move_week1_3;
+        case "move_week4_1":
+            return move_week4_1;
+        case "move_week4_2":
+            return move_week4_2;
     }
 }
 const ExperimentTimeline = function() {
@@ -288,6 +305,47 @@ const ExperimentTimeline = function() {
 
                 </Card>}
                 <br />
+
+                <Accordion variant="outlined">
+                    <AccordionSummary expandIcon={<AddIcon />}
+                    >
+                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
+                            {Strings.checks}
+                        </Typography>
+                    </AccordionSummary>
+                    <Divider />
+                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
+                        <Stack spacing={2} key={activeDay}>
+                            <TasksList
+                                tasks={experiment.days[activeDay].tasks}
+                                experimentId={experimentId}
+                                dayNum={activeDay}
+                                type={'normal'}
+                                onTaskClick={handleClickTask}
+                            />
+                        </Stack>
+                    </AccordionDetails>
+                </Accordion>
+
+                {reflectionTasks.length !== 0 && <Accordion variant="outlined">
+                    <AccordionSummary expandIcon={<AddIcon />}
+                    >
+                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
+                            {Strings.reflections}
+                        </Typography>
+                    </AccordionSummary>
+                    <Divider />
+                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
+                        <Stack spacing={2} key={activeDay}>
+                            <TasksList
+                                tasks={experiment.days[activeDay].tasks}
+                                experimentId={experimentId}
+                                dayNum={activeDay}
+                                type={'reflection'}
+                                onTaskClick={handleClickTask}
+                            />
+                        </Stack> </AccordionDetails>
+                </Accordion>}
             </Box>
 
 
@@ -296,6 +354,29 @@ const ExperimentTimeline = function() {
                     <Alert color="success">{Strings.congratulations_you_have}</Alert>
                 </Stack>
             )}
+
+            <TaskModal
+                isOpen={taskModalOpen}
+                onDismiss={() => handleDismissModal('normal')}
+                key={`${experimentId}.${dayNum}.${taskNum}.normal`}
+                experimentId={experimentId}
+                dayNum={dayNum}
+                taskNum={taskNum}
+                presentingElement={presentingElement}
+                isSubscribed={isSubscribedToExperiment}
+            />
+
+            {reflectionTasks.length !== 0 && <TaskModal
+                isOpen={reflectionModalOpen}
+                onDismiss={() => handleDismissModal('reflection')}
+                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
+                experimentId={experimentId}
+                dayNum={reflectionDayNum}
+                taskNum={reflectionTaskNum}
+                presentingElement={presentingElement}
+                isSubscribed={isSubscribedToExperiment}
+            />}
+
         </Page>
     );
 };

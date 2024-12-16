@@ -1,9 +1,9 @@
 const Strings = {
 	today : "Today",
 	boxes : "Boxes",
-	journal : "Journal",
+	journal : "Lab Book",
 	settings : "Settings",
-	teams : "Teams",
+    teams : "Teams",
 	email_is_missing : "Email is missing",
 	please_input_an_email_address : "Please input an email address",
 	password_is_missing : "Password is missing",

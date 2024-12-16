@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IonApp, IonRouterOutlet, IonTabs, IonTabBar, IonTabButton, IonLabel } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { IconContext, Users, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
+import { IconContext, Info, Gear, Cube, CalendarBlank, ListChecks } from 'phosphor-react';
 
 import { ThemeProvider, ColorModeController } from './theme';
 import store, { useSelector, useDispatch } from './slices/store';
@@ -41,6 +41,7 @@ import JournalTab from './screens/journal/Journal';
 
 import TodayTab from './screens/today/Today';
 import { AppDevice } from './models/Device';
+import AboutThisStudy from './components/AboutThisStudy';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -181,6 +182,10 @@ const App = function () {
                                                     <AllSettingsTab />
                                                 </Route>
 
+                                                <Route path="/main/about" exact>
+                                                    <AboutThisStudy />
+                                                </Route>
+
                                                 <Route path="/main/settings/about" exact>
                                                     <SettingsInformationScreen />
                                                 </Route>
@@ -206,6 +211,10 @@ const App = function () {
                                                 <IonTabButton tab="settings" href="/main/settings">
                                                     <Gear />
                                                     <IonLabel>{Strings.settings}</IonLabel>
+                                                </IonTabButton>
+                                                <IonTabButton tab="about" href="/main/about">
+                                                    <Info />
+                                                    <IonLabel>{Strings.about}</IonLabel>
                                                 </IonTabButton>
                                                 {/*This is hidden because the teams functionality is not fully built out yet*/}
                                                 {/*<IonTabButton tab="team" href="/main/team">*/}

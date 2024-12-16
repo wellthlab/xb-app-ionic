@@ -137,16 +137,7 @@ const Journal = function () {
             <Typography level="body1" sx={{ mb: 4 }}>
                 {Strings.a_summary_of_what_you_have}
             </Typography>
-
             <Tabs aria-label={Strings.journal_tabs} value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent' }}>
-                <TabList>
-                    <Tab variant={tabIndex === 0 ? 'solid' : 'plain'} color={tabIndex === 0 ? 'primary' : 'neutral'}>
-                        {Strings.daily}
-                    </Tab>
-                    <Tab variant={tabIndex === 1 ? 'solid' : 'plain'} color={tabIndex === 1 ? 'primary' : 'neutral'}>
-                        {Strings.weekly}
-                    </Tab>
-                </TabList>
                 <TabPanel value={0}>
                     <DateTimeField
                         value={currentDate}
@@ -288,9 +279,6 @@ const Journal = function () {
                             </ListItem>
                         </Collapse>
                     </List>
-                </TabPanel>
-                <TabPanel value={1} sx={{ p: 2 }}>
-                    {Strings.sorry_we_do_not_have_any_data}
                 </TabPanel>
             </Tabs>
 

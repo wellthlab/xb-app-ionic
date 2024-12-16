@@ -13,13 +13,16 @@ import useStudy from '../../hooks/useStudy';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
-const ConsentForm = function () {
+export interface IConsentFormProps {
+    isAboutPage: boolean
+}
+const ConsentForm = function ( {isAboutPage} :  IConsentFormProps) {
     const { study } = useStudy();
 
-    const initialFormState = React.useMemo(
+   const initialFormState = React.useMemo(
         () =>
             study!.consent.reduce((acc, v, i) => {
-                acc[`c${i}`] = false;
+                acc[`c${i}`] = isAboutPage;
                 return acc;
             }, {} as Record<string, boolean>),
         [study],
@@ -42,9 +45,9 @@ const ConsentForm = function () {
     });
 
     return (
-        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
+        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit} submitDisabled={isAboutPage}>
             {study!.consent.map((statement, i) => (
-                <Checkbox key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                <Checkbox isAboutPage={isAboutPage} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
             ))}
         </Form>
     );
