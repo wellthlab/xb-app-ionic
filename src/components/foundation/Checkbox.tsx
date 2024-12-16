@@ -4,15 +4,16 @@ import { Checkbox as JoyCheckbox, CheckboxProps, FormHelperText, FormControl } f
 export interface ICheckboxProps extends CheckboxProps {
     error?: boolean;
     helperText?: string;
-    isAboutPage?: boolean;
+    isEnrolled?: boolean;
 }
 
-const Checkbox = function ({ error, helperText, isAboutPage, ...others }: ICheckboxProps) {
-    const disabled = isAboutPage;
+const Checkbox = function ({ error, helperText, isEnrolled, ...others }: ICheckboxProps) {
+    const disabled = isEnrolled;
+    let {checked, ...otherProps} = others;
 
     return (
         <FormControl error={error}>
-            <JoyCheckbox disabled ={disabled} {...others} />
+            <JoyCheckbox disabled ={disabled} checked={checked} {...otherProps} />
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
         </FormControl>
     );

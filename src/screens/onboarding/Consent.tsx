@@ -10,21 +10,24 @@ import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
 
 import useStudy from '../../hooks/useStudy';
+import { useSelector } from '../../slices/store';
+import { selectIsEnrolled } from '../../slices/account';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
 const ConsentForm = function () {
     const { study } = useStudy();
     const location = useLocation();
-    const isAboutPage = location.pathname.includes('about');
+    const isEnrolled = useSelector(selectIsEnrolled);
 
    const initialFormState = React.useMemo(
-        () =>
-            study!.consent.reduce((acc, v, i) => {
-                acc[`c${i}`] = isAboutPage;
+        () => {
+            return study!.consent.reduce((acc, v, i) => {
+                acc[`c${i}`] = isEnrolled;
                 return acc;
-            }, {} as Record<string, boolean>),
-        [study, isAboutPage],
+            }, {} as Record<string, boolean>)
+        },
+        [study, isEnrolled],
     );
 
     const initialSchema = React.useMemo(() => {
@@ -34,19 +37,23 @@ const ConsentForm = function () {
         }, {} as Record<string, Yup.AnySchema>);
 
         return Yup.object().shape(schemaKeys);
-    }, [study]);
+    }, [study, isEnrolled]);
 
     const { getCheckboxProps, createHandleSubmit, form } = useForm(initialFormState, initialSchema);
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
-        history.push('/onboarding/profile');
+        if (isEnrolled) {
+            history.push('/onboarding/welcome/0');
+        } else {
+            history.push('/onboarding/profile');
+        }
     });
 
     return (
-        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit} submitDisabled={isAboutPage}>
+        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
             {study!.consent.map((statement, i) => (
-                <Checkbox isAboutPage={isAboutPage} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)}  />
             ))}
         </Form>
     );

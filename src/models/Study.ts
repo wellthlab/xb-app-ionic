@@ -6,7 +6,7 @@ export interface IStudy {
     studyInfo: Block[];
     consent: string[];
     profile: Block[];
-    welcome: { title: string; blocks: Block[] }[];
+    welcome: any[];
 }
 
 interface IStudyDocument extends Omit<IStudy, 'id'> {
