@@ -16,28 +16,28 @@ import {
     ListItemContent, Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
-import dead_hang_prep_1 from '../../experiments/dead_hang_prep_1.jpg';
-import dead_hang_prep_2 from '../../experiments/dead_hang_prep_2.jpg';
-import dead_hang_prep_3 from '../../experiments/dead_hang_prep_3.jpg';
-import muscle_contraction from '../../experiments/muscle_contraction.jpg';
-import prep_hanging from '../../experiments/prep_hanging.jpg';
-import sit_stand_1 from '../../experiments/sit_stand_1.jpg';
-import sit_stand_2 from '../../experiments/sit_stand_2.jpg';
-import eat_week1_1 from '../../experiments/eat_week1_1.jpg';
-import eat_week1_2 from '../../experiments/eat_week1_2.jpg';
-import eat_week1_3 from '../../experiments/eat_week1_3.jpg';
-import eat_week1_4 from '../../experiments/eat_week1_4.jpg';
-import eat_week2_1 from '../../experiments/eat_week2_1.jpg';
-import eat_week2_2 from '../../experiments/eat_week2_2.jpg';
-import eat_week2_3 from '../../experiments/eat_week2_3.jpg';
-import eat_week4_1 from '../../experiments/eat_week4_1.jpg';
-import sleep_week1_1 from '../../experiments/sleep_week1_1.jpg';
-import sleep_week1_2 from '../../experiments/sleep_week1_2.jpg';
-import sleep_week2_1 from '../../experiments/sleep_week2_1.jpg';
-import sleep_week2_2 from '../../experiments/sleep_week2_2.jpg';
-import sleep_week3_1 from '../../experiments/sleep_week3_1.jpg';
-import sleep_week4_1 from '../../experiments/sleep_week4_1.jpg';
-import move_week1_1 from '../../experiments/move_week1_1.jpg';
+import dead_hang_prep_1 from '../../assets/experiments/dead_hang_prep_1.jpg';
+import dead_hang_prep_2 from '../../assets/experiments/dead_hang_prep_2.jpg';
+import dead_hang_prep_3 from '../../assets/experiments/dead_hang_prep_3.jpg';
+import muscle_contraction from '../../assets/experiments/muscle_contraction.jpg';
+import prep_hanging from '../../assets/experiments/prep_hanging.jpg';
+import sit_stand_1 from '../../assets/experiments/sit_stand_1.jpg';
+import sit_stand_2 from '../../assets/experiments/sit_stand_2.jpg';
+import eat_week1_1 from '../../assets/experiments/eat_week1_1.jpg';
+import eat_week1_2 from '../../assets/experiments/eat_week1_2.jpg';
+import eat_week1_3 from '../../assets/experiments/eat_week1_3.jpg';
+import eat_week1_4 from '../../assets/experiments/eat_week1_4.jpg';
+import eat_week2_1 from '../../assets/experiments/eat_week2_1.jpg';
+import eat_week2_2 from '../../assets/experiments/eat_week2_2.jpg';
+import eat_week2_3 from '../../assets/experiments/eat_week2_3.jpg';
+import eat_week4_1 from '../../assets/experiments/eat_week4_1.jpg';
+import sleep_week1_1 from '../../assets/experiments/sleep_week1_1.jpg';
+import sleep_week1_2 from '../../assets/experiments/sleep_week1_2.jpg';
+import sleep_week2_1 from '../../assets/experiments/sleep_week2_1.jpg';
+import sleep_week2_2 from '../../assets/experiments/sleep_week2_2.jpg';
+import sleep_week3_1 from '../../assets/experiments/sleep_week3_1.jpg';
+import sleep_week4_1 from '../../assets/experiments/sleep_week4_1.jpg';
+import move_week1_1 from '../../assets/experiments/move_week1_1.jpg';
 import move_week1_2 from '../../assets/experiments/move_week1_2.jpg';
 import move_week1_3 from '../../assets/experiments/move_week1_3.jpg';
 import move_week4_1 from '../../assets/experiments/move_week4_1.jpg';
@@ -102,7 +102,6 @@ const getImage = (imageName: string) => {
             return eat_week2_3;
         case "eat_week4_1":
             return eat_week4_1;
-
         case "sleep_week1_1":
             return sleep_week1_1;
         case "sleep_week1_2":
@@ -115,7 +114,6 @@ const getImage = (imageName: string) => {
             return sleep_week3_1;
         case "sleep_week4_1":
             return sleep_week4_1;
-
         case "move_week1_1":
             return move_week1_1;
         case "move_week1_2":
