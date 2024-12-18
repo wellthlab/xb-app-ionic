@@ -54,10 +54,11 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile, startOfWeekRe
     const [cohortCode, setCohortCode] = React.useState( existingCohortName ? (existingCohortName as ICohort).name : "");
     const [startOfWeek, setStartOfWeek] = React.useState('Monday');
 
-    const [hasCohortCode, setHasCohortCode] = React.useState(isNewProfile || !!cohortId);
+    /*Hide cohort code and start of week selection for now*/
+    // const [hasCohortCode, setHasCohortCode] = React.useState(isNewProfile || !!cohortId);
     const [missingCohortCodeAlert, setMissingCohortCodeAlert] = React.useState(false);
     const [invalidCohortCodeAlert, setInvalidCohortCodeAlert] = React.useState(false);
-
+    const [hasCohortCode, setHasCohortCode] = React.useState(false);
 
     const { getInputProps, getCheckboxProps, createHandleSubmit, form } = useFormFromBlocks(study!.profile, profile);
 
@@ -90,22 +91,22 @@ const InnerForm = function ({ onSubmit, cohortIdRef, isNewProfile, startOfWeekRe
                     <TaskBlock block={block} key={blockId + Number(hasCohortCode)} inputs={{ getInputProps, getCheckboxProps }} />
                 ))}
 
+                {/*Hide cohort code and start of week selection for now*/}
+                {/*{!hasCohortCode && <Select disabled={!isNewProfile} label={'Start of Week'} options={Object.values(DayOfWeek).filter(item => typeof item === 'string') as string[]} value={startOfWeek} onChange={(event) => {setStartOfWeek(event.target.value)}}/>}*/}
 
-                {!hasCohortCode && <Select disabled={!isNewProfile} label={'Start of Week'} options={Object.values(DayOfWeek).filter(item => typeof item === 'string') as string[]} value={startOfWeek} onChange={(event) => {setStartOfWeek(event.target.value)}}/>}
-
-                <Stack spacing={2} alignItems="center">
-                    <FormControl >
-                        <Checkbox overlay defaultChecked={isNewProfile || !!cohortId} label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}
-                        />
-                    </FormControl>
-                    <Input fullWidth={true} value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!isNewProfile || !hasCohortCode} />
-                </Stack>
-                {missingCohortCodeAlert && <Alert color="danger">
-                    {Strings.cohort_code_required}
-                </Alert>}
-                {invalidCohortCodeAlert && <Alert color="danger">
-                    {Strings.cohort_code_invalid}
-                </Alert>}
+                {/*<Stack spacing={2} alignItems="center">*/}
+                {/*    <FormControl >*/}
+                {/*        <Checkbox overlay defaultChecked={isNewProfile || !!cohortId} label={Strings.has_cohort_code} onChange={() => setHasCohortCode(!hasCohortCode)} disabled = {!isNewProfile}*/}
+                {/*        />*/}
+                {/*    </FormControl>*/}
+                {/*    <Input fullWidth={true} value={cohortCode} onChange={(event) => setCohortCode(event.target.value)} placeholder={Strings.cohort_code} disabled={!isNewProfile || !hasCohortCode} />*/}
+                {/*</Stack>*/}
+                {/*{missingCohortCodeAlert && <Alert color="danger">*/}
+                {/*    {Strings.cohort_code_required}*/}
+                {/*</Alert>}*/}
+                {/*{invalidCohortCodeAlert && <Alert color="danger">*/}
+                {/*    {Strings.cohort_code_invalid}*/}
+                {/*</Alert>}*/}
             </Form>
         </React.Fragment>
     );

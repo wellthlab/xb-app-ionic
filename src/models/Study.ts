@@ -3,10 +3,10 @@ import { BaseModel, ObjectId } from './utils';
 
 export interface IStudy {
     id: string;
-    pis: string;
+    studyInfo: Block[];
     consent: string[];
     profile: Block[];
-    welcome: { title: string; blocks: Block[] }[];
+    welcome: any[];
 }
 
 interface IStudyDocument extends Omit<IStudy, 'id'> {

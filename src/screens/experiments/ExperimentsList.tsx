@@ -40,22 +40,22 @@ const ExperimentsListScreen = function () {
     const scheduledExperiments = useSelector(selectScheduledExperiments);
     const scheduledExperimentsByStartTime = new Map<number, IExperiment[]>();
     const getExperimentDescFirstParagraph = () => {
-        const paragraphs = thisBox.description!.filter(d => d['type'] === 'para');
+        const paragraphs = thisBox.description!.filter((d) => d['type'] === 'para');
         if (paragraphs.length > 0) {
-            return paragraphs[0]['content']
+            return paragraphs[0]['content'];
         } else {
             return null;
         }
-    }
+    };
     const getBoxDescription = () => {
-        return <Stack spacing={2}>
-            {thisBox.description!.map((element) => (
-                <div>
-                    {getContent(element)}
-                </div>
-            ))}
-        </Stack>;
-    }
+        return (
+            <Stack spacing={2}>
+                {thisBox.description!.map((element) => (
+                    <div>{getContent(element)}</div>
+                ))}
+            </Stack>
+        );
+    };
     const getContent = (block: any) => {
         if (block.type === 'para') {
             return (
@@ -78,38 +78,40 @@ const ExperimentsListScreen = function () {
         }
 
         if (block.type === 'image') {
-            return <img src={block.src} alt={block.alt} style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
+            return (
+                <img
+                    src={block.src}
+                    alt={block.alt}
+                    style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+                />
+            );
         }
 
         if (block.type === 'expandable') {
-            return <Accordion>
-                <AccordionSummary expandIcon={<AddIcon />}>
-                    <Typography
-                        sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                        {block.title}
-                    </Typography>
-                </AccordionSummary>
+            return (
+                <Accordion>
+                    <AccordionSummary expandIcon={<AddIcon />}>
+                        <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
+                            {block.title}
+                        </Typography>
+                    </AccordionSummary>
 
-                <Divider />
+                    <Divider />
 
-                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
-                    <br />
-                    <Stack spacing={2}>
-                        {block.contents.map((element: any) => (
-                            getContent(element)
-                        ))}
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>;
+                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                        <br />
+                        <Stack spacing={2}>{block.contents.map((element: any) => getContent(element))}</Stack>
+                    </AccordionDetails>
+                </Accordion>
+            );
         }
     };
 
     const getExperimentsGroupedByCategory = () => {
         const result = new Map();
-        Object.keys(ExperimentCategory)
-            .forEach((key) => {
-                result.set(key, []);
-            });
+        Object.keys(ExperimentCategory).forEach((key) => {
+            result.set(key, []);
+        });
 
         boxExperiments.reduce((map, experiment) => {
             if (iSubscribedToExperiment(experiment)) {
@@ -148,8 +150,9 @@ const ExperimentsListScreen = function () {
     };
 
     const getScheduledStartTime = (experiment: IExperiment) => {
-        return scheduledExperiments.find((schedule) => schedule.experiments.map(e => e.toString()).includes(experiment.id))
-            ?.startTimeUTC;
+        return scheduledExperiments.find((schedule) =>
+            schedule.experiments.map((e) => e.toString()).includes(experiment.id),
+        )?.startTimeUTC;
     };
 
     const iSubscribedToExperiment = (experiment: IExperiment) => {
@@ -193,7 +196,7 @@ const ExperimentsListScreen = function () {
     const history = useHistory();
     const handleGoBack = function () {
         history.goBack();
-    }
+    };
 
     return (
         <IonPage>
@@ -260,7 +263,15 @@ const ExperimentsListScreen = function () {
                             </Box>
                         </Box>
 
-                        <div></div>
+                        {thisBox.overlayText && (
+                            <Box sx={{ mr: 'auto', my: 'auto', p: 2 }}>
+                                <Box sx={{ p: 2, w: '100%', maxWidth: 450, bgcolor: `rgba(${thisBox.color},0.55)` }}>
+                                    <Typography level="h5" textColor="common.white">
+                                        {thisBox.overlayText}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        )}
 
                         <Button
                             variant="plain"
@@ -277,20 +288,26 @@ const ExperimentsListScreen = function () {
                 {thisBox.description && !thisBox.heroImageSrc && (
                     <React.Fragment>
                         <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
-                        <Typography level="h6" sx={{ mb: 4, fontSize: '0.8rem'  }}>
+                        <Typography level="h6" sx={{ mb: 4, fontSize: '0.8rem' }}>
                             {getExperimentDescFirstParagraph()}
                         </Typography>
                     </React.Fragment>
                 )}
-                {thisBox.description &&
-                    <Card variant="plain" ref={mainSectionRef}
-                          sx={{
-                              alignSelf: 'center',
-                              ml: 1,
-                              mr: 1,
-                          }}>{getBoxDescription()}</Card>}
+                {thisBox.description && (
+                    <Card
+                        variant="plain"
+                        ref={mainSectionRef}
+                        sx={{
+                            alignSelf: 'center',
+                            ml: 1,
+                            mr: 1,
+                        }}
+                    >
+                        {getBoxDescription()}
+                    </Card>
+                )}
 
-                <Container >
+                <Container>
                     <Stack spacing={2}>
                         {type === 'move' && <ExerciseWarning />}
                         <ExperimentsList
@@ -305,7 +322,7 @@ const ExperimentsListScreen = function () {
             </IonContent>
             <IonFooter>
                 <IonToolbar>
-                <BoxesSubMenu />
+                    <BoxesSubMenu />
                 </IonToolbar>
             </IonFooter>
         </IonPage>

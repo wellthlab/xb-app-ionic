@@ -18,6 +18,7 @@ const Form = function ({
     children,
     footer,
     submitLabel,
+    submitDisabled,
     submitButtonColor,
     message,
     messageColor = 'danger',
@@ -42,7 +43,7 @@ const Form = function ({
             </Stack>
 
             <Button
-                disabled={pending}
+                disabled={pending || submitDisabled}
                 loading={pending}
                 loadingPosition="start"
                 onClick={handleSubmit}

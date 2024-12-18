@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict';
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import Page from '../../components/foundation/Page';
@@ -10,30 +10,24 @@ import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
 
 import useStudy from '../../hooks/useStudy';
+import { useSelector } from '../../slices/store';
+import { selectIsEnrolled } from '../../slices/account';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
-const Consent = function () {
-    const { isPending } = useStudy();
-
-    return (
-        <Page>
-            <PageTitle sx = {{fontSize: '1.5rem'}}>{Strings.just_a_few_things}</PageTitle>
-            {isPending ? 'Loading...' : <ConsentForm />}
-        </Page>
-    );
-};
-
 const ConsentForm = function () {
     const { study } = useStudy();
+    const location = useLocation();
+    const isEnrolled = useSelector(selectIsEnrolled);
 
-    const initialFormState = React.useMemo(
-        () =>
-            study!.consent.reduce((acc, v, i) => {
-                acc[`c${i}`] = false;
+   const initialFormState = React.useMemo(
+        () => {
+            return study!.consent.reduce((acc, v, i) => {
+                acc[`c${i}`] = isEnrolled;
                 return acc;
-            }, {} as Record<string, boolean>),
-        [study],
+            }, {} as Record<string, boolean>)
+        },
+        [study, isEnrolled],
     );
 
     const initialSchema = React.useMemo(() => {
@@ -43,22 +37,26 @@ const ConsentForm = function () {
         }, {} as Record<string, Yup.AnySchema>);
 
         return Yup.object().shape(schemaKeys);
-    }, [study]);
+    }, [study, isEnrolled]);
 
     const { getCheckboxProps, createHandleSubmit, form } = useForm(initialFormState, initialSchema);
 
     const history = useHistory();
     const handleSubmit = createHandleSubmit(() => {
-        history.push('/onboarding/profile');
+        if (isEnrolled) {
+            history.push('/onboarding/welcome/0');
+        } else {
+            history.push('/onboarding/profile');
+        }
     });
 
     return (
         <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
             {study!.consent.map((statement, i) => (
-                <Checkbox sx = {{fontSize: '0.8rem'}} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)}  />
             ))}
         </Form>
     );
 };
 
-export default Consent;
+export default  ConsentForm;

@@ -1,9 +1,9 @@
 const Strings = {
 	today : "Today",
 	boxes : "Boxes",
-	journal : "Journal",
+	journal : "Lab Book",
 	settings : "Settings",
-	teams : "Teams",
+    teams : "Teams",
 	email_is_missing : "Email is missing",
 	please_input_an_email_address : "Please input an email address",
 	password_is_missing : "Password is missing",
@@ -13,7 +13,7 @@ const Strings = {
 	user_denied_permissions : "User denied permissions!",
 	sorry_the_invite_code_did_not : "Sorry, the invite code did not correspond to any team",
 	this_method_should_only_be : "This method should only be called when user is authenticated",
-	welcome_to_spring_2023_xb : "Welcome to Spring 2023 XB demo! Please choose a box below to get started.",
+	welcome_to_xb : "By clicking on any of these boxes, below, you can take a look at each of the experiments in each box.",
 	pick_an_experiment : "Pick an Experiment",
 	day: "Day",
     days: "Days",
@@ -164,7 +164,7 @@ const Strings = {
     confirm_restart_subscription: "Are you sure you want to restart this subscription?. You will lose all progress with your current subscription!",
     confirm_experiment_selection: "Do you want to subscribe to these selected experiments: ",
     confirm_experiment_subscription: "Do you want to subscribe to this box ?",
-    subscribe_to_box: "Subscribe to this box",
+    subscribe_to_box: "Like the look of this box? Subscribe to join in!",
     already_subscribed: "You are subscribed to this box",
     confirm_subscription: "Confirm Subscription",
 	confirm_resubscription: "Confirm Resubscription",
@@ -179,7 +179,7 @@ const Strings = {
 	next_experiment: "Start the Next Experiment",
     active_experiments: "ACTIVE EXPERIMENTS",
     suggested_experiments: "SUGGESTED EXPERIMENTS",
-    available_experiments: "AVAILABLE EXPERIMENTS",
+    available_experiments: "CLICK any of these BOXES to see Each Week’s Experiment",
     completed_experiments: "COMPLETED EXPERIMENTS",
     scheduled_experiments: "SCHEDULED EXPERIMENTS",
     no_experiments_in_category: "You do not have any experiments in this category at the moment",
@@ -197,6 +197,7 @@ const Strings = {
     reflections: 'REFLECTIONS',
     checks: 'CHECKS',
     tips: 'TIPS',
+    preview: 'PREVIEW of '
 };
 
 export default Strings;

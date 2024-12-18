@@ -16,6 +16,8 @@ import {
     subscribeToExperiments,
 } from '../../../slices/account';
 import { DayOfWeek } from '../../../models/Account';
+import PageTitle from "../../../components/foundation/PageTitle";
+import ReactMarkdown from "react-markdown";
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
@@ -130,14 +132,6 @@ const ExperimentsList = function ({
         }
     }
 
-    const getExperimentDescFirstParagraph = (experiment: IExperiment) => {
-        const sorted = _.sortBy(experiment.desc.filter(d => d['type'] === 'para'), ['index']);
-        if (sorted.length > 0) {
-            return sorted[0]['content']
-        } else {
-            return null;
-        }
-    }
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <Stack spacing={2}>
             <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg',fontSize: '0.9rem'}}>
@@ -150,8 +144,6 @@ const ExperimentsList = function ({
                             <Stack spacing={2}>
                                 <Typography level="body1" sx={{ mb: 1, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic', fontSize: '0.8rem' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
                                 {scheduledExperiments.map(experiment => {
-                                    let firstDescPara = getExperimentDescFirstParagraph(experiment);
-
                                     return (
                                         <Card
                                             key={experiment.id}
@@ -173,9 +165,7 @@ const ExperimentsList = function ({
                                                     }}
                                                 >
                                                 </Link>
-                                                {firstDescPara && <Typography level="body2" sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
-                                                <Typography
-                                                    level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
+                                                <Typography level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
                                     );
@@ -197,7 +187,6 @@ const ExperimentsList = function ({
             {experiments
                 .sort((e1, e2) => e1.boxweek - e2.boxweek )
                 .map((experiment) => {
-                    let firstDescPara = getExperimentDescFirstParagraph(experiment);
                     const completion = completionByExperimentId[experiment.id];
                     return (
                         <Card
@@ -221,8 +210,6 @@ const ExperimentsList = function ({
                                     }}
                                 >
                                 </Link>
-                                {firstDescPara && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara} </Typography>}
-
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
                                         <Typography level="body3">
@@ -257,19 +244,26 @@ const ExperimentsList = function ({
 
     return (
         <div>
+            {!userInCohort &&
+                <div>
+                    <Button
+                        onClick={toggleSubscriptionModal}
+                        style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', fontSize: '0.8rem'}}
+                        disabled={isSubscribedToBox()}
+                    >
+                        {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
+                    </Button>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+            }
+
             <Stack spacing={5}>
                 {Array.from(experimentsGroupedByCategory).map(([experimentCategory, experiments]) => {
                     return getBody(experimentCategory, experiments);
                 })}
             </Stack>
-
-            {!userInCohort && <Button
-                onClick={toggleSubscriptionModal}
-                style={{left: "12.5%", width: "70%"}} sx={{ mb: 2, mt: 4, fontWeight: 'lg', }}
-                disabled={isSubscribedToBox()}
-            >
-                {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
-            </Button>}
 
             <Modal
                 headerTitle={Strings.confirm_subscription}

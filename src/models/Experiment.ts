@@ -5,12 +5,13 @@ import { Record } from 'phosphor-react';
 export interface IBox {
     id: string;
     name: string;
-    description?:  any[];
+    description?: any[];
     heroImageSrc?: string;
     icon: string;
     disabled?: boolean;
     color?: string;
     beginAtUserStartOfWeek?: boolean;
+    overlayText?: string;
 }
 
 interface IBoxDocument extends IBox {
@@ -28,11 +29,11 @@ interface IBaseExperiment {
 }
 
 export enum ExperimentCategory {
-    ACTIVE = "ACTIVE",
-    SUGGESTED = "SUGGESTED",
-    AVAILABLE = "AVAILABLE",
-    COMPLETED = "COMPLETED",
-    SCHEDULED = "SCHEDULED"
+    ACTIVE = 'ACTIVE',
+    SUGGESTED = 'SUGGESTED',
+    AVAILABLE = 'AVAILABLE',
+    COMPLETED = 'COMPLETED',
+    SCHEDULED = 'SCHEDULED',
 }
 
 export interface IExperimentSchedule {
@@ -96,7 +97,8 @@ export type Block =
     | ICountdownTimer
     | IMovementRecorder
     | IMovementPicker
-    | ISelectSubscription;
+    | ISelectSubscription
+    | IDateInput;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -115,6 +117,10 @@ interface IText {
 
 interface ITextInput extends IGenericInput {
     type: 'text-input';
+}
+
+interface IDateInput extends IGenericInput {
+    type: 'date-input';
 }
 
 interface ICheckbox extends IGenericInput {
@@ -224,12 +230,12 @@ class Experiment extends BaseModel {
     static async getExperiments(): Promise<IExperiment[]> {
         const db = this.getDb();
         const records = await db.collection<IExperimentDocument>('experiments').find();
-        records.forEach(record => convertObjectIdFieldsToString(record));
+        records.forEach((record) => convertObjectIdFieldsToString(record));
 
-        return records.map(record => {
-             const asGenericExperiment= record as unknown as IExperiment;
-             asGenericExperiment.id = record._id as unknown as string;
-             return asGenericExperiment;
+        return records.map((record) => {
+            const asGenericExperiment = (record as unknown) as IExperiment;
+            asGenericExperiment.id = (record._id as unknown) as string;
+            return asGenericExperiment;
         });
     }
 

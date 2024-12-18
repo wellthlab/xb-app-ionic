@@ -13,7 +13,7 @@ const Strings = {
 	user_denied_permissions : "¡Permisos denegados al usuario!",
 	sorry_the_invite_code_did_not : "Lo sentimos el código de invitación no correspondía a ningún equipo",
 	this_method_should_only_be : "Este método solo debe llamarse cuando el usuario está autenticado",
-	welcome_to_spring_2023_xb : "¡Bienvenido a la demostración de XB de primavera de 2023! Elija un cuadro a continuación para comenzar.",
+	welcome_to_xb : "¡Bienvenido a la demostración de XB de primavera de 2023! Elija un cuadro a continuación para comenzar.",
 	pick_an_experiment : "Elija un experimento",
 	day: "Día",
     days: "Días",

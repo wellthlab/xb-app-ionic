@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
@@ -23,11 +23,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 
 import { useSelector } from '../../slices/store';
-import { selectTodaysTasks } from '../../slices/experiments';
+import {selectAllBoxes, selectBoxByExperimentId, selectTodaysTasks} from '../../slices/experiments';
 import { IExperiment } from '../../models/Experiment';
 
 const Today = function() {
     const tasksByExperiment = useSelector(selectTodaysTasks);
+    const history = useHistory();
+    const boxes = useSelector(selectAllBoxes);
+    const selectBoxName = (boxId: string) => boxes.find(box => box.id === boxId)!.name;
 
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
     const [modalOpen, setModalOpen] = React.useState(false);
@@ -42,6 +45,8 @@ const Today = function() {
     const [reflectionTaskNum, setReflectionTaskNum] = React.useState(0);
 
     if (!tasksByExperiment.length) {
+        history.push("/main/box");
+        // user should be redirected to the boxes page if they do not have any task for the day
         return (
             <Page>
                 <Centre>
@@ -104,7 +109,7 @@ const Today = function() {
                                 <EntryIcon experimentId={entry.experiment.id} dayNum={entry.day} />
 
                                 <div>
-                                    <Typography sx={{fontSize: '1rem'}} level="h6">{entry.experiment.name}</Typography>
+                                    <Button sx={{fontSize: '0.8rem'}} color="neutral" size="sm" variant="soft" onClick={() => history.push(`/main/box/${selectBoxName(entry.experiment.boxId)}/${entry.experiment.id}`)}>{entry.experiment.name}</Button>
                                     <Typography level="body2">
                                         {Strings.day} {entry.day + 1}
                                     </Typography>
@@ -183,38 +188,6 @@ const Today = function() {
                                                 onTaskClick={handleClickTask}
                                             />
                                         </Stack> </AccordionDetails>
-                                </Accordion>}
-
-                                {entry.experiment.tips.length !== 0 && <Accordion variant="outlined">
-                                    <AccordionSummary expandIcon={<AddIcon />}
-                                    >
-                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                            {Strings.tips}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}> <br />
-                                        <List sx={{marginBlockStart: -2}}>
-                                            {entry.experiment.tips.map((tip, index) => {
-                                                return <div>
-                                                    <ListItem sx={{ display: 'list-item' }}>
-                                                        <ListItemContent>
-                                                            <Typography sx={{fontSize: '0.8rem'}}>
-                                                                {tip}
-                                                            </Typography>
-                                                        </ListItemContent>
-                                                    </ListItem>
-
-                                                    {index !== entry.experiment.tips.length -1 &&
-                                                        <div>
-                                                            <ListDivider />
-                                                            <br />
-                                                        </div>
-                                                    }
-                                                </div>;
-                                            })}
-                                        </List>
-                                    </AccordionDetails>
                                 </Accordion>}
                             </Stack>
                         </Stack>
