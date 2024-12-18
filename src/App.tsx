@@ -151,7 +151,7 @@ const App = function () {
                                         <IonTabs>
                                             <IonRouterOutlet>
                                                 <Route path="/main" exact>
-                                                    <Redirect to="/main/today" />
+                                                    <Redirect to="/main/today/onlogin" />
                                                 </Route>
 
                                                 <Route path="/main/team" exact>
@@ -171,6 +171,14 @@ const App = function () {
                                                 </Route>
 
                                                 <Route path="/main/today" exact>
+                                                    <TodayTab />
+                                                </Route>
+
+                                                <Route path="/main/today/onlogin" exact>
+                                                    <TodayTab />
+                                                </Route>
+
+                                                <Route path="/main/today/demo/:box" exact>
                                                     <TodayTab />
                                                 </Route>
 
