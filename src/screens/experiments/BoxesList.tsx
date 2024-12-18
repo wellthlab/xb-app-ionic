@@ -27,9 +27,9 @@ const BoxesList = function () {
     return (
         <Page>
             <PageTitle sx={{ mb: 2 }}>{Strings.boxes}</PageTitle>
-            <Typography level="body1" sx={{ mb: 4 }}>
-                {Strings.welcome_to_spring_2023_xb}
-            </Typography>
+            {/*<Typography level="body1" sx={{ mb: 4 }}>*/}
+            {/*    {Strings.welcome_to_xb}*/}
+            {/*</Typography>*/}
 
             <Stack spacing={1}>
                 {boxes.map((box) => {

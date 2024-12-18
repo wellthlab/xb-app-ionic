@@ -132,14 +132,6 @@ const ExperimentsList = function ({
         }
     }
 
-    const getExperimentDescFirstParagraph = (experiment: IExperiment) => {
-        const sorted = _.sortBy(experiment.desc.filter(d => d['type'] === 'para' || d['type'] === 'markdown'), ['index']);
-        if (sorted.length > 0) {
-            return {type: sorted[0]['type'], content: sorted[0]['content'] }
-        } else {
-            return null;
-        }
-    }
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <Stack spacing={2}>
             <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg',fontSize: '0.9rem'}}>
@@ -152,8 +144,6 @@ const ExperimentsList = function ({
                             <Stack spacing={2}>
                                 <Typography level="body1" sx={{ mb: 1, mt: 2, fontWeight: 'lg', textAlign:"center", fontStyle: 'italic', fontSize: '0.8rem' }} > {Strings.starting_on} {new Date(startUTCTime).toDateString()} </Typography>
                                 {scheduledExperiments.map(experiment => {
-                                    let firstDescPara = getExperimentDescFirstParagraph(experiment);
-
                                     return (
                                         <Card
                                             key={experiment.id}
@@ -175,26 +165,7 @@ const ExperimentsList = function ({
                                                     }}
                                                 >
                                                 </Link>
-                                                {firstDescPara && firstDescPara['type'] === 'para' && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara["content"]} </Typography>}
-                                                {firstDescPara && firstDescPara['type'] === 'markdown' &&
-                                                    <ReactMarkdown
-                                                        children={firstDescPara["content"]}
-                                                        components={{
-                                                            h1: ({ children }) => <PageTitle>{children}</PageTitle>,
-
-                                                            h2: ({ children }) => (
-                                                                <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                                                                    {children}
-                                                                </Typography>
-                                                            ),
-                                                            li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-
-                                                            p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem'  }}>{children}</Typography>,
-
-                                                            a: ({ children, href }) => <Link href={href}>{children}</Link>,
-                                                        }}
-                                                    />}                                                <Typography
-                                                    level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
+                                                <Typography level="body3">{experiment.days.length} {Strings.day_s_}</Typography>
                                             </Stack>
                                         </Card>
                                     );
@@ -216,7 +187,6 @@ const ExperimentsList = function ({
             {experiments
                 .sort((e1, e2) => e1.boxweek - e2.boxweek )
                 .map((experiment) => {
-                    let firstDescPara = getExperimentDescFirstParagraph(experiment);
                     const completion = completionByExperimentId[experiment.id];
                     return (
                         <Card
@@ -240,25 +210,6 @@ const ExperimentsList = function ({
                                     }}
                                 >
                                 </Link>
-                                {firstDescPara && firstDescPara['type'] === 'para' && <Typography level="body2"  sx={{fontSize: '0.8rem'}}> {firstDescPara["content"]} </Typography>}
-                                {firstDescPara && firstDescPara['type'] === 'markdown' &&
-                                    <ReactMarkdown
-                                    children={firstDescPara["content"]}
-                                    components={{
-                                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
-
-                                        h2: ({ children }) => (
-                                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                                                {children}
-                                            </Typography>
-                                        ),
-                                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-
-                                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
-
-                                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
-                                    }}
-                                />}
                                 {completion !== undefined ? (
                                     <Stack direction="row" spacing={2} alignItems="center">
                                         <Typography level="body3">

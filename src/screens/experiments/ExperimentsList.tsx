@@ -266,7 +266,7 @@ const ExperimentsListScreen = function () {
                         {thisBox.overlayText && (
                             <Box sx={{ mr: 'auto', my: 'auto', p: 2 }}>
                                 <Box sx={{ p: 2, w: '100%', maxWidth: 450, bgcolor: `rgba(${thisBox.color},0.55)` }}>
-                                    <Typography level="h3" textColor="common.white">
+                                    <Typography level="h5" textColor="common.white">
                                         {thisBox.overlayText}
                                     </Typography>
                                 </Box>

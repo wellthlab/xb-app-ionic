@@ -306,46 +306,46 @@ const ExperimentTimeline = function () {
                 </Card>}
                 <br />
 
-                <Accordion variant="outlined">
-                    <AccordionSummary expandIcon={<AddIcon />}
-                    >
-                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                            {Strings.checks}
-                        </Typography>
-                    </AccordionSummary>
-                    <Divider />
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>
-                        <Stack spacing={2} key={activeDay}>
-                            <TasksList
-                                tasks={experiment.days[activeDay].tasks}
-                                experimentId={experimentId}
-                                dayNum={activeDay}
-                                type={'normal'}
-                                onTaskClick={handleClickTask}
-                            />
-                        </Stack>
-                    </AccordionDetails>
-                </Accordion>
+                {/*<Accordion variant="outlined">*/}
+                {/*    <AccordionSummary expandIcon={<AddIcon />}*/}
+                {/*    >*/}
+                {/*        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>*/}
+                {/*            {Strings.checks}*/}
+                {/*        </Typography>*/}
+                {/*    </AccordionSummary>*/}
+                {/*    <Divider />*/}
+                {/*    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}>*/}
+                {/*        <Stack spacing={2} key={activeDay}>*/}
+                {/*            <TasksList*/}
+                {/*                tasks={experiment.days[activeDay].tasks}*/}
+                {/*                experimentId={experimentId}*/}
+                {/*                dayNum={activeDay}*/}
+                {/*                type={'normal'}*/}
+                {/*                onTaskClick={handleClickTask}*/}
+                {/*            />*/}
+                {/*        </Stack>*/}
+                {/*    </AccordionDetails>*/}
+                {/*</Accordion>*/}
 
-                {reflectionTasks.length !== 0 && <Accordion variant="outlined">
-                    <AccordionSummary expandIcon={<AddIcon />}
-                    >
-                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                            {Strings.reflections}
-                        </Typography>
-                    </AccordionSummary>
-                    <Divider />
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
-                        <Stack spacing={2} key={activeDay}>
-                            <TasksList
-                                tasks={experiment.days[activeDay].tasks}
-                                experimentId={experimentId}
-                                dayNum={activeDay}
-                                type={'reflection'}
-                                onTaskClick={handleClickTask}
-                            />
-                        </Stack> </AccordionDetails>
-                </Accordion>}
+                {/*{reflectionTasks.length !== 0 && <Accordion variant="outlined">*/}
+                {/*    <AccordionSummary expandIcon={<AddIcon />}*/}
+                {/*    >*/}
+                {/*        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>*/}
+                {/*            {Strings.reflections}*/}
+                {/*        </Typography>*/}
+                {/*    </AccordionSummary>*/}
+                {/*    <Divider />*/}
+                {/*    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>*/}
+                {/*        <Stack spacing={2} key={activeDay}>*/}
+                {/*            <TasksList*/}
+                {/*                tasks={experiment.days[activeDay].tasks}*/}
+                {/*                experimentId={experimentId}*/}
+                {/*                dayNum={activeDay}*/}
+                {/*                type={'reflection'}*/}
+                {/*                onTaskClick={handleClickTask}*/}
+                {/*            />*/}
+                {/*        </Stack> </AccordionDetails>*/}
+                {/*</Accordion>}*/}
             </Box>
 
 
