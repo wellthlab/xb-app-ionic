@@ -1,6 +1,6 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Button, Stack, Typography } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
@@ -23,13 +23,39 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 
 import { useSelector } from '../../slices/store';
-import {selectAllBoxes, selectBoxByExperimentId, selectTodaysTasks} from '../../slices/experiments';
-import { IExperiment } from '../../models/Experiment';
+import {
+    selectAllBoxes,
+    selectAllExperiments,
+    selectTodaysTasks,
+} from '../../slices/experiments';
+import experiment, { IExperiment } from '../../models/Experiment';
 
 const Today = function() {
-    const tasksByExperiment = useSelector(selectTodaysTasks);
-    const history = useHistory();
+    const location = useLocation();
+    const params = useParams<{ box: string }>();
+    const isOnLogin = location.pathname.includes('onlogin');
+    const isDemo = location.pathname.includes('demo');
+
     const boxes = useSelector(selectAllBoxes);
+    const allExperiments = useSelector(selectAllExperiments);
+    let tasksByExperiment = useSelector(selectTodaysTasks);
+
+    // This is a hack so that the tasks for all experiments for a given box can be viewed for demo purposes
+    if (isDemo) {
+        const demoTasks = Object
+            .values(allExperiments)
+            .filter(experiment => experiment.boxId === boxes.find(box => box.name === params.box)!.id)
+            .sort((e1, e2) => e1.boxweek - e2.boxweek)
+            .map(experiment => {
+                return {
+                    experiment: experiment,
+                    day: 0,
+                };
+            });
+        tasksByExperiment = demoTasks;
+    }
+
+    const history = useHistory();
     const selectBoxName = (boxId: string) => boxes.find(box => box.id === boxId)!.name;
 
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
@@ -44,30 +70,8 @@ const Today = function() {
     const [reflectionDayNum, setReflectionDayNum] = React.useState<number>(0);
     const [reflectionTaskNum, setReflectionTaskNum] = React.useState(0);
 
-    if (!tasksByExperiment.length) {
+    if (isOnLogin && !tasksByExperiment.length) {
         history.push("/main/box");
-        // user should be redirected to the boxes page if they do not have any task for the day
-        return (
-            <Page>
-                <Centre>
-                    <Stack spacing={1}>
-                        <Typography level="h6" component="p">
-                            {Strings.you_havent_got_any_task_today}
-                        </Typography>
-
-                        <Typography level="body2">
-                            {Strings.explore_what_you_can_do_in}
-                            <br />
-                            <br />
-                        </Typography>
-
-                        <Button component={Link} to="/main/box">
-                            {Strings.click_here_to_find_some}
-                        </Button>
-                    </Stack>
-                </Centre>
-            </Page>
-        );
     }
 
     const handleDismissModal = function(type: string) {
@@ -96,10 +100,30 @@ const Today = function() {
     const getReflectionTasks = (experiment: IExperiment) => {
         return experiment.days[0].tasks.filter(task => task.type === 'reflection');
     };
-    return (
+
+    return !tasksByExperiment.length ? (
+        <Page>
+            <Centre>
+                <Stack spacing={1}>
+                    <Typography level="h6" component="p">
+                        {Strings.you_havent_got_any_task_today}
+                    </Typography>
+
+                    <Typography level="body2">
+                        {Strings.explore_what_you_can_do_in}
+                        <br />
+                        <br />
+                    </Typography>
+
+                    <Button component={Link} to="/main/box">
+                        {Strings.click_here_to_find_some}
+                    </Button>
+                </Stack>
+            </Centre>
+        </Page>
+    ) : (
         <Page ref={setPresentingElement}>
             <PageTitle sx={{fontSize: '1.5rem'}}>{Strings.todays_experiments}</PageTitle>
-
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
