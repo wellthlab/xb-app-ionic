@@ -18,34 +18,6 @@ import {
     Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
-import dead_hang_prep_1 from '../../assets/experiments/dead_hang_prep_1.jpg';
-import dead_hang_prep_2 from '../../assets/experiments/dead_hang_prep_2.jpg';
-import dead_hang_prep_3 from '../../assets/experiments/dead_hang_prep_3.jpg';
-import muscle_contraction from '../../assets/experiments/muscle_contraction.jpg';
-import prep_hanging from '../../assets/experiments/prep_hanging.jpg';
-import sit_stand_1 from '../../assets/experiments/sit_stand_1.jpg';
-import sit_stand_2 from '../../assets/experiments/sit_stand_2.jpg';
-import eat_week1_1 from '../../assets/experiments/eat_week1_1.jpg';
-import eat_week1_2 from '../../assets/experiments/eat_week1_2.jpg';
-import eat_week1_3 from '../../assets/experiments/eat_week1_3.jpg';
-import eat_week1_4 from '../../assets/experiments/eat_week1_4.jpg';
-import eat_week2_1 from '../../assets/experiments/eat_week2_1.jpg';
-import eat_week2_2 from '../../assets/experiments/eat_week2_2.jpg';
-import eat_week2_3 from '../../assets/experiments/eat_week2_3.jpg';
-import eat_week4_1 from '../../assets/experiments/eat_week4_1.jpg';
-import sleep_week1_1 from '../../assets/experiments/sleep_week1_1.jpg';
-import sleep_week1_2 from '../../assets/experiments/sleep_week1_2.jpg';
-import sleep_week2_1 from '../../assets/experiments/sleep_week2_1.jpg';
-import sleep_week2_2 from '../../assets/experiments/sleep_week2_2.jpg';
-import sleep_week3_1 from '../../assets/experiments/sleep_week3_1.jpg';
-import sleep_week4_1 from '../../assets/experiments/sleep_week4_1.png';
-import move_week1_1 from '../../assets/experiments/move_week1_1.jpg';
-import move_week1_2 from '../../assets/experiments/move_week1_2.jpg';
-import move_week1_3 from '../../assets/experiments/move_week1_3.jpg';
-import move_week4_1 from '../../assets/experiments/move_week4_1.jpg';
-import move_week4_2 from '../../assets/experiments/move_week4_2.jpg';
-
-
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
@@ -72,62 +44,8 @@ import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
 import ReactMarkdown from 'react-markdown';
 import PageTitle from '../../components/foundation/PageTitle';
 
-const getImage = (imageName: string) => {
-    switch (imageName) {
-        case "dead_hang_prep_1":
-            return dead_hang_prep_1;
-        case "dead_hang_prep_2":
-            return dead_hang_prep_2;
-        case "dead_hang_prep_3":
-            return dead_hang_prep_3;
-        case "muscle_contraction":
-            return muscle_contraction;
-        case "prep_hanging":
-            return prep_hanging;
-        case "sit_stand_1":
-            return sit_stand_1;
-        case "sit_stand_2":
-            return sit_stand_2;
-        case "eat_week1_1":
-            return eat_week1_1;
-        case "eat_week1_2":
-            return eat_week1_2;
-        case "eat_week1_3":
-            return eat_week1_3;
-        case "eat_week1_4":
-            return eat_week1_4;
-        case "eat_week2_1":
-            return eat_week2_1;
-        case "eat_week2_2":
-            return eat_week2_2;
-        case "eat_week2_3":
-            return eat_week2_3;
-        case "eat_week4_1":
-            return eat_week4_1;
-        case "sleep_week1_1":
-            return sleep_week1_1;
-        case "sleep_week1_2":
-            return sleep_week1_2;
-        case "sleep_week2_1":
-            return sleep_week2_1;
-        case "sleep_week2_2":
-            return sleep_week2_2;
-        case "sleep_week3_1":
-            return sleep_week3_1;
-        case "sleep_week4_1":
-            return sleep_week4_1;
-        case "move_week1_1":
-            return move_week1_1;
-        case "move_week1_2":
-            return move_week1_2;
-        case "move_week1_3":
-            return move_week1_3;
-        case "move_week4_1":
-            return move_week4_1;
-        case "move_week4_2":
-            return move_week4_2;
-    }
-};
+const asset_dir = '/assets/experiments/';
+
 const ExperimentTimeline = function () {
     const { experimentId } = useParams<{ experimentId: string }>();
     const { type } = useParams<{ type: string }>();
@@ -226,7 +144,7 @@ const ExperimentTimeline = function () {
         }
 
         if (block.type === 'image') {
-            return <img src={getImage(block.src)} alt={block.alt}
+            return <img src={asset_dir + block.src + '.jpg'} alt={block.alt}
                         style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }} />;
         }
 
