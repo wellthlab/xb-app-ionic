@@ -56,7 +56,7 @@ const Welcome = function () {
         <Page>
             {isStudyPending  ? '' :
                 <PageTitle>
-                    <Typography level="h5">
+                    <Typography level="body1" sx={{ fontWeight: 'lg' }}>
                      {study!.welcome[step].title}
                     </Typography>
                 </PageTitle>}
@@ -64,7 +64,7 @@ const Welcome = function () {
                 'Loading...'
             ) : (
                 <React.Fragment>
-                    <Stack spacing={2} flex={1} mb={2}>
+                    <Stack spacing={2} flex={1} mb={2} sx={{mb:35}}>
                         <Box sx={{ position: 'relative' }}>
                             <Box sx={{ position: 'relative' }}>
                                 <Box component="img" src={study!.welcome[step]['image'] as unknown as string} />
@@ -79,7 +79,7 @@ const Welcome = function () {
                             </Box>
                             <Box sx={{ position: 'absolute', left: 16, right: 16 }}>
                                 <Box sx={{ top: -32, position: 'absolute', bgcolor: 'white', p: 2 }}>
-                                    <Typography level="body2">
+                                    <Typography level="body2" >
                                     {study!.welcome[step]['secondaryText'] as unknown as string}
                                     </Typography>
                                 </Box>
@@ -87,13 +87,15 @@ const Welcome = function () {
                         </Box>
                     </Stack>
 
-                    {step === study!.welcome.length - 1 ? (
-                        <Button loading={isPending} onClick={handleEnroll}>
-                            {isEnrolled ? Strings.next : Strings.enroll}
-                        </Button>
-                    ) : (
-                        <Button onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>{Strings.next}</Button>
-                    )}
+
+                        {step === study!.welcome.length - 1 ? (
+                            <Button loading={isPending} onClick={handleEnroll}>
+                                {isEnrolled ? Strings.next : Strings.enroll}
+                            </Button>
+                        ) : (
+                            <Button onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>{Strings.next}</Button>
+                        )}
+
                 </React.Fragment>
             )}
         </Page>
