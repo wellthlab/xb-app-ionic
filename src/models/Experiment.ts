@@ -12,6 +12,7 @@ export interface IBox {
     color?: string;
     beginAtUserStartOfWeek?: boolean;
     overlayText?: string;
+    overview:string;
 }
 
 interface IBoxDocument extends IBox {

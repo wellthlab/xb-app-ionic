@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme } from '@mui/joy';
+import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme, Link } from '@mui/joy';
 import { CaretDoubleDown } from 'phosphor-react';
 
 import capitalise from './utils/capitalise';
@@ -25,8 +25,11 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
+import ReactMarkdown from 'react-markdown';
+
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
+const assets_dir = '/assets/box/';
 
 const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
@@ -78,9 +81,10 @@ const ExperimentsListScreen = function () {
         }
 
         if (block.type === 'image') {
+            console.log(block.src);
             return (
                 <img
-                    src={block.src}
+                    src={assets_dir + block.src}
                     alt={block.alt}
                     style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
                 />
@@ -104,6 +108,26 @@ const ExperimentsListScreen = function () {
                     </AccordionDetails>
                 </Accordion>
             );
+        }
+
+
+        if (block.type === 'markdown') {
+            return  <ReactMarkdown
+                children={block['content']}
+                components={{
+                    h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+
+                    h2: ({ children }) => (
+                        <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                            {children}
+                        </Typography>
+                    ),
+                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+
+                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                }}
+            />
         }
     };
 
