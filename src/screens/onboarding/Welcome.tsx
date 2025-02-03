@@ -87,14 +87,20 @@ const Welcome = function () {
                         </Box>
                     </Stack>
 
-
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button  onClick={() => step === 0 ? history.push(`/main/about`) : history.push(`/onboarding/welcome/${step - 1}`)}>
+                            {Strings.previous}
+                        </Button>
                         {step === study!.welcome.length - 1 ? (
                             <Button loading={isPending} onClick={handleEnroll}>
                                 {isEnrolled ? Strings.next : Strings.enroll}
                             </Button>
                         ) : (
-                            <Button onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>{Strings.next}</Button>
+                            <Button
+                                onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>{Strings.next}</Button>
                         )}
+                    </div>
+
 
                 </React.Fragment>
             )}

@@ -6,6 +6,7 @@ export interface IFormProps {
     children: React.ReactNode;
     onSubmit: () => void;
     footer?: React.ReactNode;
+    showSubmit?: boolean
     submitLabel?: string;
     submitDisabled?: boolean;
     submitButtonColor?: ButtonProps['color'];
@@ -22,6 +23,7 @@ const Form = function ({
     submitButtonColor,
     message,
     messageColor = 'danger',
+    showSubmit
 }: IFormProps) {
     const [pending, setPending] = React.useState(false);
 
@@ -42,7 +44,7 @@ const Form = function ({
                 {children}
             </Stack>
 
-            <Button
+            {showSubmit && <Button
                 disabled={pending || submitDisabled}
                 loading={pending}
                 loadingPosition="start"
@@ -52,7 +54,7 @@ const Form = function ({
                 fullWidth
             >
                 {submitLabel || Strings.submit}
-            </Button>
+            </Button>}
 
             {footer}
         </React.Fragment>
