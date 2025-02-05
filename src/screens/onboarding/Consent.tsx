@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
-import { Button } from '@mui/joy';
 import Form from '../../components/foundation/Form';
 import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
@@ -52,24 +51,11 @@ const ConsentForm = function () {
     });
 
     return (
-        <React.Fragment >
-            <Form message={form.errors.$root} onSubmit={handleSubmit}>
-                {study!.consent.map((statement, i) => (
-                    <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
-                ))}
-            </Form>
-            <div style={{ marginTop:4 , display: 'flex', justifyContent: 'space-between' }}>
-                <Button
-                    onClick={() =>  history.push(`/main/today`)}>
-                    {Strings.previous}
-                </Button>
-
-                    <Button
-                        onClick={handleSubmit}>{Strings.next}</Button>
-
-            </div>
-        </React.Fragment>
-
+        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
+            {study!.consent.map((statement, i) => (
+                <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)}  />
+            ))}
+        </Form>
     );
 };
 
