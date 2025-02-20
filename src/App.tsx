@@ -166,9 +166,9 @@ const App = function () {
                                                     <ExperimentsListScreen />
                                                 </Route>
 
-                                                <Route path="/main/box/:type/:experimentId" exact>
-                                                    <ExperimentTimelineScreen />
-                                                </Route>
+                                                {/*<Route path="/main/box/:type/:experimentId" exact>*/}
+                                                {/*    <ExperimentTimelineScreen />*/}
+                                                {/*</Route>*/}
 
                                                 <Route path="/main/today" exact>
                                                     <TodayTab />

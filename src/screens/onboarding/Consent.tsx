@@ -20,7 +20,7 @@ const ConsentForm = function () {
     const location = useLocation();
     const isEnrolled = useSelector(selectIsEnrolled);
 
-   const initialFormState = React.useMemo(
+    const initialFormState = React.useMemo(
         () => {
             return study!.consent.reduce((acc, v, i) => {
                 acc[`c${i}`] = isEnrolled;
@@ -59,4 +59,4 @@ const ConsentForm = function () {
     );
 };
 
-export default ConsentForm;
+export default  ConsentForm;

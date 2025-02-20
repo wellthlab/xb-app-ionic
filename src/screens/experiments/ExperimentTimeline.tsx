@@ -38,7 +38,7 @@ import Page from '../../components/foundation/Page';
 import { useSelector } from '../../slices/store';
 import { selectExperimentById, selectDayProgress, selectCurrentDay } from '../../slices/experiments';
 import { selectSubscriptionByExperimentId } from '../../slices/account';
-import { IExperiment } from '../../models/Experiment';
+import {ExperimentCategory, IExperiment} from '../../models/Experiment';
 import BoxesSubMenu from './BoxesSubMenu';
 import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
 import ReactMarkdown from 'react-markdown';
@@ -46,9 +46,14 @@ import PageTitle from '../../components/foundation/PageTitle';
 
 const asset_dir = '/assets/experiments/';
 
-const ExperimentTimeline = function () {
-    const { experimentId } = useParams<{ experimentId: string }>();
-    const { type } = useParams<{ type: string }>();
+interface IExperimentTimelineProps {
+    experimentId: string;
+}
+
+const ExperimentTimeline = function ({
+                                         experimentId
+                                     }: IExperimentTimelineProps) {
+    // const { type } = useParams<{ type: string }>();
 
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const prepExperiment = useSelector((state) => selectExperimentById(state, experiment.prepExperiment)) as IExperiment;
@@ -113,7 +118,7 @@ const ExperimentTimeline = function () {
 
     const getExperimentDescription = (experiment: IExperiment) => {
           return <Stack spacing={0.5}>
-            {experiment.desc.filter(block => !block.hidden).map((element) => (
+            {experiment.desc.map((element) => (
                 <div>
                     {getContent(element)}
                 </div>
@@ -202,68 +207,45 @@ const ExperimentTimeline = function () {
     const prepExperimentTasks = prepExperiment ? prepExperiment.days[0].tasks : [];
 
     return (
-        <Page sx={{ height: '100%' }} footerComponent={BoxesSubMenu()} headerTitle={experiment.name}
-              ref={setPresentingElement}>
+        <div>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <Card>
-                    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
-                        {'OVERVIEW'}
-                    </Typography>
-                    {getExperimentDescription(experiment)}
+                {/*<Card>*/}
+                {/*    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>*/}
+                {/*        {'OVERVIEW'}*/}
+                {/*    </Typography>*/}
+                {/*    {getExperimentDescription(experiment)}*/}
 
-                </Card>
-                <br />
-                <br />
+                {/*</Card>*/}
+                {/*<br />*/}
+                {/*<br />*/}
 
-                {prepExperiment && <Card>
-                    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>
-                        {'PREPARATIONS FOR THIS EXPERIMENT'}
-                    </Typography>
-                    {getExperimentDescription(prepExperiment)}
+                {/*{prepExperiment && <Card>*/}
+                {/*    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>*/}
+                {/*        {'PREPARATIONS FOR THIS EXPERIMENT'}*/}
+                {/*    </Typography>*/}
+                {/*    {getExperimentDescription(prepExperiment)}*/}
 
-                </Card>}
-                <br />
+                {/*</Card>}*/}
+                {/*<br />*/}
 
-                <Accordion variant="outlined">
-                    <AccordionSummary expandIcon={<AddIcon />}
-                    >
-                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                            {Strings.checks}
-                        </Typography>
-                    </AccordionSummary>
-                    <Divider />
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
-                        <Stack spacing={2} key={currentDay}>
-                            <TasksList
-                                tasks={experiment.days[currentDay].tasks}
-                                experimentId={experimentId}
-                                dayNum={currentDay}
-                                type={'normal'}
-                                onTaskClick={handleClickTask}
-                            />
-                        </Stack>
-                    </AccordionDetails>
-                </Accordion>
-                <br />
-                {reflectionTasks.length !== 0 && <Accordion variant="outlined">
-                    <AccordionSummary expandIcon={<AddIcon />}
-                    >
-                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                            {Strings.reflections}
-                        </Typography>
-                    </AccordionSummary>
-                    <Divider />
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
-                        <Stack spacing={2} key={currentDay}>
-                            <TasksList
-                                tasks={experiment.days[currentDay].tasks}
-                                experimentId={experimentId}
-                                dayNum={currentDay}
-                                type={'reflection'}
-                                onTaskClick={handleClickTask}
-                            />
-                        </Stack> </AccordionDetails>
-                </Accordion>}
+
+                    <Stack spacing={2} key={activeDay}>
+                        <TasksList
+                            tasks={experiment.days[activeDay].tasks}
+                            experimentId={experimentId}
+                            dayNum={activeDay}
+                            type={'normal'}
+                            onTaskClick={handleClickTask}
+                        />
+                        <TasksList
+                            tasks={experiment.days[activeDay].tasks}
+                            experimentId={experimentId}
+                            dayNum={activeDay}
+                            type={'reflection'}
+                            onTaskClick={handleClickTask}
+                        />
+                    </Stack>
+
             </Box>
 
 
@@ -295,7 +277,7 @@ const ExperimentTimeline = function () {
                 isSubscribed={isSubscribedToExperiment}
             />}
 
-        </Page>
+        </div>
     );
 };
 

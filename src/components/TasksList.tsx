@@ -102,7 +102,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
 
 
     return (
-        <List>
+        <List variant="plain">
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
                 const taskGroup = groupedTasks.get(task.taskId);
                 const taskIndex = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
@@ -121,6 +121,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: 
                             }
                             endDecorator={getEndDecorator(task, taskGroup.length, taskCompleted, taskIndex)}
                             onClick={createHandleClickTask(taskIndex)}
+
                         >
                             <Typography sx = {{fontSize: '0.75rem', ml: -1.5}} >
                                 {task.isRepeatable ? task.name + `  (${index - taskIndex + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}

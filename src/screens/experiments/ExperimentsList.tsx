@@ -26,6 +26,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 import ReactMarkdown from 'react-markdown';
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Sheet from "@mui/joy/Sheet";
+import IconButton from "@mui/joy/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
@@ -34,7 +38,6 @@ const assets_dir = '/assets/box/';
 const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
     const colorScheme = useColorScheme();
-    const theme = useTheme();
 
     const thisBox = useSelector((state) => selectBoxByType(state, type));
     const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
@@ -42,6 +45,8 @@ const ExperimentsListScreen = function () {
     const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
     const scheduledExperiments = useSelector(selectScheduledExperiments);
     const scheduledExperimentsByStartTime = new Map<number, IExperiment[]>();
+    const [drawerContent, setDrawerContent] = React.useState<any | null>(null);
+
     const getExperimentDescFirstParagraph = () => {
         const paragraphs = thisBox.description!.filter((d) => d['type'] === 'para');
         if (paragraphs.length > 0) {
@@ -81,10 +86,9 @@ const ExperimentsListScreen = function () {
         }
 
         if (block.type === 'image') {
-            console.log(block.src);
             return (
                 <img
-                    src={assets_dir + block.src}
+                    src={block.src}
                     alt={block.alt}
                     style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
                 />
@@ -232,7 +236,7 @@ const ExperimentsListScreen = function () {
                             height: 'calc(100dvh - 100px)',
                             backgroundImage: `linear-gradient(${
                                 colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45) 0%' : 'rgba(0, 0, 0, 0) 50%'
-                            }, var(--ion-background-color) 95%), url(${thisBox.heroImageSrc})`,
+                            }, rgb(${thisBox.color}) 95%), url(${thisBox.heroImageSrc})`,
                             backgroundRepeat: 'no-repeat',
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
@@ -309,40 +313,135 @@ const ExperimentsListScreen = function () {
                     </Box>
                 )}
                 <br />
-                {thisBox.description && !thisBox.heroImageSrc && (
-                    <React.Fragment>
-                        <PageTitle sx={{ mb: 0 }}>{capitalise(type)}</PageTitle>
-                        <Typography level="h6" sx={{ mb: 4, fontSize: '0.8rem' }}>
-                            {getExperimentDescFirstParagraph()}
-                        </Typography>
-                    </React.Fragment>
-                )}
-                {thisBox.description && (
-                    <Card
-                        variant="plain"
-                        ref={mainSectionRef}
+                <Stack alignItems="center">
+                    <Accordion
                         sx={{
-                            alignSelf: 'center',
-                            ml: 1,
-                            mr: 1,
+                            ml: 'auto',
+                            mr: 'auto',
+                            mt: 2,
+                            mb: 4,
+                            maxWidth: '90%',
+                            width: '500px',
                         }}
                     >
-                        {getBoxDescription()}
-                    </Card>
-                )}
+                        <AccordionSummary expandIcon={<AddIcon />}>
+                            <Stack
+                                direction="row"
+                                spacing={4}
+                                sx={{
+                                    width: '90%',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center'
+                                }}
+                            >
+                                <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                    Introduction to the  {capitalise(type)} Box
+                                </Typography>
+                            </Stack>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {thisBox.description?.map((item, index) => (
+                                <Stack
+                                    key={index}
+                                    direction="row"
+                                    spacing={2}
+                                    sx={{
+                                        width: '100%',
+                                        alignItems: 'center',
+                                        mb: 2
+                                    }}
+                                >
+                                    <img
+                                        src={item.sectionImageSrc}
+                                        alt=""
+                                        style={{
+                                            width: '50px',
+                                            height: '50px',
+                                            objectFit: 'cover',
+                                            borderRadius: '4px'
+                                        }}
+                                    />
 
-                <Container>
-                    <Stack spacing={2}>
-                        {type === 'move' && <ExerciseWarning />}
-                        <ExperimentsList
-                            key={type}
-                            experimentsGroupedByCategory={experimentsGroupedByCategory}
-                            scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
-                            beginAtUserStartOfWeek={thisBox.beginAtUserStartOfWeek}
-                        />
-                        <br />
-                    </Stack>
-                </Container>
+                                    <Link
+                                        textColor="inherit"
+                                        underline="none"
+                                        onClick={() => {
+                                            setDrawerContent(item);
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                flex: 1,
+                                                fontSize: '0.9rem'
+                                            }}
+                                        >
+                                            {item.sectionTitle}
+                                        </Typography>
+                                    </Link>
+                                </Stack>
+                            ))}
+                        </AccordionDetails>
+                    </Accordion>
+
+                </Stack>
+
+                <ExperimentsList
+                    key={type}
+                    experimentsGroupedByCategory={experimentsGroupedByCategory}
+                    scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
+                    beginAtUserStartOfWeek={thisBox.beginAtUserStartOfWeek}
+                />
+
+                {type === 'move' && <ExerciseWarning />}
+
+                <SwipeableDrawer
+                    anchor="bottom"
+                    open={!!drawerContent}
+                    onClose={() => setDrawerContent(null)}
+                    onOpen={() => {}}
+                    disableSwipeToOpen={true}
+                    sx={{
+                        '--Drawer-horizontalSize': '500px',
+                        '& .MuiDrawer-paper': {
+                            borderTopLeftRadius: '20px',
+                            borderTopRightRadius: '20px',
+                            height: '95vh',
+                        }
+                    }}
+                >
+                    <Sheet
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            position: 'relative',
+                        }}
+                    >
+                        <IconButton
+                            onClick={() => setDrawerContent(null)}
+                            sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                bgcolor: 'transparent',
+                                '&:hover': {
+                                    bgcolor: 'transparent',
+                                },
+                            }}
+                        >
+                            <CloseIcon sx={{ color: 'black' }} />
+                        </IconButton>
+                        <Stack spacing={2}>
+                            {drawerContent && drawerContent.sectionContent.map((element: any) => (
+                                <div>{getContent(element)}</div>
+                            ))}
+                        </Stack>
+                    </Sheet>
+                </SwipeableDrawer>
+                {/*<Stack spacing={2}>*/}
+
+                {/*</Stack>*/}
+
             </IonContent>
             <IonFooter>
                 <IonToolbar>
