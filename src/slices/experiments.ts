@@ -100,6 +100,7 @@ export const selectDayProgress = (state: IAccountSelectorState & ISelectorState,
     }
 };
 
+
 export const selectCompletionForAllExperiments = (state: IAccountSelectorState & ISelectorState) => {
     const percentages: Record<string, number> = {};
     for (const [experimentId, experiment] of Object.entries(state.experiments.experiments)) {
@@ -155,6 +156,28 @@ export const selectTodaysTasks = (state: IAccountSelectorState & ISelectorState)
 
     return tasksByExperiment;
 };
+
+export const selectPreviousDayTasks = (state: IAccountSelectorState & ISelectorState) => {
+    const subscriptions = selectSubscriptions(state);
+    const previousDayTasks: ITodayTasks[] = [];
+
+    for (const experimentId of Object.keys(subscriptions)) {
+        const experiment = selectExperimentById(state, experimentId) as IExperiment;
+        const dayProgress: boolean[]  = selectDayProgress(state, experimentId);
+
+        for (let i = 0; i < experiment.days.length; i ++) {
+            if (!dayProgress[i]) {
+                previousDayTasks.push({
+                    experiment: experiment,
+                    day: i
+                });
+            }
+
+        }
+    }
+    return previousDayTasks;
+}
+
 
 export default createSlice({
     name: 'experiments',

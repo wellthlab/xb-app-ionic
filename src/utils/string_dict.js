@@ -117,6 +117,7 @@ const Strings = {
 	day_s_ : "Day(s)",
 	xb_app_logo : "XB App logo",
 	you_havent_got_any_task_today : "You haven't got any tasks today",
+    you_have_unfinished_tasks_from_previous_days : "You've pending tasks from previous days!",
 	explore_what_you_can_do_in : "Tasks will appear here when you have started some experiments",
 	todays_experiments : "Today's Experiments",
 	read : "Read",
@@ -198,7 +199,8 @@ const Strings = {
     reflections: 'REFLECTIONS',
     checks: 'CHECKS',
     tips: 'TIPS',
-    preview: 'PREVIEW of '
+    preview: 'PREVIEW of ',
+    day_progress: 'S'
 };
 
 export default Strings;

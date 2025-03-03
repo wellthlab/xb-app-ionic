@@ -42,6 +42,7 @@ import JournalTab from './screens/journal/Journal';
 import TodayTab from './screens/today/Today';
 import { AppDevice } from './models/Device';
 import AboutThisStudy from './components/AboutThisStudy';
+import PreviousDayTasks from './screens/today/PreviousDayTasks';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -201,6 +202,12 @@ const App = function () {
                                                 <Route path="/main/settings/profile" exact>
                                                     <EditProfileScreen />
                                                 </Route>
+
+
+                                                <Route path="/main/previousDayTasks" exact>
+                                                    <PreviousDayTasks />
+                                                </Route>
+
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">

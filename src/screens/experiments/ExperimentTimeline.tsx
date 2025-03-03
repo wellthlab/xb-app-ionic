@@ -21,6 +21,9 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
+import CircularProgress, {
+    CircularProgressProps,
+} from '@mui/material/CircularProgress';
 
 import {
     Timeline,
@@ -104,8 +107,7 @@ const ExperimentTimeline = function ({
         }
     };
 
-    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
-    const maxDays = experiment.days.length;
+    const currentDay = Math.min(useSelector((state) => selectCurrentDay(state, experimentId)), experiment.days.length - 1);
     const [activeDay, setActiveDay] = React.useState(0);
 
     const handleNext = () => {
@@ -231,14 +233,14 @@ const ExperimentTimeline = function ({
 
                     <Stack spacing={2} key={activeDay}>
                         <TasksList
-                            tasks={experiment.days[activeDay].tasks}
+                            tasks={experiment.days[currentDay].tasks}
                             experimentId={experimentId}
                             dayNum={activeDay}
                             type={'normal'}
                             onTaskClick={handleClickTask}
                         />
                         <TasksList
-                            tasks={experiment.days[activeDay].tasks}
+                            tasks={experiment.days[currentDay].tasks}
                             experimentId={experimentId}
                             dayNum={activeDay}
                             type={'reflection'}

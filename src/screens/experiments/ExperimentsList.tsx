@@ -229,27 +229,17 @@ const ExperimentsListScreen = function () {
     return (
         <IonPage>
             {!thisBox.heroImageSrc && <Header title={`${capitalise(type)}`} />}
-            <IonContent ref={ionContentRef} scrollEvents={!!thisBox.heroImageSrc} onIonScroll={handleScrollAnimation}>
+            <IonContent ref={ionContentRef} scrollEvents={!!thisBox.heroImageSrc} onIonScroll={handleScrollAnimation}
+                        className="ion-content-custom"
+                        style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+            >
                 {thisBox.heroImageSrc && (
                     <Box
-                        sx={{
-                            height: 'calc(100dvh - 100px)',
-                            backgroundImage: `linear-gradient(${
-                                colorScheme.colorScheme === 'dark' ? 'rgba(0, 0, 0, 0.45) 0%' : 'rgba(0, 0, 0, 0) 50%'
-                            }, rgb(${thisBox.color}) 95%), url(${thisBox.heroImageSrc})`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                            pb: 2,
-                        }}
                     >
                         <Box
                             ref={titlesRef}
                             sx={{
-                                position: 'fixed',
+
                                 top: 0,
                                 left: 0,
                                 right: 0,
@@ -273,43 +263,43 @@ const ExperimentsListScreen = function () {
                                         {capitalise(type)}
                                     </PageTitle>
                                 </Box>
-                                <Box
-                                    sx={{
-                                        // display: showHeader ? 'block' : 'none',
-                                        height: 44,
-                                        width: 44,
-                                        borderRadius: '50%',
-                                        backgroundImage: `url(${thisBox.heroImageSrc})`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        transition: `transform 0.3s, opacity 0.2s`,
-                                        transform: showHeader ? `translate3d(0, 0, 0)` : `translate3d(0, 150%, 0)`,
-                                        opacity: showHeader ? 1 : 0,
-                                    }}
-                                />
+                                {/*<Box*/}
+                                {/*    sx={{*/}
+                                {/*        // display: showHeader ? 'block' : 'none',*/}
+                                {/*        height: 44,*/}
+                                {/*        width: 44,*/}
+                                {/*        borderRadius: '50%',*/}
+                                {/*        backgroundImage: `url(${thisBox.heroImageSrc})`,*/}
+                                {/*        backgroundRepeat: 'no-repeat',*/}
+                                {/*        backgroundSize: 'cover',*/}
+                                {/*        backgroundPosition: 'center',*/}
+                                {/*        transition: `transform 0.3s, opacity 0.2s`,*/}
+                                {/*        transform: showHeader ? `translate3d(0, 0, 0)` : `translate3d(0, 150%, 0)`,*/}
+                                {/*        opacity: showHeader ? 1 : 0,*/}
+                                {/*    }}*/}
+                                {/*/>*/}
                             </Box>
                         </Box>
 
-                        {thisBox.overlayText && (
-                            <Box sx={{ mr: 'auto', my: 'auto', p: 2 }}>
-                                <Box sx={{ p: 2, w: '100%', maxWidth: 450, bgcolor: `rgba(${thisBox.color},0.55)` }}>
-                                    <Typography level="h5" textColor="common.white">
-                                        {thisBox.overlayText}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        )}
+                        {/*{thisBox.overlayText && (*/}
+                        {/*    <Box sx={{ mr: 'auto', my: 'auto', p: 2 }}>*/}
+                        {/*        <Box sx={{ p: 2, w: '100%', maxWidth: 450, bgcolor: `rgba(${thisBox.color},0.55)` }}>*/}
+                        {/*            <Typography level="h5" textColor="common.white">*/}
+                        {/*                {thisBox.overlayText}*/}
+                        {/*            </Typography>*/}
+                        {/*        </Box>*/}
+                        {/*    </Box>*/}
+                        {/*)}*/}
 
-                        <Button
-                            variant="plain"
-                            color="neutral"
-                            startDecorator={<CaretDoubleDown />}
-                            sx={{ flexDirection: 'column', gap: 1, alignSelf: 'center' }}
-                            onClick={handleClickScroll}
-                        >
-                            Scroll down
-                        </Button>
+                        {/*<Button*/}
+                        {/*    variant="plain"*/}
+                        {/*    color="neutral"*/}
+                        {/*    startDecorator={<CaretDoubleDown />}*/}
+                        {/*    sx={{ flexDirection: 'column', gap: 1, alignSelf: 'center' }}*/}
+                        {/*    onClick={handleClickScroll}*/}
+                        {/*>*/}
+                        {/*    Scroll down*/}
+                        {/*</Button>*/}
                     </Box>
                 )}
                 <br />
@@ -324,18 +314,20 @@ const ExperimentsListScreen = function () {
                             width: '500px',
                         }}
                     >
-                        <AccordionSummary expandIcon={<AddIcon />}>
+                        <AccordionSummary expandIcon={<AddIcon /> } sx={{
+                            backgroundColor: `rgba(${thisBox.color})`}}
+                        >
                             <Stack
                                 direction="row"
                                 spacing={4}
                                 sx={{
                                     width: '90%',
                                     justifyContent: 'space-between',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
                                 }}
                             >
                                 <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                    Introduction to the  {capitalise(type)} Box
+                                    Introduction to the {capitalise(type)} Box
                                 </Typography>
                             </Stack>
                         </AccordionSummary>
@@ -348,7 +340,7 @@ const ExperimentsListScreen = function () {
                                     sx={{
                                         width: '100%',
                                         alignItems: 'center',
-                                        mb: 2
+                                        mb: 2,
                                     }}
                                 >
                                     <img
@@ -358,7 +350,7 @@ const ExperimentsListScreen = function () {
                                             width: '50px',
                                             height: '50px',
                                             objectFit: 'cover',
-                                            borderRadius: '4px'
+                                            borderRadius: '4px',
                                         }}
                                     />
 
@@ -372,7 +364,7 @@ const ExperimentsListScreen = function () {
                                         <Typography
                                             sx={{
                                                 flex: 1,
-                                                fontSize: '0.9rem'
+                                                fontSize: '0.9rem',
                                             }}
                                         >
                                             {item.sectionTitle}
@@ -387,6 +379,7 @@ const ExperimentsListScreen = function () {
 
                 <ExperimentsList
                     key={type}
+                    color={thisBox.color}
                     experimentsGroupedByCategory={experimentsGroupedByCategory}
                     scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
                     beginAtUserStartOfWeek={thisBox.beginAtUserStartOfWeek}
@@ -398,7 +391,8 @@ const ExperimentsListScreen = function () {
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => {}}
+                    onOpen={() => {
+                    }}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',
@@ -406,7 +400,7 @@ const ExperimentsListScreen = function () {
                             borderTopLeftRadius: '20px',
                             borderTopRightRadius: '20px',
                             height: '95vh',
-                        }
+                        },
                     }}
                 >
                     <Sheet
@@ -441,6 +435,7 @@ const ExperimentsListScreen = function () {
                 {/*<Stack spacing={2}>*/}
 
                 {/*</Stack>*/}
+                <img src={thisBox.heroImageSrc} alt="Bottom Image" className="bottom-image" />
 
             </IonContent>
             <IonFooter>

@@ -18,9 +18,10 @@ interface ITasksListProps {
     dayNum: number;
     type: string;
     onTaskClick: (experimentId: string, dayNum: number, taskNum: number, type: string) => void;
+    isPreviousDayTasks?: boolean;
 }
 
-const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick }: ITasksListProps) {
+const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, isPreviousDayTasks }: ITasksListProps) {
     const responseCountByDayNumAndTaskIds: number[] = useSelector((state) => selectProgressByDayNumAndTasks(state, tasks, dayNum));
     const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
 

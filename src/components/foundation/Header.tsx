@@ -27,7 +27,7 @@ const Header = function ({ title, leftButton, rightButton, rightSlot, ...others 
                     {leftButton || <HeaderButton onClick={handleGoBack}>{Strings.back}</HeaderButton>}
                 </IonButtons>
                 <IonTitle>
-                    <Typography>{title}</Typography>
+                    <Typography sx={{ fontSize: '0.8rem' }}>{title}</Typography>
                 </IonTitle>
                 {rightSlot && <div slot="end">{rightSlot}</div>}
                 {rightButton && <IonButtons slot="end">{rightButton}</IonButtons>}

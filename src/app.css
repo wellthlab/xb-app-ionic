@@ -170,3 +170,17 @@ body.dark {
     top: 0;
     font-size: 1.5rem;
 }
+
+.ion-content-custom {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+}
+
+.bottom-image {
+    width: 100%;
+    height: auto;
+    max-height: 40vh; /* Prevents the image from taking too much space */
+    object-fit: cover;
+}

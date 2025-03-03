@@ -11,7 +11,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { ExperimentCategory, IExperiment, IExperimentSchedule } from '../../../models/Experiment';
 import { useDispatch, useSelector } from '../../../slices/store';
-import { selectCompletionForAllExperiments } from '../../../slices/experiments';
+import { selectBoxByExperimentId, selectCompletionForAllExperiments } from '../../../slices/experiments';
 import _ from 'lodash';
 import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
@@ -53,7 +53,6 @@ const ExperimentsList = function ({
     const dispatch = useDispatch();
     const profile = useSelector(selectProfile);
     const [drawerContent, setDrawerContent] = React.useState<any | null>(null);
-    const [experimentId, setExperimentId] = React.useState<string | null>(null);
 
     const isSubscribedToBox = () => {
         const subscribedExperimentIds = Object.keys(subscriptions);
@@ -226,7 +225,7 @@ const ExperimentsList = function ({
                 {Array.from(scheduledExperimentsByStartTime!)
                     .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2 ).map(([startUTCTime, scheduledExperiments]) => {
                         return (
-                            <Stack alignItems="center">
+                            <Stack spacing={2} alignItems="center">
                                 {scheduledExperiments.map(experiment => {
                                     return (
                                      <Accordion sx={{ 
@@ -236,7 +235,8 @@ const ExperimentsList = function ({
                                         maxWidth: '90%',
                                         width: '500px',
                                      }}>
-                                        <AccordionSummary expandIcon={<AddIcon />}>
+                                        <AccordionSummary expandIcon={<AddIcon />} sx={{
+                                            backgroundColor: `rgba(${color})`}}>
                                             <Stack 
                                                 direction="row" 
                                                 spacing={4}
@@ -283,7 +283,6 @@ const ExperimentsList = function ({
                                                         textColor="inherit"
                                                         underline="none"
                                                         onClick={() => {
-                                                            setExperimentId(experiment.id);
                                                             setDrawerContent(item);
                                                         }}
                                                     >
@@ -298,7 +297,7 @@ const ExperimentsList = function ({
                                                     </Link>
                                                 </Stack>
                                             ))}
-                                            {experimentId && <ExperimentTimeline experimentId={experimentId}/>}
+                                            <ExperimentTimeline experimentId={experiment.id}/>
 
                                         </AccordionDetails>
                                     </Accordion>
@@ -314,7 +313,7 @@ const ExperimentsList = function ({
 
     const getNonScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: IExperiment[]) => {
         return <div>
-            <Stack alignItems="center">
+            <Stack spacing={2} alignItems="center">
                 {experiments
                     .sort((e1, e2) => e1.boxweek - e2.boxweek)
                     .map((experiment) => {
@@ -330,7 +329,8 @@ const ExperimentsList = function ({
                                     width: '500px',
                                 }}
                             >
-                                <AccordionSummary expandIcon={<AddIcon />}>
+                                <AccordionSummary expandIcon={<AddIcon />} sx={{
+                                    backgroundColor: `rgba(${color})`}}>
                                     <Stack 
                                         direction="column" 
                                         spacing={1}
@@ -339,7 +339,7 @@ const ExperimentsList = function ({
                                         }}
                                     >
                                         <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                            Week {experiment.boxweek + 1}
+                                            Week {experiment.boxweek + 1}: {experiment.name}
                                         </Typography>
                                         {completion !== undefined ? (
                                             <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '50%' }}>
@@ -386,7 +386,6 @@ const ExperimentsList = function ({
                                                 textColor="inherit"
                                                 underline="none"
                                                 onClick={() => {
-                                                    setExperimentId(experiment.id);
                                                     setDrawerContent(item);
                                                 }}
                                             >
@@ -401,7 +400,7 @@ const ExperimentsList = function ({
                                             </Link>
                                         </Stack>
                                     ))}
-                                    {experimentId && <ExperimentTimeline experimentId={experimentId}/>}
+                                    <ExperimentTimeline experimentId={experiment.id}/>
 
                                 </AccordionDetails>
                             </Accordion>
