@@ -15,6 +15,8 @@ import { authenticateUser } from '../../slices/account';
 import { useDispatch } from '../../slices/store';
 import Account from '../../models/Account';
 
+import BuildInfo from '../../components/BuildInfo';
+
 const schema = Yup.object().shape({
     email: emailSchema,
     password: Yup.string().required(Strings.password_is_missing),
@@ -73,6 +75,9 @@ const Login = function () {
                     <TextField label={Strings.password} type="password" {...getInputProps('password')} />
                 </Form>
             )}
+
+        <BuildInfo />
+
         </AuthScreenLayout>
     );
 };
