@@ -1,27 +1,28 @@
 import React from 'react';
-import {IonPage, IonContent, IonFooter, IonToolbar} from '@ionic/react';
-import {Container, ContainerProps} from '@mui/joy';
+import { IonPage, IonContent, IonFooter, IonToolbar } from '@ionic/react';
+import { Container, ContainerProps } from '@mui/joy';
 
 import Header from './Header';
 
 export interface IPageProps extends ContainerProps {
     children: React.ReactNode;
     headerTitle?: string;
-    footerComponent?: JSX.Element
+    footerComponent?: JSX.Element;
+    disableBackButton?: boolean;
 }
 
-const Page = React.forwardRef(({headerTitle, footerComponent, ...others}: IPageProps, ref) => {
+const Page = React.forwardRef(({ headerTitle, footerComponent, disableBackButton, ...others }: IPageProps, ref) => {
     return (
         <IonPage ref={ref}>
-            {headerTitle ? <Header title={headerTitle}/> : null}
+            {headerTitle ? <Header title={headerTitle} disableBackButton={disableBackButton} /> : null}
             <IonContent>
                 <Container {...others} />
             </IonContent>
-            {footerComponent ? <IonFooter>
-                <IonToolbar>
-                    {footerComponent}
-                </IonToolbar>
-            </IonFooter> : null}
+            {footerComponent ? (
+                <IonFooter>
+                    <IonToolbar>{footerComponent}</IonToolbar>
+                </IonFooter>
+            ) : null}
         </IonPage>
     );
 });

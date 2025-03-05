@@ -11,9 +11,10 @@ export interface IHeaderProps extends React.ComponentPropsWithoutRef<typeof IonH
     leftButton?: React.ReactNode;
     rightButton?: React.ReactNode;
     rightSlot?: React.ReactNode;
+    disableBackButton?: boolean;
 }
 
-const Header = function ({ title, leftButton, rightButton, rightSlot, ...others }: IHeaderProps) {
+const Header = function ({ title, leftButton, rightButton, rightSlot, disableBackButton, ...others }: IHeaderProps) {
     const history = useHistory();
 
     const handleGoBack = function () {
@@ -24,7 +25,8 @@ const Header = function ({ title, leftButton, rightButton, rightSlot, ...others 
         <IonHeader translucent {...others}>
             <Box component={IonToolbar} sx={{ paddingInline: 1 }}>
                 <IonButtons slot="start">
-                    {leftButton || <HeaderButton onClick={handleGoBack}>{Strings.back}</HeaderButton>}
+                    {leftButton ||
+                        (!disableBackButton && <HeaderButton onClick={handleGoBack}>{Strings.back}</HeaderButton>)}
                 </IonButtons>
                 <IonTitle>
                     <Typography>{title}</Typography>

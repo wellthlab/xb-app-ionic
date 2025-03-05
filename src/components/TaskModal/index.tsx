@@ -12,7 +12,8 @@ import {
     selectSubscriptionByExperimentId,
     selectSubscriptions,
     isUserInCohort,
-    subscribeToExperiments, reloadResponses,
+    subscribeToExperiments,
+    reloadResponses,
 } from '../../slices/account';
 import { selectAllExperiments, selectCurrentDay, selectTask } from '../../slices/experiments';
 
@@ -38,7 +39,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
     const dispatch = useDispatch();
 
     const handleSubmit = createHandleSubmit(async (data) => {
-        await handleSelectSubscriptionTask(data)
+        await handleSelectSubscriptionTask(data);
         await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
         await dispatch(reloadResponses(Object.values(accountSubscriptions).map((subscription) => subscription.id)));
         onDismiss();
@@ -46,13 +47,15 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
 
     const handleSelectSubscriptionTask = async (data: any) => {
         const selectedExperimentIds = task.blocks
-            .filter(block => block.type === 'select-subscription')
-            .flatMap(block => (block as ISelectSubscription).options)
-            .filter(option => Object.values(data).includes(option.label))
-            .map(option => option.experimentId);
+            .filter((block) => block.type === 'select-subscription')
+            .flatMap((block) => (block as ISelectSubscription).options)
+            .filter((option) => Object.values(data).includes(option.label))
+            .map((option) => option.experimentId);
 
         if (selectedExperimentIds.length > 0) {
-            const experimentsForSubscription = Object.values(allExperiments).filter(experiment => selectedExperimentIds.includes(experiment.id));
+            const experimentsForSubscription = Object.values(allExperiments).filter((experiment) =>
+                selectedExperimentIds.includes(experiment.id),
+            );
             if (experimentsForSubscription.length > 0) {
                 await dispatch(
                     subscribeToExperiments({
@@ -62,21 +65,28 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
                 );
             }
         }
-    }
+    };
 
     return (
         <Modal
             actionButtonDisabled={actionDisabled}
             actionButtonLabel={Strings.submit}
-            actionButtonDisabledToolTipTitle={userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks}
-            headerTitle= { actionDisabled ? Strings.preview + task.name : task.name}
+            actionButtonDisabledToolTipTitle={
+                userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks
+            }
+            headerTitle={actionDisabled ? Strings.preview + task.name : task.name}
             onAction={handleSubmit}
             onDismiss={onDismiss}
             {...others}
         >
             <Stack style={{ pointerEvents: actionDisabled ? 'none' : undefined }} spacing={2}>
                 {task.blocks.map((block, blockId) => (
-                    <TaskBlock type={task.type} key={blockId} block={block} inputs={{ getCheckboxProps, getInputProps }} />
+                    <TaskBlock
+                        type={task.type}
+                        key={blockId}
+                        block={block}
+                        inputs={{ getCheckboxProps, getInputProps }}
+                    />
                 ))}
             </Stack>
         </Modal>

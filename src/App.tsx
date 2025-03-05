@@ -36,6 +36,7 @@ import TeamInsightsTab from './screens/teams/Insights';
 import BoxesListTab from './screens/experiments/BoxesList';
 import ExperimentsListScreen from './screens/experiments/ExperimentsList';
 import ExperimentTimelineScreen from './screens/experiments/ExperimentTimeline';
+import PreviewScreen from './screens/experiments/Preview';
 
 import JournalTab from './screens/journal/Journal';
 
@@ -74,7 +75,11 @@ const AppFlowController = function () {
     }, [isAuthenticated, isEnrolled]);
 
     if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
+        if (
+            location.pathname === '/auth/new-password' ||
+            location.pathname === '/auth/confirm' ||
+            location.pathname === '/_preview'
+        ) {
             return null;
         }
 
@@ -89,7 +94,7 @@ const AppFlowController = function () {
         return <Redirect to="/onboarding" />;
     }
 
-    if (initPath === "/" || initPath === "/onboarding") {
+    if (initPath === '/' || initPath === '/onboarding') {
         return <Redirect to="/main" />;
     } else {
         return <Redirect to={initPath} />;
@@ -107,6 +112,9 @@ const App = function () {
                                 <ColorModeController />
                                 <AppFlowController />
                                 <IonRouterOutlet>
+                                    <Route path="/_preview" exact>
+                                        <PreviewScreen />
+                                    </Route>
                                     <Route path="/auth" exact>
                                         <LoginScreen />
                                     </Route>
