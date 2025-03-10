@@ -61,7 +61,7 @@ const Register = function () {
                         </Link>
                     }
                 >
-                    <TextField label={Strings.university_email} {...getInputProps('email')} />
+                    <TextField label={Strings.email} {...getInputProps('email')} />
                     <TextField label={Strings.password} type="password" {...getInputProps('password')} />
                     <TextField label={Strings.repeat_password} type="password" {...getInputProps('repeatPassword')} />
                 </Form>

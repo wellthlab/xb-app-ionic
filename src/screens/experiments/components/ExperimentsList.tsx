@@ -435,6 +435,7 @@ const ExperimentsList = function ({
                 className={'ion-modal-small'}
                 onAction={handleSubscribeToExperiment}
                 children={getModalChildren()}
+                actionButtonLabel={Strings.subscribe}
             />
 
             <Modal
@@ -444,6 +445,7 @@ const ExperimentsList = function ({
                 className={'ion-modal-small'}
                 onAction={handleResubscribeToExperiment}
                 children={getResubModalChildren()}
+                actionButtonLabel={Strings.resubscribe}
             />
 
             <SwipeableDrawer
