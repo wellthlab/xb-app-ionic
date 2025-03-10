@@ -18,7 +18,6 @@ import Sheet from '@mui/joy/Sheet';
 import IconButton from "@mui/joy/IconButton";
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
-import Carousel from 'react-material-ui-carousel'
 import EntryIcon from './EntryIcon';
 import Strings from '../../utils/string_dict';
 import TasksList from '../../components/TasksList';
