@@ -75,7 +75,9 @@ const AppFlowController = function () {
     }, [isAuthenticated, isEnrolled]);
 
     if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
+        if (location.pathname === '/auth/new-password' ||
+            location.pathname === '/auth/confirm' ||
+            location.pathname === '/_preview') {
             return null;
         }
 
@@ -108,6 +110,9 @@ const App = function () {
                                 <ColorModeController />
                                 <AppFlowController />
                                 <IonRouterOutlet>
+                                    <Route path="/_preview" exact>
+                                        <PreviewScreen />
+                                    </Route>
                                     <Route path="/auth" exact>
                                         <LoginScreen />
                                     </Route>
@@ -166,10 +171,6 @@ const App = function () {
                                                 <Route path="/main/box/:type" exact>
                                                     <ExperimentsListScreen />
                                                 </Route>
-
-                                                {/*<Route path="/main/box/:type/:experimentId" exact>*/}
-                                                {/*    <ExperimentTimelineScreen />*/}
-                                                {/*</Route>*/}
 
                                                 <Route path="/main/today" exact>
                                                     <TodayTab />

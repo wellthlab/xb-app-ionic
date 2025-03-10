@@ -13,7 +13,7 @@ import {
     selectCompletionForAllExperiments,
     selectExperimentByBoxName,
 } from '../../slices/experiments';
-import { ExperimentCategory, IExperiment } from '../../models/Experiment';
+import { ExperimentCategory, IBox, IExperiment } from '../../models/Experiment';
 import { selectScheduledExperiments, selectSubscriptions } from '../../slices/account';
 import BoxesSubMenu from './BoxesSubMenu';
 import PageTitle from '../../components/foundation/PageTitle';
@@ -30,6 +30,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { IScheduledExperimentSubscription } from '../../models/Account';
 
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
@@ -38,16 +39,37 @@ const ExperimentsListScreen = function () {
     const { type } = useParams<{ type: string }>();
     const colorScheme = useColorScheme();
 
-    const thisBox = useSelector((state) => selectBoxByType(state, type));
-    const boxExperiments = useSelector((state) => selectExperimentByBoxName(state, type));
-    const subscriptions = useSelector(selectSubscriptions);
-    const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
-    const scheduledExperiments = useSelector(selectScheduledExperiments);
+    const [experiments, setExperiments] = React.useState<IExperiment[] | null>(null);
+    const [box, setBox] = React.useState<IBox | null>(null);
+
+
+    React.useEffect(() => {
+        // Listen for messages from the parent page
+        window.addEventListener('message', (event) => {
+            try {
+                // Parse the JSON data
+                const data = JSON.parse(event.data);
+                if (data.xbExperiments) {
+                    setExperiments(data.xbExperiments);
+                }
+                if (data.xbBox) {
+                    setBox(data.xbBox);
+                }
+            } catch (error) {}
+        });
+    }, []);
+
+
+    const subscriptions = {};
+    const completionByExperimentId : Record<string, number> = {};
+    const scheduledExperiments : IScheduledExperimentSubscription[] = [];
     const scheduledExperimentsByStartTime = new Map<number, IExperiment[]>();
+
+
     const [drawerContent, setDrawerContent] = React.useState<any | null>(null);
 
     const getExperimentDescFirstParagraph = () => {
-        const paragraphs = thisBox.description!.filter((d) => d['type'] === 'para');
+        const paragraphs = box!.description!.filter((d) => d['type'] === 'para');
         if (paragraphs.length > 0) {
             return paragraphs[0]['content'];
         } else {
@@ -57,7 +79,7 @@ const ExperimentsListScreen = function () {
     const getBoxDescription = () => {
         return (
             <Stack spacing={2}>
-                {thisBox.description!.map((element) => (
+                {box!.description!.map((element) => (
                     <div>{getContent(element)}</div>
                 ))}
             </Stack>
@@ -140,7 +162,7 @@ const ExperimentsListScreen = function () {
             result.set(key, []);
         });
 
-        boxExperiments.reduce((map, experiment) => {
+        experiments!.reduce((map, experiment) => {
             if (iSubscribedToExperiment(experiment)) {
                 if (isExperimentComplete(experiment)) {
                     result.get(ExperimentCategory.COMPLETED.valueOf()).push(experiment);
@@ -227,12 +249,12 @@ const ExperimentsListScreen = function () {
 
     return (
         <IonPage>
-            {!thisBox.heroImageSrc && <Header title={`${capitalise(type)}`} />}
-            <IonContent ref={ionContentRef} scrollEvents={!!thisBox.heroImageSrc} onIonScroll={handleScrollAnimation}
+            {!box!.heroImageSrc && <Header title={`${capitalise(type)}`} />}
+            <IonContent ref={ionContentRef} scrollEvents={!!box!.heroImageSrc} onIonScroll={handleScrollAnimation}
                         className="ion-content-custom"
-                        style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+                        style={{ '--background': `linear-gradient(to top, rgba(${box!.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
             >
-                {thisBox.heroImageSrc && (
+                {!box!.heroImageSrc && (
                     <Box
                     >
                         <Box
@@ -279,7 +301,7 @@ const ExperimentsListScreen = function () {
                         }}
                     >
                         <AccordionSummary expandIcon={<AddIcon /> } sx={{
-                            backgroundColor: `rgba(${thisBox.color})`}}
+                            backgroundColor: `rgba(${box!.color})`}}
                         >
                             <Stack
                                 direction="row"
@@ -296,7 +318,7 @@ const ExperimentsListScreen = function () {
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {thisBox.description?.map((item, index) => (
+                            {!box!.description?.map((item, index) => (
                                 <Stack
                                     key={index}
                                     direction="row"
@@ -343,10 +365,10 @@ const ExperimentsListScreen = function () {
 
                 <ExperimentsList
                     key={type}
-                    color={thisBox.color}
+                    color={box!.color}
                     experimentsGroupedByCategory={experimentsGroupedByCategory}
                     scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
-                    beginAtUserStartOfWeek={thisBox.beginAtUserStartOfWeek}
+                    beginAtUserStartOfWeek={box!.beginAtUserStartOfWeek}
                 />
 
                 {type === 'move' && <ExerciseWarning />}
@@ -396,7 +418,7 @@ const ExperimentsListScreen = function () {
                         </Stack>
                     </Sheet>
                 </SwipeableDrawer>
-                <img src={thisBox.heroImageSrc} alt="Bottom Image" className="bottom-image" />
+                <img src={box!.heroImageSrc} alt="Bottom Image" className="bottom-image" />
 
             </IonContent>
             <IonFooter>

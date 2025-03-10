@@ -218,9 +218,6 @@ const ExperimentsList = function ({
 
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <div>
-            {/*<Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg',fontSize: '0.9rem'}}>*/}
-            {/*    {getCategoryTitle(experimentCategory)}*/}
-            {/*</Typography>*/}
 
                 {Array.from(scheduledExperimentsByStartTime!)
                     .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2 ).map(([startUTCTime, scheduledExperiments]) => {

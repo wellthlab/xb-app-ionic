@@ -156,38 +156,6 @@ const Today = function() {
                             </Stack>
 
                             <Stack spacing={2}>
-                                {/*{entry.experiment.steps.length !== 0 && <Accordion variant="outlined">*/}
-                                {/*    <AccordionSummary expandIcon={<AddIcon />}*/}
-                                {/*    >*/}
-                                {/*        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>*/}
-                                {/*            {Strings.steps}*/}
-                                {/*        </Typography>*/}
-                                {/*    </AccordionSummary>*/}
-                                {/*    <Divider />*/}
-                                {/*    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}> <br />*/}
-                                {/*        <List sx={{marginBlockStart: -2}}>*/}
-                                {/*            {entry.experiment.steps.map((step, index) => {*/}
-                                {/*                return <div>*/}
-                                {/*                    <ListItem sx={{ display: 'list-item' }}>*/}
-                                {/*                        <ListItemContent >*/}
-                                {/*                            <Typography sx={{fontSize: '0.8rem'}}>*/}
-                                {/*                                {step}*/}
-                                {/*                            </Typography>*/}
-                                {/*                        </ListItemContent>*/}
-                                {/*                    </ListItem>*/}
-
-                                {/*                    {index !== entry.experiment.steps.length -1 &&*/}
-                                {/*                        <div>*/}
-                                {/*                            <ListDivider />*/}
-                                {/*                            <br />*/}
-                                {/*                        </div>*/}
-                                {/*                    }*/}
-                                {/*                </div>;*/}
-                                {/*            })}*/}
-                                {/*        </List>*/}
-                                {/*    </AccordionDetails>*/}
-                                {/*</Accordion>}*/}
-
                                 <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >

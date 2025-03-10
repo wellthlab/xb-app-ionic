@@ -56,8 +56,6 @@ interface IExperimentTimelineProps {
 const ExperimentTimeline = function ({
                                          experimentId
                                      }: IExperimentTimelineProps) {
-    // const { type } = useParams<{ type: string }>();
-
     const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
     const prepExperiment = useSelector((state) => selectExperimentById(state, experiment.prepExperiment)) as IExperiment;
     const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
@@ -71,10 +69,6 @@ const ExperimentTimeline = function ({
     const [dayNum, setDayNum] = React.useState(0);
     const [taskNum, setTaskNum] = React.useState(0);
 
-    const [prepModalOpen, setPrepModalOpen] = React.useState(false);
-    const [prepDayNum, setPrepDayNum] = React.useState<number>(0);
-    const [prepTaskNum, setPrepTaskNum] = React.useState(0);
-
     const [reflectionModalOpen, setReflectionModalOpen] = React.useState(false);
     const [reflectionDayNum, setReflectionDayNum] = React.useState<number>(0);
     const [reflectionTaskNum, setReflectionTaskNum] = React.useState(0);
@@ -86,8 +80,6 @@ const ExperimentTimeline = function ({
             setTaskModalOpen(false);
         } else if (type === 'reflection') {
             setReflectionModalOpen(false);
-        } else {
-            setPrepModalOpen(false);
         }
     };
 
@@ -100,10 +92,6 @@ const ExperimentTimeline = function ({
             setReflectionModalOpen(true);
             setReflectionDayNum(dayNum);
             setReflectionTaskNum(taskNum);
-        } else {
-            setPrepModalOpen(true);
-            setPrepDayNum(dayNum);
-            setPrepTaskNum(taskNum);
         }
     };
 
@@ -211,26 +199,6 @@ const ExperimentTimeline = function ({
     return (
         <div>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
-                {/*<Card>*/}
-                {/*    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>*/}
-                {/*        {'OVERVIEW'}*/}
-                {/*    </Typography>*/}
-                {/*    {getExperimentDescription(experiment)}*/}
-
-                {/*</Card>*/}
-                {/*<br />*/}
-                {/*<br />*/}
-
-                {/*{prepExperiment && <Card>*/}
-                {/*    <Typography level="h6" sx={{ mb: 1, mt: 1, fontWeight: 'lg', fontSize: '1rem' }}>*/}
-                {/*        {'PREPARATIONS FOR THIS EXPERIMENT'}*/}
-                {/*    </Typography>*/}
-                {/*    {getExperimentDescription(prepExperiment)}*/}
-
-                {/*</Card>}*/}
-                {/*<br />*/}
-
-
                     <Stack spacing={2} key={activeDay}>
                         <TasksList
                             tasks={experiment.days[currentDay].tasks}
