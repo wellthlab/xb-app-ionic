@@ -1,68 +1,37 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../../utils/string_dict.js';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import _ from 'lodash';
 import {
     Typography,
     Box,
     Stack,
     Alert,
     Divider,
-    ListDivider,
-    Card,
-    List,
-    Button,
-    ListItem,
-    ListItemContent,
     Link,
 } from '@mui/joy';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
-import CircularProgress, {
-    CircularProgressProps,
-} from '@mui/material/CircularProgress';
+import TaskModal from './TaskModal';
+import TasksList from "./TasksList";
 
-import {
-    Timeline,
-    TimelineItem,
-    TimelineSeparator,
-    TimelineDot,
-    TimelineConnector,
-    TimelineContent,
-    timelineItemClasses,
-} from '@mui/lab';
-import TaskModal from '../../components/TaskModal';
-import TasksList from '../../components/TasksList';
-import Page from '../../components/foundation/Page';
-
-import { useSelector } from '../../slices/store';
-import { selectExperimentById, selectDayProgress, selectCurrentDay } from '../../slices/experiments';
-import { selectSubscriptionByExperimentId } from '../../slices/account';
-import {ExperimentCategory, IExperiment} from '../../models/Experiment';
-import BoxesSubMenu from './BoxesSubMenu';
-import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
+import {ExperimentCategory, IExperiment} from '../../../models/Experiment';
+import YouTubeVideo from '../../../components/TaskModal/YoutubeVideo';
 import ReactMarkdown from 'react-markdown';
-import PageTitle from '../../components/foundation/PageTitle';
+import PageTitle from '../../../components/foundation/PageTitle';
 
 const asset_dir = '/assets/experiments/';
 
 interface IExperimentTimelineProps {
-    experimentId: string;
+    experiment: IExperiment;
 }
 
 const ExperimentTimeline = function ({
-                                         experimentId
+                                         experiment
                                      }: IExperimentTimelineProps) {
-    const experiment = useSelector((state) => selectExperimentById(state, experimentId)) as IExperiment; // This page will only be shown on children experiment, so we can safely cast here
-    const prepExperiment = useSelector((state) => selectExperimentById(state, experiment.prepExperiment)) as IExperiment;
-    const dayProgress = useSelector((state) => selectDayProgress(state, experimentId));
-    const subscription = useSelector(state => {
-        return selectSubscriptionByExperimentId(state, experimentId);
-    });
-    const isSubscribedToExperiment = subscription !== undefined;
+    const dayProgress: any[] = [];
+    const isSubscribedToExperiment = false;
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
 
     const [taskModalOpen, setTaskModalOpen] = React.useState(false);
@@ -95,7 +64,7 @@ const ExperimentTimeline = function ({
         }
     };
 
-    const currentDay = Math.min(useSelector((state) => selectCurrentDay(state, experimentId)), experiment.days.length - 1);
+    const currentDay = 0;
     const [activeDay, setActiveDay] = React.useState(0);
 
     const handleNext = () => {
@@ -107,7 +76,7 @@ const ExperimentTimeline = function ({
     };
 
     const getExperimentDescription = (experiment: IExperiment) => {
-          return <Stack spacing={0.5}>
+        return <Stack spacing={0.5}>
             {experiment.desc.map((element) => (
                 <div>
                     {getContent(element)}
@@ -194,27 +163,26 @@ const ExperimentTimeline = function ({
 
     const experimentCompleted = dayProgress.reduce((acc, curr) => acc && curr, true);
     const reflectionTasks = experiment.days[0].tasks.filter(task => task.type === 'reflection');
-    const prepExperimentTasks = prepExperiment ? prepExperiment.days[0].tasks : [];
 
     return (
         <div>
             <Box sx={{ flex: 1, overflow: 'auto' }}>
-                    <Stack spacing={2} key={activeDay}>
-                        <TasksList
-                            tasks={experiment.days[currentDay].tasks}
-                            experimentId={experimentId}
-                            dayNum={activeDay}
-                            type={'normal'}
-                            onTaskClick={handleClickTask}
-                        />
-                        <TasksList
-                            tasks={experiment.days[currentDay].tasks}
-                            experimentId={experimentId}
-                            dayNum={activeDay}
-                            type={'reflection'}
-                            onTaskClick={handleClickTask}
-                        />
-                    </Stack>
+                <Stack spacing={2} key={activeDay}>
+                    <TasksList
+                        tasks={experiment.days[currentDay].tasks}
+                        experimentId={experiment.id}
+                        dayNum={activeDay}
+                        type={'normal'}
+                        onTaskClick={handleClickTask}
+                    />
+                    <TasksList
+                        tasks={experiment.days[currentDay].tasks}
+                        experimentId={experiment.id}
+                        dayNum={activeDay}
+                        type={'reflection'}
+                        onTaskClick={handleClickTask}
+                    />
+                </Stack>
 
             </Box>
 
@@ -228,8 +196,8 @@ const ExperimentTimeline = function ({
             <TaskModal
                 isOpen={taskModalOpen}
                 onDismiss={() => handleDismissModal('normal')}
-                key={`${experimentId}.${dayNum}.${taskNum}.normal`}
-                experimentId={experimentId}
+                key={`${experiment.id}.${dayNum}.${taskNum}.normal`}
+                experiment={experiment}
                 dayNum={dayNum}
                 taskNum={taskNum}
                 presentingElement={presentingElement}
@@ -239,8 +207,8 @@ const ExperimentTimeline = function ({
             {reflectionTasks.length !== 0 && <TaskModal
                 isOpen={reflectionModalOpen}
                 onDismiss={() => handleDismissModal('reflection')}
-                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
-                experimentId={experimentId}
+                key={`${experiment.id}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
+                experiment={experiment}
                 dayNum={reflectionDayNum}
                 taskNum={reflectionTaskNum}
                 presentingElement={presentingElement}

@@ -21,7 +21,7 @@ import {
     selectSubscriptions,
     subscribeToExperiments,
 } from '../../../slices/account';
-import { DayOfWeek } from '../../../models/Account';
+import {DayOfWeek, ISubscription} from '../../../models/Account';
 import PageTitle from "../../../components/foundation/PageTitle";
 import ReactMarkdown from "react-markdown";
 import Accordion from "@mui/material/Accordion";
@@ -29,7 +29,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AddIcon from "@mui/icons-material/Add";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import YouTubeVideo from "../../../components/TaskModal/YoutubeVideo";
-import ExperimentTimeline from "../ExperimentTimeline";
+import ExperimentTimeline from "./ExperimentTimeline";
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
@@ -39,19 +39,15 @@ interface IExperimentsListProps {
 }
 
 const ExperimentsList = function ({
-    experimentsGroupedByCategory,
-    scheduledExperimentsByStartTime,
-    color, beginAtUserStartOfWeek
-}: IExperimentsListProps) {
-    const completionByExperimentId = useSelector(selectCompletionForAllExperiments);
-    const subscriptions = useSelector(selectSubscriptions);
-    const { pathname } = useLocation();
-    const history = useHistory();
-    const userInCohort = useSelector((state) => isUserInCohort(state));
+                                      experimentsGroupedByCategory,
+                                      scheduledExperimentsByStartTime,
+                                      color, beginAtUserStartOfWeek
+                                  }: IExperimentsListProps) {
+    const subscriptions: Record<string, ISubscription> = {};
+    const userInCohort = false;
     const [subscriptionModalOpen, setSubscriptionModalOpen] = React.useState(false);
     const [resubscriptionModalOpen, setResubscriptionModalOpen] = React.useState(false);
     const dispatch = useDispatch();
-    const profile = useSelector(selectProfile);
     const [drawerContent, setDrawerContent] = React.useState<any | null>(null);
 
     const isSubscribedToBox = () => {
@@ -144,7 +140,7 @@ const ExperimentsList = function ({
 
     const handleSubscribeToExperiment = async () => {
         const dayOfWeek = new Date().getUTCDay();
-        const userStartOfWeekDay = DayOfWeek[profile!['startOfWeek'] as keyof typeof DayOfWeek].valueOf() + 1;
+        const userStartOfWeekDay = 1;
         const oneDayInMilliSecs = 24 * 60 * 60 * 1000;
 
         let subscriptionStartTime: number;
@@ -170,7 +166,7 @@ const ExperimentsList = function ({
             const oneWeekInMilliSecs = 7 * oneDayInMilliSecs;
             const filteredExperiments = subscribeToFirstWeekExperiments ? experiments.filter(e => e.boxweek !== 0) : experiments;
             const scheduledExperiments = filteredExperiments.map(e => {
-               return {startTimeUTC: subscriptionStartTime + (e.boxweek * oneWeekInMilliSecs), experiments: [new Realm.BSON.ObjectId(e.id)]} as IExperimentSchedule;
+                return {startTimeUTC: subscriptionStartTime + (e.boxweek * oneWeekInMilliSecs), experiments: [new Realm.BSON.ObjectId(e.id)]} as IExperimentSchedule;
             });
 
             await dispatch(saveScheduledExperiments(scheduledExperiments));
@@ -219,25 +215,25 @@ const ExperimentsList = function ({
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return <div>
 
-                {Array.from(scheduledExperimentsByStartTime!)
-                    .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2 ).map(([startUTCTime, scheduledExperiments]) => {
-                        return (
-                            <Stack spacing={2} alignItems="center">
-                                {scheduledExperiments.map(experiment => {
-                                    return (
-                                     <Accordion sx={{ 
-                                        ml: 'auto', 
+            {Array.from(scheduledExperimentsByStartTime!)
+                .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2 ).map(([startUTCTime, scheduledExperiments]) => {
+                    return (
+                        <Stack spacing={2} alignItems="center">
+                            {scheduledExperiments.map(experiment => {
+                                return (
+                                    <Accordion sx={{
+                                        ml: 'auto',
                                         mr: 'auto',
-                                         mt: 2,
+                                        mt: 2,
                                         maxWidth: '90%',
                                         width: '500px',
-                                     }}>
+                                    }}>
                                         <AccordionSummary expandIcon={<AddIcon />} sx={{
                                             backgroundColor: `rgba(${color})`}}>
-                                            <Stack 
-                                                direction="row" 
+                                            <Stack
+                                                direction="row"
                                                 spacing={4}
-                                                sx={{ 
+                                                sx={{
                                                     width: '90%',
                                                     justifyContent: 'space-between',
                                                     alignItems: 'center'
@@ -294,16 +290,16 @@ const ExperimentsList = function ({
                                                     </Link>
                                                 </Stack>
                                             ))}
-                                            <ExperimentTimeline experimentId={experiment.id}/>
+                                            <ExperimentTimeline experiment={experiment}/>
 
                                         </AccordionDetails>
                                     </Accordion>
-                                    );
-                                })}
-                            </Stack>
-                        );
-                    })
-                }
+                                );
+                            })}
+                        </Stack>
+                    );
+                })
+            }
 
         </div>;
     }
@@ -314,12 +310,12 @@ const ExperimentsList = function ({
                 {experiments
                     .sort((e1, e2) => e1.boxweek - e2.boxweek)
                     .map((experiment) => {
-                        const completion = completionByExperimentId[experiment.id];
+                        const completion = 0;
                         return (
-                            <Accordion 
+                            <Accordion
                                 key={experiment.id}
-                                sx={{ 
-                                    ml: 'auto', 
+                                sx={{
+                                    ml: 'auto',
                                     mr: 'auto',
                                     mt: 2,
                                     maxWidth: '90%',
@@ -328,10 +324,10 @@ const ExperimentsList = function ({
                             >
                                 <AccordionSummary expandIcon={<AddIcon />} sx={{
                                     backgroundColor: `rgba(${color})`}}>
-                                    <Stack 
-                                        direction="column" 
+                                    <Stack
+                                        direction="column"
                                         spacing={1}
-                                        sx={{ 
+                                        sx={{
                                             width: '90%'
                                         }}
                                     >
@@ -343,8 +339,8 @@ const ExperimentsList = function ({
                                                 <Typography level="body3" sx={{ fontSize: '0.8rem' }}>
                                                     {completion}{Strings.percent_completed}
                                                 </Typography>
-                                                <LinearProgress 
-                                                    determinate 
+                                                <LinearProgress
+                                                    determinate
                                                     value={completion}
                                                     sx={{ width: '100px' }}
                                                 />
@@ -397,7 +393,7 @@ const ExperimentsList = function ({
                                             </Link>
                                         </Stack>
                                     ))}
-                                    <ExperimentTimeline experimentId={experiment.id}/>
+                                    <ExperimentTimeline experiment={experiment}/>
 
                                 </AccordionDetails>
                             </Accordion>

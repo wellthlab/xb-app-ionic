@@ -21,12 +21,13 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
+import Alert from '@mui/material/Alert';
 
 import { useSelector } from '../../slices/store';
 import {
     selectAllBoxes,
     selectAllExperiments,
-    selectTodaysTasks,
+    selectTodaysTasks, selectPreviousDayTasks,
 } from '../../slices/experiments';
 import experiment, { IExperiment } from '../../models/Experiment';
 
@@ -39,6 +40,7 @@ const Today = function() {
     const boxes = useSelector(selectAllBoxes);
     const allExperiments = useSelector(selectAllExperiments);
     let tasksByExperiment = useSelector(selectTodaysTasks);
+    let previousDayTasks = useSelector(selectPreviousDayTasks);
 
     // This is a hack so that the tasks for all experiments for a given box can be viewed for demo purposes
     if (isDemo) {
@@ -102,7 +104,14 @@ const Today = function() {
     };
 
     return !tasksByExperiment.length ? (
+
         <Page>
+            { !!previousDayTasks.length &&
+                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0  }} onClick={() => history.push("/main/previousDayTasks")}>
+                    {Strings.you_have_unfinished_tasks_from_previous_days}
+                </Alert>
+            }
+
             <Centre>
                 <Stack spacing={1}>
                     <Typography level="h6" component="p">
@@ -121,8 +130,14 @@ const Today = function() {
                 </Stack>
             </Centre>
         </Page>
+
     ) : (
         <Page ref={setPresentingElement}>
+            { !!previousDayTasks.length &&
+                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0  }} onClick={() => history.push("/main/previousDayTasks")}>
+                    {Strings.you_have_unfinished_tasks_from_previous_days}
+                </Alert>
+            }
             <PageTitle sx={{fontSize: '1.5rem'}}>{Strings.todays_experiments}</PageTitle>
 
             <Stack spacing={4}>
@@ -141,38 +156,6 @@ const Today = function() {
                             </Stack>
 
                             <Stack spacing={2}>
-                                {entry.experiment.steps.length !== 0 && <Accordion variant="outlined">
-                                    <AccordionSummary expandIcon={<AddIcon />}
-                                    >
-                                        <Typography level="h6" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.7rem' }}>
-                                            {Strings.steps}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}  sx={{padding: 0}}> <br />
-                                        <List sx={{marginBlockStart: -2}}>
-                                            {entry.experiment.steps.map((step, index) => {
-                                                return <div>
-                                                    <ListItem sx={{ display: 'list-item' }}>
-                                                        <ListItemContent >
-                                                            <Typography sx={{fontSize: '0.8rem'}}>
-                                                                {step}
-                                                            </Typography>
-                                                        </ListItemContent>
-                                                    </ListItem>
-
-                                                    {index !== entry.experiment.steps.length -1 &&
-                                                        <div>
-                                                            <ListDivider />
-                                                            <br />
-                                                        </div>
-                                                    }
-                                                </div>;
-                                            })}
-                                        </List>
-                                    </AccordionDetails>
-                                </Accordion>}
-
                                 <Accordion variant="outlined">
                                     <AccordionSummary expandIcon={<AddIcon />}
                                     >

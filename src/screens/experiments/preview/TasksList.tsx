@@ -3,14 +3,12 @@ import { Box, Typography } from '@mui/joy';
 import { Check, CaretRight, PlusCircle, MinusCircle } from 'phosphor-react';
 import { Fab } from '@mui/material';
 
-import List from './foundation/List';
-import ListItem from './foundation/ListItem';
+import List from "../../../components/foundation/List";
+import ListItem from "../../../components/foundation/ListItem";
 
-import { ITask } from '../models/Experiment';
-import getIcon from '../utils/getIcon';
-import { useSelector } from '../slices/store';
-import { selectCurrentDay, selectProgressByDayNumAndTasks } from '../slices/experiments';
-import Strings from '../utils/string_dict';
+import { ITask } from '../../../models/Experiment';
+import getIcon from '../../../utils/getIcon';
+import Strings from '../../../utils/string_dict';
 
 interface ITasksListProps {
     tasks: ITask[];
@@ -22,8 +20,8 @@ interface ITasksListProps {
 }
 
 const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, isPreviousDayTasks }: ITasksListProps) {
-    const responseCountByDayNumAndTaskIds: number[] = useSelector((state) => selectProgressByDayNumAndTasks(state, tasks, dayNum));
-    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
+    const responseCountByDayNumAndTaskIds: number[] = [];
+    const currentDay = 0;
 
     const tasksGroupedById = new Map();
     tasks.forEach((task, index) => {

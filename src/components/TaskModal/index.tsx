@@ -69,7 +69,7 @@ const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscr
             actionButtonDisabled={actionDisabled}
             actionButtonLabel={Strings.submit}
             actionButtonDisabledToolTipTitle={userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks}
-            headerTitle= { actionDisabled ? Strings.preview + task.name : task.name}
+            headerTitle= { actionDisabled ? Strings.preview + task.name : task.name +  ' - ' + Strings.day + ' ' +  `${currentDay +1}` + ' ' + Strings.of + ' 5'}
             onAction={handleSubmit}
             onDismiss={onDismiss}
             {...others}

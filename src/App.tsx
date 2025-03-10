@@ -42,6 +42,8 @@ import JournalTab from './screens/journal/Journal';
 import TodayTab from './screens/today/Today';
 import { AppDevice } from './models/Device';
 import AboutThisStudy from './components/AboutThisStudy';
+import PreviousDayTasks from './screens/today/PreviousDayTasks';
+import PreviewScreen from './screens/experiments/preview/Preview';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -74,7 +76,9 @@ const AppFlowController = function () {
     }, [isAuthenticated, isEnrolled]);
 
     if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
+        if (location.pathname === '/auth/new-password' ||
+            location.pathname === '/auth/confirm' ||
+            location.pathname === '/_preview') {
             return null;
         }
 
@@ -107,6 +111,9 @@ const App = function () {
                                 <ColorModeController />
                                 <AppFlowController />
                                 <IonRouterOutlet>
+                                    <Route path="/_preview" exact>
+                                        <PreviewScreen />
+                                    </Route>
                                     <Route path="/auth" exact>
                                         <LoginScreen />
                                     </Route>
@@ -166,10 +173,6 @@ const App = function () {
                                                     <ExperimentsListScreen />
                                                 </Route>
 
-                                                <Route path="/main/box/:type/:experimentId" exact>
-                                                    <ExperimentTimelineScreen />
-                                                </Route>
-
                                                 <Route path="/main/today" exact>
                                                     <TodayTab />
                                                 </Route>
@@ -201,6 +204,12 @@ const App = function () {
                                                 <Route path="/main/settings/profile" exact>
                                                     <EditProfileScreen />
                                                 </Route>
+
+
+                                                <Route path="/main/previousDayTasks" exact>
+                                                    <PreviousDayTasks />
+                                                </Route>
+
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">

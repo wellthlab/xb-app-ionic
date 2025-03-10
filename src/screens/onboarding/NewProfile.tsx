@@ -17,7 +17,7 @@ const NewProfile = function () {
 
     const history = useHistory();
     const handleSubmit: IProfileFormProps['onSubmit'] = function (data) {
-        if (startOfWeekRef.current) {
+        if (startOfWeekRef.current && !data['startOfWeek']) {
             data['startOfWeek'] = startOfWeekRef.current;
         }
         dispatch(setProfile(data));

@@ -30,7 +30,7 @@ const Strings = {
 	log_out : "Log out",
 	you_have_requested_your : "You have requested your account to be deleted. We will be in touch soon.",
 	sorry_your_account_cannot_be : "Sorry, your account cannot be deleted at the moment.",
-	delete_your_account : "Delete your account",
+	delete_your_account : "Delete account and withdraw from study",
 	your_profile : "Your Profile",
 	invite_code_is_missing : "Invite code is missing",
 	invite_code_must_have_6 : "Invite code must have 6 digits",
@@ -75,7 +75,8 @@ const Strings = {
 	your_meal_today_consisted_of_3 : "% red.",
 	sorry_we_do_not_have_any_data : "Sorry, we do not have any data for now",
 	feel_free_to_jot_down : "Feel free to jot down anything that you want to look back for this day. It is for your use only, and feel free to edit it anytime.",
-	next : "Next",
+    previous : "Back",
+    next : "Next",
 	scroll_or_read_to_the_end_to : "Scroll or read to the end to continue",
 	please_check_this_box_to : "Please check this box to continue",
 	enroll : "Enroll!",
@@ -95,7 +96,7 @@ const Strings = {
 	university_email : "University email",
 	password : "Password",
 	repeat_password : "Repeat password",
-	already_had_an_account_login : "Already had an account? Login",
+	already_had_an_account_login : "Already have an account? Login",
 	email_or_password_did_not : "Email or password did not match our record",
     login_error : "An error occurred while attempting to login, please check your credentials and try again.",
     login_to_continue : "Login to continue",
@@ -116,6 +117,7 @@ const Strings = {
 	day_s_ : "Day(s)",
 	xb_app_logo : "XB App logo",
 	you_havent_got_any_task_today : "You haven't got any tasks today",
+    you_have_unfinished_tasks_from_previous_days : "You've pending tasks from previous days!",
 	explore_what_you_can_do_in : "Tasks will appear here when you have started some experiments",
 	todays_experiments : "Today's Experiments",
 	read : "Read",
@@ -167,7 +169,9 @@ const Strings = {
     subscribe_to_box: "Like the look of this box? Subscribe to join in!",
     already_subscribed: "You are subscribed to this box",
     confirm_subscription: "Confirm Subscription",
-	confirm_resubscription: "Confirm Resubscription",
+    subscribe: "Subscribe",
+    resubscribe: "Resubscribe",
+    confirm_resubscription: "Confirm Resubscription",
     week: "Week",
 	click_here_to_find_some: "Click Here to find some!",
 	box_description1: "A set of experiments to explore how you \"",
@@ -197,7 +201,8 @@ const Strings = {
     reflections: 'REFLECTIONS',
     checks: 'CHECKS',
     tips: 'TIPS',
-    preview: 'PREVIEW of '
+    preview: 'PREVIEW of ',
+    day_progress: 'S'
 };
 
 export default Strings;

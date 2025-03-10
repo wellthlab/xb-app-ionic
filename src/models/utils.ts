@@ -16,7 +16,11 @@ switch(hostname.toLowerCase()) {
         break;
 
     case 'localhost':
+        DATABASE = 'DEVELOPMENT_NEW_SCHEMA';
+        break;
     case 'xbapp01.ecs.soton.ac.uk':
+        DATABASE = 'DEVELOPMENT_NEW_SCHEMA';
+        break;
     case 'svm00146.ecs.soton.ac.uk':
     default:
         DATABASE = 'DEMONSTRATION';
