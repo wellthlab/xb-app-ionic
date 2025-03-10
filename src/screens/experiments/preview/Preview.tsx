@@ -1,26 +1,19 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme, Link } from '@mui/joy';
-import { CaretDoubleDown } from 'phosphor-react';
+import { Box, Stack, Typography, Divider, Card, useColorScheme, useTheme, Link } from '@mui/joy';
 
-import capitalise from './utils/capitalise';
-import ExperimentsList from './components/ExperimentsList';
-import ExerciseWarning from '../../components/ExerciseWarning';
+import capitalise from '../utils/capitalise';
+import ExperimentsList from '../preview/ExperimentsList';
+import ExerciseWarning from '../../../components/ExerciseWarning';
 
-import { useSelector } from '../../slices/store';
-import {
-    selectBoxByType,
-    selectCompletionForAllExperiments,
-    selectExperimentByBoxName,
-} from '../../slices/experiments';
-import { ExperimentCategory, IBox, IExperiment } from '../../models/Experiment';
-import { selectScheduledExperiments, selectSubscriptions } from '../../slices/account';
-import BoxesSubMenu from './BoxesSubMenu';
-import PageTitle from '../../components/foundation/PageTitle';
+
+import { ExperimentCategory, IBox, IExperiment } from '../../../models/Experiment';
+import BoxesSubMenu from '../BoxesSubMenu';
+import PageTitle from '../../../components/foundation/PageTitle';
 import { IonContent, IonFooter, IonPage, IonToolbar, ScrollDetail } from '@ionic/react';
-import Header from '../../components/foundation/Header';
-import HeaderButton from '../../components/foundation/HeaderButton';
-import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
+import Header from '../../../components/foundation/Header';
+import HeaderButton from '../../../components/foundation/HeaderButton';
+import YouTubeVideo from '../../../components/TaskModal/YoutubeVideo';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -30,7 +23,7 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Sheet from "@mui/joy/Sheet";
 import IconButton from "@mui/joy/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { IScheduledExperimentSubscription } from '../../models/Account';
+import { IScheduledExperimentSubscription } from '../../../models/Account';
 
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;

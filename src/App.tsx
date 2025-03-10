@@ -43,6 +43,7 @@ import TodayTab from './screens/today/Today';
 import { AppDevice } from './models/Device';
 import AboutThisStudy from './components/AboutThisStudy';
 import PreviousDayTasks from './screens/today/PreviousDayTasks';
+import PreviewScreen from './screens/experiments/preview/Preview';
 
 const AppFlowController = function () {
     const isAuthenticated = useSelector(selectIsAuthenticated);
