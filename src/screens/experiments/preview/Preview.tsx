@@ -6,7 +6,6 @@ import capitalise from '../utils/capitalise';
 import ExperimentsList from '../preview/ExperimentsList';
 import ExerciseWarning from '../../../components/ExerciseWarning';
 
-
 import { ExperimentCategory, IBox, IExperiment } from '../../../models/Experiment';
 import BoxesSubMenu from '../BoxesSubMenu';
 import PageTitle from '../../../components/foundation/PageTitle';
@@ -19,22 +18,20 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 import ReactMarkdown from 'react-markdown';
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Sheet from "@mui/joy/Sheet";
-import IconButton from "@mui/joy/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Sheet from '@mui/joy/Sheet';
+import IconButton from '@mui/joy/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import { IScheduledExperimentSubscription } from '../../../models/Account';
-
+import { boxes } from './boxes';
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
 const ExperimentsListScreen = function () {
-    const { type } = useParams<{ type: string }>();
     const colorScheme = useColorScheme();
 
-    const [experiments, setExperiments] = React.useState<IExperiment[] | null>(null);
-    const [box, setBox] = React.useState<IBox | null>(null);
-
+    const [experiments, setExperiments] = React.useState<IExperiment[]>([]);
+    const [currentDay, setCurrentDay] = React.useState(0);
 
     React.useEffect(() => {
         // Listen for messages from the parent page
@@ -43,41 +40,26 @@ const ExperimentsListScreen = function () {
                 // Parse the JSON data
                 const data = JSON.parse(event.data);
                 if (data.xbExperiments) {
+                    console.log('receive updated experiment');
                     setExperiments(data.xbExperiments);
                 }
-                if (data.xbBox) {
-                    setBox(data.xbBox);
+
+                if (typeof data.xbDay === 'number') {
+                    console.log('receive updated day');
+                    setCurrentDay(data.xbDay);
                 }
             } catch (error) {}
         });
     }, []);
 
+    const box = !experiments[0] ? null : boxes[experiments[0].boxId as keyof typeof boxes];
 
     const subscriptions = {};
-    const completionByExperimentId : Record<string, number> = {};
-    const scheduledExperiments : IScheduledExperimentSubscription[] = [];
+    const completionByExperimentId: Record<string, number> = {};
+    const scheduledExperiments: IScheduledExperimentSubscription[] = [];
     const scheduledExperimentsByStartTime = new Map<number, IExperiment[]>();
 
-
     const [drawerContent, setDrawerContent] = React.useState<any | null>(null);
-
-    const getExperimentDescFirstParagraph = () => {
-        const paragraphs = box!.description!.filter((d) => d['type'] === 'para');
-        if (paragraphs.length > 0) {
-            return paragraphs[0]['content'];
-        } else {
-            return null;
-        }
-    };
-    const getBoxDescription = () => {
-        return (
-            <Stack spacing={2}>
-                {box!.description!.map((element) => (
-                    <div>{getContent(element)}</div>
-                ))}
-            </Stack>
-        );
-    };
     const getContent = (block: any) => {
         if (block.type === 'para') {
             return (
@@ -128,24 +110,25 @@ const ExperimentsListScreen = function () {
             );
         }
 
-
         if (block.type === 'markdown') {
-            return  <ReactMarkdown
-                children={block['content']}
-                components={{
-                    h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+            return (
+                <ReactMarkdown
+                    children={block['content']}
+                    components={{
+                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
-                    h2: ({ children }) => (
-                        <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                            {children}
-                        </Typography>
-                    ),
-                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+                        h2: ({ children }) => (
+                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                                {children}
+                            </Typography>
+                        ),
+                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
 
-                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
-                }}
-            />
+                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                    }}
+                />
+            );
         }
     };
 
@@ -240,20 +223,25 @@ const ExperimentsListScreen = function () {
         history.goBack();
     };
 
+    if (!box) {
+        return null;
+    }
+
     return (
         <IonPage>
-            {!box!.heroImageSrc && <Header title={`${capitalise(type)}`} />}
-            <IonContent ref={ionContentRef} scrollEvents={!!box!.heroImageSrc} onIonScroll={handleScrollAnimation}
-                        className="ion-content-custom"
-                        style={{ '--background': `linear-gradient(to top, rgba(${box!.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+            {!box!.heroImageSrc && <Header title={`${capitalise(box.name)}`} />}
+            <IonContent
+                ref={ionContentRef}
+                scrollEvents={!!box!.heroImageSrc}
+                onIonScroll={handleScrollAnimation}
+                className="ion-content-custom"
+                style={{ '--background': `linear-gradient(to top, rgba(${box!.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
             >
                 {!box!.heroImageSrc && (
-                    <Box
-                    >
+                    <Box>
                         <Box
                             ref={titlesRef}
                             sx={{
-
                                 top: 0,
                                 left: 0,
                                 right: 0,
@@ -274,7 +262,7 @@ const ExperimentsListScreen = function () {
                                         sx={{ mb: 0, transition: 'font-size 0.2s', fontWeight: 'lg' }}
                                         level={showHeader ? 'h3' : 'h2'}
                                     >
-                                        {capitalise(type)}
+                                        {capitalise(box.name)}
                                     </PageTitle>
                                 </Box>
                             </Box>
@@ -293,8 +281,11 @@ const ExperimentsListScreen = function () {
                             width: '500px',
                         }}
                     >
-                        <AccordionSummary expandIcon={<AddIcon /> } sx={{
-                            backgroundColor: `rgba(${box!.color})`}}
+                        <AccordionSummary
+                            expandIcon={<AddIcon />}
+                            sx={{
+                                backgroundColor: `rgba(${box!.color})`,
+                            }}
                         >
                             <Stack
                                 direction="row"
@@ -306,12 +297,12 @@ const ExperimentsListScreen = function () {
                                 }}
                             >
                                 <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                    Introduction to the {capitalise(type)} Box
+                                    Introduction to the {capitalise(box.name)} Box
                                 </Typography>
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {!box!.description?.map((item, index) => (
+                            {box.description?.map((item, index) => (
                                 <Stack
                                     key={index}
                                     direction="row"
@@ -353,25 +344,24 @@ const ExperimentsListScreen = function () {
                             ))}
                         </AccordionDetails>
                     </Accordion>
-
                 </Stack>
 
                 <ExperimentsList
-                    key={type}
+                    key={box.name}
                     color={box!.color}
                     experimentsGroupedByCategory={experimentsGroupedByCategory}
                     scheduledExperimentsByStartTime={scheduledExperimentsByStartTime}
                     beginAtUserStartOfWeek={box!.beginAtUserStartOfWeek}
+                    currentDay={currentDay}
                 />
 
-                {type === 'move' && <ExerciseWarning />}
+                {box.name === 'move' && <ExerciseWarning />}
 
                 <SwipeableDrawer
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => {
-                    }}
+                    onOpen={() => {}}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',
@@ -405,14 +395,12 @@ const ExperimentsListScreen = function () {
                             <CloseIcon sx={{ color: 'black' }} />
                         </IconButton>
                         <Stack spacing={2}>
-                            {drawerContent && drawerContent.sectionContent.map((element: any) => (
-                                <div>{getContent(element)}</div>
-                            ))}
+                            {drawerContent &&
+                                drawerContent.sectionContent.map((element: any) => <div>{getContent(element)}</div>)}
                         </Stack>
                     </Sheet>
                 </SwipeableDrawer>
                 <img src={box!.heroImageSrc} alt="Bottom Image" className="bottom-image" />
-
             </IonContent>
             <IonFooter>
                 <IonToolbar>

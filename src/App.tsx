@@ -76,9 +76,11 @@ const AppFlowController = function () {
     }, [isAuthenticated, isEnrolled]);
 
     if (!isAuthenticated) {
-        if (location.pathname === '/auth/new-password' ||
+        if (
+            location.pathname === '/auth/new-password' ||
             location.pathname === '/auth/confirm' ||
-            location.pathname === '/_preview') {
+            location.pathname === '/_preview'
+        ) {
             return null;
         }
 
@@ -93,7 +95,7 @@ const AppFlowController = function () {
         return <Redirect to="/onboarding" />;
     }
 
-    if (initPath === "/" || initPath === "/onboarding") {
+    if (initPath === '/' || initPath === '/onboarding') {
         return <Redirect to="/main" />;
     } else {
         return <Redirect to={initPath} />;
@@ -205,11 +207,9 @@ const App = function () {
                                                     <EditProfileScreen />
                                                 </Route>
 
-
                                                 <Route path="/main/previousDayTasks" exact>
                                                     <PreviousDayTasks />
                                                 </Route>
-
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">

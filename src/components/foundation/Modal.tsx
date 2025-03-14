@@ -16,58 +16,68 @@ export interface IModalProps extends React.ComponentProps<typeof IonModal> {
     onAction?: () => void;
 }
 
-const Modal = function({
-                           headerTitle,
-                           children,
-                           onDismiss,
-                           actionButtonLabel,
-                           actionButtonDisabled,
-                           actionButtonDisabledToolTipTitle,
-                           onAction,
-                           ...others
-                       }: IModalProps) {
+const Modal = function ({
+    headerTitle,
+    children,
+    onDismiss,
+    actionButtonLabel,
+    actionButtonDisabled,
+    actionButtonDisabledToolTipTitle,
+    onAction,
+    ...others
+}: IModalProps) {
     const [pending, setPending] = React.useState(false);
-    const handleAction = async function() {
+    const handleAction = async function () {
         setPending(true);
         await onAction!();
         setPending(false);
     };
 
-    const handleDismiss: React.ComponentProps<typeof IonModal>['onDidDismiss'] = function(e) {
+    const handleDismiss: React.ComponentProps<typeof IonModal>['onDidDismiss'] = function (e) {
         if (e.detail.role === 'gesture') {
             onDismiss('gesture');
         }
+
+        onDismiss();
     };
 
-    const handleCancel = function() {
+    const handleCancel = function () {
         onDismiss('cancel');
     };
 
-    const actionButton =
+    const actionButton = (
         <HeaderButton disabled={pending || actionButtonDisabled} onClick={handleAction}>
             {actionButtonLabel || Strings.next}
-        </HeaderButton>;
+        </HeaderButton>
+    );
 
     return (
         <IonModal canDismiss onWillDismiss={handleDismiss} {...others}>
             <Header
                 title={headerTitle}
                 rightButton={
-                    onAction && (
-                        actionButtonDisabled ?
-                            <Tooltip title={actionButtonDisabledToolTipTitle} enterTouchDelay={0} leaveDelay={10000} followCursor={true} arrow>
-                            <span>
-                                {actionButton}
-                            </span>
-                            </Tooltip> :
-                            actionButton
-                    )
+                    onAction &&
+                    (actionButtonDisabled ? (
+                        <Tooltip
+                            title={actionButtonDisabledToolTipTitle}
+                            enterTouchDelay={0}
+                            leaveDelay={10000}
+                            followCursor={true}
+                            arrow
+                        >
+                            <span>{actionButton}</span>
+                        </Tooltip>
+                    ) : (
+                        actionButton
+                    ))
                 }
                 leftButton={<HeaderButton onClick={handleCancel}>{Strings.close}</HeaderButton>}
             />
 
-            <IonContent >
-                <Container style={{ backgroundColor: actionButtonDisabled ? '#eeeeee' : undefined }}>{children}</Container>
+            <IonContent>
+                <Container style={{ backgroundColor: actionButtonDisabled ? '#eeeeee' : undefined }}>
+                    {children}
+                </Container>
             </IonContent>
         </IonModal>
     );
