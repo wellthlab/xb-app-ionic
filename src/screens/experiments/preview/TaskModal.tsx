@@ -23,15 +23,13 @@ const TaskModal = function ({ experiment, onDismiss, dayNum, taskNum, isSubscrib
         onDismiss();
     });
 
-    console.log(task.blocks);
-
     return (
         <Modal
             actionButtonLabel={Strings.submit}
             actionButtonDisabledToolTipTitle={
                 userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks
             }
-            headerTitle={Strings.preview + task.name}
+            headerTitle={Strings.preview + (task.name || '(no task name)')}
             onAction={handleSubmit}
             onDismiss={onDismiss}
             {...others}

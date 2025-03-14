@@ -131,7 +131,12 @@ const ExperimentTimeline = function ({ experiment, currentDay }: IExperimentTime
         }
     };
 
-    const reflectionTasks = experiment.days[0].tasks.filter((task) => task.type === 'reflection');
+    if (!experiment.days.length || !experiment.days[currentDay].tasks.length) {
+        return <div>(add at least a task for something to show up here)</div>;
+    }
+
+    const reflectionTasks = experiment.days[currentDay].tasks.filter((task) => task.type === 'reflection');
+    const normalTasks = experiment.days[currentDay].tasks.filter((task) => task.type === 'normal');
 
     return (
         <div>
@@ -156,14 +161,16 @@ const ExperimentTimeline = function ({ experiment, currentDay }: IExperimentTime
                 </Stack>
             </Box>
 
-            <TaskModal
-                isOpen={taskModalOpen}
-                onDismiss={() => handleDismissModal('normal')}
-                experiment={experiment}
-                dayNum={dayNum}
-                taskNum={taskNum}
-                isSubscribed={isSubscribedToExperiment}
-            />
+            {normalTasks.length !== 0 && (
+                <TaskModal
+                    isOpen={taskModalOpen}
+                    onDismiss={() => handleDismissModal('normal')}
+                    experiment={experiment}
+                    dayNum={dayNum}
+                    taskNum={taskNum}
+                    isSubscribed={isSubscribedToExperiment}
+                />
+            )}
 
             {reflectionTasks.length !== 0 && (
                 <TaskModal

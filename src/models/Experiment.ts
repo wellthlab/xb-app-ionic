@@ -12,7 +12,7 @@ export interface IBox {
     color?: string;
     beginAtUserStartOfWeek?: boolean;
     overlayText?: string;
-    overview:string;
+    overview: string;
 }
 
 interface IBoxDocument extends IBox {
@@ -99,7 +99,8 @@ export type Block =
     | IMovementRecorder
     | IMovementPicker
     | ISelectSubscription
-    | IDateInput;
+    | IDateInput
+    | IMarkdown;
 
 export interface IGenericInput {
     optional?: boolean;
@@ -118,6 +119,10 @@ interface IText {
 
 interface ITextInput extends IGenericInput {
     type: 'text-input';
+}
+
+interface IMarkdown extends IText {
+    type: 'markdown';
 }
 
 interface IDateInput extends IGenericInput {
@@ -149,7 +154,7 @@ interface ISelectSubscriptionOption {
 
 interface ISliderInput extends IGenericInput {
     type: 'slider-input';
-    labels: Record<string, string>;
+    labels: [[number, string]];
     range: [number, number];
 }
 

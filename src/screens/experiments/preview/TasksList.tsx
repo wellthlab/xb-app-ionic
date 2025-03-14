@@ -164,9 +164,9 @@ const TasksList = function ({
                             >
                                 <Typography sx={{ fontSize: '0.75rem', ml: -1.5 }}>
                                     {task.isRepeatable
-                                        ? task.name +
+                                        ? (task.name || '(no task name)') +
                                           `  (${index - taskIndex + 1} ${Strings.of} ${task.minOccurences}) `
-                                        : task.name}
+                                        : task.name || '(no task name)'}
                                 </Typography>
                             </ListItem>
                         </div>

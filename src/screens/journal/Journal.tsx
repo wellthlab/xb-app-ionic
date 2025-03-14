@@ -52,7 +52,7 @@ const Journal = function () {
         if (!currentDate) {
             return [];
         }
-        const allResponses =  selectResponses(state);
+        const allResponses = selectResponses(state);
 
         const startDate = new Date(currentDate.toDate());
         startDate.setUTCHours(0, 0, 0, 0);
@@ -60,10 +60,9 @@ const Journal = function () {
         const endDate = new Date(currentDate.toDate());
         endDate.setUTCHours(23, 59, 59, 9999);
 
-        return Object
-            .values(allResponses)
+        return Object.values(allResponses)
             .flat()
-            .filter(s =>  s.createdAt  >= startDate.getTime() && s.createdAt <=  endDate.getTime()) ;
+            .filter((s) => s.createdAt >= startDate.getTime() && s.createdAt <= endDate.getTime());
     });
 
     const [showCalendar, setShowCalendar] = React.useState(false);
@@ -128,8 +127,8 @@ const Journal = function () {
     };
 
     const getNoteDate = () => {
-        return  new Date(currentDate!.toDate()).setUTCHours(0, 0, 0, 0);
-    }
+        return new Date(currentDate!.toDate()).setUTCHours(0, 0, 0, 0);
+    };
 
     return (
         <Page ref={setPresentingElement}>
@@ -137,7 +136,12 @@ const Journal = function () {
             <Typography level="body1" sx={{ mb: 4 }}>
                 {Strings.a_summary_of_what_you_have}
             </Typography>
-            <Tabs aria-label={Strings.journal_tabs} value={tabIndex} onChange={handleTabChange} sx={{ bgcolor: 'transparent' }}>
+            <Tabs
+                aria-label={Strings.journal_tabs}
+                value={tabIndex}
+                onChange={handleTabChange}
+                sx={{ bgcolor: 'transparent' }}
+            >
                 <TabPanel value={0}>
                     <DateTimeField
                         value={currentDate}
@@ -204,11 +208,14 @@ const Journal = function () {
                                         }}
                                     >
                                         {responses.map((response, responseIndex) => {
-
-                                            const correspondingSubcription = Object.values(subscriptions).find(subscription => subscription.id === response.subscriptionId);
-                                            const experiment = experiments[correspondingSubcription!.experimentId] as IExperiment;
+                                            const correspondingSubcription = Object.values(subscriptions).find(
+                                                (subscription) => subscription.id === response.subscriptionId,
+                                            );
+                                            const experiment = experiments[
+                                                correspondingSubcription!.experimentId
+                                            ] as IExperiment;
                                             const day = experiment.days[response.dayNum];
-                                            const task = day.tasks.find(task => task.taskId === response.taskId);
+                                            const task = day.tasks.find((task) => task.taskId === response.taskId);
                                             const payloadEntries = Object.entries(response.payload);
 
                                             const [detectorGreenKey, greenPercentage] =
@@ -220,7 +227,9 @@ const Journal = function () {
                                                 <TimelineItem key={response.id}>
                                                     <TimelineSeparator>
                                                         <TimelineDot />
-                                                        {responseIndex !== responses.length - 1 && <TimelineConnector />}
+                                                        {responseIndex !== responses.length - 1 && (
+                                                            <TimelineConnector />
+                                                        )}
                                                     </TimelineSeparator>
                                                     <TimelineContent>
                                                         <Typography level="h4" mb={1}>
@@ -235,8 +244,10 @@ const Journal = function () {
                                                         <Stack spacing={1} mb={3}>
                                                             {greenPercentage && redPercentage && (
                                                                 <Typography color="neutral">
-                                                                    {Strings.your_meal_today_consisted_of} {greenPercentage}
-                                                                    {Strings.your_meal_today_consisted_of_2} {redPercentage}
+                                                                    {Strings.your_meal_today_consisted_of}{' '}
+                                                                    {greenPercentage}
+                                                                    {Strings.your_meal_today_consisted_of_2}{' '}
+                                                                    {redPercentage}
                                                                     {Strings.your_meal_today_consisted_of_3}
                                                                 </Typography>
                                                             )}
@@ -290,9 +301,7 @@ const Journal = function () {
                 onAction={handleSubmitNote}
             >
                 <Stack spacing={2}>
-                    <Typography level="body2">
-                        {Strings.feel_free_to_jot_down}
-                    </Typography>
+                    <Typography level="body2">{Strings.feel_free_to_jot_down}</Typography>
 
                     <Textarea
                         label={Strings.note}

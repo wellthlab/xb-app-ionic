@@ -34,8 +34,7 @@ const ExperimentsListScreen = function () {
     const [currentDay, setCurrentDay] = React.useState(0);
 
     React.useEffect(() => {
-        // Listen for messages from the parent page
-        window.addEventListener('message', (event) => {
+        const handler = (event: MessageEvent<any>) => {
             try {
                 // Parse the JSON data
                 const data = JSON.parse(event.data);
@@ -49,7 +48,11 @@ const ExperimentsListScreen = function () {
                     setCurrentDay(data.xbDay);
                 }
             } catch (error) {}
-        });
+        };
+
+        // Listen for messages from the parent page
+        window.addEventListener('message', handler);
+        return () => window.removeEventListener('message', handler);
     }, []);
 
     const box = !experiments[0] ? null : boxes[experiments[0].boxId as keyof typeof boxes];
@@ -224,7 +227,19 @@ const ExperimentsListScreen = function () {
     };
 
     if (!box) {
-        return null;
+        return (
+            <Box
+                sx={{
+                    height: '100dvh',
+                    width: '100dvw',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                Select a box to preview this experiment
+            </Box>
+        );
     }
 
     return (

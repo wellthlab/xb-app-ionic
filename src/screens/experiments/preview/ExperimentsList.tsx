@@ -278,7 +278,8 @@ const ExperimentsList = function ({
                                             }}
                                         >
                                             <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                                Week {experiment.boxweek + 1}: {experiment.name}
+                                                Week {experiment.boxweek + 1}:{' '}
+                                                {experiment.name || '(no experiment name)'}
                                             </Typography>
                                             {completion !== undefined ? (
                                                 <Stack

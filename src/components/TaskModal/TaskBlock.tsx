@@ -22,12 +22,13 @@ import AddIcon from '@mui/icons-material/Add';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Textarea from '../foundation/Textarea';
-import SelectDate from "../foundation/DatePicker";
+import SelectDate from '../foundation/DatePicker';
 import RadioGroupXB from './RadioGroup';
+import ReactMarkdown from 'react-markdown';
 
 export interface ITaskBlockProps {
     block: Block;
-    type?: string
+    type?: string;
     inputs?: {
         getInputProps: (key: string) => any;
         getCheckboxProps: (key: string) => any;
@@ -57,9 +58,37 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
 
     if (block.type === 'para' || block.type === 'title') {
         return (
-            <Typography level={block.type === 'para' ? 'body1' : 'h6'} sx = {{fontSize: '0.8rem'}}>
+            <Typography level={block.type === 'para' ? 'body1' : 'h6'} sx={{ fontSize: '0.8rem' }}>
                 {renderParagraphWithLinks(block.content)}
             </Typography>
+        );
+    }
+
+    if (block.type === 'markdown') {
+        return (
+            <ReactMarkdown
+                children={block['content']}
+                components={{
+                    h1: ({ children }) => <Typography level="h2">{children}</Typography>,
+
+                    h2: ({ children }) => (
+                        <Typography level="h3" color="primary" sx={{ mt: 4 }}>
+                            {children}
+                        </Typography>
+                    ),
+
+                    h3: ({ children }) => (
+                        <Typography level="h4" color="primary" sx={{ mt: 4 }}>
+                            {children}
+                        </Typography>
+                    ),
+
+                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+
+                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
+                }}
+            />
         );
     }
 
@@ -82,25 +111,24 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     }
 
     if ((block as any)['type'] === 'expandable') {
-        return <Accordion>
-            <AccordionSummary expandIcon={<AddIcon />}>
-                <Typography
-                    sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>
-                    {(block as any)['title']}
-                </Typography>
-            </AccordionSummary>
+        return (
+            <Accordion>
+                <AccordionSummary expandIcon={<AddIcon />}>
+                    <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg' }}>{(block as any)['title']}</Typography>
+                </AccordionSummary>
 
-            <Divider />
+                <Divider />
 
-            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
-                <br />
-                <Stack spacing={2}>
-                    {(block as any)['contents'].map((element: any) => (
-                        <TaskBlock block={element}></TaskBlock>
-                    ))}
-                </Stack>
-            </AccordionDetails>
-        </Accordion>;
+                <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
+                    <br />
+                    <Stack spacing={2}>
+                        {(block as any)['contents'].map((element: any) => (
+                            <TaskBlock block={element}></TaskBlock>
+                        ))}
+                    </Stack>
+                </AccordionDetails>
+            </Accordion>
+        );
     }
 
     // Input blocks
@@ -112,7 +140,11 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     }
 
     if (!block.rk) {
-        throw new Error('All input block must have the key "rk". Please ensure that the database entry is correct. (Block ' + (block as any).blockId + ' )');
+        throw new Error(
+            'All input block must have the key "rk". Please ensure that the database entry is correct. (Block ' +
+                (block as any).rk +
+                ' )',
+        );
     }
 
     if (block.type === 'green-detector') {
@@ -136,20 +168,20 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
 
     if (block.type === 'select-input') {
         if (block.options.length < 6) {
-            return <RadioGroupXB options={block.options} {...commonProps} />
+            return <RadioGroupXB options={block.options} {...commonProps} />;
         }
         return <Select options={block.options} {...commonProps} />;
     }
 
     if (block.type === 'select-subscription') {
-        return <Select options={block.options.map(option => option.label)} {...commonProps} />;
+        return <Select options={block.options.map((option) => option.label)} {...commonProps} />;
     }
 
     if (block.type === 'slider-input') {
         const marks = [];
 
-        for (const key of Object.keys(block.labels)) {
-            marks.push({ value: Number(key), label: block.labels[key] });
+        for (const label of block.labels) {
+            marks.push({ value: label[0], label: label[1] });
         }
 
         return (
@@ -216,11 +248,11 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     }
 
     if (block.type === 'date-input') {
-        return <SelectDate {...commonProps}/>;
+        return <SelectDate {...commonProps} />;
     }
 
     if (type === 'reflection') {
-        return <Textarea {...commonProps} minRows={7}/>
+        return <Textarea {...commonProps} minRows={7} />;
     } else {
         return <TextField {...commonProps} />;
     }
