@@ -6,12 +6,16 @@ const APP_ID = isProd ? 'xb-prod-mpzaf' : 'xb-dev-gwbln';
 // const DATABASE = isProd ? 'PRODUCTION' : 'DEVELOPMENT_NEW_SCHEMA';
 
 const hostname = window.location.hostname;
-console.debug("Hostname is ", hostname);
+console.debug('Hostname is ', hostname);
 
-var DATABASE : string = "";
+var DATABASE: string = '';
 
-switch(hostname.toLowerCase()) {
+switch (hostname.toLowerCase()) {
     case 'xbapp02.ecs.soton.ac.uk':
+        DATABASE = 'CONTENTSTAGING';
+        break;
+
+    case 'xbapp03.ecs.soton.ac.uk':
         DATABASE = 'CONTENTSTAGING';
         break;
 
@@ -25,10 +29,9 @@ switch(hostname.toLowerCase()) {
     default:
         DATABASE = 'DEMONSTRATION';
         break;
-
 }
 
-console.debug("Mongo database is ", DATABASE);
+console.debug('Mongo database is ', DATABASE);
 
 export class BaseModel {
     protected static client = Realm.getApp(APP_ID);
