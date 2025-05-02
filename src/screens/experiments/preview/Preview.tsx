@@ -23,7 +23,6 @@ import Sheet from '@mui/joy/Sheet';
 import IconButton from '@mui/joy/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { IScheduledExperimentSubscription } from '../../../models/Account';
-import { boxes } from './boxes';
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
@@ -31,6 +30,7 @@ const ExperimentsListScreen = function () {
     const colorScheme = useColorScheme();
 
     const [experiments, setExperiments] = React.useState<IExperiment[]>([]);
+    const [boxes, setBoxes] = React.useState([]);
     const [currentDay, setCurrentDay] = React.useState(0);
 
     React.useEffect(() => {
@@ -41,6 +41,11 @@ const ExperimentsListScreen = function () {
                 if (data.xbExperiments) {
                     console.log('receive updated experiment');
                     setExperiments(data.xbExperiments);
+                }
+
+                if (data.xbBoxes) {
+                    console.log('received boxes');
+                    setBoxes(data.xbBoxes);
                 }
 
                 if (typeof data.xbDay === 'number') {
