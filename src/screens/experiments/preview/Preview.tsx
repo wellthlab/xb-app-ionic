@@ -30,7 +30,7 @@ const ExperimentsListScreen = function () {
     const colorScheme = useColorScheme();
 
     const [experiments, setExperiments] = React.useState<IExperiment[]>([]);
-    const [boxes, setBoxes] = React.useState([]);
+    const [boxes, setBoxes] = React.useState<Record<string, IBox>>({});
     const [currentDay, setCurrentDay] = React.useState(0);
 
     React.useEffect(() => {
