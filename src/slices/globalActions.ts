@@ -4,18 +4,19 @@ import Account from '../models/Account';
 import Team from '../models/Team';
 import Experiment from '../models/Experiment';
 
-export const boot = createAsyncThunk('global/boot', async () => {
+export const boot = createAsyncThunk('global/boot', async (lang: string) => {
     const [account, team, experiments, boxes, allCohortNames, scheduledExperiments] = await Promise.all([
         Account.getDetails(),
         Team.getCurrentTeam(),
-        Experiment.getExperiments(),
-        Experiment.getBoxes(),
+        Experiment.getExperiments(lang),
+        Experiment.getBoxes(lang),
         Account.getAllCohortNames(),
-        Account.getScheduledExperiments()
+        Account.getScheduledExperiments(),
     ]);
 
-    const subscriptions = account && account.subscriptions.length > 0 ? await Account.getSubscriptions(account.subscriptions) : [];
-    const responses = subscriptions.length > 0 ? await Experiment.getResponses(subscriptions.map(s => s.id)) : {};
+    const subscriptions =
+        account && account.subscriptions.length > 0 ? await Account.getSubscriptions(account.subscriptions) : [];
+    const responses = subscriptions.length > 0 ? await Experiment.getResponses(subscriptions.map((s) => s.id)) : {};
 
     return {
         account,
@@ -25,11 +26,10 @@ export const boot = createAsyncThunk('global/boot', async () => {
         subscriptions,
         responses,
         allCohortNames,
-        scheduledExperiments
+        scheduledExperiments,
     };
 });
 
 export const logOut = createAsyncThunk('global/loggedOut', async () => {
     return Account.logOut();
 });
-

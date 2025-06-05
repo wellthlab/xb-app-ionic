@@ -65,7 +65,7 @@ const AppFlowController = function () {
             console.log('BOOTING...');
             setHydrating(true);
 
-            await dispatch(boot());
+            await dispatch(boot('en'));
 
             console.log('BOOTED');
             setHydrating(false);
