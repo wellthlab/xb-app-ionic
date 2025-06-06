@@ -44,8 +44,9 @@ import { AppDevice } from './models/Device';
 import AboutThisStudy from './components/AboutThisStudy';
 import PreviousDayTasks from './screens/today/PreviousDayTasks';
 import PreviewScreen from './screens/experiments/preview/Preview';
+import { ParQScreen } from './screens/onboarding/ParQ';
 
-const AppFlowController = function () {
+const AppFlowController = function ({ parQ }: { parQ: any }) {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(selectIsEnrolled);
     const location = useLocation();
@@ -55,6 +56,10 @@ const AppFlowController = function () {
     const [initPath, setInitPath] = React.useState(location.pathname);
 
     React.useEffect(() => {
+        if (parQ === null || (!parQ.pass && !parQ.consulted)) {
+            return;
+        }
+
         // Call boot only if authenticated
 
         if (!isAuthenticated) {
@@ -74,6 +79,10 @@ const AppFlowController = function () {
         hydrate();
         AppDevice.updateDeviceInfo();
     }, [isAuthenticated, isEnrolled]);
+
+    if (parQ === null || (!parQ.pass && !parQ.consulted)) {
+        return <Redirect to="/parq" />;
+    }
 
     if (!isAuthenticated) {
         if (
@@ -103,6 +112,10 @@ const AppFlowController = function () {
 };
 
 const App = function () {
+    const [parQ, setParQ] = React.useState(() => {
+        const parq = localStorage.getItem('parq');
+        return parq === null ? null : JSON.parse(parq);
+    });
     return (
         <IonApp>
             <Provider store={store}>
@@ -111,10 +124,13 @@ const App = function () {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <IconContext.Provider value={{ weight: 'light', size: 18 }}>
                                 <ColorModeController />
-                                <AppFlowController />
+                                <AppFlowController parQ={parQ} />
                                 <IonRouterOutlet>
                                     <Route path="/_preview" exact>
                                         <PreviewScreen />
+                                    </Route>
+                                    <Route path="/parq" exact>
+                                        <ParQScreen parQ={parQ} setParQ={setParQ} />
                                     </Route>
                                     <Route path="/auth" exact>
                                         <LoginScreen />
