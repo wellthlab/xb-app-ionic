@@ -118,6 +118,15 @@ const ExperimentsList = function ({
                         p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
 
                         a: ({ children, href }) => <Link href={href}>{children}</Link>,
+
+                        img: (props) => {
+                            console.log(props.src);
+                            return props.src?.startsWith('https://www.youtube.com/embed/') ? (
+                                <YouTubeVideo src={props.src} />
+                            ) : (
+                                <img {...props} />
+                            );
+                        },
                     }}
                 />
             );
