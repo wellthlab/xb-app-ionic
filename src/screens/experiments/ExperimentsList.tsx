@@ -26,11 +26,10 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 import ReactMarkdown from 'react-markdown';
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Sheet from "@mui/joy/Sheet";
-import IconButton from "@mui/joy/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Sheet from '@mui/joy/Sheet';
+import IconButton from '@mui/joy/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
@@ -113,24 +112,34 @@ const ExperimentsListScreen = function () {
             );
         }
 
-
         if (block.type === 'markdown') {
-            return  <ReactMarkdown
-                children={block['content']}
-                components={{
-                    h1: ({ children }) => <PageTitle>{children}</PageTitle>,
+            return (
+                <ReactMarkdown
+                    children={block['content']}
+                    components={{
+                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
-                    h2: ({ children }) => (
-                        <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                            {children}
-                        </Typography>
-                    ),
-                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+                        h2: ({ children }) => (
+                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                                {children}
+                            </Typography>
+                        ),
+                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
+                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
 
-                    a: ({ children, href }) => <Link href={href}>{children}</Link>,
-                }}
-            />
+                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
+
+                        img: (props) => {
+                            console.log(props.src);
+                            return props.src?.startsWith('https://www.youtube.com/embed/') ? (
+                                <YouTubeVideo src={props.src} />
+                            ) : (
+                                <img {...props} />
+                            );
+                        },
+                    }}
+                />
+            );
         }
     };
 
@@ -228,17 +237,18 @@ const ExperimentsListScreen = function () {
     return (
         <IonPage>
             {!thisBox.heroImageSrc && <Header title={`${capitalise(type)}`} />}
-            <IonContent ref={ionContentRef} scrollEvents={!!thisBox.heroImageSrc} onIonScroll={handleScrollAnimation}
-                        className="ion-content-custom"
-                        style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+            <IonContent
+                ref={ionContentRef}
+                scrollEvents={!!thisBox.heroImageSrc}
+                onIonScroll={handleScrollAnimation}
+                className="ion-content-custom"
+                style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
             >
                 {thisBox.heroImageSrc && (
-                    <Box
-                    >
+                    <Box>
                         <Box
                             ref={titlesRef}
                             sx={{
-
                                 top: 0,
                                 left: 0,
                                 right: 0,
@@ -278,8 +288,11 @@ const ExperimentsListScreen = function () {
                             width: '500px',
                         }}
                     >
-                        <AccordionSummary expandIcon={<AddIcon /> } sx={{
-                            backgroundColor: `rgba(${thisBox.color})`}}
+                        <AccordionSummary
+                            expandIcon={<AddIcon />}
+                            sx={{
+                                backgroundColor: `rgba(${thisBox.color})`,
+                            }}
                         >
                             <Stack
                                 direction="row"
@@ -338,7 +351,6 @@ const ExperimentsListScreen = function () {
                             ))}
                         </AccordionDetails>
                     </Accordion>
-
                 </Stack>
 
                 <ExperimentsList
@@ -355,8 +367,7 @@ const ExperimentsListScreen = function () {
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => {
-                    }}
+                    onOpen={() => {}}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',
@@ -390,14 +401,12 @@ const ExperimentsListScreen = function () {
                             <CloseIcon sx={{ color: 'black' }} />
                         </IconButton>
                         <Stack spacing={2}>
-                            {drawerContent && drawerContent.sectionContent.map((element: any) => (
-                                <div>{getContent(element)}</div>
-                            ))}
+                            {drawerContent &&
+                                drawerContent.sectionContent.map((element: any) => <div>{getContent(element)}</div>)}
                         </Stack>
                     </Sheet>
                 </SwipeableDrawer>
                 <img src={thisBox.heroImageSrc} alt="Bottom Image" className="bottom-image" />
-
             </IonContent>
             <IonFooter>
                 <IonToolbar>
