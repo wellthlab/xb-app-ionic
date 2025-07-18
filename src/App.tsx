@@ -80,16 +80,16 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         AppDevice.updateDeviceInfo();
     }, [isAuthenticated, isEnrolled]);
 
+    if (location.pathname === '/_preview') {
+        return null;
+    }
+
     if (parQ === null || (!parQ.pass && !parQ.consulted)) {
         return <Redirect to="/parq" />;
     }
 
     if (!isAuthenticated) {
-        if (
-            location.pathname === '/auth/new-password' ||
-            location.pathname === '/auth/confirm' ||
-            location.pathname === '/_preview'
-        ) {
+        if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
             return null;
         }
 
