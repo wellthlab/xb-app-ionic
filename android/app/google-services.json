@@ -2,14 +2,14 @@
   "project_info": {
     "project_number": "601422797354",
     "project_id": "xb-app-36cb2",
-    "storage_bucket": "xb-app-36cb2.appspot.com"
+    "storage_bucket": "xb-app-36cb2.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:601422797354:android:9ce590b53447026dca0153",
+        "mobilesdk_app_id": "1:601422797354:android:df0474d81feafae9ca0153",
         "android_client_info": {
-          "package_name": "com.uos.xb"
+          "package_name": "uk.ac.soton.ecs.xbapp"
         }
       },
       "oauth_client": [],
