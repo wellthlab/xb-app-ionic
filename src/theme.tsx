@@ -13,13 +13,17 @@ import {
     shouldSkipGeneratingVar as joyShouldSkipGeneratingVar,
 } from '@mui/joy/styles';
 
-import type {} from '@mui/x-date-pickers/themeAugmentation';
-import type {} from '@mui/lab/themeAugmentation';
+import type { } from '@mui/x-date-pickers/themeAugmentation';
+import type { } from '@mui/lab/themeAugmentation';
 
 const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
     // This is required to point to `var(--joy-*)` because we are using
     // `CssVarsProvider` from Joy UI.
     cssVarPrefix: 'joy',
+
+    typography: {
+        fontFamily: '"Barlow", "Arial", sans-serif',
+    },
 
     colorSchemes: {
         light: {
@@ -101,6 +105,17 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
 });
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
+    fontFamily: {
+        display: '"Barlow", "Arial", sans-serif',
+        body: '"Barlow", "Arial", sans-serif',
+        code: 'monospace',
+    },
+    fontWeight: {
+        sm: 300,  // Small / light
+        md: 400,  // Medium / normal
+        lg: 500,  // Large / semi-bold
+        xl: 700,  // Extra bold (optional)
+    },
     components: {
         JoyList: {
             defaultProps: { variant: 'soft' },

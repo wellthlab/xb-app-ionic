@@ -17,6 +17,7 @@ import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
 import './app.css';
+
 import { FCMService } from './services/fcm/fcmService';
 
 setupIonicReact();
