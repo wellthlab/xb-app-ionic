@@ -14,6 +14,8 @@ import { logOut } from '../../slices/globalActions';
 import { markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
 import { useSelector, useDispatch } from '../../slices/store';
 
+import BuildInfo from '../../components/BuildInfo';
+
 const AllSettings = function () {
     const isDeleted = useSelector(selectIsDeleted);
 
@@ -109,6 +111,8 @@ const AllSettings = function () {
                         </ListItem>
                     </List>
                 </Stack>
+
+                <BuildInfo />
             </IconContext.Provider>
         </Page>
     );

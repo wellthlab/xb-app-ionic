@@ -39,3 +39,15 @@ Code beautifier: `npx prettier --write .`
 `ionic cap run ios -l --external` To run the project on a server in xcode
 
 Update version numbers in app manifest before packaging.
+
+
+## Google Play Store
+
+App MUST be published as uk.ac.soton.ecs.xbapp
+
+The java namespace and gradle build must be configured accordingly.
+
+The app MUST be signed using the upload key from XBKeyStore.jks - please contact Richard if you do not have it
+
+
+
