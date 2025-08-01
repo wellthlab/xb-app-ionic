@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { TextField, Link, Box } from '@mui/joy';
+import { TextField, Link, Box, Container } from '@mui/joy';
 import * as Yup from 'yup';
 
 import { emailSchema } from './utils/schemas';
@@ -52,16 +52,16 @@ const Login = function () {
     };
 
     return (
-        <AuthScreenLayout title={Strings.login_to_continue}>
+        <AuthScreenLayout title={Strings.login}>
             {confirmationRequired ? (
                 <ConfirmationRequired email={form.values.email} onClickLoginLink={handleClickLoginLink} />
             ) : (
-                <Form
+                    <Form
                     onSubmit={handleSubmit}
                     submitLabel={Strings.login}
                     message={form.errors.$root}
                     footer={
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                             <Link component={RouterLink} level="body2" to="/auth/register">
                                 {Strings.not_yet_a_user_register}
                             </Link>
@@ -71,8 +71,8 @@ const Login = function () {
                         </Box>
                     }
                 >
-                    <TextField label={Strings.email} {...getInputProps('email')} />
-                    <TextField label={Strings.password} type="password" {...getInputProps('password')} />
+                    <TextField fullWidth label={Strings.email} {...getInputProps('email')} />
+                    <TextField fullWidth label={Strings.password} type="password" {...getInputProps('password')} />
                 </Form>
             )}
 
