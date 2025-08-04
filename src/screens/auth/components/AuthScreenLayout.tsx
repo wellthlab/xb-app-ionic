@@ -32,91 +32,14 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
                 m: 0,
                 maxWidth: '100% !important',
                 width: '100%',
-                background,
-                alignItems: 'center',
+                backgroundImage: `url(/assets/backgrounds/background_tile.svg), ${background}`,
+                backgroundRepeat: 'repeat, no-repeat',
+                backgroundSize: '400px, cover',
+                backgroundPosition: 'top left, center',
                 justifyContent: 'center',
+                alignItems: 'center',
             }}
         >
-            <Box
-                sx={{
-                    position: 'absolute',
-                    bottom: {
-                        xs: "2%",
-                        sm: "4%",
-                        md: "5%",
-                        lg: "7.5%",
-                        xl: "12.5%",
-                    },
-                    right: {
-                        xs: "10%",
-                        sm: "2.5%",
-                        md: "5%",
-                        lg: "7.5%",
-                        xl: "7.5%",
-                    },
-                    width: {
-                        xs: '100%',
-                        sm: '60%',
-                        md: '50%',
-                    },
-                    height: "auto",
-                    maxHeight: {
-                        xs: 200,
-                        sm: 400,
-                        md: 500,
-                        lg: 600,
-                        xl: 700
-                    },
-                    aspectRatio: '445 / 481',
-                    backgroundImage: 'url(/assets/backgrounds/step_box.svg)',
-                    backgroundRepeat: "no-repeat",
-                    justifyContent: 'center',
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'bottom right',
-                    opacity: 0.5
-                }}
-            />
-
-            <Box
-                sx={{
-                    position: 'absolute',
-                    top: {
-                        xs: "2%",
-                        sm: "4%",
-                        md: "5%",
-                        lg: "7.5%",
-                        xl: "12.5%",
-                    },
-                    left: {
-                        xs: "10%",
-                        sm: "2.5%",
-                        md: "5%",
-                        lg: "7.5%",
-                        xl: "12.5%",
-                    },
-                    width: {
-                        xs: '100%',
-                        sm: '60%',
-                        md: '50%',
-                    },
-                    height: "auto",
-                    maxHeight: {
-                        xs: 200,
-                        sm: 400,
-                        md: 500,
-                        lg: 600,
-                        xl: 700
-                    },
-                    aspectRatio: '209 / 450',
-                    backgroundImage: 'url(/assets/backgrounds/horse_stance.svg)',
-                    backgroundRepeat: "no-repeat",
-                    justifyContent: 'center',
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'top left',
-                    opacity: 0.5
-                }}
-            />
-
             <Container
                 maxWidth="xs"
                 sx={{
