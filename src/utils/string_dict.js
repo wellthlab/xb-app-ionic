@@ -202,7 +202,8 @@ const Strings = {
     checks: 'CHECKS',
     tips: 'TIPS',
     preview: 'PREVIEW of ',
-    day_progress: 'S'
+    day_progress: 'S',
+	adjust_how_app_works: 'Adjust how the app works for you'
 };
 
 export default Strings;

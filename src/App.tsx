@@ -46,6 +46,8 @@ import PreviousDayTasks from './screens/today/PreviousDayTasks';
 import PreviewScreen from './screens/experiments/preview/Preview';
 import { ParQScreen } from './screens/onboarding/ParQ';
 
+import './global.scss';
+
 const AppFlowController = function ({ parQ }: { parQ: any }) {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(selectIsEnrolled);
@@ -55,6 +57,9 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
     const dispatch = useDispatch();
     const [initPath, setInitPath] = React.useState(location.pathname);
 
+    // TODO: ⚠️ DEV OVERRIDE FLAG — remove this before shipping!
+    const DEV_BYPASS = true;
+
     React.useEffect(() => {
         if (parQ === null || (!parQ.pass && !parQ.consulted)) {
             return;
@@ -62,7 +67,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
 
         // Call boot only if authenticated
 
-        if (!isAuthenticated) {
+        if (!isAuthenticated && !DEV_BYPASS) {
             return;
         }
 
@@ -88,7 +93,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         return <Redirect to="/parq" />;
     }
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !DEV_BYPASS) {
         if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
             return null;
         }
@@ -104,7 +109,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         return <Redirect to="/loading" />;
     }
 
-    if (!isEnrolled) {
+    if (!isEnrolled && !DEV_BYPASS) {
         return <Redirect to="/onboarding" />;
     }
 
@@ -122,6 +127,7 @@ const App = function () {
     });
     return (
         <IonApp>
+            <div className="app-wrapper">
             <Provider store={store}>
                 <IonReactRouter>
                     <ThemeProvider>
@@ -267,6 +273,7 @@ const App = function () {
                     </ThemeProvider>
                 </IonReactRouter>
             </Provider>
+            </div>
         </IonApp>
     );
 };

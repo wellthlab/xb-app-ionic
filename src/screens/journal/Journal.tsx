@@ -13,6 +13,7 @@ import {
     IconButton,
     Button,
     ListDivider,
+    Container
 } from '@mui/joy';
 import { DateCalendar, DateCalendarProps, DateTimeField } from '@mui/x-date-pickers';
 import {
@@ -131,167 +132,204 @@ const Journal = function () {
     };
 
     return (
-        <Page ref={setPresentingElement}>
-            <PageTitle sx={{ mb: 2 }}>{Strings.journal}</PageTitle>
-            <Typography level="body1" sx={{ mb: 4 }}>
-                {Strings.a_summary_of_what_you_have}
-            </Typography>
-            <Tabs
-                aria-label={Strings.journal_tabs}
-                value={tabIndex}
-                onChange={handleTabChange}
-                sx={{ bgcolor: 'transparent' }}
+        <Page
+            disableGutters
+            sx={{
+                position: 'relative',
+                m: 0,
+                maxWidth: '100% !important',
+                width: '100%',
+                justifyContent: "top",
+                alignItems: 'top',
+                backgroundImage: `url(/assets/backgrounds/lab_book_tile.svg), linear-gradient(to top right, #6b21a8, #4f46e5);`,
+                backgroundRepeat: 'repeat, no-repeat',
+                backgroundSize: '200px, cover',
+                backgroundPosition: 'top right, center',
+                animation: 'scrollBg 15s linear infinite', // <- animation here
+
+                '@keyframes scrollBg': {
+                    '0%': {
+                        backgroundPosition: '0 0, center',
+                    },
+                    '100%': {
+                        backgroundPosition: '200px 110px, center', // scrolls right
+                    },
+                },
+            }}
+            ref={setPresentingElement}
+        >
+            <Container
+                maxWidth="sm"
+                sx={{
+                    backgroundColor: "#fff",
+                    height: 'auto',      // Prevent full height
+                    minHeight: 'unset',
+                    borderRadius: "10px",
+                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
+                    py: 3
+                }}
             >
-                <TabPanel value={0}>
-                    <DateTimeField
-                        value={currentDate}
-                        onChange={setCurrentDate}
-                        sx={{ mt: 2 }}
-                        format="DD/MM/YYYY"
-                        fullWidth
-                        slotProps={{
-                            textField: {
-                                InputProps: {
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton variant="plain" color="neutral" onClick={handleToggleCalendar}>
-                                                <Calendar />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
+                <PageTitle sx={{ mb: 0 }}>{Strings.journal}</PageTitle>
+                <Typography level="body2" sx={{ mb: 0 }}>
+                    {Strings.a_summary_of_what_you_have}
+                </Typography>
+                <Tabs
+                    aria-label={Strings.journal_tabs}
+                    value={tabIndex}
+                    onChange={handleTabChange}
+                    sx={{ bgcolor: 'transparent' }}
+                >
+                    <TabPanel value={0}>
+                        <DateTimeField
+                            value={currentDate}
+                            onChange={setCurrentDate}
+                            sx={{ mt: 2 }}
+                            format="DD/MM/YYYY"
+                            fullWidth
+                            slotProps={{
+                                textField: {
+                                    InputProps: {
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton variant="plain" color="neutral" onClick={handleToggleCalendar}>
+                                                    <Calendar />
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    },
                                 },
-                            },
-                        }}
-                    />
+                            }}
+                        />
 
-                    <Collapse in={showCalendar}>
-                        <Card sx={{ px: 0, py: 1, mt: 2, overflow: 'hidden' }}>
-                            <DateCalendar value={currentDate} onChange={handleChangeDate} />
-                        </Card>
-                    </Collapse>
-
-                    <List noDividers sx={{ mt: 2 }}>
-                        <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('note')}>
-                            {Strings.note}
-                        </ListItem>
-
-                        <Collapse in={openStates.note}>
-                            <ListDivider />
-                            <ListItem sx={{ p: 2 }}>
-                                <Stack spacing={2}>
-                                    <Typography>{displayedNote || Strings.you_did_not_have_any_notes}</Typography>
-                                    <Button variant="outlined" onClick={handleAddNote}>
-                                        {Strings.add_a_note}
-                                    </Button>
-                                </Stack>
-                            </ListItem>
+                        <Collapse in={showCalendar}>
+                            <Card sx={{ px: 0, py: 1, mt: 2, overflow: 'hidden' }}>
+                                <DateCalendar value={currentDate} onChange={handleChangeDate} />
+                            </Card>
                         </Collapse>
 
-                        <ListDivider />
-                        <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('activity')}>
-                            {Strings.activity}
-                        </ListItem>
+                        <List noDividers sx={{ mt: 2 }}>
+                            <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('note')}>
+                                {Strings.note}
+                            </ListItem>
 
-                        <Collapse in={openStates.activity}>
+                            <Collapse in={openStates.note}>
+                                <ListDivider />
+                                <ListItem sx={{ p: 2 }}>
+                                    <Stack spacing={2}>
+                                        <Typography>{displayedNote || Strings.you_did_not_have_any_notes}</Typography>
+                                        <Button variant="outlined" onClick={handleAddNote}>
+                                            {Strings.add_a_note}
+                                        </Button>
+                                    </Stack>
+                                </ListItem>
+                            </Collapse>
+
                             <ListDivider />
-                            <ListItem sx={{ p: 2 }}>
-                                {!responses.length ? (
-                                    Strings.you_did_not_have_any
-                                ) : (
-                                    <Timeline
-                                        sx={{
-                                            padding: 0,
-                                            [`& .${timelineItemClasses.root}:before`]: {
-                                                flex: 0,
+                            <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('activity')}>
+                                {Strings.activity}
+                            </ListItem>
+
+                            <Collapse in={openStates.activity}>
+                                <ListDivider />
+                                <ListItem sx={{ p: 2 }}>
+                                    {!responses.length ? (
+                                        Strings.you_did_not_have_any
+                                    ) : (
+                                        <Timeline
+                                            sx={{
                                                 padding: 0,
-                                            },
-                                        }}
-                                    >
-                                        {responses.map((response, responseIndex) => {
-                                            const correspondingSubcription = Object.values(subscriptions).find(
-                                                (subscription) => subscription.id === response.subscriptionId,
-                                            );
-                                            const experiment = experiments[
-                                                correspondingSubcription!.experimentId
-                                            ] as IExperiment;
-                                            const day = experiment.days[response.dayNum];
-                                            const task = day.tasks.find((task) => task.taskId === response.taskId);
-                                            const payloadEntries = Object.entries(response.payload);
+                                                [`& .${timelineItemClasses.root}:before`]: {
+                                                    flex: 0,
+                                                    padding: 0,
+                                                },
+                                            }}
+                                        >
+                                            {responses.map((response, responseIndex) => {
+                                                const correspondingSubcription = Object.values(subscriptions).find(
+                                                    (subscription) => subscription.id === response.subscriptionId,
+                                                );
+                                                const experiment = experiments[
+                                                    correspondingSubcription!.experimentId
+                                                ] as IExperiment;
+                                                const day = experiment.days[response.dayNum];
+                                                const task = day.tasks.find((task) => task.taskId === response.taskId);
+                                                const payloadEntries = Object.entries(response.payload);
 
-                                            const [detectorGreenKey, greenPercentage] =
-                                                payloadEntries.find(([key]) => key.includes('-$$g')) || [];
-                                            const [detectorRedKey, redPercentage] =
-                                                payloadEntries.find(([key]) => key.includes('-$$r')) || [];
+                                                const [detectorGreenKey, greenPercentage] =
+                                                    payloadEntries.find(([key]) => key.includes('-$$g')) || [];
+                                                const [detectorRedKey, redPercentage] =
+                                                    payloadEntries.find(([key]) => key.includes('-$$r')) || [];
 
-                                            return (
-                                                <TimelineItem key={response.id}>
-                                                    <TimelineSeparator>
-                                                        <TimelineDot />
-                                                        {responseIndex !== responses.length - 1 && (
-                                                            <TimelineConnector />
-                                                        )}
-                                                    </TimelineSeparator>
-                                                    <TimelineContent>
-                                                        <Typography level="h4" mb={1}>
-                                                            {experiment.name}
-                                                        </Typography>
-                                                        <Typography level="body2" mb={1}>
-                                                            {day.name} (Day {response.dayNum + 1}) / {task!.name}
-                                                        </Typography>
-                                                        <Typography level="body2" mb={3}>
-                                                            {dayjs(response.createdAt).format('HH:mm')}
-                                                        </Typography>
-                                                        <Stack spacing={1} mb={3}>
-                                                            {greenPercentage && redPercentage && (
-                                                                <Typography color="neutral">
-                                                                    {Strings.your_meal_today_consisted_of}{' '}
-                                                                    {greenPercentage}
-                                                                    {Strings.your_meal_today_consisted_of_2}{' '}
-                                                                    {redPercentage}
-                                                                    {Strings.your_meal_today_consisted_of_3}
-                                                                </Typography>
+                                                return (
+                                                    <TimelineItem key={response.id}>
+                                                        <TimelineSeparator>
+                                                            <TimelineDot />
+                                                            {responseIndex !== responses.length - 1 && (
+                                                                <TimelineConnector />
                                                             )}
-                                                            {Object.keys(response.payload).map((key) => {
-                                                                if (
-                                                                    key === detectorGreenKey ||
-                                                                    key === detectorRedKey
-                                                                ) {
-                                                                    return null;
-                                                                }
+                                                        </TimelineSeparator>
+                                                        <TimelineContent>
+                                                            <Typography level="h4" mb={1}>
+                                                                {experiment.name}
+                                                            </Typography>
+                                                            <Typography level="body2" mb={1}>
+                                                                {day.name} (Day {response.dayNum + 1}) / {task!.name}
+                                                            </Typography>
+                                                            <Typography level="body2" mb={3}>
+                                                                {dayjs(response.createdAt).format('HH:mm')}
+                                                            </Typography>
+                                                            <Stack spacing={1} mb={3}>
+                                                                {greenPercentage && redPercentage && (
+                                                                    <Typography color="neutral">
+                                                                        {Strings.your_meal_today_consisted_of}{' '}
+                                                                        {greenPercentage}
+                                                                        {Strings.your_meal_today_consisted_of_2}{' '}
+                                                                        {redPercentage}
+                                                                        {Strings.your_meal_today_consisted_of_3}
+                                                                    </Typography>
+                                                                )}
+                                                                {Object.keys(response.payload).map((key) => {
+                                                                    if (
+                                                                        key === detectorGreenKey ||
+                                                                        key === detectorRedKey
+                                                                    ) {
+                                                                        return null;
+                                                                    }
 
-                                                                const blockDefinition = task!.blocks.find(
-                                                                    (block) => (block as IGenericInput).rk === key,
-                                                                );
+                                                                    const blockDefinition = task!.blocks.find(
+                                                                        (block) => (block as IGenericInput).rk === key,
+                                                                    );
 
-                                                                if (!blockDefinition) {
-                                                                    return null;
-                                                                }
+                                                                    if (!blockDefinition) {
+                                                                        return null;
+                                                                    }
 
-                                                                return (
-                                                                    <div key={key}>
-                                                                        <Typography
-                                                                            component="span"
-                                                                            display="inline"
-                                                                            color="neutral"
-                                                                        >
-                                                                            "{(blockDefinition as IGenericInput).label}"
-                                                                        </Typography>{' '}
-                                                                        {response.payload[key]}
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </Stack>
-                                                    </TimelineContent>
-                                                </TimelineItem>
-                                            );
-                                        })}
-                                    </Timeline>
-                                )}
-                            </ListItem>
-                        </Collapse>
-                    </List>
-                </TabPanel>
-            </Tabs>
+                                                                    return (
+                                                                        <div key={key}>
+                                                                            <Typography
+                                                                                component="span"
+                                                                                display="inline"
+                                                                                color="neutral"
+                                                                            >
+                                                                                "{(blockDefinition as IGenericInput).label}"
+                                                                            </Typography>{' '}
+                                                                            {response.payload[key]}
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </Stack>
+                                                        </TimelineContent>
+                                                    </TimelineItem>
+                                                );
+                                            })}
+                                        </Timeline>
+                                    )}
+                                </ListItem>
+                            </Collapse>
+                        </List>
+                    </TabPanel>
+                </Tabs>
+            </Container>
 
             <Modal
                 headerTitle={Strings.add_a_note}

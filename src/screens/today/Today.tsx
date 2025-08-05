@@ -113,18 +113,25 @@ const Today = function() {
             }
 
             <Centre>
-                <Stack spacing={1}>
+                <Stack>
                     <Typography level="h6" component="p">
                         {Strings.you_havent_got_any_task_today}
                     </Typography>
 
-                    <Typography level="body2">
+                    <Typography level="body2" sx={{ lineHeight: 1, mt: 0 }}>
                         {Strings.explore_what_you_can_do_in}
-                        <br />
-                        <br />
                     </Typography>
 
-                    <Button component={Link} to="/main/box">
+                    <Button 
+                        aria-label="Find new tasks" 
+                        component={Link} 
+                        to="/main/box" 
+                        size="sm" 
+                        sx={{ 
+                            lineHeight: 1, 
+                            mt: 3
+                        }}
+                    >
                         {Strings.click_here_to_find_some}
                     </Button>
                 </Stack>
