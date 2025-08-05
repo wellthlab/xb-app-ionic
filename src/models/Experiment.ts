@@ -235,7 +235,7 @@ interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 't
 class Experiment extends BaseModel {
     static async getExperiments(lang: string): Promise<IExperiment[]> {
         const db = this.getDb();
-        const records = await db.collection<IExperimentDocument>(`experiments_${lang}`).find();
+        const records = await db.collection<IExperimentDocument>(`experiments`).find({ locale: lang });
         records.forEach((record) => convertObjectIdFieldsToString(record));
 
         return records.map((record) => {
@@ -248,7 +248,9 @@ class Experiment extends BaseModel {
     static async getBoxes(lang: string): Promise<IBox[]> {
         const db = this.getDb();
 
-        const result = await db.collection<IBoxDocument>(`boxes_${lang}`).find();
+        const result = await db.collection<IBoxDocument>(`boxes`).find({
+            locale: lang,
+        });
 
         return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
     }
