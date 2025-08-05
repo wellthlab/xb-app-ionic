@@ -94,6 +94,10 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         }
 
         return <Redirect to="/auth" />;
+    } else {
+        if(location.pathname === '/auth' || location.pathname === '/auth/register' || location.pathname === '/auth/reset-password') {
+            return <Redirect to="/main" />;
+        }
     }
 
     if (hydrating) {
