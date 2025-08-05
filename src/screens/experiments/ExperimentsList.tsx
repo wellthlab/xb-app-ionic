@@ -320,16 +320,18 @@ const ExperimentsListScreen = function () {
                                         mb: 2,
                                     }}
                                 >
-                                    <img
-                                        src={item.sectionImageSrc}
-                                        alt=""
-                                        style={{
-                                            width: '50px',
-                                            height: '50px',
-                                            objectFit: 'cover',
-                                            borderRadius: '4px',
-                                        }}
-                                    />
+                                    {item.sectionImageSrc && (
+                                        <img
+                                            src={item.sectionImageSrc}
+                                            alt=""
+                                            style={{
+                                                width: '50px',
+                                                height: '50px',
+                                                objectFit: 'cover',
+                                                borderRadius: '4px',
+                                            }}
+                                        />
+                                    )}
 
                                     <Link
                                         textColor="inherit"

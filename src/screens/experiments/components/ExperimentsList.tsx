@@ -251,100 +251,104 @@ const ExperimentsList = function ({
                     .map(([startUTCTime, scheduledExperiments]) => {
                         return (
                             <Stack spacing={2} alignItems="center">
-                                {scheduledExperiments.map((experiment) => {
-                                    return (
-                                        <Accordion
-                                            sx={{
-                                                ml: 'auto',
-                                                mr: 'auto',
-                                                mt: 2,
-                                                maxWidth: '90%',
-                                                width: '500px',
-                                            }}
-                                        >
-                                            <AccordionSummary
-                                                expandIcon={<AddIcon />}
+                                {scheduledExperiments
+                                    .filter((experiment) => experiment.days.length > 0)
+                                    .map((experiment) => {
+                                        return (
+                                            <Accordion
                                                 sx={{
-                                                    backgroundColor: `rgba(${color})`,
+                                                    ml: 'auto',
+                                                    mr: 'auto',
+                                                    mt: 2,
+                                                    maxWidth: '90%',
+                                                    width: '500px',
                                                 }}
                                             >
-                                                <Stack
-                                                    direction="row"
-                                                    spacing={4}
+                                                <AccordionSummary
+                                                    expandIcon={<AddIcon />}
                                                     sx={{
-                                                        width: '90%',
-                                                        justifyContent: 'space-between',
-                                                        alignItems: 'center',
+                                                        backgroundColor: `rgba(${color})`,
                                                     }}
                                                 >
-                                                    <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                                        Week {experiment.boxweek + 1}
-                                                    </Typography>
-                                                    <Typography
-                                                        sx={{
-                                                            fontWeight: 'lg',
-                                                            fontSize: '0.8rem',
-                                                            fontStyle: 'italic',
-                                                        }}
-                                                    >
-                                                        <AccessTimeIcon
-                                                            sx={{
-                                                                fontSize: '0.9rem',
-                                                                verticalAlign: 'middle',
-                                                                mr: 0.5,
-                                                            }}
-                                                        />
-                                                        {new Date(startUTCTime).toDateString()}
-                                                    </Typography>
-                                                </Stack>
-                                            </AccordionSummary>
-
-                                            <AccordionDetails>
-                                                {experiment.desc?.map((item, index) => (
                                                     <Stack
-                                                        key={index}
                                                         direction="row"
-                                                        spacing={2}
+                                                        spacing={4}
                                                         sx={{
-                                                            width: '100%',
+                                                            width: '90%',
+                                                            justifyContent: 'space-between',
                                                             alignItems: 'center',
-                                                            mb: 2,
                                                         }}
                                                     >
-                                                        <img
-                                                            src={item.sectionImageSrc}
-                                                            alt=""
-                                                            style={{
-                                                                width: '50px',
-                                                                height: '50px',
-                                                                objectFit: 'cover',
-                                                                borderRadius: '4px',
-                                                            }}
-                                                        />
-
-                                                        <Link
-                                                            textColor="inherit"
-                                                            underline="none"
-                                                            onClick={() => {
-                                                                setDrawerContent(item);
+                                                        <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                                            Week {experiment.boxweek + 1}
+                                                        </Typography>
+                                                        <Typography
+                                                            sx={{
+                                                                fontWeight: 'lg',
+                                                                fontSize: '0.8rem',
+                                                                fontStyle: 'italic',
                                                             }}
                                                         >
-                                                            <Typography
+                                                            <AccessTimeIcon
                                                                 sx={{
-                                                                    flex: 1,
                                                                     fontSize: '0.9rem',
+                                                                    verticalAlign: 'middle',
+                                                                    mr: 0.5,
+                                                                }}
+                                                            />
+                                                            {new Date(startUTCTime).toDateString()}
+                                                        </Typography>
+                                                    </Stack>
+                                                </AccordionSummary>
+
+                                                <AccordionDetails>
+                                                    {experiment.desc?.map((item, index) => (
+                                                        <Stack
+                                                            key={index}
+                                                            direction="row"
+                                                            spacing={2}
+                                                            sx={{
+                                                                width: '100%',
+                                                                alignItems: 'center',
+                                                                mb: 2,
+                                                            }}
+                                                        >
+                                                            {item.sectionImageSrc && (
+                                                                <img
+                                                                    src={item.sectionImageSrc}
+                                                                    alt=""
+                                                                    style={{
+                                                                        width: '50px',
+                                                                        height: '50px',
+                                                                        objectFit: 'cover',
+                                                                        borderRadius: '4px',
+                                                                    }}
+                                                                />
+                                                            )}
+
+                                                            <Link
+                                                                textColor="inherit"
+                                                                underline="none"
+                                                                onClick={() => {
+                                                                    setDrawerContent(item);
                                                                 }}
                                                             >
-                                                                {item.sectionTitle}
-                                                            </Typography>
-                                                        </Link>
-                                                    </Stack>
-                                                ))}
-                                                <ExperimentTimeline experimentId={experiment.id} />
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    );
-                                })}
+                                                                <Typography
+                                                                    sx={{
+                                                                        flex: 1,
+                                                                        fontSize: '0.9rem',
+                                                                    }}
+                                                                >
+                                                                    {item.sectionTitle}
+                                                                </Typography>
+                                                            </Link>
+                                                        </Stack>
+                                                    ))}
+                                                    <ExperimentTimeline experimentId={experiment.id} />
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        );
+                                    })}
                             </Stack>
                         );
                     })}
@@ -357,6 +361,7 @@ const ExperimentsList = function ({
             <div>
                 <Stack spacing={2} alignItems="center">
                     {experiments
+                        .filter((e) => e.days.length > 0)
                         .sort((e1, e2) => e1.boxweek - e2.boxweek)
                         .map((experiment) => {
                             const completion = completionByExperimentId[experiment.id];
@@ -424,16 +429,18 @@ const ExperimentsList = function ({
                                                     mb: 2,
                                                 }}
                                             >
-                                                <img
-                                                    src={item.sectionImageSrc}
-                                                    alt=""
-                                                    style={{
-                                                        width: '50px',
-                                                        height: '50px',
-                                                        objectFit: 'cover',
-                                                        borderRadius: '4px',
-                                                    }}
-                                                />
+                                                {item.sectionImageSrc && (
+                                                    <img
+                                                        src={item.sectionImageSrc}
+                                                        alt=""
+                                                        style={{
+                                                            width: '50px',
+                                                            height: '50px',
+                                                            objectFit: 'cover',
+                                                            borderRadius: '4px',
+                                                        }}
+                                                    />
+                                                )}
                                                 <Link
                                                     textColor="inherit"
                                                     underline="none"
