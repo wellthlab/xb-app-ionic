@@ -19,7 +19,7 @@ switch (hostname.toLowerCase()) {
 
     case 'xbdev':
     case 'localhost':
-        DATABASE = 'DEVELOPMENT_NEW_SCHEMA';
+        DATABASE = 'CONTENTSTAGING_PROD';
         break;
 
     case 'xbapp01.ecs.soton.ac.uk':
