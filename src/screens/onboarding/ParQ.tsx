@@ -37,11 +37,11 @@ export function ParQScreen({ parQ, setParQ }: { parQ: any; setParQ: (v: any) => 
         }, {} as Record<string, boolean>);
     }, []);
 
-    const { getCheckboxProps, createHandleSubmit, form } = useForm(initialFormState, initialSchema);
+    const { createHandleSubmit, form } = useForm(initialFormState, initialSchema);
 
     const handleSubmit = createHandleSubmit((data) => {
         for (const key of Object.keys(data)) {
-            if (!data[key]) {
+            if (data[key]) {
                 localStorage.setItem('parq', JSON.stringify({ pass: false, consulted: false }));
                 setNext(true);
                 return;
