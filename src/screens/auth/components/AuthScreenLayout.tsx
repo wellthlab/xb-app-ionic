@@ -16,9 +16,8 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
 
     const backgroundGradients: Record<string, string> = {
         '/auth': 'linear-gradient(to right top, #f857a6, #ff5c90, #ff667b, #ff7468, #ff8358)',
-        '/auth/register': 'linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12)',
-        '/auth/reset-password': 'linear-gradient(to right top, #1e3c72, #2a5298)',
-        default: 'linear-gradient(to right top, #000000, #434343)',
+        '/auth/register': 'linear-gradient(to right top, #fbc2eb 0%, #a6c1ee 100%)',
+        '/auth/reset-password': 'linear-gradient(to top, #5ee7df 0%, #b490ca 100%)'
     };
 
     // Pick gradient based on current path, or fallback to default
@@ -34,7 +33,7 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
                 width: '100%',
                 backgroundImage: `url(/assets/backgrounds/background_tile.svg), ${background}`,
                 backgroundRepeat: 'repeat, no-repeat',
-                backgroundSize: '400px, cover',
+                backgroundSize: '300px, cover',
                 backgroundPosition: 'top left, center',
                 justifyContent: 'center',
                 alignItems: 'center',
