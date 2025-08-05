@@ -31,6 +31,7 @@ interface IUseFormReturns<T, TS extends Yup.ObjectSchema<any>> {
     form: {
         values: T;
         errors: Errors<T>;
+        setValues: (values: T | ((prev: T) => T)) => void;
         hasError: () => boolean;
         resetErrors: () => void;
         resetValues: () => void;
@@ -50,10 +51,10 @@ const processErrors = function (errors: Yup.ValidationError[]) {
     return result;
 };
 
-const useForm = function <T extends Record<string, string | boolean | number | null| dayjs.Dayjs>, TS extends Yup.ObjectSchema<any>>(
-    initial: T,
-    schema: TS,
-): IUseFormReturns<T, TS> {
+const useForm = function <
+    T extends Record<string, string | boolean | number | null | dayjs.Dayjs>,
+    TS extends Yup.ObjectSchema<any>
+>(initial: T, schema: TS): IUseFormReturns<T, TS> {
     const [values, setValues] = React.useState(initial);
     const [errors, setErrors] = React.useState<Errors<T>>({});
 
@@ -99,6 +100,7 @@ const useForm = function <T extends Record<string, string | boolean | number | n
                 return Object.keys(errors).length > 0;
             },
 
+            setValues,
             resetErrors,
             resetValues,
             resetForm,

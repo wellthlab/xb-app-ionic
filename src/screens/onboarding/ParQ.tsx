@@ -1,10 +1,9 @@
 import React from 'react';
 import Form from '../../components/foundation/Form';
 import Strings from '../../utils/string_dict';
-import Checkbox from '../../components/foundation/Checkbox';
 import * as Yup from 'yup';
 import useForm from '../../components/foundation/useForm';
-import { Box, Button } from '@mui/joy';
+import { Box, Button, FormLabel, Radio, RadioGroup } from '@mui/joy';
 import Page from '../../components/foundation/Page';
 
 const questions = [
@@ -58,9 +57,24 @@ export function ParQScreen({ parQ, setParQ }: { parQ: any; setParQ: (v: any) => 
         <Page>
             {!next ? (
                 <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
-                    {questions.map((question, i) => (
-                        <Checkbox key={i} label={question} {...getCheckboxProps(`c${i}`)} />
-                    ))}
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        {questions.map((question, i) => (
+                            <RadioGroup
+                                value={form.values[`c${i}`] ? 'y' : 'n'}
+                                defaultValue="n"
+                                onChange={(e) =>
+                                    form.setValues(
+                                        (prev) =>
+                                            ({ ...prev, [`c${i}`]: e.target.value === 'y' } as Record<string, boolean>),
+                                    )
+                                }
+                            >
+                                <FormLabel>{question}</FormLabel>
+                                <Radio value="y" label="Yes" />
+                                <Radio value="n" label="No" />
+                            </RadioGroup>
+                        ))}
+                    </Box>
                 </Form>
             ) : (
                 <Box

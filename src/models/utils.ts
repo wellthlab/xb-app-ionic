@@ -11,14 +11,12 @@ console.debug('Hostname is ', hostname);
 var DATABASE: string = '';
 
 switch (hostname.toLowerCase()) {
-    
     case 'xbstaging': // Use this for local development by adding an entry in your hosts file
     case 'xbapp02.ecs.soton.ac.uk':
     case 'xbapp03.ecs.soton.ac.uk':
-        DATABASE = 'CONTENTSTAGING';
+        DATABASE = 'CONTENTSTAGING_PROD';
         break;
 
-    
     case 'xbdev':
     case 'localhost':
         DATABASE = 'DEVELOPMENT_NEW_SCHEMA';
