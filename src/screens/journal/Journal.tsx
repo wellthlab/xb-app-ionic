@@ -145,14 +145,13 @@ const Journal = function () {
                 backgroundRepeat: 'repeat, no-repeat',
                 backgroundSize: '200px, cover',
                 backgroundPosition: 'top right, center',
-                animation: 'scrollBg 15s linear infinite', // <- animation here
-
+                animation: 'scrollBg 15s linear infinite',
                 '@keyframes scrollBg': {
                     '0%': {
                         backgroundPosition: '0 0, center',
                     },
                     '100%': {
-                        backgroundPosition: '200px 110px, center', // scrolls right
+                        backgroundPosition: '200px 110px, center',
                     },
                 },
             }}

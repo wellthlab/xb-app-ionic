@@ -283,7 +283,7 @@ const ExperimentsListScreen = function () {
                             ml: 'auto',
                             mr: 'auto',
                             mt: 2,
-                            mb: 4,
+                            mb: 1,
                             maxWidth: '90%',
                             width: '500px',
                         }}
@@ -292,6 +292,7 @@ const ExperimentsListScreen = function () {
                             expandIcon={<AddIcon />}
                             sx={{
                                 backgroundColor: `rgba(${thisBox.color})`,
+                                p: 1
                             }}
                         >
                             <Stack
@@ -303,8 +304,8 @@ const ExperimentsListScreen = function () {
                                     alignItems: 'center',
                                 }}
                             >
-                                <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                    Introduction to the {capitalise(type)} Box
+                                <Typography>
+                                    Introduction to the {type} Box
                                 </Typography>
                             </Stack>
                         </AccordionSummary>
@@ -343,7 +344,6 @@ const ExperimentsListScreen = function () {
                                         <Typography
                                             sx={{
                                                 flex: 1,
-                                                fontSize: '0.9rem',
                                             }}
                                         >
                                             {item.sectionTitle}

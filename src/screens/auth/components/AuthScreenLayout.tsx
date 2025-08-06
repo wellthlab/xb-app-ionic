@@ -37,6 +37,15 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
                 backgroundPosition: 'top left, center',
                 justifyContent: 'center',
                 alignItems: 'center',
+                animation: 'scrollBg 15s linear infinite',
+                '@keyframes scrollBg': {
+                    '0%': {
+                        backgroundPosition: '0 0, center',
+                    },
+                    '100%': {
+                        backgroundPosition: '300px 300px, center',
+                    },
+                },
             }}
         >
             <Container

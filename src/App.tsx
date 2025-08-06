@@ -58,7 +58,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
     const [initPath, setInitPath] = React.useState(location.pathname);
 
     // TODO: ⚠️ DEV OVERRIDE FLAG — remove this before shipping!
-    const DEV_BYPASS = true;
+    const DEV_BYPASS = false;
 
     React.useEffect(() => {
         if (parQ === null || (!parQ.pass && !parQ.consulted)) {
