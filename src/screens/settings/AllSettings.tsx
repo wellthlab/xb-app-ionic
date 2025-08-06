@@ -83,7 +83,7 @@ const AllSettings = function () {
                         backgroundPosition: '0 0, center',
                     },
                     '100%': {
-                        backgroundPosition: '-200px 110px, center',
+                        backgroundPosition: '200px 110px, center',
                     },
                 },
             }}

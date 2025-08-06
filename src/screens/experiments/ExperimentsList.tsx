@@ -65,7 +65,7 @@ const ExperimentsListScreen = function () {
     const getContent = (block: any) => {
         if (block.type === 'para') {
             return (
-                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
+                <Typography>
                     {block['content']}
                 </Typography>
             );
@@ -73,7 +73,7 @@ const ExperimentsListScreen = function () {
 
         if (block.type === 'title') {
             return (
-                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
+                <Typography>
                     {block['content']}
                 </Typography>
             );
@@ -97,7 +97,7 @@ const ExperimentsListScreen = function () {
             return (
                 <Accordion>
                     <AccordionSummary expandIcon={<AddIcon />}>
-                        <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
+                        <Typography>
                             {block.title}
                         </Typography>
                     </AccordionSummary>
@@ -120,12 +120,12 @@ const ExperimentsListScreen = function () {
                         h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
                         h2: ({ children }) => (
-                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
+                            <Typography>
                                 {children}
                             </Typography>
                         ),
-                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+                        li: ({ children }) => <li>{children}</li>,
+                        p: ({ children }) => <Typography>{children}</Typography>,
 
                         a: ({ children, href }) => <Link href={href}>{children}</Link>,
 
@@ -282,17 +282,17 @@ const ExperimentsListScreen = function () {
                         sx={{
                             ml: 'auto',
                             mr: 'auto',
-                            mt: 2,
-                            mb: 1,
-                            maxWidth: '90%',
-                            width: '500px',
+                            mt: 0,
+                            mb: 0,
+                            maxWidth: '500px',
+                            width: '90%',
                         }}
                     >
                         <AccordionSummary
                             expandIcon={<AddIcon />}
                             sx={{
                                 backgroundColor: `rgba(${thisBox.color})`,
-                                p: 1
+                                p: 2
                             }}
                         >
                             <Stack
@@ -304,8 +304,8 @@ const ExperimentsListScreen = function () {
                                     alignItems: 'center',
                                 }}
                             >
-                                <Typography>
-                                    Introduction to the {type} Box
+                                <Typography level="h1">
+                                    Introduction to the {`${capitalise(type)}`} Box
                                 </Typography>
                             </Stack>
                         </AccordionSummary>
@@ -335,8 +335,6 @@ const ExperimentsListScreen = function () {
                                     )}
 
                                     <Link
-                                        textColor="inherit"
-                                        underline="none"
                                         onClick={() => {
                                             setDrawerContent(item);
                                         }}
@@ -347,6 +345,7 @@ const ExperimentsListScreen = function () {
                                             }}
                                         >
                                             {item.sectionTitle}
+                                            ▶
                                         </Typography>
                                     </Link>
                                 </Stack>

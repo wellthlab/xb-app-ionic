@@ -31,8 +31,8 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import YouTubeVideo from '../../../components/TaskModal/YoutubeVideo';
 import ExperimentTimeline from '../ExperimentTimeline';
+import getContent from '../utils/getContent';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
@@ -74,87 +74,6 @@ const ExperimentsList = function ({
 
     const toggleResubscriptionModal = () => {
         setResubscriptionModalOpen(!resubscriptionModalOpen);
-    };
-
-    const getContent = (block: any) => {
-        if (block.type === 'para') {
-            return (
-                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
-                    {block['content']}
-                </Typography>
-            );
-        }
-
-        if (block.type === 'title') {
-            return (
-                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                    {block['content']}
-                </Typography>
-            );
-        }
-
-        if (block.type === 'video') {
-            return <YouTubeVideo src={block.src} />;
-        }
-
-        if (block.type === 'image') {
-            return (
-                <img
-                    src={block.src}
-                    alt={block.alt}
-                    style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-                />
-            );
-        }
-
-        if (block.type === 'expandable') {
-            return (
-                <Accordion>
-                    <AccordionSummary expandIcon={<AddIcon />}>
-                        <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                            {block.title}
-                        </Typography>
-                    </AccordionSummary>
-
-                    <Divider />
-
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
-                        <br />
-                        <Stack spacing={2}>{block.contents.map((element: any) => getContent(element))}</Stack>
-                    </AccordionDetails>
-                </Accordion>
-            );
-        }
-
-        if (block.type === 'markdown') {
-            return (
-                <ReactMarkdown
-                    children={block['content']}
-                    components={{
-                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
-
-                        h2: ({ children }) => (
-                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                                {children}
-                            </Typography>
-                        ),
-                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
-
-                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
-
-                        img: (props) => {
-                            console.log(props.src);
-                            return props.src?.startsWith('https://www.youtube.com/embed/') ? (
-                                <YouTubeVideo src={props.src} />
-                            ) : (
-                                <img {...props} />
-                            );
-                        },
-                    }}
-                />
-            );
-        }
     };
 
     const handleSubscribeToExperiment = async () => {
@@ -279,19 +198,16 @@ const ExperimentsList = function ({
                                                             alignItems: 'center',
                                                         }}
                                                     >
-                                                        <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                                        <Typography sx={{}}>
                                                             Week {experiment.boxweek + 1}
                                                         </Typography>
                                                         <Typography
                                                             sx={{
-                                                                fontWeight: 'lg',
-                                                                fontSize: '0.8rem',
                                                                 fontStyle: 'italic',
                                                             }}
                                                         >
                                                             <AccessTimeIcon
                                                                 sx={{
-                                                                    fontSize: '0.9rem',
                                                                     verticalAlign: 'middle',
                                                                     mr: 0.5,
                                                                 }}
@@ -327,8 +243,10 @@ const ExperimentsList = function ({
                                                             )}
 
                                                             <Link
-                                                                textColor="inherit"
                                                                 underline="none"
+                                                                sx={{
+                                                                    color: "neutral.900"
+                                                                }}
                                                                 onClick={() => {
                                                                     setDrawerContent(item);
                                                                 }}
@@ -336,10 +254,10 @@ const ExperimentsList = function ({
                                                                 <Typography
                                                                     sx={{
                                                                         flex: 1,
-                                                                        fontSize: '0.9rem',
                                                                     }}
                                                                 >
                                                                     {item.sectionTitle}
+                                                                    ▶
                                                                 </Typography>
                                                             </Link>
                                                         </Stack>
@@ -389,7 +307,7 @@ const ExperimentsList = function ({
                                                 width: '90%',
                                             }}
                                         >
-                                            <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                            <Typography level="h2">
                                                 Week {experiment.boxweek + 1}: {experiment.name}
                                             </Typography>
                                             {completion !== undefined ? (
@@ -399,7 +317,7 @@ const ExperimentsList = function ({
                                                     alignItems="center"
                                                     sx={{ width: '50%' }}
                                                 >
-                                                    <Typography level="body3" sx={{ fontSize: '0.8rem' }}>
+                                                    <Typography level="body2" sx={{}}>
                                                         {completion}
                                                         {Strings.percent_completed}
                                                     </Typography>
@@ -410,7 +328,7 @@ const ExperimentsList = function ({
                                                     />
                                                 </Stack>
                                             ) : (
-                                                <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
+                                                <Typography sx={{}}>
                                                     {experiment.days.length} {Strings.day_s_}
                                                 </Typography>
                                             )}
@@ -442,8 +360,10 @@ const ExperimentsList = function ({
                                                     />
                                                 )}
                                                 <Link
-                                                    textColor="inherit"
                                                     underline="none"
+                                                    sx={{
+                                                        color: "neutral.900"
+                                                    }}
                                                     onClick={() => {
                                                         setDrawerContent(item);
                                                     }}
@@ -451,10 +371,10 @@ const ExperimentsList = function ({
                                                     <Typography
                                                         sx={{
                                                             flex: 1,
-                                                            fontSize: '0.9rem',
                                                         }}
                                                     >
                                                         {item.sectionTitle}
+                                                        &nbsp;▶
                                                     </Typography>
                                                 </Link>
                                             </Stack>
@@ -472,7 +392,7 @@ const ExperimentsList = function ({
     const getModalChildren = () => {
         return (
             <div>
-                <Typography level="h6"> {Strings.confirm_experiment_subscription} </Typography>
+                <Typography level="h3"> {Strings.confirm_experiment_subscription} </Typography>
             </div>
         );
     };
@@ -480,7 +400,7 @@ const ExperimentsList = function ({
     const getResubModalChildren = () => {
         return (
             <div>
-                <Typography level="h6"> {Strings.confirm_restart_subscription} </Typography>
+                <Typography level="h3"> {Strings.confirm_restart_subscription} </Typography>
                 <br />
             </div>
         );
@@ -518,7 +438,7 @@ const ExperimentsList = function ({
                 anchor="bottom"
                 open={!!drawerContent}
                 onClose={() => setDrawerContent(null)}
-                onOpen={() => {}}
+                onOpen={() => { }}
                 disableSwipeToOpen={true}
                 sx={{
                     '--Drawer-horizontalSize': '500px',
@@ -564,14 +484,11 @@ const ExperimentsList = function ({
                     <Button
                         onClick={toggleSubscriptionModal}
                         style={{ left: '12.5%', width: '70%' }}
-                        sx={{ mb: 2, mt: 4, fontWeight: 'lg', fontSize: '0.8rem' }}
+                        sx={{ mb: 4, mt: 4 }}
                         disabled={isSubscribedToBox()}
                     >
                         {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
                     </Button>
-                    <br />
-                    <br />
-                    <br />
                 </div>
             )}
         </div>
