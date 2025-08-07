@@ -207,6 +207,9 @@ const Journal = function () {
                         </Collapse>
 
                         <List noDividers sx={{ mt: 2 }}>
+                            {/*
+                            TODO: m.c. wanted to disable notes for the time being, commenting out as a temporary measure until a decision is made on whether to keep
+                            
                             <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('note')}>
                                 {Strings.note}
                             </ListItem>
@@ -224,6 +227,7 @@ const Journal = function () {
                             </Collapse>
 
                             <ListDivider />
+                            */}
                             <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('activity')}>
                                 {Strings.activity}
                             </ListItem>
