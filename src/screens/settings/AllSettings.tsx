@@ -114,9 +114,13 @@ const AllSettings = function () {
                         </List>
 
                         <List>
+                            {/*
+                            TODO: Richard wants About removed from here, commenting out as a temporary measure
+                            
                             <ListItem href="/main/settings/about" startDecorator={<Info />}>
                                 {Strings.about}
                             </ListItem>
+                            */}
                             {/*
                             TODO: Dark mode does not currently meet accessible contrast ratio so
                             hardcoded to 'light' setting for now
