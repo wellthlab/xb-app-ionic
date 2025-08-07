@@ -23,7 +23,8 @@ const AllSettings = function () {
 
     const { mode, setMode } = useColorScheme();
     const handleChangeMode = function (e: React.ChangeEvent<HTMLSelectElement>) {
-        setMode(e.target.value as any);
+        //setMode(e.target.value as any);
+        setMode("light");
     };
 
     // Log out
@@ -116,6 +117,10 @@ const AllSettings = function () {
                             <ListItem href="/main/settings/about" startDecorator={<Info />}>
                                 {Strings.about}
                             </ListItem>
+                            {/*
+                            TODO: Dark mode does not currently meet accessible contrast ratio so
+                            hardcoded to 'light' setting for now
+                            
                             <ListItem
                                 startDecorator={<Palette />}
                                 endDecorator={
@@ -128,6 +133,7 @@ const AllSettings = function () {
                             >
                                 {Strings.app_theme}
                             </ListItem>
+                            */}
                             <ListItem button startDecorator={<SignOut />} onClick={handleLogOut}>
                                 {Strings.log_out}
                             </ListItem>

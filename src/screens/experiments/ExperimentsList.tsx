@@ -222,9 +222,8 @@ const ExperimentsListScreen = function () {
         if (titlesRef.current) {
             const opacity = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 0.9);
             const blur = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 1) * 8;
-            titlesRef.current.style.backgroundColor = `rgb(${
-                colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
-            } / ${opacity})`;
+            titlesRef.current.style.backgroundColor = `rgb(${colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
+                } / ${opacity})`;
             titlesRef.current.style.backdropFilter = `blur(${blur}px)`;
         }
     };
@@ -242,7 +241,7 @@ const ExperimentsListScreen = function () {
                 scrollEvents={!!thisBox.heroImageSrc}
                 onIonScroll={handleScrollAnimation}
                 className="ion-content-custom"
-                style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+                style={{ '--background': `var(--joy-palette-neutral-50)` }}
             >
                 {thisBox.heroImageSrc && (
                     <Box>
@@ -345,7 +344,7 @@ const ExperimentsListScreen = function () {
                                             }}
                                         >
                                             {item.sectionTitle}
-                                            ▶
+                                            &nbsp;▶
                                         </Typography>
                                     </Link>
                                 </Stack>
@@ -368,7 +367,7 @@ const ExperimentsListScreen = function () {
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => {}}
+                    onOpen={() => { }}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',
@@ -407,7 +406,7 @@ const ExperimentsListScreen = function () {
                         </Stack>
                     </Sheet>
                 </SwipeableDrawer>
-                <img src={thisBox.heroImageSrc} alt="Bottom Image" className="bottom-image" />
+                <img src={thisBox.heroImageSrc} alt="" className="bottom-image" />
             </IonContent>
             <IonFooter>
                 <IonToolbar>

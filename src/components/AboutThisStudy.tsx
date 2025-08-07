@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Link, Divider, Stack } from '@mui/joy';
+import { Typography, Link, Divider, Stack, Container } from '@mui/joy';
 import ReactMarkdown from 'react-markdown';
 
 import PageTitle from './foundation/PageTitle';
@@ -71,11 +71,25 @@ const AboutThisStudy = function () {
     };
 
     return (
-        <Page>
-            {study?.studyInfo.map((block, blockId) => getContent(block, blockId))}
-            <br />
-            <ConsentForm />
-        </Page>
+        <Page
+            sx={{
+                backgroundColor: 'var(--joy-palette-neutral-50)'
+            }}  >
+            <Container
+                maxWidth="sm"
+                sx={{
+                    backgroundColor: "#fff",
+                    height: 'auto',      // Prevent full height
+                    minHeight: 'unset',
+                    borderRadius: "10px",
+                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
+                    py: 3
+                }}>
+                {study?.studyInfo.map((block, blockId) => getContent(block, blockId))}
+                <br />
+                <ConsentForm />
+            </Container>
+        </Page >
     );
 };
 

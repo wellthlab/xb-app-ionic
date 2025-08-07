@@ -3,7 +3,7 @@ import Form from '../../components/foundation/Form';
 import Strings from '../../utils/string_dict';
 import * as Yup from 'yup';
 import useForm from '../../components/foundation/useForm';
-import { Box, Button, FormLabel, Radio, RadioGroup } from '@mui/joy';
+import { Box, Button, FormLabel, Radio, RadioGroup, Container, Typography } from '@mui/joy';
 import Page from '../../components/foundation/Page';
 
 const questions = [
@@ -54,49 +54,64 @@ export function ParQScreen({ parQ, setParQ }: { parQ: any; setParQ: (v: any) => 
     });
 
     return (
-        <Page>
-            {!next ? (
-                <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        {questions.map((question, i) => (
-                            <RadioGroup
-                                value={form.values[`c${i}`] ? 'y' : 'n'}
-                                defaultValue="n"
-                                onChange={(e) =>
-                                    form.setValues(
-                                        (prev) =>
-                                            ({ ...prev, [`c${i}`]: e.target.value === 'y' } as Record<string, boolean>),
-                                    )
-                                }
-                            >
-                                <FormLabel>{question}</FormLabel>
-                                <Radio value="y" label="Yes" />
-                                <Radio value="n" label="No" />
-                            </RadioGroup>
-                        ))}
-                    </Box>
-                </Form>
-            ) : (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 2,
-                        alignItems: 'center',
-                    }}
-                >
-                    You need to consult a GP before continue
-                    <Button
-                        variant="solid"
-                        onClick={() => {
-                            localStorage.setItem('parq', JSON.stringify({ pass: false, consulted: true }));
-                            setParQ({ pass: false, consulted: true });
+        <Page
+            sx={{
+                backgroundColor: 'var(--joy-palette-neutral-50)'
+            }} >
+            <Container
+                maxWidth="sm"
+                sx={{
+                    backgroundColor: "#fff",
+                    height: 'auto',      // Prevent full height
+                    minHeight: 'unset',
+                    borderRadius: "10px",
+                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
+                    py: 3
+                }}>
+                {!next ? (
+                    <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
+                        <Typography level="h1">Please answer the following health questions:</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            {questions.map((question, i) => (
+                                <RadioGroup
+                                    value={form.values[`c${i}`] ? 'y' : 'n'}
+                                    defaultValue="n"
+                                    onChange={(e) =>
+                                        form.setValues(
+                                            (prev) =>
+                                                ({ ...prev, [`c${i}`]: e.target.value === 'y' } as Record<string, boolean>),
+                                        )
+                                    }
+                                >
+                                    <FormLabel>{question}</FormLabel>
+                                    <Radio value="y" label="Yes" />
+                                    <Radio value="n" label="No" />
+                                </RadioGroup>
+                            ))}
+                        </Box>
+                    </Form>
+                ) : (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2,
+                            alignItems: 'center',
                         }}
                     >
-                        I have consulted my GP
-                    </Button>
-                </Box>
-            )}
+                        You need to consult a GP before continue
+                        <Button
+                            variant="solid"
+                            onClick={() => {
+                                localStorage.setItem('parq', JSON.stringify({ pass: false, consulted: true }));
+                                setParQ({ pass: false, consulted: true });
+                            }}
+                        >
+                            I have consulted my GP
+                        </Button>
+                    </Box>
+                )}
+            </Container>
         </Page>
     );
 }

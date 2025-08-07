@@ -240,7 +240,7 @@ const ExperimentsList = function ({
                                                                 }}
                                                             >
                                                                 {item.sectionTitle}
-                                                                ▶
+                                                                &nbsp;▶
                                                             </Typography>
                                                         </Link>
                                                     </Stack>
@@ -356,7 +356,7 @@ const ExperimentsList = function ({
                                                         }}
                                                     >
                                                         {item.sectionTitle}
-                                                        ▶
+                                                        &nbsp;▶
                                                     </Typography>
                                                 </Link>
                                             </Stack>

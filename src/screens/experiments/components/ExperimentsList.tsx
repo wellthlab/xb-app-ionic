@@ -257,7 +257,7 @@ const ExperimentsList = function ({
                                                                     }}
                                                                 >
                                                                     {item.sectionTitle}
-                                                                    ▶
+                                                                    &nbsp;▶
                                                                 </Typography>
                                                             </Link>
                                                         </Stack>
