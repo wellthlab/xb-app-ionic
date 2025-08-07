@@ -9,36 +9,18 @@ interface BoxCardProps {
 }
 
 const BoxCard: React.FC<BoxCardProps> = ({ box }) => {
-    console.log(box);
+    //console.log(box);
 
-    // TODO: cardImg should be stored in state, switch is brittle!
-    let cardSrc = '';
-
-    switch (capitalise(box.name)) {
-        case "Move":
-            cardSrc = '/assets/boxcard/move.svg';
-            break;
-        case "Eat":
-            cardSrc = '/assets/boxcard/eat.svg';
-            break;
-        case "Sleep":
-            cardSrc = '/assets/boxcard/sleep.svg';
-            break;
-        case "Journal":
-            cardSrc = '/assets/boxcard/journal.svg';
-            break;
-        default:
-            cardSrc = '/assets/boxcard/base.svg';
-    }
+    const narrowImgSrc = box.heroImageSrc + '_narrow.svg';
 
     const cardImg = <img
-        src={cardSrc}
+        src={narrowImgSrc}
         loading="lazy"
         alt=""
     />;
 
     return (
-        <Grid xs={6}>
+        <Grid xs={12}>
             <Card
                 component={RouterLink as React.ElementType}
                 to={box.disabled ? undefined : `/main/box/${box.name}`}
@@ -56,14 +38,20 @@ const BoxCard: React.FC<BoxCardProps> = ({ box }) => {
                 }}
             >
                 <CardOverflow>
-                    <AspectRatio ratio="1">
+                    <AspectRatio ratio="900/500">
                         {cardImg}
                     </AspectRatio>
                 </CardOverflow>
                 <CardContent sx={{
                     pt: 2
                 }}>
-                    <Typography level="h2" sx={{textAlign: "center"}}>{capitalise(box.name)}</Typography>
+                    <Typography level="h2">{capitalise(box.name)}</Typography>
+                    {box.overview && (
+                        <Typography level="body2" sx={{ mt: 1 }}>
+                            {box.overview}
+                        </Typography>
+                    )}
+
                 </CardContent>
             </Card>
         </Grid>
