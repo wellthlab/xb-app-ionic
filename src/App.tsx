@@ -125,6 +125,7 @@ const App = function () {
         const parq = localStorage.getItem('parq');
         return parq === null ? null : JSON.parse(parq);
     });
+
     return (
         <IonApp>
             <div className="app-wrapper">
@@ -239,28 +240,28 @@ const App = function () {
                                             </IonRouterOutlet>
 
                                             <IonTabBar slot="bottom">
-                                                <IonTabButton tab="today" href="/main/today">
+                                                <IonTabButton tab="today" href="/main/today" className="xb-tab-button">
                                                     <ListChecks />
                                                     <IonLabel>{Strings.today}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="box" href="/main/box">
+                                                <IonTabButton tab="box" href="/main/box" className="xb-tab-button">
                                                     <Cube />
                                                     <IonLabel>{Strings.boxes}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="journal" href="/main/journal">
+                                                <IonTabButton tab="journal" href="/main/journal" className="xb-tab-button">
                                                     <CalendarBlank />
                                                     <IonLabel>{Strings.journal}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="settings" href="/main/settings">
+                                                <IonTabButton tab="settings" href="/main/settings" className="xb-tab-button">
                                                     <Gear />
                                                     <IonLabel>{Strings.settings}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="about" href="/main/about">
+                                                <IonTabButton tab="about" href="/main/about" className="xb-tab-button">
                                                     <Info />
                                                     <IonLabel>{Strings.about}</IonLabel>
                                                 </IonTabButton>
                                                 {/*This is hidden because the teams functionality is not fully built out yet*/}
-                                                {/*<IonTabButton tab="team" href="/main/team">*/}
+                                                {/*<IonTabButton tab="team" href="/main/team" style={tabButtonStyle}>*/}
                                                 {/*    <Users />*/}
                                                 {/*    <IonLabel>{Strings.teams}</IonLabel>*/}
                                                 {/*</IonTabButton>*/}

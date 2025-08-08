@@ -93,3 +93,31 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 }
+
+ion-tab-bar {
+  overflow: visible !important;
+  position: relative;
+  z-index: 0;
+}
+
+.xb-tab-button {
+  --color: var(--joy-palette-grey-700);
+  --color-selected: var(--joy-palette-info-700);
+  --ripple-color: rgba(0,0,0,0);
+  transition: all 0s ease-in-out;
+  font-weight: 700;
+
+  &.tab-selected {
+    background: var(--joy-palette-info-700);
+    --color-selected: rgba(255,255,255,1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+    svg {
+      transform: scale(1.15);
+    }
+
+    ion-label {
+      margin-top: 3px;
+    }
+  }
+}
