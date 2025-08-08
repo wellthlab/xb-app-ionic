@@ -1,17 +1,16 @@
 import React from 'react';
+import Box from '@mui/material/Box';
 import * as Realm from 'realm-web';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, Card, Divider, LinearProgress, Link, Stack, Typography } from '@mui/joy';
+import { Button, LinearProgress, Link, Stack, Typography } from '@mui/joy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { Drawer } from '@mui/material';
 import Sheet from '@mui/joy/Sheet';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/joy/IconButton';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-
 import { ExperimentCategory, IExperiment, IExperimentSchedule } from '../../../models/Experiment';
 import { useDispatch, useSelector } from '../../../slices/store';
-import { selectBoxByExperimentId, selectCompletionForAllExperiments } from '../../../slices/experiments';
+import { selectCompletionForAllExperiments } from '../../../slices/experiments';
 import _ from 'lodash';
 import Strings from '../../../utils/string_dict';
 import Modal from '../../../components/foundation/Modal';
@@ -25,8 +24,6 @@ import {
     subscribeToExperiments,
 } from '../../../slices/account';
 import { DayOfWeek } from '../../../models/Account';
-import PageTitle from '../../../components/foundation/PageTitle';
-import ReactMarkdown from 'react-markdown';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
@@ -164,229 +161,223 @@ const ExperimentsList = function ({
 
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return (
-            <div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    px: 2,
+                }}
+            >
                 {Array.from(scheduledExperimentsByStartTime!)
-                    .sort(([startTime1, _], [startTime2, __]) => startTime1 - startTime2)
-                    .map(([startUTCTime, scheduledExperiments]) => {
-                        return (
-                            <Stack spacing={2} alignItems="center">
-                                {scheduledExperiments
-                                    .filter((experiment) => experiment.days.length > 0)
-                                    .map((experiment) => {
-                                        return (
-                                            <Accordion
+                    .sort(([startTime1], [startTime2]) => startTime1 - startTime2)
+                    .map(([startUTCTime, scheduledExperiments]) =>
+                        scheduledExperiments
+                            .filter((experiment) => experiment.days.length > 0)
+                            .map((experiment) => (
+                                <Box
+                                    key={experiment.id}
+                                    sx={{
+                                        width: '100%',
+                                        maxWidth: '500px',
+                                        mb: 2,
+                                    }}
+                                >
+                                    <Accordion
+                                        disableGutters
+                                        sx={{
+                                            width: '100%',
+                                            backgroundColor: 'rgba(255,255,255,.8)',
+                                            borderRadius: '10px',
+                                            boxShadow: 'none',
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        <AccordionSummary
+                                            expandIcon={<AddIcon />}
+                                            sx={{
+                                                backgroundColor: 'transparent',
+                                                px: 2,
+                                            }}
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                spacing={4}
                                                 sx={{
-                                                    ml: 'auto',
-                                                    mr: 'auto',
-                                                    mt: 2,
-                                                    maxWidth: '90%',
-                                                    width: '500px',
+                                                    width: '100%',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
                                                 }}
                                             >
-                                                <AccordionSummary
-                                                    expandIcon={<AddIcon />}
+                                                <Typography>Week {experiment.boxweek + 1}</Typography>
+                                                <Typography sx={{ fontStyle: 'italic' }}>
+                                                    <AccessTimeIcon sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                                                    {new Date(startUTCTime).toDateString()}
+                                                </Typography>
+                                            </Stack>
+                                        </AccordionSummary>
+
+                                        <AccordionDetails
+                                            sx={{
+                                                backgroundColor: 'transparent',
+                                                px: 2,
+                                            }}
+                                        >
+                                            {experiment.desc?.map((item, index) => (
+                                                <Stack
+                                                    key={index}
+                                                    direction="row"
+                                                    spacing={2}
                                                     sx={{
-                                                        backgroundColor: `rgba(${color})`,
+                                                        width: '100%',
+                                                        alignItems: 'center',
+                                                        mb: 2,
                                                     }}
                                                 >
-                                                    <Stack
-                                                        direction="row"
-                                                        spacing={4}
-                                                        sx={{
-                                                            width: '90%',
-                                                            justifyContent: 'space-between',
-                                                            alignItems: 'center',
+                                                    {item.sectionImageSrc && (
+                                                        <img
+                                                            src={item.sectionImageSrc}
+                                                            alt=""
+                                                            style={{
+                                                                width: '50px',
+                                                                height: '50px',
+                                                                objectFit: 'cover',
+                                                                borderRadius: '4px',
+                                                            }}
+                                                        />
+                                                    )}
+
+                                                    <Link
+                                                        underline="none"
+                                                        sx={{ color: 'neutral.900' }}
+                                                        onClick={() => {
+                                                            setDrawerContent(item);
                                                         }}
                                                     >
-                                                        <Typography sx={{}}>
-                                                            Week {experiment.boxweek + 1}
+                                                        <Typography sx={{ flex: 1 }}>
+                                                            {item.sectionTitle} &nbsp;▶
                                                         </Typography>
-                                                        <Typography
-                                                            sx={{
-                                                                fontStyle: 'italic',
-                                                            }}
-                                                        >
-                                                            <AccessTimeIcon
-                                                                sx={{
-                                                                    verticalAlign: 'middle',
-                                                                    mr: 0.5,
-                                                                }}
-                                                            />
-                                                            {new Date(startUTCTime).toDateString()}
-                                                        </Typography>
-                                                    </Stack>
-                                                </AccordionSummary>
+                                                    </Link>
+                                                </Stack>
+                                            ))}
 
-                                                <AccordionDetails>
-                                                    {experiment.desc?.map((item, index) => (
-                                                        <Stack
-                                                            key={index}
-                                                            direction="row"
-                                                            spacing={2}
-                                                            sx={{
-                                                                width: '100%',
-                                                                alignItems: 'center',
-                                                                mb: 2,
-                                                            }}
-                                                        >
-                                                            {item.sectionImageSrc && (
-                                                                <img
-                                                                    src={item.sectionImageSrc}
-                                                                    alt=""
-                                                                    style={{
-                                                                        width: '50px',
-                                                                        height: '50px',
-                                                                        objectFit: 'cover',
-                                                                        borderRadius: '4px',
-                                                                    }}
-                                                                />
-                                                            )}
-
-                                                            <Link
-                                                                underline="none"
-                                                                sx={{
-                                                                    color: "neutral.900"
-                                                                }}
-                                                                onClick={() => {
-                                                                    setDrawerContent(item);
-                                                                }}
-                                                            >
-                                                                <Typography
-                                                                    sx={{
-                                                                        flex: 1,
-                                                                    }}
-                                                                >
-                                                                    {item.sectionTitle}
-                                                                    &nbsp;▶
-                                                                </Typography>
-                                                            </Link>
-                                                        </Stack>
-                                                    ))}
-                                                    <ExperimentTimeline experimentId={experiment.id} />
-                                                </AccordionDetails>
-                                            </Accordion>
-                                        );
-                                    })}
-                            </Stack>
-                        );
-                    })}
-            </div>
+                                            <ExperimentTimeline experimentId={experiment.id} />
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Box>
+                            ))
+                    )}
+            </Box>
         );
     };
 
-    const getNonScheduledExperimentsBody = (experimentCategory: ExperimentCategory, experiments: IExperiment[]) => {
-        return (
-            <div>
-                <Stack spacing={2} alignItems="center">
-                    {experiments
-                        .filter((e) => e.days.length > 0)
-                        .sort((e1, e2) => e1.boxweek - e2.boxweek)
-                        .map((experiment) => {
-                            const completion = completionByExperimentId[experiment.id];
-                            return (
-                                <Accordion
-                                    key={experiment.id}
-                                    sx={{
-                                        ml: 'auto',
-                                        mr: 'auto',
-                                        mt: 2,
-                                        maxWidth: '90%',
-                                        width: '500px',
-                                    }}
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<AddIcon />}
+
+
+    const getNonScheduledExperimentsBody = (
+        experimentCategory: ExperimentCategory,
+        experiments: IExperiment[]
+    ) => {
+        return experiments
+            .filter((e) => e.days.length > 0)
+            .sort((e1, e2) => e1.boxweek - e2.boxweek)
+            .map((experiment) => {
+                const completion = completionByExperimentId[experiment.id];
+                return (
+                    <Box
+                        key={experiment.id}
+                        sx={{
+                            mx: 'auto',
+                            width: '100%',
+                            maxWidth: '500px',
+                            px: 2,
+                            mb: 2,
+                        }}
+                    >
+                        <Accordion
+                            sx={{
+                                width: '100%',
+                                backgroundColor: 'rgba(255,255,255,.8)',
+                                borderRadius: '10px',
+                            }}
+                        >
+                            <AccordionSummary
+                                expandIcon={<AddIcon />}
+                                sx={{ backgroundColor: 'transparent' }}
+                            >
+                                <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
+                                    <Typography level="h2">
+                                        Week {experiment.boxweek + 1}: {experiment.name}
+                                    </Typography>
+                                    {completion !== undefined ? (
+                                        <Stack
+                                            direction="row"
+                                            spacing={2}
+                                            alignItems="center"
+                                            sx={{ width: '50%' }}
+                                        >
+                                            <Typography level="body2">
+                                                {completion}
+                                                {Strings.percent_completed}
+                                            </Typography>
+                                            <LinearProgress
+                                                variant="solid"
+                                                size="lg"
+                                                determinate
+                                                value={completion}
+                                                sx={{ width: '100px' }}
+                                            />
+                                        </Stack>
+                                    ) : (
+                                        <Typography>
+                                            {experiment.days.length} {Strings.day_s_}
+                                        </Typography>
+                                    )}
+                                </Stack>
+                            </AccordionSummary>
+
+                            <AccordionDetails sx={{ backgroundColor: 'transparent' }}>
+                                {experiment.desc?.map((item, index) => (
+                                    <Stack
+                                        key={index}
+                                        direction="row"
+                                        spacing={2}
                                         sx={{
-                                            backgroundColor: `rgba(${color})`,
+                                            width: '100%',
+                                            alignItems: 'center',
+                                            mb: 2,
                                         }}
                                     >
-                                        <Stack
-                                            direction="column"
-                                            spacing={1}
-                                            sx={{
-                                                width: '90%',
+                                        {item.sectionImageSrc && (
+                                            <img
+                                                src={item.sectionImageSrc}
+                                                alt=""
+                                                style={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '4px',
+                                                }}
+                                            />
+                                        )}
+                                        <Link
+                                            underline="none"
+                                            sx={{ color: 'neutral.900' }}
+                                            onClick={() => {
+                                                setDrawerContent(item);
                                             }}
                                         >
-                                            <Typography level="h2">
-                                                Week {experiment.boxweek + 1}: {experiment.name}
+                                            <Typography sx={{ flex: 1 }}>
+                                                {item.sectionTitle} &nbsp;▶
                                             </Typography>
-                                            {completion !== undefined ? (
-                                                <Stack
-                                                    direction="row"
-                                                    spacing={2}
-                                                    alignItems="center"
-                                                    sx={{ width: '50%' }}
-                                                >
-                                                    <Typography level="body2" sx={{}}>
-                                                        {completion}
-                                                        {Strings.percent_completed}
-                                                    </Typography>
-                                                    <LinearProgress
-                                                        determinate
-                                                        value={completion}
-                                                        sx={{ width: '100px' }}
-                                                    />
-                                                </Stack>
-                                            ) : (
-                                                <Typography sx={{}}>
-                                                    {experiment.days.length} {Strings.day_s_}
-                                                </Typography>
-                                            )}
-                                        </Stack>
-                                    </AccordionSummary>
-
-                                    <AccordionDetails>
-                                        {experiment.desc?.map((item, index) => (
-                                            <Stack
-                                                key={index}
-                                                direction="row"
-                                                spacing={2}
-                                                sx={{
-                                                    width: '100%',
-                                                    alignItems: 'center',
-                                                    mb: 2,
-                                                }}
-                                            >
-                                                {item.sectionImageSrc && (
-                                                    <img
-                                                        src={item.sectionImageSrc}
-                                                        alt=""
-                                                        style={{
-                                                            width: '50px',
-                                                            height: '50px',
-                                                            objectFit: 'cover',
-                                                            borderRadius: '4px',
-                                                        }}
-                                                    />
-                                                )}
-                                                <Link
-                                                    underline="none"
-                                                    sx={{
-                                                        color: "neutral.900"
-                                                    }}
-                                                    onClick={() => {
-                                                        setDrawerContent(item);
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        sx={{
-                                                            flex: 1,
-                                                        }}
-                                                    >
-                                                        {item.sectionTitle}
-                                                        &nbsp;▶
-                                                    </Typography>
-                                                </Link>
-                                            </Stack>
-                                        ))}
-                                        <ExperimentTimeline experimentId={experiment.id} />
-                                    </AccordionDetails>
-                                </Accordion>
-                            );
-                        })}
-                </Stack>
-            </div>
-        );
+                                        </Link>
+                                    </Stack>
+                                ))}
+                                <ExperimentTimeline experimentId={experiment.id} />
+                            </AccordionDetails>
+                        </Accordion>
+                    </Box>
+                );
+            });
     };
 
     const getModalChildren = () => {
@@ -484,7 +475,7 @@ const ExperimentsList = function ({
                     <Button
                         onClick={toggleSubscriptionModal}
                         style={{ left: '12.5%', width: '70%' }}
-                        sx={{ mb: 4, mt: 4 }}
+                        sx={{ mb: 4, mt: 4, p: 1 }}
                         disabled={isSubscribedToBox()}
                     >
                         {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}

@@ -1,3 +1,11 @@
+:root {
+  --box-background-move: #00BFFF;
+  --box-background-eat: #00CED1;
+  --box-background-sleep: #9470DC;
+  --box-background-base: #f6af54;
+  --box-background-journal: #ff5655;
+}
+
 .app-wrapper {
   position: relative;
   max-width: 414px;

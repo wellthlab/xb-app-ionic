@@ -191,10 +191,3 @@ body.dark {
     justify-content: flex-end;
     position: relative;
 }
-
-.bottom-image {
-    width: 100%;
-    height: auto;
-    max-height: 40vh; /* Prevents the image from taking too much space */
-    object-fit: cover;
-}
