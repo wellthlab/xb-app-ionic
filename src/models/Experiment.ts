@@ -242,7 +242,10 @@ class Experiment extends BaseModel {
             const asGenericExperiment = (record as unknown) as IExperiment;
             asGenericExperiment.id = (record._id as unknown) as string;
             if (asGenericExperiment.days.length === 1) {
-                asGenericExperiment.days = new Array(5).fill(asGenericExperiment.days[0]);
+                asGenericExperiment.days = new Array(5).fill(1).map((_, i) => ({
+                    ...asGenericExperiment.days[0],
+                    dayId: `${asGenericExperiment.days[0].id}_${i}`,
+                }));
             }
             return asGenericExperiment;
         });
