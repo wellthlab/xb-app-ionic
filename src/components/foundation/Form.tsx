@@ -38,7 +38,7 @@ const Form = function ({
                     {message}
                 </Alert>
             )}
-            <Stack component="form" spacing={2}>
+            <Stack component="form" spacing={2} sx={{ width: '100%' }}>
                 {children}
             </Stack>
 
