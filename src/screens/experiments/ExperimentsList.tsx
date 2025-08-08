@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme, Link } from '@mui/joy';
 import { CaretDoubleDown } from 'phosphor-react';
@@ -408,11 +409,11 @@ const ExperimentsListScreen = function () {
                 </SwipeableDrawer>
                 <img src={thisBox.heroImageSrc} alt="" className="bottom-image" />
             </IonContent>
-            <IonFooter>
-                <IonToolbar>
-                    <BoxesSubMenu />
-                </IonToolbar>
-            </IonFooter>
+                <IonFooter>
+                    <IonToolbar>
+                        <BoxesSubMenu />
+                    </IonToolbar>
+                </IonFooter>
         </IonPage>
     );
 };

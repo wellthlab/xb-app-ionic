@@ -6,7 +6,7 @@ import capitalise from './utils/capitalise';
 import getIcon from '../../utils/getIcon';
 import { useSelector } from '../../slices/store';
 import { selectAllBoxes } from '../../slices/experiments';
-import {IonLabel, IonTabBar, IonTabButton} from '@ionic/react';
+import { IonLabel, IonTabBar, IonTabButton } from '@ionic/react';
 import { Drawer } from '@mui/material';
 
 const BoxesSubMenu = function () {
@@ -14,37 +14,31 @@ const BoxesSubMenu = function () {
     const { type } = useParams<{ type: string }>();
 
     return (
-            <Drawer variant="persistent" anchor="bottom" open={true}>
-                <IonTabBar slot="bottom">
-                    {boxes.map((box) => {
-                        const Icon = getIcon(box.icon);
-                        const path = "/main/box/" + box.name;
-                        return (
-                            <IonTabButton selected={box.name===type}>
-                                <Box
-                                    component={Icon}
-                                    color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'}
-                                />
-                                <IonLabel>{capitalise(box.name)}</IonLabel>
-                                 <Link
-                                        overlay
-                                        textColor="inherit"
-                                        underline="none"
-                                        component={RouterLink}
-                                        to={path}
-                                        disabled={box.disabled}
-                                        sx={{
-                                            [`&.${linkClasses.disabled}`]: {
-                                                color: 'neutral.plainDisabledColor',
-                                            },
-                                        }}
-                                    >
-                                    </Link>
-                            </IonTabButton>
-                        );
-                    })}
-                </IonTabBar>
-            </Drawer>
+        <Drawer variant="persistent" anchor="bottom" open={true}>
+            <IonTabBar slot="bottom" className="xb-tab-menu--sub-menu">
+                {boxes.map((box) => {
+                    const Icon = getIcon(box.icon);
+                    const path = "/main/box/" + box.name;
+                    const isSelected = box.name === type;
+
+                    return (
+                        <IonTabButton
+                            key={box.name}
+                            tab={box.name}
+                            href={path}
+                            disabled={box.disabled}
+                            className={`xb-tab-button ${isSelected ? 'tab-selected' : ''}`}
+                        >
+                            <Box
+                                component={Icon}
+                                color={box.disabled ? 'neutral.plainDisabledColor' : 'inherit'}
+                            />
+                            <IonLabel>{capitalise(box.name)}</IonLabel>
+                        </IonTabButton>
+                    );
+                })}
+            </IonTabBar>
+        </Drawer>
     );
 };
 

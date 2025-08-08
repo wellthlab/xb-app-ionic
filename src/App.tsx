@@ -239,7 +239,7 @@ const App = function () {
                                                 </Route>
                                             </IonRouterOutlet>
 
-                                            <IonTabBar slot="bottom">
+                                            <IonTabBar slot="bottom" className="xb-tab-menu">
                                                 <IonTabButton tab="today" href="/main/today" className="xb-tab-button">
                                                     <ListChecks />
                                                     <IonLabel>{Strings.today}</IonLabel>
