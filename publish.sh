@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "connvm2.sh first!";
-pubname=xbapp01
+pubname=xbapp02
 echo "Publish to $pubname?"
 
 read -p "Are you sure? " -n 1 -r
