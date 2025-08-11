@@ -2,7 +2,7 @@ import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
-
+import { Box } from '@mui/joy';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 import Form from '../../components/foundation/Form';
@@ -51,12 +51,14 @@ const ConsentForm = function () {
     });
 
     return (
-        <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
-            {study!.consent.map((statement, i) => (
-                <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)}  />
-            ))}
-        </Form>
+        <Box sx={{ mt: 2 }}>
+            <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
+                {study!.consent.map((statement, i) => (
+                    <Checkbox isEnrolled={isEnrolled} key={i} label={statement} {...getCheckboxProps(`c${i}`)} />
+                ))}
+            </Form>
+        </Box>
     );
 };
 
-export default  ConsentForm;
+export default ConsentForm;

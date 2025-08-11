@@ -80,6 +80,7 @@ const Strings = {
 	scroll_or_read_to_the_end_to : "Scroll or read to the end to continue",
 	please_check_this_box_to : "Please check this box to continue",
 	enroll : "Enroll!",
+	finish : "Finish",
 	just_a_few_things : "Just a Few Things...",
 	i_have_read_the_provided : "I have read the provided participant information and consent to take part in the study",
 	i_am_a_member_of_staff_or_a : "I am a member of staff or a student at the University of Southampton, and I am at least 18 years old.",
@@ -202,7 +203,8 @@ const Strings = {
     checks: 'CHECKS',
     tips: 'TIPS',
     preview: 'PREVIEW of ',
-    day_progress: 'S'
+    day_progress: 'S',
+	adjust_how_app_works: 'Adjust how the app works for you'
 };
 
 export default Strings;

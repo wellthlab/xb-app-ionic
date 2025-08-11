@@ -1,0 +1,143 @@
+:root {
+  --box-background-move: #00BFFF;
+  --box-background-eat: #00CED1;
+  --box-background-sleep: #9470DC;
+  --box-background-base: #f6af54;
+  --box-background-journal: #ff5655;
+}
+
+.app-wrapper {
+  position: relative;
+  max-width: 414px;
+  max-height: 896px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.app-wrapper ion-content {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.markdown-content {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Golos", "Arial", sans-serif;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 2rem 0 1rem;
+  }
+
+  h1 {
+    font-size: 1.476rem;
+  }
+
+  h2 {
+    font-size: 1.383rem;
+  }
+
+  h3 {
+    font-size: 1.296rem;
+  }
+
+  h4 {
+    font-size: 1.215rem;
+  }
+
+  h5 {
+    font-size: 1.138rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 1rem 0;
+    line-height: 1.15;
+    font-size: 1rem;
+  }
+
+
+  a {
+    text-decoration: underline;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0;
+    padding-left: 1.2rem;
+    list-style-position: outside;
+  }
+
+  li {
+    margin-left: 0;
+    padding-left: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.15;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.xb-tab-menu {
+  &--sub-menu {
+    .xb-tab-button {
+        ion-label {
+          font-size: 11px;
+        }
+
+        svg {
+          transform: scale(0.9);
+        }
+
+      &.tab-selected {
+        background: var(--joy-palette-info-100);
+        --color-selected: var(--joy-palette-info-700);
+      }
+    }
+  }
+}
+
+.xb-tab-button {
+  --color: var(--joy-palette-grey-700);
+  --color-selected: var(--joy-palette-info-700);
+  --ripple-color: rgba(0, 0, 0, 0);
+  transition: all 0.1s ease-in-out;
+
+  ion-label {
+    font-size: 12px;
+  }
+
+  &.tab-selected {
+    background: var(--joy-palette-info-700);
+    --color-selected: rgba(255, 255, 255, 1);
+  }
+
+  &:hover {
+    --background: var(--joy-palette-info-50);
+  }
+}

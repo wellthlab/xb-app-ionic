@@ -46,6 +46,8 @@ import PreviousDayTasks from './screens/today/PreviousDayTasks';
 import PreviewScreen from './screens/experiments/preview/Preview';
 import { ParQScreen } from './screens/onboarding/ParQ';
 
+import './global.scss';
+
 const AppFlowController = function ({ parQ }: { parQ: any }) {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(selectIsEnrolled);
@@ -55,6 +57,9 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
     const dispatch = useDispatch();
     const [initPath, setInitPath] = React.useState(location.pathname);
 
+    // TODO: ⚠️ DEV OVERRIDE FLAG — remove this before shipping!
+    const DEV_BYPASS = false;
+
     React.useEffect(() => {
         if (parQ === null || (!parQ.pass && !parQ.consulted)) {
             return;
@@ -62,7 +67,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
 
         // Call boot only if authenticated
 
-        if (!isAuthenticated) {
+        if (!isAuthenticated && !DEV_BYPASS) {
             return;
         }
 
@@ -88,7 +93,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         return <Redirect to="/parq" />;
     }
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !DEV_BYPASS) {
         if (location.pathname === '/auth/new-password' || location.pathname === '/auth/confirm') {
             return null;
         }
@@ -104,7 +109,7 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
         return <Redirect to="/loading" />;
     }
 
-    if (!isEnrolled) {
+    if (!isEnrolled && !DEV_BYPASS) {
         return <Redirect to="/onboarding" />;
     }
 
@@ -120,8 +125,10 @@ const App = function () {
         const parq = localStorage.getItem('parq');
         return parq === null ? null : JSON.parse(parq);
     });
+
     return (
         <IonApp>
+            <div className="app-wrapper">
             <Provider store={store}>
                 <IonReactRouter>
                     <ThemeProvider>
@@ -232,29 +239,29 @@ const App = function () {
                                                 </Route>
                                             </IonRouterOutlet>
 
-                                            <IonTabBar slot="bottom">
-                                                <IonTabButton tab="today" href="/main/today">
+                                            <IonTabBar slot="bottom" className="xb-tab-menu">
+                                                <IonTabButton tab="today" href="/main/today" className="xb-tab-button">
                                                     <ListChecks />
                                                     <IonLabel>{Strings.today}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="box" href="/main/box">
+                                                <IonTabButton tab="box" href="/main/box" className="xb-tab-button">
                                                     <Cube />
                                                     <IonLabel>{Strings.boxes}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="journal" href="/main/journal">
+                                                <IonTabButton tab="journal" href="/main/journal" className="xb-tab-button">
                                                     <CalendarBlank />
                                                     <IonLabel>{Strings.journal}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="settings" href="/main/settings">
+                                                <IonTabButton tab="settings" href="/main/settings" className="xb-tab-button">
                                                     <Gear />
                                                     <IonLabel>{Strings.settings}</IonLabel>
                                                 </IonTabButton>
-                                                <IonTabButton tab="about" href="/main/about">
+                                                <IonTabButton tab="about" href="/main/about" className="xb-tab-button">
                                                     <Info />
                                                     <IonLabel>{Strings.about}</IonLabel>
                                                 </IonTabButton>
                                                 {/*This is hidden because the teams functionality is not fully built out yet*/}
-                                                {/*<IonTabButton tab="team" href="/main/team">*/}
+                                                {/*<IonTabButton tab="team" href="/main/team" style={tabButtonStyle}>*/}
                                                 {/*    <Users />*/}
                                                 {/*    <IonLabel>{Strings.teams}</IonLabel>*/}
                                                 {/*</IonTabButton>*/}
@@ -267,6 +274,7 @@ const App = function () {
                     </ThemeProvider>
                 </IonReactRouter>
             </Provider>
+            </div>
         </IonApp>
     );
 };

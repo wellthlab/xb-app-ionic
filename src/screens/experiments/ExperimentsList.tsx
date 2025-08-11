@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Container, Stack, Typography, Divider, Card, useColorScheme, useTheme, Link } from '@mui/joy';
-import { CaretDoubleDown } from 'phosphor-react';
+import { Stack, Typography, useColorScheme, Box, AspectRatio } from '@mui/joy';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import capitalise from './utils/capitalise';
 import ExperimentsList from './components/ExperimentsList';
@@ -16,20 +16,17 @@ import {
 import { ExperimentCategory, IExperiment } from '../../models/Experiment';
 import { selectScheduledExperiments, selectSubscriptions } from '../../slices/account';
 import BoxesSubMenu from './BoxesSubMenu';
-import PageTitle from '../../components/foundation/PageTitle';
 import { IonContent, IonFooter, IonPage, IonToolbar, ScrollDetail } from '@ionic/react';
 import Header from '../../components/foundation/Header';
-import HeaderButton from '../../components/foundation/HeaderButton';
-import YouTubeVideo from '../../components/TaskModal/YoutubeVideo';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
-import ReactMarkdown from 'react-markdown';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Sheet from '@mui/joy/Sheet';
 import IconButton from '@mui/joy/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import getContent from './utils/getContent';
 
 const SHOW_HEADER_SCROLL_THRESHOLD = 80;
 
@@ -61,86 +58,6 @@ const ExperimentsListScreen = function () {
                 ))}
             </Stack>
         );
-    };
-    const getContent = (block: any) => {
-        if (block.type === 'para') {
-            return (
-                <Typography level="body1" sx={{ fontSize: '0.8rem' }}>
-                    {block['content']}
-                </Typography>
-            );
-        }
-
-        if (block.type === 'title') {
-            return (
-                <Typography level="h5" sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                    {block['content']}
-                </Typography>
-            );
-        }
-
-        if (block.type === 'video') {
-            return <YouTubeVideo src={block.src} />;
-        }
-
-        if (block.type === 'image') {
-            return (
-                <img
-                    src={block.src}
-                    alt={block.alt}
-                    style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-                />
-            );
-        }
-
-        if (block.type === 'expandable') {
-            return (
-                <Accordion>
-                    <AccordionSummary expandIcon={<AddIcon />}>
-                        <Typography sx={{ mb: 2, mt: 2, fontWeight: 'lg', fontSize: '0.8rem' }}>
-                            {block.title}
-                        </Typography>
-                    </AccordionSummary>
-
-                    <Divider />
-
-                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
-                        <br />
-                        <Stack spacing={2}>{block.contents.map((element: any) => getContent(element))}</Stack>
-                    </AccordionDetails>
-                </Accordion>
-            );
-        }
-
-        if (block.type === 'markdown') {
-            return (
-                <ReactMarkdown
-                    children={block['content']}
-                    components={{
-                        h1: ({ children }) => <PageTitle>{children}</PageTitle>,
-
-                        h2: ({ children }) => (
-                            <Typography level="h4" component="h2" color="primary" sx={{ mt: 4 }}>
-                                {children}
-                            </Typography>
-                        ),
-                        li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                        p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
-
-                        a: ({ children, href }) => <Link href={href}>{children}</Link>,
-
-                        img: (props) => {
-                            console.log(props.src);
-                            return props.src?.startsWith('https://www.youtube.com/embed/') ? (
-                                <YouTubeVideo src={props.src} />
-                            ) : (
-                                <img {...props} />
-                            );
-                        },
-                    }}
-                />
-            );
-        }
     };
 
     const getExperimentsGroupedByCategory = () => {
@@ -222,9 +139,8 @@ const ExperimentsListScreen = function () {
         if (titlesRef.current) {
             const opacity = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 0.9);
             const blur = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 1) * 8;
-            titlesRef.current.style.backgroundColor = `rgb(${
-                colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
-            } / ${opacity})`;
+            titlesRef.current.style.backgroundColor = `rgb(${colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
+                } / ${opacity})`;
             titlesRef.current.style.backdropFilter = `blur(${blur}px)`;
         }
     };
@@ -234,6 +150,30 @@ const ExperimentsListScreen = function () {
         history.goBack();
     };
 
+    // TODO: Color has been removed as an option from Vite so reverting to a Switch statement. This variable should be stored on Vite because this is currently very brittle.
+
+    let pageBackgroundColor = '';
+
+    switch (thisBox.name) {
+        case "Move":
+            pageBackgroundColor = 'var(--box-background-move)';
+            break;
+        case "Eat":
+            pageBackgroundColor = 'var(--box-background-eat)';
+            break;
+        case "Sleep":
+            pageBackgroundColor = 'var(--box-background-sleep)';
+            break;
+        case "Base Box":
+            pageBackgroundColor = 'var(--box-background-base)';
+            break;
+        case "Journal":
+            pageBackgroundColor = 'var(--box-background-journal)';
+            break;
+        default:
+            pageBackgroundColor = 'var(--joy-palette-neutral-50)';
+    }
+
     return (
         <IonPage>
             {!thisBox.heroImageSrc && <Header title={`${capitalise(type)}`} />}
@@ -242,118 +182,53 @@ const ExperimentsListScreen = function () {
                 scrollEvents={!!thisBox.heroImageSrc}
                 onIonScroll={handleScrollAnimation}
                 className="ion-content-custom"
-                style={{ '--background': `linear-gradient(to top, rgba(${thisBox.color}) 40%, rgba(0, 0, 0, 0) 70%)` }}
+                style={{ '--background': pageBackgroundColor }}
             >
-                {thisBox.heroImageSrc && (
-                    <Box>
-                        <Box
-                            ref={titlesRef}
-                            sx={{
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                zIndex: 10,
-                                pt: 1,
-                                pb: 1.5,
-                                px: 2,
-                                borderBottomWidth: showHeader ? 1 : 0,
-                                borderBottomStyle: 'solid',
-                                borderColor: 'divider',
-                                overflow: 'hidden',
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Box sx={{ flex: 1 }}>
-                                    <HeaderButton onClick={handleGoBack}>Back</HeaderButton>
-                                    <PageTitle
-                                        sx={{ mb: 0, transition: 'font-size 0.2s', fontWeight: 'lg' }}
-                                        level={showHeader ? 'h3' : 'h2'}
-                                    >
-                                        {capitalise(type)}
-                                    </PageTitle>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Box>
-                )}
-                <br />
-                <Stack alignItems="center">
+                <IconButton
+                    onClick={() => history.push('/main/box')}
+                    aria-label="go back"
+                    size="lg"
+                    sx={{
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(255,255,255,.8)',
+                        color: 'primary',
+                        '&:hover': {
+                            backgroundColor: 'rgba(255,255,255,1)',
+                        },
+                        ml: '5%',
+                        mt: 2,
+                        mb: 3
+                    }}
+                >
+                    <ArrowBackIcon fontSize="inherit" />
+                </IconButton>
+
+                <Box
+                    sx={{
+                        mx: 'auto',
+                        width: '100%',
+                        maxWidth: '500px',
+                        px: 2,
+                    }}
+                >
                     <Accordion
                         sx={{
-                            ml: 'auto',
-                            mr: 'auto',
-                            mt: 2,
-                            mb: 4,
-                            maxWidth: '90%',
-                            width: '500px',
+                            width: '100%',
+                            backgroundColor: 'rgba(255,255,255,.8)',
+                            borderRadius: 2,
+                            mb: 2,
                         }}
                     >
-                        <AccordionSummary
-                            expandIcon={<AddIcon />}
-                            sx={{
-                                backgroundColor: `rgba(${thisBox.color})`,
-                            }}
-                        >
-                            <Stack
-                                direction="row"
-                                spacing={4}
-                                sx={{
-                                    width: '90%',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Typography sx={{ fontWeight: 'lg', fontSize: '0.8rem' }}>
-                                    Introduction to the {capitalise(type)} Box
-                                </Typography>
-                            </Stack>
+                        <AccordionSummary expandIcon={<AddIcon />} sx={{ backgroundColor: 'transparent' }}>
+                            <Typography level="h1">
+                                Introduction to the {capitalise(type)} Box
+                            </Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
-                            {thisBox.description?.map((item, index) => (
-                                <Stack
-                                    key={index}
-                                    direction="row"
-                                    spacing={2}
-                                    sx={{
-                                        width: '100%',
-                                        alignItems: 'center',
-                                        mb: 2,
-                                    }}
-                                >
-                                    {item.sectionImageSrc && (
-                                        <img
-                                            src={item.sectionImageSrc}
-                                            alt=""
-                                            style={{
-                                                width: '50px',
-                                                height: '50px',
-                                                objectFit: 'cover',
-                                                borderRadius: '4px',
-                                            }}
-                                        />
-                                    )}
-
-                                    <Link
-                                        textColor="inherit"
-                                        underline="none"
-                                        onClick={() => {
-                                            setDrawerContent(item);
-                                        }}
-                                    >
-                                        <Typography
-                                            sx={{
-                                                flex: 1,
-                                                fontSize: '0.9rem',
-                                            }}
-                                        >
-                                            {item.sectionTitle}
-                                        </Typography>
-                                    </Link>
-                                </Stack>
-                            ))}
+                        <AccordionDetails sx={{ backgroundColor: 'transparent', width: '100%' }}>
+                            ...
                         </AccordionDetails>
                     </Accordion>
-                </Stack>
+                </Box>
 
                 <ExperimentsList
                     key={type}
@@ -369,7 +244,7 @@ const ExperimentsListScreen = function () {
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => {}}
+                    onOpen={() => { }}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',
@@ -408,9 +283,11 @@ const ExperimentsListScreen = function () {
                         </Stack>
                     </Sheet>
                 </SwipeableDrawer>
-                <img src={thisBox.heroImageSrc} alt="Bottom Image" className="bottom-image" />
+                <AspectRatio ratio="1">
+                    <img src={thisBox.heroImageSrc + '.svg'} alt="" />
+                </AspectRatio>
             </IonContent>
-            <IonFooter>
+            <IonFooter className="ion-no-border">
                 <IonToolbar>
                     <BoxesSubMenu />
                 </IonToolbar>

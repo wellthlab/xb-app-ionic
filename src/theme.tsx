@@ -22,7 +22,7 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
     cssVarPrefix: 'joy',
 
     typography: {
-        fontFamily: '"Barlow", "Arial", sans-serif',
+        fontFamily: '"Golos", "Arial", sans-serif',
     },
 
     colorSchemes: {
@@ -106,8 +106,8 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
     fontFamily: {
-        display: '"Barlow", "Arial", sans-serif',
-        body: '"Barlow", "Arial", sans-serif',
+        display: '"Golos", "Arial", sans-serif',
+        body: '"Golos", "Arial", sans-serif',
         code: 'monospace',
     },
     fontWeight: {
@@ -117,19 +117,22 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         xl: 700,  // Extra bold (optional)
     },
     fontSize: {
-        xs: '0.79rem',
-        sm: '0.889rem',
+        xs: '0.878rem',
+        sm: '0.937rem',
         md: '1rem',
-        lg: '1.266rem',
-        xl: '1.424rem',
-        xl2: '1.602rem',
-        xl3: '1.802rem',
-        xl4: '2.027rem',
+        lg: '1.067rem',
+        xl: '1.138rem',
+        xl2: '1.215rem',
+        xl3: '1.296rem',
+        xl4: '1.383rem',
+        xl5: '1.476rem',
+        xl6: '1.575rem',
+        xl7: '1.68rem'
     },
     lineHeight: {
-        sm: '1.15',
-        md: '1.6',
-        lg: '1.75',
+        sm: '1',
+        md: '1.1',
+        lg: '1.2',
     },
     letterSpacing: {
         sm: '0em',

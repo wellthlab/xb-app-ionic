@@ -1,7 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
-import { Button, Stack, Typography } from '@mui/joy';
+import { Button, Stack, Typography, Container } from '@mui/joy';
 
 import EntryIcon from './EntryIcon';
 import TasksList from '../../components/TasksList';
@@ -31,7 +31,7 @@ import {
 } from '../../slices/experiments';
 import experiment, { IExperiment } from '../../models/Experiment';
 
-const Today = function() {
+const Today = function () {
     const location = useLocation();
     const params = useParams<{ box: string }>();
     const isOnLogin = location.pathname.includes('onlogin');
@@ -76,7 +76,7 @@ const Today = function() {
         history.push("/main/box");
     }
 
-    const handleDismissModal = function(type: string) {
+    const handleDismissModal = function (type: string) {
         if (type === 'normal') {
             setModalOpen(false);
         } else {
@@ -84,7 +84,7 @@ const Today = function() {
         }
     };
 
-    const handleClickTask = function(experimentId: string, dayNum: number, taskNum: number, type: string) {
+    const handleClickTask = function (experimentId: string, dayNum: number, taskNum: number, type: string) {
         if (type === 'normal') {
             setModalOpen(true);
             setExperimentId(experimentId);
@@ -105,50 +105,71 @@ const Today = function() {
 
     return !tasksByExperiment.length ? (
 
-        <Page>
-            { !!previousDayTasks.length &&
-                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0  }} onClick={() => history.push("/main/previousDayTasks")}>
+        <Page
+            sx={{
+                backgroundColor: 'var(--joy-palette-neutral-50)'
+            }} >
+            {!!previousDayTasks.length &&
+                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0 }} onClick={() => history.push("/main/previousDayTasks")}>
                     {Strings.you_have_unfinished_tasks_from_previous_days}
                 </Alert>
             }
 
             <Centre>
-                <Stack spacing={1}>
-                    <Typography level="h6" component="p">
-                        {Strings.you_havent_got_any_task_today}
-                    </Typography>
+                <Stack>
+                    <Container
+                        maxWidth="sm"
+                        sx={{
+                            backgroundColor: "#fff",
+                            height: 'auto',      // Prevent full height
+                            minHeight: 'unset',
+                            borderRadius: "10px",
+                            boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
+                            py: 3
+                        }}>
+                        <Typography level="h2" component="p">
+                            {Strings.you_havent_got_any_task_today}
+                        </Typography>
 
-                    <Typography level="body2">
-                        {Strings.explore_what_you_can_do_in}
-                        <br />
-                        <br />
-                    </Typography>
+                        <Typography level="body2" sx={{ lineHeight: 1, mt: 1 }}>
+                            {Strings.explore_what_you_can_do_in}
+                        </Typography>
 
-                    <Button component={Link} to="/main/box">
-                        {Strings.click_here_to_find_some}
-                    </Button>
+                        <Button
+                            aria-label="Find new tasks"
+                            component={Link}
+                            to="/main/box"
+                            size="sm"
+                            sx={{
+                                lineHeight: 1,
+                                mt: 2
+                            }}
+                        >
+                            {Strings.click_here_to_find_some}
+                        </Button>
+                    </Container>
                 </Stack>
             </Centre>
         </Page>
 
     ) : (
         <Page ref={setPresentingElement}>
-            { !!previousDayTasks.length &&
-                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0  }} onClick={() => history.push("/main/previousDayTasks")}>
+            {!!previousDayTasks.length &&
+                <Alert variant="outlined" severity="info" sx={{ display: "flex", justifyContent: "center", textAlign: "center", mx: 0, px: 0 }} onClick={() => history.push("/main/previousDayTasks")}>
                     {Strings.you_have_unfinished_tasks_from_previous_days}
                 </Alert>
             }
-            <PageTitle sx={{fontSize: '1.5rem'}}>{Strings.todays_experiments}</PageTitle>
+            <PageTitle sx={{ fontSize: '1.5rem' }}>{Strings.todays_experiments}</PageTitle>
 
             <Stack spacing={4}>
                 {tasksByExperiment.map((entry) => (
                     <Card >
-                        <Stack spacing={2}  key={entry.experiment.id}>
+                        <Stack spacing={2} key={entry.experiment.id}>
                             <Stack spacing={2} direction="row" alignItems="left">
                                 <EntryIcon experimentId={entry.experiment.id} dayNum={entry.day} />
 
                                 <div>
-                                    <Button sx={{fontSize: '0.8rem'}} color="neutral" size="sm" variant="soft" onClick={() => history.push(`/main/box/${selectBoxName(entry.experiment.boxId)}/${entry.experiment.id}`)}>{entry.experiment.name}</Button>
+                                    <Button sx={{ fontSize: '0.8rem' }} color="neutral" size="sm" variant="soft" onClick={() => history.push(`/main/box/${selectBoxName(entry.experiment.boxId)}/${entry.experiment.id}`)}>{entry.experiment.name}</Button>
                                     <Typography level="body2">
                                         {Strings.day} {entry.day + 1}
                                     </Typography>
@@ -164,7 +185,7 @@ const Today = function() {
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}>
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
                                         <Stack spacing={2}>
                                             <TasksList
                                                 tasks={entry.experiment.days[entry.day].tasks}
@@ -185,7 +206,7 @@ const Today = function() {
                                         </Typography>
                                     </AccordionSummary>
                                     <Divider />
-                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{padding: 0}}>
+                                    <AccordionDetails style={{ backgroundColor: '#eeeeee' }} sx={{ padding: 0 }}>
                                         <Stack spacing={2}>
                                             <TasksList
                                                 tasks={entry.experiment.days[entry.day].tasks}

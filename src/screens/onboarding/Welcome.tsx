@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Button, Stack, Typography } from '@mui/joy';
+import { LinearProgress } from '@mui/material'; // 
+import { Box, Card, Button, Stack, Typography, AspectRatio } from '@mui/joy';
 import { useParams, Link, useHistory } from 'react-router-dom';
 
 import Page from '../../components/foundation/Page';
@@ -52,56 +53,70 @@ const Welcome = function () {
         }
     };
 
+    const progressPercent = ((step + 1) / study!.welcome.length) * 100;
+
+    console.log(progressPercent);
+
     return (
-        <Page>
-            {isStudyPending  ? '' :
-                <PageTitle>
-                    <Typography level="body1" sx={{ fontWeight: 'lg' }}>
-                     {study!.welcome[step].title}
-                    </Typography>
-                </PageTitle>}
+        <Page
+            sx={{
+                backgroundColor: 'var(--joy-palette-neutral-50)'
+            }}  >
             {isStudyPending ? (
                 'Loading...'
             ) : (
                 <React.Fragment>
-                    <Stack spacing={2} flex={1} mb={2} sx={{mb:35}}>
-                        <Box sx={{ position: 'relative' }}>
-                            <Box sx={{ position: 'relative' }}>
-                                <Box component="img" src={study!.welcome[step]['image'] as unknown as string} />
+                    <Card>
+                        <LinearProgress
+                            variant="determinate"
+                            value={progressPercent}
+                            sx={{ height: 6, borderRadius: 4, mb: 2 }}
+                        />
+                        <Typography level="h1">
+                            {study!.welcome[step].title}
+                        </Typography>
+                        <Typography level="body2" sx={{ mt: 1, mb: 2 }}>
+                            {study!.welcome[step]['mainText'] as unknown as string}
+                        </Typography>
+                        <AspectRatio ratio="1">
+                            <Box component="img" src={study!.welcome[step]['image'] as unknown as string} />
+                        </AspectRatio>
+                        <Typography level="body1" sx={{ mt: 2 }}>
+                            {study!.welcome[step]['secondaryText'] as unknown as string}
+                        </Typography>
 
-                                <Box sx={{ position: 'absolute', inset: 0, p: 2, pt: 1, display: 'flex' }}>
-                                    <Box sx={{ m: 'auto', bgcolor: 'rgba(255,255,255,0.8)', p: 2 }}>
-                                        <Typography level="body2">
-                                            {study!.welcome[step]['mainText'] as unknown as string}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
-                            <Box sx={{ position: 'absolute', left: 16, right: 16 }}>
-                                <Box sx={{ top: -32, position: 'absolute', bgcolor: 'white', p: 2 }}>
-                                    <Typography level="body2" >
-                                    {study!.welcome[step]['secondaryText'] as unknown as string}
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Box>
-                    </Stack>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button  onClick={() => step === 0 ? history.push(`/main/about`) : history.push(`/onboarding/welcome/${step - 1}`)}>
-                            {Strings.previous}
-                        </Button>
-                        {step === study!.welcome.length - 1 ? (
-                            <Button loading={isPending} onClick={handleEnroll}>
-                                {isEnrolled ? Strings.next : Strings.enroll}
-                            </Button>
-                        ) : (
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            spacing={2}
+                            sx={{ mt: 3 }}
+                        >
                             <Button
-                                onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}>{Strings.next}</Button>
-                        )}
-                    </div>
+                                onClick={() =>
+                                    step === 0
+                                        ? history.push(`/main/about`)
+                                        : history.push(`/onboarding/welcome/${step - 1}`)
+                                }
+                            >
+                                {Strings.previous}
+                            </Button>
 
+                            {step === study!.welcome.length - 1 ? (
+                                <Button loading={isPending} onClick={handleEnroll}>
+                                    {/* Show "Finish" if enrolled, otherwise "Enroll" */}
+                                    {isEnrolled ? Strings.finish : Strings.enroll}
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={() => history.push(`/onboarding/welcome/${step + 1}`)}
+                                >
+                                    {Strings.next}
+                                </Button>
+                            )}
 
+                        </Stack>
+                    </Card>
                 </React.Fragment>
             )}
         </Page>
