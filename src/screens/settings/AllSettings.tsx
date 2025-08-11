@@ -16,7 +16,6 @@ import { useSelector, useDispatch } from '../../slices/store';
 
 import BuildInfo from '../../components/BuildInfo';
 
-import BuildInfo from '../../components/BuildInfo';
 
 const AllSettings = function () {
     const isDeleted = useSelector(selectIsDeleted);

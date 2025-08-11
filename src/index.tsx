@@ -19,6 +19,7 @@ import '@ionic/react/css/typography.css';
 import './app.css';
 
 import { FCMService } from './services/fcm/fcmService';
+import { Capacitor } from '@capacitor/core';
 
 setupIonicReact();
 defineCustomElements(window);
@@ -28,9 +29,17 @@ defineCustomElements(window);
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
 
-//set up firebase cloud messaging listeners
 export const fcmService = new FCMService();
-fcmService.registerNotifications();
-fcmService.addListeners();
+
+// Don't register FCM on web platform as it is not supported and will throw an error if attempted
+if (Capacitor.getPlatform() !== 'web') {
+    //set up firebase cloud messaging listeners
+    fcmService.registerNotifications();
+    fcmService.addListeners();
+} else {
+    console.warn('Push Notifications are not supported on web platform; not registering that plugin');
+}
+
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
