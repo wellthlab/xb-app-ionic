@@ -6,6 +6,11 @@
   --box-background-journal: #ff5655;
 }
 
+/* This container wraps the entire app and limits dimensions to an
+iPhone 11 to make styling easier when developing on desktop. Should
+not be active on the deployed version because it might cause layout
+problems e.g. on tablet devices.
+
 .app-wrapper {
   position: relative;
   max-width: 414px;
@@ -20,6 +25,7 @@
   max-width: 100%;
   overflow-x: hidden;
 }
+*/
 
 .markdown-content {
 
