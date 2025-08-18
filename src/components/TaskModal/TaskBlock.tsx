@@ -26,8 +26,8 @@ import SelectDate from '../foundation/DatePicker';
 import RadioGroupXB from './RadioGroup';
 import ReactMarkdown from 'react-markdown';
 
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 
 export interface ITaskBlockProps {
     block: Block;
@@ -57,7 +57,7 @@ const renderParagraphWithLinks = function (content: string) {
 };
 
 function isWhitespace(n: React.ReactNode) {
-    return typeof n === "string" && n.trim() === "";
+    return typeof n === 'string' && n.trim() === '';
 }
 
 function trimLeadingNewlines(children: React.ReactNode) {
@@ -79,9 +79,9 @@ function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
     return (
         <Accordion>
             {summary}
-            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>{rest}</AccordionDetails>
+            <AccordionDetails>{rest}</AccordionDetails>
         </Accordion>
-    )
+    );
 }
 
 const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
@@ -186,8 +186,8 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     if (!block.rk) {
         throw new Error(
             'All input block must have the key "rk". Please ensure that the database entry is correct. (Block ' +
-            (block as any).rk +
-            ' )',
+                (block as any).rk +
+                ' )',
         );
     }
 

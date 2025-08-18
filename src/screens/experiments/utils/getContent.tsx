@@ -7,11 +7,11 @@ import AccordionDetails from '@mui/material/AccordionDetails'; // or Joy version
 import AddIcon from '@mui/icons-material/Add';
 import ReactMarkdown from 'react-markdown';
 
-import rehypeRaw from "rehype-raw";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 
 function isWhitespace(n: React.ReactNode) {
-    return typeof n === "string" && n.trim() === "";
+    return typeof n === 'string' && n.trim() === '';
 }
 
 function trimLeadingNewlines(children: React.ReactNode) {
@@ -33,26 +33,18 @@ function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
     return (
         <Accordion>
             {summary}
-            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>{rest}</AccordionDetails>
+            <AccordionDetails>{rest}</AccordionDetails>
         </Accordion>
-    )
+    );
 }
 
 const getContent = (block: any) => {
     if (block.type === 'para') {
-        return (
-            <p>
-                {block['content']}
-            </p>
-        );
+        return <p>{block['content']}</p>;
     }
 
     if (block.type === 'title') {
-        return (
-            <h2>
-                {block['content']}
-            </h2>
-        );
+        return <h2>{block['content']}</h2>;
     }
 
     if (block.type === 'video') {
@@ -64,8 +56,7 @@ const getContent = (block: any) => {
             <img
                 src={block.src}
                 alt={block.alt}
-                style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }
-                }
+                style={{ display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
             />
         );
     }
@@ -73,17 +64,15 @@ const getContent = (block: any) => {
     if (block.type === 'expandable') {
         return (
             <Accordion>
-                <AccordionSummary expandIcon={< AddIcon />}>
-                    <Typography sx={{ mb: 2, mt: 2 }}>
-                        {block.title}
-                    </Typography>
+                <AccordionSummary expandIcon={<AddIcon />}>
+                    <Typography sx={{ mb: 2, mt: 2 }}>{block.title}</Typography>
                 </AccordionSummary>
 
-                < Divider />
+                <Divider />
 
                 <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>
                     <br />
-                    < Stack spacing={2} > {block.contents.map((element: any) => getContent(element))} </Stack>
+                    <Stack spacing={2}> {block.contents.map((element: any) => getContent(element))} </Stack>
                 </AccordionDetails>
             </Accordion>
         );
