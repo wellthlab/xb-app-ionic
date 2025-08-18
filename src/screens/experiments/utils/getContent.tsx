@@ -5,8 +5,20 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails'; // or Joy version
 import AddIcon from '@mui/icons-material/Add';
-import Link from '@mui/joy/Link'; // or '@mui/material/Link' if using MUI Core
 import ReactMarkdown from 'react-markdown';
+
+
+function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
+    const array = React.useMemo(() => React.Children.toArray(children), [children]);
+    const [summary, ...rest] = array;
+
+    return (
+        <Accordion>
+            {summary}
+            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>{rest}</AccordionDetails>
+        </Accordion>
+    )
+}
 
 const getContent = (block: any) => {
     if (block.type === 'para') {
@@ -88,6 +100,8 @@ const getContent = (block: any) => {
                                 <img {...props} />
                             );
                         },
+                        details: (props) => <MarkdownAccordion {...props} />,
+                        summary: (props) => <AccordionSummary {...props} />,
                     }}
                 />
             </div>
@@ -103,16 +117,16 @@ function logChildren(children: React.ReactNode, label = '') {
 
 // Replaces unconventional bullet points with proper markdown syntax
 function normalizeBullets(markdown: string): string {
-  return markdown
-    .split('\n')
-    .map((line) => {
-      const bulletMatch = line.match(/^\s*[·•]\s+(.*)/);
-      if (bulletMatch) {
-        return `- ${bulletMatch[1].trim()}`;
-      }
-      return line;
-    })
-    .join('\n');
+    return markdown
+        .split('\n')
+        .map((line) => {
+            const bulletMatch = line.match(/^\s*[·•]\s+(.*)/);
+            if (bulletMatch) {
+                return `- ${bulletMatch[1].trim()}`;
+            }
+            return line;
+        })
+        .join('\n');
 }
 
 // Removes empty values and trims strings

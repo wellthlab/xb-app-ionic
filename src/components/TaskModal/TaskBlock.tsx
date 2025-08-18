@@ -53,6 +53,18 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
+function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
+    const array = React.useMemo(() => React.Children.toArray(children), [children]);
+    const [summary, ...rest] = array;
+
+    return (
+        <Accordion>
+            {summary}
+            <AccordionDetails style={{ backgroundColor: '#eeeeee' }}>{rest}</AccordionDetails>
+        </Accordion>
+    )
+}
+
 const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     // Non-input blocks
 
@@ -89,13 +101,15 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
                     a: ({ children, href }) => <Link href={href}>{children}</Link>,
 
                     img: (props) => {
-                        console.log(props.src);
                         return props.src?.startsWith('https://www.youtube.com/embed/') ? (
                             <YouTubeVideo src={props.src} />
                         ) : (
                             <img {...props} />
                         );
                     },
+
+                    details: (props) => <MarkdownAccordion {...props} />,
+                    summary: (props) => <AccordionSummary {...props} />,
                 }}
             />
         );
@@ -151,8 +165,8 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
     if (!block.rk) {
         throw new Error(
             'All input block must have the key "rk". Please ensure that the database entry is correct. (Block ' +
-                (block as any).rk +
-                ' )',
+            (block as any).rk +
+            ' )',
         );
     }
 
