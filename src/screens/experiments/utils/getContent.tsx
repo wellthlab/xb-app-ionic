@@ -7,10 +7,28 @@ import AccordionDetails from '@mui/material/AccordionDetails'; // or Joy version
 import AddIcon from '@mui/icons-material/Add';
 import ReactMarkdown from 'react-markdown';
 
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+
+function isWhitespace(n: React.ReactNode) {
+    return typeof n === "string" && n.trim() === "";
+}
+
+function trimLeadingNewlines(children: React.ReactNode) {
+    const arr = React.Children.toArray(children);
+    let i = 0;
+    while (i < arr.length && isWhitespace(arr[i])) i++;
+    return arr.slice(i);
+}
 
 function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
-    const array = React.useMemo(() => React.Children.toArray(children), [children]);
-    const [summary, ...rest] = array;
+    const arr = React.useMemo(() => trimLeadingNewlines(children), [children]);
+
+    if (arr.length === 0) {
+        return null;
+    }
+
+    const [summary, ...rest] = arr;
 
     return (
         <Accordion>
@@ -78,6 +96,8 @@ const getContent = (block: any) => {
             <div className="markdown-content">
                 <ReactMarkdown
                     children={cleanedMarkdown}
+                    // @ts-expect-error
+                    rehypePlugins={[rehypeRaw, [rehypeSanitize, defaultSchema]]}
                     components={{
                         h1: ({ children }) => <h1>{children} </h1>,
                         h2: ({ children }) => <h2>{children}</h2>,
@@ -101,7 +121,7 @@ const getContent = (block: any) => {
                             );
                         },
                         details: (props) => <MarkdownAccordion {...props} />,
-                        summary: (props) => <AccordionSummary {...props} />,
+                        summary: (props) => <AccordionSummary expandIcon={<AddIcon />} {...props} />,
                     }}
                 />
             </div>

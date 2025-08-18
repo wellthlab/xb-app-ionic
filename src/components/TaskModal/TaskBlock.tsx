@@ -26,6 +26,9 @@ import SelectDate from '../foundation/DatePicker';
 import RadioGroupXB from './RadioGroup';
 import ReactMarkdown from 'react-markdown';
 
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+
 export interface ITaskBlockProps {
     block: Block;
     type?: string;
@@ -53,9 +56,25 @@ const renderParagraphWithLinks = function (content: string) {
     });
 };
 
+function isWhitespace(n: React.ReactNode) {
+    return typeof n === "string" && n.trim() === "";
+}
+
+function trimLeadingNewlines(children: React.ReactNode) {
+    const arr = React.Children.toArray(children);
+    let i = 0;
+    while (i < arr.length && isWhitespace(arr[i])) i++;
+    return arr.slice(i);
+}
+
 function MarkdownAccordion({ children }: React.ComponentProps<'details'>) {
-    const array = React.useMemo(() => React.Children.toArray(children), [children]);
-    const [summary, ...rest] = array;
+    const arr = React.useMemo(() => trimLeadingNewlines(children), [children]);
+
+    if (arr.length === 0) {
+        return null;
+    }
+
+    const [summary, ...rest] = arr;
 
     return (
         <Accordion>
@@ -80,6 +99,8 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
         return (
             <ReactMarkdown
                 children={block['content']}
+                // @ts-expect-error
+                rehypePlugins={[rehypeRaw, [rehypeSanitize, defaultSchema]]}
                 components={{
                     h1: ({ children }) => <Typography level="h2">{children}</Typography>,
 
@@ -109,7 +130,7 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
                     },
 
                     details: (props) => <MarkdownAccordion {...props} />,
-                    summary: (props) => <AccordionSummary {...props} />,
+                    summary: (props) => <AccordionSummary expandIcon={<AddIcon />} {...props} />,
                 }}
             />
         );
