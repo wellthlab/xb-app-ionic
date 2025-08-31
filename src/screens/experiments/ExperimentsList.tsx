@@ -139,8 +139,9 @@ const ExperimentsListScreen = function () {
         if (titlesRef.current) {
             const opacity = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 0.9);
             const blur = Math.min(e.detail.scrollTop / SHOW_HEADER_SCROLL_THRESHOLD, 1) * 8;
-            titlesRef.current.style.backgroundColor = `rgb(${colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
-                } / ${opacity})`;
+            titlesRef.current.style.backgroundColor = `rgb(${
+                colorScheme.colorScheme === 'dark' ? '19 19 24' : '255 255 255'
+            } / ${opacity})`;
             titlesRef.current.style.backdropFilter = `blur(${blur}px)`;
         }
     };
@@ -154,20 +155,20 @@ const ExperimentsListScreen = function () {
 
     let pageBackgroundColor = '';
 
-    switch (thisBox.name) {
-        case "Move":
+    switch (thisBox.name.toLowerCase()) {
+        case 'move':
             pageBackgroundColor = 'var(--box-background-move)';
             break;
-        case "Eat":
+        case 'eat':
             pageBackgroundColor = 'var(--box-background-eat)';
             break;
-        case "Sleep":
+        case 'sleep':
             pageBackgroundColor = 'var(--box-background-sleep)';
             break;
-        case "Base Box":
+        case 'base box':
             pageBackgroundColor = 'var(--box-background-base)';
             break;
-        case "Journal":
+        case 'journal':
             pageBackgroundColor = 'var(--box-background-journal)';
             break;
         default:
@@ -197,7 +198,7 @@ const ExperimentsListScreen = function () {
                         },
                         ml: '5%',
                         mt: 2,
-                        mb: 3
+                        mb: 3,
                     }}
                 >
                     <ArrowBackIcon fontSize="inherit" />
@@ -220,13 +221,9 @@ const ExperimentsListScreen = function () {
                         }}
                     >
                         <AccordionSummary expandIcon={<AddIcon />} sx={{ backgroundColor: 'transparent' }}>
-                            <Typography level="h1">
-                                Introduction to the {capitalise(type)} Box
-                            </Typography>
+                            <Typography level="h1">Introduction to the {capitalise(type)} Box</Typography>
                         </AccordionSummary>
-                        <AccordionDetails sx={{ backgroundColor: 'transparent', width: '100%' }}>
-                            ...
-                        </AccordionDetails>
+                        <AccordionDetails sx={{ backgroundColor: 'transparent', width: '100%' }}>...</AccordionDetails>
                     </Accordion>
                 </Box>
 
@@ -244,7 +241,7 @@ const ExperimentsListScreen = function () {
                     anchor="bottom"
                     open={!!drawerContent}
                     onClose={() => setDrawerContent(null)}
-                    onOpen={() => { }}
+                    onOpen={() => {}}
                     disableSwipeToOpen={true}
                     sx={{
                         '--Drawer-horizontalSize': '500px',

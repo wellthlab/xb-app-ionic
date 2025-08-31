@@ -5,6 +5,7 @@ import { Record } from 'phosphor-react';
 export interface IBox {
     id: string;
     name: string;
+    translationOf?: string;
     description?: any[];
     heroImageSrc?: string;
     icon: string;
@@ -49,6 +50,7 @@ export interface IExperiment extends IBaseExperiment {
     preconditions?: any[];
     instructions?: string[];
     shouldSendReminders: boolean;
+    translationOf?: string;
     // next_experiment_id?: string; // redundant - to be removed
     // also_experiment_id?: string; // redundant - to be removed
     prepExperiment: string;
@@ -241,6 +243,7 @@ class Experiment extends BaseModel {
         return records.map((record) => {
             const asGenericExperiment = (record as unknown) as IExperiment;
             asGenericExperiment.id = (record._id as unknown) as string;
+            asGenericExperiment.translationOf = (record.translationOf as unknown) as string;
             if (asGenericExperiment.days.length === 1) {
                 asGenericExperiment.days = new Array(5).fill(1).map((_, i) => ({
                     ...asGenericExperiment.days[0],
@@ -258,7 +261,11 @@ class Experiment extends BaseModel {
             locale: lang,
         });
 
-        return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
+        return result.map(({ _id, translationOf, ...item }) => ({
+            ...item,
+            id: _id.toString(),
+            translationOf: translationOf ? translationOf.toString() : undefined,
+        }));
     }
 
     static saveResponse(response: Omit<IResponse, 'subscriptionId' | 'createdAt' | 'id'>, subscriptionId: string) {

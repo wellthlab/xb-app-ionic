@@ -48,6 +48,8 @@ import { ParQScreen } from './screens/onboarding/ParQ';
 
 import './global.scss';
 
+const SUPPORT_LANG = ['en', 'es'];
+
 const AppFlowController = function ({ parQ }: { parQ: any }) {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(selectIsEnrolled);
@@ -59,6 +61,23 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
 
     // TODO: ⚠️ DEV OVERRIDE FLAG — remove this before shipping!
     const DEV_BYPASS = false;
+
+    React.useEffect(() => {
+        function switchLanguage(ev: KeyboardEvent) {
+            if (ev.ctrlKey && ev.shiftKey && ev.key === 'L') {
+                ev.preventDefault();
+                console.log('Language switch key combo detected');
+                const langIndex = localStorage.getItem('lang') ?? '0';
+                localStorage.setItem('lang', String((Number(langIndex) + 1) % SUPPORT_LANG.length));
+                window.location.href = '/';
+            }
+        }
+
+        document.addEventListener('keydown', switchLanguage);
+        return () => {
+            document.removeEventListener('keydown', switchLanguage);
+        };
+    }, []);
 
     React.useEffect(() => {
         if (parQ === null || (!parQ.pass && !parQ.consulted)) {
@@ -75,7 +94,9 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
             console.log('BOOTING...');
             setHydrating(true);
 
-            await dispatch(boot('en'));
+            const langIndex = localStorage.getItem('lang') ?? '0';
+
+            await dispatch(boot(SUPPORT_LANG[Number(langIndex)]));
 
             console.log('BOOTED');
             setHydrating(false);
@@ -100,7 +121,11 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
 
         return <Redirect to="/auth" />;
     } else {
-        if(location.pathname === '/auth' || location.pathname === '/auth/register' || location.pathname === '/auth/reset-password') {
+        if (
+            location.pathname === '/auth' ||
+            location.pathname === '/auth/register' ||
+            location.pathname === '/auth/reset-password'
+        ) {
             return <Redirect to="/main" />;
         }
     }
@@ -129,151 +154,167 @@ const App = function () {
     return (
         <IonApp>
             <div className="app-wrapper">
-            <Provider store={store}>
-                <IonReactRouter>
-                    <ThemeProvider>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <IconContext.Provider value={{ weight: 'light', size: 18 }}>
-                                <ColorModeController />
-                                <AppFlowController parQ={parQ} />
-                                <IonRouterOutlet>
-                                    <Route path="/_preview" exact>
-                                        <PreviewScreen />
-                                    </Route>
-                                    <Route path="/parq" exact>
-                                        <ParQScreen parQ={parQ} setParQ={setParQ} />
-                                    </Route>
-                                    <Route path="/auth" exact>
-                                        <LoginScreen />
-                                    </Route>
+                <Provider store={store}>
+                    <IonReactRouter>
+                        <ThemeProvider>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <IconContext.Provider value={{ weight: 'light', size: 18 }}>
+                                    <ColorModeController />
+                                    <AppFlowController parQ={parQ} />
+                                    <IonRouterOutlet>
+                                        <Route path="/_preview" exact>
+                                            <PreviewScreen />
+                                        </Route>
+                                        <Route path="/parq" exact>
+                                            <ParQScreen parQ={parQ} setParQ={setParQ} />
+                                        </Route>
+                                        <Route path="/auth" exact>
+                                            <LoginScreen />
+                                        </Route>
 
-                                    <Route path="/auth/register" exact>
-                                        <RegisterScreen />
-                                    </Route>
+                                        <Route path="/auth/register" exact>
+                                            <RegisterScreen />
+                                        </Route>
 
-                                    <Route path="/auth/reset-password" exact>
-                                        <ResetPasswordScreen />
-                                    </Route>
+                                        <Route path="/auth/reset-password" exact>
+                                            <ResetPasswordScreen />
+                                        </Route>
 
-                                    <Route path="/auth/new-password" exact>
-                                        <NewPasswordScreen />
-                                    </Route>
+                                        <Route path="/auth/new-password" exact>
+                                            <NewPasswordScreen />
+                                        </Route>
 
-                                    <Route path="/auth/confirm" exact>
-                                        <ConfirmAccountScreen />
-                                    </Route>
+                                        <Route path="/auth/confirm" exact>
+                                            <ConfirmAccountScreen />
+                                        </Route>
 
-                                    <Route path="/onboarding" exact>
-                                        <OnboardingStudyInformationScreen />
-                                    </Route>
+                                        <Route path="/onboarding" exact>
+                                            <OnboardingStudyInformationScreen />
+                                        </Route>
 
-                                    <Route path="/onboarding/profile" exact>
-                                        <NewProfileScreen />
-                                    </Route>
+                                        <Route path="/onboarding/profile" exact>
+                                            <NewProfileScreen />
+                                        </Route>
 
-                                    <Route path="/onboarding/welcome/:step" exact>
-                                        <WelcomeScreen />
-                                    </Route>
+                                        <Route path="/onboarding/welcome/:step" exact>
+                                            <WelcomeScreen />
+                                        </Route>
 
-                                    <Route path="/loading">
-                                        <Page>
-                                            <Centre>
-                                                <CircularProgress />
-                                            </Centre>
-                                        </Page>
-                                    </Route>
+                                        <Route path="/loading">
+                                            <Page>
+                                                <Centre>
+                                                    <CircularProgress />
+                                                </Centre>
+                                            </Page>
+                                        </Route>
 
-                                    <Route path="/main">
-                                        <IonTabs>
-                                            <IonRouterOutlet>
-                                                <Route path="/main" exact>
-                                                    <Redirect to="/main/today/onlogin" />
-                                                </Route>
+                                        <Route path="/main">
+                                            <IonTabs>
+                                                <IonRouterOutlet>
+                                                    <Route path="/main" exact>
+                                                        <Redirect to="/main/today/onlogin" />
+                                                    </Route>
 
-                                                <Route path="/main/team" exact>
-                                                    <TeamInsightsTab />
-                                                </Route>
+                                                    <Route path="/main/team" exact>
+                                                        <TeamInsightsTab />
+                                                    </Route>
 
-                                                <Route path="/main/box" exact>
-                                                    <BoxesListTab />
-                                                </Route>
+                                                    <Route path="/main/box" exact>
+                                                        <BoxesListTab />
+                                                    </Route>
 
-                                                <Route path="/main/box/:type" exact>
-                                                    <ExperimentsListScreen />
-                                                </Route>
+                                                    <Route path="/main/box/:type" exact>
+                                                        <ExperimentsListScreen />
+                                                    </Route>
 
-                                                <Route path="/main/today" exact>
-                                                    <TodayTab />
-                                                </Route>
+                                                    <Route path="/main/today" exact>
+                                                        <TodayTab />
+                                                    </Route>
 
-                                                <Route path="/main/today/onlogin" exact>
-                                                    <TodayTab />
-                                                </Route>
+                                                    <Route path="/main/today/onlogin" exact>
+                                                        <TodayTab />
+                                                    </Route>
 
-                                                <Route path="/main/today/demo/:box" exact>
-                                                    <TodayTab />
-                                                </Route>
+                                                    <Route path="/main/today/demo/:box" exact>
+                                                        <TodayTab />
+                                                    </Route>
 
-                                                <Route path="/main/journal">
-                                                    <JournalTab />
-                                                </Route>
+                                                    <Route path="/main/journal">
+                                                        <JournalTab />
+                                                    </Route>
 
-                                                <Route path="/main/settings" exact>
-                                                    <AllSettingsTab />
-                                                </Route>
+                                                    <Route path="/main/settings" exact>
+                                                        <AllSettingsTab />
+                                                    </Route>
 
-                                                <Route path="/main/about" exact>
-                                                    <AboutThisStudy />
-                                                </Route>
+                                                    <Route path="/main/about" exact>
+                                                        <AboutThisStudy />
+                                                    </Route>
 
-                                                <Route path="/main/settings/about" exact>
-                                                    <SettingsInformationScreen />
-                                                </Route>
+                                                    <Route path="/main/settings/about" exact>
+                                                        <SettingsInformationScreen />
+                                                    </Route>
 
-                                                <Route path="/main/settings/profile" exact>
-                                                    <EditProfileScreen />
-                                                </Route>
+                                                    <Route path="/main/settings/profile" exact>
+                                                        <EditProfileScreen />
+                                                    </Route>
 
-                                                <Route path="/main/previousDayTasks" exact>
-                                                    <PreviousDayTasks />
-                                                </Route>
-                                            </IonRouterOutlet>
+                                                    <Route path="/main/previousDayTasks" exact>
+                                                        <PreviousDayTasks />
+                                                    </Route>
+                                                </IonRouterOutlet>
 
-                                            <IonTabBar slot="bottom" className="xb-tab-menu">
-                                                <IonTabButton tab="today" href="/main/today" className="xb-tab-button">
-                                                    <ListChecks />
-                                                    <IonLabel>{Strings.today}</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="box" href="/main/box" className="xb-tab-button">
-                                                    <Cube />
-                                                    <IonLabel>{Strings.boxes}</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="journal" href="/main/journal" className="xb-tab-button">
-                                                    <CalendarBlank />
-                                                    <IonLabel>{Strings.journal}</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="settings" href="/main/settings" className="xb-tab-button">
-                                                    <Gear />
-                                                    <IonLabel>{Strings.settings}</IonLabel>
-                                                </IonTabButton>
-                                                <IonTabButton tab="about" href="/main/about" className="xb-tab-button">
-                                                    <Info />
-                                                    <IonLabel>{Strings.about}</IonLabel>
-                                                </IonTabButton>
-                                                {/*This is hidden because the teams functionality is not fully built out yet*/}
-                                                {/*<IonTabButton tab="team" href="/main/team" style={tabButtonStyle}>*/}
-                                                {/*    <Users />*/}
-                                                {/*    <IonLabel>{Strings.teams}</IonLabel>*/}
-                                                {/*</IonTabButton>*/}
-                                            </IonTabBar>
-                                        </IonTabs>
-                                    </Route>
-                                </IonRouterOutlet>
-                            </IconContext.Provider>
-                        </LocalizationProvider>
-                    </ThemeProvider>
-                </IonReactRouter>
-            </Provider>
+                                                <IonTabBar slot="bottom" className="xb-tab-menu">
+                                                    <IonTabButton
+                                                        tab="today"
+                                                        href="/main/today"
+                                                        className="xb-tab-button"
+                                                    >
+                                                        <ListChecks />
+                                                        <IonLabel>{Strings.today}</IonLabel>
+                                                    </IonTabButton>
+                                                    <IonTabButton tab="box" href="/main/box" className="xb-tab-button">
+                                                        <Cube />
+                                                        <IonLabel>{Strings.boxes}</IonLabel>
+                                                    </IonTabButton>
+                                                    <IonTabButton
+                                                        tab="journal"
+                                                        href="/main/journal"
+                                                        className="xb-tab-button"
+                                                    >
+                                                        <CalendarBlank />
+                                                        <IonLabel>{Strings.journal}</IonLabel>
+                                                    </IonTabButton>
+                                                    <IonTabButton
+                                                        tab="settings"
+                                                        href="/main/settings"
+                                                        className="xb-tab-button"
+                                                    >
+                                                        <Gear />
+                                                        <IonLabel>{Strings.settings}</IonLabel>
+                                                    </IonTabButton>
+                                                    <IonTabButton
+                                                        tab="about"
+                                                        href="/main/about"
+                                                        className="xb-tab-button"
+                                                    >
+                                                        <Info />
+                                                        <IonLabel>{Strings.about}</IonLabel>
+                                                    </IonTabButton>
+                                                    {/*This is hidden because the teams functionality is not fully built out yet*/}
+                                                    {/*<IonTabButton tab="team" href="/main/team" style={tabButtonStyle}>*/}
+                                                    {/*    <Users />*/}
+                                                    {/*    <IonLabel>{Strings.teams}</IonLabel>*/}
+                                                    {/*</IonTabButton>*/}
+                                                </IonTabBar>
+                                            </IonTabs>
+                                        </Route>
+                                    </IonRouterOutlet>
+                                </IconContext.Provider>
+                            </LocalizationProvider>
+                        </ThemeProvider>
+                    </IonReactRouter>
+                </Provider>
             </div>
         </IonApp>
     );
