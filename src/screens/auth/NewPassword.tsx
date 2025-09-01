@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Alert, TextField } from '@mui/joy';
@@ -36,7 +36,11 @@ const NewPassword = function () {
             ) : (
                 <Form onSubmit={handleSubmit} message={form.errors.$root}>
                     <TextField label={Strings.new_password} type="password" {...getInputProps('password')} />
-                    <TextField label={Strings.repeat_new_password} type="password" {...getInputProps('repeatPassword')} />
+                    <TextField
+                        label={Strings.repeat_new_password}
+                        type="password"
+                        {...getInputProps('repeatPassword')}
+                    />
                 </Form>
             )}
         </AuthScreenLayout>

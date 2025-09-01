@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Typography, Grid } from '@mui/joy';
 import Page from '../../components/foundation/Page';
@@ -17,16 +17,16 @@ const BoxesList = function () {
     return (
         <Page
             sx={{
-                backgroundColor: 'var(--joy-palette-neutral-50)'
-            }}    
+                backgroundColor: 'var(--joy-palette-neutral-50)',
+            }}
         >
-            <Typography level="h1" sx={{ mb: 2 }}>{Strings.boxes}</Typography>
+            <Typography level="h1" sx={{ mb: 2 }}>
+                {Strings.boxes}
+            </Typography>
 
             <Grid container spacing={2} sx={{ flexGrow: 1 }}>
                 {sortedBoxes.map((box) => {
-                    return (
-                        <BoxCard key={box.id} box={box} />
-                    );
+                    return <BoxCard key={box.id} box={box} />;
                 })}
             </Grid>
         </Page>

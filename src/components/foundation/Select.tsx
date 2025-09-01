@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Box, FormHelperText, FormLabel, FormControl } from '@mui/joy';
 import { SxProps } from '@mui/joy/styles/types';
@@ -15,7 +15,7 @@ export interface ISelectProps {
     onBlur?: () => void;
     required?: boolean;
     sx?: SxProps;
-    disabled?: boolean
+    disabled?: boolean;
 }
 
 const Select = function ({
@@ -77,7 +77,7 @@ const Select = function ({
                     onChange={onChange}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    disabled = {disabled}
+                    disabled={disabled}
                 >
                     <option value="" disabled hidden>
                         {Strings.please_select}

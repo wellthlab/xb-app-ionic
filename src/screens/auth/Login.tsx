@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { TextField, Link, Box, Container } from '@mui/joy';
@@ -56,7 +56,7 @@ const Login = function () {
             {confirmationRequired ? (
                 <ConfirmationRequired email={form.values.email} onClickLoginLink={handleClickLoginLink} />
             ) : (
-                    <Form
+                <Form
                     onSubmit={handleSubmit}
                     submitLabel={Strings.login}
                     message={form.errors.$root}
@@ -76,8 +76,7 @@ const Login = function () {
                 </Form>
             )}
 
-        <BuildInfo />
-
+            <BuildInfo />
         </AuthScreenLayout>
     );
 };

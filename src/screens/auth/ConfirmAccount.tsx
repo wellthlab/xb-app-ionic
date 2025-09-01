@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { CircularProgress, Alert } from '@mui/joy';
@@ -45,9 +45,7 @@ const ConfirmAccount = function () {
                     <CircularProgress />
                 </Centre>
             ) : status === 'rejected' ? (
-                <Alert color="danger">
-                    {Strings.sorry_we_cannot_confirm_this}
-                </Alert>
+                <Alert color="danger">{Strings.sorry_we_cannot_confirm_this}</Alert>
             ) : (
                 <Alert color="success">{Strings.account_confirmed_you_can_now}</Alert>
             )}

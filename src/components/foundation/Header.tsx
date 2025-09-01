@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonHeader, IonTitle, IonToolbar, IonButtons } from '@ionic/react';

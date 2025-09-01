@@ -1,4 +1,4 @@
-import Strings from '../../../utils/string_dict.js';
+import Strings from '../../../utils/string_dict';
 import React from 'react';
 import { useIonAlert } from '@ionic/react';
 import { Card, Button, Typography, Stack, Chip, Box } from '@mui/joy';
@@ -49,7 +49,9 @@ const InnerTeamInsights = function () {
 
     return (
         <Page ref={setPresentingElement}>
-            <PageTitle>{Strings.welcome}, {fullName}</PageTitle>
+            <PageTitle>
+                {Strings.welcome}, {fullName}
+            </PageTitle>
             <Card sx={{ mb: 4 }}>
                 <Typography level="h5" sx={{ mb: 1 }}>
                     {team.name}
@@ -60,7 +62,10 @@ const InnerTeamInsights = function () {
                 <Stack spacing={2}>
                     <Stack direction="row" spacing={2}>
                         <Users />
-                        <Typography>{team.members.length}{Strings.members}</Typography>
+                        <Typography>
+                            {team.members.length}
+                            {Strings.members}
+                        </Typography>
                     </Stack>
 
                     <Stack direction="row" spacing={2}>

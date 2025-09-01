@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Button, Alert, Stack, ButtonProps, AlertProps } from '@mui/joy';
 
@@ -14,15 +14,15 @@ export interface IFormProps {
 }
 
 const Form = function ({
-                           onSubmit,
-                           children,
-                           footer,
-                           submitLabel,
-                           submitDisabled,
-                           submitButtonColor,
-                           message,
-                           messageColor = 'danger',
-                       }: IFormProps) {
+    onSubmit,
+    children,
+    footer,
+    submitLabel,
+    submitDisabled,
+    submitButtonColor,
+    message,
+    messageColor = 'danger',
+}: IFormProps) {
     const [pending, setPending] = React.useState(false);
 
     const handleSubmit = async function () {

@@ -15,7 +15,7 @@ import { selectIsAuthenticated, selectIsEnrolled } from './slices/account';
 import Page from './components/foundation/Page';
 import Centre from './components/foundation/Centre';
 
-import Strings from './utils/string_dict.js';
+import Strings from './utils/string_dict';
 
 import LoginScreen from './screens/auth/Login';
 import RegisterScreen from './screens/auth/Register';

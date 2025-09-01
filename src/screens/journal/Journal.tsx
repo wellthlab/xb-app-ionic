@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import {
@@ -13,7 +13,7 @@ import {
     IconButton,
     Button,
     ListDivider,
-    Container
+    Container,
 } from '@mui/joy';
 import { DateCalendar, DateCalendarProps, DateTimeField } from '@mui/x-date-pickers';
 import {
@@ -139,7 +139,7 @@ const Journal = function () {
                 m: 0,
                 maxWidth: '100% !important',
                 width: '100%',
-                justifyContent: "top",
+                justifyContent: 'top',
                 alignItems: 'top',
                 backgroundImage: `url(/assets/backgrounds/lab_book_tile.svg), linear-gradient(to top right, #6b21a8, #4f46e5);`,
                 backgroundRepeat: 'repeat, no-repeat',
@@ -160,12 +160,12 @@ const Journal = function () {
             <Container
                 maxWidth="sm"
                 sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                    py: 3,
                 }}
             >
                 <PageTitle sx={{ mb: 0 }}>{Strings.journal}</PageTitle>
@@ -190,7 +190,11 @@ const Journal = function () {
                                     InputProps: {
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton variant="plain" color="neutral" onClick={handleToggleCalendar}>
+                                                <IconButton
+                                                    variant="plain"
+                                                    color="neutral"
+                                                    onClick={handleToggleCalendar}
+                                                >
                                                     <Calendar />
                                                 </IconButton>
                                             </InputAdornment>
@@ -314,7 +318,12 @@ const Journal = function () {
                                                                                 display="inline"
                                                                                 color="neutral"
                                                                             >
-                                                                                "{(blockDefinition as IGenericInput).label}"
+                                                                                "
+                                                                                {
+                                                                                    (blockDefinition as IGenericInput)
+                                                                                        .label
+                                                                                }
+                                                                                "
                                                                             </Typography>{' '}
                                                                             {response.payload[key]}
                                                                         </div>

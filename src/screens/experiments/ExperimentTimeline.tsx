@@ -1,8 +1,8 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import _ from 'lodash';
-import { Box,Stack, Alert} from '@mui/joy';
+import { Box, Stack, Alert } from '@mui/joy';
 
 import TaskModal from '../../components/TaskModal';
 import TasksList from '../../components/TasksList';

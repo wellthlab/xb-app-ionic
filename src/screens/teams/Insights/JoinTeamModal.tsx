@@ -1,4 +1,4 @@
-import Strings from '../../../utils/string_dict.js';
+import Strings from '../../../utils/string_dict';
 import React from 'react';
 import { Alert, TextField, Stack, Typography } from '@mui/joy';
 import * as Yup from 'yup';
@@ -27,9 +27,7 @@ const JoinTeamModal = function ({ onDismiss, ...others }: IJoinTeamModal) {
     return (
         <Modal headerTitle={Strings.join_a_team} onAction={handleSubmit} onDismiss={onDismiss} {...others}>
             <Stack spacing={2}>
-                <Typography level="body2">
-                    {Strings.an_invite_code_is_a_unique}
-                </Typography>
+                <Typography level="body2">{Strings.an_invite_code_is_a_unique}</Typography>
                 {form.errors.$root && <Alert color="danger">{form.errors.$root}</Alert>}
                 <TextField label={Strings.invite_code} placeholder="AB1234" {...getInputProps('invite')} />
             </Stack>

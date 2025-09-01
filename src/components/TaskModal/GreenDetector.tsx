@@ -1,4 +1,4 @@
-import Strings from '../../utils/string_dict.js';
+import Strings from '../../utils/string_dict';
 import React from 'react';
 import { Button, Typography, TextField, Grid, TextFieldProps } from '@mui/joy';
 import { Camera as CameraIcon } from 'phosphor-react';
@@ -145,9 +145,7 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
             </Button>
 
             <Typography level="body3">
-                {photoUploaded
-                    ? Strings.please_review_the_estimation
-                    : Strings.a_good_picture_must_show_your}
+                {photoUploaded ? Strings.please_review_the_estimation : Strings.a_good_picture_must_show_your}
             </Typography>
 
             <Grid container spacing={1}>
@@ -171,9 +169,7 @@ const GreenDetector = function ({ required, greenInputProps, redInputProps }: IG
 
             {photoUploaded && (
                 <React.Fragment>
-                    <Typography level="body3">
-                        {Strings.the_original_picture_has_been}
-                    </Typography>
+                    <Typography level="body3">{Strings.the_original_picture_has_been}</Typography>
 
                     <canvas ref={canvasRef}></canvas>
                 </React.Fragment>

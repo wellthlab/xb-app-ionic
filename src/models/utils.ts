@@ -1,4 +1,4 @@
-import Strings from '../utils/string_dict.js';
+import Strings from '../utils/string_dict';
 import * as Realm from 'realm-web';
 
 const isProd = true;

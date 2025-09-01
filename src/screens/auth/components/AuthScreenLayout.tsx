@@ -1,4 +1,4 @@
-import Strings from '../../../utils/string_dict.js';
+import Strings from '../../../utils/string_dict';
 import { useLocation } from 'react-router-dom';
 import React from 'react';
 import { Box, Container } from '@mui/joy';
@@ -17,7 +17,7 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
     const backgroundGradients: Record<string, string> = {
         '/auth': 'linear-gradient(to right top, #f857a6, #ff5c90, #ff667b, #ff7468, #ff8358)',
         '/auth/register': 'linear-gradient(to right top, #fbc2eb 0%, #a6c1ee 100%)',
-        '/auth/reset-password': 'linear-gradient(to top, #5ee7df 0%, #b490ca 100%)'
+        '/auth/reset-password': 'linear-gradient(to top, #5ee7df 0%, #b490ca 100%)',
     };
 
     // Pick gradient based on current path, or fallback to default
@@ -55,15 +55,14 @@ const AuthScreenLayout = function ({ children, title }: IAuthScreenLayout) {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    alignSelf: "center",
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)"
+                    alignSelf: 'center',
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
                 }}
             >
-
                 <PageTitle sx={{ mb: 3 }}>{title}</PageTitle>
                 {children}
             </Container>
