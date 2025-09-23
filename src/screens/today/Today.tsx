@@ -128,7 +128,7 @@ const Today = function () {
                             {Strings.you_havent_got_any_task_today}
                         </Typography>
 
-                        <Typography level="body2" sx={{ lineHeight: 1, mt: 1 }}>
+                        <Typography level="body2" sx={{ mt: 1 }}>
                             {Strings.explore_what_you_can_do_in}
                         </Typography>
 
@@ -138,7 +138,6 @@ const Today = function () {
                             to="/main/box"
                             size="sm"
                             sx={{
-                                lineHeight: 1,
                                 mt: 2,
                             }}
                         >

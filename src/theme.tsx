@@ -130,9 +130,9 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
         xl7: '1.68rem'
     },
     lineHeight: {
-        sm: '1',
-        md: '1.1',
-        lg: '1.2',
+        sm: '1.2',
+        md: '1.4',
+        lg: '1.8',
     },
     letterSpacing: {
         sm: '0em',
