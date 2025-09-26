@@ -25,6 +25,7 @@ const TaskModal = function ({ experiment, onDismiss, dayNum, taskNum, isSubscrib
 
     return (
         <Modal
+        className="experiment-timeline__task-modal"
             actionButtonLabel={Strings.submit}
             actionButtonDisabledToolTipTitle={
                 userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks

@@ -196,9 +196,10 @@ const ExperimentsListScreen = function () {
                         '&:hover': {
                             backgroundColor: 'rgba(255,255,255,1)',
                         },
-                        ml: '5%',
+                        ml: 2,
                         mt: 2,
                         mb: 3,
+                        boxShadow: '0px 2px 6px rgba(0,0,0,0.3)'
                     }}
                 >
                     <ArrowBackIcon fontSize="inherit" />
@@ -208,8 +209,8 @@ const ExperimentsListScreen = function () {
                     sx={{
                         mx: 'auto',
                         width: '100%',
-                        maxWidth: '500px',
                         px: 2,
+                        mb: 2
                     }}
                 >
                     <Accordion
@@ -220,10 +221,10 @@ const ExperimentsListScreen = function () {
                             mb: 2,
                         }}
                     >
-                        <AccordionSummary expandIcon={<AddIcon />} sx={{ backgroundColor: 'transparent' }}>
+                        <AccordionSummary className="experiments-list__title" expandIcon={<AddIcon />} sx={{ backgroundColor: 'transparent' }}>
                             <Typography level="h1">Introduction to the {capitalise(type)} Box</Typography>
                         </AccordionSummary>
-                        <AccordionDetails sx={{ backgroundColor: 'transparent', width: '100%' }}>...</AccordionDetails>
+                        <AccordionDetails sx={{ backgroundColor: 'transparent', width: '100%'}}>...</AccordionDetails>
                     </Accordion>
                 </Box>
 

@@ -179,7 +179,7 @@ const ExperimentsListScreen = function () {
     }
 
     return (
-        <IonPage>
+        <IonPage className="preview">
             {!box!.heroImageSrc && <Header title={`${capitalise(box.name)}`} />}
             <IonContent
                 ref={ionContentRef}

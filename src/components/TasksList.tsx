@@ -83,13 +83,13 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, is
 
     const getEndDecorator = (task: ITask, taskCount: number, taskCompleted: boolean, taskNum: number ) => {
         if (isLastCompletedRepeatableTask(task, taskCount, taskNum)) {
-            return <Fab variant="extended" size="small" aria-label="add" disabled={addAnotherSubmissionDisabled(task, taskNum)} onClick={(event: MouseEvent) => {
+            return <Fab className='experiment-timeline__list-decorator' variant="extended" size="small" aria-label="add" disabled={addAnotherSubmissionDisabled(task, taskNum)} onClick={(event: MouseEvent) => {
                 onClickAmendTasksButton(event, "add", task);
             }}>
                 <PlusCircle/>
             </Fab>
         } else if (isUncompletedRepeatableTask(task, taskCount, taskNum)) {
-            return  <Fab variant="extended" size="small" aria-label="add"  onClick={(event: MouseEvent) => {
+            return  <Fab className='experiment-timeline__list-decorator' variant="extended" size="small" aria-label="add"  onClick={(event: MouseEvent) => {
                 onClickAmendTasksButton(event, "remove", task);
             }}>
                 <MinusCircle/>
@@ -103,7 +103,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, is
 
 
     return (
-        <List variant="plain">
+        <List className="experiment-timeline__list" variant="plain">
             {Array.from(groupedTasks).flatMap(([_, taskList]) => taskList).map((task, index) => {
                 const taskGroup = groupedTasks.get(task.taskId);
                 const taskIndex = tasks.findIndex(thatTask => task.taskId === thatTask.taskId)!;
@@ -114,6 +114,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, is
                 return (
                     <div key={taskIndex}>
                         <ListItem
+                            className='experiment-timeline__list-item'
                             button={!taskCompleted}
                             key={taskIndex}
                             startDecorator={
@@ -124,7 +125,7 @@ const TasksList = function ({ tasks, experimentId, dayNum, type, onTaskClick, is
                             onClick={createHandleClickTask(taskIndex)}
 
                         >
-                            <Typography sx = {{fontSize: '0.75rem', ml: -1.5}} >
+                            <Typography>
                                 {task.isRepeatable ? task.name + `  (${index - taskIndex + 1} ${Strings.of} ${task.minOccurences}) ` : task.name}
                             </Typography>
                         </ListItem>

@@ -75,7 +75,7 @@ const Modal = function ({
             />
 
             <IonContent>
-                <Container style={{ backgroundColor: actionButtonDisabled ? '#eeeeee' : undefined }}>
+                <Container className="task-modal__text-container" style={{ backgroundColor: actionButtonDisabled ? '#fff' : undefined }}>
                     {children}
                 </Container>
             </IonContent>

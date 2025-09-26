@@ -6,15 +6,18 @@
   --box-background-journal: #ff5655;
 }
 
-/* This container wraps the entire app and limits dimensions to an
-iPhone 11 to make styling easier when developing on desktop. Should
-not be active on the deployed version because it might cause layout
-problems e.g. on tablet devices.
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+$text-width: 740px;
 
 .app-wrapper {
   position: relative;
-  max-width: 414px;
-  max-height: 896px;
+  //max-width: 500px;
+  //max-height: 896px;
   margin: 0 auto;
   width: 100%;
   height: 100%;
@@ -25,9 +28,36 @@ problems e.g. on tablet devices.
   max-width: 100%;
   overflow-x: hidden;
 }
-*/
+
+iframe {
+  max-width: $text-width;
+}
 
 .markdown-content {
+  margin-top: $spacing-md;
+  margin-bottom: $spacing-xl;
+}
+
+.task-modal__text-container {
+  padding-top: $spacing-lg !important;
+  padding-bottom: $spacing-xl !important;
+
+  *:first-child {
+    margin-top: 0;
+  }
+
+  .JoyFormControl-root {
+    padding: $spacing-sm;
+    border: 1px solid var(--joy-palette-neutral-outlinedBorder);
+    border-radius: var(--joy-radius-sm);
+  }
+}
+
+.markdown-content,
+.task-modal__text-container {
+  * {
+    max-width: $text-width;
+  }
 
   h1,
   h2,
@@ -35,10 +65,10 @@ problems e.g. on tablet devices.
   h4,
   h5,
   h6 {
-    font-family: "Golos", "Arial", sans-serif;
-    font-weight: 500;
+    font-family: "D-DIN Condensed", "Arial", sans-serif;
+    font-weight: 600;
     line-height: 1.2;
-    margin: 2rem 0 1rem;
+    letter-spacing: 0.01em;
   }
 
   h1 {
@@ -66,11 +96,15 @@ problems e.g. on tablet devices.
   }
 
   p {
-    margin: 1rem 0;
-    line-height: 1.15;
+    margin: 1.5rem 0 0 0;
+    line-height: 1.4;
     font-size: 1rem;
-  }
+    letter-spacing: 0.01em;
 
+    * {
+      display: inline;
+    }
+  }
 
   a {
     text-decoration: underline;
@@ -86,17 +120,17 @@ problems e.g. on tablet devices.
 
   ul,
   ol {
-    margin: 1rem 0;
-    padding-left: 1.2rem;
+    margin: 1.5rem 0;
+    padding-left: .9rem;
     list-style-position: outside;
   }
 
   li {
     margin-left: 0;
     padding-left: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
     font-size: 1rem;
-    line-height: 1.15;
+    line-height: 1.4;
   }
 
   img {
@@ -106,6 +140,16 @@ problems e.g. on tablet devices.
     margin: 2rem auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  blockquote {
+    margin: 0;
+  }
+
+  label {
+    line-height: 1.4;
+    font-size: .9rem;
+    color: var(--joy-palette-text-secondary);
   }
 }
 

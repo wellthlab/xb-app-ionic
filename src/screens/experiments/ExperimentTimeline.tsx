@@ -90,57 +90,62 @@ const ExperimentTimeline = function ({ experimentId }: IExperimentTimelineProps)
     const prepExperimentTasks = prepExperiment ? prepExperiment.days[0].tasks : [];
 
     return (
-        <div>
-            <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <Stack spacing={2} key={activeDay}>
-                    <TasksList
-                        tasks={experiment.days[currentDay].tasks}
-                        experimentId={experimentId}
-                        dayNum={activeDay}
-                        type={'normal'}
-                        onTaskClick={handleClickTask}
-                    />
-                    <TasksList
-                        tasks={experiment.days[currentDay].tasks}
-                        experimentId={experimentId}
-                        dayNum={activeDay}
-                        type={'reflection'}
-                        onTaskClick={handleClickTask}
-                    />
-                </Stack>
-            </Box>
+    <div className="experiment-timeline">
+        <Box className="experiment-timeline__container" sx={{ flex: 1, overflow: 'auto' }}>
+            <Stack spacing={2} key={activeDay} className="experiment-timeline__day-stack">
+                <TasksList
+                    tasks={experiment.days[currentDay].tasks}
+                    experimentId={experimentId}
+                    dayNum={activeDay}
+                    type={'normal'}
+                    onTaskClick={handleClickTask}
+                />
+                <TasksList
+                    tasks={experiment.days[currentDay].tasks}
+                    experimentId={experimentId}
+                    dayNum={activeDay}
+                    type={'reflection'}
+                    onTaskClick={handleClickTask}
+                />
+            </Stack>
+        </Box>
 
-            {experimentCompleted && (
-                <Stack spacing={2}>
-                    <Alert color="success">{Strings.congratulations_you_have}</Alert>
-                </Stack>
-            )}
+        {experimentCompleted && (
+            <Stack spacing={2} className="experiment-timeline__completion">
+                <Alert className="experiment-timeline__completion-alert" color="success">
+                    {Strings.congratulations_you_have}
+                </Alert>
+            </Stack>
+        )}
 
+        <TaskModal
+            className="experiment-timeline__task-modal"
+            isOpen={taskModalOpen}
+            onDismiss={() => handleDismissModal('normal')}
+            key={`${experimentId}.${dayNum}.${taskNum}.normal`}
+            experimentId={experimentId}
+            dayNum={dayNum}
+            taskNum={taskNum}
+            presentingElement={presentingElement}
+            isSubscribed={isSubscribedToExperiment}
+        />
+
+        {reflectionTasks.length !== 0 && (
             <TaskModal
-                isOpen={taskModalOpen}
-                onDismiss={() => handleDismissModal('normal')}
-                key={`${experimentId}.${dayNum}.${taskNum}.normal`}
+                className="experiment-timeline__task-modal experiment-timeline__task-modal--reflection"
+                isOpen={reflectionModalOpen}
+                onDismiss={() => handleDismissModal('reflection')}
+                key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
                 experimentId={experimentId}
-                dayNum={dayNum}
-                taskNum={taskNum}
+                dayNum={reflectionDayNum}
+                taskNum={reflectionTaskNum}
                 presentingElement={presentingElement}
                 isSubscribed={isSubscribedToExperiment}
             />
+        )}
+    </div>
+);
 
-            {reflectionTasks.length !== 0 && (
-                <TaskModal
-                    isOpen={reflectionModalOpen}
-                    onDismiss={() => handleDismissModal('reflection')}
-                    key={`${experimentId}.${reflectionDayNum}.${reflectionTaskNum}.reflect`}
-                    experimentId={experimentId}
-                    dayNum={reflectionDayNum}
-                    taskNum={reflectionTaskNum}
-                    presentingElement={presentingElement}
-                    isSubscribed={isSubscribedToExperiment}
-                />
-            )}
-        </div>
-    );
 };
 
 export default ExperimentTimeline;

@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import * as Realm from 'realm-web';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Button, LinearProgress, Link, Stack, Typography } from '@mui/joy';
+import { ListItemDecorator, Button, LinearProgress, Link, Stack, Typography } from '@mui/joy';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import Sheet from '@mui/joy/Sheet';
 import CloseIcon from '@mui/icons-material/Close';
@@ -30,6 +30,7 @@ import AddIcon from '@mui/icons-material/Add';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExperimentTimeline from '../ExperimentTimeline';
 import getContent from '../utils/getContent';
+import './ExperimentsList.scss';
 
 interface IExperimentsListProps {
     experimentsGroupedByCategory: Map<ExperimentCategory, IExperiment[]>;
@@ -161,14 +162,7 @@ const ExperimentsList = function ({
 
     const getScheduledExperimentsBody = (experimentCategory: ExperimentCategory) => {
         return (
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    px: 2,
-                }}
-            >
+            <Box className="experiments-list__scheduled-body" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', px: 2 }}>
                 {Array.from(scheduledExperimentsByStartTime!)
                     .sort(([startTime1], [startTime2]) => startTime1 - startTime2)
                     .map(([startUTCTime, scheduledExperiments]) =>
@@ -177,67 +171,51 @@ const ExperimentsList = function ({
                             .map((experiment) => (
                                 <Box
                                     key={experiment.id}
-                                    sx={{
-                                        width: '100%',
-                                        maxWidth: '500px',
-                                        mb: 2,
-                                    }}
+                                    className="experiments-list__scheduled-experiment"
+                                    sx={{ width: '100%' }}
                                 >
                                     <Accordion
                                         disableGutters
-                                        sx={{
-                                            width: '100%',
-                                            backgroundColor: 'rgba(255,255,255,.8)',
-                                            borderRadius: '10px',
-                                            boxShadow: 'none',
-                                            overflow: 'hidden',
-                                        }}
+                                        className="experiments-list__accordion" elevation={1} sx={{ width: '100%', backgroundColor: 'rgba(255,255,255,.8)', borderRadius: '10px', overflow: 'hidden' }}
                                     >
                                         <AccordionSummary
                                             expandIcon={<AddIcon />}
-                                            sx={{
-                                                backgroundColor: 'transparent',
-                                                px: 2,
-                                            }}
+                                            className="experiments-list__accordion-summary"
+                                            sx={{ backgroundColor: 'transparent', px: 2 }}
                                         >
                                             <Stack
+                                                className="experiments-list__accordion-summary-stack"
                                                 direction="row"
                                                 spacing={4}
-                                                sx={{
-                                                    width: '100%',
-                                                    justifyContent: 'space-between',
-                                                    alignItems: 'center',
-                                                }}
+                                                sx={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}
                                             >
-                                                <Typography>Week {experiment.boxweek + 1}</Typography>
-                                                <Typography sx={{ fontStyle: 'italic' }}>
-                                                    <AccessTimeIcon sx={{ verticalAlign: 'middle', mr: 0.5 }} />
+                                                <Typography className="experiments-list__week-label">Week {experiment.boxweek + 1}</Typography>
+                                                <Typography className="experiments-list__week-date">
+                                                    <AccessTimeIcon sx={{ mr: 0.5 }} />
                                                     {new Date(startUTCTime).toDateString()}
                                                 </Typography>
                                             </Stack>
                                         </AccordionSummary>
 
                                         <AccordionDetails
-                                            sx={{
-                                                backgroundColor: 'transparent',
-                                                px: 2,
-                                            }}
+                                            className="experiments-list__accordion-details"
+                                            sx={{ backgroundColor: 'transparent', px: 2 }}
                                         >
                                             {experiment.desc?.map((item, index) => (
                                                 <Stack
                                                     key={index}
+                                                    className="experiments-list__section-stack"
                                                     direction="row"
-                                                    spacing={2}
-                                                    sx={{
-                                                        width: '100%',
-                                                        alignItems: 'center',
-                                                        mb: 2,
-                                                    }}
+                                                    alignItems="center"
+                                                    spacing={1}
+                                                    onClick={() => setDrawerContent(item)}
+                                                    sx={{ cursor: 'pointer', boxShadow: '0px 2px 6px rgba(0,0,0,0.1)' }}
                                                 >
                                                     {item.sectionImageSrc && (
                                                         <img
                                                             src={item.sectionImageSrc}
                                                             alt=""
+                                                            className="experiments-list__section-image"
                                                             style={{
                                                                 width: '50px',
                                                                 height: '50px',
@@ -247,21 +225,31 @@ const ExperimentsList = function ({
                                                         />
                                                     )}
 
-                                                    <Link
-                                                        underline="none"
-                                                        sx={{ color: 'neutral.900' }}
-                                                        onClick={() => {
-                                                            setDrawerContent(item);
-                                                        }}
+                                                    <Typography
+                                                        className="experiments-list__section-title"
+                                                        sx={{ flex: 1 }}
                                                     >
-                                                        <Typography sx={{ flex: 1 }}>
-                                                            {item.sectionTitle} &nbsp;▶
-                                                        </Typography>
-                                                    </Link>
+                                                        {item.sectionTitle}
+                                                    </Typography>
+
+                                                    <ListItemDecorator
+                                                        sx={{
+                                                            ml: 1,
+                                                            color: 'text.secondary',
+                                                            fontSize: '1.2em',
+                                                            transform: 'rotate(-45deg)',
+                                                            borderRight: '2px solid currentColor',
+                                                            borderBottom: '2px solid currentColor',
+                                                            width: '6px',
+                                                            height: '6px',
+                                                            transition: 'transform 0.2s',
+                                                        }}
+                                                    />
                                                 </Stack>
                                             ))}
 
-                                            <ExperimentTimeline experimentId={experiment.id} />
+                                            <ExperimentTimeline
+                                                experimentId={experiment.id} />
                                         </AccordionDetails>
                                     </Accordion>
                                 </Box>
@@ -270,8 +258,6 @@ const ExperimentsList = function ({
             </Box>
         );
     };
-
-
 
     const getNonScheduledExperimentsBody = (
         experimentCategory: ExperimentCategory,
@@ -285,72 +271,49 @@ const ExperimentsList = function ({
                 return (
                     <Box
                         key={experiment.id}
-                        sx={{
-                            mx: 'auto',
-                            width: '100%',
-                            maxWidth: '500px',
-                            px: 2,
-                            mb: 2,
-                        }}
+                        className="experiments-list__non-scheduled-experiment"
+                        sx={{ mx: 'auto', width: '100%', maxWidth: '500px', px: 2, mb: 2 }}
                     >
-                        <Accordion
-                            sx={{
-                                width: '100%',
-                                backgroundColor: 'rgba(255,255,255,.8)',
-                                borderRadius: '10px',
-                            }}
-                        >
-                            <AccordionSummary
-                                expandIcon={<AddIcon />}
-                                sx={{ backgroundColor: 'transparent' }}
-                            >
-                                <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
-                                    <Typography level="h2">
+                        <Accordion className="experiments-list__accordion" elevation={1} sx={{ width: '100%', backgroundColor: 'rgba(255,255,255,.8)', borderRadius: '10px' }}>
+                            <AccordionSummary expandIcon={<AddIcon />} className="experiments-list__accordion-summary" sx={{ backgroundColor: 'transparent' }}>
+                                <Stack direction="column" spacing={1} className="experiments-list__accordion-summary-stack" sx={{ width: '100%' }}>
+                                    <Typography className="experiments-list__week-label" level="h2">
                                         Week {experiment.boxweek + 1}: {experiment.name}
                                     </Typography>
                                     {completion !== undefined ? (
-                                        <Stack
-                                            direction="row"
-                                            spacing={2}
-                                            alignItems="center"
-                                            sx={{ width: '50%' }}
-                                        >
-                                            <Typography level="body2">
-                                                {completion}
-                                                {Strings.percent_completed}
+                                        <Stack direction="row" spacing={2} alignItems="center" className="experiments-list__completion" sx={{ width: '50%' }}>
+                                            <Typography level="body2" className="experiments-list__completion-text">
+                                                {completion}{Strings.percent_completed}
                                             </Typography>
-                                            <LinearProgress
-                                                variant="solid"
-                                                size="lg"
-                                                determinate
-                                                value={completion}
-                                                sx={{ width: '100px' }}
-                                            />
+                                            <LinearProgress className="experiments-list__completion-bar" variant="solid" size="lg" determinate value={completion} sx={{ width: '100px' }} />
                                         </Stack>
                                     ) : (
-                                        <Typography>
+                                        <Typography className="experiments-list__days-label">
                                             {experiment.days.length} {Strings.day_s_}
                                         </Typography>
                                     )}
                                 </Stack>
                             </AccordionSummary>
 
-                            <AccordionDetails sx={{ backgroundColor: 'transparent' }}>
+                            <AccordionDetails
+                                className="experiments-list__accordion-details"
+                                sx={{ backgroundColor: 'transparent', px: 2 }}
+                            >
                                 {experiment.desc?.map((item, index) => (
                                     <Stack
                                         key={index}
+                                        className="experiments-list__section-stack"
                                         direction="row"
-                                        spacing={2}
-                                        sx={{
-                                            width: '100%',
-                                            alignItems: 'center',
-                                            mb: 2,
-                                        }}
+                                        alignItems="center"
+                                        spacing={1}
+                                        onClick={() => setDrawerContent(item)}
+                                        sx={{ cursor: 'pointer', boxShadow: '0px 2px 6px rgba(0,0,0,0.1)' }}
                                     >
                                         {item.sectionImageSrc && (
                                             <img
                                                 src={item.sectionImageSrc}
                                                 alt=""
+                                                className="experiments-list__section-image"
                                                 style={{
                                                     width: '50px',
                                                     height: '50px',
@@ -359,17 +322,27 @@ const ExperimentsList = function ({
                                                 }}
                                             />
                                         )}
-                                        <Link
-                                            underline="none"
-                                            sx={{ color: 'neutral.900' }}
-                                            onClick={() => {
-                                                setDrawerContent(item);
-                                            }}
+
+                                        <Typography
+                                            className="experiments-list__section-title"
+                                            sx={{ flex: 1 }}
                                         >
-                                            <Typography sx={{ flex: 1 }}>
-                                                {item.sectionTitle} &nbsp;▶
-                                            </Typography>
-                                        </Link>
+                                            {item.sectionTitle}
+                                        </Typography>
+
+                                        <ListItemDecorator
+                                            sx={{
+                                                ml: 1,
+                                                color: 'text.secondary',
+                                                fontSize: '1.2em',
+                                                transform: 'rotate(-45deg)',
+                                                borderRight: '2px solid currentColor',
+                                                borderBottom: '2px solid currentColor',
+                                                width: '6px',
+                                                height: '6px',
+                                                transition: 'transform 0.2s',
+                                            }}
+                                        />
                                     </Stack>
                                 ))}
                                 <ExperimentTimeline experimentId={experiment.id} />
@@ -398,39 +371,44 @@ const ExperimentsList = function ({
     };
 
     return (
-        <div>
-            <Stack>
+        <div className="experiments-list">
+            {/* Main Stack holding all experiment categories */}
+            <Stack className="experiments-list__categories">
                 {Array.from(experimentsGroupedByCategory).map(([experimentCategory, experiments]) => {
                     return getBody(experimentCategory, experiments);
                 })}
             </Stack>
 
+            {/* Subscription Modal */}
             <Modal
                 headerTitle={Strings.confirm_subscription}
                 isOpen={subscriptionModalOpen}
                 onDismiss={toggleSubscriptionModal}
-                className={'ion-modal-small'}
+                className={'ion-modal-small experiments-list__subscription-modal'}
                 onAction={handleSubscribeToExperiment}
                 children={getModalChildren()}
                 actionButtonLabel={Strings.subscribe}
             />
 
+            {/* Resubscription Modal */}
             <Modal
                 headerTitle={Strings.confirm_resubscription}
                 isOpen={resubscriptionModalOpen}
                 onDismiss={toggleResubscriptionModal}
-                className={'ion-modal-small'}
+                className={'ion-modal-small experiments-list__resubscription-modal'}
                 onAction={handleResubscribeToExperiment}
                 children={getResubModalChildren()}
                 actionButtonLabel={Strings.resubscribe}
             />
 
+            {/* Bottom drawer for section content */}
             <SwipeableDrawer
                 anchor="bottom"
                 open={!!drawerContent}
                 onClose={() => setDrawerContent(null)}
                 onOpen={() => { }}
                 disableSwipeToOpen={true}
+                className="experiments-list__drawer"
                 sx={{
                     '--Drawer-horizontalSize': '500px',
                     '& .MuiDrawer-paper': {
@@ -441,6 +419,7 @@ const ExperimentsList = function ({
                 }}
             >
                 <Sheet
+                    className="experiments-list__drawer-sheet"
                     sx={{
                         p: 2,
                         display: 'flex',
@@ -450,33 +429,38 @@ const ExperimentsList = function ({
                 >
                     <IconButton
                         onClick={() => setDrawerContent(null)}
+                        className="experiments-list__drawer-close"
                         sx={{
                             position: 'absolute',
                             right: 8,
                             top: 8,
                             bgcolor: 'transparent',
-                            '&:hover': {
-                                bgcolor: 'transparent',
-                            },
+                            '&:hover': { bgcolor: 'transparent' },
                         }}
                     >
                         <CloseIcon sx={{ color: 'black' }} />
                     </IconButton>
 
-                    <Stack spacing={2}>
+                    <Stack spacing={2} className="experiments-list__drawer-content">
                         {drawerContent &&
-                            drawerContent.sectionContent.map((element: any) => <div>{getContent(element)}</div>)}
+                            drawerContent.sectionContent.map((element: any, idx: number) => (
+                                <div key={idx} className="experiments-list__drawer-element">
+                                    {getContent(element)}
+                                </div>
+                            ))}
                     </Stack>
                 </Sheet>
             </SwipeableDrawer>
 
+            {/* Subscribe Button for users not in cohort */}
             {!userInCohort && (
-                <div>
+                <div className="experiments-list__subscribe-button-wrapper">
                     <Button
                         onClick={toggleSubscriptionModal}
                         style={{ left: '12.5%', width: '70%' }}
                         sx={{ mb: 4, mt: 4, p: 1 }}
                         disabled={isSubscribedToBox()}
+                        className="experiments-list__subscribe-button"
                     >
                         {isSubscribedToBox() ? Strings.already_subscribed : Strings.subscribe_to_box}
                     </Button>
@@ -484,6 +468,7 @@ const ExperimentsList = function ({
             )}
         </div>
     );
+
 };
 
 export default ExperimentsList;

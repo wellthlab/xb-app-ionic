@@ -105,6 +105,7 @@ const TasksList = function ({
         if (isLastCompletedRepeatableTask(task, taskCount, taskNum)) {
             return (
                 <Fab
+                    className='experiment-timeline__list-decorator'
                     variant="extended"
                     size="small"
                     aria-label="add"
@@ -119,6 +120,7 @@ const TasksList = function ({
         } else if (isUncompletedRepeatableTask(task, taskCount, taskNum)) {
             return (
                 <Fab
+                    className='experiment-timeline__list-decorator'
                     variant="extended"
                     size="small"
                     aria-label="add"
@@ -137,7 +139,9 @@ const TasksList = function ({
     };
 
     return (
-        <List variant="plain">
+        <List
+            className="experiment-timeline__list" 
+            variant="plain">
             {Object.entries(groupedTasks)
                 .flatMap(([_, taskList]) => taskList)
                 .map((task, index) => {
@@ -150,6 +154,7 @@ const TasksList = function ({
                     return (
                         <div key={taskIndex}>
                             <ListItem
+                                className='experiment-timeline__list-item'
                                 button={!taskCompleted}
                                 startDecorator={
                                     Icon &&
@@ -162,7 +167,7 @@ const TasksList = function ({
                                 endDecorator={getEndDecorator(task, taskGroup.length, taskCompleted, taskIndex)}
                                 onClick={createHandleClickTask(taskIndex)}
                             >
-                                <Typography sx={{ fontSize: '0.75rem', ml: -1.5 }}>
+                                <Typography>
                                     {task.isRepeatable
                                         ? (task.name || '(no task name)') +
                                           `  (${index - taskIndex + 1} ${Strings.of} ${task.minOccurences}) `

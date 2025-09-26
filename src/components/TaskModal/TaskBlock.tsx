@@ -89,7 +89,7 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
 
     if (block.type === 'para' || block.type === 'title') {
         return (
-            <Typography level={block.type === 'para' ? 'body1' : 'h6'} sx={{ fontSize: '0.8rem' }}>
+            <Typography level={block.type === 'para' ? 'body1' : 'h6'}>
                 {renderParagraphWithLinks(block.content)}
             </Typography>
         );
@@ -102,22 +102,22 @@ const TaskBlock = function ({ block, inputs, type }: ITaskBlockProps) {
                 // @ts-expect-error
                 rehypePlugins={[rehypeRaw, [rehypeSanitize, defaultSchema]]}
                 components={{
-                    h1: ({ children }) => <Typography level="h2">{children}</Typography>,
+                    h1: ({ children }) => <Typography level="h1">{children}</Typography>,
 
                     h2: ({ children }) => (
-                        <Typography level="h3" color="primary" sx={{ mt: 4 }}>
+                        <Typography level="h2">
                             {children}
                         </Typography>
                     ),
 
                     h3: ({ children }) => (
-                        <Typography level="h4" color="primary" sx={{ mt: 4 }}>
+                        <Typography level="h3">
                             {children}
                         </Typography>
                     ),
 
-                    li: ({ children }) => <li style={{ marginTop: 2, fontSize: '0.8rem' }}>{children}</li>,
-                    p: ({ children }) => <Typography sx={{ mt: 2, fontSize: '0.8rem' }}>{children}</Typography>,
+                    li: ({ children }) => <li>{children}</li>,
+                    p: ({ children }) => <Typography>{children}</Typography>,
 
                     a: ({ children, href }) => <Link href={href}>{children}</Link>,
 

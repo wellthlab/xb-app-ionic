@@ -22,7 +22,7 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
     cssVarPrefix: 'joy',
 
     typography: {
-        fontFamily: '"Golos", "Arial", sans-serif',
+        fontFamily: '"D-DIN", "Arial", sans-serif',
     },
 
     colorSchemes: {
@@ -106,8 +106,8 @@ const { unstable_sxConfig: muiSxConfig, ...muiTheme } = extendMuiTheme({
 
 const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
     fontFamily: {
-        display: '"Golos", "Arial", sans-serif',
-        body: '"Golos", "Arial", sans-serif',
+        display: '"D-DIN Condensed", "Arial", sans-serif',
+        body: '"D-DIN", "Arial", sans-serif',
         code: 'monospace',
     },
     fontWeight: {
@@ -160,7 +160,8 @@ const { unstable_sxConfig: joySxConfig, ...joyTheme } = extendJoyTheme({
                     minHeight: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: theme.spacing(4, 2),
+                    padding: theme.spacing(2),
+                    backgroundColor: 'rgb(255,255,255)'
                 }),
             },
         },

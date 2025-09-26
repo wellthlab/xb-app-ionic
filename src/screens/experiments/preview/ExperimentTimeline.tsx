@@ -51,7 +51,7 @@ const ExperimentTimeline = function ({ experiment, currentDay }: IExperimentTime
     const normalTasks = experiment.days[currentDay].tasks.filter((task) => task.type === 'normal');
 
     return (
-        <div>
+        <div className="experiment-timeline--preview">
             <Box sx={{ flex: 1, overflow: 'auto' }}>
                 <Stack spacing={2}>
                     <TasksList

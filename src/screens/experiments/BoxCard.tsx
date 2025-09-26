@@ -20,7 +20,7 @@ const BoxCard: React.FC<BoxCardProps> = ({ box }) => {
     />;
 
     return (
-        <Grid xs={12}>
+        <Grid xs={6}>
             <Card
                 component={RouterLink as React.ElementType}
                 to={box.disabled ? undefined : `/main/box/${box.name}`}
