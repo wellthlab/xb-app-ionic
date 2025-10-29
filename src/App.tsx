@@ -41,6 +41,8 @@ import { ParQScreen } from './screens/onboarding/ParQ';
 
 import './global.scss';
 
+const SUPPORT_LANG = ['en', 'es'];
+
 const AppFlowController = function ({ parQ }: { parQ: any }) {
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const isEnrolled = useSelector(selectIsEnrolled);
@@ -49,6 +51,23 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
 
     const [hydrating, setHydrating] = React.useState(true);
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        function switchLanguage(ev: KeyboardEvent) {
+            if (ev.ctrlKey && ev.shiftKey && ev.key === 'L') {
+                ev.preventDefault();
+                console.log('Language switch key combo detected');
+                const langIndex = localStorage.getItem('lang') ?? '0';
+                localStorage.setItem('lang', String((Number(langIndex) + 1) % SUPPORT_LANG.length));
+                window.location.href = '/';
+            }
+        }
+
+        document.addEventListener('keydown', switchLanguage);
+        return () => {
+            document.removeEventListener('keydown', switchLanguage);
+        };
+    }, []);
 
     React.useEffect(() => {
         if (parQ === null || (!parQ.pass && !parQ.consulted)) {
@@ -65,7 +84,9 @@ const AppFlowController = function ({ parQ }: { parQ: any }) {
             console.log('BOOTING...');
             setHydrating(true);
 
-            await dispatch(boot('en'));
+            const langIndex = localStorage.getItem('lang') ?? '0';
+
+            await dispatch(boot(SUPPORT_LANG[Number(langIndex)]));
 
             console.log('BOOTED');
             setHydrating(false);
