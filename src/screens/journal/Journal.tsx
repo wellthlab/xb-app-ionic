@@ -43,7 +43,7 @@ const Journal = function () {
         const endDate = new Date(currentDate.toDate());
         endDate.setUTCHours(23, 59, 59, 9999);
 
-        return Object.values(allResponses)
+        return allResponses
             .flat()
             .filter((s) => s.createdAt >= startDate.getTime() && s.createdAt <= endDate.getTime());
     });

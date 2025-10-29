@@ -48,7 +48,7 @@ export const selectTask = (state: ISelectorState, experimentId: string, dayNum: 
 
 export default createSlice({
     name: 'experiments',
-    initialState: { experiments: {}, boxes: {}, responses: [] } as IExperimentState,
+    initialState: { experiments: {}, boxes: {}, responses: Experiment.getResponses() } as IExperimentState,
     reducers: {},
 
     extraReducers: (builder) => {

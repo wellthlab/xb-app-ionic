@@ -197,7 +197,7 @@ export interface IResponse {
 
 class Experiment {
     static async getExperiments(lang: string): Promise<IExperiment[]> {
-        const data = await fetch(`http://localhost:8082/experiments?locale=${lang}`);
+        const data = await fetch(`https://xbapp03.ecs.soton.ac.uk/backend/experiments?locale=${lang}`);
         const experiments = await data.json();
         return experiments
             .filter((experiment: IExperiment) => experiment.days.length > 0)
@@ -205,7 +205,7 @@ class Experiment {
     }
 
     static async getBoxes(lang: string): Promise<IBox[]> {
-        const data = await fetch(`http://localhost:8082/boxes?locale=${lang}`);
+        const data = await fetch(`https://xbapp03.ecs.soton.ac.uk/backend/boxes?locale=${lang}`);
         const boxes = await data.json();
         return boxes.map((box: any) => ({ ...box, id: box._id }));
     }
