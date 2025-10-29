@@ -1,6 +1,17 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Typography, Card, CardOverflow, AspectRatio, Grid, Box, Stack, Link, linkClasses, CardContent } from '@mui/joy';
+import {
+    Typography,
+    Card,
+    CardOverflow,
+    AspectRatio,
+    Grid,
+    Box,
+    Stack,
+    Link,
+    linkClasses,
+    CardContent,
+} from '@mui/joy';
 import capitalise from './utils/capitalise';
 import { IBox } from '../../models/Experiment';
 
@@ -13,17 +24,13 @@ const BoxCard: React.FC<BoxCardProps> = ({ box }) => {
 
     const narrowImgSrc = box.heroImageSrc + '_narrow.svg';
 
-    const cardImg = <img
-        src={narrowImgSrc}
-        loading="lazy"
-        alt=""
-    />;
+    const cardImg = <img src={narrowImgSrc} loading="lazy" alt="" />;
 
     return (
         <Grid xs={12}>
             <Card
                 component={RouterLink as React.ElementType}
-                to={box.disabled ? undefined : `/main/box/${box.name}`}
+                to={box.disabled ? undefined : `/main/box/${box.id}`}
                 disabled={box.disabled}
                 sx={{
                     textDecoration: 'none',
@@ -38,24 +45,23 @@ const BoxCard: React.FC<BoxCardProps> = ({ box }) => {
                 }}
             >
                 <CardOverflow>
-                    <AspectRatio ratio="900/500">
-                        {cardImg}
-                    </AspectRatio>
+                    <AspectRatio ratio="900/500">{cardImg}</AspectRatio>
                 </CardOverflow>
-                <CardContent sx={{
-                    pt: 2
-                }}>
+                <CardContent
+                    sx={{
+                        pt: 2,
+                    }}
+                >
                     <Typography level="h2">{capitalise(box.name)}</Typography>
                     {box.overview && (
                         <Typography level="body2" sx={{ mt: 1 }}>
                             {box.overview}
                         </Typography>
                     )}
-
                 </CardContent>
             </Card>
         </Grid>
-    )
-}
+    );
+};
 
 export default BoxCard;

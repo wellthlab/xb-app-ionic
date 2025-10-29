@@ -1,7 +1,3 @@
-import { BaseModel, ObjectId } from './utils';
-import { convertObjectIdFieldsToString } from '../utils/helperFunctions';
-import { Record } from 'phosphor-react';
-
 export interface IBox {
     id: string;
     name: string;
@@ -15,10 +11,6 @@ export interface IBox {
     overview: string;
 }
 
-interface IBoxDocument extends IBox {
-    _id: ObjectId;
-}
-
 interface IBaseExperiment {
     name: string;
     boxId: string;
@@ -27,19 +19,6 @@ interface IBaseExperiment {
     hidden?: boolean;
     isSuggested: boolean;
     id: string;
-}
-
-export enum ExperimentCategory {
-    ACTIVE = 'ACTIVE',
-    SUGGESTED = 'SUGGESTED',
-    AVAILABLE = 'AVAILABLE',
-    COMPLETED = 'COMPLETED',
-    SCHEDULED = 'SCHEDULED',
-}
-
-export interface IExperimentSchedule {
-    startTimeUTC: number;
-    experiments: ObjectId[];
 }
 
 export interface IExperiment extends IBaseExperiment {
@@ -54,10 +33,6 @@ export interface IExperiment extends IBaseExperiment {
     prepExperiment: string;
     nextExperiment?: string;
     boxweek: number;
-}
-
-interface IExperimentDocument extends Omit<IExperiment, 'id'> {
-    _id: ObjectId;
 }
 
 export interface IDay {
@@ -98,15 +73,21 @@ export type Block =
     | ICountdownTimer
     | IMovementRecorder
     | IMovementPicker
-    | ISelectSubscription
     | IDateInput
-    | IMarkdown;
+    | IMarkdown
+    | IExpandable;
 
 export interface IGenericInput {
     optional?: boolean;
     label: string;
     help?: string;
     rk: string;
+}
+
+interface IExpandable {
+    type: 'expandable';
+    title: string;
+    contents: Block[];
 }
 
 interface IMedia {
@@ -140,16 +121,6 @@ interface INumberInput extends IGenericInput {
 interface ISelectInput extends IGenericInput {
     type: 'select-input';
     options: string[];
-}
-
-export interface ISelectSubscription extends IGenericInput {
-    type: 'select-subscription';
-    options: ISelectSubscriptionOption[];
-}
-
-interface ISelectSubscriptionOption {
-    label: string;
-    experimentId: string;
 }
 
 interface ISliderInput extends IGenericInput {
@@ -217,107 +188,59 @@ interface ICountdownTimer {
 }
 
 export interface IResponse {
-    id: string;
-    subscriptionId: string;
+    experimentId: string;
     taskId: string;
     dayNum: number;
     payload: Record<string, string | number>;
     createdAt: number;
-    inactiveSubscription?: boolean;
 }
 
-interface IResponseDocument extends Omit<IResponse, 'id' | 'subscriptionId' | 'taskId'> {
-    _id: ObjectId;
-    subscriptionId: ObjectId;
-    taskId: ObjectId;
-}
-
-class Experiment extends BaseModel {
+class Experiment {
     static async getExperiments(lang: string): Promise<IExperiment[]> {
-        const db = this.getDb();
-        const records = await db.collection<IExperimentDocument>(`experiments`).find({ locale: lang });
-        records.forEach((record) => convertObjectIdFieldsToString(record));
-
-        return records.map((record) => {
-            const asGenericExperiment = (record as unknown) as IExperiment;
-            asGenericExperiment.id = (record._id as unknown) as string;
-            if (asGenericExperiment.days.length === 1) {
-                asGenericExperiment.days = new Array(5).fill(1).map((_, i) => ({
-                    ...asGenericExperiment.days[0],
-                    dayId: `${asGenericExperiment.days[0].id}_${i}`,
-                }));
-            }
-            return asGenericExperiment;
-        });
+        const data = await fetch(`http://localhost:8082/experiments?locale=${lang}`);
+        const experiments = await data.json();
+        return experiments
+            .filter((experiment: IExperiment) => experiment.days.length > 0)
+            .map((experiment: any) => ({ ...experiment, id: experiment._id }));
     }
 
     static async getBoxes(lang: string): Promise<IBox[]> {
-        const db = this.getDb();
-
-        const result = await db.collection<IBoxDocument>(`boxes`).find({
-            locale: lang,
-        });
-
-        return result.map(({ _id, ...item }) => ({ ...item, id: _id.toString() }));
+        const data = await fetch(`http://localhost:8082/boxes?locale=${lang}`);
+        const boxes = await data.json();
+        return boxes.map((box: any) => ({ ...box, id: box._id }));
     }
 
-    static saveResponse(response: Omit<IResponse, 'subscriptionId' | 'createdAt' | 'id'>, subscriptionId: string) {
-        const db = this.getDb();
-
-        return db.collection<IResponseDocument>('responses').insertOne({
-            ...response,
-            taskId: this.oid(response.taskId),
-            subscriptionId: this.oid(subscriptionId),
-            createdAt: Date.now(),
-        });
-    }
-
-    static async getResponses(subscriptionIds: string[]) {
-        const db = this.getDb();
-        const subscriptionIdsAsObjectIds = subscriptionIds.map((subscriptionId) => this.oid(subscriptionId));
-        const responses = await db
-            .collection<IResponseDocument>('responses')
-            .find({ subscriptionId: { $in: subscriptionIdsAsObjectIds } });
-        convertObjectIdFieldsToString(responses);
-
-        const responsesAsIResponse = responses.map((record) => {
-            const asIResponse = (record as unknown) as IResponse;
-            asIResponse.id = (record._id as unknown) as string;
-            return asIResponse;
-        });
-
-        const responsesGroupedBySubscriptionId = responsesAsIResponse.reduce(
-            (records: Record<string, IResponse[]>, response) => {
-                if (records[response.subscriptionId]) {
-                    records[response.subscriptionId].push(response);
-                } else {
-                    records[response.subscriptionId] = [response];
-                }
-                return records;
-            },
-            {},
+    static saveResponse(response: Omit<IResponse, 'createdAt'>): IResponse[] {
+        const existingResponses = this.getResponses();
+        const existingIndex = existingResponses.findIndex(
+            (r) =>
+                r.experimentId === response.experimentId &&
+                r.taskId === response.taskId &&
+                r.dayNum === response.dayNum,
         );
+        if (existingIndex !== -1) {
+            existingResponses[existingIndex] = { ...response, createdAt: Date.now() };
+        } else {
+            existingResponses.push({
+                ...response,
+                createdAt: Date.now(),
+            });
+        }
 
-        return responsesGroupedBySubscriptionId;
+        window.localStorage.setItem('responses', JSON.stringify(existingResponses));
+        return existingResponses;
     }
 
-    static deleteResponses(subscriptionIds: string[]) {
-        const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
-
-        return db.collection('responses').deleteMany({ subscriptionId: { $in: subscriptionIdsAsObjectId } });
+    static getResponses(): IResponse[] {
+        const responses = window.localStorage.getItem('responses');
+        return responses ? JSON.parse(responses) : [];
     }
 
-    static flagResponsesInactive(subscriptionIds: string[]) {
-        const db = this.getDb();
-        const subscriptionIdsAsObjectId = subscriptionIds.map((s) => this.oid(s));
-
-        return db
-            .collection('responses')
-            .updateMany(
-                { subscriptionId: { $in: subscriptionIdsAsObjectId } },
-                { $set: { inactiveSubscription: true } },
-            );
+    static getResponse(experimentId: string, taskId: string, dayNum: number): IResponse | null {
+        const responses = this.getResponses();
+        return (
+            responses.find((r) => r.experimentId === experimentId && r.taskId === taskId && r.dayNum === dayNum) || null
+        );
     }
 }
 

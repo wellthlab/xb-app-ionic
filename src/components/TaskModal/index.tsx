@@ -6,77 +6,43 @@ import TaskBlock from './TaskBlock';
 import Modal, { IModalProps } from '../foundation/Modal';
 import { useFormFromBlocks } from '../foundation/useForm';
 
-import Experiment, { ISelectSubscription } from '../../models/Experiment';
 import { useDispatch, useSelector } from '../../slices/store';
-import {
-    selectSubscriptionByExperimentId,
-    selectSubscriptions,
-    isUserInCohort,
-    subscribeToExperiments, reloadResponses,
-} from '../../slices/account';
-import { selectAllExperiments, selectCurrentDay, selectTask } from '../../slices/experiments';
+import { saveResponse, selectTask } from '../../slices/experiments';
 
 interface ITaskModalProps extends Omit<IModalProps, 'headerTitle'> {
     experimentId: string;
     dayNum: number;
     taskNum: number;
-    isSubscribed: boolean;
 }
 
-const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, isSubscribed, ...others }: ITaskModalProps) {
+const TaskModal = function ({ experimentId, onDismiss, dayNum, taskNum, ...others }: ITaskModalProps) {
     const task = useSelector((state) => selectTask(state, experimentId, dayNum, taskNum));
-    const accountSubscriptions = useSelector(selectSubscriptions);
-    const subscription = useSelector((state) => selectSubscriptionByExperimentId(state, experimentId));
-    const currentDay = useSelector((state) => selectCurrentDay(state, experimentId));
-    const actionDisabled = !isSubscribed || currentDay < dayNum;
-    const allExperiments = useSelector(selectAllExperiments);
-
-    const userInCohort = useSelector((state) => isUserInCohort(state));
 
     const { createHandleSubmit, getCheckboxProps, getInputProps } = useFormFromBlocks(task.blocks);
 
     const dispatch = useDispatch();
 
     const handleSubmit = createHandleSubmit(async (data) => {
-        await handleSelectSubscriptionTask(data)
-        await Experiment.saveResponse({ taskId: task.taskId, payload: data, dayNum }, subscription.id);
-        await dispatch(reloadResponses(Object.values(accountSubscriptions).map((subscription) => subscription.id)));
+        await dispatch(saveResponse({ experimentId, taskId: task.taskId, payload: data, dayNum }));
         onDismiss();
     });
 
-    const handleSelectSubscriptionTask = async (data: any) => {
-        const selectedExperimentIds = task.blocks
-            .filter(block => block.type === 'select-subscription')
-            .flatMap(block => (block as ISelectSubscription).options)
-            .filter(option => Object.values(data).includes(option.label))
-            .map(option => option.experimentId);
-
-        if (selectedExperimentIds.length > 0) {
-            const experimentsForSubscription = Object.values(allExperiments).filter(experiment => selectedExperimentIds.includes(experiment.id));
-            if (experimentsForSubscription.length > 0) {
-                await dispatch(
-                    subscribeToExperiments({
-                        experiments: experimentsForSubscription,
-                        subscriptionStartTime: Date.now(),
-                    }),
-                );
-            }
-        }
-    }
-
     return (
         <Modal
-            actionButtonDisabled={actionDisabled}
             actionButtonLabel={Strings.submit}
-            actionButtonDisabledToolTipTitle={userInCohort ? Strings.not_subscribed_to_experiment : Strings.subscribe_to_complete_tasks}
-            headerTitle= { actionDisabled ? Strings.preview + task.name : task.name +  ' - ' + Strings.day + ' ' +  `${currentDay +1}` + ' ' + Strings.of + ' 5'}
+            headerTitle={task.name + ' - ' + Strings.day + ' ' + `${dayNum + 1}` + ' ' + Strings.of + ' 5'}
             onAction={handleSubmit}
             onDismiss={onDismiss}
             {...others}
         >
-            <Stack style={{ pointerEvents: actionDisabled ? 'none' : undefined }} spacing={2}>
+            <Stack spacing={2}>
                 {task.blocks.map((block, blockId) => (
-                    <TaskBlock type={task.type} key={blockId} block={block} inputs={{ getCheckboxProps, getInputProps }} />
+                    <TaskBlock
+                        type={task.type}
+                        key={blockId}
+                        block={block}
+                        inputs={{ getCheckboxProps, getInputProps }}
+                    />
                 ))}
             </Stack>
         </Modal>

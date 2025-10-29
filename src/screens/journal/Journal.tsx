@@ -1,20 +1,7 @@
 import Strings from '../../utils/string_dict.js';
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import {
-    Typography,
-    Card,
-    Stack,
-    Tabs,
-    TabList,
-    Tab,
-    TabPanel,
-    TabsProps,
-    IconButton,
-    Button,
-    ListDivider,
-    Container
-} from '@mui/joy';
+import { Typography, Card, Stack, Tabs, TabPanel, TabsProps, IconButton, ListDivider, Container } from '@mui/joy';
 import { DateCalendar, DateCalendarProps, DateTimeField } from '@mui/x-date-pickers';
 import {
     Timeline,
@@ -31,18 +18,13 @@ import { Calendar, CaretDown } from 'phosphor-react';
 import Page from '../../components/foundation/Page';
 import PageTitle from '../../components/foundation/PageTitle';
 
-import { IExperiment, IGenericInput, IResponse } from '../../models/Experiment';
-import { useDispatch, useSelector } from '../../slices/store';
-import { selectAllExperiments, selectExperimentById } from '../../slices/experiments';
+import { IExperiment, IGenericInput } from '../../models/Experiment';
+import { useSelector } from '../../slices/store';
+import { selectAllExperiments, selectResponses } from '../../slices/experiments';
 import List from '../../components/foundation/List';
 import ListItem from '../../components/foundation/ListItem';
-import Modal from '../../components/foundation/Modal';
-import Textarea from '../../components/foundation/Textarea';
-import { saveNotes, selectNotes, selectResponses, selectSubscriptions } from '../../slices/account';
 
 const Journal = function () {
-    const dispatch = useDispatch();
-    const notes = useSelector((state) => selectNotes(state));
     const [tabIndex, setTabIndex] = React.useState(0);
     const handleTabChange: TabsProps['onChange'] = function (_, value) {
         setTabIndex(value as number);
@@ -84,52 +66,8 @@ const Journal = function () {
     };
 
     const [presentingElement, setPresentingElement] = React.useState<HTMLElement>();
-    const [isAddingNote, setIsAddingNote] = React.useState(false);
-
-    const handleAddNote = function () {
-        setIsAddingNote(true);
-    };
-
-    const handleDismiss = function () {
-        setIsAddingNote(false);
-    };
 
     const experiments = useSelector(selectAllExperiments);
-    const subscriptions = useSelector(selectSubscriptions);
-
-    const [displayedNote, setDisplayedNote] = React.useState('');
-    const [editableNote, setEditableNote] = React.useState('');
-
-    React.useEffect(() => {
-        const noteForDisplay = notes[getNoteDate()];
-        if (noteForDisplay) {
-            setEditableNote(noteForDisplay);
-            setDisplayedNote(noteForDisplay);
-        } else {
-            setEditableNote('');
-            setDisplayedNote('');
-        }
-    }, [currentDate]);
-
-    const handleChangeNote = function (e: React.ChangeEvent<HTMLTextAreaElement>) {
-        setEditableNote(e.target.value);
-    };
-
-    const handleSubmitNote = async function () {
-        if (!currentDate) {
-            return;
-        }
-
-        const updateNotes = JSON.parse(JSON.stringify(notes));
-        updateNotes[getNoteDate()] = editableNote;
-        dispatch(saveNotes(updateNotes));
-        setDisplayedNote(editableNote);
-        setIsAddingNote(false);
-    };
-
-    const getNoteDate = () => {
-        return new Date(currentDate!.toDate()).setUTCHours(0, 0, 0, 0);
-    };
 
     return (
         <Page
@@ -139,7 +77,7 @@ const Journal = function () {
                 m: 0,
                 maxWidth: '100% !important',
                 width: '100%',
-                justifyContent: "top",
+                justifyContent: 'top',
                 alignItems: 'top',
                 backgroundImage: `url(/assets/backgrounds/lab_book_tile.svg), linear-gradient(to top right, #6b21a8, #4f46e5);`,
                 backgroundRepeat: 'repeat, no-repeat',
@@ -160,12 +98,12 @@ const Journal = function () {
             <Container
                 maxWidth="sm"
                 sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                    py: 3,
                 }}
             >
                 <PageTitle sx={{ mb: 0 }}>{Strings.journal}</PageTitle>
@@ -190,7 +128,11 @@ const Journal = function () {
                                     InputProps: {
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton variant="plain" color="neutral" onClick={handleToggleCalendar}>
+                                                <IconButton
+                                                    variant="plain"
+                                                    color="neutral"
+                                                    onClick={handleToggleCalendar}
+                                                >
                                                     <Calendar />
                                                 </IconButton>
                                             </InputAdornment>
@@ -207,27 +149,6 @@ const Journal = function () {
                         </Collapse>
 
                         <List noDividers sx={{ mt: 2 }}>
-                            {/*
-                            TODO: m.c. wanted to disable notes for the time being, commenting out as a temporary measure until a decision is made on whether to keep
-                            
-                            <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('note')}>
-                                {Strings.note}
-                            </ListItem>
-
-                            <Collapse in={openStates.note}>
-                                <ListDivider />
-                                <ListItem sx={{ p: 2 }}>
-                                    <Stack spacing={2}>
-                                        <Typography>{displayedNote || Strings.you_did_not_have_any_notes}</Typography>
-                                        <Button variant="outlined" onClick={handleAddNote}>
-                                            {Strings.add_a_note}
-                                        </Button>
-                                    </Stack>
-                                </ListItem>
-                            </Collapse>
-
-                            <ListDivider />
-                            */}
                             <ListItem button startDecorator={<CaretDown />} onClick={createHandleToggle('activity')}>
                                 {Strings.activity}
                             </ListItem>
@@ -248,12 +169,7 @@ const Journal = function () {
                                             }}
                                         >
                                             {responses.map((response, responseIndex) => {
-                                                const correspondingSubcription = Object.values(subscriptions).find(
-                                                    (subscription) => subscription.id === response.subscriptionId,
-                                                );
-                                                const experiment = experiments[
-                                                    correspondingSubcription!.experimentId
-                                                ] as IExperiment;
+                                                const experiment = experiments[response.experimentId] as IExperiment;
                                                 const day = experiment.days[response.dayNum];
                                                 const task = day.tasks.find((task) => task.taskId === response.taskId);
                                                 const payloadEntries = Object.entries(response.payload);
@@ -264,7 +180,9 @@ const Journal = function () {
                                                     payloadEntries.find(([key]) => key.includes('-$$r')) || [];
 
                                                 return (
-                                                    <TimelineItem key={response.id}>
+                                                    <TimelineItem
+                                                        key={`${response.experimentId}-${response.dayNum}-${response.taskId}`}
+                                                    >
                                                         <TimelineSeparator>
                                                             <TimelineDot />
                                                             {responseIndex !== responses.length - 1 && (
@@ -314,7 +232,12 @@ const Journal = function () {
                                                                                 display="inline"
                                                                                 color="neutral"
                                                                             >
-                                                                                "{(blockDefinition as IGenericInput).label}"
+                                                                                "
+                                                                                {
+                                                                                    (blockDefinition as IGenericInput)
+                                                                                        .label
+                                                                                }
+                                                                                "
                                                                             </Typography>{' '}
                                                                             {response.payload[key]}
                                                                         </div>
@@ -333,27 +256,6 @@ const Journal = function () {
                     </TabPanel>
                 </Tabs>
             </Container>
-
-            <Modal
-                headerTitle={Strings.add_a_note}
-                isOpen={isAddingNote}
-                presentingElement={presentingElement}
-                onDismiss={handleDismiss}
-                onAction={handleSubmitNote}
-            >
-                <Stack spacing={2}>
-                    <Typography level="body2">{Strings.feel_free_to_jot_down}</Typography>
-
-                    <Textarea
-                        label={Strings.note}
-                        placeholder={Strings.a_note_to_your_future_self}
-                        minRows={5}
-                        maxRows={14}
-                        value={editableNote}
-                        onChange={handleChangeNote}
-                    />
-                </Stack>
-            </Modal>
         </Page>
     );
 };

@@ -11,33 +11,31 @@ import { updateUserProfile } from '../../slices/account';
 
 const EditProfile = function () {
     const dispatch = useDispatch();
-    const cohortIdRef = React.useRef(undefined)
-    const startOfWeekRef = React.useRef(undefined)
 
     const handleSubmit: IProfileFormProps['onSubmit'] = async (data) => {
-        if (startOfWeekRef.current) {
-            data['startOfWeek'] = startOfWeekRef.current;
-        }
-        await dispatch(updateUserProfile({ payload: data, cohortId: cohortIdRef.current })).unwrap();
+        await dispatch(updateUserProfile({ payload: data })).unwrap();
     };
 
     return (
-        <Page headerTitle={Strings.your_profile} sx={{
-            backgroundColor: 'var(--joy-palette-neutral-50)'
-        }} >
+        <Page
+            headerTitle={Strings.your_profile}
+            sx={{
+                backgroundColor: 'var(--joy-palette-neutral-50)',
+            }}
+        >
             <Container
                 maxWidth="sm"
                 sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
-            }}>
-                <ProfileForm onSubmit={handleSubmit} cohortIdRef={cohortIdRef} startOfWeekRef={startOfWeekRef} isNewProfile={false} />
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                    py: 3,
+                }}
+            >
+                <ProfileForm onSubmit={handleSubmit} />
             </Container>
-
         </Page>
     );
 };

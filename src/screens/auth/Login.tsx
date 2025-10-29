@@ -15,8 +15,6 @@ import { authenticateUser } from '../../slices/account';
 import { useDispatch } from '../../slices/store';
 import Account from '../../models/Account';
 
-import BuildInfo from '../../components/BuildInfo';
-
 const schema = Yup.object().shape({
     email: emailSchema,
     password: Yup.string().required(Strings.password_is_missing),
@@ -56,7 +54,7 @@ const Login = function () {
             {confirmationRequired ? (
                 <ConfirmationRequired email={form.values.email} onClickLoginLink={handleClickLoginLink} />
             ) : (
-                    <Form
+                <Form
                     onSubmit={handleSubmit}
                     submitLabel={Strings.login}
                     message={form.errors.$root}
@@ -75,9 +73,6 @@ const Login = function () {
                     <TextField fullWidth label={Strings.password} type="password" {...getInputProps('password')} />
                 </Form>
             )}
-
-        <BuildInfo />
-
         </AuthScreenLayout>
     );
 };

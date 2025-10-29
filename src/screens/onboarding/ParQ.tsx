@@ -56,30 +56,36 @@ export function ParQScreen({ parQ, setParQ }: { parQ: any; setParQ: (v: any) => 
     return (
         <Page
             sx={{
-                backgroundColor: 'var(--joy-palette-neutral-50)'
-            }} >
+                backgroundColor: 'var(--joy-palette-neutral-50)',
+            }}
+        >
             <Container
                 maxWidth="sm"
                 sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
-                }}>
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                    py: 3,
+                }}
+            >
                 {!next ? (
                     <Form submitLabel={Strings.next} message={form.errors.$root} onSubmit={handleSubmit}>
                         <Typography level="h1">Please answer the following health questions:</Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                             {questions.map((question, i) => (
                                 <RadioGroup
+                                    key={i}
                                     value={form.values[`c${i}`] ? 'y' : 'n'}
                                     defaultValue="n"
                                     onChange={(e) =>
                                         form.setValues(
                                             (prev) =>
-                                                ({ ...prev, [`c${i}`]: e.target.value === 'y' } as Record<string, boolean>),
+                                                ({ ...prev, [`c${i}`]: e.target.value === 'y' } as Record<
+                                                    string,
+                                                    boolean
+                                                >),
                                         )
                                     }
                                 >

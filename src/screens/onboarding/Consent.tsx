@@ -1,34 +1,28 @@
 import Strings from '../../utils/string_dict';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Box } from '@mui/joy';
-import Page from '../../components/foundation/Page';
-import PageTitle from '../../components/foundation/PageTitle';
 import Form from '../../components/foundation/Form';
 import Checkbox from '../../components/foundation/Checkbox';
 import useForm from '../../components/foundation/useForm';
 
-import useStudy from '../../hooks/useStudy';
+import Study from '../../models/Study';
 import { useSelector } from '../../slices/store';
 import { selectIsEnrolled } from '../../slices/account';
 
 const checkboxSchema = Yup.bool().oneOf([true], Strings.please_check_this_box_to);
 
 const ConsentForm = function () {
-    const { study } = useStudy();
-    const location = useLocation();
+    const study = Study.getCurrentStudy();
     const isEnrolled = useSelector(selectIsEnrolled);
 
-    const initialFormState = React.useMemo(
-        () => {
-            return study!.consent.reduce((acc, v, i) => {
-                acc[`c${i}`] = isEnrolled;
-                return acc;
-            }, {} as Record<string, boolean>)
-        },
-        [study, isEnrolled],
-    );
+    const initialFormState = React.useMemo(() => {
+        return study!.consent.reduce((acc, v, i) => {
+            acc[`c${i}`] = isEnrolled;
+            return acc;
+        }, {} as Record<string, boolean>);
+    }, [study, isEnrolled]);
 
     const initialSchema = React.useMemo(() => {
         const schemaKeys = study!.consent.reduce((acc, v, i) => {
@@ -37,7 +31,7 @@ const ConsentForm = function () {
         }, {} as Record<string, Yup.AnySchema>);
 
         return Yup.object().shape(schemaKeys);
-    }, [study, isEnrolled]);
+    }, [study]);
 
     const { getCheckboxProps, createHandleSubmit, form } = useForm(initialFormState, initialSchema);
 

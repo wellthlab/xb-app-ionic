@@ -14,9 +14,6 @@ import { logOut } from '../../slices/globalActions';
 import { markAccountAsDeleted, selectIsDeleted } from '../../slices/account';
 import { useSelector, useDispatch } from '../../slices/store';
 
-import BuildInfo from '../../components/BuildInfo';
-
-
 const AllSettings = function () {
     const isDeleted = useSelector(selectIsDeleted);
 
@@ -25,7 +22,7 @@ const AllSettings = function () {
     const { mode, setMode } = useColorScheme();
     const handleChangeMode = function (e: React.ChangeEvent<HTMLSelectElement>) {
         //setMode(e.target.value as any);
-        setMode("light");
+        setMode('light');
     };
 
     // Log out
@@ -73,7 +70,7 @@ const AllSettings = function () {
                 m: 0,
                 maxWidth: '100% !important',
                 width: '100%',
-                justifyContent: "top",
+                justifyContent: 'top',
                 alignItems: 'top',
                 backgroundImage: `url(/assets/backgrounds/settings_tile.svg), linear-gradient(to top right, #6e6b80, #6b7280);`,
                 backgroundRepeat: 'repeat, no-repeat',
@@ -93,12 +90,12 @@ const AllSettings = function () {
             <Container
                 maxWidth="sm"
                 sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
+                    backgroundColor: '#fff',
+                    height: 'auto', // Prevent full height
                     minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
+                    borderRadius: '10px',
+                    boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                    py: 3,
                 }}
             >
                 <PageTitle sx={{ mb: 0 }}>{Strings.settings}</PageTitle>
@@ -159,8 +156,6 @@ const AllSettings = function () {
                             </ListItem>
                         </List>
                     </Stack>
-
-                    <BuildInfo />
                 </IconContext.Provider>
             </Container>
         </Page>

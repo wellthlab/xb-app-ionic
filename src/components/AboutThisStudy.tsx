@@ -3,20 +3,15 @@ import { Typography, Link, Divider, Stack, Container } from '@mui/joy';
 import ReactMarkdown from 'react-markdown';
 
 import PageTitle from './foundation/PageTitle';
-import useStudy from '../hooks/useStudy';
+import Study from '../models/Study';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AddIcon from '@mui/icons-material/Add';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import Page from './foundation/Page';
 import ConsentForm from '../screens/onboarding/Consent';
 
 const AboutThisStudy = function () {
-    const { study, isPending } = useStudy();
-
-    if (isPending) {
-        return <div>Loading...</div>;
-    }
+    const study = Study.getCurrentStudy();
 
     const getContent = (block: any, blockId: number) => {
         if (block.type === 'expandable') {
@@ -51,7 +46,7 @@ const AboutThisStudy = function () {
             return (
                 <ReactMarkdown
                     key={blockId}
-                    children={block.contents}
+                    children={block.content}
                     components={{
                         h1: ({ children }) => <PageTitle>{children}</PageTitle>,
 
@@ -71,25 +66,21 @@ const AboutThisStudy = function () {
     };
 
     return (
-        <Page
+        <Container
+            maxWidth="sm"
             sx={{
-                backgroundColor: 'var(--joy-palette-neutral-50)'
-            }}  >
-            <Container
-                maxWidth="sm"
-                sx={{
-                    backgroundColor: "#fff",
-                    height: 'auto',      // Prevent full height
-                    minHeight: 'unset',
-                    borderRadius: "10px",
-                    boxShadow: "2px 4px 5px rgba(0,0,0,.3)",
-                    py: 3
-                }}>
-                {study?.studyInfo.map((block, blockId) => getContent(block, blockId))}
-                <br />
-                <ConsentForm />
-            </Container>
-        </Page >
+                backgroundColor: '#fff',
+                height: 'auto', // Prevent full height
+                minHeight: 'unset',
+                borderRadius: '10px',
+                boxShadow: '2px 4px 5px rgba(0,0,0,.3)',
+                py: 3,
+            }}
+        >
+            {study?.studyInfo.map((block, blockId) => getContent(block, blockId))}
+            <br />
+            <ConsentForm />
+        </Container>
     );
 };
 

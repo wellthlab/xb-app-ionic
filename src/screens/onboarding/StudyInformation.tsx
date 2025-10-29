@@ -1,7 +1,5 @@
-import Strings from '../../utils/string_dict';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button } from '@mui/joy';
+import { Box } from '@mui/joy';
 
 import Page from '../../components/foundation/Page';
 import AboutThisStudy from '../../components/AboutThisStudy';
